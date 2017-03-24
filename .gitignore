@@ -255,4 +255,4 @@ ConnectionStrings.config
 CMS/KZW_BG
 
 # Some log file of 51Degrees
-/CMS/App_Data/CMSModules/DeviceProfiles/logFiftyOne.txt
+kadena2.0/CMS/App_Data/CMSModules/DeviceProfiles/logFiftyOne.txt
