@@ -1,8 +1,0 @@
-2017-03-15T03:25:55.2774664Z - 3304 - Warn - Exception cleaning temporary files
-2017-03-15T03:25:55.2804605Z - 3304 - Warn - 
-2017-03-15T03:25:55.2804605Z - 3304 - Warn - Could not find a part of the path 'C:\inetpub\wwwroot\kadena2.0\CMS\App_Data\51Degrees'.
-2017-03-15T03:25:55.2814680Z - 3304 - Warn -    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
-   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
-   at System.IO.DirectoryInfo.InternalGetFiles(String searchPattern, SearchOption searchOption)
-   at FiftyOne.Foundation.Mobile.Detection.WebProvider.CleanTemporaryFiles()
