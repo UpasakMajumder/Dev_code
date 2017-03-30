@@ -21,7 +21,7 @@ namespace AutomatedTests.Utilities
         /// </summary>
         public static Env Name { get; set; }
         /// <summary>
-        /// Url to set environment
+        /// Url to set environment w/o trailing slash
         /// </summary>
         public static string Url { get; set; }
         /// <summary>
@@ -63,7 +63,7 @@ namespace AutomatedTests.Utilities
             DateTimeFormat = ConfigurationManager.AppSettings["datetimeformat"];
             DateFormat = ConfigurationManager.AppSettings["dateformat"];
             ReadableDateTimeFormat = ConfigurationManager.AppSettings["readabledateformat"];
-            Name = EnumHelper.Parse<Env>(ConfigurationManager.AppSettings["environment"]);
+            Name = EnumHelper.Parse<Env>(ConfigurationManager.AppSettings["test-env"]);
             Url = ConfigurationManager.AppSettings[Name.ToString()];
         }
 
