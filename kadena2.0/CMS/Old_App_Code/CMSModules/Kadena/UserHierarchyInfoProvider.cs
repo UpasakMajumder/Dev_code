@@ -3,7 +3,7 @@ using System.Linq;
 
 using CMS.DataEngine;
 
-namespace Custom
+namespace Kadena
 {    
     /// <summary>
     /// Class providing UserHierarchyInfo management.

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using CMS;
 using CMS.DataEngine;
 using CMS.Helpers;
-using Custom;
+using Kadena;
 
 [assembly: RegisterObjectType(typeof(UserHierarchyInfo), UserHierarchyInfo.OBJECT_TYPE)]
 
-namespace Custom
+namespace Kadena
 {
     /// <summary>
     /// UserHierarchyInfo data container class.
@@ -23,15 +23,16 @@ namespace Custom
         /// <summary>
         /// Object type
         /// </summary>
-        public const string OBJECT_TYPE = "custom.userhierarchy";
+        public const string OBJECT_TYPE = "kadena.userhierarchy";
 
 
         /// <summary>
         /// Type information.
         /// </summary>
-        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Custom.UserHierarchy", null, null, null, null, null, null, null, "ParentUserId", "cms.user")
+#warning "You will need to configure the type info."
+        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Kadena.UserHierarchy", null, null, null, null, null, null, null, "ParentUserId", "cms.user")
         {
-			ModuleName = "cms.customsystemmodule",
+			ModuleName = "Kadena",
 			TouchCacheDependencies = true,
             DependsOn = new List<ObjectDependency>() 
 			{
