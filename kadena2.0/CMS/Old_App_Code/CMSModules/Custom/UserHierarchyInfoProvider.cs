@@ -21,14 +21,14 @@ namespace Custom
         }
 
 
-		/// <summary>
+        /// <summary>
         /// Returns UserHierarchyInfo binding structure.
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>  
-        public static UserHierarchyInfo GetUserHierarchyInfo(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>  
+        public static UserHierarchyInfo GetUserHierarchyInfo(int parentUserId, int childUserId)
         {
-            return ProviderObject.GetUserHierarchyInfoInternal(userId, userId);
+            return ProviderObject.GetUserHierarchyInfoInternal(parentUserId, childUserId);
         }
 
 
@@ -55,40 +55,40 @@ namespace Custom
         /// <summary>
         /// Deletes UserHierarchyInfo binding.
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>  
-        public static void RemoveUserFromUser(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>  
+        public static void RemoveUserFromUser(int parentUserId, int childUserId)
         {
-            ProviderObject.RemoveUserFromUserInternal(userId, userId);
+            ProviderObject.RemoveUserFromUserInternal(parentUserId, childUserId);
         }
 
 
         /// <summary>
         /// Creates UserHierarchyInfo binding. 
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>   
-        public static void AddUserToUser(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>   
+        public static void AddUserToUser(int parentUserId, int childUserId)
         {
-            ProviderObject.AddUserToUserInternal(userId, userId);
+            ProviderObject.AddUserToUserInternal(parentUserId, childUserId);
         }
 
         #endregion
 
 
         #region "Internal methods"
-	
+
         /// <summary>
         /// Returns the UserHierarchyInfo structure.
         /// Null if binding doesn't exist.
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>  
-        protected virtual UserHierarchyInfo GetUserHierarchyInfoInternal(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>  
+        protected virtual UserHierarchyInfo GetUserHierarchyInfoInternal(int parentUserId, int childUserId)
         {
             return GetSingleObject()
-                .WhereEquals("ParentUserId", userId)
-                .WhereEquals("ChildUserId", userId);
+                .WhereEquals("ParentUserId", parentUserId)
+                .WhereEquals("ChildUserId", childUserId);
         }
 
 
@@ -112,14 +112,14 @@ namespace Custom
         }
 
 
-		/// <summary>
+        /// <summary>
         /// Deletes UserHierarchyInfo binding.
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>  
-        protected virtual void RemoveUserFromUserInternal(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>  
+        protected virtual void RemoveUserFromUserInternal(int parentUserId, int childUserId)
         {
-            var infoObj = GetUserHierarchyInfo(userId, userId);
+            var infoObj = GetUserHierarchyInfo(parentUserId, childUserId);
 			if (infoObj != null) 
 			{
 				DeleteUserHierarchyInfo(infoObj);
@@ -130,14 +130,14 @@ namespace Custom
         /// <summary>
         /// Creates UserHierarchyInfo binding. 
         /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userId">User ID</param>   
-        protected virtual void AddUserToUserInternal(int userId, int userId)
+        /// <param name="parentUserId">User ID</param>
+        /// <param name="childUserId">User ID</param>   
+        protected virtual void AddUserToUserInternal(int parentUserId, int childUserId)
         {
             // Create new binding
             var infoObj = new UserHierarchyInfo();
-            infoObj.ParentUserId = userId;
-			infoObj.ChildUserId = userId;
+            infoObj.ParentUserId = parentUserId;
+			infoObj.ChildUserId = childUserId;
 
             // Save to the database
             SetUserHierarchyInfo(infoObj);

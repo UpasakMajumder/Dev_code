@@ -21792,6 +21792,8 @@
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureEditExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureListExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureSitesExtender.cs" />
+    <Compile Include="Old_App_Code\CMSModules\Custom\UserHierarchyInfo.cs" />
+    <Compile Include="Old_App_Code\CMSModules\Custom\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\DocumentTypes\TransformationTabsExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Ecommerce\CMSTransformation.cs">
       <SubType>ASPXCodeBehind</SubType>

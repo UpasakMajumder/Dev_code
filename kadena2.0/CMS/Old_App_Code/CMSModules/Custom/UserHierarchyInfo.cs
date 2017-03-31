@@ -29,8 +29,7 @@ namespace Custom
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
-        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Custom.UserHierarchy", "ParentUserId", null, null, null, null, null, null, "ParentUserId", "cms.user")
+        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Custom.UserHierarchy", null, null, null, null, null, null, null, "ParentUserId", "cms.user")
         {
 			ModuleName = "cms.customsystemmodule",
 			TouchCacheDependencies = true,
@@ -38,6 +37,7 @@ namespace Custom
 			{
 			    new ObjectDependency("ChildUserId", "cms.user", ObjectDependencyEnum.Binding), 
             },
+            IsBinding = true
         };
 
         #endregion
