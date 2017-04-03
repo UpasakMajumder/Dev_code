@@ -6,10 +6,10 @@
 <asp:Content ID="cntMain" runat="server" ContentPlaceHolderID="plcContent">
     <div class="form-horizontal">
         <cms:LocalizedHeading ID="headParent" runat="server" EnableViewState="false" Level="4" CssClass="listing-title" ResourceString="Kadena.ParentUsers" />
-        <cms:UniSelector ID="selParent" runat="server" IsLiveSite="false" ObjectType="cms.user" SelectionMode="Multiple"/>
+        <cms:UniSelector ID="selParent" runat="server" IsLiveSite="false" ObjectType="cms.user" SelectionMode="Multiple" ValuesSeparator=","/>
     </div>
     <div class="form-horizontal">
         <cms:LocalizedHeading ID="headChild" runat="server" EnableViewState="false" Level="4" CssClass="listing-title" ResourceString="Kadena.ChildUsers" />
-        <cms:UniSelector ID="selChild" runat="server" IsLiveSite="false" ObjectType="cms.user" SelectionMode="Multiple"/>
+        <cms:UniSelector ID="selChild" runat="server" IsLiveSite="false" ObjectType="cms.user" SelectionMode="Multiple" ValuesSeparator=","/>
     </div>
 </asp:Content>
