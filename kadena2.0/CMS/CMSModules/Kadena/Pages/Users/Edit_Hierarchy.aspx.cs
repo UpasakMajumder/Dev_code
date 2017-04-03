@@ -102,7 +102,53 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
 
         private void SelParent_OnSelectionChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            bool reloadSecond = false;
+
+            // Remove old items
+            string newValues = ValidationHelper.GetString(selParent.Value, null);
+            string items = DataHelper.GetNewItemsInList(newValues, _selectedParents);
+            if (!String.IsNullOrEmpty(items))
+            {
+                var newItems = items.Split(new[] { selParent.ValuesSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                // Add all new items to site
+                foreach (string item in newItems)
+                {
+                    int parentId = ValidationHelper.GetInteger(item, 0);
+                    UserHierarchyInfoProvider.RemoveUserFromUser(parentId, _currentUserId);
+
+                    if (_currentUserId == parentId)
+                    {
+                        reloadSecond = true;
+                    }
+                }
+            }
+
+            // Add new items
+            items = DataHelper.GetNewItemsInList(_selectedParents, newValues);
+            if (!String.IsNullOrEmpty(items))
+            {
+                var newItems = items.Split(new[] { selParent.ValuesSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                // Add all new items to site
+                foreach (string item in newItems)
+                {
+                    int parentId = ValidationHelper.GetInteger(item, 0);
+                    UserHierarchyInfoProvider.AddUserToUser(parentId, _currentUserId);
+
+                    if (_currentUserId == parentId)
+                    {
+                        reloadSecond = true;
+                    }
+                }
+            }
+
+            // Reload second unigrid
+            if (reloadSecond)
+            {
+                LoadChildData(true);
+                selChild.Reload(true);
+            }
+
+            ShowChangesSaved();
         }
 
         private void LoadData()
@@ -117,6 +163,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         /// </summary>
         private void LoadChildData(bool forceReload = false)
         {
+            // Get the active parent users
             DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies().WhereEquals("ParentUserId", _currentUserId);
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
@@ -140,7 +187,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         /// </summary>
         private void LoadParentData(bool forceReload = false)
         {
-            // Get the active child classes
+            // Get the active child users
             DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies().WhereEquals("ChildUserId", _currentUserId);
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
