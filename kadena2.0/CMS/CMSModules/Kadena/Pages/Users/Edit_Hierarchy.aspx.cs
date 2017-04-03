@@ -66,9 +66,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                     UserHierarchyInfoProvider.RemoveUserFromUser(_currentUserId, childId);
 
                     if (_currentUserId == childId)
-                    {
                         reloadSecond = true;
-                    }
                 }
             }
 
@@ -84,9 +82,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                     UserHierarchyInfoProvider.AddUserToUser(_currentUserId, childId);
 
                     if (_currentUserId == childId)
-                    {
                         reloadSecond = true;
-                    }
                 }
             }
 
@@ -117,9 +113,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                     UserHierarchyInfoProvider.RemoveUserFromUser(parentId, _currentUserId);
 
                     if (_currentUserId == parentId)
-                    {
                         reloadSecond = true;
-                    }
                 }
             }
 
@@ -135,9 +129,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                     UserHierarchyInfoProvider.AddUserToUser(parentId, _currentUserId);
 
                     if (_currentUserId == parentId)
-                    {
                         reloadSecond = true;
-                    }
                 }
             }
 
@@ -161,6 +153,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         /// <summary>
         /// Loads currently selected child users.
         /// </summary>
+        /// <param name="forceReload">Forces reload of selected values</param>
         private void LoadChildData(bool forceReload = false)
         {
             // Get the active parent users
@@ -169,22 +162,25 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
             {
                 _selectedChilds = TextHelper.Join(selChild.ValuesSeparator.ToString(), DataHelper.GetStringValues(ds.Tables[0], "ChildUserId"));
                 if (!URLHelper.IsPostback() || forceReload)
-                {
                     selChild.Value = _selectedChilds;
-                }
             }
             else
             {
                 if (forceReload)
-                {
                     selChild.Value = string.Empty;
-                }
             }
+
+            // Filtering data on control for parent users.
+            selParent.WhereCondition = $"UserId in ({_currentSiteUsers})"
+                + (string.IsNullOrWhiteSpace(_selectedChilds)
+                    ? string.Empty
+                    : $" and UserId not in ({_selectedChilds})");
         }
 
         /// <summary>
         /// Loads currently selected parent users.
         /// </summary>
+        /// <param name="forceReload">Forces reload of selected values</param>
         private void LoadParentData(bool forceReload = false)
         {
             // Get the active child users
@@ -193,17 +189,19 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
             {
                 _selectedParents = TextHelper.Join(selParent.ValuesSeparator.ToString(), DataHelper.GetStringValues(ds.Tables[0], "ParentUserId"));
                 if (!URLHelper.IsPostback() || forceReload)
-                {
                     selParent.Value = _selectedParents;
-                }
             }
             else
             {
                 if (forceReload)
-                {
                     selParent.Value = string.Empty;
-                }
             }
+
+            // Filtering data on control for child users.
+            selChild.WhereCondition = $"UserId in ({_currentSiteUsers})"
+                + (string.IsNullOrWhiteSpace(_selectedParents)
+                    ? string.Empty
+                    : $" and UserId not in ({_selectedParents})");
         }
     }
 }
