@@ -9,17 +9,17 @@ using CMS.Helpers;
 using Kadena;
 
 [assembly: RegisterObjectType(typeof(UserHierarchyInfo), UserHierarchyInfo.OBJECT_TYPE)]
-
+    
 namespace Kadena
 {
     /// <summary>
     /// UserHierarchyInfo data container class.
     /// </summary>
-    [Serializable]
+	[Serializable]
     public partial class UserHierarchyInfo : AbstractInfo<UserHierarchyInfo>
     {
         #region "Type information"
-		
+
         /// <summary>
         /// Object type
         /// </summary>
@@ -29,16 +29,17 @@ namespace Kadena
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
-        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Kadena.UserHierarchy", null, null, null, null, null, null, null, "ParentUserId", "cms.user")
+        public static ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(UserHierarchyInfoProvider), OBJECT_TYPE, "Kadena.UserHierarchy", null, null, null, null, null, null, "SiteId", null, null)
         {
 			ModuleName = "Kadena",
 			TouchCacheDependencies = true,
+            IsBinding = true,
             DependsOn = new List<ObjectDependency>() 
 			{
+			    new ObjectDependency("ParentUserId", "cms.user", ObjectDependencyEnum.Binding), 
 			    new ObjectDependency("ChildUserId", "cms.user", ObjectDependencyEnum.Binding), 
+			    new ObjectDependency("SiteId", "cms.site", ObjectDependencyEnum.Binding), 
             },
-            IsBinding = true
         };
 
         #endregion
@@ -79,6 +80,23 @@ namespace Kadena
             }
         }
 
+
+        /// <summary>
+        /// Site id
+        /// </summary>
+        [DatabaseField]
+        public virtual int SiteId
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("SiteId"), 0);
+            }
+            set
+            {
+                SetValue("SiteId", value);
+            }
+        }
+
         #endregion
 
 
@@ -105,7 +123,7 @@ namespace Kadena
 
 
         #region "Constructors"
-		
+
 		/// <summary>
         /// Constructor for de-serialization.
         /// </summary>

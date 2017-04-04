@@ -1,7 +1,10 @@
 using System;
-using System.Linq;
+using System.Data;
 
+using CMS.Base;
 using CMS.DataEngine;
+using CMS.Helpers;
+using CMS.SiteProvider;
 
 namespace Kadena
 {    
@@ -10,32 +13,34 @@ namespace Kadena
     /// </summary>
     public partial class UserHierarchyInfoProvider : AbstractInfoProvider<UserHierarchyInfo, UserHierarchyInfoProvider>
     {
-        #region "Public methods"
+        #region "Constructors"
 
-		/// <summary>
-        /// Returns all UserHierarchyInfo bindings.
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public UserHierarchyInfoProvider()
+            : base(UserHierarchyInfo.TYPEINFO)
+        {
+        }
+
+        #endregion
+
+
+        #region "Public methods - Basic"
+
+        /// <summary>
+        /// Returns a query for all the UserHierarchyInfo objects.
         /// </summary>
         public static ObjectQuery<UserHierarchyInfo> GetUserHierarchies()
         {
-            return ProviderObject.GetObjectQuery();
+            return ProviderObject.GetUserHierarchiesInternal();
         }
 
 
         /// <summary>
-        /// Returns UserHierarchyInfo binding structure.
+        /// Sets (updates or inserts) specified UserHierarchyInfo.
         /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>  
-        public static UserHierarchyInfo GetUserHierarchyInfo(int parentUserId, int childUserId)
-        {
-            return ProviderObject.GetUserHierarchyInfoInternal(parentUserId, childUserId);
-        }
-
-
-        /// <summary>
-        /// Sets specified UserHierarchyInfo.
-        /// </summary>
-        /// <param name="infoObj">UserHierarchyInfo to set</param>
+        /// <param name="infoObj">UserHierarchyInfo to be set</param>
         public static void SetUserHierarchyInfo(UserHierarchyInfo infoObj)
         {
             ProviderObject.SetUserHierarchyInfoInternal(infoObj);
@@ -43,59 +48,46 @@ namespace Kadena
 
 
         /// <summary>
-        /// Deletes specified UserHierarchyInfo binding.
+        /// Deletes specified UserHierarchyInfo.
         /// </summary>
-        /// <param name="infoObj">UserHierarchyInfo object</param>
+        /// <param name="infoObj">UserHierarchyInfo to be deleted</param>
         public static void DeleteUserHierarchyInfo(UserHierarchyInfo infoObj)
         {
             ProviderObject.DeleteUserHierarchyInfoInternal(infoObj);
         }
 
-
-        /// <summary>
-        /// Deletes UserHierarchyInfo binding.
-        /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>  
-        public static void RemoveUserFromUser(int parentUserId, int childUserId)
-        {
-            ProviderObject.RemoveUserFromUserInternal(parentUserId, childUserId);
-        }
-
-
-        /// <summary>
-        /// Creates UserHierarchyInfo binding. 
-        /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>   
-        public static void AddUserToUser(int parentUserId, int childUserId)
-        {
-            ProviderObject.AddUserToUserInternal(parentUserId, childUserId);
-        }
-
         #endregion
 
 
-        #region "Internal methods"
+        #region "Public methods - Advanced"
 
         /// <summary>
-        /// Returns the UserHierarchyInfo structure.
-        /// Null if binding doesn't exist.
+        /// Returns a query for all the UserHierarchyInfo objects of a specified site.
         /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>  
-        protected virtual UserHierarchyInfo GetUserHierarchyInfoInternal(int parentUserId, int childUserId)
+        /// <param name="siteId">Site ID</param>
+        public static ObjectQuery<UserHierarchyInfo> GetUserHierarchies(int siteId)
         {
-            return GetSingleObject()
-                .WhereEquals("ParentUserId", parentUserId)
-                .WhereEquals("ChildUserId", childUserId);
+            return ProviderObject.GetUserHierarchiesInternal(siteId);
         }
+        
+        #endregion
+
+
+        #region "Internal methods - Basic"
+	
+        /// <summary>
+        /// Returns a query for all the UserHierarchyInfo objects.
+        /// </summary>
+        protected virtual ObjectQuery<UserHierarchyInfo> GetUserHierarchiesInternal()
+        {
+            return GetObjectQuery();
+        }    
 
 
         /// <summary>
-        /// Sets specified UserHierarchyInfo binding.
+        /// Sets (updates or inserts) specified UserHierarchyInfo.
         /// </summary>
-        /// <param name="infoObj">UserHierarchyInfo object</param>
+        /// <param name="infoObj">UserHierarchyInfo to be set</param>        
         protected virtual void SetUserHierarchyInfoInternal(UserHierarchyInfo infoObj)
         {
             SetInfo(infoObj);
@@ -105,44 +97,26 @@ namespace Kadena
         /// <summary>
         /// Deletes specified UserHierarchyInfo.
         /// </summary>
-        /// <param name="infoObj">UserHierarchyInfo object</param>
+        /// <param name="infoObj">UserHierarchyInfo to be deleted</param>        
         protected virtual void DeleteUserHierarchyInfoInternal(UserHierarchyInfo infoObj)
         {
             DeleteInfo(infoObj);
-        }
+        }	
+
+        #endregion
+
+        #region "Internal methods - Advanced"
 
 
         /// <summary>
-        /// Deletes UserHierarchyInfo binding.
+        /// Returns a query for all the UserHierarchyInfo objects of a specified site.
         /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>  
-        protected virtual void RemoveUserFromUserInternal(int parentUserId, int childUserId)
+        /// <param name="siteId">Site ID</param>
+        protected virtual ObjectQuery<UserHierarchyInfo> GetUserHierarchiesInternal(int siteId)
         {
-            var infoObj = GetUserHierarchyInfo(parentUserId, childUserId);
-			if (infoObj != null) 
-			{
-				DeleteUserHierarchyInfo(infoObj);
-			}
-        }
-
-
-        /// <summary>
-        /// Creates UserHierarchyInfo binding. 
-        /// </summary>
-        /// <param name="parentUserId">User ID</param>
-        /// <param name="childUserId">User ID</param>   
-        protected virtual void AddUserToUserInternal(int parentUserId, int childUserId)
-        {
-            // Create new binding
-            var infoObj = new UserHierarchyInfo();
-            infoObj.ParentUserId = parentUserId;
-			infoObj.ChildUserId = childUserId;
-
-            // Save to the database
-            SetUserHierarchyInfo(infoObj);
-        }
-       
+            return GetObjectQuery().OnSite(siteId);
+        }    
+        
         #endregion		
     }
 }

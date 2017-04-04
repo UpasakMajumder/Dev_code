@@ -10,13 +10,13 @@ using CMS.DataEngine;
 using System.Data;
 using Kadena;
 using CMS.Membership;
-using CMS.SiteProvider;
 
 namespace CMSApp.CMSModules.Kadena.Pages.Users
 {
     public partial class User_Edit_Hierarchy : CMSPage
     {
         private int _currentUserId;
+        private int _currentSiteId;
 
         private string _currentSiteUsers;
 
@@ -26,9 +26,10 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         protected void Page_Load(object sender, EventArgs e)
         {
             _currentUserId = QueryHelper.GetInteger("objectid", 0);
+            _currentSiteId = CMS.SiteProvider.SiteContext.CurrentSiteID;
 
             var currentSiteUserIds = UserSiteInfoProvider.GetUserSites()
-                .WhereEquals("SiteID", SiteContext.CurrentSiteID)
+                .WhereEquals("SiteID", _currentSiteId)
                 .And()
                 .WhereNotEquals("UserID", _currentUserId);
 
@@ -63,7 +64,12 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                 foreach (string item in newItems)
                 {
                     int childId = ValidationHelper.GetInteger(item, 0);
-                    UserHierarchyInfoProvider.RemoveUserFromUser(_currentUserId, childId);
+                    UserHierarchyInfoProvider.DeleteUserHierarchyInfo(new UserHierarchyInfo
+                    {
+                        ParentUserId = _currentUserId,
+                        ChildUserId = childId,
+                        SiteId = _currentSiteId
+                    });
 
                     if (_currentUserId == childId)
                         reloadSecond = true;
@@ -79,7 +85,12 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                 foreach (string item in newItems)
                 {
                     int childId = ValidationHelper.GetInteger(item, 0);
-                    UserHierarchyInfoProvider.AddUserToUser(_currentUserId, childId);
+                    UserHierarchyInfoProvider.SetUserHierarchyInfo(new UserHierarchyInfo
+                    {
+                        ParentUserId = _currentUserId,
+                        ChildUserId = childId,
+                        SiteId = _currentSiteId
+                    });
 
                     if (_currentUserId == childId)
                         reloadSecond = true;
@@ -103,14 +114,19 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
             // Remove old items
             string newValues = ValidationHelper.GetString(selParent.Value, null);
             string items = DataHelper.GetNewItemsInList(newValues, _selectedParents);
-            if (!String.IsNullOrEmpty(items))
+            if (!string.IsNullOrEmpty(items))
             {
                 var newItems = items.Split(new[] { selParent.ValuesSeparator }, StringSplitOptions.RemoveEmptyEntries);
                 // Add all new items to site
                 foreach (string item in newItems)
                 {
                     int parentId = ValidationHelper.GetInteger(item, 0);
-                    UserHierarchyInfoProvider.RemoveUserFromUser(parentId, _currentUserId);
+                    UserHierarchyInfoProvider.DeleteUserHierarchyInfo(new UserHierarchyInfo
+                    {
+                        ParentUserId = parentId,
+                        ChildUserId = _currentUserId,
+                        SiteId = _currentSiteId
+                    });
 
                     if (_currentUserId == parentId)
                         reloadSecond = true;
@@ -119,14 +135,19 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
 
             // Add new items
             items = DataHelper.GetNewItemsInList(_selectedParents, newValues);
-            if (!String.IsNullOrEmpty(items))
+            if (!string.IsNullOrEmpty(items))
             {
                 var newItems = items.Split(new[] { selParent.ValuesSeparator }, StringSplitOptions.RemoveEmptyEntries);
                 // Add all new items to site
                 foreach (string item in newItems)
                 {
                     int parentId = ValidationHelper.GetInteger(item, 0);
-                    UserHierarchyInfoProvider.AddUserToUser(parentId, _currentUserId);
+                    UserHierarchyInfoProvider.SetUserHierarchyInfo(new UserHierarchyInfo
+                    {
+                        ParentUserId = parentId,
+                        ChildUserId = _currentUserId,
+                        SiteId = _currentSiteId
+                    });
 
                     if (_currentUserId == parentId)
                         reloadSecond = true;
@@ -157,7 +178,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         private void LoadChildData(bool forceReload = false)
         {
             // Get the active parent users
-            DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies().WhereEquals("ParentUserId", _currentUserId);
+            DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies(_currentSiteId).WhereEquals("ParentUserId", _currentUserId);
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
                 _selectedChilds = TextHelper.Join(selChild.ValuesSeparator.ToString(), DataHelper.GetStringValues(ds.Tables[0], "ChildUserId"));
@@ -184,7 +205,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         private void LoadParentData(bool forceReload = false)
         {
             // Get the active child users
-            DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies().WhereEquals("ChildUserId", _currentUserId);
+            DataSet ds = UserHierarchyInfoProvider.GetUserHierarchies(_currentSiteId).WhereEquals("ChildUserId", _currentUserId);
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
                 _selectedParents = TextHelper.Join(selParent.ValuesSeparator.ToString(), DataHelper.GetStringValues(ds.Tables[0], "ParentUserId"));
