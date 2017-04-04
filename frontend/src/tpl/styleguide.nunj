@@ -1,0 +1,7 @@
+{% extends "layouts/default-fluid.nunj" %}
+
+{% set title = "Styleguide" %}
+
+{% block content %}
+
+{% endblock %}

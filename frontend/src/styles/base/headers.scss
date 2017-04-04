@@ -1,0 +1,25 @@
+h2,
+h3,
+h4 {
+  color: $brand-dark;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: $font-xl;
+}
+
+h2 {
+  font-size: $font-l;
+}
+
+h3 {
+  font-family: $font-family-secondary;
+  font-style: italic;
+  font-size: $font-m;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: $font-m;
+}

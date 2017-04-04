@@ -23,14 +23,14 @@
         <link rel="preload" href="css/main{% if not _dev %}.min{% endif %}.css" as="style" onload="this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css"></noscript>
         <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" async defer></script>
-        <link rel="prefetch" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
         <script>
             // TODO: load minified scripts
             {% include '../../../node_modules/fg-loadcss/src/loadCSS.js' %}
             {% include '../../../node_modules/fg-loadcss/src/cssrelpreload.js' %}
             WebFontConfig = {
                 google: {
-                    families: ['Roboto:400,700:latin']
+                    families: ['Lato:400,400i']
                 }
             };
             {# cookie expired after 24 hours #}
@@ -38,7 +38,7 @@
         </script>
     {% else %}
         <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700:latin">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
     {% endif %}
 
     {% block header %}{% endblock %}

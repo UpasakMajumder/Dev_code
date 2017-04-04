@@ -3,5 +3,4 @@
 {% set title = "" %}
 
 {% block content %}
-
 {% endblock %}

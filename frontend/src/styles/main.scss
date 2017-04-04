@@ -4,7 +4,9 @@
 @import 'base/*';
 
 body {
-    font-family: 'Roboto', $font-family-base;
+  font-family: $font-family-base;
+  color: $brand-darker;
+  line-height: 1.5;
 }
 
 @import 'components/*';
