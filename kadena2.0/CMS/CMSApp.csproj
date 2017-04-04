@@ -21813,6 +21813,7 @@
     <Compile Include="Old_App_Code\CMSModules\FormControls\FormUserControlEditExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\FormControls\FormUserControlListExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Forums\ForumFunctions.cs" />
+    <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LicenseListControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LicenseNewControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LiveTileModelProviders\LicensesLiveTileModelProvider.cs" />
