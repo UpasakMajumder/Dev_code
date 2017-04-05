@@ -28,7 +28,8 @@ namespace Kadena
                 var childs = DataHelper.GetIntegerValues(ds.Tables[0], "ChildUserId");
                 foreach (var c in childs)
                 {
-                    if (result.Contains(c))
+                    if (result.Contains(c) || c == userId)
+                        // Skip step for user that already exists in result set or the one that was passed to method as parameter.
                         continue;
                     else
                     {

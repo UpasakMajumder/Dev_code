@@ -1467,7 +1467,6 @@
     <Content Include="CMSModules\EmailTemplates\Pages\SendDraft.aspx" />
     <Content Include="CMSModules\ImportExport\Controls\Export\cms_resource.ascx" />
     <Content Include="CMSModules\ImportExport\Controls\Export\Site\community_group.ascx" />
-    <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
     <Content Include="CMSModules\Modules\Controls\NuGetPackages\ExportModule.ascx" />
     <Content Include="CMSModules\Newsletters\Controls\RecipientContactGroups.ascx" />
     <Content Include="CMSModules\Newsletters\Controls\IssueLinks.ascx" />
@@ -5081,13 +5080,6 @@
     </Compile>
     <Compile Include="CMSModules\ImportExport\Controls\Export\Site\community_group.ascx.designer.cs">
       <DependentUpon>community_group.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.cs">
-      <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.designer.cs">
-      <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Modules\Controls\NuGetPackages\ExportModule.ascx.cs">
       <DependentUpon>ExportModule.ascx</DependentUpon>
@@ -21800,8 +21792,6 @@
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureEditExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureListExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Cultures\CultureSitesExtender.cs" />
-    <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
-    <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\DocumentTypes\TransformationTabsExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Ecommerce\CMSTransformation.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -21813,7 +21803,6 @@
     <Compile Include="Old_App_Code\CMSModules\FormControls\FormUserControlEditExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\FormControls\FormUserControlListExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Forums\ForumFunctions.cs" />
-    <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LicenseListControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LicenseNewControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\Licenses\LiveTileModelProviders\LicensesLiveTileModelProvider.cs" />
