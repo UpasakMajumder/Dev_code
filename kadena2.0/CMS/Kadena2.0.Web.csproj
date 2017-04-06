@@ -683,6 +683,13 @@
     <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.designer.cs">
       <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.cs">
+      <DependentUpon>NewMailingList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.designer.cs">
+      <DependentUpon>NewMailingList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
@@ -702,6 +709,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSPages\Kadena\NewMailingList.aspx" />
     <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>

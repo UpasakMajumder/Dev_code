@@ -7,7 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CMSApp.CMSModules.MailingList {
+namespace CMSApp.CMSPages.Kadena
+{
     
     
     public partial class NewMailingList {

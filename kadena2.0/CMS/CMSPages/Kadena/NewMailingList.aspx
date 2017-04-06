@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NewMailingList.aspx.cs" Inherits="CMSApp.CMSModules.MailingList.NewMailingList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NewMailingList.aspx.cs" Inherits="CMSApp.CMSPages.Kadena.NewMailingList" %>
 
 <!DOCTYPE html>
 
