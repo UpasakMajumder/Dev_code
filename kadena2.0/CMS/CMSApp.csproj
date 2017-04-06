@@ -1524,6 +1524,7 @@
     <Content Include="CMSPages\Ecommerce\GetProductFile.aspx" />
     <Content Include="CMSPages\GoogleSiteMap.aspx" />
     <Content Include="CMSPages\IntegrationNotify.aspx" />
+    <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSPages\LiveIDLogin.aspx" />
     <Content Include="CMSPages\logon.aspx" />
     <Content Include="CMSPages\PortalTemplate.aspx" />
@@ -14877,6 +14878,13 @@
     <Compile Include="CMSPages\IntegrationNotify.aspx.designer.cs">
       <DependentUpon>IntegrationNotify.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.cs">
+      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
+      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSPages\LiveIDLogin.aspx.cs">
       <DependentUpon>LiveIDLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -22672,6 +22680,7 @@
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-resource.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-sanitize.min.js.map" />
+    <Content Include="ConnectionStrings.config" />
     <None Include="Old_App_WebReferences\WS\WebService.discomap" />
     <None Include="Old_App_WebReferences\WS\WebService.wsdl" />
     <Content Include="CMSAdminControls\web.config" />
