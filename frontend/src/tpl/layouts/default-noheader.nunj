@@ -46,19 +46,12 @@
   {% block header %}{% endblock %}
 </head>
 <body>
-<form>
-  {# Main content of the page #}
-  <div class="container-fluid height-full">
-    {% include '../partials/header.nunj' %}
-
-    <main class="row css-main js-collapse isOpen">
-      {% include '../partials/sidebar.nunj' %}
-
-      {# Main content of the page #}
+  <form>
+    {# Main content of the page #}
+    <div class="container-fluid">
       {% block content %}{% endblock %}
-    </main>
-  </div>
-</form>
+    </div>
+  </form>
 
 {# Scripts #}
 <script>
