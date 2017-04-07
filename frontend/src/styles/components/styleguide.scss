@@ -1,0 +1,68 @@
+.styleguide {
+  &__row {
+    @extend .row;
+  }
+
+  &__header {
+    @extend .col;
+    @extend .bg-dark;
+    @extend .py-4;
+
+    & h1 {
+      @extend .font-white;
+    }
+  }
+
+  &__text {
+    @extend .py-5;
+    @extend .col-4;
+    @extend .bg-lightgrey;
+  }
+
+  &__headers {
+    @extend .my-4;
+  }
+
+  &__main {
+    @extend .col;
+    @extend .py-5;
+  }
+
+  &__list {
+    @extend .list--unstyled;
+  }
+
+  &__color {
+    @extend .mb-2;
+    @extend .font-white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 100px;
+
+    &:not(:last-child) {
+      @extend .mr-2;
+    }
+  }
+
+  &__table {
+    tr {
+      border-top: 30px solid;
+      border-bottom: 30px solid;
+      border-color: transparent;
+    }
+  }
+
+  &__tabs {
+    @extend .py-4;
+  }
+
+  &__inputs {
+    @extend .py-4;
+  }
+
+  &__draganddrop {
+    @extend .py-4;
+  }
+}
