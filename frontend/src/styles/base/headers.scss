@@ -1,0 +1,31 @@
+h2,
+h3,
+h4 {
+  color: $brand-dark;
+  font-weight: 100;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: $font-xxl;
+}
+
+h2 {
+  font-size: $font-xl;
+}
+
+h3 {
+  font-style: italic;
+  font-size: $font-l;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: $font-l;
+}
+
+.h--underlined {
+  @extend .pb-1;
+  border-bottom: 1px solid $brand-dark;
+  max-width: 500px;
+}

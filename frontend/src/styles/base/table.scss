@@ -1,0 +1,21 @@
+.table {
+  thead tr,
+  tr:nth-child(2n) {
+    background-color: $brand-lightgrey;
+  }
+
+  tr {
+    th {
+      @extend .font-dark;
+      font-size: $font-xs;
+      text-transform: uppercase;
+    }
+
+    td,
+    th {
+      @extend .py-2;
+      @extend .px-2;
+      border: 1px solid $brand-grey;
+    }
+  }
+}

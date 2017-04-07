@@ -1,0 +1,56 @@
+.css-tabs {
+  &__list {
+    @extend .list--unstyled;
+    display: flex;
+  }
+
+  &__tab {
+    @extend .py-2;
+    @extend .px-3;
+    position: relative;
+    border-bottom: 2px solid $brand-grey;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: $brand-primary;
+      transition: all .3s ease-in-out 0s;
+      visibility: hidden;
+      transform: scaleX(0);
+    }
+
+    &.active {
+      @extend .font-primary;
+
+      &:after {
+        transform: scaleX(1);
+        visibility: visible;
+      }
+    }
+
+    &:hover {
+      @extend .bg-lightgrey;
+      cursor: pointer;
+    }
+  }
+
+  &__content {
+    transition: all .3s ease-in-out 0s;
+    display: none;
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
+    }
+
+    &.active {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+@import 'bootstrap/variables';
+@import 'bootstrap/bootstrap';
+@import 'variables';
+@import 'base/*';
+
+html,
+body,
+form {
+  height: 100%;
+}
+
+body {
+  font-family: $font-family-base;
+  color: $brand-darker;
+  line-height: 1.5;
+
+  main {
+    min-height: calc(100% - 60px);
+    display: flex;
+    position: relative;
+    top: 60px;
+  }
+}
+
+@import 'components/*';
