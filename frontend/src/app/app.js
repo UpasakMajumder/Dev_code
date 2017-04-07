@@ -4,7 +4,7 @@
  */
 // import 'svgxuse';
 // import configureStore from './store';
-import { init } from './init';
+import { init, render } from './init';
 
 const app = {
   run() {
@@ -15,14 +15,15 @@ const app = {
   /* Static JavaScript classes */
   static() {
     init('spotfire', document.getElementsByClassName('js-spotfire'));
+    init('num-format', document.getElementsByClassName('js-num-format'));
+    init('tabs', document.getElementsByClassName('js-tabs'));
   },
 
   /* React */
   react() {
     /* Configure Redux store */
     // window.store = configureStore();
-
-    // render('Gallery', document.querySelector('.gallery'), { store: false });
+    render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
   },
 };
 
