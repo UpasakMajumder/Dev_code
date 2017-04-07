@@ -1,194 +1,94 @@
-/**
- * Button
- *
- * Styleguide Base - Button
- */
+.btn-common {
+  font-family: $font-family-base;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: $border-radius;
+  box-sizing: border-box;
+  height: 40px;
+  width: 140px;
 
-/**
- * Default button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-default {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-default {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-default {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-default {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -10
- *
- * Styleguide Base - Button - Default
- */
+  &:focus {
+    outline: none;
+  }
+}
 
-/**
- * Primary button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * weight: -10
- *
- * markup:
- * <a class="btn btn-primary {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-primary {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-primary {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-primary {{modifier_class}}" type="submit" value="Submit">
- *
- * Styleguide Base - Button - Primary
- */
+$colors: (
+  main: $brand-primary,
+  action: $brand-secondary,
+  info: $brand-info,
+  success: $brand-success
+);
 
-/**
- * Success button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-success {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-success {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-success {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-success {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -5
- *
- * Styleguide Base - Button - Success
- */
+@each $key, $color in $colors {
+  .btn-#{$key} {
+    @extend .btn-common;
+    color: white;
+    background-color: $color;
+    border: 2px solid $color;
+    box-shadow: 0 1px 0 0 darken($color, 10%);
+    position: relative;
 
-/**
- * Info button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-info {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-info {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-info {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-info {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -5
- *
- * Styleguide Base - Button - Info
- */
+    &[disabled],
+    &.disabled {
+      background-color: $color;
+      border: 2px solid $color;
+      opacity: .5;
+      cursor: $cursor-disabled;
+    }
 
-/**
- * Warning button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-warning {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-warning {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-warning {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-warning {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -5
- *
- * Styleguide Base - Button - Warning
- */
+    &:hover {
+      background-color: $color;
+      border: 2px solid $color;
 
-/**
- * Danger button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-danger {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-danger {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-danger {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-danger {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -5
- *
- * Styleguide Base - Button - Danger
- */
+      &:after {
+        content: '';
+        width: 140px;
+        height: 20px;
+        display: block;
+        background-repeat: no-repeat;
+        position: absolute;
+        background-image: url($svg-path + 'btn-shadow.svg');
+        bottom: -20px;
+        left: 0;
+      }
+    }
 
-/**
- * Link button
- *
- * default - Normal button
- * :hover - Hover
- * :active - Active
- * :focus - Focus
- *
- * markup:
- * <a class="btn btn-link {{modifier_class}}" href="#" role="button">Link</a>
- * <button class="btn btn-link {{modifier_class}}" type="submit">Button</button>
- * <input class="btn btn-link {{modifier_class}}" type="button" value="Input">
- * <input class="btn btn-link {{modifier_class}}" type="submit" value="Submit">
- *
- * weight: -3
- *
- * Styleguide Base - Button - Link
- */
+    &:focus {
+      box-shadow: 0 1px 0 0 darken($color, 10%);
+    }
 
-/**
- * Disabled button
- *
- * markup:
- * <a class="btn btn-default disabled" href="#" role="button">Link</a>
- * <button class="btn btn-default" type="submit" disabled>Button</button>
- * <input class="btn btn-default" type="button" value="Input" disabled>
- * <input class="btn btn-default" type="submit" value="Submit" disabled>
- * <a class="btn btn-primary disabled" href="#" role="button">Link</a>
- * <button class="btn btn-primary" type="submit" disabled>Button</button>
- * <input class="btn btn-primary" type="button" value="Input" disabled>
- * <input class="btn btn-primary" type="submit" value="Submit" disabled>
- * <a class="btn btn-secondary disabled" href="#" role="button">Link</a>
- * <button class="btn btn-secondary" type="submit" disabled>Button</button>
- * <input class="btn btn-secondary" type="button" value="Input" disabled>
- * <input class="btn btn-secondary" type="submit" value="Submit" disabled>
- *
- * weight: -3
- *
- * Styleguide Base - Button - Disabled
- */
+    &:active {
+      &:after {
+        content: '';
+        width: 219px;
+        height: 17px;
+        display: block;
+        background-repeat: no-repeat;
+        position: absolute;
+        background-image: url($svg-path + 'btn-shadow-filtered.svg');
+        bottom: -17px;
+        left: -39px;
+      }
+    }
 
-/**
- * Button sizes
- *
- * markup:
- * <p>
-      <button type="button" class="btn btn-primary btn-lg">Large button</button>
-      <button type="button" class="btn btn-default btn-lg">Large button</button>
-    </p>
-    <p>
-      <button type="button" class="btn btn-primary">Default button</button>
-      <button type="button" class="btn btn-default">Default button</button>
-    </p>
-    <p>
-      <button type="button" class="btn btn-primary btn-sm">Small button</button>
-      <button type="button" class="btn btn-default btn-sm">Small button</button>
-    </p>
-    <p>
-      <button type="button" class="btn btn-primary btn-xs">Extra small button</button>
-      <button type="button" class="btn btn-default btn-xs">Extra small button</button>
-    </p>
- *
- * Styleguide Base - Button - Sizes
- */
+    &--secondary {
+      @extend .bg-white;
+      color: $color;
 
-/**
- * Block button
- *
- * markup:
- * <button type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
- * <button type="button" class="btn btn-default btn-lg btn-block">Block level button</button>
- *
- * Styleguide Base - Button - Block
- */
+      &[disabled],
+      &.disabled {
+        @extend .bg-white;
+        color: $color;
+      }
+
+      &:hover {
+        @extend .bg-white;
+        color: $color;
+      }
+
+      &:focus {
+        box-shadow: 0 1px 0 0 darken($color, 10%);
+      }
+    }
+  }
+}
