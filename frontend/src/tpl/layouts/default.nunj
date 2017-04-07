@@ -9,58 +9,60 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
-    {% if firstVisit %}
-        <style>
-            {% if _dev %}
-                {% include '../../../dist/css/critical.css' %}
-            {% else %}
-                {% include '../../../dist/css/critical.min.css' %}
-            {% endif %}
-        </style>
-        <link rel="preload" href="css/main{% if not _dev %}.min{% endif %}.css" as="style" onload="this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css"></noscript>
-        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" async defer></script>
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
-        <script>
-            // TODO: load minified scripts
-            {% include '../../../node_modules/fg-loadcss/src/loadCSS.js' %}
-            {% include '../../../node_modules/fg-loadcss/src/cssrelpreload.js' %}
-            WebFontConfig = {
-                google: {
-                    families: ['Lato:400,400i']
-                }
-            };
-            {# cookie expired after 24 hours #}
-            document.cookie ='cache=1; expires='+(new Date(new Date().getTime() + 86400000)).toGMTString()+'; path=/'
-        </script>
-    {% else %}
-        <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
-    {% endif %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  {% if firstVisit %}
+    <style>
+      {% if _dev %}
+      {% include '../../../dist/css/critical.css' %}
+      {% else %}
+      {% include '../../../dist/css/critical.min.css' %}
+      {% endif %}
+    </style>
+    <link rel="preload" href="css/main{% if not _dev %}.min{% endif %}.css" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
+    </noscript>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" async defer></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+    <script>
+      // TODO: load minified scripts
+      {% include '../../../node_modules/fg-loadcss/src/loadCSS.js' %}
+      {% include '../../../node_modules/fg-loadcss/src/cssrelpreload.js' %}
+      WebFontConfig = {
+        google: {
+          families: ['Lato:400,400i']
+        }
+      };
+      {# cookie expired after 24 hours #}
+      document.cookie = 'cache=1; expires=' + (new Date(new Date().getTime() + 86400000)).toGMTString() + '; path=/'
+    </script>
+  {% else %}
+  <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+  {% endif %}
 
-    {% block header %}{% endblock %}
+  {% block header %}{% endblock %}
 </head>
 <body>
 
-    {# Main content of the page #}
-    <main>
-        <div class="container">
-            {% block content %}{% endblock %}
-        </div>
-    </main>
+<div class="container">
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</div>
 
-    {# Scripts #}
-    <script>
-        var config = {};
-    </script>
-    <script src="js/common.js"></script>
-    {% if _dev %}
-        <script src="js/app.js" async></script>
-    {% else %}
-        <script src="js/app.min.js" async></script>
-    {% endif %}
+
+{# Scripts #}
+<script>
+  var config = {};
+</script>
+<script src="js/common.js"></script>
+{% if _dev %}
+  <script src="js/app.js" async></script>
+{% else %}
+  <script src="js/app.min.js" async></script>
+{% endif %}
 </body>
 </html>
