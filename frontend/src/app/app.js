@@ -17,6 +17,7 @@ const app = {
     init('spotfire', document.getElementsByClassName('js-spotfire'));
     init('num-format', document.getElementsByClassName('js-num-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
+    init('collapse', document.getElementsByClassName('js-collapse'));
   },
 
   /* React */
