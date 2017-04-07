@@ -90,7 +90,13 @@ module.exports = {
                         query: { cacheDirectory: true }
                     },
                     {
-                        loader: 'eslint-loader'
+                        loader: 'eslint-loader',
+                        options: {
+                          configFile: eslintConfig,
+                          rules: {
+                            "indent": ["error", 2]
+                          }
+                        }
                     }
                 ]
             },
