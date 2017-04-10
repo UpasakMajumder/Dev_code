@@ -20,8 +20,10 @@ export function init(moduleName, containers, ...options) {
 
   if (containers.length) {
     request(moduleName, (Module) => { // eslint-disable-line arrow-body-style
+      /* eslint-disable new-cap */
       return containers.map(container => new Module.default(container, ...options));
     }, false);
+    /* eslint-enable */
   }
 
   return false;
@@ -29,7 +31,7 @@ export function init(moduleName, containers, ...options) {
 
 /* Initialize React Components */
 export function render(componentName, containers, options = {
-  store: true, // true: use Redux store; false: don't
+  store: true // true: use Redux store; false: don't
 }) {
   /* Convert containers to Array */
   containers = Array.from(containers);
@@ -38,15 +40,19 @@ export function render(componentName, containers, options = {
     request(componentName, (module) => {
       const Component = module.default;
 
+      /* eslint-disable array-callback-return */
       return containers.map((container) => {
         /* Configure initial props */
         let initialProps = {};
+        /* eslint-disable no-prototype-builtins */
         Component.hasOwnProperty('configureProps') && (initialProps = Component.configureProps(container));
+        /* eslint-enable */
 
         let RenderOutput = <Component {...initialProps} />;
         options.store && (RenderOutput = (<Provider store={window.store}>{RenderOutput}</Provider>));
-
+        /* eslint-disable new-cap */
         DOMRender(RenderOutput, container);
+        /* eslint-enable */
       });
     });
   }

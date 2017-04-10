@@ -25,7 +25,7 @@ const app = {
     /* Configure Redux store */
     // window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-  },
+  }
 };
 
 /* Global scope reference */

@@ -1,0 +1,17 @@
+{% extends "layouts/default-fluid.nunj" %}
+
+{% set title = "" %}
+
+{% block content %}
+
+  <div class="content">
+    <h1 class="content-header">Pages</h1>
+    <div class="content__breadcrumbs">
+      <a class="content__breadcrumbs-link" href="/">Home</a>
+    </div>
+    <div class="content__canvas">
+      <h1>hi</h1>
+    </div>
+  </div>
+
+{% endblock %}
