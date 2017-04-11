@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CheckboxInput from '../form/CheckboxInput';
-import TextInput from '../form/TextInput';
 import Dropzone from 'react-dropzone';
 import { Link } from 'react-router-dom';
+import CheckboxInput from '../form/CheckboxInput';
+import TextInput from '../form/TextInput';
 
 
 class UploadMailList extends Component {
