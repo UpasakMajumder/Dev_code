@@ -1,16 +1,16 @@
 ﻿using CMS.IO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
+using System.Net.Http;
 using System.Web.UI.WebControls;
 
 namespace CMSApp.CMSPages.Kadena
 {
     public partial class NewMailingList : System.Web.UI.Page
     {
-        private char _separator = ';';
+        private readonly char _separator = ';';
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,6 +21,7 @@ namespace CMSApp.CMSPages.Kadena
         {
             lblUploadStatus.Text = "";
             var map = GetColumnMapping();
+            SendToService(flFile.PostedFile.InputStream, map);
             pnlColumns.Visible = false;
         }
 
@@ -28,29 +29,26 @@ namespace CMSApp.CMSPages.Kadena
         {
             if (flFile.HasFile)
             {
-                var headers = ParseHeaders(flFile.PostedFile.FileName);
+                var headers = ParseHeaders(flFile.PostedFile.InputStream);
                 BindHeaders(headers);
                 pnlColumns.Visible = true;
                 lblUploadStatus.Text = "Headers loaded";
             }
         }
 
-        private Dictionary<string, int> ParseHeaders(string filePath)
+        private Dictionary<string, int> ParseHeaders(System.IO.Stream stream)
         {
             Dictionary<string, int> result = null;
-            using (var file = FileStream.New(filePath, FileMode.Open, FileAccess.Read))
+            using (var reader = StreamReader.New(stream))
             {
-                using (var reader = StreamReader.New(file))
+                // Read only first row where the name of columns stated
+                string line = reader.ReadLine();
+                if (!string.IsNullOrWhiteSpace(line))
                 {
-                    // Read only first row where the name of columns stated
-                    string line = reader.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        string[] productData = line.Trim().Split(_separator);
+                    string[] productData = line.Trim().Split(_separator);
 
-                        result = productData.Select((c, i) => new { Key = c, Value = i })
-                            .ToDictionary(c => c.Key, c => c.Value);
-                    }
+                    result = productData.Select((c, i) => new { Key = c, Value = i })
+                        .ToDictionary(c => c.Key, c => c.Value);
                 }
             }
             return result;
@@ -100,6 +98,37 @@ namespace CMSApp.CMSPages.Kadena
             result.Add("zipCode", ddlZipCode.SelectedValue);
 
             return result;
+        }
+
+        private void SendToService(System.IO.Stream fileStream, Dictionary<string, string> columnMapping)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var content = new MultipartFormDataContent())
+                {
+                    content.Add(new StreamContent(fileStream), "file", "MailingListTest.csv");
+                    content.Add(new StringContent("orginal-mailing"), "bucketType");
+                    content.Add(new StringContent("actum"), "customerName");
+                    content.Add(new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        Title = columnMapping["title"],
+                        FirstName = columnMapping["firstName"],
+                        LastName = columnMapping["secondName"],
+                        Address1 = columnMapping["firstAddress"],
+                        Address2 = columnMapping["secondAddresss"],
+                        City = columnMapping["city"],
+                        State = columnMapping["state"],
+                        Zip = columnMapping["zipCode"]
+                    })), "Mapping");
+                    content.Add(new StringContent(Guid.Empty.ToString()), "containerId");
+                    using (var message = client.PostAsync("https://0kzyrcqyyd.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress", content))
+                    {
+                        var input = message.Result.Content;
+
+                        lblUploadStatus.Text = input.ReadAsStringAsync().Result;
+                    }
+                }
+            }
         }
     }
 }
