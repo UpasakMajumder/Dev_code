@@ -3,7 +3,7 @@
      Codebehind="PortalTemplate.aspx.cs" %>
 
 <%=DocType%>
-<html <%=XHtmlNameSpace%> <%=XmlNamespace%>>
+<html <%=XHtmlNameSpace%> <%=XmlNamespace%> lang='<%=Lang %>'>
 <head id="head" runat="server" enableviewstate="false">
     <title id="_title" runat="server">My site</title>
     <asp:Literal runat="server" ID="tags" EnableViewState="false" />
