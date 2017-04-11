@@ -1,0 +1,8 @@
+/**
+ * Bootstrap variables customizations
+ */
+
+$enable-flex: true;
+
+// Import bootstrap's own variables
+@import '../../../node_modules/bootstrap/scss/variables';

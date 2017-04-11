@@ -1,0 +1,14 @@
+{# SVG shorhand #}
+{# Specify which sprite and which svg file to use within arguments #}
+{# Example: {{ svg('icon-1', 'my-class') }} uses "svg/sprites/icons/icon-1.svg" with class "my-class" #}
+{# Example: {{ svg(sprite="my-sprite", "icon-2") }} uses "svg/sprites/my-sprite/icon-2.svg" #}
+
+{% macro template(class) %}
+  <svg class="icon {{ class }}">
+    {{caller()}}
+  </svg>
+{% endmacro %}
+
+{% macro use(name, class, sprite="icons") %}
+  <use{% if class %} class="{{ class }}"{% endif %} xlink:href="/gfx/svg/sprites/{{ sprite }}.svg#{{ name }}" />
+{% endmacro %}

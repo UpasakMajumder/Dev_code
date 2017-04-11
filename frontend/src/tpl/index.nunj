@@ -1,0 +1,23 @@
+{% extends "layouts/default-fluid.nunj" %}
+
+{% set title = "" %}
+
+{% block content %}
+
+  <div class="content">
+    <h1 class="content-header">Pages</h1>
+    <div class="content__breadcrumbs">
+      <a class="content__breadcrumbs-link" href="/">Home</a>
+    </div>
+    <div class="content__canvas">
+      <ul>
+        {% for path in _pages %}
+          <li>
+            <a href="{{ path }}.html">{{ path }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

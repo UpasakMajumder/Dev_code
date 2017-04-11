@@ -1,0 +1,158 @@
+.input {
+  @extend .py-2;
+  border: 1px solid $brand-darkgrey;
+  border-radius: $border-radius;
+  font-weight: 100;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &__wrapper {
+    position: relative;
+
+    &--disabled {
+      opacity: .5;
+    }
+  }
+
+  &:focus {
+    border: 1px solid $brand-secondary;
+    box-shadow: 0 0 8px 0 $brand-secondary;
+  }
+
+  &[disabled],
+  .disabled {
+    cursor: $cursor-disabled;
+  }
+
+  &__text {
+    @extend .px-3;
+    @extend .input;
+  }
+
+  &__password {
+    @extend .pl-3;
+    @extend .input;
+    padding-right: 4.5rem;
+  }
+
+  &__toggler {
+    @extend .font-secondary;
+    cursor: pointer;
+    position: absolute;
+    right: .75rem;
+    text-transform: uppercase;
+    top: 2.05rem;
+  }
+
+  &__label {
+    display: block;
+    font-weight: 300;
+    text-transform: uppercase;
+
+    &--radio,
+    &--checkbox {
+      @extend .mb-1;
+      cursor: pointer;
+      margin: 0;
+      padding-left: 2rem;
+      text-transform: none;
+
+      &:before {
+        content: "";
+        border: 1px solid $brand-darkgrey;
+        box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, .2), 0 1px 0 0 $brand-grey;
+        display: inline-block;
+        height: 25px;
+        left: 0;
+        margin-right: 10px;
+        position: absolute;
+        top: 0;
+        width: 25px;
+      }
+    }
+
+    &--checkbox {
+      &:before {
+        border-radius: $border-radius;
+      }
+    }
+
+    &--radio {
+      &:before {
+        border-radius: 100%;
+      }
+    }
+  }
+
+  &__checkbox,
+  &__radio {
+    display: none;
+
+    &:checked + label:before {
+      content: "";
+      background-color: $brand-success;
+      border: 1px;
+      box-shadow: 0 1px 0 0 darken($brand-success, 10%);
+    }
+
+    &:checked + label:after {
+      @extend .font-white;
+      font-size: $font-m;
+      font-weight: bold;
+      position: absolute;
+    }
+  }
+
+  &__checkbox {
+    &:checked + label:after {
+      content: "\2143";
+      left: 6px;
+      top: -5px;
+      transform: rotate(42deg);
+    }
+  }
+
+  &__radio {
+    &:checked + label:after {
+      content: "•";
+      left: 7px;
+      top: -4px;
+    }
+  }
+
+  &__select {
+    @extend .bg-white;
+    border: 1px solid $brand-darkgrey;
+    border-radius: $border-radius;
+    height: 42px;
+    width: 100%;
+
+    select {
+      background: transparent;
+      border: none;
+      height: 42px;
+      font-weight: 100;
+      width: 100%;
+    }
+  }
+
+  &--error {
+    border-bottom: 1px solid $brand-dangerous;
+  }
+
+  &__error {
+    @extend .font-dangerous;
+    border-top: 1px solid $brand-dangerous;
+    display: block;
+    font-size: $font-xxs;
+    position: absolute;
+    width: 100%;
+
+    &--noborder {
+      border-top: none;
+    }
+  }
+}

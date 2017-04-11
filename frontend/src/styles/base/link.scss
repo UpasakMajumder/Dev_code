@@ -1,0 +1,15 @@
+.link {
+  @extend .font-secondary;
+  text-decoration: none;
+
+  &:hover {
+    @extend .font-secondary;
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:active {
+    color: darken($brand-secondary, 10%);
+    text-decoration: none;
+  }
+}
