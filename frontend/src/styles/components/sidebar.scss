@@ -55,6 +55,7 @@ $sidebar-font-size: 11px;
     padding-bottom: 8px;
     cursor: pointer;
 
+    &.active,
     &:hover {
       background-color: #000;
 
@@ -99,6 +100,7 @@ $sidebar-font-size: 11px;
 }
 
 // Hover/Active state to change SVG icons
+.css-sidebar__nav-item.active,
 .css-sidebar__nav-item:hover {
   .icon-dashboard {
     display: none;

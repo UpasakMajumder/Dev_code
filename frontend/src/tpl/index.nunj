@@ -1,9 +1,11 @@
 {% extends "layouts/default-fluid.nunj" %}
+{% from "helpers/sidebar.nunj" import sidebar %}
 
-{% set title = "" %}
+{% set title = "Pages" %}
 
 {% block content %}
 
+  {{ sidebar(title) }}
   <div class="content">
     <h1 class="content-header">Pages</h1>
     <div class="content__breadcrumbs">
