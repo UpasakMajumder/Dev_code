@@ -1524,7 +1524,6 @@
     <Content Include="CMSPages\Ecommerce\GetProductFile.aspx" />
     <Content Include="CMSPages\GoogleSiteMap.aspx" />
     <Content Include="CMSPages\IntegrationNotify.aspx" />
-    <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSPages\LiveIDLogin.aspx" />
     <Content Include="CMSPages\logon.aspx" />
     <Content Include="CMSPages\PortalTemplate.aspx" />
@@ -4359,6 +4358,7 @@
     <Content Include="IntranetPortal\media\Media\Trees for Bugs\Trees-for-bugs-5.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice_col.jpg" />
+    <Content Include="KadenaWebService.asmx" />
     <Content Include="ObjectTranslationRESTService.svc" />
     <Content Include="DocumentRESTService.svc" />
     <Content Include="Default.aspx" />
@@ -14878,13 +14878,6 @@
     <Compile Include="CMSPages\IntegrationNotify.aspx.designer.cs">
       <DependentUpon>IntegrationNotify.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.cs">
-      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
-      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CMSPages\LiveIDLogin.aspx.cs">
       <DependentUpon>LiveIDLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -21769,6 +21762,10 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="KadenaWebService.asmx.cs">
+      <DependentUpon>KadenaWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Old_App_Code\CMSModules\Automation\AutomationFunctions.cs" />
     <Compile Include="Old_App_Code\CMSModules\Badges\BadgesListControlExtender.cs" />
