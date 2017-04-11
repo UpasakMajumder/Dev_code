@@ -27,7 +27,10 @@ CheckboxInput.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   error: PropTypes.string,
-  inputClass: PropTypes.string
+  inputClass: PropTypes.string,
+  defaultChecked: PropTypes.bool,
+  value: PropTypes.string
 };
