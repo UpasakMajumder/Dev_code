@@ -31,13 +31,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::CMSFormControls_Sites_SiteSelector siteSelector;
         
         /// <summary>
-        /// lblRejectTemplate control.
+        /// lblEmailTemplate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblRejectTemplate;
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblEmailTemplate;
         
         /// <summary>
         /// etBlankPasswords control.

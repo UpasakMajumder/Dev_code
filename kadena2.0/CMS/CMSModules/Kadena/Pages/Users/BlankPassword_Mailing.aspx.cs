@@ -27,9 +27,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 return;
             }
 
-            // Show content placeholder where site selector can be shown
-            CurrentMaster.DisplaySiteSelectorPanel = true;
-
             siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
 

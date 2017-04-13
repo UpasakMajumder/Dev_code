@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <div class="editing-form-label-cell">
-                <cms:LocalizedLabel CssClass="control-label" ID="lblRejectTemplate" runat="server" EnableViewState="false"
+                <cms:LocalizedLabel CssClass="control-label" ID="lblEmailTemplate" runat="server" EnableViewState="false"
                     ResourceString="workflow.customtemplate" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
