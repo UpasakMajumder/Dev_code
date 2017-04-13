@@ -31,75 +31,21 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::CMSFormControls_Sites_SiteSelector siteSelector;
         
         /// <summary>
-        /// lblFrom control.
+        /// lblRejectTemplate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblFrom;
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblRejectTemplate;
         
         /// <summary>
-        /// emailSender control.
+        /// etBlankPasswords control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSFormControls_Inputs_EmailInput emailSender;
-        
-        /// <summary>
-        /// lblSubject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblSubject;
-        
-        /// <summary>
-        /// txtSubject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtSubject;
-        
-        /// <summary>
-        /// pnlUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlUpdate;
-        
-        /// <summary>
-        /// plcText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder plcText;
-        
-        /// <summary>
-        /// lblText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblText;
-        
-        /// <summary>
-        /// htmlText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.DocumentEngine.Web.UI.CMSHtmlEditor htmlText;
+        protected global::CMSModules_EmailTemplates_FormControls_EmailTemplateSelector etBlankPasswords;
     }
 }
