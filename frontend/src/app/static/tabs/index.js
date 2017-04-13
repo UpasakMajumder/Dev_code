@@ -1,7 +1,7 @@
 export default class Tabs {
   constructor(container) {
     this.container = container;
-    const { tabActiveDefault, tab } = this.container.dataset;
+    const { tabActiveDefault, tab: tabSelector } = this.container.dataset;
 
     this.activeClass = 'active';
     this.showClass = 'show';
@@ -10,7 +10,7 @@ export default class Tabs {
 
     this.styleActiveTab();
 
-    const tabs = Array.from(this.container.querySelectorAll(tab));
+    const tabs = Array.from(this.container.querySelectorAll(tabSelector));
 
     tabs.forEach((tab) => {
       tab.addEventListener('click', (event) => {

@@ -5,7 +5,7 @@ import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 
 class StyleguideInput extends Component {
-  render() {
+  render() { // eslint-disable-line class-methods-use-this
     const thead = <tr>
                     <th>State</th>
                     <th>Text</th>
