@@ -20,7 +20,7 @@
         <div class="form-group">
             <div class="editing-form-label-cell">
                 <cms:LocalizedLabel CssClass="control-label" ID="lblEmailTemplate" runat="server" EnableViewState="false"
-                    ResourceString="workflow.customtemplate" DisplayColon="true" />
+                    ResourceString="Kadena.Email.SelectTemplate" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
                 <cms:EmailTemplateSelector ID="etBlankPasswords" runat="server" IsLiveSite="false" />
