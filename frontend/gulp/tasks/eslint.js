@@ -11,7 +11,8 @@ const lint = (globs) => {
   const options = {
     configFile: eslintConfig,
     rules: {
-      "indent": ["error", 2]
+      "indent": ["error", 2],
+      "class-methods-use-this": [0, {"exceptMethods": ["render", "componentDidMount"]}]
     }
   };
 
