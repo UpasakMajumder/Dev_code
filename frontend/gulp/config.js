@@ -80,7 +80,7 @@ const
 
     // api
     API = `${DEVELOPMENT_BASE}/api/api.js`,
-    API_PORT = 5003;
+    API_PORT = 3000;
 
 module.exports = {
     PORT,
