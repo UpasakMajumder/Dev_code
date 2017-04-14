@@ -24,7 +24,7 @@ export default function TextInput(props) {
 }
 
 TextInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   placeholder: PropTypes.string,
   error: PropTypes.string,
   disabled: PropTypes.bool
