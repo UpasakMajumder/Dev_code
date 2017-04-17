@@ -1,0 +1,23 @@
+{% extends "layouts/default-noheader.nunj" %}
+{% import "helpers/svg.nunj" as svg %}
+
+{% set title = "Login" %}
+
+{% block content %}
+
+<div class="login">
+  <div class="login__form">
+    <div class="login__custom-logo mb-3">
+      <img src="http://satyr.io/205x40/red" alt="logo-image">
+    </div>
+    <div class="login__form-content js-login"></div>
+  </div>
+  <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
+  <div class="login__kadena-logo">
+    {% call svg.template(class='logo') %}
+      {{svg.use(name='logo')}}
+      {% endcall %}
+  </div>
+</div>
+
+{% endblock %}

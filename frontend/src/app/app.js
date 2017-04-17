@@ -3,7 +3,7 @@
  * If you do not use SVG <use xlink:href="…"> elements, remove svgxuse module
  */
 // import 'svgxuse';
-// import configureStore from './store';
+import configureStore from './store';
 import { init, render } from './init';
 
 const app = {
@@ -23,9 +23,10 @@ const app = {
   /* React */
   react() {
     /* Configure Redux store */
-    // window.store = configureStore();
+    window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-  },
+    render('Login', document.querySelectorAll('.js-login'));
+  }
 };
 
 /* Global scope reference */
