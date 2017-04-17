@@ -1,14 +1,46 @@
 .btn-common {
+  @extend .py-2;
+  @extend .px-4;
   font-family: $font-family-base;
   text-decoration: none;
   cursor: pointer;
   border-radius: $border-radius;
   box-sizing: border-box;
-  height: 40px;
-  width: 140px;
 
   &:focus {
     outline: none;
+  }
+
+  &:not(.btn--no-shadow) {
+    &:active,
+    &:hover {
+      &:after {
+        content: '';
+        height: 100%;
+        display: block;
+        background-repeat: no-repeat;
+        position: absolute;
+        background-size: contain;
+      }
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+        background-image: url($svg-path + 'btn-shadow.svg');
+        bottom: -100%;
+        left: 0;
+      }
+    }
+
+    &:active {
+      &:after {
+        width: 120%;
+        background-image: url($svg-path + 'btn-shadow-filtered.svg');
+        bottom: -100%;
+        left: -10%;
+      }
+    }
   }
 }
 
@@ -39,36 +71,10 @@ $colors: (
     &:hover {
       background-color: $color;
       border: 2px solid $color;
-
-      &:after {
-        content: '';
-        width: 140px;
-        height: 20px;
-        display: block;
-        background-repeat: no-repeat;
-        position: absolute;
-        background-image: url($svg-path + 'btn-shadow.svg');
-        bottom: -20px;
-        left: 0;
-      }
     }
 
     &:focus {
       box-shadow: 0 1px 0 0 darken($color, 10%);
-    }
-
-    &:active {
-      &:after {
-        content: '';
-        width: 219px;
-        height: 17px;
-        display: block;
-        background-repeat: no-repeat;
-        position: absolute;
-        background-image: url($svg-path + 'btn-shadow-filtered.svg');
-        bottom: -17px;
-        left: -39px;
-      }
     }
 
     &--secondary {
