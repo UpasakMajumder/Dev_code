@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="76px" height="100px" viewBox="0 0 76 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0,7.99335421 C0,3.57874658 3.57681119,0 8.00379696,0 L50.8661826,0 L75.4098361,25.5117603 L75.4098361,91.9930985 C75.4098361,96.4151881 71.8233942,100 67.4110553,100 L7.99878078,100 C3.58117614,100 0,96.4114635 0,92.0066458 L0,7.99335421 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Form/Input/File/Uploaded" transform="translate(-432.000000, -37.000000)">
+            <g id="Icon" transform="translate(432.000000, 37.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#00BB89" xlink:href="#path-1"></use>
+                <path d="M83.525438,25.5275113 L58.8204025,25.5275113 C54.4017211,25.5275113 50.8196721,21.9450518 50.8196721,17.5247858 L50.8196721,-3.68852459 L83.525438,25.5275113 Z" id="Rectangle" fill="#028B66" mask="url(#mask-2)"></path>
+                <text id=".CSV" mask="url(#mask-2)" font-family=".AppleSystemUIFont" font-size="18" font-weight="normal" fill="#FFFFFF">
+                    <tspan x="18.0629883" y="56">.CSV</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
