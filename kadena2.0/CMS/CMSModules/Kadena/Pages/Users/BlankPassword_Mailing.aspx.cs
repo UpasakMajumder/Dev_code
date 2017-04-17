@@ -16,7 +16,10 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class BlankPassword_Mailing : CMSPage
     {
-        private int siteId;
+        private int _siteId;
+        private string _urlNewItem = "~/CMSModules/EmailTemplates/Pages/New.aspx";
+        private string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
+        private string _templateType = "membershipchangepassword";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,18 +33,27 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
 
-            if (!RequestHelper.IsPostBack())
+            if (RequestHelper.IsPostBack())
+            {
+                _siteId = ValidationHelper.GetInteger(siteSelector.Value, 0);
+            }
+            else
             {
                 siteSelector.Value = UniSelector.US_ALL_RECORDS;
             }
 
-            // Load selected site from site selector
-            if (RequestHelper.IsPostBack())
+            usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition,
+                _siteId > 0 ? $"EmailTemplateSiteId = {_siteId}"
+                : "EmailTemplateSiteId is null");
+            
+            // Filter type
+            if (!string.IsNullOrWhiteSpace(_templateType))
             {
-                siteId = ValidationHelper.GetInteger(siteSelector.Value, 0);
-                etBlankPasswords.SiteId = siteId;
+                usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition, $"EmailTemplateType = '{_templateType}'");
             }
 
+            
+            usBlankPasswords.ButtonClear.Visible = false;
             // Initialize header actions
             InitHeaderActions();
         }
@@ -51,8 +63,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         /// </summary>
         protected void Site_Changed(object sender, EventArgs e)
         {
-            etBlankPasswords.Value = null;
-            etBlankPasswords.Reload(true);
+            usBlankPasswords.Value = null;
+            usBlankPasswords.Reload(true);
         }
 
         /// <summary>

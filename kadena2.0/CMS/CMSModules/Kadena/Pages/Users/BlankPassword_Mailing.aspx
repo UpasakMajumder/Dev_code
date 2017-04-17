@@ -4,14 +4,15 @@
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>
-<%@ Register Src="~/CMSModules/EmailTemplates/FormControls/EmailTemplateSelector.ascx"
-    TagName="EmailTemplateSelector" TagPrefix="cms" %>
+<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
+    TagPrefix="cms" %>
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
         <div class="form-group">
             <div class="editing-form-label-cell">
-                <cms:LocalizedLabel ID="lblSite" runat="server" CssClass="control-label" EnableViewState="false" ResourceString="general.site" DisplayColon="true" />
+                <cms:LocalizedLabel ID="lblSite" runat="server" CssClass="control-label" EnableViewState="false"
+                    ResourceString="general.site" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
                 <cms:SiteSelector ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="true" />
@@ -23,7 +24,9 @@
                     ResourceString="Kadena.Email.SelectTemplate" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
-                <cms:EmailTemplateSelector ID="etBlankPasswords" runat="server" IsLiveSite="false" />
+                <cms:UniSelector ID="usBlankPasswords" runat="server" IsLiveSite="false"  ObjectType="cms.emailtemplate" 
+                    SelectionMode="SingleTextBox" OrderBy="EmailTemplateDisplayName" ResourcePrefix="emailtemplateselect" 
+                    AllowEmpty="true" AllowEditTextBox="true" ReturnColumnName="EmailTemplateName" />
             </div>
         </div>
     </div>

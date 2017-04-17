@@ -40,12 +40,12 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::CMS.Base.Web.UI.LocalizedLabel lblEmailTemplate;
         
         /// <summary>
-        /// etBlankPasswords control.
+        /// usBlankPasswords control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSModules_EmailTemplates_FormControls_EmailTemplateSelector etBlankPasswords;
+        protected global::CMSAdminControls_UI_UniSelector_UniSelector usBlankPasswords;
     }
 }
