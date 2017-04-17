@@ -103,6 +103,46 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         /// </summary>
         protected void Send()
         {
+            // Check "modify" permission
+            if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Users", "Modify"))
+            {
+                RedirectToAccessDenied("CMS.Users", "Modify");
+            }
+
+            // Check template name
+            var templateName = usBlankPasswords.Value.ToString();
+            if (string.IsNullOrWhiteSpace(templateName))
+            {
+                ShowError(GetString("Kadena.Email.TemplateNotSelected"));
+                return;
+            }
+
+            EmailTemplateInfo eti = EmailTemplateProvider.GetEmailTemplate(templateName, _siteId);
+            // Validate first
+            if (string.IsNullOrEmpty(eti.TemplateFrom))
+            {
+                ShowError(GetString("Kadena.Email.CorrectFromField"));
+                return;
+            }
+
+            var users = UserInfoProvider.GetUsers().WhereEmpty("UserPassword");
+            if (_siteId > 0)
+                users = users.And().WhereIn("UserID",
+                    UserSiteInfoProvider.GetUserSites()
+                    .WhereEquals("SiteID", _siteId)
+                    .Column("UserID"));
+
+            foreach (var ui in users)
+            {
+                if (!string.IsNullOrWhiteSpace(ui.Email))
+                {
+                    EmailMessage msg = new EmailMessage();
+                    msg.EmailFormat = EmailFormatEnum.Both;
+                    msg.From = eti.TemplateFrom; //make sure this is specified in the template settings
+                    msg.Recipients = ui.Email;
+                    EmailSender.SendEmailWithTemplateText(siteSelector.SiteName, msg, eti, null, false); //if send immeditaley is true, e-mail queue is not used
+                }
+            }
         }
     }
 }
