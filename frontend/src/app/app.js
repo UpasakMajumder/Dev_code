@@ -26,6 +26,7 @@ const app = {
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Mailing', document.querySelectorAll('.new-mailing'), { store: true });
+    render('Login', document.querySelectorAll('.js-login'));
   }
 };
 

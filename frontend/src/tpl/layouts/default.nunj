@@ -55,8 +55,24 @@
 
 
 {# Scripts #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-  var config = {};
+  var config = {
+    localization: {
+      login: {
+        email: 'E-MAIL',
+        emailPlaceholder: 'your@email.com',
+        emailValidationMessage: 'Please check your email format.',
+        password: 'PASSWORD',
+        passwordPlaceholder: 'password',
+        passwordShow: 'SHOW',
+        passwordHide: 'HIDE',
+        passwordValidationMessage: 'Please enter password.',
+        keepMeLoggedIn: 'Keep me logged in',
+        login: 'Log in'
+      }
+    }
+  };
 </script>
 <script src="js/common.js"></script>
 {% if _dev %}

@@ -7,46 +7,52 @@ using CMS.Helpers;
 
 public partial class CMSPages_PortalTemplate : PortalPage
 {
-    #region "Properties"
+  #region "Properties"
 
-    /// <summary>
-    /// Document manager
-    /// </summary>
-    public override ICMSDocumentManager DocumentManager
+  /// <summary>
+  /// Document manager
+  /// </summary>
+  public override ICMSDocumentManager DocumentManager
+  {
+    get
     {
-        get
-        {
-            // Enable document manager
-            docMan.Visible = true;
-            docMan.StopProcessing = false;
-            return docMan;
-        }
+      // Enable document manager
+      docMan.Visible = true;
+      docMan.StopProcessing = false;
+      return docMan;
     }
+  }
 
 
-    /// <summary>
-    /// Returns XHTML namespace if current page has XHTML DocType. Otherwise it returns empty string.
-    /// </summary>
-    protected string XHtmlNameSpace
+  /// <summary>
+  /// Returns XHTML namespace if current page has XHTML DocType. Otherwise it returns empty string.
+  /// </summary>
+  protected string XHtmlNameSpace
+  {
+    get
     {
-        get
-        {
-            return DocumentBase.IsHTML5 ? String.Empty : HTMLHelper.DEFAULT_XMLNS_ATTRIBUTE;
-        }
+      return DocumentBase.IsHTML5 ? String.Empty : HTMLHelper.DEFAULT_XMLNS_ATTRIBUTE;
     }
+  }
 
-    #endregion
+  /// <summary>
+  /// Lang attribute customization
+  /// </summary>
+  protected string Lang { get; set; }
+
+  #endregion
 
 
-    #region "Methods"
+  #region "Methods"
 
-    protected override void OnPreRender(EventArgs e)
-    {
-        base.OnPreRender(e);
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender(e);
 
-        // Init the header tags
-        tags.Text = HeaderTags;
-    }
+    // Init the header tags
+    tags.Text = HeaderTags;
+    Lang = this.CurrentPage.DocumentCulture;
+  }
 
-    #endregion
+  #endregion
 }

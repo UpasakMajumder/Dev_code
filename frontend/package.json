@@ -82,6 +82,7 @@
     "yargs": "^6.3.0"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "babel-eslint": "^7.2.1",
     "babel-loader": "^6.4.1",
     "babel-polyfill": "^6.9.1",
@@ -91,6 +92,7 @@
     "merge-stream": "^1.0.0",
     "nunjucks": "^3.0.0",
     "path": "^0.12.7",
+    "query-string": "^4.3.3",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-dropzone": "^3.12.3",
@@ -100,8 +102,11 @@
     "react-router-dom": "^4.0.0-beta.8",
     "react-svg-loader": "^1.1.1",
     "redux": "^3.6.0",
+    "redux-logger": "^3.0.1",
+    "redux-thunk": "^2.2.0",
     "styleguide": "actum/styleguide",
     "svgxuse": "^1.2.4",
+    "validator": "^7.0.0",
     "webpack": "^2.3.2",
     "webpack-stream": "^3.2.0",
     "write-file-webpack-plugin": "^4.0.0"

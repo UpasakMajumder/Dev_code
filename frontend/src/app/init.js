@@ -19,9 +19,9 @@ export function init(moduleName, containers, ...options) {
   containers = Array.from(containers);
 
   if (containers.length) {
+    // eslint-disable-line new-cap
     request(moduleName, (Module) => { // eslint-disable-line arrow-body-style
-      /* eslint-disable new-cap */
-      return containers.map(container => new Module.default(container, ...options));
+      return containers.map(container => new Module.default(container, ...options)); // eslint-disable-line new-cap
     }, false);
     /* eslint-enable */
   }
@@ -40,19 +40,16 @@ export function render(componentName, containers, options = {
     request(componentName, (module) => {
       const Component = module.default;
 
-      /* eslint-disable array-callback-return */
-      return containers.map((container) => {
+      return containers.map((container) => { // eslint-disable-line array-callback-return
         /* Configure initial props */
         let initialProps = {};
-        /* eslint-disable no-prototype-builtins */
-        Component.hasOwnProperty('configureProps') && (initialProps = Component.configureProps(container));
-        /* eslint-enable */
+
+        Component.hasOwnProperty('configureProps') && (initialProps = Component.configureProps(container)); // eslint-disable-line no-prototype-builtins
 
         let RenderOutput = <Component {...initialProps} />;
         options.store && (RenderOutput = (<Provider store={window.store}>{RenderOutput}</Provider>));
-        /* eslint-disable new-cap */
-        DOMRender(RenderOutput, container);
-        /* eslint-enable */
+
+        DOMRender(RenderOutput, container); // eslint-disable-line new-cap
       });
     });
   }

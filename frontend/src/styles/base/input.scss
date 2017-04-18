@@ -3,6 +3,7 @@
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
   font-weight: 100;
+  width: 100%;
 
   &:focus,
   &:active {
@@ -44,7 +45,8 @@
     position: absolute;
     right: .75rem;
     text-transform: uppercase;
-    top: 2.05rem;
+    bottom: 11px;
+    font-size: $font-xxs;
   }
 
   &__label {
@@ -117,10 +119,10 @@
   }
 
   &__radio {
-    &:checked + label:after {
-      content: "•";
-      left: 7px;
-      top: -4px;
+    &:checked + label:before {
+      content: "";
+      border: 7px solid $brand-success;
+      background-color: white;
     }
   }
 
