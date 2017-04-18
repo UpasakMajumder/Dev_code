@@ -232,14 +232,19 @@ class UploadMailList extends Component {
           <h2>Name</h2>
           <p>Give it a nice name for future reference</p>
 
-          <TextInput
-            placeholder="Name"
-            name="name"
-            value={this.state.name}
-            onChange={(event) => {
-              this.handleChange(event.target.name, event.target.value);
-            }}
-          />
+          <div className="row">
+            <div className="col-lg-5 col-xl-3">
+              <TextInput
+                placeholder="Name"
+                name="name"
+                value={this.state.name}
+                onChange={(event) => {
+                  this.handleChange(event.target.name, event.target.value);
+                }}
+              />
+            </div>
+          </div>
+
         </div>
 
         <button type="button" className="btn-main">Create mailing list</button>
