@@ -1,4 +1,4 @@
-const { localization } = config;
+const { localization } = config; // eslint-disable-line no-undef
 
 const {
   login

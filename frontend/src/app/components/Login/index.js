@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 
 import TextInput from '../form/TextInput';
 import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 import requestLogin from '../../AC/login';
 import { LOGIN } from '../../globals';
-import queryString from 'query-string';
 
 class Login extends Component {
   constructor(props) {
