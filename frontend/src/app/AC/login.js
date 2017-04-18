@@ -1,9 +1,10 @@
 import axios from 'axios';
 import validator from 'validator';
 import * as constants from '../constants';
+import { LOGIN } from '../globals';
 
 export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
-  return (dispatch, state) => {
+  return (dispatch) => {
 
     if (!validator.isEmail(loginEmail)) {
       dispatch({
@@ -12,7 +13,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
           isLoading: false,
           response: {
             success: false,
-            errorMessage: 'Please check your email format.',
+            errorMessage: LOGIN.emailValidationMessage,
             errorPropertyName: 'loginEmail'
           }
         }
@@ -28,7 +29,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
           isLoading: false,
           response: {
             success: false,
-            errorMessage: 'Pleokase enter password.',
+            errorMessage: LOGIN.passwordValidationMessage,
             errorPropertyName: 'password'
           }
         }
