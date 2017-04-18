@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import TextInput from '../form/TextInput';
 import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 import requestLogin from '../../AC/login';
+import { LOGIN } from '../../globals';
+import queryString from 'query-string';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -15,6 +17,14 @@ class Login extends React.Component {
       password: '',
       isKeepMeLoggedIn: false
     };
+
+    // from config
+    this.emailText = LOGIN.email;
+    this.emailPlaceholder = LOGIN.emailPlaceholder;
+    this.keepMeLoggedInText = LOGIN.keepMeLoggedIn;
+    this.loginText = LOGIN.login;
+    this.passwordPlaceholder = LOGIN.passwordPlaceholder;
+    this.passwordText = LOGIN.password;
   }
 
   handleLoginEmailChange(e) {
@@ -54,13 +64,13 @@ class Login extends React.Component {
       <div className="css-login">
         <div className="row justify-content-center css-login__row mb-4">
           <div className="col-12">
-            <TextInput label="E-MAIL" placeholder="your@email.com" value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
+            <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
                 error={this.getErrorMessage('loginEmail', response)} />
           </div>
         </div>
         <div className="row justify-content-center css-login__row mb-4">
           <div className="col-12">
-            <PasswordInput label="Password" placeholder="password" value={password} onChange={e => this.handlePasswordChange(e)}
+            <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
                 error={this.getErrorMessage('password', response)} />
           </div>
         </div>
@@ -70,7 +80,7 @@ class Login extends React.Component {
               <CheckboxInput
                 id="dom-1"
                 type="checkbox"
-                label="Keep me logged in"
+                label={this.keepMeLoggedInText}
                 value={isKeepMeLoggedIn}
                 onChange={e => this.handleIsKeepMeLoggedIn(e)}
               />
@@ -80,17 +90,7 @@ class Login extends React.Component {
         <div className="row justify-content-center css-login__row mb-4">
           <div className="col-12 text-center">
             <button type="button" className="btn-main css-login__login-button" disabled={isLoading}
-             onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>Log in</button>
-          </div>
-        </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12 text-center">
-            <a href="/" className="css-login-link">Forgot password?</a>
-          </div>
-        </div>
-        <div className="row justify-content-center css-login__row">
-          <div className="col-12 text-center">
-            <a href="/" className="css-login-link">Request access</a>
+             onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
           </div>
         </div>
       </div>
@@ -101,7 +101,14 @@ class Login extends React.Component {
 export default connect(
   (state) => {
     const { login } = state;
-    if (login.response && login.response.success) location.reload();
+    if (login.response && login.response.success) {
+      const query = queryString.parse(location.search);
+      if (query.returnurl) {
+        location.assign(query.returnurl);
+      } else {
+        location.assign('/');
+      }
+    }
     return { login };
   },
   {
