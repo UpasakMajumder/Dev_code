@@ -17,9 +17,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
     public partial class BlankPassword_Mailing : CMSPage
     {
         private int _siteId;
-        private string _urlNewItem = "~/CMSModules/EmailTemplates/Pages/New.aspx";
-        private string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
-        private string _templateType = "membershipchangepassword";
+        private const string _urlNewItem = "~/CMSModules/EmailTemplates/Pages/New.aspx";
+        private const string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
+        private const string _templateType = "membershipchangepassword";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,18 +42,12 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 siteSelector.Value = UniSelector.US_ALL_RECORDS;
             }
 
-            usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition,
-                _siteId > 0 ? $"EmailTemplateSiteId = {_siteId}"
-                : "EmailTemplateSiteId is null");
             
-            // Filter type
-            if (!string.IsNullOrWhiteSpace(_templateType))
-            {
-                usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition, $"EmailTemplateType = '{_templateType}'");
-            }
 
+            SetUpTemplateSelector();
             
             usBlankPasswords.ButtonClear.Visible = false;
+            
             // Initialize header actions
             InitHeaderActions();
         }
@@ -65,6 +59,48 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         {
             usBlankPasswords.Value = null;
             usBlankPasswords.Reload(true);
+            SetUpTemplateSelector();
+            pnlTemplate.Update();
+        }
+
+        private void SetUpTemplateSelector()
+        {
+            usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition,
+                _siteId > 0 ? $"EmailTemplateSiteId = {_siteId}"
+                : "EmailTemplateSiteId is null");
+
+            // Filter type
+            if (!string.IsNullOrWhiteSpace(_templateType))
+            {
+                usBlankPasswords.WhereCondition = SqlHelper.AddWhereCondition(usBlankPasswords.WhereCondition, $"EmailTemplateType = '{_templateType}'");
+            }
+
+            if (MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.EmailTemplates", "Modify"))
+            {
+                string templateParameter = null;
+                if (!string.IsNullOrWhiteSpace(_templateType))
+                {
+                    templateParameter = "&templatetype=" + URLHelper.URLEncode(_templateType);
+                }
+
+                string siteParameter = null;
+                if (_siteId > 0)
+                {
+                    siteParameter = $"&siteid={_siteId}";
+                }
+                if (!string.IsNullOrWhiteSpace(_urlEditItem))
+                {
+                    string url = $"{_urlEditItem}?name=##ITEMID##&tabmode=1&editonlycode=1{siteParameter}{templateParameter}";
+                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{siteParameter}{templateParameter}"));
+                    usBlankPasswords.EditItemPageUrl = url;
+                }
+                if (!string.IsNullOrWhiteSpace(_urlNewItem))
+                {
+                    string url = $"{_urlNewItem }?editonlycode=1{siteParameter}{templateParameter}";
+                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{templateParameter}"));
+                    usBlankPasswords.NewItemPageUrl = url;
+                }
+            }
         }
 
         /// <summary>

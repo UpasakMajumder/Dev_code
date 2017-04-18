@@ -31,6 +31,15 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::CMSFormControls_Sites_SiteSelector siteSelector;
         
         /// <summary>
+        /// pnlTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlTemplate;
+        
+        /// <summary>
         /// lblEmailTemplate control.
         /// </summary>
         /// <remarks>
