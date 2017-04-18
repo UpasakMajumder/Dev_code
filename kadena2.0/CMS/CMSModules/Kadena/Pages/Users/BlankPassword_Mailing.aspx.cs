@@ -91,7 +91,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 if (!string.IsNullOrWhiteSpace(_urlEditItem))
                 {
                     string url = $"{_urlEditItem}?name=##ITEMID##&tabmode=1&editonlycode=1{siteParameter}{templateParameter}";
-                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{siteParameter}{templateParameter}"));
+                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{templateParameter}"));
                     usBlankPasswords.EditItemPageUrl = url;
                 }
                 if (!string.IsNullOrWhiteSpace(_urlNewItem))
