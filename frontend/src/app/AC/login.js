@@ -44,7 +44,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
     });
 
     // ToDo: Change to POST and URL
-    axios.get('http://localhost:3000/loginSuccess', { loginEmail, password, isKeepMeLoggedIn })
+    axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
       .then((response) => {
         dispatch({
           type: constants.FETCH_SERVERS_SUCCESS
