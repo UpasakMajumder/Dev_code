@@ -42,12 +42,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 siteSelector.Value = UniSelector.US_ALL_RECORDS;
             }
 
-            
-
             SetUpTemplateSelector();
-            
             usBlankPasswords.ButtonClear.Visible = false;
-            
+
             // Initialize header actions
             InitHeaderActions();
         }
@@ -135,7 +132,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         }
 
         /// <summary>
-        /// Sends the email.
+        /// Sends the emails.
         /// </summary>
         protected void Send()
         {
@@ -153,32 +150,47 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 return;
             }
 
-            EmailTemplateInfo eti = EmailTemplateProvider.GetEmailTemplate(templateName, _siteId);
-            // Validate first
-            if (string.IsNullOrEmpty(eti.TemplateFrom))
+            var emailTemplate = EmailTemplateProvider.GetEmailTemplate(templateName, _siteId);
+            // Validate From field
+            if (string.IsNullOrEmpty(emailTemplate.TemplateFrom))
             {
                 ShowError(GetString("Kadena.Email.CorrectFromField"));
                 return;
             }
 
-            var users = UserInfoProvider.GetUsers().WhereEmpty("UserPassword");
+            // Selecting users for emails
+            var users = UserInfoProvider.GetUsers().WhereEmpty("UserPassword")
+                .And()
+                .WhereNotEmpty("Email");
             if (_siteId > 0)
-                users = users.And().WhereIn("UserID",
-                    UserSiteInfoProvider.GetUserSites()
-                    .WhereEquals("SiteID", _siteId)
-                    .Column("UserID"));
+            {
+                users = users
+                    .And()
+                    .WhereIn("UserID", UserSiteInfoProvider.GetUserSites()
+                                        .WhereEquals("SiteID", _siteId)
+                                        .Columns("UserID", "Email", "UserGUID"));
+            }
+            if (users.Count == 0)
+            {
+                ShowInformation(GetString("Kadena.Email.NoUsersToSend"));
+                return;
+            }
 
+            // Creating and sending email message.
+            var resolver = MacroResolver.GetInstance();
             foreach (var ui in users)
             {
-                if (!string.IsNullOrWhiteSpace(ui.Email))
-                {
-                    EmailMessage msg = new EmailMessage();
-                    msg.EmailFormat = EmailFormatEnum.Both;
-                    msg.From = eti.TemplateFrom; //make sure this is specified in the template settings
-                    msg.Recipients = ui.Email;
-                    EmailSender.SendEmailWithTemplateText(siteSelector.SiteName, msg, eti, null, false); //if send immeditaley is true, e-mail queue is not used
-                }
+                var message = new EmailMessage();
+                message.EmailFormat = EmailFormatEnum.Both;
+                message.From = emailTemplate.TemplateFrom;
+                message.Recipients = ui.Email;
+                message.Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject).Replace("{userCode}", ui.UserGUID.ToString());
+                message.Body = resolver.ResolveMacros(emailTemplate.TemplateText).Replace("{userCode}", ui.UserGUID.ToString());
+                message.PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText).Replace("{userCode}", ui.UserGUID.ToString());
+                EmailSender.SendEmail(siteSelector.SiteName, message, false);
             }
+
+            ShowConfirmation(GetString("system_email.emailsent"));
         }
     }
 }
