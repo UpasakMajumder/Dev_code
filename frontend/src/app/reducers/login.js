@@ -12,6 +12,7 @@ export default function login(state = defaultState, action = {}) {
       ...state,
       isLoading: action.isLoading
     };
+
   case constants.LOGIN_CLIENT_VALIDATION_ERROR:
     return {
       ...state,

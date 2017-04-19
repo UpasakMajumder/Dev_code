@@ -11,5 +11,9 @@ module.exports = () => {
       errorPropertyName: 'loginEmail'
     }
 
-    return { loginSuccess, loginError };
+    const mailingSuccess = {
+      success: true
+    }
+
+    return { loginSuccess, loginError, mailingSuccess };
 };

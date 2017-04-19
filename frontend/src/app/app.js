@@ -25,7 +25,7 @@ const app = {
     /* Configure Redux store */
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-    render('Mailing', document.querySelectorAll('.new-mailing'), { store: true });
+    render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
   }
 };

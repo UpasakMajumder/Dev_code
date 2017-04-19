@@ -32,5 +32,5 @@ CheckboxInput.propTypes = {
   error: PropTypes.string,
   inputClass: PropTypes.string,
   defaultChecked: PropTypes.bool,
-  value: PropTypes.bool
+  value: PropTypes.string
 };

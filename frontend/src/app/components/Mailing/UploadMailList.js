@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { Link } from 'react-router-dom';
+import Tooltip from 'react-tooltip-component';
+import { connect } from 'react-redux';
+
 import CheckboxInput from '../form/CheckboxInput';
 import TextInput from '../form/TextInput';
 import SVG from '../SVG';
-import Tooltip from 'react-tooltip-component';
+import sendMailingList from '../../AC/mailing';
+
 
 class UploadMailList extends Component {
   constructor() {
@@ -48,6 +52,8 @@ class UploadMailList extends Component {
   }
 
   render() {
+    const { mailing, sendMailingList: send } = this.props;
+    const { isLoading } = mailing;
 
     const dropzoneContent = this.state.preview
       ? <div>
@@ -247,7 +253,11 @@ class UploadMailList extends Component {
 
         </div>
 
-        <button type="button" className="btn-main">Create mailing list</button>
+        <button type="button"
+                className="btn-main"
+                disabled={isLoading}
+                onClick={(e) => send(this.state)}
+        >Create mailing list</button>
 
 
         <br />
@@ -258,4 +268,12 @@ class UploadMailList extends Component {
   }
 }
 
-export default UploadMailList;
+export default connect(
+  (state) => {
+    const { mailing } = state;
+
+    return { mailing };
+  }, {
+    sendMailingList
+  })
+(UploadMailList);
