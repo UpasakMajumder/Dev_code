@@ -1,9 +1,10 @@
 import axios from 'axios';
 import validator from 'validator';
 import * as constants from '../constants';
+import { LOGIN } from '../globals';
 
 export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
-  return (dispatch, state) => {
+  return (dispatch) => {
 
     if (!validator.isEmail(loginEmail)) {
       dispatch({
@@ -12,7 +13,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
           isLoading: false,
           response: {
             success: false,
-            errorMessage: 'Please check your email format.',
+            errorMessage: LOGIN.emailValidationMessage,
             errorPropertyName: 'loginEmail'
           }
         }
@@ -28,7 +29,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
           isLoading: false,
           response: {
             success: false,
-            errorMessage: 'Pleokase enter password.',
+            errorMessage: LOGIN.passwordValidationMessage,
             errorPropertyName: 'password'
           }
         }
@@ -43,15 +44,16 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
     });
 
     // ToDo: Change to POST and URL
-    axios.get('http://localhost:3000/loginSuccess', { loginEmail, password, isKeepMeLoggedIn })
+    axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
       .then((response) => {
         dispatch({
           type: constants.FETCH_SERVERS_SUCCESS
         });
 
+        const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
         dispatch({
           type: constants.LOGIN_RESPONSE_SUCCESS,
-          data: response.data
+          data
         });
       })
       .catch(() => {

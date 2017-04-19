@@ -39,6 +39,8 @@
       AuthenticationHelper.SignOut();
     }
 
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
     public LogonUserResult LogonUser(string loginEmail, string password, bool isKeepMeLoggedIn)
     {
       #region Validation
@@ -91,7 +93,7 @@
       }
       else
       {
-        return new LogonUserResult { success = false, errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
+        return new LogonUserResult { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
       }
     }
 

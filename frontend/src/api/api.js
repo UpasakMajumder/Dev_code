@@ -1,6 +1,8 @@
 module.exports = () => {
     const loginSuccess = {
-      success: true
+      success: false,
+      errorMessage: 'Email address is not exists.',
+      errorPropertyName: 'loginEmail'
     }
 
     const loginError = {
