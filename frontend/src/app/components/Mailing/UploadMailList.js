@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { Link } from 'react-router-dom';
 import Tooltip from 'react-tooltip-component';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import CheckboxInput from '../form/CheckboxInput';
 import TextInput from '../form/TextInput';
 import SVG from '../SVG';
 import sendMailingList from '../../AC/mailing';
+import Steps from '../Steps';
 
 
 class UploadMailList extends Component {
@@ -26,6 +27,17 @@ class UploadMailList extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.removeFile = this.removeFile.bind(this);
+
+    // this.steps = [
+    //   'Add a mailing list',
+    //   'Map columns',
+    //   'Wait for a proofing'
+    // ];
+
+    this.steps = [
+      'gear',
+      'tick'
+    ];
   }
 
 
@@ -58,15 +70,15 @@ class UploadMailList extends Component {
     const dropzoneContent = this.state.preview
       ? <div>
           <span onClick={this.removeFile} href="#" className="drop-zone__btn close">
-            <SVG name="cross" className="icon-cross" />
+            <SVG name="cross" className="icon-cross"/>
           </span>
-          <SVG name="csv" className="icon-csv" />
-          <p className="drop-zone__file-name">{this.state.name}</p>
-        </div>
+      <SVG name="csv" className="icon-csv"/>
+      <p className="drop-zone__file-name">{this.state.name}</p>
+    </div>
       : <div>
-          <SVG name="draganddrop" className="icon-drop" />
-          <p className="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
-        </div>;
+      <SVG name="draganddrop" className="icon-drop"/>
+      <p className="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
+    </div>;
 
     const dropZoneClass = this.state.preview
       ? 'drop-zone drop-zone--dropped'
@@ -74,14 +86,17 @@ class UploadMailList extends Component {
 
     return (
       <div className="upload-mail">
+        <Steps current={1} steps={this.steps}/>
+
         <div className="upload-mail__drop-zone">
           <Tooltip title="Do you need a help with a bulk upload?" position="left">
             <span href="#" className="drop-zone__btn question">
-              <SVG name="question-mark" className="icon-question" />
+              <SVG name="question-mark" className="icon-question"/>
             </span>
           </Tooltip>
 
-          <Dropzone disableClick={!!this.state.preview} className={dropZoneClass} accept="text/csv" multiple={false} onDrop={this.onDrop}>
+          <Dropzone disableClick={!!this.state.preview} className={dropZoneClass} accept="text/csv" multiple={false}
+                    onDrop={this.onDrop}>
             <div className="drop-zone__content">
               { dropzoneContent }
             </div>
@@ -250,30 +265,25 @@ class UploadMailList extends Component {
               />
             </div>
           </div>
-
         </div>
 
         <button type="button"
                 className="btn-main"
                 disabled={isLoading}
-                onClick={(e) => send(this.state)}
-        >Create mailing list</button>
-
-
-        <br />
-        <Link to="/map-columns.html">Create mailing list</Link>
+                onClick={() => { send(this.state); }}
+        >Create mailing list
+        </button>
 
       </div>
     );
   }
 }
 
-export default connect(
-  (state) => {
+export default withRouter(
+  connect((state) => {
     const { mailing } = state;
-
     return { mailing };
   }, {
     sendMailingList
-  })
-(UploadMailList);
+  })(UploadMailList)
+);

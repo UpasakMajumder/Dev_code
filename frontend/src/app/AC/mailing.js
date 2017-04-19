@@ -1,7 +1,7 @@
 import axios from 'axios';
-import * as constants from '../constants';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 import { push } from 'react-router-redux';
+import * as constants from '../constants';
 
 export default function sendMailingList(credentials) {
   return (dispatch) => {
@@ -10,23 +10,20 @@ export default function sendMailingList(credentials) {
       isLoading: true
     });
 
-    setTimeout(() => {
-      // ToDo: Change to POST and URL
-      axios.get('http://localhost:3000/mailingSuccess', credentials)
-        .then((response) => {
-          dispatch({
-            type: constants.FETCH_SERVERS_SUCCESS
-          });
-
-          dispatch(push('map-columns.html'));
-          // browserHistory.push('map-columns.html');
-        })
-        .catch(() => {
-          dispatch({
-            type: constants.FETCH_SERVERS_FAILURE,
-            isLoading: false
-          });
+    // ToDo: Change to POST and URL
+    axios.get('http://localhost:3000/mailingSuccess', credentials)
+      .then(() => {
+        dispatch({
+          type: constants.FETCH_SERVERS_SUCCESS
         });
-    }, 1000);
+
+        dispatch(push('map-columns.html'));
+      })
+      .catch(() => {
+        dispatch({
+          type: constants.FETCH_SERVERS_FAILURE,
+          isLoading: false
+        });
+      });
   };
 }
