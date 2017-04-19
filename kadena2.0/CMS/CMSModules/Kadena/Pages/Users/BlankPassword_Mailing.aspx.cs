@@ -74,12 +74,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             if (MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.EmailTemplates", "Modify"))
             {
-                string templateParameter = null;
-                if (!string.IsNullOrWhiteSpace(_templateType))
-                {
-                    templateParameter = "&templatetype=" + URLHelper.URLEncode(_templateType);
-                }
-
                 string siteParameter = null;
                 if (_siteId > 0)
                 {
@@ -87,14 +81,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 }
                 if (!string.IsNullOrWhiteSpace(_urlEditItem))
                 {
-                    string url = $"{_urlEditItem}?name=##ITEMID##&tabmode=1&editonlycode=1{siteParameter}{templateParameter}";
-                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{templateParameter}"));
+                    string url = $"{_urlEditItem}?name=##ITEMID##&tabmode=1&editonlycode=1&templatetype={_templateType}{siteParameter}";
+                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1&templatetype={_templateType}"));
                     usBlankPasswords.EditItemPageUrl = url;
                 }
                 if (!string.IsNullOrWhiteSpace(_urlNewItem))
                 {
-                    string url = $"{_urlNewItem }?editonlycode=1{siteParameter}{templateParameter}";
-                    url = URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash($"?editonlycode=1{templateParameter}"));
+                    string url = $"{_urlNewItem }?editonlycode=1&templatetype={_templateType}{siteParameter}";
                     usBlankPasswords.NewItemPageUrl = url;
                 }
             }
