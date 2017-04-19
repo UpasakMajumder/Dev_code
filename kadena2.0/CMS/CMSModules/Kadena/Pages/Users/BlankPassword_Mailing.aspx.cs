@@ -168,7 +168,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                     .And()
                     .WhereIn("UserID", UserSiteInfoProvider.GetUserSites()
                                         .WhereEquals("SiteID", _siteId)
-                                        .Columns("UserID", "Email", "UserGUID"));
+                                        .Column("UserID"))
+                    .Columns("UserID", "Email", "UserGUID");
             }
             if (users.Count == 0)
             {
