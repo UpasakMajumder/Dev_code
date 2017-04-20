@@ -688,6 +688,13 @@
     <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.designer.cs">
       <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.cs">
+      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
+      <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSPages\Kadena\NewMailingList.aspx.cs">
       <DependentUpon>NewMailingList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -698,6 +705,7 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
+    <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -723,6 +731,9 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
+    <Content Include="CMSScripts\Custom\Kadena\custom.js" />
+    <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
