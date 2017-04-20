@@ -1,12 +1,13 @@
 .breadcrumbs {
   a {
-    text-decoration: none;
+    @extend .link;
     padding-left: 7px;
 
     &:after {
       content: '/';
       padding-left: 7px;
       color: $brand-darkgrey;
+      text-decoration: none;
     }
 
     &:last-child {

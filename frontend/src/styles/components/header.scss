@@ -54,7 +54,7 @@
       }
 
       a.nav-link {
-        color: $brand-secondary;
+        @extend .link;
         padding: 10px;
         font-size: $font-xs;
       }

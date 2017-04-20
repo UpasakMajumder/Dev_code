@@ -9,6 +9,7 @@ import TextInput from '../form/TextInput';
 import SVG from '../SVG';
 import sendMailingList from '../../AC/mailing';
 import Steps from '../Steps';
+import Breadcrumbs from '../Breadcrumbs';
 
 
 class UploadMailList extends Component {
@@ -28,15 +29,16 @@ class UploadMailList extends Component {
     this.onDrop = this.onDrop.bind(this);
     this.removeFile = this.removeFile.bind(this);
 
-    // this.steps = [
-    //   'Add a mailing list',
-    //   'Map columns',
-    //   'Wait for a proofing'
-    // ];
-
     this.steps = [
-      'gear',
-      'tick'
+      'Add a mailing list',
+      'Map columns',
+      'Wait for a proofing'
+    ];
+
+    this.crumbs = [
+      { title: 'Home', link: '/' },
+      { title: 'Mailing list', link: '/mailing-list.html' },
+      { title: 'New mailing list', link: '#' }
     ];
   }
 
@@ -85,196 +87,205 @@ class UploadMailList extends Component {
       : 'drop-zone drop-zone--dropping';
 
     return (
-      <div className="upload-mail">
-        <Steps current={1} steps={this.steps}/>
+    <div className="content">
+      <div className="content__inner">
+        <div className="content-header">
+          <h1 className="content-header__page-name">New mailing list</h1>
+          <Breadcrumbs crumbs={this.crumbs} />
+        </div>
+        <div className="content-block">
+          <div className="upload-mail">
+            <Steps current={0} steps={this.steps}/>
 
-        <div className="upload-mail__drop-zone">
-          <Tooltip title="Do you need a help with a bulk upload?" position="left">
-            <span href="#" className="drop-zone__btn question">
-              <SVG name="question-mark" className="icon-question"/>
-            </span>
-          </Tooltip>
+            <div className="upload-mail__drop-zone">
+              <Tooltip title="Do you need a help with a bulk upload?" position="left">
+                <span href="#" className="drop-zone__btn question">
+                  <SVG name="question-mark" className="icon-question"/>
+                </span>
+              </Tooltip>
 
-          <Dropzone disableClick={!!this.state.preview} className={dropZoneClass} accept="text/csv" multiple={false}
-                    onDrop={this.onDrop}>
-            <div className="drop-zone__content">
-              { dropzoneContent }
+              <Dropzone disableClick={!!this.state.preview} className={dropZoneClass} accept="text/csv" multiple={false}
+                        onDrop={this.onDrop}>
+                <div className="drop-zone__content">
+                  { dropzoneContent }
+                </div>
+              </Dropzone>
+
+              <div className="drop-zone__offer">
+                <span>or</span>
+                <p>Skip this field to insert the addresses manually within the next step.</p>
+              </div>
             </div>
-          </Dropzone>
 
-          <div className="drop-zone__offer">
-            <span>or</span>
-            <p>Skip this field to insert the addresses manually within the next step.</p>
+            <div className="upload-mail__row">
+              <h2>Mail type</h2>
+              <p>First class guarantees next working day delivery, standart class usually takes 3-5 days</p>
+
+              <div className="row">
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="mail-type-first-class"
+                    label="First Class"
+                    type="radio"
+                    name="mail-type"
+                    value="first-class"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                    defaultChecked
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="mail-type-unsorted"
+                    label="Standart - Unsorted"
+                    type="radio"
+                    name="mail-type"
+                    value="unsorted"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="mail-type-sorted"
+                    label="Standart - Sorted"
+                    type="radio"
+                    name="mail-type"
+                    value="sorted"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="upload-mail__row">
+              <h2>Product</h2>
+              <p>Specify what kind of mailing are you going to send</p>
+
+              <div className="row">
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="product-postcard"
+                    label="Post Card"
+                    type="radio"
+                    name="mail-product"
+                    value="postcard"
+                    defaultChecked
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="product-letter"
+                    label="Letter"
+                    type="radio"
+                    name="mail-product"
+                    value="letter"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="product-self-mailer"
+                    label="Self-mailer"
+                    type="radio"
+                    name="mail-product"
+                    value="self"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="upload-mail__row">
+              <h2>Validity</h2>
+              <p>Tell us when the mailing list will expire</p>
+
+              <div className="row">
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="validity-1week"
+                    label="1 week"
+                    type="radio"
+                    name="mail-validity"
+                    value="1week"
+                    defaultChecked
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="validity-90days"
+                    label="90 days"
+                    type="radio"
+                    name="mail-validity"
+                    value="90days"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+
+                <div className="col-lg-4 col-xl-3">
+                  <CheckboxInput
+                    id="validity-unlimited"
+                    label="Unlimited"
+                    type="radio"
+                    name="mail-validity"
+                    value="unlimited"
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="upload-mail__row">
+              <h2>Name</h2>
+              <p>Give it a nice name for future reference</p>
+
+              <div className="row">
+                <div className="col-lg-5 col-xl-3">
+                  <TextInput
+                    placeholder="Name"
+                    name="name"
+                    value={this.state.name}
+                    onChange={(event) => {
+                      this.handleChange(event.target.name, event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button type="button"
+                    className="btn-main"
+                    disabled={isLoading}
+                    onClick={() => { send(this.state); }}
+            >Create mailing list
+            </button>
           </div>
         </div>
-
-        <div className="upload-mail__row">
-          <h2>Mail type</h2>
-          <p>First class guarantees next working day delivery, standart class usually takes 3-5 days</p>
-
-          <div className="row">
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="mail-type-first-class"
-                label="First Class"
-                type="radio"
-                name="mail-type"
-                value="first-class"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-                defaultChecked
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="mail-type-unsorted"
-                label="Standart - Unsorted"
-                type="radio"
-                name="mail-type"
-                value="unsorted"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="mail-type-sorted"
-                label="Standart - Sorted"
-                type="radio"
-                name="mail-type"
-                value="sorted"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="upload-mail__row">
-          <h2>Product</h2>
-          <p>Specify what kind of mailing are you going to send</p>
-
-          <div className="row">
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="product-postcard"
-                label="Post Card"
-                type="radio"
-                name="mail-product"
-                value="postcard"
-                defaultChecked
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="product-letter"
-                label="Letter"
-                type="radio"
-                name="mail-product"
-                value="letter"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="product-self-mailer"
-                label="Self-mailer"
-                type="radio"
-                name="mail-product"
-                value="self"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="upload-mail__row">
-          <h2>Validity</h2>
-          <p>Tell us when the mailing list will expire</p>
-
-          <div className="row">
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="validity-1week"
-                label="1 week"
-                type="radio"
-                name="mail-validity"
-                value="1week"
-                defaultChecked
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="validity-90days"
-                label="90 days"
-                type="radio"
-                name="mail-validity"
-                value="90days"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-lg-4 col-xl-3">
-              <CheckboxInput
-                id="validity-unlimited"
-                label="Unlimited"
-                type="radio"
-                name="mail-validity"
-                value="unlimited"
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="upload-mail__row">
-          <h2>Name</h2>
-          <p>Give it a nice name for future reference</p>
-
-          <div className="row">
-            <div className="col-lg-5 col-xl-3">
-              <TextInput
-                placeholder="Name"
-                name="name"
-                value={this.state.name}
-                onChange={(event) => {
-                  this.handleChange(event.target.name, event.target.value);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <button type="button"
-                className="btn-main"
-                disabled={isLoading}
-                onClick={() => { send(this.state); }}
-        >Create mailing list
-        </button>
-
       </div>
+    </div>
     );
   }
 }
