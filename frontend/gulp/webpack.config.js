@@ -107,7 +107,7 @@ module.exports = {
                         loader: 'babel-loader'
                     },
                     {
-                        loader: 'react-svgs.nunj-loader',
+                        loader: 'react-svg-loader',
                         query: { jsx: true }
                     }
                 ]
