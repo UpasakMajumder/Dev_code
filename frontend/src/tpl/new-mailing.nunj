@@ -1,0 +1,22 @@
+{% extends "layouts/default-fluid.nunj" %}
+
+{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+
+{% from "helpers/sidebar.nunj" import sidebar %}
+
+{% set title = "New mailing list" %}
+
+{% block content %}
+
+  {{ sidebar('Mailing list') }}
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <h1 class="content-header__page-name">{{ title }}</h1>
+        {{ breadcrumb(['Home','New Mailing']) }}
+      </div>
+      <div class="content-block"></div>
+    </div>
+  </div>
+
+{% endblock %}

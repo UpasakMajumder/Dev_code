@@ -1,32 +1,27 @@
 $offset-height: 55px;
-$padding: 20px;
+$padding: 10px;
 $sidebar-width-close: 70px;
 
 .content {
-  background: #edf1f5;
   width: 100%;
-  padding: $padding;
-  padding-left: $padding + $sidebar-width-close;
-  transition: all .4s ease-in-out;
+  padding-left: $sidebar-width-close;
+  transition: all 0.4s ease-in-out;
+
+  &__inner {
+    background-color: $brand-white;
+    width: 100%;
+    padding: 24px;
+    // Hardcoded height
+    min-height: calc(100vh - 192px);
+    border-right: $main-layout-gutter solid $main-gutter-color;
+    border-left: $main-layout-gutter solid $main-gutter-color;
+  }
 
   &-header {
-    font-size: $font-l;
-    color: $brand-dark;
-    display: inline-block;
-  }
-
-  &__breadcrumbs {
-    float: right;
-
-    &-link {
-      color: $brand-secondary;
-    }
-  }
-
-  &__canvas {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: $brand-white;
-    min-height: calc(100% - #{$offset-height});
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
   }
 }

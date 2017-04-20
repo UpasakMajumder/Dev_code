@@ -1,0 +1,10 @@
+{% extends "layouts/default-noheader.nunj" %}
+{% set title = "Login" %}
+
+{% block content %}
+
+ <button type="button" class="btn-main js-lightbox-toggle" data-lightbox="lightbox-1">Add to cart</button>
+
+ <h2 class="lightbox-1">LightBox</h2>
+
+{% endblock %}

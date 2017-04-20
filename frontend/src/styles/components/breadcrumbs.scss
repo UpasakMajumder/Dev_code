@@ -1,0 +1,22 @@
+.breadcrumbs {
+  a {
+    text-decoration: none;
+    padding-left: 7px;
+
+    &:after {
+      content: '/';
+      padding-left: 7px;
+      color: $brand-darkgrey;
+    }
+
+    &:last-child {
+      pointer-events: none;
+      cursor: default;
+      color: $brand-darkgrey;
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+}

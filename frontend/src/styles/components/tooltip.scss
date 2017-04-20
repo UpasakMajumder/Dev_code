@@ -1,0 +1,124 @@
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-break: auto;
+  line-height: 1.42857143;
+  text-align: left;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  white-space: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  font-size: $font-xs;
+
+  .tooltip-inner {
+    @extend .font-white;
+    @extend .bg-darker;
+    max-width: inherit;
+    padding: 3px 8px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  &.left,
+  &[x-placement="left"] {
+    margin-left: 1px;
+    padding: 0 5px;
+
+    .tooltip-arrow {
+      top: 50%;
+      right: 0;
+      margin-top: -5px;
+      border-width: 5px 0 5px 5px;
+      border-left-color: $brand-darker;
+    }
+  }
+
+  &.top,
+  &[x-placement="top"] {
+    margin-top: 1px;
+    padding: 5px 0;
+
+    .tooltip-arrow {
+      bottom: 0;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px 5px 0;
+      border-top-color: $brand-darker;
+    }
+  }
+
+  &.right,
+  &[x-placement="right"] {
+    margin-left: -1px;
+    padding: 0 5px;
+
+    .tooltip-arrow {
+      top: 50%;
+      left: 0;
+      margin-top: -5px;
+      border-width: 5px 5px 5px 0;
+      border-right-color: $brand-darker;
+    }
+  }
+
+  &.bottom,
+  &[x-placement="bottom"] {
+    margin-top: -1px;
+    padding: 5px 0;
+
+    .tooltip-arrow {
+      top: 0;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 0 5px 5px;
+      border-bottom-color: $brand-darker;
+    }
+  }
+
+  &[x-placement="top"] {
+    padding-bottom: 9px;
+
+    .tooltip-arrow {
+      padding-bottom: 4px;
+    }
+  }
+
+  &[x-placement="left"] {
+    padding-right: 9px;
+
+    .tooltip-arrow {
+      padding-right: 4px;
+    }
+  }
+
+  &[x-placement="right"] {
+    padding-left: 9px;
+
+    .tooltip-arrow {
+      padding-left: 4px;
+    }
+  }
+
+  &[x-placement="bottom"] {
+    padding-top: 9px;
+
+    .tooltip-arrow {
+      padding-top: 4px;
+    }
+  }
+
+  &-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+  }
+}
