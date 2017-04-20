@@ -316,6 +316,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Tests", "Kadena2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatedTests", "AutomatedTests\AutomatedTests.csproj", "{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Services", "Kadena2.0.Services\Kadena2.0.Services.csproj", "{36CA7D6A-4651-481B-9B3A-F7B483C45B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -337,6 +339,10 @@ Global
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36CA7D6A-4651-481B-9B3A-F7B483C45B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36CA7D6A-4651-481B-9B3A-F7B483C45B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36CA7D6A-4651-481B-9B3A-F7B483C45B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36CA7D6A-4651-481B-9B3A-F7B483C45B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
