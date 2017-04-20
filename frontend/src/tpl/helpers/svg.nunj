@@ -10,6 +10,5 @@
 {% endmacro %}
 
 {% macro use(name, class, sprite="icons") %}
-  {{ name }}
   <use{% if class %} class="{{ class }}"{% endif %} xlink:href="/gfx/svg/sprites/{{ sprite }}.svg#{{ name }}" />
 {% endmacro %}
