@@ -1,7 +1,7 @@
 {# SVG shorhand #}
-{# Specify which sprite and which svg file to use within arguments #}
-{# Example: {{ svg('icon-1', 'my-class') }} uses "svg/sprites/icons/icon-1.svg" with class "my-class" #}
-{# Example: {{ svg(sprite="my-sprite", "icon-2") }} uses "svg/sprites/my-sprite/icon-2.svg" #}
+{# Specify which sprite and which svgs.nunj file to use within arguments #}
+{# Example: {{ svgs.nunj('icon-1', 'my-class') }} uses "svgs.nunj/sprites/icons/icon-1.svgs.nunj" with class "my-class" #}
+{# Example: {{ svgs.nunj(sprite="my-sprite", "icon-2") }} uses "svgs.nunj/sprites/my-sprite/icon-2.svgs.nunj" #}
 
 {% macro template(class) %}
   <svg class="icon {{ class }}">

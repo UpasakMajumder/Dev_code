@@ -30,15 +30,9 @@
         <li class="css-sidebar__nav-item {% if(item === page.title) %} active {% endif %}">
           <div class="orange-bar"></div>
           <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
-            {% call svg.template(class='icon-navigation icon-dashboard') %}
-              {{svg.use(name=page.name)}}
-            {% endcall %}
 
-            {% set svgColorName = page.name + "--color" %}
+            {% include "partials/svgs.nunj" %}
 
-            {% call svg.template(class='icon-navigation icon-navigation--color icon-dashboard--color') %}
-              {{svg.use(name=svgColorName)}}
-            {% endcall %}
             <span>{{ page.title }}</span>
           </a>
         </li>

@@ -30,7 +30,7 @@ function getSprites() {
 
 /* Bundle SVG sprites */
 /* Single SVG images are optimized in "images" task */
-gulp.task('svg:sprite', () => {
+gulp.task('svg.nunj:sprite', () => {
     function bundle(sprite) {
         gutil.log(`Bundling '${gutil.colors.green(sprite.name)}' from ${gutil.colors.magenta(`(${sprite.glob})`)}`);
 
