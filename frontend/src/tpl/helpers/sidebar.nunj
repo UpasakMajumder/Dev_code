@@ -1,115 +1,45 @@
 {% import "helpers/svg.nunj" as svg %}
 
+{% set pages = [
+{'title': 'Dashboard', 'name': 'dashboard'},
+{'title': 'Products', 'name': 'products'},
+{'title': 'Mailing list', 'name': 'mailing-list'},
+{'title': 'Orders', 'name': 'orders'},
+{'title': 'Insights', 'name': 'insights'},
+{'title': 'Sourcing', 'name': 'sourcing'},
+{'title': 'Proofing', 'name': 'proofing'},
+{'title': 'DAM', 'name': 'dam'},
+{'title': 'Settings', 'name': 'settings'},
+{'title': 'Help', 'name': 'help'}
+] %}
+
 {% macro sidebar(item) %}
-  <div class="css-sidebar">
+  <div class="css-sidebar js-sidebar">
     <div class="css-sidebar__header">
-      <span class="css-sidebar__title">Modules</span>
-      {% call svg.template(class='icon-hamburger js-toggle cursor--pointer') %}
-      {{svg.use(name='hamburger')}}
+
+      {% call svg.template(class='css-sidebar__icon') %}
+        {{svg.use(name='kadena-xs')}}
       {% endcall %}
+      {% call svg.template(class='icon-hamburger js-toggle cursor--pointer') %}
+        {{svg.use(name='hamburger')}}
+      {% endcall %}
+
     </div>
 
     <ul class="css-sidebar__nav list-unstyled">
-      <li class="css-sidebar__nav-item {% if(item == 'Dashboard') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-dashboard') %}
-        {{svg.use(name='dashboard')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-dashboard--color') %}
-        {{svg.use(name='dashboard--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Dashboard</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Products') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-products') %}
-        {{svg.use(name='products')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-products--color') %}
-        {{svg.use(name='products--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Products</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Mailing list') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-mailing-list') %}
-        {{svg.use(name='mailing-list')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-mailing-list--color') %}
-        {{svg.use(name='mailing-list--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Mailing list</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Orders') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-orders') %}
-        {{svg.use(name='orders')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-orders--color') %}
-        {{svg.use(name='orders--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Orders</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Insights') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-insights') %}
-        {{svg.use(name='insights')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-insights--color') %}
-        {{svg.use(name='insights--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Insights</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Sourcing') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-sourcing') %}
-        {{svg.use(name='sourcing')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-sourcing--color') %}
-        {{svg.use(name='sourcing--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Sourcing</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Proofing') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-proofing') %}
-        {{svg.use(name='proofing')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-proofing--color') %}
-        {{svg.use(name='proofing--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Proofing</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'DAM') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-dam') %}
-        {{svg.use(name='dam')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-dam--color') %}
-        {{svg.use(name='dam--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">DAM</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Settings') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-settings') %}
-        {{svg.use(name='settings')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-settings--color') %}
-        {{svg.use(name='settings--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Settings</a>
-      </li>
-      <li class="css-sidebar__nav-item {% if(item == 'Help') %} active {% endif %}">
-        <div class="orange-bar"></div>
-        {% call svg.template(class='icon-navigation icon-help') %}
-        {{svg.use(name='help')}}
-        {% endcall %}
-        {% call svg.template(class='icon-navigation icon-navigation--color icon-help--color') %}
-        {{svg.use(name='help--color')}}
-        {% endcall %}
-        <a class="css-sidebar__nav-link">Help</a>
-      </li>
+
+      {% for page in pages %}
+        <li class="css-sidebar__nav-item {% if(item === page.title) %} active {% endif %}">
+          <div class="orange-bar"></div>
+          <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
+
+            {% include "partials/svgs.nunj" %}
+
+            <span>{{ page.title }}</span>
+          </a>
+        </li>
+      {% endfor %}
+
     </ul>
   </div>
 {% endmacro %}

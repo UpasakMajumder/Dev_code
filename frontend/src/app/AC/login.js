@@ -50,9 +50,10 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
           type: constants.FETCH_SERVERS_SUCCESS
         });
 
+        const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
         dispatch({
           type: constants.LOGIN_RESPONSE_SUCCESS,
-          data: response.data
+          data
         });
       })
       .catch(() => {

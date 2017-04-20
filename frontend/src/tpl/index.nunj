@@ -1,24 +1,30 @@
 {% extends "layouts/default-fluid.nunj" %}
 {% from "helpers/sidebar.nunj" import sidebar %}
 
+{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+
+{% from "helpers/sidebar.nunj" import sidebar %}
+
 {% set title = "Pages" %}
 
 {% block content %}
 
   {{ sidebar(title) }}
   <div class="content">
-    <h1 class="content-header">Pages</h1>
-    <div class="content__breadcrumbs">
-      <a class="content__breadcrumbs-link" href="/">Home</a>
-    </div>
-    <div class="content__canvas">
-      <ul>
-        {% for path in _pages %}
-          <li>
-            <a href="{{ path }}.html">{{ path }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+    <div class="content__inner">
+      <div class="content-header">
+        <h1 class="content-header__page-name">Dashboard</h1>
+        {{ breadcrumb(['Home','Dashboard']) }}
+      </div>
+      <div class="content-block">
+        <ul>
+          {% for path in _pages %}
+            <li>
+              <a href="{{ path }}.html">{{ path }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 

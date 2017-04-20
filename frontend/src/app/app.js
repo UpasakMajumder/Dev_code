@@ -18,6 +18,8 @@ const app = {
     init('num-format', document.getElementsByClassName('js-num-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
     init('collapse', document.getElementsByClassName('js-collapse'));
+    init('tooltip', document.getElementsByClassName('js-tooltip'));
+    init('sidebar', document.getElementsByClassName('js-sidebar'));
   },
 
   /* React */

@@ -26,7 +26,8 @@
     border-radius: 4px;
   }
 
-  &.left {
+  &.left,
+  &[x-placement="left"] {
     margin-left: 1px;
     padding: 0 5px;
 
@@ -39,7 +40,8 @@
     }
   }
 
-  &.top {
+  &.top,
+  &[x-placement="top"] {
     margin-top: 1px;
     padding: 5px 0;
 
@@ -52,7 +54,8 @@
     }
   }
 
-  &.right {
+  &.right,
+  &[x-placement="right"] {
     margin-left: -1px;
     padding: 0 5px;
 
@@ -65,7 +68,8 @@
     }
   }
 
-  &.bottom {
+  &.bottom,
+  &[x-placement="bottom"] {
     margin-top: -1px;
     padding: 5px 0;
 
@@ -75,6 +79,38 @@
       margin-left: -5px;
       border-width: 0 5px 5px;
       border-bottom-color: $brand-darker;
+    }
+  }
+
+  &[x-placement="top"] {
+    padding-bottom: 9px;
+
+    .tooltip-arrow {
+      padding-bottom: 4px;
+    }
+  }
+
+  &[x-placement="left"] {
+    padding-right: 9px;
+
+    .tooltip-arrow {
+      padding-right: 4px;
+    }
+  }
+
+  &[x-placement="right"] {
+    padding-left: 9px;
+
+    .tooltip-arrow {
+      padding-left: 4px;
+    }
+  }
+
+  &[x-placement="bottom"] {
+    padding-top: 9px;
+
+    .tooltip-arrow {
+      padding-top: 4px;
     }
   }
 

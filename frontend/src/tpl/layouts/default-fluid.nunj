@@ -48,18 +48,23 @@
 <body>
 <form>
   {# Main content of the page #}
-  <div class="container-fluid height-full">
-    {% include '../partials/header.nunj' %}
+  <div class="main-container">
+    <div class="main-container__inner">
+      {% include '../partials/header.nunj' %}
 
-    <main class="row css-main js-collapse isOpen">
-      {# Main content of the page #}
-      {% block content %}{% endblock %}
-    </main>
+      <main class="css-main js-collapse isOpen">
+        {# Main content of the page #}
+        {% block content %}{% endblock %}
+      </main>
+     {% include '../partials/footer.nunj' %}
+
+    </div>
   </div>
 </form>
 
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
   var config = {
     localization: {

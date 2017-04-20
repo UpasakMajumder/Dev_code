@@ -6,7 +6,7 @@
 
 // colors
 $brand-primary: #ff6d19;
-$brand-secondary: #219cd9;
+$brand-secondary: #009bd8;
 $brand-info: #ffbd31;
 $brand-success: #00bb89;
 $brand-grey: #e4e7ea;
@@ -18,6 +18,16 @@ $brand-white: #fff;
 $brand-darkgrey: #a6a6a6;
 $brand-text: #777;
 
+// font colors
+$font-grey: #777;
+$font-dark-grey: #4a4a4a;
+$font-dark: #404040;
+$font-darker: #2b2b2b;
+$font-black: #00011d;
+
+$main-gutter-color: #edf1f5;
+$sidebar-hover: #f0f4f5;
+
 /*
 ========================
         COMMENTS
@@ -25,6 +35,7 @@ $brand-text: #777;
 */
 
 $font-family-base: 'Lato', sans-serif;
+$base-layout-gradient: linear-gradient(180deg, #003d5c 0%, #0588cc 100%);
 
 /*
 ========================
@@ -32,13 +43,15 @@ $font-family-base: 'Lato', sans-serif;
 ========================
 */
 
-$font-xxl: 36px;
-$font-xl: 30px;
+$font-xxl: 30px;
+$font-xl: 26px;
 $font-l: 24px;
 $font-m: 20px;
-$font-s: 16px;
-$font-xs: 14px;
+$font-s: 18px;
+$font-xs: 16px;
 $font-xxs: 12px;
 
 $border-radius: 2px;
+$main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
+$border-layout: 5px;
