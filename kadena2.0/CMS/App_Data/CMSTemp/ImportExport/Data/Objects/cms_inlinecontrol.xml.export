@@ -1,0 +1,145 @@
+﻿<cms_inlinecontrol version="10.0">
+  <NewDataSet>
+    <cms_inlinecontrol>
+      <ControlID>11</ControlID>
+      <ControlDisplayName>Media</ControlDisplayName>
+      <ControlName>Media</ControlName>
+      <ControlDescription>Displays media file or flash specified by the given file URL and additional parameters.</ControlDescription>
+      <ControlGUID>87898dae-c5a4-4f67-8eaf-0e10276438d7</ControlGUID>
+      <ControlLastModified>2009-05-27T10:27:52.157+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/MediaControl.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>12</ControlID>
+      <ControlDisplayName>Page attachments</ControlDisplayName>
+      <ControlName>DocumentAttachments</ControlName>
+      <ControlDescription>Displays the unsorted attachments of current page. This control uses transformation 'cms.root.attachment' by default. If page type of current page contains transformation 'attachment', this transforamtion is used instead.</ControlDescription>
+      <ControlGUID>37d23f6d-78be-447f-8302-16942bdf4409</ControlGUID>
+      <ControlLastModified>2014-07-08T11:56:26.0240485+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/DocumentAttachments.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>8</ControlID>
+      <ControlDisplayName>Report table</ControlDisplayName>
+      <ControlName>ReportTable</ControlName>
+      <ControlDescription></ControlDescription>
+      <ControlGUID>c57b101f-e828-40b5-87fe-4b03828dbbf7</ControlGUID>
+      <ControlLastModified>2010-11-01T16:41:26.233+01:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Reporting/Controls/ReportTable.ascx</ControlFileName>
+      <ControlResourceID>114</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>7</ControlID>
+      <ControlDisplayName>Report graph</ControlDisplayName>
+      <ControlName>ReportGraph</ControlName>
+      <ControlDescription></ControlDescription>
+      <ControlGUID>ad097801-b324-436d-b6c9-532fb5051888</ControlGUID>
+      <ControlLastModified>2010-11-01T16:41:11.163+01:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Reporting/Controls/ReportGraph.ascx</ControlFileName>
+      <ControlResourceID>114</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>39</ControlID>
+      <ControlDisplayName>Report HTML graph</ControlDisplayName>
+      <ControlName>ReportHtmlGraph</ControlName>
+      <ControlDescription></ControlDescription>
+      <ControlGUID>82d9a13a-3cc1-451e-ace1-62c3d97a3b7f</ControlGUID>
+      <ControlLastModified>2011-04-04T11:41:26.46+02:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Reporting/Controls/HtmlBarGraph.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>10</ControlID>
+      <ControlDisplayName>Media file</ControlDisplayName>
+      <ControlName>MediaFileControl</ControlName>
+      <ControlDescription>Displays media file specified by the given file GUID.</ControlDescription>
+      <ControlGUID>9842e890-6659-44cd-9206-6aa644969291</ControlGUID>
+      <ControlLastModified>2010-10-25T12:59:26.68+02:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/MediaLibrary/InlineControls/MediaFileControl.ascx</ControlFileName>
+      <ControlResourceID>140</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>14</ControlID>
+      <ControlDisplayName>Attachment image gallery</ControlDisplayName>
+      <ControlName>AttachmentImageGallery</ControlName>
+      <ControlDescription>Displays the unsorted attachments of current document in the lightbox. This control uses transformation 'cms.root.AttachmentLightbox' and 'cms.root.AttachmentLightboxDetail' for detail view by default. If document type of current document contains transformation 'AttachmentLightbox' and 'AttachmentLightboxDetail', this transforamtion is used instead.</ControlDescription>
+      <ControlGUID>3b6f219e-6c40-4742-992b-88c04d876d37</ControlGUID>
+      <ControlLastModified>2009-06-17T06:30:24.297+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/AttachmentLightBoxGallery.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>15</ControlID>
+      <ControlDisplayName>Image control</ControlDisplayName>
+      <ControlName>Image</ControlName>
+      <ControlDescription>Displays image file specified by the given image URL and additional parameters.</ControlDescription>
+      <ControlGUID>7f272dd8-067f-4b8c-912d-9e12bb54c0be</ControlGUID>
+      <ControlLastModified>2009-05-06T14:39:20.06+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/ImageControl.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>13</ControlID>
+      <ControlDisplayName>YouTube video</ControlDisplayName>
+      <ControlName>YouTubeVideo</ControlName>
+      <ControlDescription>Displays youtube video by the given URL and additional parameters.</ControlDescription>
+      <ControlGUID>a8b27ddc-fd96-470f-bdca-b0e79059ea79</ControlGUID>
+      <ControlLastModified>2009-04-09T12:08:00.743+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/YouTubeControl.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>9</ControlID>
+      <ControlDisplayName>Report value</ControlDisplayName>
+      <ControlName>ReportValue</ControlName>
+      <ControlDescription></ControlDescription>
+      <ControlGUID>2b34ea2d-064c-48c0-b2fe-b5163b2a248d</ControlGUID>
+      <ControlLastModified>2010-11-01T16:41:47.513+01:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Reporting/Controls/ReportValue.ascx</ControlFileName>
+      <ControlResourceID>114</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>20</ControlID>
+      <ControlDisplayName>Widget</ControlDisplayName>
+      <ControlName>Widget</ControlName>
+      <ControlDescription>Displays inline widget.</ControlDescription>
+      <ControlGUID>342ab0da-5a5d-4561-855e-bfa16d71505c</ControlGUID>
+      <ControlLastModified>2011-04-29T09:23:00.327+02:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Widgets/InlineControl/InlineWidget.ascx</ControlFileName>
+      <ControlResourceID>152</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>2</ControlID>
+      <ControlDisplayName>Poll</ControlDisplayName>
+      <ControlName>PollControl</ControlName>
+      <ControlDescription>Displays the Poll specified by the given code name.</ControlDescription>
+      <ControlGUID>9b909a22-f376-45a1-af59-c9e4fc6234b9</ControlGUID>
+      <ControlLastModified>2008-10-08T15:22:16.747+02:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/Polls/InlineControls/PollControl.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>6</ControlID>
+      <ControlDisplayName>Rating</ControlDisplayName>
+      <ControlName>RatingControl</ControlName>
+      <ControlDescription>Displays rating scale specified by type.</ControlDescription>
+      <ControlGUID>57cdcd1e-82e7-4831-844c-ec6a3ae5019a</ControlGUID>
+      <ControlLastModified>2008-09-29T08:39:49.567+02:00</ControlLastModified>
+      <ControlFileName>RatingControl.ascx</ControlFileName>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>1</ControlID>
+      <ControlDisplayName>BizForm</ControlDisplayName>
+      <ControlName>BizFormControl</ControlName>
+      <ControlDescription>Displays the BizForm control specified by the given form code name.</ControlDescription>
+      <ControlGUID>d2438925-0147-4ed9-95ba-fa3ab3c5841f</ControlGUID>
+      <ControlLastModified>2010-09-24T13:58:53.943+02:00</ControlLastModified>
+      <ControlFileName>~/CMSModules/BizForms/InlineControls/BizFormControl.ascx</ControlFileName>
+      <ControlResourceID>197</ControlResourceID>
+    </cms_inlinecontrol>
+    <cms_inlinecontrol>
+      <ControlID>21</ControlID>
+      <ControlDisplayName>Web part zone</ControlDisplayName>
+      <ControlName>WebPartZone</ControlName>
+      <ControlDescription>Provides web part zone for the HTML layouts.</ControlDescription>
+      <ControlGUID>fcf8cc3b-cb10-4ec4-a7de-fc27890dcbfb</ControlGUID>
+      <ControlLastModified>2010-09-01T13:40:52.303+02:00</ControlLastModified>
+      <ControlFileName>~/CMSInlineControls/WebPartZone.ascx</ControlFileName>
+    </cms_inlinecontrol>
+  </NewDataSet>
+</cms_inlinecontrol>
