@@ -1,0 +1,14 @@
+﻿<media_library version="10.0">
+  <NewDataSet>
+    <media_library>
+      <LibraryID>1</LibraryID>
+      <LibraryName>Kadena</LibraryName>
+      <LibraryDisplayName>Kadena</LibraryDisplayName>
+      <LibraryFolder>Kadena</LibraryFolder>
+      <LibraryAccess>0</LibraryAccess>
+      <LibrarySiteID>1</LibrarySiteID>
+      <LibraryGUID>bf79deee-e6a8-47c4-84f3-21d5a45caffa</LibraryGUID>
+      <LibraryLastModified>2017-03-29T13:35:27.8524776+02:00</LibraryLastModified>
+    </media_library>
+  </NewDataSet>
+</media_library>

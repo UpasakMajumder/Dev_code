@@ -1,0 +1,100 @@
+﻿<cms_webpartcontainer version="10.0">
+  <NewDataSet>
+    <cms_webpartcontainer>
+      <ContainerID>1</ContainerID>
+      <ContainerDisplayName>Orange box</ContainerDisplayName>
+      <ContainerName>OrangeBox</ContainerName>
+      <ContainerTextBefore>&lt;div class="orangeBox"&gt;
+&lt;h3 class="title"&gt;{%ContainerTitle%}&lt;/h3&gt;
+&lt;div class="content"&gt;</ContainerTextBefore>
+      <ContainerTextAfter>&lt;/div&gt;
+&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>e6abcd4b-e99b-4ed9-b23c-041938c4f6be</ContainerGUID>
+      <ContainerLastModified>2012-08-28T12:56:59.683+02:00</ContainerLastModified>
+      <ContainerCSS xml:space="preserve">
+</ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainer>
+      <ContainerID>2</ContainerID>
+      <ContainerDisplayName>Search box</ContainerDisplayName>
+      <ContainerName>SearchBox</ContainerName>
+      <ContainerTextBefore>&lt;div class="boxSearchLeft"&gt;
+  &lt;div class="boxSearchLeftTop"&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;</ContainerTextBefore>
+      <ContainerTextAfter>&lt;div class="boxSearchLeftBot"&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>6ef5e754-61f3-4e8b-854e-2299224c007a</ContainerGUID>
+      <ContainerLastModified>2012-08-28T12:56:59.703+02:00</ContainerLastModified>
+      <ContainerCSS></ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainer>
+      <ContainerID>3</ContainerID>
+      <ContainerDisplayName>Black box</ContainerDisplayName>
+      <ContainerName>BlackBox</ContainerName>
+      <ContainerTextBefore>&lt;div class="blackBox"&gt;
+  &lt;h2 class="title"&gt;{%ContainerTitle%}&lt;/h2&gt;
+  &lt;div class="content"&gt;
+    </ContainerTextBefore>
+      <ContainerTextAfter>
+  &lt;/div&gt;
+&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>8dd8abba-d7ea-473c-a194-436add312719</ContainerGUID>
+      <ContainerLastModified>2013-08-23T07:31:08.4494244+02:00</ContainerLastModified>
+      <ContainerCSS></ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainer>
+      <ContainerID>4</ContainerID>
+      <ContainerDisplayName>Gray box with header</ContainerDisplayName>
+      <ContainerName>GrayBoxWithHeader</ContainerName>
+      <ContainerTextBefore>&lt;div class="grayBoxWH"&gt;&lt;h2&gt;{%ContainerTitle%}&lt;/h2&gt;
+&lt;div class="inner"&gt;</ContainerTextBefore>
+      <ContainerTextAfter>&lt;/div&gt;&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>91bf2937-b812-4fb8-8589-700e7d8a87e1</ContainerGUID>
+      <ContainerLastModified>2013-06-13T11:35:38.95+02:00</ContainerLastModified>
+      <ContainerCSS></ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainer>
+      <ContainerID>5</ContainerID>
+      <ContainerDisplayName>Content padding</ContainerDisplayName>
+      <ContainerName>Padding.Content</ContainerName>
+      <ContainerTextBefore>&lt;div class="ContentPadding"&gt;</ContainerTextBefore>
+      <ContainerTextAfter>&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>2102cc78-54f5-4e85-9977-746d8b67c136</ContainerGUID>
+      <ContainerLastModified>2012-08-28T12:56:59.547+02:00</ContainerLastModified>
+      <ContainerCSS></ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainer>
+      <ContainerID>6</ContainerID>
+      <ContainerDisplayName>Gray box</ContainerDisplayName>
+      <ContainerName>Box.Gray</ContainerName>
+      <ContainerTextBefore>&lt;div class="grayBox"&gt;</ContainerTextBefore>
+      <ContainerTextAfter>&lt;/div&gt;</ContainerTextAfter>
+      <ContainerGUID>d48d9b0d-12a4-4c3c-9c41-b5a8aefec6ee</ContainerGUID>
+      <ContainerLastModified>2012-08-28T12:56:59.643+02:00</ContainerLastModified>
+      <ContainerCSS></ContainerCSS>
+    </cms_webpartcontainer>
+    <cms_webpartcontainersite>
+      <ContainerID>1</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+    <cms_webpartcontainersite>
+      <ContainerID>2</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+    <cms_webpartcontainersite>
+      <ContainerID>3</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+    <cms_webpartcontainersite>
+      <ContainerID>4</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+    <cms_webpartcontainersite>
+      <ContainerID>5</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+    <cms_webpartcontainersite>
+      <ContainerID>6</ContainerID>
+      <SiteID>1</SiteID>
+    </cms_webpartcontainersite>
+  </NewDataSet>
+</cms_webpartcontainer>

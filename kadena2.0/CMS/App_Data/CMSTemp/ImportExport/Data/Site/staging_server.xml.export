@@ -1,0 +1,17 @@
+﻿<staging_server version="10.0">
+  <NewDataSet>
+    <staging_server>
+      <ServerID>1</ServerID>
+      <ServerName>TEST</ServerName>
+      <ServerDisplayName>TEST</ServerDisplayName>
+      <ServerSiteID>1</ServerSiteID>
+      <ServerURL>http://default.kadenatest.com</ServerURL>
+      <ServerEnabled>true</ServerEnabled>
+      <ServerAuthentication>USERNAME</ServerAuthentication>
+      <ServerUsername>administrator</ServerUsername>
+      <ServerPassword>jRqu4e533tV8YyUYIYHzZX3t5GjxUNFvqll5pcc2Q/U=</ServerPassword>
+      <ServerGUID>db6ed537-c26f-4a1c-b001-bf3d4844339a</ServerGUID>
+      <ServerLastModified>2017-04-07T07:52:44.728901+02:00</ServerLastModified>
+    </staging_server>
+  </NewDataSet>
+</staging_server>

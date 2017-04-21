@@ -1,0 +1,16 @@
+﻿<cms_documentalias version="10.0">
+  <NewDataSet>
+    <cms_documentalias>
+      <AliasID>1</AliasID>
+      <AliasNodeID>28</AliasNodeID>
+      <AliasCulture>en-US</AliasCulture>
+      <AliasURLPath>/test</AliasURLPath>
+      <AliasExtensions></AliasExtensions>
+      <AliasWildcardRule></AliasWildcardRule>
+      <AliasPriority>1</AliasPriority>
+      <AliasGUID>21590458-6f0d-4405-a39a-ecd517162523</AliasGUID>
+      <AliasLastModified>2017-04-13T10:21:13.9826068+02:00</AliasLastModified>
+      <AliasSiteID>1</AliasSiteID>
+    </cms_documentalias>
+  </NewDataSet>
+</cms_documentalias>
