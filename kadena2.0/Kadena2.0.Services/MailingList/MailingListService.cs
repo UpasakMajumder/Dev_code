@@ -8,8 +8,9 @@ namespace Kadena.Services.MailingList
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "MailingListService" in both code and config file together.
     public class MailingListService : IMailingListService
     {
-        private readonly string _customerNameSettingKey = "";
-        private readonly string _mailingServiceSettingKey = "";
+        private readonly string _customerNameSettingKey = "KDA_CustomerName";
+        private readonly string _mailingServiceSettingKey = "KDA_MailingServiceUrl";
+        private readonly string _fileServiceSettingKey = "KDA_FileServiceUrl";
 
         public ResponseMessage UploadFile(UploadFileData data)
         {
@@ -35,9 +36,10 @@ namespace Kadena.Services.MailingList
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            string mailingServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            string mailingServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceSettingKey}");
+            string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceSettingKey}");
 
-            if(string.IsNullOrWhiteSpace(customerName))
+            if (string.IsNullOrWhiteSpace(customerName))
             {
                 return new ResponseMessage { IsSuccess = false, Message = "CustomerName not specified." };
             }
@@ -45,9 +47,51 @@ namespace Kadena.Services.MailingList
             {
                 return new ResponseMessage { IsSuccess = false, Message = "Mailing service address not specified." };
             }
+            if (string.IsNullOrWhiteSpace(fileServiceAddress))
+            {
+                return new ResponseMessage { IsSuccess = false, Message = "File service address not specified." };
+            }
 
 
             // Create container
+            using (var client = new HttpClient())
+            {
+                using (var content = new StringContent(JsonConvert.SerializeObject(new
+                {
+                    name = $"Container for {data.FileName} file",
+                    customerName = customerName,
+                    Validity = data.Validity,
+                    mailType = data.MailType,
+                    productType = data.Product
+                }), System.Text.Encoding.UTF8, "application/json"))
+                {
+                    using (var message = client.PostAsync(mailingServiceAddress, content))
+                    {
+                        var awsResponse = message.Result;
+                        if (awsResponse.IsSuccessStatusCode)
+                        {
+                            var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                            return new ResponseMessage
+                            {
+                                IsSuccess = true,
+                                Message = $"Created container id is {response.Response}",
+                                AWSStatusCode = awsResponse.StatusCode,
+                                AWSResponse = awsResponse.ReasonPhrase
+                            };
+                        }
+                        else
+                        {
+                            return new ResponseMessage
+                            {
+                                IsSuccess = false,
+                                Message = "Failed to create mailing container.",
+                                AWSStatusCode = awsResponse.StatusCode,
+                                AWSResponse = awsResponse.ReasonPhrase
+                            };
+                        }
+                    }
+                }
+            }
             // Upload file
             // Return headers
 
