@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AWSResponseMessage.cs" />
     <Compile Include="MailingList\IMailingListService.cs" />
     <Compile Include="MailingList\MailingListService.cs" />
     <Compile Include="MailingList\UploadFileData.cs" />
