@@ -13,10 +13,6 @@ body {
   font-family: $font-family-base;
   color: $brand-darker;
   line-height: 1.5;
-
-  main {
-    position: relative;
-  }
 }
 
 @import 'components/*';

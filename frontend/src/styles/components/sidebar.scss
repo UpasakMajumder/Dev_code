@@ -9,7 +9,6 @@ $sidebar-font-size: 11px;
   flex: 0 0 $sidebar-width;
   width: $sidebar-width;
   font-size: $sidebar-font-size;
-  background-color: $brand-white;
   transition: all .4s ease-in-out;
   position: absolute;
 
@@ -23,15 +22,14 @@ $sidebar-font-size: 11px;
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     font-size: $font-s;
     color: $brand-grey;
 
     .isOpen & {
       justify-content: space-between;
-      padding-right: $sidebar-padding-x;
-      padding-left: $sidebar-padding-x;
+      padding: 25px $sidebar-padding-x;
     }
   }
 
@@ -64,8 +62,8 @@ $sidebar-font-size: 11px;
   &__nav-item {
     position: relative;
     margin-bottom: 2px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
 
     &.active,

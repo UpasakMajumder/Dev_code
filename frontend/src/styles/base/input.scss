@@ -49,9 +49,9 @@
   }
 
   &__label {
-    @extend .font-text;
+    color: $font-dark;
     display: block;
-    font-weight: 300;
+    font-weight: 100;
     text-transform: uppercase;
 
     &--radio,
@@ -87,6 +87,19 @@
         border-radius: 100%;
       }
     }
+  }
+
+  &__right-label {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    font-size: $font-xxs;
+    font-weight: 100;
+    color: $brand-dark;
+  }
+
+  &__label-group {
+    @extend %clearfix;
   }
 
   &__checkbox,

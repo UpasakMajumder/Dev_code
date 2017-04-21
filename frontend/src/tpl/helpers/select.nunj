@@ -1,0 +1,20 @@
+{% macro select(label, optHolder, options, label2, className) %}
+  <div class=" input__wrapper {% if className %}{{ className }}{% endif %}">
+
+    <span class="input__label">{{ label }}</span>
+    {% if label2 %}
+      <span class="input__right-label">{{label2}}</span>
+    {% endif %}
+
+    <div class="input__select">
+      <select>
+        <option disabled selected>{{ optHolder }}</option>
+        {% for item in options %}
+          <option>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+  </div>
+
+{% endmacro %}

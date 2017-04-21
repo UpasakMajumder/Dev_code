@@ -28,6 +28,8 @@ $font-black: #00011d;
 $main-gutter-color: #edf1f5;
 $sidebar-hover: #f0f4f5;
 
+$content-emphasized-bg: rgba(238, 238, 238, 0.5);
+
 /*
 ========================
         COMMENTS
@@ -48,10 +50,11 @@ $font-xl: 26px;
 $font-l: 24px;
 $font-m: 20px;
 $font-s: 18px;
-$font-xs: 16px;
+$font-xs: 14px;
 $font-xxs: 12px;
 
 $border-radius: 2px;
 $main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
+$img-path: '/gfx/images/';
 $border-layout: 5px;

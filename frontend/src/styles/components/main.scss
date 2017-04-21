@@ -12,6 +12,11 @@ $padding: 15px;
       &__nav-link {
         flex-direction: row;
       }
+
+      &__nav-item {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
     }
 
     .content {
@@ -30,6 +35,7 @@ $padding: 15px;
 
   &__inner {
     background-color: $brand-white;
+    overflow: hidden;
     border-radius: $border-layout;
   }
 }

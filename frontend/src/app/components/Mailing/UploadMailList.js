@@ -277,7 +277,7 @@ class UploadMailList extends Component {
             </div>
 
             <button type="button"
-                    className="btn-main"
+                    className="btn-action"
                     disabled={isLoading}
                     onClick={() => { send(this.state); }}
             >Create mailing list

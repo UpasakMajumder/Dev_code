@@ -2,12 +2,13 @@
   a {
     @extend .link;
     padding-left: 7px;
+    font-size: $font-xs;
 
     &:after {
       content: '/';
+      display: inline-block;
       padding-left: 7px;
       color: $brand-darkgrey;
-      text-decoration: none;
     }
 
     &:last-child {

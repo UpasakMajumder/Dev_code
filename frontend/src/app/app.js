@@ -20,6 +20,7 @@ const app = {
     init('collapse', document.getElementsByClassName('js-collapse'));
     init('tooltip', document.getElementsByClassName('js-tooltip'));
     init('sidebar', document.getElementsByClassName('js-sidebar'));
+    init('drop-zone', document.getElementsByClassName('js-drop-zone'));
   },
 
   /* React */

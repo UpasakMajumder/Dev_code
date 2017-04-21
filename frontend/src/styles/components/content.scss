@@ -13,7 +13,6 @@ $sidebar-width-close: 70px;
     padding: 24px;
     // Hardcoded height
     min-height: calc(100vh - 192px);
-    border-right: $main-layout-gutter solid $main-gutter-color;
     border-left: $main-layout-gutter solid $main-gutter-color;
   }
 
