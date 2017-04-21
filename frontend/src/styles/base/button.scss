@@ -1,5 +1,7 @@
 .btn-common {
-  @extend .py-2;
+  @include rem(padding-top, 5px);
+  @include rem(padding-bottom, 5px);
+
   @extend .px-4;
   font-family: $font-family-base;
   text-decoration: none;
@@ -99,11 +101,15 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
     text-align: left;
   }
 
+  &--right {
+    text-align: right;
+  }
+
   &--centered {
     text-align: center;
   }
 
   button + button {
-    @extend .ml-4;
+    @extend .ml-3;
   }
 }
