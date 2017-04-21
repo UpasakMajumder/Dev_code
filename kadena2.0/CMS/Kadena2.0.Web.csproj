@@ -676,6 +676,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.cs">
+      <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.designer.cs">
+      <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.cs">
       <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -694,6 +701,7 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
+    <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroFields.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
@@ -705,6 +713,7 @@
     <Folder Include="CMSWebParts\Kadena\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
   <ItemGroup>
