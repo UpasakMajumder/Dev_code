@@ -1,14 +1,11 @@
-﻿using CMS.FormEngine.Web.UI;
-using CMS.Membership;
+﻿using CMS.Membership;
 using CMS.UIControls;
 using CMS.Base.Web.UI;
 using CMS.Base.Web.UI.ActionsConfig;
 using CMS.DataEngine;
 using CMS.EmailEngine;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.MacroEngine;
-using CMS.SiteProvider;
 using System;
 using System.Web.UI.WebControls;
 
@@ -20,6 +17,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         private const string _urlNewItem = "~/CMSModules/EmailTemplates/Pages/New.aspx";
         private const string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
         private const string _templateType = "membershipchangepassword";
+        private const string _setUpPasswordUrlMacro = "SetUpPasswordUrl";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -174,17 +172,28 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             var resolver = MacroResolver.GetInstance();
             foreach (var ui in users)
             {
+                resolver.SetNamedSourceData(_setUpPasswordUrlMacro, GetSetUpPasswordUrl(ui.UserGUID));
                 var message = new EmailMessage();
                 message.EmailFormat = EmailFormatEnum.Both;
                 message.From = emailTemplate.TemplateFrom;
                 message.Recipients = ui.Email;
-                message.Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject).Replace("{userCode}", ui.UserGUID.ToString());
-                message.Body = resolver.ResolveMacros(emailTemplate.TemplateText).Replace("{userCode}", ui.UserGUID.ToString());
-                message.PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText).Replace("{userCode}", ui.UserGUID.ToString());
+                message.Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject);
+                message.Body = resolver.ResolveMacros(emailTemplate.TemplateText);
+                message.PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText);
                 EmailSender.SendEmail(siteSelector.SiteName, message, false);
             }
 
             ShowConfirmation(GetString("system_email.emailsent"));
+        }
+
+        private string GetSetUpPasswordUrl(Guid userCode)
+        {
+            string setUpUrl;
+            if (_siteId > 0)
+                setUpUrl = SettingsKeyInfoProvider.GetURLValue($"{siteSelector.SiteName}.KDA_SetUpPasswordURL", string.Empty);
+            else
+                setUpUrl = SettingsKeyInfoProvider.GetURLValue("KDA_SetUpPasswordURL", string.Empty);
+            return URLHelper.AddParameterToUrl(setUpUrl, "h", userCode.ToString());
         }
     }
 }
