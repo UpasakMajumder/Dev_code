@@ -9,12 +9,22 @@ class Steps extends Component {
     const width = `${100 / steps.length}%`;
 
     const items = steps.map((step, index) => {
+      let road = {
+        className: '',
+        icon: null
+      };
 
-      const road = (index < current)
-        ? { className: 'previous', icon: <SVG name="tick" /> }
-        : (index === current)
-          ? { className: 'current', icon: <SVG name="gear" /> }
-          : { className: '', icon: null };
+      if (index < current) {
+        road = {
+          className: 'previous',
+          icon: <SVG name="tick" />
+        };
+      } else if (index === current) {
+        road = {
+          className: 'current',
+          icon: <SVG name="gear" />
+        };
+      }
 
       return (
         <div key={index} className="steps__item" style={{ width }}>
