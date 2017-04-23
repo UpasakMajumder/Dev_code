@@ -1,20 +1,30 @@
-{% macro select(label, optHolder, options, label2, className) %}
+{% macro select(label, optHolder, options, label2, className, error) %}
   <div class=" input__wrapper {% if className %}{{ className }}{% endif %}">
 
-    <span class="input__label">{{ label }}</span>
+    {% if label %}
+      <span class="input__label">{{ label }}</span>
+    {% endif %}
+
     {% if label2 %}
       <span class="input__right-label">{{label2}}</span>
     {% endif %}
 
-    <div class="input__select">
+    <div class="input__select {% if error %}input--error{% endif %}">
       <select>
-        <option disabled selected>{{ optHolder }}</option>
+        {% if optHolder %}
+          <option disabled selected>{{ optHolder }}</option>
+        {% endif %}
         {% for item in options %}
           <option>{{ item }}</option>
         {% endfor %}
       </select>
+      {% if error %}
+        <span class="input__error input__error--noborder">{{ error }}</span>
+      {% endif %}
+
     </div>
 
   </div>
+
 
 {% endmacro %}
