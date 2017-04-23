@@ -1,4 +1,6 @@
 .table {
+  width: 100%;
+
   thead tr,
   tr:nth-child(2n) {
     background-color: $brand-lightgrey;

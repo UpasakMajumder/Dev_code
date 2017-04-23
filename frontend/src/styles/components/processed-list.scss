@@ -23,7 +23,8 @@ $heading-round-mark-size: 19px;
     h3 {
       position: relative;
       margin-bottom: 0;
-      font-size: $font-l;
+      font-size: $font-xm;
+      color: $font-darker;
     }
 
     &--error,
@@ -57,21 +58,6 @@ $heading-round-mark-size: 19px;
   &__table-inner {
     @include rem(padding-bottom, 55px);
     position: relative;
-
-    .table {
-      width: 100%;
-      position: relative;
-
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        height: 100px;
-        background: $table-bottom-shadow;
-      }
-    }
   }
 
   &__table-helper {
@@ -87,6 +73,31 @@ $heading-round-mark-size: 19px;
       position: absolute;
       left: 0;
       bottom: 0;
+    }
+  }
+
+  &__table-dialog {
+    @include rem(padding-right, 10px);
+    max-height: 475px;
+    overflow: scroll;
+
+    tbody tr td {
+      @include rem(padding-top, 22px);
+      @include rem(padding-bottom, 22px);
+    }
+  }
+
+  &__table--shadow {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100px;
+      background: $table-bottom-shadow;
     }
   }
 }
