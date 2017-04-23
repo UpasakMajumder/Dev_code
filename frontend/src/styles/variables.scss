@@ -49,7 +49,7 @@ $base-layout-gradient: linear-gradient(180deg, #003d5c 0%, #0588cc 100%);
         Font size
 ========================
 */
-
+$font-large: 44px;
 $font-xxl: 30px;
 $font-xl: 26px;
 $font-l: 24px;
@@ -60,6 +60,7 @@ $font-xs: 14px;
 $font-xxs: 12px;
 
 $border-radius: 2px;
+$border-radius-xl: 8px;
 $main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
 $img-path: '/gfx/images/';

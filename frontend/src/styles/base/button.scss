@@ -72,10 +72,14 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
     &:hover {
       background-color: $color;
       border: 2px solid $color;
+      color: white;
+      text-decoration: none;
     }
 
     &:focus {
       box-shadow: 0 1px 0 0 darken($color, 10%);
+      color: white;
+      text-decoration: none;
     }
 
     &--secondary {
@@ -91,10 +95,13 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
       &:hover {
         @extend .bg-white;
         color: $color;
+        text-decoration: none;
       }
 
       &:focus {
         box-shadow: 0 1px 0 0 darken($color, 10%);
+        color: $color;
+        text-decoration: none;
       }
     }
   }
