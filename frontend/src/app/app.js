@@ -21,6 +21,7 @@ const app = {
     init('tooltip', document.getElementsByClassName('js-tooltip'));
     init('sidebar', document.getElementsByClassName('js-sidebar'));
     init('drop-zone', document.getElementsByClassName('js-drop-zone'));
+    init('dialog', document.getElementsByClassName('js-dialog'));
   },
 
   /* React */
