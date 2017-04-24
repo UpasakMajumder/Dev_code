@@ -1,6 +1,6 @@
 .mailing-lists {
   & > *:not(:last-child) {
-    @include rem(margin-bottom, 30px);
+    @extend .mb-4;
   }
 
   &__btn {

@@ -1,6 +1,5 @@
 .category {
-  @include rem(margin-top, 35px);
-  @include rem(margin-bottom, 35px);
+  @extend .mb-4;
   display: block;
   text-align: center;
   text-decoration: none;
