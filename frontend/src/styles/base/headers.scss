@@ -1,19 +1,19 @@
 h2,
 h3,
 h4 {
-  color: $font-dark;
+  color: $brand-dark;
   font-weight: 100;
 }
 
 h1 {
   font-weight: bold;
   font-size: $font-xl;
-  color: $font-dark;
+  color: $brand-dark;
 }
 
 h2 {
   font-size: $font-xxl;
-  color: $font-darker;
+  color: $brand-darker;
 }
 
 h3 {
@@ -29,6 +29,6 @@ h4 {
 
 .h--underlined {
   @extend .pb-1;
-  border-bottom: 1px solid $font-dark;
+  border-bottom: 1px solid $brand-dark;
   max-width: 500px;
 }

@@ -14,7 +14,7 @@ a:focus {
 
   &:focus,
   &:active {
-    color: darken($brand-secondary, 10%);
+    color: darken($brand-primary, 10%);
     text-decoration: none;
   }
 }

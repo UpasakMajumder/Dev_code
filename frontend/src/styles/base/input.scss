@@ -20,8 +20,8 @@
   }
 
   &:focus {
-    border: 1px solid $brand-secondary;
-    box-shadow: 0 0 8px 0 $brand-secondary;
+    border: 1px solid $brand-primary;
+    box-shadow: 0 0 8px 0 $brand-primary;
   }
 
   &[disabled],
@@ -50,7 +50,7 @@
   }
 
   &__label {
-    color: $font-dark;
+    color: $brand-dark;
     display: block;
     font-weight: 100;
     text-transform: uppercase;
