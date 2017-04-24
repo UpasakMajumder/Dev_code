@@ -8,6 +8,7 @@ namespace Kadena.Services.MailingList
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "MailingListService" in both code and config file together.
     public class MailingListService : IMailingListService
     {
+        private readonly string _bucketType = "original-mailing";
         private readonly string _customerNameSettingKey = "KDA_CustomerName";
         private readonly string _mailingServiceSettingKey = "KDA_MailingServiceUrl";
         private readonly string _fileServiceSettingKey = "KDA_FileServiceUrl";
