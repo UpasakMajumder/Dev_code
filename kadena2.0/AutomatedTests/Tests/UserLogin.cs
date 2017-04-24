@@ -12,7 +12,7 @@ namespace AutomatedTests.Tests
     class UserLogin : BaseTest
     {
         [Test]
-        public void LogUserInWithCorrectCredentials()
+        public void Login_LogUserInWithCorrectCredentials()
         {
             var login = new Login();
             login.Open();
@@ -31,7 +31,7 @@ namespace AutomatedTests.Tests
         }
 
         [Test]
-        public void LoginWithIncorrectCredentials()
+        public void Login_LoginWithIncorrectCredentials()
         {
             var login = new Login();
             login.Open();
@@ -46,6 +46,16 @@ namespace AutomatedTests.Tests
             login.FillLogin(TestUser.Name, String.Empty);
             login.SubmitInvalid();
             Assert.IsTrue(login.IsErrorMessageDisplayed());
+        }
+
+        [Test]
+        public void Login_CustomerLogo()
+        {
+            var login = new Login();
+            login.Open();
+
+            //verify if customer logo is displayed
+            Assert.IsTrue(login.IsCustomerLogoDisplayed());
         }
     }
 }

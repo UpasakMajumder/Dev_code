@@ -26,6 +26,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.ClassName, Using = "input__error")]
         private IWebElement inputError { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".login__custom-logo>img")]
+        private IWebElement customerLogo { get; set; }
+
         public Login()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -81,6 +84,12 @@ namespace AutomatedTests.PageObjects
         {
             inputError.WaitTillVisible();
             return inputError.IsDisplayed();
+        }
+
+        public bool IsCustomerLogoDisplayed()
+        {
+            customerLogo.WaitTillVisible();
+            return customerLogo.IsDisplayed();
         }
     }
 }
