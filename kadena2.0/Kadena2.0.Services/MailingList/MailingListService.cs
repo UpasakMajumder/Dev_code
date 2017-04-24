@@ -98,5 +98,41 @@ namespace Kadena.Services.MailingList
 
             return new ResponseMessage { IsSuccess = true, Message = "Method called" };
         }
+
+        private Guid SendToService(System.IO.Stream fileStream, string fileName)
+        {
+            string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceSettingKey}");
+            if (string.IsNullOrWhiteSpace(fileServiceAddress))
+            {
+                return Guid.Empty;
+            }
+
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                return Guid.Empty;
+            }
+
+            var fileId = Guid.Empty;
+            using (var client = new HttpClient())
+            {
+                using (var content = new MultipartFormDataContent())
+                {
+                    content.Add(new StreamContent(fileStream), "file", fileName);
+                    content.Add(new StringContent(_bucketType), "bucketType");
+                    content.Add(new StringContent(customerName), "customerName");
+                    using (var message = client.PostAsync(fileServiceAddress, content))
+                    {
+                        var awsResponse = message.Result;
+                        if (awsResponse.IsSuccessStatusCode)
+                        {
+                            var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                            fileId = new Guid(response.Response);
+                        }
+                        return fileId;
+                    }
+                }
+            }
+        }
     }
 }
