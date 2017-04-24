@@ -38,7 +38,6 @@ namespace Kadena.Services.MailingList
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
             string mailingServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceSettingKey}");
-            string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceSettingKey}");
 
             if (string.IsNullOrWhiteSpace(customerName))
             {
@@ -48,12 +47,8 @@ namespace Kadena.Services.MailingList
             {
                 return new ResponseMessage { IsSuccess = false, Message = "Mailing service address not specified." };
             }
-            if (string.IsNullOrWhiteSpace(fileServiceAddress))
-            {
-                return new ResponseMessage { IsSuccess = false, Message = "File service address not specified." };
-            }
 
-
+            var containerId = Guid.Empty;
             // Create container
             using (var client = new HttpClient())
             {
@@ -72,10 +67,11 @@ namespace Kadena.Services.MailingList
                         if (awsResponse.IsSuccessStatusCode)
                         {
                             var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                            containerId = new Guid(response.Response);
                             return new ResponseMessage
                             {
                                 IsSuccess = true,
-                                Message = $"Created container id is {response.Response}",
+                                Message = $"Created container id is {containerId}",
                                 AWSStatusCode = awsResponse.StatusCode,
                                 AWSResponse = awsResponse.ReasonPhrase
                             };
