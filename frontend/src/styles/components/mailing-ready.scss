@@ -62,10 +62,8 @@
   }
 
   &__img {
+    @extend .inline-bg;
     height: 150px;
-    background-size: contain;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
 
     img {
       width: 100%;

@@ -1,3 +1,8 @@
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
 .link {
   @extend .font-secondary;
   text-decoration: none;

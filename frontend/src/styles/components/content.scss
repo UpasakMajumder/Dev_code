@@ -23,5 +23,18 @@ $sidebar-width-close: 70px;
     align-items: center;
     padding-bottom: 15px;
     margin-bottom: 12px;
+
+    &__inner {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: baseline;
+    }
+
+    &__btn {
+      @extend .bg-secondary;
+      @extend .btn--circle;
+
+      @include rem(margin-left, 10px);
+    }
   }
 }

@@ -117,6 +117,14 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
   }
 }
 
+.btn--circle {
+  @extend .line-height--off;
+
+  @include rem(padding, 5px);
+  border-radius: 100%;
+  display: block;
+}
+
 .btn-group {
   &--left {
     text-align: left;
