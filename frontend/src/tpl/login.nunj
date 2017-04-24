@@ -11,6 +11,8 @@
         <img src="http://satyr.io/205x40/red" alt="logo-image">
       </div>
       <div class="login__form-content js-login"></div>
+      <a href="#" class="link mb-3">Forgot password?</a>
+      <a href="#" class="link">Request access</a>
     </div>
     <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
     <div class="login__kadena-logo">
