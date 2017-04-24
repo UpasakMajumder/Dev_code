@@ -3,7 +3,7 @@ const environment = config.environment;
 const PRODUCTION = !environment.isDevelopment;
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
-const cached = require('gulp-cached');
+const eslint = require('gulp-eslint');
 const eslintConfig = require('eslint-config-actum').getConfig({ environment });
 
 const lint = (globs) => {
