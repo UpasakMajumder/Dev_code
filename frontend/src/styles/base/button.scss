@@ -3,8 +3,8 @@ button {
 }
 
 .btn-common {
-  @include rem(padding-top, 5px);
-  @include rem(padding-bottom, 5px);
+  @include rem(padding-top, 6px);
+  @include rem(padding-bottom, 6px);
 
   @extend .px-4;
   font-family: $font-family-base;
@@ -60,6 +60,7 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
     border: 2px solid $color;
     box-shadow: 0 1px 0 0 darken($color, 10%);
     position: relative;
+    display: inline-block;
 
     &.disabled,
     &[disabled] {

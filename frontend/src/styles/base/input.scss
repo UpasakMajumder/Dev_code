@@ -1,5 +1,6 @@
 .input {
-  @extend .py-2;
+  @include rem(padding-top, 8px);
+  @include rem(padding-bottom, 8px);
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
   font-weight: 100;

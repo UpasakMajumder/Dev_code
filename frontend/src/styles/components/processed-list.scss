@@ -5,7 +5,7 @@ $heading-round-mark-size: 19px;
     @include rem(padding-top, 35px);
 
     &:first-child {
-      @include rem(padding-top, 20px);
+      @include rem(padding-top, 0);
     }
 
     & + & {
