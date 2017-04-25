@@ -12,8 +12,7 @@
     &__group-wrapper {
       @extend .px-2;
       @extend .py-3;
-      background-color: $content-emphasized-bg;
-      opacity: .5;
+      background-color: rgba($content-emphasized-bg, .5);
       border-radius: $border-radius-xl;
 
       & .input__label {

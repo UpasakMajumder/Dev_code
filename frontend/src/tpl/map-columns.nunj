@@ -8,6 +8,8 @@
 
 {% from "helpers/select.nunj" import select %}
 
+{% import "helpers/svg.nunj" as svg %}
+
 {% set title = "New mailing list" %}
 
 {% block content %}
@@ -23,13 +25,18 @@
       <div class="content-block map-columns">
         {{ steps(2, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
-        <div class="map-columns__paragraphs">
-          <p class="p-info"> We tried to map the items in your uploaded files into the correct address fields.</p>
-          <p class="p-info">Please check if we got it right and correct any mistakes we might have made.</p>
+        <div class="alert--info alert--close isOpen js-collapse">
+          <button type="button" class="alert__close btn--off js-toggle">
+            {% call svg.template(class = 'icon-modal') %}
+              {{svg.use(name='cross--darker')}}
+            {% endcall %}
+          </button>
+          <p class="p-info weight--normal"> We tried to map the items in your uploaded files into the correct address fields.</p>
+          <p class="p-info weight--normal">Please check if we got it right and correct any mistakes we might have made.</p>
+          <p class="p-note mb-0">
+            Note: This is just for the address. You will be able to use other fields in the templating process.
+          </p>
         </div>
-        <p class="p-note">
-          Note: This is just for the address. You will be able to use other fields in the templating process.
-        </p>
 
         <div class="map-columns__form map-columns-form">
           <div class="map-columns-form__group-wrapper">
