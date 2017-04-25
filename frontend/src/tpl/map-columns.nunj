@@ -1,14 +1,14 @@
-{% extends "layouts/default-fluid.nunj" %}
+{% extends "layouts/default.nunj" %}
 
-{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
 
-{% from "helpers/sidebar.nunj" import sidebar %}
+{% from "macro/sidebar.nunj" import sidebar %}
 
-{% from "helpers/steps.nunj" import steps %}
+{% from "macro/steps.nunj" import steps %}
 
-{% from "helpers/select.nunj" import select %}
+{% from "macro/select.nunj" import select %}
 
-{% import "helpers/svg.nunj" as svg %}
+{% import "macro/svg.nunj" as svg %}
 
 {% set title = "New mailing list" %}
 

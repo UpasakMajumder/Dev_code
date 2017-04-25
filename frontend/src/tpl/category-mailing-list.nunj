@@ -1,10 +1,8 @@
-{% extends "layouts/default-fluid.nunj" %}
+{% extends "layouts/default.nunj" %}
 
-{% from "helpers/breadcrumb.nunj" import breadcrumb %}
-
-{% from "helpers/sidebar.nunj" import sidebar %}
-
-{% import "helpers/svg.nunj" as svg %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/sidebar.nunj" import sidebar %}
+{% import "macro/svg.nunj" as svg %}
 
 {% set title = "Category name" %}
 

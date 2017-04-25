@@ -1,8 +1,8 @@
-{% extends "layouts/default-fluid.nunj" %}
+{% extends "layouts/default.nunj" %}
 
-{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
 
-{% from "helpers/sidebar.nunj" import sidebar %}
+{% from "macro/sidebar.nunj" import sidebar %}
 
 {% set title = "Orders" %}
 

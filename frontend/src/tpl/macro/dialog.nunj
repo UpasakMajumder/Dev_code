@@ -13,7 +13,7 @@
 {#clicker#}
 {#<button type="button" data-dialog="DIALOG SELECTOR" class="js-dialog"></button>#}
 
-{% import "helpers/svg.nunj" as svg %}
+{% import "macro/svg.nunj" as svg %}
 
 {% macro wrapper(class, id) %}
   <div class="dialog {% if class %}{{ class }}{% endif %}"

@@ -1,5 +1,5 @@
 {% extends "layouts/default-noheader.nunj" %}
-{% import "helpers/svg.nunj" as svg %}
+{% import "macro/svg.nunj" as svg %}
 
 {% set title = "Login" %}
 
