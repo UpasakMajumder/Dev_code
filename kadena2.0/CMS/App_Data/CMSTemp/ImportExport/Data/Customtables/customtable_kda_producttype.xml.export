@@ -1,0 +1,46 @@
+﻿<customtable_kda_producttype version="10.0">
+  <NewDataSet>
+    <kda_producttype>
+      <ItemID>1</ItemID>
+      <ItemOrder>1</ItemOrder>
+      <ItemGUID>8ef10c90-4e84-4a27-a753-3bd10dc67d6f</ItemGUID>
+      <Name>Static product </Name>
+      <CodeName>KDA.StaticProduct</CodeName>
+    </kda_producttype>
+    <kda_producttype>
+      <ItemID>2</ItemID>
+      <ItemOrder>2</ItemOrder>
+      <ItemGUID>f673ad02-f808-4205-92cf-f5e0ed6c14cc</ItemGUID>
+      <Name>Inventory product</Name>
+      <CodeName>KDA.InventoryProduct</CodeName>
+    </kda_producttype>
+    <kda_producttype>
+      <ItemID>3</ItemID>
+      <ItemOrder>3</ItemOrder>
+      <ItemGUID>60c4980d-1db8-40ce-b50d-2cd4a224e57e</ItemGUID>
+      <Name>POD</Name>
+      <CodeName>KDA.POD</CodeName>
+    </kda_producttype>
+    <kda_producttype>
+      <ItemID>4</ItemID>
+      <ItemOrder>4</ItemOrder>
+      <ItemGUID>ec26fd1c-e569-41d1-9b33-8064bf4f87e9</ItemGUID>
+      <Name>Mailing product</Name>
+      <CodeName>KDA.MailingProduct</CodeName>
+    </kda_producttype>
+    <kda_producttype>
+      <ItemID>5</ItemID>
+      <ItemOrder>5</ItemOrder>
+      <ItemGUID>add53b8d-86db-440a-97a3-9f7a63606ea5</ItemGUID>
+      <Name>Templated product </Name>
+      <CodeName>KDA.TemplatedProduct</CodeName>
+    </kda_producttype>
+    <kda_producttype>
+      <ItemID>6</ItemID>
+      <ItemOrder>6</ItemOrder>
+      <ItemGUID>1456fee3-8559-4aff-ae37-ca4d0d161189</ItemGUID>
+      <Name>Product with Add-ons</Name>
+      <CodeName>KDA.ProductWithAddOns</CodeName>
+    </kda_producttype>
+  </NewDataSet>
+</customtable_kda_producttype>

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import removeProps from '../../helpers/object';
+import { LOGIN } from '../../globals';
 
 export default class PasswordInput extends Component {
   constructor() {
@@ -10,6 +11,8 @@ export default class PasswordInput extends Component {
     };
 
     this.handleToggle = this.handleToggle.bind(this);
+    this.passwordHideText = LOGIN.passwordHide;
+    this.passwordShowText = LOGIN.passwordShow;
   }
 
   handleToggle() {
@@ -27,7 +30,7 @@ export default class PasswordInput extends Component {
     const inputProps = removeProps(this.props, ['error', 'label']);
 
     const labelElement = label ? <span className="input__label">{label}</span> : null;
-    const toggler = isShown ? 'Hide' : 'Show';
+    const toggler = isShown ? this.passwordHideText : this.passwordShowText;
     const type = isShown ? 'text' : 'password';
     const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
     const onClick = disabled ? undefined : this.handleToggle;

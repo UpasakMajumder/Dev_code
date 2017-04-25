@@ -4,19 +4,18 @@ const PRODUCTION = !environment.isDevelopment;
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
 const eslint = require('gulp-eslint');
-const cached = require('gulp-cached');
 const eslintConfig = require('eslint-config-actum').getConfig({ environment });
 
 const lint = (globs) => {
   const options = {
     configFile: eslintConfig,
     rules: {
-      "indent": ["error", 2]
+      "indent": ["error", 2],
+      "class-methods-use-this": [0, {"exceptMethods": ["render", "componentDidMount"]}]
     }
   };
 
   return gulp.src(globs)
-    .pipe(cached('eslint'))
     .pipe(eslint(options))
     .pipe(eslint.format())
     .pipe(gulpif(PRODUCTION, eslint.failOnError()));

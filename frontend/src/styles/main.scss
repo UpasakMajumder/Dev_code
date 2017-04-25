@@ -1,6 +1,7 @@
 @import 'bootstrap/variables';
 @import 'bootstrap/bootstrap';
 @import 'variables';
+@import 'mixins';
 @import 'base/*';
 
 html,
@@ -11,15 +12,8 @@ form {
 
 body {
   font-family: $font-family-base;
-  color: $brand-darker;
+  color: $brand-dark;
   line-height: 1.5;
-
-  main {
-    min-height: calc(100% - 60px);
-    display: flex;
-    position: relative;
-    top: 60px;
-  }
 }
 
 @import 'components/*';

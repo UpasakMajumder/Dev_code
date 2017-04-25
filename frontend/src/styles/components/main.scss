@@ -1,16 +1,41 @@
 $sidebar-width-open: 220px;
-$padding: 20px;
+$padding: 15px;
 
 .css-main {
+  border-top: $main-layout-gutter solid $main-gutter-color;
+
   &.isOpen {
     .css-sidebar {
-      flex: 0 0 $sidebar-width-open;
       width: $sidebar-width-open;
       font-size: $font-s;
+
+      &__nav-link {
+        flex-direction: row;
+      }
+
+      &__nav-item {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
     }
 
     .content {
-      padding-left: $padding + $sidebar-width-open;
+      padding-left: $sidebar-width-open;
     }
+
+    .footer {
+      padding-left: $sidebar-width-open;
+    }
+  }
+}
+
+.main-container {
+  padding: 20px;
+  background: $base-layout-gradient;
+
+  &__inner {
+    background-color: $brand-white;
+    overflow: hidden;
+    border-radius: $border-layout;
   }
 }

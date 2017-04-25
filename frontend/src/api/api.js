@@ -1,13 +1,17 @@
 module.exports = () => {
-    const createUser = id => ({
-        id,
-        name: `user_${id}`
-    });
-    const users = [];
-    const usersCount = 10;
-    for (let i = 0; i < usersCount; i++) {
-        users.push(createUser(i));
+    const loginSuccess = {
+      success: true
     }
 
-    return { users };
+    const loginError = {
+      success: false,
+      errorMessage: 'Email address is not exists.',
+      errorPropertyName: 'loginEmail'
+    }
+
+    const mailingSuccess = {
+      success: true
+    }
+
+    return { loginSuccess, loginError, mailingSuccess };
 };

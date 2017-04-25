@@ -1,8 +1,10 @@
 .input {
-  @extend .py-2;
+  @include rem(padding-top, 8px);
+  @include rem(padding-bottom, 8px);
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
   font-weight: 100;
+  width: 100%;
 
   &:focus,
   &:active {
@@ -44,12 +46,13 @@
     position: absolute;
     right: .75rem;
     text-transform: uppercase;
-    top: 2.05rem;
+    bottom: 10px;
   }
 
   &__label {
+    color: $font-dark;
     display: block;
-    font-weight: 300;
+    font-weight: 100;
     text-transform: uppercase;
 
     &--radio,
@@ -57,7 +60,7 @@
       @extend .mb-1;
       cursor: pointer;
       margin: 0;
-      padding-left: 2rem;
+      padding-left: 2.5rem;
       text-transform: none;
 
       &:before {
@@ -85,6 +88,19 @@
         border-radius: 100%;
       }
     }
+  }
+
+  &__right-label {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    font-size: $font-xxs;
+    font-weight: 100;
+    color: $brand-dark;
+  }
+
+  &__label-group {
+    @extend %clearfix;
   }
 
   &__checkbox,
@@ -116,10 +132,10 @@
   }
 
   &__radio {
-    &:checked + label:after {
-      content: "•";
-      left: 7px;
-      top: -4px;
+    &:checked + label:before {
+      content: "";
+      border: 7px solid $brand-success;
+      background-color: white;
     }
   }
 

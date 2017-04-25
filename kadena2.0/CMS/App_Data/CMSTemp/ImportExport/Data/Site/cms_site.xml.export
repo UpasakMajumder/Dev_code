@@ -1,0 +1,34 @@
+﻿<cms_site version="10.0">
+  <NewDataSet>
+    <cms_site>
+      <SiteID>1</SiteID>
+      <SiteName>KDA</SiteName>
+      <SiteDisplayName>Kadena 2.0</SiteDisplayName>
+      <SiteDescription>Kadena 2.0 base site</SiteDescription>
+      <SiteStatus>RUNNING</SiteStatus>
+      <SiteDomainName>localhost:56000</SiteDomainName>
+      <SiteDefaultStylesheetID>1</SiteDefaultStylesheetID>
+      <SiteDefaultVisitorCulture>en-US</SiteDefaultVisitorCulture>
+      <SiteGUID>f681bf51-43c5-45a6-83fd-f44f447f479e</SiteGUID>
+      <SiteLastModified>2017-04-10T17:08:28.7709023+02:00</SiteLastModified>
+      <SiteIsOffline>false</SiteIsOffline>
+      <SiteOfflineMessage></SiteOfflineMessage>
+    </cms_site>
+    <cms_sitedomainalias>
+      <SiteDomainAliasID>1</SiteDomainAliasID>
+      <SiteDomainAliasName>default.kadenadev.com</SiteDomainAliasName>
+      <SiteID>1</SiteID>
+      <SiteDomainGUID>4f0e091c-f9f9-4b05-9689-bda0a2fd9696</SiteDomainGUID>
+      <SiteDomainLastModified>2017-03-15T03:31:17.0221392+01:00</SiteDomainLastModified>
+      <SiteDomainDefaultAliasPath>/</SiteDomainDefaultAliasPath>
+    </cms_sitedomainalias>
+    <cms_sitedomainalias>
+      <SiteDomainAliasID>2</SiteDomainAliasID>
+      <SiteDomainAliasName>localhost:10500</SiteDomainAliasName>
+      <SiteID>1</SiteID>
+      <SiteDefaultVisitorCulture>en-US</SiteDefaultVisitorCulture>
+      <SiteDomainGUID>12d6d6dd-a681-4092-b6d8-bf4396947c05</SiteDomainGUID>
+      <SiteDomainLastModified>2017-03-15T09:41:18.6457858+01:00</SiteDomainLastModified>
+    </cms_sitedomainalias>
+  </NewDataSet>
+</cms_site>

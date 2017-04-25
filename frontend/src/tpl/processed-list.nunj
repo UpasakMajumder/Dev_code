@@ -1,0 +1,84 @@
+{% extends "layouts/default-fluid.nunj" %}
+
+{% from "helpers/sidebar.nunj" import sidebar %}
+{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+{% from "helpers/select.nunj" import select %}
+{% import "helpers/svg.nunj" as svg %}
+{% from "helpers/tr.nunj" import tr %}
+
+
+{% set title = "Mailing list" %}
+
+{% block content %}
+  {{ sidebar('Mailing list') }}
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <h1 class="content-header__page-name">Your processed list</h1>
+        {{ breadcrumb(['Home','Mailing list','New mailing list']) }}
+      </div>
+      <div class="content-block processed-list">
+        <div class="processed-list__table-block">
+          <div class="processed-list__table-heading processed-list__table-heading--success">
+            <h3>332 addresses have been processed successfuly</h3>
+          </div>
+          <div class="processed-list__table-inner">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address Line 1</th>
+                  <th>Address Line 2</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Jane Doe</td>
+                  <td>2167 225th Ave</td>
+                  <td>-</td>
+                  <td>San Francisco</td>
+                  <td>CA</td>
+                  <td>94116</td>
+                </tr>
+                <tr>
+                  <td>Oliver Ustinovich</td>
+                  <td>2167 5th Ave</td>
+                  <td>-</td>
+                  <td>San Francisco</td>
+                  <td>AB</td>
+                  <td>94116</td>
+                </tr>
+                <tr>
+                  <td>Denisa Lorencova</td>
+                  <td>2167/273a 25th Ave</td>
+                  <td>-</td>
+                  <td>Saint Joseph</td>
+                  <td>MS</td>
+                  <td>94116</td>
+                </tr>
+                <tr>
+                  <td>John Snow</td>
+                  <td>2167/273a 25th Ave</td>
+                  <td>-</td>
+                  <td>Old York</td>
+                  <td>GB</td>
+                  <td>94116</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="btn-group btn-group--left">
+          <button type="button" class="btn-action">Save list</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,9 +1,8 @@
 .css-header {
   @extend .bg-white;
   height: 60px;
-  border-bottom: 1px solid #c9cdd0;
-
-  /* ToDo: Place to variables */
+  border-top-left-radius: $border-layout;
+  border-top-right-radius: $border-layout;
   font-size: $font-s;
 
   .navbar-brand {
@@ -21,6 +20,7 @@
     .nav-item {
       display: flex;
       align-items: center;
+      margin-left: 1.5rem;
 
       .icon {
         display: inline-block;
@@ -54,18 +54,20 @@
       }
 
       a.nav-link {
-        color: $brand-secondary;
+        @extend .link;
         padding: 10px;
-        margin-right: 50px;
+        font-size: $font-xs;
       }
+    }
+
+    .navbar-user {
+      font-size: $font-xs;
     }
 
     .badge-custom-color {
       margin-left: 5px;
       background-color: #d0021b;
       padding: 2px 5px;
-
-      /* ToDo: Place to variables */
     }
   }
 }

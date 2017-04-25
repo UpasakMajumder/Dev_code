@@ -1,0 +1,7 @@
+{% macro tr(type, args) %}
+  <tr>
+    {% for item in args %}
+      <{{type}}>{{item}}</{{type}}>
+    {% endfor %}
+  </tr>
+{% endmacro %}
