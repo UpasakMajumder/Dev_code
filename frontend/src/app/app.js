@@ -22,6 +22,7 @@ const app = {
     init('sidebar', document.getElementsByClassName('js-sidebar'));
     init('drop-zone', document.getElementsByClassName('js-drop-zone'));
     init('dialog', document.getElementsByClassName('js-dialog'));
+    init('add-tr', document.getElementsByClassName('js-add-tr'));
   },
 
   /* React */

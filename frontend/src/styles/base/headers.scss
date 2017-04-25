@@ -1,17 +1,12 @@
-h2,
-h3,
-h4 {
-  color: $brand-dark;
-  font-weight: 100;
-}
 
 h1 {
-  font-weight: bold;
+  font-weight: 700;
   font-size: $font-xl;
   color: $brand-dark;
 }
 
 h2 {
+  font-weight: 500;
   font-size: $font-xxl;
   color: $brand-darker;
 }
@@ -23,8 +18,9 @@ h3 {
 }
 
 h4 {
+  font-weight: 400;
   font-size: $font-m;
-  color: $font-dark-grey;
+  color: $font-black;
 }
 
 .h--underlined {
