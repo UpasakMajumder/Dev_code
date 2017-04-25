@@ -28,6 +28,12 @@
       public string errorPropertyName { get; set; }
     }
 
+    public class InitialPasswordSettingResult
+    {
+      public bool success { get; set; }
+      public string errorMessage { get; set; }
+    }
+
     #endregion
 
     #region Public methods
@@ -39,6 +45,8 @@
       AuthenticationHelper.SignOut();
     }
 
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
     public LogonUserResult LogonUser(string loginEmail, string password, bool isKeepMeLoggedIn)
     {
       #region Validation
@@ -59,6 +67,30 @@
       #endregion
 
       return LogonUserInternal(loginEmail, password, isKeepMeLoggedIn);
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public InitialPasswordSettingResult InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
+    {
+      #region Validation
+
+      if (string.IsNullOrWhiteSpace(password))
+      {
+        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (string.IsNullOrWhiteSpace(confirmPassword))
+      {
+        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (password != confirmPassword)
+      {
+        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+
+      #endregion
+
+      return InitialPasswordSettingInternal(password, confirmPassword, userGUID);
     }
 
     #endregion
@@ -91,8 +123,22 @@
       }
       else
       {
-        return new LogonUserResult { success = false, errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
+        return new LogonUserResult { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
       }
+    }
+
+    private InitialPasswordSettingResult InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
+    {
+      var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
+      if (ui == null)
+      {
+        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordCantBeSetUp", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      UserInfoProvider.SetPassword(ui, password);
+      ui.Enabled = true;
+      ui.Update();
+
+      return new InitialPasswordSettingResult { success = true };
     }
 
     private bool IsEmailValid(string email)

@@ -1,0 +1,71 @@
+﻿// LOGOUT
+
+(function ($) {
+    $.fn.logout = function (options) {
+        var base = this;
+
+        $(base).click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    window.location.reload(false);
+                },
+                error: function (xhr, ajaxOptions, thrownError) { }
+            });
+        });
+    }
+}(jQuery));
+
+// INITIAL PASSWORD SETTING
+
+(function ($) {
+    $.fn.createPassword = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            passwordInput: '.j-password',
+            confirmPasswordInput: '.j-confirm-password',
+            submitButton: '.j-submit'
+        }, options);
+
+        base.find(settings.confirmPasswordInput,settings.passwordInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.submitButton).click(function (e) {
+            e.preventDefault();
+
+            alert('xdf');
+            //if ()
+        });
+    }
+}(jQuery));
+
+// custom script initialization
+
+var customScripts = {
+    logoutInit: function () {
+        $("#js-logout").logout();
+    },
+    createPasswordInit: function() {
+        $(".j-initial-password-setting-form").createPassword();
+    },
+    init: function () {
+        var base = this;
+
+        base.logoutInit();
+        base.createPasswordInit();
+    }
+}
+
+$(document).ready(function () {
+    customScripts.init();
+});
