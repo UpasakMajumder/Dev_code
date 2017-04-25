@@ -9,6 +9,6 @@ namespace Kadena.Services
         public bool Success { get; set; }
 
         [DataMember(Name = "response")]
-        public string Response { get; set; }
+        public object Response { get; set; }
     }
 }

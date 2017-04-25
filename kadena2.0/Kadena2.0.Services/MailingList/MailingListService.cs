@@ -5,6 +5,8 @@ using CMS.SiteProvider;
 using CMS.Helpers;
 using CMS.IO;
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Kadena.Services.MailingList
 {
@@ -13,8 +15,9 @@ namespace Kadena.Services.MailingList
     {
         private readonly string _bucketType = "original-mailing";
         private readonly string _customerNameSettingKey = "KDA_CustomerName";
-        private readonly string _mailingServiceSettingKey = "KDA_MailingServiceUrl";
-        private readonly string _fileServiceSettingKey = "KDA_FileServiceUrl";
+        private readonly string _createContainerSettingKey = "KDA_CreateContainerUrl";
+        private readonly string _loadFileSettingKey = "KDA_LoadFileUrl";
+        private readonly string _getHeadersSettingKey = "KDA_GetHeadersUrl";
 
         public ResponseMessage UploadFile(UploadFileData data)
         {
@@ -40,7 +43,7 @@ namespace Kadena.Services.MailingList
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            string mailingServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceSettingKey}");
+            string mailingServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_createContainerSettingKey}");
 
             if (string.IsNullOrWhiteSpace(customerName))
             {
@@ -70,7 +73,7 @@ namespace Kadena.Services.MailingList
                         if (awsResponse.IsSuccessStatusCode)
                         {
                             var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
-                            containerId = new Guid(response.Response);
+                            containerId = new Guid(response.Response.ToString());
                             return new ResponseMessage
                             {
                                 IsSuccess = true,
@@ -102,7 +105,7 @@ namespace Kadena.Services.MailingList
 
         private Guid SendToService(System.IO.Stream fileStream, string fileName)
         {
-            string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceSettingKey}");
+            string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}");
             if (string.IsNullOrWhiteSpace(fileServiceAddress))
             {
                 return Guid.Empty;
@@ -128,7 +131,7 @@ namespace Kadena.Services.MailingList
                         if (awsResponse.IsSuccessStatusCode)
                         {
                             var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
-                            fileId = new Guid(response.Response);
+                            fileId = new Guid(response.Response.ToString());
                         }
                         return fileId;
                     }
@@ -136,22 +139,35 @@ namespace Kadena.Services.MailingList
             }
         }
 
-        private void GetHeaders()
+        private IEnumerable<string> RequestHeaders(Guid fileId)
         {
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                return null;
+            }
+            string getHeadersAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getHeadersSettingKey}");
+            if (string.IsNullOrWhiteSpace(getHeadersAddress))
+            {
+                return null;
+            }
+
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
                 {
-                    using (var message = client.GetAsync(""))
+                    using (var message = client.GetAsync(getHeadersAddress))
                     {
                         var awsResponse = message.Result;
                         if (awsResponse.IsSuccessStatusCode)
                         {
                             var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                            return (response.Response as JArray).ToObject<IEnumerable<string>>();
                         }
                     }
                 }
             }
+            return null;
         }
 
         public ResponseMessage UploadFilePath()
@@ -165,6 +181,12 @@ namespace Kadena.Services.MailingList
                 else
                     return new ResponseMessage { IsSuccess = true, Message = $"File id is {fileId}" };
             }
+        }
+
+        public string GetHeaders(string fileId)
+        {
+            var id = new Guid(fileId);
+            return JsonConvert.SerializeObject(RequestHeaders(id));
         }
     }
 }
