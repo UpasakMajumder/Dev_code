@@ -1,0 +1,7 @@
+<svg class="icon-navigation icon-dashboard">
+  <use xlink:href="/gfx/svg/sprites/icons.svg#{{ page.name }}" />
+</svg>
+
+<svg class="icon icon-navigation icon-navigation--color icon-dashboard--color">
+  <use xlink:href="/gfx/svg/sprites/icons.svg#{{ page.name }}--color" />
+</svg>

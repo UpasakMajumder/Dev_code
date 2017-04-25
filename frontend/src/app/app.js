@@ -2,7 +2,7 @@
  * https://github.com/Keyamoon/svgxuse
  * If you do not use SVG <use xlink:href="…"> elements, remove svgxuse module
  */
-// import 'svgxuse';
+import 'svgxuse';
 import configureStore from './store';
 import { init, render } from './init';
 
@@ -18,6 +18,10 @@ const app = {
     init('num-format', document.getElementsByClassName('js-num-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
     init('collapse', document.getElementsByClassName('js-collapse'));
+    init('tooltip', document.getElementsByClassName('js-tooltip'));
+    init('sidebar', document.getElementsByClassName('js-sidebar'));
+    init('drop-zone', document.getElementsByClassName('js-drop-zone'));
+    init('dialog', document.getElementsByClassName('js-dialog'));
   },
 
   /* React */
@@ -25,6 +29,7 @@ const app = {
     /* Configure Redux store */
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
+    render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
   }
 };

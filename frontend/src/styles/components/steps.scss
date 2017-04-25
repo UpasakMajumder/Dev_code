@@ -1,0 +1,58 @@
+$size: 50px;
+
+.steps {
+  @extend .py-2;
+  @extend .px-3;
+  align-items: center;
+  border-radius: $border-radius * 4;
+  display: flex;
+  //TODO: var
+  background-color: #efefef;
+  position: relative;
+
+  &__item {
+    z-index: 2;
+  }
+
+  &__circle {
+    //TODO: var
+    background-color: #efefef;
+    border: 4px solid $brand-white;
+    border-radius: 100%;
+    height: $size;
+    width: $size;
+    text-align: center;
+
+    &.previous {
+      @extend .bg-secondary;
+    }
+
+    &.current {
+      & svg {
+        animation: rotation 2s infinite;
+      }
+    }
+
+    & svg {
+      width: 24px;
+    }
+  }
+
+  &__line {
+    @extend .bg-white;
+    height: 4px;
+    width: calc(100% - 1rem);
+    position: absolute;
+    z-index: 1;
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

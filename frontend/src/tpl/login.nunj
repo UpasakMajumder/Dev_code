@@ -5,31 +5,19 @@
 
 {% block content %}
 
-<div class="login">
-  <div class="login__form">
-    <div class="login__custom-logo mb-3">
-      <img src="http://satyr.io/205x40/red" alt="logo-image">
-    </div>
-    <div class="login__form-content js-login"></div>
-    <div class="login__form-links text-center">
-      <div class="row mb-3">
-        <div class="col-12">
-          <a href="#" class="link">Forgot password?</a>
-        </div>
+  <div class="login">
+    <div class="login__form">
+      <div class="login__custom-logo mb-3">
+        <img src="http://satyr.io/205x40/red" alt="logo-image">
       </div>
-      <div class="row">
-        <div class="col-12">
-          <a href="#" class="link">Request access</a>
-        </div>
-      </div>
+      <div class="login__form-content js-login"></div>
     </div>
-  </div>
-  <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
-  <div class="login__kadena-logo">
-    {% call svg.template(class='logo') %}
+    <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
+    <div class="login__kadena-logo">
+      {% call svg.template(class = 'logo') %}
       {{svg.use(name='logo')}}
       {% endcall %}
+    </div>
   </div>
-</div>
 
 {% endblock %}

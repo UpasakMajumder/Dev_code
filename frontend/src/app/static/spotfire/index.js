@@ -1,5 +1,5 @@
 export default class Spotfire {
-  constructor(container) {
+  constructor(container) { // container is a card block
     const serverUrl = 'https://spotfire.cloud.tibco.com/spotfire/wp/';
     const analysisPath = '/Gallery/Mashup';
     const parameters = '';

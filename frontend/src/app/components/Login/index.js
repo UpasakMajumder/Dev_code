@@ -25,6 +25,12 @@ class Login extends Component {
     this.loginText = LOGIN.login;
     this.passwordPlaceholder = LOGIN.passwordPlaceholder;
     this.passwordText = LOGIN.password;
+
+    document.querySelector('body').addEventListener('keypress', (event) => {
+      if (event.keyCode === 13) {
+        this.props.requestLogin(this.state.loginEmail, this.state.password, this.state.isKeepMeLoggedIn);
+      }
+    });
   }
 
   handleLoginEmailChange(e) {

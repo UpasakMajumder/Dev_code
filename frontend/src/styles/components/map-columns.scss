@@ -1,0 +1,35 @@
+.map-columns {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+
+  &__form {
+    width: 100%;
+    max-width: 526px;
+  }
+
+  &-form {
+    &__group-wrapper {
+      @extend .px-2;
+      @extend .py-3;
+      background-color: $content-emphasized-bg;
+      border-radius: $border-layout;
+
+      & .input__label {
+        font-size: $font-xs;
+      }
+    }
+
+    .input__wrapper {
+      @extend .mb-3;
+
+      & + .input__wrapper {
+        @extend .mt-3;
+      }
+    }
+
+    .btn-group {
+      @extend .pt-4;
+    }
+  }
+}

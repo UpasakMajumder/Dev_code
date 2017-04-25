@@ -1,31 +1,34 @@
 h2,
 h3,
 h4 {
-  color: $brand-dark;
+  color: $font-dark;
   font-weight: 100;
 }
 
 h1 {
   font-weight: bold;
-  font-size: $font-xxl;
+  font-size: $font-xl;
+  color: $font-dark;
 }
 
 h2 {
-  font-size: $font-xl;
+  font-size: $font-xxl;
+  color: $font-darker;
 }
 
 h3 {
-  font-style: italic;
+  font-weight: 500;
   font-size: $font-l;
+  color: $font-black;
 }
 
 h4 {
-  font-weight: 500;
-  font-size: $font-l;
+  font-size: $font-m;
+  color: $font-dark-grey;
 }
 
 .h--underlined {
   @extend .pb-1;
-  border-bottom: 1px solid $brand-dark;
+  border-bottom: 1px solid $font-dark;
   max-width: 500px;
 }

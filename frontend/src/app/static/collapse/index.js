@@ -2,17 +2,15 @@
 export default class Collapse {
   constructor(container) {
     this.container = container;
-    const togglers = Array.from(this.container.getElementsByClassName('js-toggle'));
+    const toggler = this.container.querySelector('.js-toggle');
     const expandedCssClass = 'isOpen';
 
-    togglers.forEach((toggler) => {
-      toggler.addEventListener('click', () => {
-        if (this.container.classList.contains(expandedCssClass)) {
-          this.container.classList.remove(expandedCssClass);
-        } else {
-          this.container.classList.add(expandedCssClass);
-        }
-      });
+    toggler.addEventListener('click', () => {
+      if (this.container.classList.contains(expandedCssClass)) {
+        this.container.classList.remove(expandedCssClass);
+      } else {
+        this.container.classList.add(expandedCssClass);
+      }
     });
   }
 }

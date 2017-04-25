@@ -4,9 +4,7 @@
  * weight: -5
  *
  * Styleguide Base - Utilities
- */
 
-/**
  * Hidden element
  *
  * markup:
@@ -22,4 +20,26 @@
 
 .height-full {
   height: 100%;
+}
+
+.width-fill {
+  width: 100%;
+}
+
+.cursor--pointer {
+  cursor: pointer;
+}
+
+%clearfix {
+  zoom: 1;
+
+  &:after,
+  &:before {
+    content: "";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
 }

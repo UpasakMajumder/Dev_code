@@ -8,32 +8,35 @@ $sidebar-font-size: 11px;
   align-items: center;
   flex: 0 0 $sidebar-width;
   width: $sidebar-width;
-  height: 100%;
   font-size: $sidebar-font-size;
-  color: $brand-white;
-  background: $brand-dark;
   transition: all .4s ease-in-out;
-  position: fixed;
+  position: absolute;
+
+  &.isFixed {
+    position: fixed;
+    top: 0;
+  }
 
   &__header {
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     font-size: $font-s;
     color: $brand-grey;
 
     .isOpen & {
       justify-content: space-between;
-      padding-right: $sidebar-padding-x;
-      padding-left: $sidebar-padding-x;
+      padding: 25px $sidebar-padding-x;
     }
   }
 
-  &__title {
+  &__icon {
     display: none;
+    width: 38px;
+    height: 24px;
 
     .isOpen & {
       display: block;
@@ -45,18 +48,27 @@ $sidebar-font-size: 11px;
     text-align: center;
   }
 
-  &__nav-item {
-    position: relative;
+  &__nav-link,
+  &__nav-link:hover,
+  &__nav-link:active {
+    text-decoration: none;
+    color: $font-grey;
+    font-weight: 100;
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 5px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+  }
+
+  &__nav-item {
+    position: relative;
+    margin-bottom: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
 
+    &.active,
     &:hover {
-      background-color: #000;
+      background-color: $sidebar-hover;
 
       .orange-bar {
         position: absolute;
@@ -64,7 +76,7 @@ $sidebar-font-size: 11px;
         left: 0;
         bottom: 0;
         width: 6px;
-        background-color: $brand-primary;
+        background-color: $brand-secondary;
         border-radius: 4px;
       }
 
@@ -77,8 +89,8 @@ $sidebar-font-size: 11px;
         width: 100%;
         height: 4px;
         border-radius: 50%;
-        background: $brand-dark;
-        transform: scaleY(0.4);
+        background: #fff;
+        transform: scaleY(-1);
       }
 
       &:before {
@@ -99,6 +111,7 @@ $sidebar-font-size: 11px;
 }
 
 // Hover/Active state to change SVG icons
+.css-sidebar__nav-item.active,
 .css-sidebar__nav-item:hover {
   .icon-dashboard {
     display: none;
