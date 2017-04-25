@@ -1,4 +1,4 @@
-{% macro select(label, optHolder, options, label2, className, error) %}
+{% macro select(label, optHolder, options, label2, className, error, name, data) %}
   <div class=" input__wrapper {% if className %}{{ className }}{% endif %}">
 
     {% if label %}
@@ -10,7 +10,7 @@
     {% endif %}
 
     <div class="input__select {% if error %}input--error{% endif %}">
-      <select>
+      <select name="{{name}}" {{data}}>
         {% if optHolder %}
           <option disabled selected>{{ optHolder }}</option>
         {% endif %}
@@ -25,6 +25,4 @@
     </div>
 
   </div>
-
-
 {% endmacro %}

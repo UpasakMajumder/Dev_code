@@ -50,7 +50,7 @@ button {
     }
   }
 }
-$colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, success: $brand-success );
+$colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, success: $brand-success );
 
 @each $key, $color in $colors {
   .btn-#{$key} {
@@ -115,6 +115,14 @@ $colors: ( main: $brand-primary, action: $brand-secondary, info: $brand-info, su
     padding: 0;
     margin: 0;
   }
+}
+
+.btn--circle {
+  @extend .line-height--off;
+
+  @include rem(padding, 5px);
+  border-radius: 100%;
+  display: block;
 }
 
 .btn-group {

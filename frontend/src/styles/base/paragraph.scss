@@ -1,36 +1,32 @@
 .p-intro {
   font-size: $font-s;
-  color: $font-dark-grey;
-  font-weight: 100;
+  color: $brand-dark;
+  font-weight: 500;
 }
 
 .p-primary {
-  font-size: $font-xs;
-  color: $font-grey;
-  font-weight: 100;
+  font-size: initial;
+  color: $brand-dark;
+  font-weight: 500;
 }
 
 .p-quote {
   font-size: $font-l;
-  color: $font-darker;
+  color: $brand-dark;
   font-style: italic;
   text-align: center;
-  font-weight: 100;
+  font-weight: 500;
 }
 
 .p-small {
   font-size: $font-xxs;
-  color: $font-darker;
-  font-weight: 100;
+  color: $brand-dark;
+  font-weight: 500;
 }
 
 .p-note {
   @extend .p-primary;
   font-size: initial;
+  color: $font-note-color;
   font-style: italic;
-}
-
-.p-info {
-  @extend .p-intro;
-  font-size: initial;
 }

@@ -5,37 +5,33 @@
 */
 
 // colors
-$brand-primary: #ff6d19;
-$brand-secondary: #009bd8;
+$brand-primary: #009bd8;
+$brand-secondary: #ff6d19;
 $brand-info: #ffbd31;
 $brand-success: #00bb89;
-$brand-grey: #e4e7ea;
-$brand-lightgrey: #f6f6f6;
-$brand-dark: #404040;
-$brand-darker: #2b2b2b;
 $brand-dangerous: #c91c23;
-$brand-white: #fff;
-$brand-darkgrey: #a6a6a6;
-$brand-text: #777;
 
-// font colors
-$font-grey: #777;
-$font-dark-grey: #4a4a4a;
-$font-dark: #404040;
-$font-darker: #2b2b2b;
-$font-black: #00011d;
+$brand-white:         #fff;
+$brand-grey:          #e4e7ea;
+$brand-lightgrey:     #f6f6f6;
+$brand-darkgrey:      #a6a6a6;
+$font-grey:           #777;
+$brand-dark:          #404040;
+$brand-darker:        #2b2b2b;
+$font-dark-grey:      #4a4a4a;
+$font-black:          #00011d;
+$main-gutter-color:   #edf1f5;
+$sidebar-hover:       #f0f4f5;
+$font-note-color:     #838386;
 
-$font-success: #028b66;
-
-$main-gutter-color: #edf1f5;
-$sidebar-hover: #f0f4f5;
-
-$content-emphasized-bg: rgba(238, 238, 238, 0.5);
-$table-bottom-shadow: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+$content-emphasized-bg: #eee;
 $processed-list-block-border: #e7eaec;
 
+$table-bottom-shadow: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
 $error-mark: #ff6d2e;
 $success-mark: #00bd8c;
+$font-success: #028b66;
+$brand-yellow-light: #ffbd61;
 
 /*
 ========================
@@ -67,4 +63,3 @@ $border-radius-xl: 8px;
 $main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
 $img-path: '/gfx/images/';
-$border-layout: 5px;

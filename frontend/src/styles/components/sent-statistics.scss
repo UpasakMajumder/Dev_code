@@ -1,0 +1,30 @@
+.sent-statistics {
+  @include rem(padding, 15px);
+  background-color: $brand-lightgrey;
+  color: $success-mark;
+  border-radius: $border-radius-xl;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+
+  &__item {
+    text-align: center;
+  }
+
+  &__title,
+  &__value {
+    @extend .line-height--one;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  &__title {
+    @include rem(margin-bottom, 10px);
+    text-transform: uppercase;
+    font-size: $font-xxs;
+  }
+
+  &__value {
+    font-size: $font-large;
+  }
+}

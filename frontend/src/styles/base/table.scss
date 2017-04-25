@@ -22,3 +22,12 @@
     }
   }
 }
+
+.tbody-counter {
+  counter-reset: table-row;
+
+  & > tr > td:first-child:before {
+    counter-increment: table-row;
+    content: counter(table-row);
+  }
+}
