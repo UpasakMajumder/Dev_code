@@ -9,5 +9,9 @@ namespace Kadena.Services.MailingList
         [OperationContract]
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, UriTemplate = "UploadFile")]
         ResponseMessage UploadFile(UploadFileData data);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, UriTemplate = "UploadFilePath")]
+        ResponseMessage UploadFilePath();
     }
 }

@@ -2,6 +2,9 @@
 using System.Net.Http;
 using CMS.DataEngine;
 using CMS.SiteProvider;
+using CMS.Helpers;
+using CMS.IO;
+using System;
 
 namespace Kadena.Services.MailingList
 {
@@ -91,6 +94,7 @@ namespace Kadena.Services.MailingList
             }
             // Upload file
             // Return headers
+            // ef0c7c36-4934-4118-b317-2604ac69138c
 
 
             return new ResponseMessage { IsSuccess = true, Message = "Method called" };
@@ -129,6 +133,37 @@ namespace Kadena.Services.MailingList
                         return fileId;
                     }
                 }
+            }
+        }
+
+        private void GetHeaders()
+        {
+            using (var client = new HttpClient())
+            {
+                using (var content = new MultipartFormDataContent())
+                {
+                    using (var message = client.GetAsync(""))
+                    {
+                        var awsResponse = message.Result;
+                        if (awsResponse.IsSuccessStatusCode)
+                        {
+                            var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                        }
+                    }
+                }
+            }
+        }
+
+        public ResponseMessage UploadFilePath()
+        {
+            var path = @"C:\Projects\MailingListTest.csv";
+            using (var fs = FileStream.New(path, FileMode.Open))
+            {
+                var fileId = SendToService(fs, System.IO.Path.GetFileName(path));
+                if (fileId == Guid.Empty)
+                    return new ResponseMessage { IsSuccess = false, Message = "Failed to upload file." };
+                else
+                    return new ResponseMessage { IsSuccess = true, Message = $"File id is {fileId}" };
             }
         }
     }
