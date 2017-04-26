@@ -10,10 +10,9 @@ $sidebar-width-close: 70px;
   &__inner {
     background-color: $brand-white;
     width: 100%;
-    padding: 24px;
+    padding: 24px 24px 24px 34px;
     // Hardcoded height
     min-height: calc(100vh - 192px);
-    border-left: $main-layout-gutter solid $main-gutter-color;
   }
 
   &-header {
