@@ -1,39 +1,28 @@
 export default class Sidebar {
   constructor(container) {
     this.container = container;
-    this.startSidebarPos = -1;
     this.animatedClass = 'isFixed';
+    this.containerOffsetTop = container.getBoundingClientRect().top;
+    this.containerHeight = container.offsetHeight;
+    this.screenVisibleHeight = window.innerHeight - this.containerOffsetTop;
     this.initScroll();
+    this.resize();
   }
 
   initScroll() {
     window.addEventListener('scroll', () => {
-      const bar = this.container;
-      if (this.startSidebarPos < 0) {
-        this.startSidebarPos = Sidebar.findPosY(bar);
-      }
-
-      if (window.pageYOffset > this.startSidebarPos) {
-        bar.classList.add(this.animatedClass);
+      if (window.scrollY < this.containerOffsetTop || this.containerHeight > this.screenVisibleHeight) {
+        this.container.classList.remove(this.animatedClass);
       } else {
-        bar.classList.remove(this.animatedClass);
+        this.container.classList.add(this.animatedClass);
       }
-
     });
   }
 
-  static findPosY(obj) {
-    let curtop = 0;
-    if (typeof obj.offsetParent !== 'undefined' && obj.offsetParent) {
-      while (obj.offsetParent) {
-        curtop += obj.offsetTop;
-        obj = obj.offsetParent;
-      }
-      curtop += obj.offsetTop;
-    } else if (obj.y) {
-      curtop += obj.y;
-    }
-    return curtop;
+  resize() {
+    window.addEventListener('resize', () => {
+      this.screenVisibleHeight = window.innerHeight - this.containerOffsetTop;
+    });
   }
 
 }
