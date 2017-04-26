@@ -1,0 +1,94 @@
+$product-img-size: 250px;
+$product-blocks-gap: 15px;
+
+.product-view {
+  &__img {
+    @include rem(margin-right, $product-blocks-gap);
+    position: relative;
+    float: left;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: $product-img-size;
+    height: $product-img-size;
+  }
+
+  &__zoom {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  &__block {
+    overflow: hidden;
+    width: calc(100% - #{$product-img-size} - #{$product-blocks-gap});
+    margin-left: calc(#{$product-img-size} + #{$product-blocks-gap});
+
+    & > div {
+      @include rem(margin-bottom, 30px);
+    }
+  }
+
+  &__info {
+    @include rem(padding, 10px);
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    border: 1px solid $brand-grey;
+
+    div:nth-child(2) {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    div:nth-child(1) {
+      flex-grow: 0;
+      flex-shrink: 1;
+    }
+
+    span {
+      @include rem(margin-right, 20px);
+      font-size: $font-xs;
+      white-space: nowrap;
+    }
+  }
+
+  &__properties {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__property {
+    @include rem(line-height, 35px);
+    @include rem(margin-right, 30px);
+    font-weight: bold;
+  }
+
+  &__property-val {
+    font-weight: initial;
+  }
+
+  &__tables {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0 -2%;
+
+    .table {
+      width: 46%;
+      margin: 0 2%;
+
+      tr > th:first-child {
+        @include rem(padding-left, 35px);
+        position: relative;
+
+        .icon {
+          position: absolute;
+          left: 17px;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+}
