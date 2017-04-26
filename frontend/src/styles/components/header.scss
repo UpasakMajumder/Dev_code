@@ -1,9 +1,10 @@
 .css-header {
   @extend .bg-white;
-  height: 60px;
+  height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
   font-size: $font-s;
+  border-bottom: $main-layout-gutter solid $main-gutter-color;
 
   .navbar-brand {
     color: inherit;
