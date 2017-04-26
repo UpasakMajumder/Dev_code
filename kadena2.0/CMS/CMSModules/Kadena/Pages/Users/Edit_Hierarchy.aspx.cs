@@ -18,7 +18,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
         private int _currentUserId;
         private int _currentSiteId;
 
-        private string _currentSiteUsers;
+        private string _currentSiteUsersFilter;
 
         private string _selectedChilds;
         private string _selectedParents;
@@ -33,7 +33,10 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
                 .And()
                 .WhereNotEquals("UserID", _currentUserId);
 
-            _currentSiteUsers = TextHelper.Join(",", DataHelper.GetStringValues(currentSiteUserIds.Tables[0], "UserID"));
+            if (currentSiteUserIds.Count > 0)
+                _currentSiteUsersFilter = string.Format("UserId in ({0})", TextHelper.Join(",", DataHelper.GetStringValues(currentSiteUserIds.Tables[0], "UserID")));
+            else
+                _currentSiteUsersFilter = "UserId is null";
 
             if (_currentUserId > 0)
             {
@@ -192,7 +195,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
             }
 
             // Filtering data on control for parent users.
-            selParent.WhereCondition = $"UserId in ({_currentSiteUsers})"
+            selParent.WhereCondition = _currentSiteUsersFilter
                 + (string.IsNullOrWhiteSpace(_selectedChilds)
                     ? string.Empty
                     : $" and UserId not in ({_selectedChilds})");
@@ -219,7 +222,7 @@ namespace CMSApp.CMSModules.Kadena.Pages.Users
             }
 
             // Filtering data on control for child users.
-            selChild.WhereCondition = $"UserId in ({_currentSiteUsers})"
+            selChild.WhereCondition = _currentSiteUsersFilter
                 + (string.IsNullOrWhiteSpace(_selectedParents)
                     ? string.Empty
                     : $" and UserId not in ({_selectedParents})");
