@@ -18,6 +18,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         private const string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
         private const string _templateType = "membershipchangepassword";
         private const string _setUpPasswordUrlMacro = "SetUpPasswordUrl";
+        private const string _setUpPasswordUrlSettingKey = "KDA_SetUpPasswordURL";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -190,9 +191,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         {
             string setUpUrl;
             if (_siteId > 0)
-                setUpUrl = SettingsKeyInfoProvider.GetURLValue($"{siteSelector.SiteName}.KDA_SetUpPasswordURL", string.Empty);
+                setUpUrl = SettingsKeyInfoProvider.GetURLValue($"{siteSelector.SiteName}.{_setUpPasswordUrlSettingKey}", string.Empty);
             else
-                setUpUrl = SettingsKeyInfoProvider.GetURLValue("KDA_SetUpPasswordURL", string.Empty);
+                setUpUrl = SettingsKeyInfoProvider.GetURLValue(_setUpPasswordUrlSettingKey, string.Empty);
             return URLHelper.AddParameterToUrl(setUpUrl, "h", userCode.ToString());
         }
     }
