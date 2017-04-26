@@ -21,6 +21,7 @@ namespace Kadena.Services.MailingList
 
         public ResponseMessage UploadFile(UploadFileData data)
         {
+            // Create container
             if (string.IsNullOrWhiteSpace(data.FileName))
             {
                 return new ResponseMessage { IsSuccess = false, Message = "File name can not be empty." };
@@ -55,7 +56,6 @@ namespace Kadena.Services.MailingList
             }
 
             var containerId = Guid.Empty;
-            // Create container
             using (var client = new HttpClient())
             {
                 using (var content = new StringContent(JsonConvert.SerializeObject(new
@@ -95,16 +95,11 @@ namespace Kadena.Services.MailingList
                     }
                 }
             }
-            // Upload file
-            // Return headers
-            // ef0c7c36-4934-4118-b317-2604ac69138c
-
-
-            return new ResponseMessage { IsSuccess = true, Message = "Method called" };
         }
 
         private Guid SendToService(System.IO.Stream fileStream, string fileName)
         {
+            // Upload file
             string fileServiceAddress = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}");
             if (string.IsNullOrWhiteSpace(fileServiceAddress))
             {
@@ -141,6 +136,7 @@ namespace Kadena.Services.MailingList
 
         private IEnumerable<string> RequestHeaders(Guid fileId)
         {
+            // Return headers
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
             if (string.IsNullOrWhiteSpace(customerName))
             {
@@ -151,19 +147,19 @@ namespace Kadena.Services.MailingList
             {
                 return null;
             }
-
+            getHeadersAddress = getHeadersAddress
+                .Replace("{fileId}", fileId.ToString())
+                .Replace("{customerName}", customerName)
+                .Replace("{bucketType}", _bucketType);
             using (var client = new HttpClient())
             {
-                using (var content = new MultipartFormDataContent())
+                using (var message = client.GetAsync(getHeadersAddress))
                 {
-                    using (var message = client.GetAsync(getHeadersAddress))
+                    var awsResponse = message.Result;
+                    if (awsResponse.IsSuccessStatusCode)
                     {
-                        var awsResponse = message.Result;
-                        if (awsResponse.IsSuccessStatusCode)
-                        {
-                            var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
-                            return (response.Response as JArray).ToObject<IEnumerable<string>>();
-                        }
+                        var response = JsonConvert.DeserializeObject<AWSResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                        return (response.Response as JArray).ToObject<IEnumerable<string>>();
                     }
                 }
             }
