@@ -17,4 +17,12 @@ a:focus {
     color: darken($brand-primary, 10%);
     text-decoration: none;
   }
+
+  &--no-decoration {
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+    }
+  }
 }

@@ -5,3 +5,15 @@
 .line-height--one {
   line-height: 1;
 }
+
+// text--left
+// text--right
+// text--center
+
+$aligns: (left, right, center);
+
+@each $align in $aligns {
+  .text--#{$align} {
+    text-align: $align;
+  }
+}

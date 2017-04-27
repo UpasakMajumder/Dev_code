@@ -19,10 +19,21 @@ $sidebar-width-close: 70px;
   &-header {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
     align-items: center;
     padding-bottom: 15px;
     margin-bottom: 12px;
+
+    .breadcrumbs {
+      @extend .mb-3;
+    }
+
+    &__page-name {
+      order: 1;
+      margin-right: auto;
+    }
 
     &__inner {
       display: flex;
