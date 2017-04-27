@@ -355,8 +355,4 @@
   </div>
 </div>
 
-
-
-
-
 {% endblock %}

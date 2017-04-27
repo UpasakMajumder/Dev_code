@@ -1,4 +1,4 @@
-{% import "helpers/svg.nunj" as svg %}
+{% import "macro/svg.nunj" as svg %}
 
 {% set pages = [
 {'title': 'Dashboard', 'name': 'dashboard'},
@@ -33,7 +33,7 @@
           <div class="orange-bar"></div>
           <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
 
-            {% include "partials/svgs.nunj" %}
+            {% include "components/svgs.nunj" %}
 
             <span>{{ page.title }}</span>
           </a>

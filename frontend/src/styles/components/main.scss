@@ -1,12 +1,12 @@
-$sidebar-width-open: 220px;
 $padding: 15px;
 
 .css-main {
-  border-top: $main-layout-gutter solid $main-gutter-color;
+  min-height: calc(100% - #{$header-size});
+  position: relative;
 
   &.isOpen {
     .css-sidebar {
-      width: $sidebar-width-open;
+      width: $sidebar-width-large;
       font-size: $font-s;
 
       &__nav-link {
@@ -19,13 +19,32 @@ $padding: 15px;
       }
     }
 
-    .content {
-      padding-left: $sidebar-width-open;
+    &:before {
+      left: $sidebar-width-large;
     }
 
-    .footer {
-      padding-left: $sidebar-width-open;
+    .content {
+      padding-left: $sidebar-width-large;
     }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: $main-layout-gutter;
+    top: 0;
+    left: $sidebar-width-small;
+    bottom: 0;
+    background-color: $main-gutter-color;
+    transition: $sidebar-transition;
+  }
+
+  &:after {
+    clear: both;
+    content: '';
+    display: block;
+    height: 0;
   }
 }
 
@@ -36,6 +55,6 @@ $padding: 15px;
   &__inner {
     background-color: $brand-white;
     overflow: hidden;
-    border-radius: $border-layout;
+    border-radius: $border-radius-xl;
   }
 }

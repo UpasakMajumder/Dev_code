@@ -1,9 +1,9 @@
-{% extends "layouts/default-fluid.nunj" %}
-{% from "helpers/sidebar.nunj" import sidebar %}
+{% extends "layouts/default.nunj" %}
+{% from "macro/sidebar.nunj" import sidebar %}
 
-{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
 
-{% from "helpers/sidebar.nunj" import sidebar %}
+{% from "macro/sidebar.nunj" import sidebar %}
 
 {% set title = "Pages" %}
 

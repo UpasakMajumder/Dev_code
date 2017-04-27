@@ -1,0 +1,99 @@
+  {% extends "layouts/default.nunj" %}
+
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+
+{% from "macro/sidebar.nunj" import sidebar %}
+
+{% from "macro/select.nunj" import select %}
+
+{% import "macro/svg.nunj" as svg %}
+
+{% set title = "Mailing lists" %}
+
+{% block content %}
+  {{ sidebar('Mailing list') }}
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="mailing-lists__header">
+          <h1 class="content-header__page-name">{{ title }}</h1>
+        </div>
+
+        {{ breadcrumb(['Home','Mailing list']) }}
+      </div>
+      <div class="content-block">
+        <div class="mailing-lists">
+
+          <div class="mailing-lists__row">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Line</th>
+                  <th>Name</th>
+                  <th>Adderess Line 1</th>
+                  <th>Adderess Line 2</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
+                </tr>
+              </thead>
+              <tbody class="tbody-counter">
+                <tr class="js-first-tr">
+                  <td></td>
+                  <td>
+
+                    <div class="input__wrapper">
+                      <input type="text" data-name="line" class="input__text" placeholder="Empty" name='line-1'>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input__wrapper">
+                      <input type="text" data-name="name" class="input__text" placeholder="Empty" name='name-1'>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input__wrapper">
+                      <input type="text" data-name="adress1" class="input__text" placeholder="Empty" name='adress1-1'>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input__wrapper">
+                      <input type="text" data-name="adress2" class="input__text" placeholder="Empty" name='adress2-1'>
+                    </div>
+                  </td>
+                  <td>
+                    {{select(optHolder = "Choose", options = ['option_1', 'option_2', 'option_3'],name = 'select-1' , data="data-name=state")}}
+                  </td>
+                  <td>
+                    <div class="input__wrapper">
+                      <input type="text" data-name="zip" class="input__text" placeholder="Empty" name="zip-1">
+                    </div>
+                  </td>
+                </tr>
+                <tr class="js-add-tr additional-row">
+                  <td></td>
+                  <td colspan="6">
+                    <a href="#" class="js-add-tr-toggler mailing-lists__add-link">
+                      <span class="mailing-lists__add-row-icon">
+                        {% call svg.template('icon-modal') %}
+                        {{svg.use(name='plus')}}
+                        {% endcall %}
+                      </span>
+                      <span>Add an adress</span>
+                    </a>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mailing-lists__row">
+            <a href="#" class="btn-action">New mailing</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

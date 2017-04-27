@@ -10,10 +10,9 @@ $sidebar-width-close: 70px;
   &__inner {
     background-color: $brand-white;
     width: 100%;
-    padding: 24px;
+    padding: 24px 24px 24px 34px;
     // Hardcoded height
     min-height: calc(100vh - 192px);
-    border-left: $main-layout-gutter solid $main-gutter-color;
   }
 
   &-header {
@@ -23,5 +22,18 @@ $sidebar-width-close: 70px;
     align-items: center;
     padding-bottom: 15px;
     margin-bottom: 12px;
+
+    &__inner {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: baseline;
+    }
+
+    &__btn {
+      @extend .bg-secondary;
+      @extend .btn--circle;
+
+      @include rem(margin-left, 10px);
+    }
   }
 }

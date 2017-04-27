@@ -1,4 +1,3 @@
-$sidebar-width: 70px;
 $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
 
@@ -6,11 +5,11 @@ $sidebar-font-size: 11px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 $sidebar-width;
-  width: $sidebar-width;
+  flex: 0 0 $sidebar-width-small;
+  width: $sidebar-width-small;
   font-size: $sidebar-font-size;
-  transition: all .4s ease-in-out;
-  position: absolute;
+  transition: $sidebar-transition;
+  float: left;
 
   &.isFixed {
     position: fixed;
@@ -76,7 +75,7 @@ $sidebar-font-size: 11px;
         left: 0;
         bottom: 0;
         width: 6px;
-        background-color: $brand-secondary;
+        background-color: $brand-primary;
         border-radius: 4px;
       }
 

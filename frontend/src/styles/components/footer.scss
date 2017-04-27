@@ -1,10 +1,11 @@
 .footer {
+  height: $footer-size;
   padding: 24px 0;
   background-color: $brand-white;
   text-align: center;
   border-top: $main-layout-gutter solid $main-gutter-color;
-  border-bottom-left-radius: $border-layout;
-  border-bottom-right-radius: $border-layout;
+  border-bottom-left-radius: $border-radius-xl;
+  border-bottom-right-radius: $border-radius-xl;
 
   & a {
     @extend .link;

@@ -1,10 +1,10 @@
-{% extends "layouts/default-fluid.nunj" %}
+{% extends "layouts/default.nunj" %}
 
-{% from "helpers/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
 
-{% from "helpers/sidebar.nunj" import sidebar %}
+{% from "macro/sidebar.nunj" import sidebar %}
 
-{% import "helpers/svg.nunj" as svg %}
+{% import "macro/svg.nunj" as svg %}
 
 {% set title = "Mailing lists" %}
 
@@ -13,9 +13,11 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <div class="mailing-lists__header">
+        <div class="content-header__inner">
           <h1 class="content-header__page-name">{{ title }}</h1>
-          <a href="#" class="mailing-lists__plus">
+          <a href="#" class="content-header__btn js-tooltip"
+             data-tooltip-placement="right"
+             data-tooltip-title="Add new mailing list">
             {% call svg.template('icon-modal') %}
               {{svg.use(name='plus')}}
             {% endcall %}
@@ -27,22 +29,22 @@
       <div class="content-block">
         <div class="mailing-lists">
           <div class="mailing-lists__row">
-            <div class="mailing-lists__statistics">
-              <div class="mailing-lists__statistics-item">
-                <p class="mailing-lists__statistics-title">Sent in 90 days</p>
-                <p class="mailing-lists__statistics-value">6</p>
+            <div class="sent-statistics">
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Sent in 90 days</p>
+                <p class="sent-statistics__value">6</p>
               </div>
-              <div class="mailing-lists__statistics-item">
-                <p class="mailing-lists__statistics-title">Correct addresses</p>
-                <p class="mailing-lists__statistics-value">2105</p>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Correct addresses</p>
+                <p class="sent-statistics__value">2105</p>
               </div>
-              <div class="mailing-lists__statistics-item">
-                <p class="mailing-lists__statistics-title">Bad addresses</p>
-                <p class="mailing-lists__statistics-value">10</p>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Bad addresses</p>
+                <p class="sent-statistics__value">10</p>
               </div>
-              <div class="mailing-lists__statistics-item">
-                <p class="mailing-lists__statistics-title">Success rate</p>
-                <p class="mailing-lists__statistics-value">99,9%</p>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Success rate</p>
+                <p class="sent-statistics__value">99,9%</p>
               </div>
             </div>
           </div>

@@ -16,7 +16,7 @@
     p {
       @include rem(margin-bottom, 10px);
       font-weight: 100;
-      color: $font-dark;
+      color: $brand-dark;
 
       &:last-child {
         margin: 0;
@@ -49,121 +49,6 @@
       flex-wrap: nowrap;
       align-items: center;
       font-weight: 100;
-    }
-  }
-
-  &__template {
-    @include rem(margin-bottom, 30px);
-    position: relative;
-
-    & > *:not(:last-child, :first-child) {
-      @include rem(margin-bottom, 10px);
-    }
-  }
-
-  &__img {
-    height: 150px;
-    background-size: contain;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-
-    img {
-      width: 100%;
-    }
-  }
-
-  &__breadcrumbs {
-    span {
-      @include rem(margin-right, 5px);
-      display: inline-block;
-      color: $font-dark;
-      font-size: $font-xxs;
-
-      &:not(:last-child) {
-        &:after {
-          @include rem(margin-left, 5px);
-          content: '/';
-        }
-      }
-    }
-  }
-
-  &__title {
-    $line-height: 1.625;
-
-    h3 {
-      line-height: $line-height;
-      font-size: $font-size-default;
-      color: $font-black;
-      font-weight: bold;
-      margin: 0;
-      height: $font-size-default * 2 * $line-height;
-      overflow: hidden;
-    }
-  }
-
-  &__favourite {
-    position: absolute;
-    cursor: pointer;
-    margin: 0;
-    left: 0;
-    top: -11px;
-    height: 22px;
-
-    .mailing-ready__icon {
-      &--filled {
-        display: none;
-      }
-    }
-
-    &.isOpen {
-      .mailing-ready__icon {
-        &--filled {
-          display: block;
-        }
-
-        &--unfilled {
-          display: none;
-        }
-      }
-    }
-  }
-
-  &__stock {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    font-weight: 100;
-    font-size: $font-xs;
-
-    svg {
-      @include rem(margin-right, 5px);
-    }
-
-    &--available {
-      color: $font-success;
-    }
-
-    &--unavailable {
-      color: $font-dark;
-    }
-
-    &--out {
-      color: $error-mark;
-    }
-  }
-
-  &__use {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-
-    input {
-      flex-shrink: 9000;
-    }
-
-    a {
-      @include rem(margin-left, 10px);
     }
   }
 }
