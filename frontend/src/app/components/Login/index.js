@@ -68,20 +68,15 @@ class Login extends Component {
 
     return (
       <div className="css-login">
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
+        <div className="mb-4">
             <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
                 error={this.getErrorMessage('loginEmail', response)} />
-          </div>
         </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
+        <div className="mb-4">
             <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
                 error={this.getErrorMessage('password', response)} />
-          </div>
         </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
+        <div className="mb-4">
             <div className="input__wrapper">
               <CheckboxInput
                 id="dom-1"
@@ -91,11 +86,10 @@ class Login extends Component {
                 onChange={e => this.handleIsKeepMeLoggedIn(e)}
               />
           </div>
-          </div>
         </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12 text-center">
-            <button type="button" className="btn-main css-login__login-button" disabled={isLoading}
+        <div className="mb-4">
+          <div className="text-center">
+            <button type="button" className="btn-main login__login-button" disabled={isLoading}
              onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
           </div>
         </div>
