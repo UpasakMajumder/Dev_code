@@ -23,6 +23,8 @@ const app = {
     init('drop-zone', document.getElementsByClassName('js-drop-zone'));
     init('dialog', document.getElementsByClassName('js-dialog'));
     init('add-tr', document.getElementsByClassName('js-add-tr'));
+    init('redirection', document.getElementsByClassName('js-redirection'));
+    init('confirmation', document.getElementsByClassName('js-confirmation'));
   },
 
   /* React */
