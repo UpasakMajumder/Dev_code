@@ -1,4 +1,4 @@
-  {% extends "layouts/default.nunj" %}
+{% extends "layouts/default.nunj" %}
 
 {% from "macro/breadcrumb.nunj" import breadcrumb %}
 
@@ -62,11 +62,11 @@
                     </div>
                   </td>
                   <td>
-                    {{select(optHolder = "Choose", options = ['option_1', 'option_2', 'option_3'],name = 'select-1' , data="data-name=state")}}
+                    {{select(optHolder = "Choose", options = ['option_1', 'option_2', 'option_3'],name = 'state-1' , data={'name':'state'})}}
                   </td>
                   <td>
                     <div class="input__wrapper">
-                      <input type="text" data-name="zip" class="input__text" placeholder="Empty" name="zip-1">
+                      <input type="number" data-name="zip" class="input__text" placeholder="Empty" name="zip-1">
                     </div>
                   </td>
                 </tr>
@@ -75,7 +75,7 @@
                   <td colspan="6">
                     <a href="#" class="js-add-tr-toggler mailing-lists__add-link">
                       <span class="mailing-lists__add-row-icon">
-                        {% call svg.template('icon-modal') %}
+                        {% call svg.template('icon-add-circle') %}
                         {{svg.use(name='plus')}}
                         {% endcall %}
                       </span>

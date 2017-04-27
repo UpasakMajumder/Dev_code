@@ -10,7 +10,12 @@
     {% endif %}
 
     <div class="input__select {% if error %}input--error{% endif %}">
-      <select name="{{name}}" {{data}}>
+      <select name="{{name}}"
+      {% if data %}
+        {% for name, val in data %}
+          data-{{name}}="{{val}}" 
+        {% endfor %}
+      {% endif %}>
         {% if optHolder %}
           <option disabled selected>{{ optHolder }}</option>
         {% endif %}
