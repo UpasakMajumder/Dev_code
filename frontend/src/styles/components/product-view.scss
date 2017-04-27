@@ -1,14 +1,13 @@
-$product-img-size: 250px;
-$product-blocks-gap: 15px;
-
 .product-view {
+  $product-img-size: 250px;
+  $product-blocks-gap: 15px;
+
   &__img {
     @include rem(margin-right, $product-blocks-gap);
+
+    @extend .inline-bg;
     position: relative;
     float: left;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
     width: $product-img-size;
     height: $product-img-size;
   }
@@ -37,21 +36,21 @@ $product-blocks-gap: 15px;
     justify-content: space-between;
     border: 1px solid $brand-grey;
 
-    div:nth-child(2) {
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    div:nth-child(1) {
-      flex-grow: 0;
-      flex-shrink: 1;
-    }
-
     span {
       @include rem(margin-right, 20px);
       font-size: $font-xs;
       white-space: nowrap;
     }
+  }
+
+  &__info-description {
+    flex-grow: 0;
+    flex-shrink: 1;
+  }
+
+  &__info-btn {
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   &__properties {
@@ -66,17 +65,17 @@ $product-blocks-gap: 15px;
   }
 
   &__property-val {
-    font-weight: initial;
+    @extend .weight--normal;
   }
 
   &__tables {
     display: flex;
     flex-wrap: nowrap;
-    margin: 0 -2%;
+    margin: 0 -#{$product-blocks-gap};
 
     .table {
-      width: 46%;
-      margin: 0 2%;
+      width: calc(50% - #{$product-blocks-gap*2});
+      margin: 0 $product-blocks-gap;
 
       tr > th:first-child {
         @include rem(padding-left, 35px);
