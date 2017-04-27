@@ -1,0 +1,30 @@
+{% import "macro/svg.nunj" as svg %}
+
+<div class="pagination">
+  <div class="pagination__item">
+    <a href="#" class="pagination__step">
+      {% call svg.template('icon-chevron mr-1') %}
+      {{svg.use(name='chevron')}}
+      {% endcall %}
+      Previous
+    </a>
+  </div>
+  <div class="pagination__item">
+    <a href="#" class="pagination__page">1</a>
+    <span class="pagination__dots">...</span>
+    <a href="#" class="pagination__page">4</a>
+    <a href="#" class="pagination__page pagination__page--active">5</a>
+    <a href="#" class="pagination__page">6</a>
+    <span class="pagination__dots">...</span>
+    <a href="#" class="pagination__page">10</a>
+  </div>
+
+  <div class="pagination__item">
+    <a href="#" class="pagination__step">
+      Next
+      {% call svg.template('icon-chevron icon--180 ml-1') %}
+      {{svg.use(name='chevron')}}
+      {% endcall %}
+    </a>
+  </div>
+</div>
