@@ -51,4 +51,36 @@
       height: 100%;
     }
   }
+
+  &__table-dialog {
+    width: 100%;
+    max-height: 475px;
+    overflow: auto;
+
+    button {
+      display: block;
+      margin: auto;
+    }
+
+    td > span,
+    th > span {
+      @include rem(height, 40px);
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+
+  &__dialog-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__dialog-footer-text {
+    @include rem(padding-right, 30px);
+  }
+
+  &__dialog-footer-btn {
+    flex-shrink: 0;
+  }
 }
