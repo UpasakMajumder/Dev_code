@@ -76,6 +76,7 @@
     .table {
       width: calc(50% - #{$product-blocks-gap*2});
       margin: 0 $product-blocks-gap;
+      font-size: $font-xs;
 
       tr > th:first-child {
         @include rem(padding-left, 35px);
