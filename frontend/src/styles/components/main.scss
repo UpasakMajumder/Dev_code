@@ -2,7 +2,6 @@ $padding: 15px;
 
 .css-main {
   min-height: calc(100% - #{$header-size});
-  margin-bottom: -$footer-size;
   position: relative;
 
   &.isOpen {
@@ -36,7 +35,7 @@ $padding: 15px;
     width: $main-layout-gutter;
     top: 0;
     left: $sidebar-width-small;
-    bottom: $footer-size;
+    bottom: 0;
     background-color: $main-gutter-color;
     transition: $sidebar-transition;
   }
@@ -45,7 +44,7 @@ $padding: 15px;
     clear: both;
     content: '';
     display: block;
-    height: $footer-size;
+    height: 0;
   }
 }
 

@@ -2770,35 +2770,35 @@ var map = {
 	],
 	"./static/add-tr/index": [
 		255,
-		2
+		7
 	],
 	"./static/add-tr/index.js": [
 		255,
-		2
+		7
 	],
 	"./static/collapse/index": [
 		256,
-		1
+		2
 	],
 	"./static/collapse/index.js": [
 		256,
-		1
+		2
 	],
 	"./static/dialog/index": [
 		257,
-		1
+		2
 	],
 	"./static/dialog/index.js": [
 		257,
-		1
+		2
 	],
 	"./static/drop-zone/index": [
 		258,
-		2
+		1
 	],
 	"./static/drop-zone/index.js": [
 		258,
-		2
+		1
 	],
 	"./static/num-format/index": [
 		259,
@@ -2810,11 +2810,11 @@ var map = {
 	],
 	"./static/sidebar/index": [
 		260,
-		7
+		1
 	],
 	"./static/sidebar/index.js": [
 		260,
-		7
+		1
 	],
 	"./static/spotfire/index": [
 		261,
