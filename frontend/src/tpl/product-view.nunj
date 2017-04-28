@@ -32,9 +32,6 @@
                 <span>Product added: Feb 15 2017</span>
                 <span>Product code: 326B-0815</span>
               </div>
-              <div class="product-view__info-btn">
-                <button type="button" class="btn-action btn-action--secondary">Request a kit</button>
-              </div>
             </div>
             <div class="product-view__properties">
               {% set productProp = [1,2,3,4,5,6,7,8] %}
