@@ -712,6 +712,13 @@
     <Compile Include="CMSPages\Kadena\NewMailingList.aspx.designer.cs">
       <DependentUpon>NewMailingList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.cs">
+      <DependentUpon>StatisticLabel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.designer.cs">
+      <DependentUpon>StatisticLabel.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
@@ -723,7 +730,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CMSFormControls\Kadena\Basic\" />
-    <Folder Include="CMSWebParts\Kadena\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
@@ -741,6 +747,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\NewMailingList.aspx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="MailingService.svc" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
