@@ -2,6 +2,7 @@
   $bar-margins-x: 20px;
   $product-block-y: 20px;
   $product-bar-input: 100px;
+  $product-editor-dialog-height: 475px;
 
   &__block {
     @include rem(margin-top, $product-block-y);
@@ -39,7 +40,7 @@
 
   &__iframe {
     position: relative;
-    padding-top: 54%;
+    padding-top: 56.25%;
     width: calc(100% + #{$content-inner-padding * 2});
     margin: 0 #{-$content-inner-padding} #{-$content-inner-padding};
 
@@ -54,7 +55,7 @@
 
   &__table-dialog {
     width: 100%;
-    max-height: 475px;
+    max-height: $product-editor-dialog-height;
     overflow: auto;
 
     button {

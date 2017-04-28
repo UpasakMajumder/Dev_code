@@ -6,6 +6,20 @@
 {% set title = "Products" %}
 {% import "macro/dialog.nunj" as dialog %}
 
+{% set tdContent1 = ['<span>Mar 1 2017</span>',
+'240',
+'1',
+'Mar 13 2017',
+'Ready for use',
+'<button type="button" class="btn-action">Use</button>']%}
+
+{% set tdContent2 = ['<span>Feb 10 2017</span>',
+'1333',
+'0',
+'Mar 13 2017',
+'Jan 15 2017',
+'']%}
+
 {% block content %}
 
   {{ sidebar('Products') }}
@@ -27,43 +41,27 @@
       </thead>
       <tbody>
         <tr>
-          <td><span>Mar 1 2017</span></td>
-          <td>240</td>
-          <td>1</td>
-          <td>Mar 13 2017</td>
-          <td>Ready for use</td>
-          <td>
-            <button type="button" class="btn-action">Use</button>
-          </td>
+          {% for item in tdContent1 %}
+            <td>{{item|safe}}</td>
+          {% endfor %}
         </tr>
 
         <tr>
-          <td><span>Mar 1 2017</span></td>
-          <td>130</td>
-          <td>3</td>
-          <td>Mar 13 2017</td>
-          <td>Proofing done</td>
-          <td>
-            <button type="button" class="btn-action">Use</button>
-          </td>
+          {% for item in tdContent1 %}
+            <td>{{item|safe}}</td>
+          {% endfor %}
         </tr>
 
         <tr>
-          <td><span>Feb 10 2017</span></td>
-          <td>1333</td>
-          <td>0</td>
-          <td>Jan 15 2017</td>
-          <td>Sent out</td>
-          <td></td>
+          {% for item in tdContent2 %}
+            <td>{{item|safe}}</td>
+          {% endfor %}
         </tr>
 
         <tr>
-          <td><span>Feb 10 2017</span></td>
-          <td>1333</td>
-          <td>0</td>
-          <td>Jan 15 2017</td>
-          <td>Sent out</td>
-          <td></td>
+          {% for item in tdContent2 %}
+            <td>{{item|safe}}</td>
+          {% endfor %}
         </tr>
       </tbody>
     </table>
