@@ -29,8 +29,6 @@
   }
 
   &__right-label {
-    @extend .weight--bold;
-
     @include rem(margin-right, 30px);
   }
 }
