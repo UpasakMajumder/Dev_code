@@ -30,7 +30,8 @@ $sidebar-width-close: 70px;
       @extend .mb-3;
     }
 
-    &__page-name {
+    &__page-name,
+    &__inner {
       order: 1;
       margin-right: auto;
     }
@@ -44,6 +45,7 @@ $sidebar-width-close: 70px;
     &__btn {
       @extend .bg-secondary;
       @extend .btn--circle;
+      order: 2;
 
       @include rem(margin-left, 10px);
     }

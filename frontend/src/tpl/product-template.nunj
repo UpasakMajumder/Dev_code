@@ -22,7 +22,9 @@
       </div>
 
       <div class="content-block product-template">
-        <div class="product-template__block"></div>
+        <div class="product-template__block">
+          {% include "components/product-view.nunj" %}
+        </div>
         <div class="product-template__block">
           <div class="product-template__item">
             <h3>Manage products</h3>

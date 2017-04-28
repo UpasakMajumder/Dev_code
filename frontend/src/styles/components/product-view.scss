@@ -24,7 +24,9 @@
     margin-left: calc(#{$product-img-size} + #{$product-blocks-gap});
 
     & > div {
-      @include rem(margin-bottom, 30px);
+      &:not(:last-child) {
+        @include rem(margin-bottom, 30px);
+      }
     }
   }
 
