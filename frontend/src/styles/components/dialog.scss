@@ -27,6 +27,7 @@
   &__block {
     @include rem(padding, 20px);
     margin: auto;
+    align-self: flex-start;
     background-color: $brand-white;
     z-index: $zindex-modal;
     border-radius: $border-radius * 4;

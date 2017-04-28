@@ -1,6 +1,7 @@
 $offset-height: 55px;
 $padding: 10px;
 $sidebar-width-close: 70px;
+$content-inner-padding: 24px;
 
 .content {
   width: 100%;
@@ -10,7 +11,7 @@ $sidebar-width-close: 70px;
   &__inner {
     background-color: $brand-white;
     width: 100%;
-    padding: 24px 24px 24px 34px;
+    padding: $content-inner-padding $content-inner-padding $content-inner-padding 34px;
     // Hardcoded height
     min-height: calc(100vh - 192px);
   }
