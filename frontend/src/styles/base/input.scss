@@ -19,6 +19,10 @@
     }
   }
 
+  &__inner {
+    position: relative;
+  }
+
   &:focus {
     border: 1px solid $brand-primary;
     box-shadow: 0 0 8px 0 $brand-primary;
@@ -46,7 +50,8 @@
     position: absolute;
     right: .75rem;
     text-transform: uppercase;
-    bottom: 7px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &__label {
