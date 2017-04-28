@@ -31,7 +31,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Date Added</th>
+          <th><span>Date Added</span></th>
           <th>Addresses</th>
           <th>Errors</th>
           <th>Valid through</th>
@@ -101,8 +101,8 @@
               </div>
               <div>
                 <div class="btn-group">
-                  <button type="button" class="btn-main btn-main--secondary">Add to cart</button>
-                  <button type="button" class="btn-action btn-action--secondary">Add to cart</button>
+                  <button type="button" class="btn-main btn-main--secondary">Discard changes</button>
+                  <button type="button" class="btn-action btn-action--secondary">Save project</button>
                 </div>
               </div>
               <div>
@@ -110,7 +110,7 @@
                   <span class="input__label">Quantity</span>
                   <input type="number" class="input__text" placeholder="1234">
                 </div>
-                <button type="button" class="btn-action btn-action--secondary">Add to cart</button>
+                <button type="button" class="btn-action">Add to cart</button>
               </div>
             </div>
           </div>
