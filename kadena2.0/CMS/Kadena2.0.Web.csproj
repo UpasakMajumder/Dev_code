@@ -712,6 +712,13 @@
     <Compile Include="CMSPages\Kadena\NewMailingList.aspx.designer.cs">
       <DependentUpon>NewMailingList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.cs">
+      <DependentUpon>MailingListUploader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.designer.cs">
+      <DependentUpon>MailingListUploader.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.cs">
       <DependentUpon>StatisticLabel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -747,6 +754,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\NewMailingList.aspx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="MailingService.svc" />
     <Content Include="web.config">
