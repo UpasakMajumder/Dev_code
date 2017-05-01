@@ -3,17 +3,17 @@
 
 <div class="upload-mail__drop-zone">
     <div class="drop-zone js-drop-zone">
-        <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" data-tooltip-title="Do you need a help with a bulk upload?">
+        <button runat="server" id="btnHelp" type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" data-tooltip-title="">
             <svg class="icon icon-question">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#question-mark" />
             </svg>
         </button>
-        <input accept="text/csv" type="file" name="file" class="js-drop-zone-file">
+        <input runat="server" id="inpFile" accept="text/csv" type="file" name="file" class="js-drop-zone-file">
         <div class="drop-zone__dropping">
             <svg class="icon icon-drop">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#draganddrop" />
             </svg>
-            <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
+            <p runat="server" id="textFileToUpload" class="font-text"></p>
         </div>
         <div class="drop-zone__dropped">
             <div>
@@ -31,8 +31,8 @@
     </div>
 </div>
 <div class="upload-mail__row upload-mail__offer">
-    <span>or</span>
-    <p>Skip this field to insert the addresses manually within the next step.</p>
+    <span runat="server" id="textOr"></span>
+    <p runat ="server" id="textSkipField"></p>
 </div>
 <div class="upload-mail__row">
     <h2>Mail type</h2>
