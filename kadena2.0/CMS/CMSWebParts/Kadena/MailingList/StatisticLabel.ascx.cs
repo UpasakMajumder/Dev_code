@@ -9,7 +9,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             get
             {
-                return GetStringValue("TitleText", "Sent in 90 days");
+                return GetStringValue("TitleText", string.Empty);
             }
         }
 
@@ -17,7 +17,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             get
             {
-                return GetStringValue("TitleCssClass", "");
+                return GetStringValue("TitleCssClass", string.Empty);
             }
         }
 
@@ -25,7 +25,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             get
             {
-                return GetStringValue("ValueCssClass", "");
+                return GetStringValue("ValueCssClass", string.Empty);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             get
             {
-                return GetStringValue("ValueEndpoint", "");
+                return GetStringValue("ValueEndpoint", string.Empty);
             }
         }
         protected void Page_Load(object sender, EventArgs e)
