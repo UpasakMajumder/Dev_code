@@ -22,7 +22,7 @@
       <div class="content-block">
         <div class="shopping-cart">
           <div class="shopping-cart__block">
-            <h2>Added items</h2>
+            <h2>Added items <span class="shopping-cart__badge">3</span></h2>
             <div class="cart-product cart-product--non-deliverable">
               <div class="cart-product__img">
                 <img src="http://satyr.io/150-300x100-200" alt="#">
@@ -80,13 +80,98 @@
           </div>
           <div class="shopping-cart__block">
             <h2>Delivery</h2>
+            <div class="cart-fill__block">
+              <p class="cart-fill__info">Products will be delivered to selected address by</p>
+              <div class="cart-fill__block-inner">
+
+                <div class="input__wrapper">
+                  <input id="dom-4" name="adress" type="radio" class="input__radio">
+                  <label for="dom-4" class="input__label input__label--radio">
+                    <p>4001 Valley Industrial Blvd</p>
+                    <p>Shakopee</p>
+                    <p>MN 55379</p>
+                  </label>
+                </div>
+
+                <div class="input__wrapper">
+                  <input id="dom-5" name="adress" type="radio" class="input__radio">
+                  <label for="dom-5" class="input__label input__label--radio">
+                    <p>4001 Valley Industrial Blvd</p>
+                    <p>Shakopee</p>
+                    <p>MN 55379</p>
+                  </label>
+                </div>
+              </div>
+              <div class="btn-group btn-grout--left">
+                <button type="button" class="btn-action btn-action--secondary">New adress</button>
+              </div>
+            </div>
           </div>
+
           <div class="shopping-cart__block">
             <h2>Payment</h2>
+            <div class="cart-fill__block">
+              <div class="cart-fill__block-inner">
+
+                <div class="input__wrapper">
+                  <input id="dom-6" name="pay-method" type="radio" class="input__radio">
+                  <label for="dom-6" class="input__label input__label--radio">
+                    <p>Credit card</p>
+                  </label>
+                </div>
+
+                <div class="input__wrapper">
+                  <input id="dom-7" name="pay-method" type="radio" class="input__radio">
+                  <label for="dom-7" class="input__label input__label--radio">
+                    <p>Pay Pal</p>
+                  </label>
+                </div>
+
+                <div class="input__wrapper cart-fill__block-input-wrapper">
+                  <input id="dom-8" name="pay-method" type="radio" class="input__radio">
+                  <label for="dom-8" class="input__label input__label--radio">
+                    <p>Purchase order</p>
+                  </label>
+                  <div class="input__wrapper">
+                    <input type="text" class="input__text" placeholder="Insert your PO number">
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
+
           <div class="shopping-cart__block">
             <h2>Total</h2>
+            <div class="cart-fill__block">
+              <div class="cart-fill__block-inner">
+                <div class="cart-fill__block-table">
+                  <div class="cart-fill__block-table-row">
+                    <span class="cart-fill__block-table-info">Summary</span>
+                    <span class="cart-fill__block-table-amount">$ 1 025.49</span>
+                  </div>
+                  <div class="cart-fill__block-table-row">
+                    <span class="cart-fill__block-table-info">Shipping</span>
+                    <span class="cart-fill__block-table-amount">$ 42.64
+                </span>
+                  </div>
+                  <div class="cart-fill__block-table-row">
+                    <span class="cart-fill__block-table-info">Subtotal</span>
+                    <span class="cart-fill__block-table-amount">$ 67.49</span>
+                  </div>
+                  <div class="cart-fill__block-table-row">
+                    <span class="cart-fill__block-table-info">Tax 8%</span>
+                    <span class="cart-fill__block-table-amount">$ 16.20</span>
+                  </div>
+                  <div class="cart-fill__block-table-row">
+                    <span class="cart-fill__block-table-info">Total</span>
+                    <span class="cart-fill__block-table-amount cart-fill__block-table-amount--emphasized">$ 1 383.68</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div class="shopping-cart__block">
             <button type="button" class="btn-action">Place order</button>
           </div>
