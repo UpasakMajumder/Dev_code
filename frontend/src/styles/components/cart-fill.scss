@@ -1,6 +1,8 @@
 .cart-fill {
   &__block {
-    @include rem(margin-bottom, 25px);
+    &:not(:last-child) {
+      @include rem(margin-bottom, 25px);
+    }
 
     .input__wrapper {
       @include rem(margin-bottom, 16px);
