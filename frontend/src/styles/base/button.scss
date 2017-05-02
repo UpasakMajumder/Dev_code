@@ -12,6 +12,7 @@ button {
   cursor: pointer;
   border-radius: $border-radius;
   box-sizing: border-box;
+  font-weight: 100;
 
   &:focus {
     outline: none;

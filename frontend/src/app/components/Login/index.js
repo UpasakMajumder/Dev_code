@@ -69,28 +69,28 @@ class Login extends Component {
     return (
       <div className="css-login">
         <div className="mb-4">
-            <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
-                error={this.getErrorMessage('loginEmail', response)} />
+          <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
+                     error={this.getErrorMessage('loginEmail', response)} />
         </div>
         <div className="mb-4">
-            <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
-                error={this.getErrorMessage('password', response)} />
+          <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
+                         error={this.getErrorMessage('password', response)} />
         </div>
         <div className="mb-4">
-            <div className="input__wrapper">
-              <CheckboxInput
-                id="dom-1"
-                type="checkbox"
-                label={this.keepMeLoggedInText}
-                value={isKeepMeLoggedIn}
-                onChange={e => this.handleIsKeepMeLoggedIn(e)}
-              />
+          <div className="input__wrapper">
+            <CheckboxInput
+              id="dom-1"
+              type="checkbox"
+              label={this.keepMeLoggedInText}
+              value={isKeepMeLoggedIn}
+              onChange={e => this.handleIsKeepMeLoggedIn(e)}
+            />
           </div>
         </div>
         <div className="mb-4">
           <div className="text-center">
             <button type="button" className="btn-main login__login-button" disabled={isLoading}
-             onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
+                    onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
           </div>
         </div>
       </div>

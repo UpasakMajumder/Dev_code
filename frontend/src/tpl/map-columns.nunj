@@ -19,7 +19,9 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <h1 class="content-header__page-name">Map columns</h1>
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">Map columns</h1>
+        </div>
         {{ breadcrumb(['Home','Mailing list', 'New mailing list']) }}
       </div>
       <div class="content-block map-columns">
@@ -28,10 +30,11 @@
         <div class="alert--info alert--close isOpen js-collapse">
           <button type="button" class="alert__close btn--off js-toggle">
             {% call svg.template(class = 'icon-modal') %}
-              {{svg.use(name='cross--darker')}}
+            {{svg.use(name='cross--darker')}}
             {% endcall %}
           </button>
-          <p class="p-info weight--normal"> We tried to map the items in your uploaded files into the correct address fields.</p>
+          <p class="p-info weight--normal">
+            We tried to map the items in your uploaded files into the correct address fields.</p>
           <p class="p-info weight--normal">Please check if we got it right and correct any mistakes we might have made.</p>
           <p class="p-note mb-0">
             Note: This is just for the address. You will be able to use other fields in the templating process.

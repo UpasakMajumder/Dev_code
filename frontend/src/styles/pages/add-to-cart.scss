@@ -1,10 +1,17 @@
 .add-to-cart {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 
+  & > div {
+    @include rem(margin-bottom, 15px);
+  }
+
   &__info {
     @extend .weight--bold;
+
+    @include rem(padding-right, 30px);
     font-size: $font-size-default;
   }
 
@@ -15,7 +22,6 @@
 
   &__right {
     flex-shrink: 0;
-    flex-grow: 1;
     text-align: right;
 
     & > * {

@@ -21,7 +21,7 @@ $sidebar-font-size: 11px;
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    padding-top: 15px;
+    padding-top: 20px;
     padding-bottom: 15px;
     font-size: $font-s;
     color: $brand-grey;
@@ -67,7 +67,7 @@ $sidebar-font-size: 11px;
 
     &.active,
     &:hover {
-      background-color: $sidebar-hover;
+      background-color: $main-gutter-color;
 
       .orange-bar {
         position: absolute;

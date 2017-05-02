@@ -101,12 +101,9 @@
     flex-wrap: nowrap;
     justify-content: space-between;
 
-    input {
-      flex-shrink: 9000;
-    }
-
     a {
       @include rem(margin-left, 10px);
+      flex-shrink: 0;
     }
   }
 }

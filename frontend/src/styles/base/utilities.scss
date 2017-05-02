@@ -30,7 +30,8 @@
   cursor: pointer;
 }
 
-%clearfix {
+%clearfix,
+.clearfix {
   zoom: 1;
 
   &:after,
@@ -50,4 +51,8 @@
 
 .weight--bold {
   font-weight: bold;
+}
+
+.flex-align--center {
+  align-items: center;
 }

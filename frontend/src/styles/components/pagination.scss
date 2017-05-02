@@ -10,12 +10,6 @@
     display: inline-block;
   }
 
-  &__step {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-  }
-
   & a.pagination__page--active {
     @extend .line-height--one;
     @extend .link--no-decoration;

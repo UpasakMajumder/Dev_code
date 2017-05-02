@@ -345,10 +345,10 @@
       <div class="styleguide__tooltip">
         <h2 class="h--underlined">Tooltip</h2>
         <ul class="list--unstyled text-center">
-          <li><span class="js-tooltip" data-tooltip-placement="top" data-tooltip-title="Top">Hover me</span></li>
-          <li><span class="js-tooltip" data-tooltip-placement="left" data-tooltip-title="Left">Hover me</span></li>
-          <li><span class="js-tooltip" data-tooltip-placement="right" data-tooltip-title="Right">Hover me</span></li>
-          <li><span class="js-tooltip" data-tooltip-placement="bottom" data-tooltip-title="Bottom">Hover me</span></li>
+          <li><span class="js-tooltip" data-tooltip-placement="top" title="Top">Hover me</span></li>
+          <li><span class="js-tooltip" data-tooltip-placement="left" title="Left">Hover me</span></li>
+          <li><span class="js-tooltip" data-tooltip-placement="right" title="Right">Hover me</span></li>
+          <li><span class="js-tooltip" data-tooltip-placement="bottom" title="Bottom">Hover me</span></li>
         </ul>
       </div>
     </div>

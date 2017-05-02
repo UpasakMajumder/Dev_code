@@ -17,7 +17,9 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <h1 class="content-header__page-name">{{ title }}</h1>
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">{{ title }}</h1>
+        </div>
         {{ breadcrumb(['Home','Products','Category name','Category name','March 2017 Events']) }}
       </div>
 
@@ -46,11 +48,11 @@
                 </tr>
               </thead>
               <tbody>
-                {% set loop = [1,2,3,4,5,6,7,8,9,10,11] %}
+                {% set loop = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] %}
                 {% for x in loop %}
                   <tr class="product-list__row js-redirection" data-url="#">
                     <td>
-                      <div class="product-list__preview" style="background-image: url(http://satyr.io/250-300x250-300/{{ x }})"></div>
+                      <div class="product-list__preview" style="background-image: url(http://satyr.io/250-300x250-300?{{ x }})"></div>
                     </td>
                     <td>
                       <a class="link weight--normal" href="#">Andrei Fidelman v1</a>
@@ -60,9 +62,7 @@
                     </td>
                     <td>
                       <div class="product-list__btn-group">
-                        <div class="confirmation js-confirmation" data-confirmation-active-element=".product-list__row"
-                             data-confirmation-active-class="product-list__row--hover"
-                             data-confirmation-button-text="Cancel" data-confirmation-position="top">
+                        <div class="confirmation js-confirmation" data-confirmation-active-element=".product-list__row" data-confirmation-active-class="product-list__row--hover" data-confirmation-button-text="Cancel" data-confirmation-position="top">
                           <button type="button" class="btn-main btn-main--secondary js-confirmation-clicker js-redirection-ignore">
                             Delete
                           </button>
@@ -81,9 +81,9 @@
           </div>
 
           <div class="product-template__item">
-            <div class="row">
+            <div class="row flex-align--center">
               <div class="col-6">
-                <p>Showing 11 to 20 of 103 entries</p>
+                <span>Showing 11 to 20 of 103 entries</span>
               </div>
               <div class="col-6 text--right">
                 {% include "components/pagination.nunj" %}

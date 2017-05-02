@@ -1,4 +1,4 @@
-{% import "macro/svg.nunj" as svg %}
+{% import "helpers/svg.nunj" as svg %}
 
 {% set pages = [
 {'title': 'Dashboard', 'name': 'dashboard'},
@@ -17,18 +17,13 @@
   <div class="css-sidebar js-sidebar">
     <div class="css-sidebar__header">
 
-      <div>
-        {% call svg.template(class='css-sidebar__icon') %}
+      {% call svg.template(class='css-sidebar__icon') %}
         {{svg.use(name='kadena-xs')}}
-        {% endcall %}
-      </div>
-
-      <div class="js-toggle cursor--pointer js-storage" data-storage-active="false" data-storage-change="true"
-           data-storage-key="isSidebarCollapsed" data-storage-value="true">
-        {% call svg.template(class='icon-hamburger') %}
+      {% endcall %}
+      {% call svg.template(class='icon-hamburger js-toggle cursor--pointer') %}
         {{svg.use(name='hamburger')}}
-        {% endcall %}
-      </div>
+      {% endcall %}
+
     </div>
 
     <ul class="css-sidebar__nav list-unstyled">
@@ -38,7 +33,7 @@
           <div class="orange-bar"></div>
           <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
 
-            {% include "components/svgs.nunj" %}
+            {% include "partials/svgs.nunj" %}
 
             <span>{{ page.title }}</span>
           </a>

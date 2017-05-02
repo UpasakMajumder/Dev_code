@@ -1,0 +1,41 @@
+{% import "helpers/svg.nunj" as svg %}
+
+<nav class="css-header navbar navbar-toggleable-md navbar-inverse bg-inverse">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <a class="navbar-brand" href="index.html">
+    <img src="http://satyr.io/200x34/" alt="logo">
+  </a>
+
+  <div class="navbar-user">Welcome,  <span>Oliver</span></div>
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+
+      {% call svg.template(class='icon-activity') %}
+      {{svg.use(name='icon-activity', sprite="icons")}}
+      {% endcall %}
+      <a class="nav-link" href="#">Activity <span class="badge badge-pill badge-custom-color">3</span></a>
+    </li>
+    <li class="nav-item">
+      {% call svg.template(class='icon-newspaper') %}
+      {{svg.use(name='icon-newspaper', sprite="icons")}}
+      {% endcall %}
+      <a class="nav-link" href="#">Drafts</a>
+    </li>
+    <li class="nav-item">
+      {% call svg.template(class='icon-cart') %}
+      {{svg.use(name='icon-cart', sprite="icons")}}
+      {% endcall %}
+      <a class="nav-link" href="#">Shopping cart</a>
+    </li>
+    <li class="nav-item">
+     {% call svg.template(class='icon-sing-out') %}
+     {{svg.use(name='icon-sing-out', sprite="icons")}}
+     {% endcall %}
+     <a class="nav-link" href="#">Log Out</a>
+    </li>
+  </ul>
+</nav>

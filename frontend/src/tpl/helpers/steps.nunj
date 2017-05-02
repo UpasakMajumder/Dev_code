@@ -1,4 +1,4 @@
-{% import "macro/svg.nunj" as svg %}
+{% import "helpers/svg.nunj" as svg %}
 
 {% macro steps(current, steps) %}
 

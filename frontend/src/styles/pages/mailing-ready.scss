@@ -6,7 +6,7 @@
 
     &:not(:first-child) {
       @include rem(padding-top, 30px);
-      border-top: 2px solid $processed-list-block-border;
+      border-top: 2px solid $brand-grey;
     }
   }
 

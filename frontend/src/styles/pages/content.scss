@@ -10,9 +10,9 @@ $sidebar-width-close: 70px;
   &__inner {
     background-color: $brand-white;
     width: 100%;
-    padding: 24px 24px 24px 34px;
+    padding: $content-inner-padding $content-inner-padding $content-inner-padding 34px;
     // Hardcoded height
-    min-height: calc(100vh - 192px);
+    min-height: calc(100vh - 190px);
   }
 
   &-header {
@@ -20,23 +20,22 @@ $sidebar-width-close: 70px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row-reverse;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding-bottom: 15px;
     margin-bottom: 12px;
 
     .breadcrumbs {
       @extend .mb-3;
-    }
-
-    &__page-name,
-    &__inner {
       order: 1;
       margin-right: auto;
     }
 
     &__inner {
       display: flex;
+      order: 2;
+      flex-grow: 1;
+      margin-right: auto;
       flex-wrap: nowrap;
       align-items: baseline;
     }

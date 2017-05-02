@@ -17,7 +17,7 @@
           <h1 class="content-header__page-name">{{ title }}</h1>
           <a href="#" class="content-header__btn js-tooltip"
              data-tooltip-placement="right"
-             data-tooltip-title="Request new product">
+             title="Request new product">
             {% call svg.template('icon-modal') %}
             {{svg.use(name='plus')}}
             {% endcall %}
@@ -31,7 +31,7 @@
       <div class="content-block">
         <div class="row">
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -64,7 +64,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -97,7 +97,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -130,7 +130,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -162,7 +162,7 @@
             </div>
           </div>
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -195,7 +195,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -228,7 +228,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}
@@ -261,7 +261,7 @@
           </div>
 
           <div class="col-lg-4 col-xl-3 template">
-            <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" data-tooltip-title="Set product as favorite">
+            <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
               <div class="js-toggle">
                 {% call svg.template('template__icon--filled icon-star') %}
                 {{svg.use(name='star--filled')}}

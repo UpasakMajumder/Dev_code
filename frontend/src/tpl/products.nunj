@@ -19,7 +19,7 @@
           <h1 class="content-header__page-name">{{ title }}</h1>
           <a href="#" class="content-header__btn js-tooltip"
              data-tooltip-placement="right"
-             data-tooltip-title="Request new product">
+             title="Request new product">
             {% call svg.template('icon-modal') %}
             {{svg.use(name='plus')}}
             {% endcall %}

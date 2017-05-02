@@ -17,14 +17,16 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <h1 class="content-header__page-name">We're now processing your list...</h1>
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">We're now processing your list...</h1>
+        </div>
         {{ breadcrumb(['Home','Mailing list', 'New mailing list']) }}
       </div>
       <div class="content-block mail-processing">
         {{ steps(3, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
         {% call svg.template('mail-processing__central-img') %}
-          {{svg.use(name='envelope')}}
+        {{svg.use(name='envelope')}}
         {% endcall %}
 
         <div class="mail-processing__text-group mail-processing__text-group--centered">
