@@ -2,7 +2,6 @@
   $bar-margins-x: 20px;
   $product-block-y: 20px;
   $product-bar-input: 100px;
-  $product-editor-dialog-height: 475px;
 
   &__block {
     @include rem(margin-top, $product-block-y);
