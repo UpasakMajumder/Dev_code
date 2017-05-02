@@ -24,61 +24,6 @@
 
   {{ sidebar('Products') }}
 
-  {% call dialog.wrapper(id = 'mail-list-errors') %}
-  {{ dialog.header(header='Select a mailing list to use') }}
-  {% call dialog.content() %}
-  <div class="product-editor__table-dialog">
-    <table class="table">
-      <thead>
-        <tr>
-          <th><span>Date Added</span></th>
-          <th>Addresses</th>
-          <th>Errors</th>
-          <th>Valid through</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {% for item in tdContent1 %}
-            <td>{{item|safe}}</td>
-          {% endfor %}
-        </tr>
-
-        <tr>
-          {% for item in tdContent1 %}
-            <td>{{item|safe}}</td>
-          {% endfor %}
-        </tr>
-
-        <tr>
-          {% for item in tdContent2 %}
-            <td>{{item|safe}}</td>
-          {% endfor %}
-        </tr>
-
-        <tr>
-          {% for item in tdContent2 %}
-            <td>{{item|safe}}</td>
-          {% endfor %}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  {% endcall %}
-  {% call dialog.footer() %}
-  <div class="product-editor__dialog-footer">
-    <div class="product-editor__dialog-footer-text">
-      <span>Missing the right mailing list? Go ahead and create it. This will save your current progress in Drafts section where you can access it through top navigation bar.</span>
-    </div>
-    <div class="product-editor__dialog-footer-btn">
-      <button type="button" class="btn-action">New maiking list</button>
-    </div>
-  </div>
-  {% endcall %}
-  {% endcall %}
-
   <div class="content">
     <div class="content__inner">
       <div class="content-header">

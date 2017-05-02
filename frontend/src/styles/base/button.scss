@@ -138,7 +138,9 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
     text-align: center;
   }
 
-  button + button {
-    @extend .ml-3;
+  & > * {
+    &:not(:last-child) {
+      @extend .mr-3;
+    }
   }
 }
