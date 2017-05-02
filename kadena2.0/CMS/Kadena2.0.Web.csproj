@@ -676,6 +676,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.cs">
+      <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
+      <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.cs">
       <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -708,10 +715,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CMSFormControls\Kadena\Basic\" />
     <Folder Include="CMSWebParts\Kadena\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>

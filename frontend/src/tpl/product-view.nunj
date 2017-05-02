@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="product-view__properties">
-              {% set productProp = [1,2,3,4,5,6,7,8] %}
+              {% set productProp = [1,2] %}
               {% for i in productProp %}
               <span class="product-view__property">Size:
                 <span class="product-view__property-val">310 x 200</span>
@@ -73,27 +73,27 @@
                       {% call svg.template('icon-dollar') %}
                       {{svg.use(name='money')}}
                       {% endcall %}
-                      Estimates</th>
+                      Unit price</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Production time</td>
-                    <td>7 days</td>
+                    <td>0 - 50 pcs</td>
+                    <td>$ 2.10</td>
                   </tr>
                   <tr>
-                    <td>Ship time</td>
-                    <td>7 days</td>
+                    <td>51 - 100 pcs</td>
+                    <td>$ 1.90</td>
                   </tr>
                   <tr>
-                    <td>Shipping cost</td>
-                    <td>$ 10 - $ 15</td>
+                    <td>101 + pcs</td>
+                    <td>$ 1.50</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <div class="btn-group btn-group--right">
-              <button class="btn-action btn-action ">Open template in desight</button>
+              <button class="btn-action btn-action" type="button">Open template in desight</button>
             </div>
           </div>
         </div>
