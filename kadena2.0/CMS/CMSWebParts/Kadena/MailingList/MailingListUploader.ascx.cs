@@ -122,7 +122,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (IsPostBack)
+            {
 
+                var nextStepUrl = DocumentContext.CurrentDocument.GetStringValue("UrlNextPage", string.Empty);
+                Response.Redirect(nextStepUrl);
+            }
         }
     }
 }
