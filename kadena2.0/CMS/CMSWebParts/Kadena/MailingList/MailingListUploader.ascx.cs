@@ -1,5 +1,8 @@
-﻿using CMS.IO;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.IO;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,11 +59,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                     , _validity)));
         }
 
-        private string GetDictionaryHTML(string name, string description, IDictionary<string, string> options)
+        private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options)
         {
             // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags.
 
-            var dictionaryName = name.Trim().Replace(' ', '-').ToLower();
+            var dictionaryName = GetHTMLName(name);
             var stringWriter = new StringWriter();
             var html = new HtmlTextWriter(stringWriter);
             html.AddAttribute(HtmlTextWriterAttribute.Class, "upload-mail__row");
@@ -118,6 +121,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             }
             html.RenderEndTag();
             return stringWriter.ToString();
+        }
+
+        private static string GetHTMLName(string name)
+        {
+            return name.Trim().Replace(' ', '-').ToLower();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
