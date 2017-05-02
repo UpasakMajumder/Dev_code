@@ -81,7 +81,9 @@
     }
   }
 
-  &__template {
+  &__template,
+  &__delivery,
+  &__mlist {
     p {
       display: flex;
       align-items: center;
@@ -96,30 +98,12 @@
 
   &__delivery {
     p {
-      display: flex;
-      align-items: center;
-
       font-size: $font-xxs;
       color: $brand-success;
     }
 
     svg {
-      margin-right: $icon-margin;
-      width: $icon-square;
       height: $icon-arrow;
-    }
-  }
-
-  &__mlist {
-    p {
-      display: flex;
-      align-items: center;
-    }
-
-    svg {
-      @extend .mr-1;
-      width: $icon-square;
-      height: $icon-square;
     }
   }
 
