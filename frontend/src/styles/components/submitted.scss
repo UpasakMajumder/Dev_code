@@ -1,6 +1,5 @@
-.mail-processing {
+.submitted {
   &__central-img {
-    @extend .my-5;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -14,7 +13,15 @@
     }
   }
 
-  .btn-group {
+  &__btn-group {
+    @extend .btn-group;
     @extend .pt-4;
+    @extend .btn-group--centered;
+
+    & > * {
+      &:not(:last-child) {
+        @extend .mr-3;
+      }
+    }
   }
 }
