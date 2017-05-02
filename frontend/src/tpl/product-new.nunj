@@ -82,7 +82,6 @@
                       {% call svg.template('icon-dollar') %}
                       {{svg.use(name='money')}}
                       {% endcall %}
-
                       Unit price</th>
                   </tr>
                 </thead>
