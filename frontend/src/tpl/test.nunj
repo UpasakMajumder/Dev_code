@@ -99,6 +99,15 @@
             <span class="cart-fill__block-table-amount cart-fill__block-table-amount--emphasized">$ 1 383.68</span>
           </div>
         </div>
+
+        <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
+          <button type="button" class="alert__close btn--off js-toggle">
+            {% call svg.template(class = 'icon-modal') %}
+            {{svg.use(name='cross--darker')}}
+            {% endcall %}
+          </button>
+          <span>All items will be mailed according to the selected mailing list.</span>
+        </div>
       </div>
     </div>
   </div>

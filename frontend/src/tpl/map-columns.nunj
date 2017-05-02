@@ -27,7 +27,7 @@
       <div class="content-block map-columns">
         {{ steps(2, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
-        <div class="alert--info alert--close isOpen js-collapse">
+        <div class="alert--info isOpen js-collapse">
           <button type="button" class="alert__close btn--off js-toggle">
             {% call svg.template(class = 'icon-modal') %}
             {{svg.use(name='cross--darker')}}
