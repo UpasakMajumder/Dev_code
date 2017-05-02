@@ -23,7 +23,7 @@
         <div class="shopping-cart">
           <div class="shopping-cart__block">
             <h2>Added items</h2>
-            <div class="cart-product">
+            <div class="cart-product cart-product--non-deliverable">
               <div class="cart-product__img">
                 <img src="http://satyr.io/150-300x100-200" alt="#">
               </div>
