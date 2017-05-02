@@ -14,4 +14,12 @@
       }
     }
   }
+
+  &__badge {
+    @extend .badge;
+    @extend .badge--dark;
+    @extend .ml-1;
+    @extend .font--xs;
+    @extend .v--middle;
+  }
 }

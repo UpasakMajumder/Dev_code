@@ -6,7 +6,7 @@
   $input-width:     90px;
   $icon-square:     15px;
   $icon-arrow:      40px;
-  $icon-margin:     .25rem;
+  $icon-margin:     3px;
 
   @include rem(padding, $padding-block);
   border-radius: $border-radius;
@@ -16,7 +16,6 @@
   p {
     margin: 0;
   }
-
 
   & > * {
     &:not(:last-child) {
@@ -44,9 +43,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-
-  &__action {
   }
 
   &__price {
@@ -79,7 +75,6 @@
 
     svg {
       $size: 10px;
-
       margin-right: $icon-margin;
       width: $size;
       height: $size;
