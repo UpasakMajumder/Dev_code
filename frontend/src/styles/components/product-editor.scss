@@ -53,14 +53,11 @@
     }
   }
 
-  &__table-dialog {
+  &__table-select {
     width: 100%;
-    max-height: $product-editor-dialog-height;
-    overflow: auto;
 
-    button {
-      display: block;
-      margin: auto;
+    tr > td:last-child {
+      text-align: center;
     }
 
     td > span,
@@ -71,17 +68,18 @@
     }
   }
 
-  &__dialog-footer {
+  &__bottom {
+    @include rem(margin-top, 30px);
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  &__dialog-footer-text {
+  &__left-text {
     @include rem(padding-right, 30px);
   }
 
-  &__dialog-footer-btn {
+  &__right-btn-group {
     flex-shrink: 0;
   }
 }
