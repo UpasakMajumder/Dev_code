@@ -27,6 +27,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             { "90days", "90 days" },
             { "unlimited", "Unlimited" }
         };
+        private readonly string _bucketType = "original-mailing";
+        private readonly string _customerNameSettingKey = "KDA_CustomerName";
+        private readonly string _createContainerSettingKey = "KDA_CreateContainerUrl";
+        private readonly string _loadFileSettingKey = "KDA_LoadFileUrl";
+        private readonly string _getHeadersSettingKey = "KDA_GetHeadersUrl";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack)
