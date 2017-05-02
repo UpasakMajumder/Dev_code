@@ -316,6 +316,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Tests", "Kadena2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatedTests", "AutomatedTests\AutomatedTests.csproj", "{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carriers", "Carriers", "{69A8D6E8-F543-443C-B98D-DEE86478B247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedExCarrier", "Carriers\FedExCarrier\FedExCarrier.csproj", "{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -337,11 +341,16 @@ Global
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{04C3408E-84B8-4FF2-A2FE-7C79CEEF084D} = {16761108-9229-4A1A-88E0-02796DFAFA89}
+		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
 	EndGlobalSection
 EndGlobal
