@@ -8,6 +8,9 @@ namespace Kadena.Old_App_Code.Helpers
 {
     public static class ServiceHelper
     {
+        private const string _bucketType = "original-mailing";
+        private const string _loadFileSettingKey = "KDA_LoadFileUrl";
+        private const string _getHeadersSettingKey = "KDA_GetHeadersUrl";
         private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
 
@@ -78,6 +81,57 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
             return containerId;
+        }
+
+        public static Guid SendToService(System.IO.Stream fileStream, string fileName)
+        {
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                throw new InvalidOperationException(_customerNotSpecifiedMessage);
+            }
+
+            Uri postFileUrl;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}")
+                , UriKind.Absolute
+                , out postFileUrl))
+            {
+                throw new InvalidOperationException(_loadFileIncorrectMessage);
+            }
+
+            var fileId = Guid.Empty;
+            using (var client = new HttpClient())
+            {
+                using (var content = new MultipartFormDataContent())
+                {
+                    content.Add(new StreamContent(fileStream), "file", fileName);
+                    content.Add(new StringContent(_bucketType), "bucketType");
+                    content.Add(new StringContent(customerName), "customerName");
+                    using (var message = client.PostAsync(postFileUrl, content))
+                    {
+                        AwsResponseMessage response;
+                        try
+                        {
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                                .Content.ReadAsStringAsync()
+                                .Result);
+                        }
+                        catch (JsonReaderException e)
+                        {
+                            throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        }
+                        if (response.Success)
+                        {
+                            fileId = new Guid(response?.Response?.ToString());
+                        }
+                        else
+                        {
+                            throw new HttpRequestException(response.ErrorMessages);
+                        }
+                    }
+                }
+            }
+            return fileId;
         }
     }
 }
