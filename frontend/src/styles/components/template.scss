@@ -73,9 +73,8 @@
   }
 
   &__stock {
-    display: flex;
+    @extend %flex--center--default;
     flex-wrap: nowrap;
-    align-items: center;
     font-weight: 100;
     font-size: $font-xs;
 
@@ -97,9 +96,8 @@
   }
 
   &__use {
-    display: flex;
+    @extend %flex--default--between;
     flex-wrap: nowrap;
-    justify-content: space-between;
 
     a {
       @include rem(margin-left, 10px);

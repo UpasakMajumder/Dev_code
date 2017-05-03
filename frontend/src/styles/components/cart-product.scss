@@ -1,12 +1,12 @@
 .cart-product {
-  $margin-content:  15px;
-  $padding-block:   10px;
-  $padding-btn:     5px;
-  $btn-size:        100px;
-  $input-width:     90px;
-  $icon-square:     15px;
-  $icon-arrow:      40px;
-  $icon-margin:     3px;
+  $margin-content: 15px;
+  $padding-block: 10px;
+  $padding-btn: 5px;
+  $btn-size: 100px;
+  $input-width: 90px;
+  $icon-square: 15px;
+  $icon-arrow: 40px;
+  $icon-margin: 3px;
 
   @include rem(padding, $padding-block);
   border-radius: $border-radius;
@@ -33,17 +33,15 @@
   }
 
   &__content {
-    display: flex;
+    @extend %flex--default--between;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
   }
 
   &__options {
+    @extend %flex--default--between;
     margin-left: auto;
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
   }
 
   &__price {
@@ -56,9 +54,9 @@
   }
 
   &__btn {
+    @extend %flex--center--default;
+
     @include rem(padding, $padding-btn $padding-block);
-    display: flex;
-    align-items: center;
     border-radius: $border-radius * 2;
     color: $brand-dark;
     font-size: $font-xxs;
@@ -69,8 +67,8 @@
       @include rem(margin-bottom, $padding-block);
     }
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
       color: $brand-dark;
     }
 
@@ -82,12 +80,11 @@
     }
   }
 
-  &__template,
   &__delivery,
-  &__mlist {
+  &__mlist,
+  &__template {
     p {
-      display: flex;
-      align-items: center;
+      @extend %flex--center--default;
     }
 
     svg {

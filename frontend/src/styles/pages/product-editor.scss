@@ -9,9 +9,7 @@
   }
 
   &__bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend %flex--center--between;
     flex-wrap: wrap;
 
     & > div {
@@ -72,9 +70,7 @@
   }
 
   &__dialog-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend %flex--center--between;
   }
 
   &__dialog-footer-text {

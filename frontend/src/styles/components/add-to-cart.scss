@@ -1,7 +1,5 @@
 .add-to-cart {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @extend %flex--center--between;
 
   &__info {
     @extend .weight--bold;
