@@ -108,6 +108,31 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
   }
 }
 
+.in-card-btn {
+  $padding-btn-x: 10px;
+  $padding-btn-y: 5px;
+  $icon-margin: 3px;
+  $svg-size: 10px;
+
+  @include rem(padding, $padding-btn-y   $padding-btn-x);
+  display: inline-block;
+  border-radius: $border-radius * 2;
+  color: $brand-dark;
+  font-size: $font-xxs;
+  background-color: $brand-grey;
+
+  &:focus,
+  &:hover {
+    color: $brand-dark;
+  }
+
+  svg {
+    margin-right: $icon-margin;
+    width: $svg-size;
+    height: $svg-size;
+  }
+}
+
 .btn {
   &--off {
     background-color: transparent;

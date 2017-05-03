@@ -63,10 +63,6 @@
     background-color: $brand-grey;
     width: $btn-size;
 
-    &:not(:last-child) {
-      @include rem(margin-bottom, $padding-block);
-    }
-
     &:focus,
     &:hover {
       color: $brand-dark;

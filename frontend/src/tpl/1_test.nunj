@@ -18,7 +18,25 @@
         {{ breadcrumb(['Home','Test']) }}
       </div>
       <div class="content-block">
-
+        <div class="adress-card">
+          <span>4001 Valley Industrial Blvd</span>
+          <span>Shakopee</span>
+          <span>MN 55379</span>
+          <dib class="adress-card__btn-block">
+            <a href="#" class="in-card-btn">
+              {% call svg.template() %}
+              {{svg.use(name='edit')}}
+              {% endcall %}
+              Edit
+            </a>
+            <a href="#" class="in-card-btn">
+              {% call svg.template() %}
+              {{svg.use(name='cross--dark')}}
+              {% endcall %}
+              Remove
+            </a>
+          </dib>
+        </div>
       </div>
     </div>
   </div>
