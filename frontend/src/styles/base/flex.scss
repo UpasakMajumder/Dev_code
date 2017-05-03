@@ -3,11 +3,11 @@ $justify-content: (center: center, between: space-between, around: space-around,
 $align-items: (center: center, start: flex-start, end: flex-end, stretch: stretch, baseline: baseline, default: stretch);
 
 @each $alignProp, $alignStyle in $align-items {
-  @each $justifyProp, $jusrifyStyle in $justify-content {
+  @each $justifyProp, $justifyStyle in $justify-content {
     %flex--#{$alignProp}--#{$justifyProp} {
       display: flex;
       align-items: $alignStyle;
-      justify-content: $jusrifyStyle;
+      justify-content: $justifyStyle;
     }
   }
 }

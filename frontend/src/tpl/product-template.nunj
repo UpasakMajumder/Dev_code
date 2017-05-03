@@ -48,8 +48,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% set loop = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] %}
-                {% for x in loop %}
+                {% for x in range(0, 11) %}
                   <tr class="product-list__row js-redirection" data-url="#">
                     <td>
                       <div class="product-list__preview" style="background-image: url(http://satyr.io/250-300x250-300?{{ x }})"></div>

@@ -14,11 +14,10 @@
       </div>
     </div>
     <div class="product-view__properties">
-      {% set productProp = [1,2,3,4,5,6,7,8] %}
-      {% for i in productProp %}
+      {% for i in range(0, 8) %}
         <span class="product-view__property">Size:
-                <span class="product-view__property-val">310 x 200</span>
-              </span>
+          <span class="product-view__property-val">310 x 200</span>
+        </span>
       {% endfor %}
     </div>
     <div class="product-view__tables">
@@ -28,7 +27,8 @@
           <th colspan="2">
             {% call svg.template('icon-deliver') %}
             {{svg.use(name='deliver-car')}}
-            {% endcall %}Estimates</th>
+            {% endcall %}Estimates
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -53,7 +53,8 @@
             {% call svg.template('icon-dollar') %}
             {{svg.use(name='money')}}
             {% endcall %}
-            Estimates</th>
+            Estimates
+          </th>
         </tr>
         </thead>
         <tbody>
