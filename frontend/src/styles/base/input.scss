@@ -1,4 +1,6 @@
 .input {
+  @extend .line-height--one;
+
   @include rem(padding-top, 8px);
   @include rem(padding-bottom, 8px);
   border: 1px solid $brand-darkgrey;
@@ -34,8 +36,17 @@
   }
 
   &__text {
-    @extend .px-3;
     @extend .input;
+
+    @include rem(padding-left, 16px);
+    @include rem(padding-right, 16px);
+
+    &--small {
+      @include rem(padding-top, 5px);
+      @include rem(padding-bottom, 5px);
+      @include rem(padding-left, 10px);
+      @include rem(padding-right, 10px);
+    }
   }
 
   &__password {
