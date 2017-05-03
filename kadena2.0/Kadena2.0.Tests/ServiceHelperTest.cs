@@ -49,5 +49,18 @@ namespace Kadena.Tests
                 , () => ServiceHelper.CreateMailingContainer(_mailType, _product, _validity));
             Assert.AreEqual("Mailing service is not in correct format. Check settings for your site.", exc.Message);
         }
+
+
+        [Test]
+        public void NoExceptionTest()
+        {
+            Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
+                .WithData(
+                new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
+                new SettingsKeyInfo { KeyName = $"{_createContainerUrlSetting}", KeyValue = "http://example.com" }
+                );
+            
+            ServiceHelper.CreateMailingContainer(_mailType, _product, _validity);
+        }
     }
 }
