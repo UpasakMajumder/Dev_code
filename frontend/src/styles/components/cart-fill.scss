@@ -48,11 +48,10 @@
   }
 
   &__block-table-row {
+    @extend %flex--center--between;
+
     @include rem(padding, 5px 0);
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
 
     &:after {
