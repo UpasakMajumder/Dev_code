@@ -28,8 +28,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             { "unlimited", "Unlimited" }
         };
         private readonly string _bucketType = "original-mailing";
-        private readonly string _customerNameSettingKey = "KDA_CustomerName";
-        private readonly string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private readonly string _loadFileSettingKey = "KDA_LoadFileUrl";
         private readonly string _getHeadersSettingKey = "KDA_GetHeadersUrl";
 
@@ -65,9 +63,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                     , _validity)));
         }
 
+        /// <summary>
+        /// Creates radio button group for specified set with list of options.
+        /// </summary>
+        /// <param name="name">Name of set.</param>
+        /// <param name="description">Description of set.</param>
+        /// <param name="options">Set of options.</param>
+        /// <returns>String with html-code of radio button group.</returns>
         private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options)
         {
-            // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags.
+            // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags for them.
 
             var dictionaryName = GetHTMLName(name);
             var stringWriter = new StringWriter();
@@ -129,15 +134,29 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             return stringWriter.ToString();
         }
 
-        private static string GetHTMLName(string name)
+        /// <summary>
+        /// Converts to format appropriate to use as value of tag's attributes.
+        /// </summary>
+        /// <param name="value">Value to convert.</param>
+        /// <returns>Formated string.</returns>
+        private static string GetHTMLName(string value)
         {
-            return name.Trim().Replace(' ', '-').ToLower();
+            return value.Trim().Replace(' ', '-').ToLower();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (IsPostBack)
             {
+                var mailType = Request.Form[GetHTMLName(GetString("Kadena.MailingList.MailType"))];
+                var product = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Product"))];
+                var validity = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))];
+                var fileStream = inpFile.PostedFile.InputStream;
+                var fileName = inpFileName.Value;
+
+                
+
+                
 
                 var nextStepUrl = DocumentContext.CurrentDocument.GetStringValue("UrlNextPage", string.Empty);
                 Response.Redirect(nextStepUrl);
