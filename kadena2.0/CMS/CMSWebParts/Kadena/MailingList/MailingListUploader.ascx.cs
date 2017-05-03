@@ -23,13 +23,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             { "SelfMailer", "Self-mailer" }
         };
         private Dictionary<string, string> _validity = new Dictionary<string, string>() {
-            { "1week", "1 week" },
-            { "90days", "90 days" },
-            { "unlimited", "Unlimited" }
+            { "7", "1 week" },
+            { "90", "90 days" },
+            { "0", "Unlimited" }
         };
-        private readonly string _bucketType = "original-mailing";
-        private readonly string _loadFileSettingKey = "KDA_LoadFileUrl";
-        private readonly string _getHeadersSettingKey = "KDA_GetHeadersUrl";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -150,7 +147,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 var mailType = Request.Form[GetHTMLName(GetString("Kadena.MailingList.MailType"))];
                 var product = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Product"))];
-                var validity = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))];
+                var validity = int.Parse(Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))]);
                 var fileStream = inpFile.PostedFile.InputStream;
                 var fileName = inpFileName.Value;
 
