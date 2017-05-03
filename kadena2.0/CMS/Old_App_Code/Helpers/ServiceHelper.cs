@@ -19,6 +19,14 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
         private const string _loadFileIncorrectMessage = "Url for file uploading is not in correct format. Check settings for your site.";
         private const string _createContainerIncorrectMessage = "Url for creating container is not in correct format. Check settings for your site.";
+
+        /// <summary>
+        /// Sends request to microservice to create mailing container.
+        /// </summary>
+        /// <param name="mailType">Mail type option for mailing container.</param>
+        /// <param name="product">Product type option for mailing container.</param>
+        /// <param name="validityDays">Validity option for mailing container.</param>
+        /// <returns>Id of mailing container.</returns>
         public static Guid CreateMailingContainer(string mailType, string product, int validityDays)
         {
             if (string.IsNullOrWhiteSpace(mailType))
@@ -83,7 +91,13 @@ namespace Kadena.Old_App_Code.Helpers
             return containerId;
         }
 
-        public static Guid SendToService(System.IO.Stream fileStream, string fileName)
+        /// <summary>
+        /// Uploads file with request to microservice.
+        /// </summary>
+        /// <param name="fileStream">Stream to upload.</param>
+        /// <param name="fileName">Name of file to pass to microservice.</param>
+        /// <returns>Id of uploaded file.</returns>
+        public static Guid UploadFile(System.IO.Stream fileStream, string fileName)
         {
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
             if (string.IsNullOrWhiteSpace(customerName))
