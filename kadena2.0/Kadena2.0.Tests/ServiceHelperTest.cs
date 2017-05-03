@@ -15,10 +15,7 @@ namespace Kadena.Tests
         private string _mailType = "type";
         private string _product = "product";
         private string _validity = "validity";
-        private string _site = "Kadena";
-        private string _customerName = "actum";
         private string _customerNameSetting = "KDA_CustomerName";
-        private string _createContainerUrl = "http://";
         private string _createContainerUrlSetting = "KDA_CreateContainerUrl";
 
         [SetUp]

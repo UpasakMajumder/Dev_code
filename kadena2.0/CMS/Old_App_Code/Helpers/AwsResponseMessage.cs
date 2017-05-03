@@ -8,7 +8,10 @@ namespace Kadena.Old_App_Code.Helpers
         [DataMember(Name = "success")]
         public bool Success { get; set; }
 
-        [DataMember(Name = "response")]
+        [DataMember(Name = "payload")]
         public object Response { get; set; }
+
+        [DataMember(Name = "errorMessage")]
+        public string ErrorMessages { get; set; }
     }
 }

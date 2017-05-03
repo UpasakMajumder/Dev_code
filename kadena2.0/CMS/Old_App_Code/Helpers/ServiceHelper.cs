@@ -38,7 +38,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 throw new InvalidOperationException("Mailing service is not in correct format. Check settings for your site.");
             }
-            
+
             var containerId = Guid.Empty;
             using (var client = new HttpClient())
             {
@@ -54,15 +54,22 @@ namespace Kadena.Old_App_Code.Helpers
                     using (var message = client.PostAsync(createContainerUrl, content))
                     {
                         var awsResponse = message.Result;
-                        if (awsResponse.IsSuccessStatusCode)
+                        AwsResponseMessage response;
+                        try
                         {
-                            // success
-                            var response = JsonConvert.DeserializeObject<AwsResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
-                            containerId = new Guid(response.Response.ToString());
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                        }
+                        catch (JsonReaderException)
+                        {
+                            throw new InvalidOperationException("Response from microservice is not in correct format.");
+                        }
+                        if (response.Success)
+                        {
+                            containerId = new Guid(response?.Response?.ToString());
                         }
                         else
                         {
-                            // fail
+                            throw new HttpRequestException(response.ErrorMessages);
                         }
                     }
                 }
