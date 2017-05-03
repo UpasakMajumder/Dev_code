@@ -99,6 +99,16 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>Id of uploaded file.</returns>
         public static Guid UploadFile(System.IO.Stream fileStream, string fileName)
         {
+            if (fileStream == null || fileStream.Length == 0)
+            {
+                throw new ArgumentNullException(_valueEmptyMessage, "fileStream");
+            }
+
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                throw new ArgumentNullException(_valueEmptyMessage, "fileName");
+            }
+
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
             if (string.IsNullOrWhiteSpace(customerName))
             {
