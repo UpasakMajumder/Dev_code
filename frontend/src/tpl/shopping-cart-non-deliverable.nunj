@@ -19,7 +19,7 @@
       <tr>
         <td>
           <div class="input__wrapper">
-            <input type="text"class="input__text" placeholder="Name" name='name-1'>
+            <input type="text" class="input__text" placeholder="Name" name='name-1'>
           </div>
         </td>
         <td>
@@ -87,8 +87,7 @@
                   </p>
                 </div>
                 <div class="cart-product__quantity">
-                  <span>Quantity:
-                  </span>
+                  <span>Quantity: </span>
                   <input type="number" min="1" value="1">
                 </div>
                 <div class="cart-product__delivery">
@@ -205,8 +204,7 @@
                   </div>
                   <div class="cart-fill__block-table-row">
                     <span class="cart-fill__block-table-info">Shipping</span>
-                    <span class="cart-fill__block-table-amount">$ 42.64
-                    </span>
+                    <span class="cart-fill__block-table-amount">$ 42.64</span>
                   </div>
                   <div class="cart-fill__block-table-row">
                     <span class="cart-fill__block-table-info">Subtotal</span>
