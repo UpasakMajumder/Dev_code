@@ -1,0 +1,30 @@
+<div class="my-account">
+  <table class="my-account__table">
+    <tbody>
+    <tr>
+      <td>Title</td>
+      <td>Chief Marketing Officer</td>
+    </tr>
+    <tr>
+      <td>Company name</td>
+      <td>Nortek Global HVAC LLC</td>
+    </tr>
+    <tr>
+      <td>Username / Email</td>
+      <td>jane.doe@mycompany.com</td>
+    </tr>
+    <tr>
+      <td>Customer ID</td>
+      <td>ASa1231</td>
+    </tr>
+    <tr>
+      <td>Budget period</td>
+      <td>May 17 2015 - May 24 2019</td>
+    </tr>
+    <tr>
+      <td>Budget amount</td>
+      <td>$ <span>1000000</span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
