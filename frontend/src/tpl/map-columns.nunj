@@ -41,17 +41,15 @@
           </p>
         </div>
 
-        <div class="map-columns__form map-columns-form">
-          <div class="map-columns-form__group-wrapper">
-            {{select('TITLE', 'Select a title', ['option1','option2','option3'],'optional')}}
-            {{select('NAME', 'CUSTOMER_NAME', ['option1','option2','option3'])}}
-            {{select('LAST NAME', 'Empty', ['option1','option2','option3'],'optional')}}
-            {{select('FIRST ADRESS LINE', 'PREM_ADRESS1', ['option1','option2','option3'])}}
-            {{select('SECOND ADRESS LINE', 'PREM_ADRESS2', ['option1','option2','option3'])}}
-            {{select('CITY', 'PREM_CITY', ['option1','option2','option3'])}}
-            {{select('STATE', 'PREM_STATE', ['option1','option2','option3'])}}
-            {{select('ZIP CODE', 'PREM_ZIP', ['option1','option2','option3'])}}
-          </div>
+        <div class="map-columns-form">
+          {{select('TITLE', 'Select a title', ['option1','option2','option3'],'optional')}}
+          {{select('NAME', 'CUSTOMER_NAME', ['option1','option2','option3'])}}
+          {{select('LAST NAME', 'Empty', ['option1','option2','option3'],'optional')}}
+          {{select('FIRST ADRESS LINE', 'PREM_ADRESS1', ['option1','option2','option3'])}}
+          {{select('SECOND ADRESS LINE', 'PREM_ADRESS2', ['option1','option2','option3'])}}
+          {{select('CITY', 'PREM_CITY', ['option1','option2','option3'])}}
+          {{select('STATE', 'PREM_STATE', ['option1','option2','option3'])}}
+          {{select('ZIP CODE', 'PREM_ZIP', ['option1','option2','option3'])}}
         </div>
 
         <div class="btn-group btn-group--left">
