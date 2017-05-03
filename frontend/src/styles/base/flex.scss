@@ -1,0 +1,13 @@
+$justify-content: (center: center, between: space-between, around: space-around, start: flex-start, end: flex-end);
+
+$align-items: (center: center, start: flex-start, end: flex-end, stretch: stretch, auto: auto);
+
+@each $alignProp, $alignStyle in $align-items {
+  @each $justifyProp, $jusrifyStyle in $justify-content {
+    .flex--#{$alignProp}--#{$justifyProp} {
+      display: flex;
+      align-items: $alignStyle;
+      justify-content: $jusrifyStyle;
+    }
+  }
+}
