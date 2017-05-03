@@ -1,6 +1,6 @@
 .adress-card {
   @include rem(padding, 10px);
-  @include rem(margin-left, 20px);
+  @include rem(margin, 0 0 20px 20px);
   display: inline-block;
   border-radius: $border-radius-xl;
   border: 3px solid $brand-grey;
@@ -11,6 +11,8 @@
   }
 
   &__btn-block {
+    @include rem(padding-top, 12px);
+
     a:not(:first-child) {
       @include rem(margin-left, 5px);
     }

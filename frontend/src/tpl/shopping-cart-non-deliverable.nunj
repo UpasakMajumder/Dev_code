@@ -111,13 +111,13 @@
               </div>
               <div class="cart-product__options">
                 <div class="cart-product__action">
-                  <a href="#" class="cart-product__btn">
+                  <a href="#" class="in-card-btn">
                     {% call svg.template() %}
                     {{svg.use(name='edit')}}
                     {% endcall %}
                     Edit
                   </a>
-                  <a href="#" class="cart-product__btn">
+                  <a href="#" class="in-card-btn">
                     {% call svg.template() %}
                     {{svg.use(name='cross--dark')}}
                     {% endcall %}

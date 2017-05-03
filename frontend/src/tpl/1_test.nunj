@@ -1,13 +1,59 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/breadcrumb.nunj" import breadcrumb %}
 {% from "macro/sidebar.nunj" import sidebar %}
+{% from "macro/select.nunj" import select %}
 {% import "macro/svg.nunj" as svg %}
+{% import "macro/dialog.nunj" as dialog %}
 
 {% set title = "Test" %}
 
 {% block content %}
 
   {{ sidebar('Products') }}
+  {% call dialog.wrapper(id = 'edit-adress') %}
+  {{ dialog.header(header='New adress:') }}
+  {% call dialog.content() %}
+  <table class="cart__dialog-table">
+    <tbody>
+      <tr>
+        <td>
+          <div class="input__wrapper">
+            <span class="input__label">Adderess Line 1</span>
+            <input type="text" class="input__text" placeholder="Adderess Line 1" name='adress-1'>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <span class="input__label">Adderess Line 2</span>
+            <input type="text" class="input__text" placeholder="Adderess Line 2" name='adress1-1'>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <span class="input__label">City</span>
+            <input type="text" class="input__text" placeholder="City" name='city-1'>
+          </div>
+        </td>
+        <td>
+          {{select(optHolder = "CA", options = ['CA', 'option_2', 'option_3'],name = 'select-1', label="State")}}
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <span class="input__label">Zip Code</span>
+            <input type="text" class="input__text" placeholder="Zip Code" name="zip-1">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endcall %}
+  {% call dialog.footer() %}
+  <div class="btn-group btn-group--right">
+    <button type="button" class="btn-action btn-action--secondary">Discard changes</button>
+    <button type="button" class="btn-action">Confirm & use address</button>
+  </div>
+  {% endcall %}
+  {% endcall %}
 
   <div class="content">
     <div class="content__inner">
@@ -22,7 +68,7 @@
           <span>4001 Valley Industrial Blvd</span>
           <span>Shakopee</span>
           <span>MN 55379</span>
-          <dib class="adress-card__btn-block">
+          <div class="adress-card__btn-block">
             <a href="#" class="in-card-btn">
               {% call svg.template() %}
               {{svg.use(name='edit')}}
@@ -35,7 +81,15 @@
               {% endcall %}
               Remove
             </a>
-          </dib>
+          </div>
+        </div>
+        <div class="action-heading">
+          <h3>Shipping Adress</h3>
+          <a href="#" class="plus-btn js-tooltip js-dialog" data-tooltip-placement="right" data-dialog="#edit-adress" title="Add new shipping adress">
+            {% call svg.template('icon-modal') %}
+            {{svg.use(name='plus')}}
+            {% endcall %}
+          </a>
         </div>
       </div>
     </div>

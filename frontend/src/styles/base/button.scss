@@ -150,6 +150,13 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
   display: block;
 }
 
+.plus-btn {
+  @extend .bg-secondary;
+  @extend .btn--circle;
+
+  @include rem(margin-left, 10px);
+}
+
 .btn-group {
   &--left {
     text-align: left;
