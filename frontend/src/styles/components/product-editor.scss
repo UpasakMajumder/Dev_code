@@ -8,9 +8,7 @@
   }
 
   &__bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend %flex--center--between;
     flex-wrap: wrap;
 
     & > div {
@@ -68,10 +66,9 @@
   }
 
   &__bottom {
+    @extend %flex--center--between;
+
     @include rem(margin-top, 30px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 
   &__left-text {

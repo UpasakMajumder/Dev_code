@@ -1,8 +1,6 @@
 .add-to-cart {
-  display: flex;
+  @extend %flex--center--between;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
 
   & > div {
     @include rem(margin-bottom, 15px);

@@ -1,11 +1,10 @@
 $size: 50px;
 
 .steps {
+  @extend %flex--center--default;
   @extend .py-2;
   @extend .px-3;
-  align-items: center;
   border-radius: $border-radius * 4;
-  display: flex;
   background-color: #efefef; //TODO: var
   position: relative;
 

@@ -1,11 +1,11 @@
 .sent-statistics {
+  @extend %flex--default--around;
+
   @include rem(padding, 15px);
   background-color: $brand-lightgrey;
   color: $success-mark;
   border-radius: $border-radius-xl;
-  display: flex;
   flex-wrap: nowrap;
-  justify-content: space-around;
 
   &__item {
     text-align: center;
