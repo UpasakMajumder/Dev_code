@@ -53,9 +53,3 @@
     }
   }
 }
-
-.cart__dialog-table {
-  tr td:not(:first-child) {
-    @include rem(padding-left, 10px);
-  }
-}
