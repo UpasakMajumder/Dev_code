@@ -52,7 +52,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                     , _mailTypes)));
             phProduct.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
-                                    , GetString("Kadena.MailingList.ProductDesription")
+                                    , GetString("Kadena.MailingList.ProductDescription")
                                     , _products)));
             phValidity.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
@@ -88,7 +88,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 html.Write(description);
                 html.RenderEndTag();
             }
-            if (options.Count() > 0)
+            if ((options?.Count()).GetValueOrDefault() > 0)
             {
                 html.AddAttribute(HtmlTextWriterAttribute.Class, "row");
                 html.RenderBeginTag(HtmlTextWriterTag.Div);
