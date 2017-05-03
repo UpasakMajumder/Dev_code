@@ -1,8 +1,8 @@
 .input {
   @extend .line-height--one;
 
-  @include rem(padding-top, 8px);
-  @include rem(padding-bottom, 8px);
+  @include rem(padding-top, 11px);
+  @include rem(padding-bottom, 11px);
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
   font-weight: 100;

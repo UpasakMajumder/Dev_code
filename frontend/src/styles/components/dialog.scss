@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: $zindex-modal-backdrop;
 
   &.active {
     display: flex;
@@ -51,5 +51,11 @@
     button {
       @include rem(margin-left, 10px);
     }
+  }
+}
+
+.cart__dialog-table {
+  tr td:not(:first-child) {
+    @include rem(padding-left, 10px);
   }
 }
