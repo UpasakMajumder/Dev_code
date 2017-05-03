@@ -704,6 +704,27 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
+      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
+      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.cs">
+      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.designer.cs">
+      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.cs">
+      <DependentUpon>EstimatesTable.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
+      <DependentUpon>EstimatesTable.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\KadenaModule.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
@@ -712,11 +733,12 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CMSWebParts\Kadena\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
@@ -731,6 +753,9 @@
   <ItemGroup>
     <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
+    <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
     <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>
