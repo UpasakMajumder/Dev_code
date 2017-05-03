@@ -17,7 +17,80 @@
         </div>
         {{ breadcrumb(['Home','Settings']) }}
       </div>
-      <div class="content-block"></div>
+      <div class="content-block">
+        <div class="settings">
+          <div class="css-tabs__container js-tabs" data-tab=".js-tab-settings" data-tab-active="active" data-tab-active-default=".js-tab-settings-my-account">
+            <ul class="css-tabs__list">
+              <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-my-account">My account</li>
+              <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-password">Password</li>
+              <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
+              <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-addresses">Addresses</li>
+            </ul>
+
+            <div>
+              <div class="css-tabs__content js-tab-settings-my-account">
+                <div class="settings__block">
+                  <div class="settings__item">
+                    <h2>My account</h2>
+                    <div>
+                      {% include 'components/settings/my-account.nunj' %}
+                    </div>
+                  </div>
+
+                  <div class="settings__item">
+                    <h2>Contact person</h2>
+                    <div>
+                      {% include 'components/settings/contact-person.nunj' %}
+                    </div>
+                  </div>
+
+                  <div class="settings__item">
+                    <button type="button" class="btn-action">Save changes</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="css-tabs__content js-tab-settings-password">
+                <div class="settings__block">
+                  <div class="settings__item">
+                    <div>
+                      {% include 'components/settings/change-password.nunj' %}
+                    </div>
+                  </div>
+                  <div class="settings__item">
+                    <button type="button" class="btn-action">Change password</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="css-tabs__content js-tab-settings-email-notification">
+                <div class="settings__block">
+                  <div class="settings__item">
+                    <div>
+                      {% include 'components/settings/email-notification.nunj' %}
+                    </div>
+                  </div>
+                  <div class="settings__item">
+                    <button type="button" class="btn-action">Place order</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="css-tabs__content js-tab-settings-addresses">
+                <div class="settings__block">
+                  <div class="settings__item">
+                    <h2>Billing address</h2>
+                  </div>
+
+                  <div class="settings__item">
+                    <h2>Shipping addresses</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
