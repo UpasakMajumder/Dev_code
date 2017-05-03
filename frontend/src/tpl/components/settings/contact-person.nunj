@@ -1,1 +1,21 @@
-hello
+<div class="form">
+  <div class="input__wrapper">
+    <span class="input__label">First name</span>
+    <input type="text" class="input__text" value="Oliver">
+  </div>
+
+  <div class="input__wrapper">
+    <span class="input__label">Last name</span>
+    <input type="text" class="input__text" value="Ustinovich">
+  </div>
+
+  <div class="input__wrapper">
+    <span class="input__label">Mobile</span>
+    <input type="text" class="input__text" value="+1-202-555-0186">
+  </div>
+
+  <div class="input__wrapper">
+    <span class="input__label">Phone number</span>
+    <input type="text" class="input__text" value="+1-202-555-0186">
+  </div>
+</div>
