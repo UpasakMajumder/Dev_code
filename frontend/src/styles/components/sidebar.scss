@@ -17,9 +17,8 @@ $sidebar-font-size: 11px;
   }
 
   &__header {
-    display: flex;
+    @extend %flex--default--center;
     flex-direction: row;
-    justify-content: center;
     width: 100%;
     padding-top: 20px;
     padding-bottom: 15px;

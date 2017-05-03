@@ -38,9 +38,7 @@
   }
 
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    @extend %flex--baseline--between;
 
     p {
       margin: 0;

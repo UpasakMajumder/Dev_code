@@ -14,9 +14,7 @@ $heading-round-mark-size: 19px;
   }
 
   &__table-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @extend %flex--center--between;
 
     @include rem(padding-bottom, 24px);
 
