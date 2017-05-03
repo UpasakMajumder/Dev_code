@@ -1,4 +1,5 @@
-﻿using CMS.DataEngine;
+﻿using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
@@ -12,28 +13,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class MailingListUploader : CMSAbstractWebPart
     {
-        private Dictionary<string, string> _mailTypes = new Dictionary<string, string>() {
-            { "FirstClass", "First Class" },
-            { "StandartUnsorted", "Standart - Unsorted" },
-            { "StandartSorted", "Standart - Sorted" }
-        };
-        private Dictionary<string, string> _products = new Dictionary<string, string>() {
-            { "Postcard", "Postcard" },
-            { "Letter", "Letter" },
-            { "SelfMailer", "Self-mailer" }
-        };
-        private Dictionary<string, string> _validity = new Dictionary<string, string>() {
-            { "7", "1 week" },
-            { "90", "90 days" },
-            { "0", "Unlimited" }
-        };
+        private readonly string _mailTypeTableName = "KDA.MailingType";
+        private readonly string _productTableName = "KDA.MailingProductType";
+        private readonly string _validityTableName = "KDA.MailingValidity";
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack)
-            {
-            }
-            else
+            if (!IsPostBack)
             {
                 btnHelp.Attributes["data-tooltip-title"] = GetString("Kadena.MailingList.HelpUpload");
                 textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
@@ -46,18 +32,29 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 inpFileName.Attributes["placeholder"] = GetString("Kadena.MailingList.FileName");
             }
 
+            var mailTypes = CustomTableItemProvider.GetItems(_mailTypeTableName)
+                    .OrderBy("ItemOrder")
+                    .ToDictionary(row => row["CodeName"].ToString(), row => row["DisplayName"].ToString());
             phMailType.Controls.Add(new LiteralControl(
                     GetDictionaryHTML(GetString("Kadena.MailingList.MailType")
                                     , GetString("Kadena.MailingList.MailTypeDescription")
-                                    , _mailTypes)));
+                                    , mailTypes)));
+
+            var products = CustomTableItemProvider.GetItems(_productTableName)
+                    .OrderBy("ItemOrder")
+                    .ToDictionary(row => row["CodeName"].ToString(), row => row["DisplayName"].ToString());
             phProduct.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
                                     , GetString("Kadena.MailingList.ProductDescription")
-                                    , _products)));
+                                    , products)));
+
+            var validity = CustomTableItemProvider.GetItems(_validityTableName)
+                    .OrderBy("ItemOrder")
+                    .ToDictionary(row => row["DayNumber"].ToString(), row => row["DisplayName"].ToString());
             phValidity.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
                                     , GetString("Kadena.MailingList.ValidityDescription")
-                                    , _validity)));
+                                    , validity)));
         }
 
         /// <summary>
