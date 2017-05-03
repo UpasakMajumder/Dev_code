@@ -52,15 +52,30 @@ namespace Kadena.Tests
 
 
         [Test]
-        public void NoExceptionTest()
+        public void NotMicroserviceCallTest()
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(
                 new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
                 new SettingsKeyInfo { KeyName = $"{_createContainerUrlSetting}", KeyValue = "http://example.com" }
                 );
-            
-            ServiceHelper.CreateMailingContainer(_mailType, _product, _validity);
+
+            var exc = Assert.Catch(typeof(InvalidOperationException)
+                , () => ServiceHelper.CreateMailingContainer(_mailType, _product, _validity));
+            Assert.AreEqual("Response from microservice is not in correct format.", exc.Message);
+        }
+
+        [Test]
+        public void MicroserviceCallTest()
+        {
+            Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
+                .WithData(
+                new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
+                new SettingsKeyInfo { KeyName = $"{_createContainerUrlSetting}", KeyValue = "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/Mailing" }
+                );
+
+            var containerId = ServiceHelper.CreateMailingContainer(_mailType, _product, _validity);
+            Assert.AreNotEqual(Guid.Empty, containerId);
         }
     }
 }
