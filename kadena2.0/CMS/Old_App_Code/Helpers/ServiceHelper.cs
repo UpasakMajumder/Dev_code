@@ -128,6 +128,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new MultipartFormDataContent())
                 {
+                    fileStream.Seek(0, System.IO.SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
                     content.Add(new StringContent(_bucketType), "bucketType");
                     content.Add(new StringContent(customerName), "customerName");
