@@ -15,11 +15,9 @@
       <div class="content-header">
         <div class="content-header__inner">
           <h1 class="content-header__page-name">{{ title }}</h1>
-          <a href="#" class="content-header__btn js-tooltip"
-             data-tooltip-placement="right"
-             title="Add new mailing list">
+          <a href="#" class="content-header__btn js-tooltip" data-tooltip-placement="right" title="Add new mailing list">
             {% call svg.template('icon-modal') %}
-              {{svg.use(name='plus')}}
+            {{svg.use(name='plus')}}
             {% endcall %}
           </a>
         </div>
@@ -51,7 +49,7 @@
 
           <div class="mailing-lists__row">
             <table class="table">
-              <thead>
+              <tbody>
                 <tr>
                   <th>Date added</th>
                   <th>Addresses</th>
@@ -60,19 +58,17 @@
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>Mar 3 2017</td>
-                <td>240</td>
-                <td>1</td>
-                <td>Mar 3 2017</td>
-                <td>Ready to use</td>
-                <td>
-                  <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
-                  <a href="#" class="mailing-lists__btn btn-action">Use</a>
-                </td>
-              </tr>
+                <tr>
+                  <td>Mar 3 2017</td>
+                  <td>240</td>
+                  <td>1</td>
+                  <td>Mar 3 2017</td>
+                  <td>Ready to use</td>
+                  <td>
+                    <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
+                    <a href="#" class="mailing-lists__btn btn-action">Use</a>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

@@ -24,7 +24,7 @@
           </div>
           <div class="processed-list__table-inner">
             <table class="table">
-              <thead>
+            <tbody>
                 <tr>
                   <th>Name</th>
                   <th>Address Line 1</th>
@@ -33,9 +33,6 @@
                   <th>State</th>
                   <th>Zip Code</th>
                 </tr>
-              </thead>
-
-              <tbody>
                 <tr>
                   <td>Jane Doe</td>
                   <td>2167 225th Ave</td>
