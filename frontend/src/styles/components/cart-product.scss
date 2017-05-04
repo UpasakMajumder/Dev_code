@@ -1,7 +1,6 @@
 .cart-product {
   $margin-content: 15px;
   $padding-block: 10px;
-  $padding-btn: 5px;
   $btn-size: 100px;
   $input-width: 90px;
   $icon-square: 15px;
@@ -53,30 +52,13 @@
     }
   }
 
-  &__btn {
+  &__action-btn {
+    @extend .in-card-btn;
     @extend %flex--center--default;
-
-    @include rem(padding, $padding-btn $padding-block);
-    border-radius: $border-radius * 2;
-    color: $brand-dark;
-    font-size: $font-xxs;
-    background-color: $brand-grey;
     width: $btn-size;
 
     &:not(:last-child) {
       @include rem(margin-bottom, $padding-block);
-    }
-
-    &:focus,
-    &:hover {
-      color: $brand-dark;
-    }
-
-    svg {
-      $size: 10px;
-      margin-right: $icon-margin;
-      width: $size;
-      height: $size;
     }
   }
 
