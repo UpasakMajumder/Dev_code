@@ -1,7 +1,10 @@
 ﻿using CMS.DataEngine;
+using CMS.Helpers;
 using CMS.SiteProvider;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Helpers
@@ -10,7 +13,7 @@ namespace Kadena.Old_App_Code.Helpers
     {
         private const string _bucketType = "original-mailing";
         private const string _loadFileSettingKey = "KDA_LoadFileUrl";
-        private const string _getHeadersSettingKey = "KDA_GetHeadersUrl";
+        private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
         private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
 
@@ -19,6 +22,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
         private const string _loadFileIncorrectMessage = "Url for file uploading is not in correct format. Check settings for your site.";
         private const string _createContainerIncorrectMessage = "Url for creating container is not in correct format. Check settings for your site.";
+        private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -157,6 +161,41 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
             return fileId;
+        }
+
+        public static IEnumerable<string> GetHeaders(Guid fileId)
+        {
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                throw new InvalidOperationException(_customerNotSpecifiedMessage);
+            }
+
+            Uri getHeaderUrl;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getHeaderSettingKey}")
+                , UriKind.Absolute
+                , out getHeaderUrl))
+            {
+                throw new InvalidOperationException(_getHeaderSettingKey);
+            }
+
+            string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.Query, "fileid", fileId.ToString());
+            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "customername", customerName);
+            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "buckettype", _bucketType);
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parametrizeUrl))
+                {
+                    var awsResponse = message.Result;
+                    if (awsResponse.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<AwsResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
+                        return (response.Response as JArray).ToObject<IEnumerable<string>>();
+                    }
+                }
+            }
+            return null;
         }
     }
 }
