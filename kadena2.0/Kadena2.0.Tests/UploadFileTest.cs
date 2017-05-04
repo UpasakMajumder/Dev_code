@@ -34,17 +34,68 @@ namespace Kadena.Tests
                     Assert.AreEqual("fileName", argExc.ParamName);
 
                     var exc = Assert.Catch(typeof(InvalidOperationException)
-                        , () => ServiceHelper.UploadFile(stream, "name"));
+                                    , () => ServiceHelper.UploadFile(stream, "name"));
                     Assert.AreEqual("CustomerName not specified. Check settings for your site.", exc.Message);
-                    
+
                     Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                         .WithData(
-                        new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
-                        new SettingsKeyInfo { KeyName = $"{_urlSetting}", KeyValue = "http://" }
+                            new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
+                            new SettingsKeyInfo { KeyName = $"{_urlSetting}", KeyValue = "http://" }
                         );
                     exc = Assert.Catch(typeof(InvalidOperationException)
-                        , () => ServiceHelper.UploadFile(stream, "name"));
+                                    , () => ServiceHelper.UploadFile(stream, "name"));
                     Assert.AreEqual("Url for file uploading is not in correct format. Check settings for your site.", exc.Message);
+                }
+            }
+        }
+
+        [Test]
+        public void NotMicroserviceCallTest()
+        {
+            Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
+                .WithData(
+                new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
+                new SettingsKeyInfo { KeyName = $"{_urlSetting}", KeyValue = "http://example.com" }
+                );
+
+            using (var stream = new MemoryStream())
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine("Column1, Column2,Column3,Column4");
+                    writer.WriteLine("Data1, Data2,Data3,Data4");
+                    writer.Flush();
+                    var exc = Assert.Catch(typeof(InvalidOperationException)
+                                        , () => ServiceHelper.UploadFile(stream, "name"));
+                    Assert.AreEqual("Response from microservice is not in correct format.", exc.Message);
+                }
+            }
+        }
+
+        [Test]
+        public void MicroserviceCallTest()
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine("Column1, Column2,Column3,Column4");
+                    writer.WriteLine("Data1, Data2,Data3,Data4");
+                    writer.Flush();
+
+                    Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
+                        .WithData(
+                            new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
+                            new SettingsKeyInfo
+                            {
+                                KeyName = $"{_urlSetting}",
+                                KeyValue = "https://eauydb7sta.execute-api.us-east-1.amazonaws.com/Prod/Api/File"
+                            }
+                        );
+
+                    var fileId = ServiceHelper.UploadFile(stream, "unittestfile.csv");
+                    TestContext.WriteLine($"File Id {fileId}");
+                    Assert.AreNotEqual(Guid.Empty, fileId);
                 }
             }
         }

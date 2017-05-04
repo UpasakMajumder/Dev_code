@@ -77,13 +77,13 @@ namespace Kadena.Old_App_Code.Helpers
                         {
                             throw new InvalidOperationException(_responseIncorrectMessage, e);
                         }
-                        if (response.Success)
+                        if (response?.Success ?? false)
                         {
                             containerId = new Guid(response?.Response?.ToString());
                         }
                         else
                         {
-                            throw new HttpRequestException(response.ErrorMessages);
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
                         }
                     }
                 }
@@ -144,13 +144,13 @@ namespace Kadena.Old_App_Code.Helpers
                         {
                             throw new InvalidOperationException(_responseIncorrectMessage, e);
                         }
-                        if (response.Success)
+                        if (response?.Success ?? false)
                         {
                             fileId = new Guid(response?.Response?.ToString());
                         }
                         else
                         {
-                            throw new HttpRequestException(response.ErrorMessages);
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
                         }
                     }
                 }
