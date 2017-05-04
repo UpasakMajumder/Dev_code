@@ -1,14 +1,62 @@
 {% extends "layouts/default.nunj" %}
-
 {% from "macro/breadcrumb.nunj" import breadcrumb %}
-
 {% from "macro/sidebar.nunj" import sidebar %}
+{% import "macro/svg.nunj" as svg %}
+{% import "macro/dialog.nunj" as dialog %}
+{% from "macro/select.nunj" import select %}
 
 {% set title = "Settings" %}
 
 {% block content %}
 
   {{ sidebar('Settings') }}
+  {% call dialog.wrapper(id = 'edit-adress') %}
+  {{ dialog.header(header='New adress:') }}
+  {% call dialog.content() %}
+  <table class="cart__dialog-table">
+    <tbody>
+    <tr>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Adderess Line 1</span>
+          <input type="text" class="input__text" placeholder="Adderess Line 1" name='adress-1'>
+        </div>
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Adderess Line 2</span>
+          <input type="text" class="input__text" placeholder="Adderess Line 2" name='adress1-1'>
+        </div>
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">City</span>
+          <input type="text" class="input__text" placeholder="City" name='city-1'>
+        </div>
+      </td>
+      <td>
+        {{select(optHolder = "CA", options = ['CA', 'option_2', 'option_3'],name = 'select-1', label="State")}}
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Zip Code</span>
+          <input type="text" class="input__text" placeholder="Zip Code" name="zip-1">
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  {% endcall %}
+  {% call dialog.footer() %}
+  <div class="btn-group btn-group--right">
+    <button type="button" class="btn-action btn-action--secondary">Discard changes</button>
+    <button type="button" class="btn-action">Confirm & use address</button>
+  </div>
+  {% endcall %}
+  {% endcall %}
+
+
+
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
@@ -80,10 +128,25 @@
                 <div class="settings__block">
                   <div class="settings__item">
                     <h2>Billing address</h2>
+                    <div>
+                      {% include 'components/settings/address-card.nunj' %}
+                    </div>
                   </div>
 
                   <div class="settings__item">
-                    <h2>Shipping addresses</h2>
+                    <div class="action-heading">
+                      <h2>Shipping Adress</h2>
+                      <a href="#" class="plus-btn js-tooltip js-dialog" data-tooltip-placement="right" data-dialog="#edit-adress" title="Add new shipping adress">
+                        {% call svg.template('icon-modal') %}
+                        {{svg.use(name='plus')}}
+                        {% endcall %}
+                      </a>
+                    </div>
+                    <div>
+                      {% for x in range(0, 3) %}
+                        {% include 'components/settings/address-card.nunj' %}
+                      {% endfor %}
+                    </div>
                   </div>
                 </div>
               </div>

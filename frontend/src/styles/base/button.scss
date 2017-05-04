@@ -117,6 +117,7 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
   @include rem(padding, $padding-btn-y $padding-btn-x);
   display: inline-block;
   border-radius: $border-radius * 2;
+  border: none;
   color: $brand-dark;
   font-size: $font-xxs;
   background-color: $brand-grey;
