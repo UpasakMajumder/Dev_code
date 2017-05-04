@@ -154,8 +154,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var fileStream = inpFile.PostedFile.InputStream;
                 var fileName = inpFileName.Value;
 
-                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
                 var fileId = ServiceHelper.UploadFile(fileStream, fileName);
+                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
 
                 var nextStepUrl = DocumentContext.CurrentDocument.GetStringValue("UrlNextPage", string.Empty);
                 nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
