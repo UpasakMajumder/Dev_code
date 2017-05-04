@@ -52,14 +52,13 @@
     }
   }
 
-  &__action {
-    .in-card-btn {
-      @extend %flex--center--default;
-      width: $btn-size;
+  &__action-btn {
+    @extend .in-card-btn;
+    @extend %flex--center--default;
+    width: $btn-size;
 
-      &:not(:last-child) {
-        @include rem(margin-bottom, $padding-block);
-      }
+    &:not(:last-child) {
+      @include rem(margin-bottom, $padding-block);
     }
   }
 

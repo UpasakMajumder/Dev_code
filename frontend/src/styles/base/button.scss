@@ -114,7 +114,7 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
   $icon-margin: 3px;
   $svg-size: 10px;
 
-  @include rem(padding, $padding-btn-y   $padding-btn-x);
+  @include rem(padding, $padding-btn-y $padding-btn-x);
   display: inline-block;
   border-radius: $border-radius * 2;
   color: $brand-dark;
@@ -153,8 +153,6 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
 .plus-btn {
   @extend .bg-secondary;
   @extend .btn--circle;
-
-  @include rem(margin-left, 10px);
 }
 
 .btn-group {
