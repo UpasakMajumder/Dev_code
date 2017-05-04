@@ -19,7 +19,7 @@
       </div>
       <div class="content-block product-editor">
         <table class="table product-editor__table-select">
-          <thead>
+          <tbody>
             <tr>
               <th>Date Added</th>
               <th>Addresses</th>
@@ -28,8 +28,6 @@
               <th>Status</th>
               <th></th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
               <td>
                 <span>Mar 1 2017</span>

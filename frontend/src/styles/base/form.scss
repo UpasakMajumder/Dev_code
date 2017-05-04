@@ -14,5 +14,10 @@
 
   & .input__label {
     font-size: $font-xs;
+
+    &--checkbox,
+    &--radio {
+      font-size: $font-size-default;
+    }
   }
 }
