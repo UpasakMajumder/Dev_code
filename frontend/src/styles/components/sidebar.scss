@@ -2,9 +2,8 @@ $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
 
 .css-sidebar {
-  display: flex;
+  @extend %flex--center--default;
   flex-direction: column;
-  align-items: center;
   flex: 0 0 $sidebar-width-small;
   width: $sidebar-width-small;
   font-size: $sidebar-font-size;
@@ -17,9 +16,8 @@ $sidebar-font-size: 11px;
   }
 
   &__header {
-    display: flex;
+    @extend %flex--default--center;
     flex-direction: row;
-    justify-content: center;
     width: 100%;
     padding-top: 20px;
     padding-bottom: 15px;
@@ -50,11 +48,10 @@ $sidebar-font-size: 11px;
   &__nav-link,
   &__nav-link:hover,
   &__nav-link:active {
+    @extend %flex--center--default;
     text-decoration: none;
     color: $font-grey;
     font-weight: 100;
-    display: flex;
-    align-items: center;
     flex-direction: column;
   }
 

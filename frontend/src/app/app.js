@@ -16,7 +16,6 @@ const app = {
   static() {
     init('confirmation', document.getElementsByClassName('js-confirmation'));
     init('storage', document.getElementsByClassName('js-storage'));
-
     init('spotfire', document.getElementsByClassName('js-spotfire'));
     init('num-format', document.getElementsByClassName('js-num-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
@@ -27,6 +26,7 @@ const app = {
     init('dialog', document.getElementsByClassName('js-dialog'));
     init('add-tr', document.getElementsByClassName('js-add-tr'));
     init('redirection', document.getElementsByClassName('js-redirection'));
+    init('password', document.getElementsByClassName('js-password'));
 
   },
 

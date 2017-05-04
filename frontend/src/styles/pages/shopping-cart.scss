@@ -1,0 +1,25 @@
+.shopping-cart {
+  &__block {
+    h2 {
+      @extend h3;
+    }
+
+    &:not(:last-child) {
+      @extend .mb-4;
+    }
+
+    & > * {
+      &:not(:last-child) {
+        @extend .mb-3;
+      }
+    }
+  }
+
+  &__badge {
+    @extend .badge;
+    @extend .badge--dark;
+    @extend .ml-1;
+    @extend .font--xs;
+    @extend .v--middle;
+  }
+}

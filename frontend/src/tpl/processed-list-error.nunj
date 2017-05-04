@@ -16,7 +16,7 @@
   {% call dialog.content() %}
   <div class="processed-list__table-dialog">
     <table class="table">
-      <thead>
+    <tbody>
         <tr>
           <td>Line</td>
           <td>Name</td>
@@ -26,8 +26,6 @@
           <td>State</td>
           <td>Zip Code</td>
         </tr>
-      </thead>
-      <tbody>
         <tr>
           <td>75</td>
           <td>
@@ -435,7 +433,7 @@
           </div>
           <div class="processed-list__table-inner">
             <table class="table processed-list__table--shadow">
-              <thead>
+            <tbody>
                 <tr>
                   <th>Line</th>
                   <th>Name</th>
@@ -445,9 +443,6 @@
                   <th>State</th>
                   <th>Zip Code</th>
                 </tr>
-              </thead>
-
-              <tbody>
                 <tr>
                   <td>2</td>
                   <td>Jane Doe</td>
@@ -504,7 +499,7 @@
           </div>
           <div class="processed-list__table-inner">
             <table class="table processed-list__table--shadow">
-              <thead>
+            <tbody>
                 <tr>
                   <th>Name</th>
                   <th>Address Line 1</th>
@@ -513,9 +508,6 @@
                   <th>State</th>
                   <th>Zip Code</th>
                 </tr>
-              </thead>
-
-              <tbody>
                 <tr>
                   <td>Jane Doe</td>
                   <td>2167 225th Ave</td>

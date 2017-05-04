@@ -1,0 +1,93 @@
+.cart-fill {
+  &__block {
+    &:not(:last-child) {
+      @include rem(margin-bottom, 25px);
+    }
+
+    .input__wrapper {
+      @include rem(margin-bottom, 16px);
+
+      label p {
+        @include rem(margin-bottom, 8px);
+      }
+    }
+
+    &-input-wrapper {
+      input[type="radio"]:checked ~ .input__wrapper {
+        visibility: visible;
+      }
+
+      label {
+        float: left;
+      }
+
+      .input__wrapper {
+        @include rem(left, 16px);
+        @include rem(top, -8px);
+        visibility: hidden;
+        position: relative;
+
+        input {
+          width: auto;
+        }
+      }
+    }
+
+    .btn-group {
+      @include rem(margin-top, 16px);
+    }
+  }
+
+  &__block-inner {
+    @include rem(padding-left, 20px);
+  }
+
+  &__block-table {
+    @include rem(margin, 10px 0);
+    max-width: 270px;
+  }
+
+  &__block-table-row {
+    @extend %flex--center--between;
+
+    @include rem(padding, 5px 0);
+    position: relative;
+    width: 100%;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      border-top: 1px dashed $brand-darker;
+      transform: translate(0, -50%);
+    }
+  }
+
+  &__block-table-amount {
+    @include rem(padding-left, 10px);
+    position: relative;
+    z-index: 1;
+    background-color: $brand-white;
+    margin-left: auto;
+
+    &--emphasized {
+      @extend .weight--bold;
+      font-size: $font-m;
+    }
+  }
+
+  &__block-table-info {
+    @include rem(padding-right, 10px);
+    background-color: $brand-white;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.cart__dialog-table {
+  tr td:not(:first-child) {
+    @include rem(padding-left, 10px);
+  }
+}

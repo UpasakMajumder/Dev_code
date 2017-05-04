@@ -1,0 +1,28 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/sidebar.nunj" import sidebar %}
+{% from "macro/select.nunj" import select %}
+{% import "macro/svg.nunj" as svg %}
+{% import "macro/dialog.nunj" as dialog %}
+
+{% set title = "Test" %}
+
+{% block content %}
+
+  {{ sidebar('Products') }}
+
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">Test Header</h1>
+        </div>
+        {{ breadcrumb(['Home','Test']) }}
+      </div>
+      <div class="content-block">
+        
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

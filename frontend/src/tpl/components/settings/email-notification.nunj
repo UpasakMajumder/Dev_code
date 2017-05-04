@@ -1,0 +1,16 @@
+<div class="form">
+  <div class="input__wrapper">
+    <input id="order" type="checkbox" class="input__checkbox">
+    <label for="order" class="input__label input__label--checkbox">Order confirmation</label>
+  </div>
+
+  <div class="input__wrapper">
+    <input id="shipping" type="checkbox" class="input__checkbox">
+    <label for="shipping" class="input__label input__label--checkbox">Shipping notifications</label>
+  </div>
+
+  <div class="input__wrapper">
+    <input id="general" type="checkbox" class="input__checkbox">
+    <label for="general" class="input__label input__label--checkbox">General updates</label>
+  </div>
+</div>

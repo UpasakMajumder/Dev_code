@@ -79,26 +79,28 @@
     };
 
     function RestoreDynamicPricingData() {
-        var data = JSON.parse($cmsj(".j-dynamic-pricing-value").val());
+        if ($cmsj(".j-dynamic-pricing-value").val() != "") {
+            var data = JSON.parse($cmsj(".j-dynamic-pricing-value").val());
 
-        $cmsj.each(data, function (index, value) {
-            var item = $cmsj(".j-dynamic-pricing-table-model").find("tr").clone();
-            $cmsj(item).find("input[data-attr='min-val']").val(value.minVal);
-            $cmsj(item).find("input[data-attr='max-val']").val(value.maxVal);
-            $cmsj(item).find("input[data-attr='price']").val(value.price);
+            $cmsj.each(data, function (index, value) {
+                var item = $cmsj(".j-dynamic-pricing-table-model").find("tr").clone();
+                $cmsj(item).find("input[data-attr='min-val']").val(value.minVal);
+                $cmsj(item).find("input[data-attr='max-val']").val(value.maxVal);
+                $cmsj(item).find("input[data-attr='price']").val(value.price);
 
-            $cmsj(item).find(".j-dynamic-pricing-input").keyup(function (e) {
-                SaveDynamicPricingData();
+                $cmsj(item).find(".j-dynamic-pricing-input").keyup(function (e) {
+                    SaveDynamicPricingData();
+                });
+
+                $cmsj(item).find(".j-dynamic-pricing-delete-button").click(function (e) {
+                    e.preventDefault();
+
+                    $cmsj(this).parent("td").parent("tr").remove();
+                    SaveDynamicPricingData();
+                });
+
+                $cmsj(".j-dynamic-pricing-table").append(item);
             });
-
-            $cmsj(item).find(".j-dynamic-pricing-delete-button").click(function (e) {
-                e.preventDefault();
-
-                $cmsj(this).parent("td").parent("tr").remove();
-                SaveDynamicPricingData();
-            });
-
-            $cmsj(".j-dynamic-pricing-table").append(item);
-        });
+        }
     };
 </script>

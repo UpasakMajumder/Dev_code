@@ -2,16 +2,13 @@
   $bar-margins-x: 20px;
   $product-block-y: 20px;
   $product-bar-input: 100px;
-  $product-editor-dialog-height: 475px;
 
   &__block {
     @include rem(margin-top, $product-block-y);
   }
 
   &__bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @extend %flex--center--between;
     flex-wrap: wrap;
 
     & > div {
@@ -53,14 +50,11 @@
     }
   }
 
-  &__table-dialog {
+  &__table-select {
     width: 100%;
-    max-height: $product-editor-dialog-height;
-    overflow: auto;
 
-    button {
-      display: block;
-      margin: auto;
+    tr > td:last-child {
+      text-align: center;
     }
 
     td > span,
@@ -71,17 +65,17 @@
     }
   }
 
-  &__dialog-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  &__bottom {
+    @extend %flex--center--between;
+
+    @include rem(margin-top, 30px);
   }
 
-  &__dialog-footer-text {
+  &__left-text {
     @include rem(padding-right, 30px);
   }
 
-  &__dialog-footer-btn {
+  &__right-btn-group {
     flex-shrink: 0;
   }
 }

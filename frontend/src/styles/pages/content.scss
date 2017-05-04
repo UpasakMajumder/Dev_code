@@ -17,12 +17,10 @@ $content-inner-padding: 24px;
   }
 
   &-header {
+    @extend %flex--center--between;
     width: 100%;
-    display: flex;
     flex-wrap: wrap;
     flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: center;
     padding-bottom: 15px;
     margin-bottom: 12px;
 
@@ -33,12 +31,11 @@ $content-inner-padding: 24px;
     }
 
     &__inner {
-      display: flex;
+      @extend %flex--baseline--default;
       order: 2;
       flex-grow: 1;
       margin-right: auto;
       flex-wrap: nowrap;
-      align-items: baseline;
     }
 
     &__btn {

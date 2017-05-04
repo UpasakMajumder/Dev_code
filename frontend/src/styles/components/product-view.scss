@@ -29,11 +29,10 @@
   }
 
   &__info {
+    @extend %flex--center--between;
+
     @include rem(padding, 10px);
-    display: flex;
-    align-items: center;
     flex-wrap: nowrap;
-    justify-content: space-between;
     border: 1px solid $brand-grey;
 
     span {
