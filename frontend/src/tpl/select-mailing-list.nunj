@@ -1,0 +1,91 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/sidebar.nunj" import sidebar %}
+{% import "macro/svg.nunj" as svg %}
+
+{% set title = "Products" %}
+
+{% block content %}
+
+  {{ sidebar('Products') }}
+
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">Select a mailing list to use</h1>
+        </div>
+        {{ breadcrumb(['Home','Products', 'Category Name', 'Category Name', 'March 2017 Events']) }}
+      </div>
+      <div class="content-block product-editor">
+        <table class="table product-editor__table-select">
+          <thead>
+            <tr>
+              <th>Date Added</th>
+              <th>Addresses</th>
+              <th>Errors</th>
+              <th>Valid through</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span>Mar 1 2017</span>
+              </td>
+              <td>240</td>
+              <td>1</td>
+              <td>Mar 13 2017</td>
+              <td>Ready for use</td>
+              <td>
+                <button type="button" class="btn-action">Use</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Mar 1 2017</span>
+              </td>
+              <td>240</td>
+              <td>1</td>
+              <td>Mar 13 2017</td>
+              <td>Ready for use</td>
+              <td>
+                <button type="button" class="btn-action">Use</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>Feb 10 2017</span>
+              </td>
+              <td>1333</td>
+              <td>0</td>
+              <td>Mar 13 2017</td>
+              <td>Jan 15 2017</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <span>Feb 10 2017</span>
+              </td>
+              <td>1333</td>
+              <td>0</td>
+              <td>Mar 13 2017</td>
+              <td>Jan 15 2017</td>
+              <td>List expired</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="product-editor__bottom">
+          <div class="product-editor__left-text">
+            <span>Missing the right mailing list? Go ahead and create it. This will save your current progress in Drafts section where you can access it through top navigation bar.</span>
+          </div>
+          <div class="product-editor__right-btn-group btn-group btn-group--right">
+            <button type="button" class="btn-action btn-action--secondary">New mailing list</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

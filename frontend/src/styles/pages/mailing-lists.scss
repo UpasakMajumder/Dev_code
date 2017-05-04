@@ -1,0 +1,33 @@
+$circle-btn-size: 25px;
+
+.mailing-lists {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+
+  &__btn {
+    &:nth-child(2) {
+      @include rem(margin-left, 10px);
+    }
+  }
+
+  &__add-row-icon {
+    @extend .bg-primary;
+    @extend .btn--circle;
+    float: left;
+
+    @include rem(margin-right, 7px);
+
+    & + span {
+      color: $brand-dark;
+    }
+  }
+
+  .additional-row {
+    padding: 5px 0;
+
+    > td {
+      height: 59px;
+    }
+  }
+}

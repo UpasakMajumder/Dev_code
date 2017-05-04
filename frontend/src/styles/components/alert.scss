@@ -1,0 +1,43 @@
+.alert {
+  @include rem(padding, 30px);
+  border-radius: $border-radius-xl;
+  display: none;
+  position: relative;
+
+  &.isOpen {
+    display: inline-block;
+  }
+
+  &--info {
+    @extend .alert;
+    border: 3px solid $brand-info;
+    background-color: rgba($brand-yellow-light, .3);
+  }
+
+  &--grey {
+    @extend .alert;
+    border: 3px solid $brand-grey;
+    background-color: rgba($brand-grey, .3);
+  }
+
+  &--smaller {
+    @include rem(padding, 20px);
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  &--close {
+    .alert__close {
+      display: block;
+    }
+  }
+
+  &__close {
+    @include rem(top, 10px);
+    @include rem(right, 10px);
+    position: absolute;
+    display: none;
+  }
+}

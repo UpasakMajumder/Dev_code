@@ -1,0 +1,53 @@
+.dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: $zindex-modal-backdrop;
+
+  &.active {
+    display: flex;
+  }
+
+  &__shadow {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $brand-dark;
+    opacity: .5;
+    z-index: $zindex-modal-backdrop;
+  }
+
+  &__block {
+    @include rem(padding, 20px);
+    margin: auto;
+    align-self: flex-start;
+    background-color: $brand-white;
+    z-index: $zindex-modal;
+    border-radius: $border-radius * 4;
+
+    & > *:not(:last-child) {
+      @include rem(margin-bottom, 20px);
+    }
+  }
+
+  &__header {
+    @extend %flex--baseline--between;
+
+    p {
+      margin: 0;
+      font-size: $font-xm;
+      color: $brand-darker;
+    }
+
+    button {
+      @include rem(margin-left, 10px);
+    }
+  }
+}

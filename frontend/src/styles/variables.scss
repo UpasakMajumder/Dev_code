@@ -5,17 +5,27 @@
 */
 
 // colors
-$brand-primary: #ff6d19;
-$brand-secondary: #219cd9;
+$brand-primary: #009bd8;
+$brand-secondary: #ff6d19;
 $brand-info: #ffbd31;
 $brand-success: #00bb89;
-$brand-grey: #e4e7ea;
-$brand-lightgrey: #f6f6f6;
-$brand-dark: #404040;
-$brand-darker: #2b2b2b;
 $brand-dangerous: #c91c23;
-$brand-white: #fff;
-$brand-darkgrey: #a6a6a6;
+
+$brand-white:         #fff;
+$brand-lightgrey:     #f6f6f6;
+$brand-grey:          #e4e7ea;
+$brand-darkgrey:      #a6a6a6;
+$font-grey:           #777;
+$brand-dark:          #404040;
+$brand-darker:        #2b2b2b;
+$font-black:          #00011d;
+$main-gutter-color:   #edf1f5;
+
+$table-bottom-shadow: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+$error-mark: #ff6d2e;
+$success-mark: #00bd8c;
+$font-success: #028b66;
+$brand-yellow-light: #ffbd61;
 
 /*
 ========================
@@ -24,20 +34,32 @@ $brand-darkgrey: #a6a6a6;
 */
 
 $font-family-base: 'Lato', sans-serif;
+$base-layout-gradient: linear-gradient(180deg, #003d5c 0%, #0588cc 100%);
 
 /*
 ========================
         Font size
 ========================
 */
-
-$font-xxl: 36px;
-$font-xl: 30px;
+$font-large: 44px;
+$font-xxl: 30px;
+$font-xl: 26px;
 $font-l: 24px;
+$font-xm: 22px;
 $font-m: 20px;
-$font-s: 16px;
+$font-s: 18px;
 $font-xs: 14px;
 $font-xxs: 12px;
+$font-size-default: 16px;
 
 $border-radius: 2px;
+$border-radius-xl: 8px;
+$main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
+$img-path: '/gfx/images/';
+$header-size: 60px;
+$footer-size: 80px;
+$sidebar-transition: all .4s ease-in-out;
+$sidebar-width-small: 70px;
+$sidebar-width-large: 220px;
+$content-inner-padding: 24px;

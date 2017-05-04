@@ -4,9 +4,7 @@
  * weight: -5
  *
  * Styleguide Base - Utilities
- */
 
-/**
  * Hidden element
  *
  * markup:
@@ -16,10 +14,50 @@
  *
  * Styleguide Base - Utilities - Hidden element
  */
+
+.v--middle {
+  vertical-align: middle;
+}
+
 .u-hidden {
   display: none;
 }
 
 .height-full {
   height: 100%;
+}
+
+.width-fill {
+  width: 100%;
+}
+
+.cursor--pointer {
+  cursor: pointer;
+}
+
+%clearfix,
+.clearfix {
+  zoom: 1;
+
+  &:after,
+  &:before {
+    content: "";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+.weight--normal {
+  font-weight: normal;
+}
+
+.weight--bold {
+  font-weight: bold;
+}
+
+.flex-align--center {
+  align-items: center;
 }

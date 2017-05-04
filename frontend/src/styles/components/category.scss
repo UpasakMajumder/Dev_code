@@ -1,0 +1,25 @@
+.category {
+  @extend .mb-4;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+
+  & > *:not(:last-child) {
+    @include rem(margin-bottom, 20px);
+  }
+
+  &__picture {
+    @extend .inline-bg;
+    height: 150px;
+  }
+
+  &__title {
+    h2 {
+      color: $font-black;
+      font-weight: bold;
+      font-size: $font-size-default;
+      margin: 0;
+      line-height: 1.625;
+    }
+  }
+}

@@ -1,0 +1,330 @@
+{% extends "layouts/default.nunj" %}
+
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+
+{% from "macro/sidebar.nunj" import sidebar %}
+
+{% import "macro/svg.nunj" as svg %}
+
+{% set title = "List is ready" %}
+
+{% block content %}
+  {{ sidebar('Mailing list') }}
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">List is now ready to be used</h1>
+        </div>
+        {{ breadcrumb(['Home','Mailing list', 'New mailing list']) }}
+      </div>
+      <div class="content-block">
+        <div class="mailing-ready">
+          <div class="mailing-ready__block">
+            <div class="mailing-ready__paragraph">
+              <p>We tried to map the items in your uploaded files into the correct address fields.</p>
+              <p>Please check if we got it right and correct any mistakes we might have made.
+              </p>
+            </div>
+            <a href="#" class="btn-action">New mailing list</a>
+          </div>
+          <div class="mailing-ready__block">
+            <h2 class="mailing-ready__header">Select a template to use for the mailing</h2>
+
+            <div class="row">
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?1)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Technical news 2017">Technical news 2017</h3>
+                </div>
+                <div class="template__stock template__stock--available">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--available')}}
+                  {% endcall %}
+                  150 pcs in stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?2)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3
+                    title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Abdhahdiasgdhas blanditiis cumque cupiditate eveniet exercitationem illo laudantium numquam officia quaerat, quo, quod sint, tempora unde! Accusamus accusantium aperiam aspernatur, dicta distinctio dolore dolorem doloribus dolorum earum eum, expedita harum hic iure molestiae molestias nesciunt nostrum obcaecati officiis optio porro provident quidem quo repellat repellendus sapiente sed sunt, voluptatem. At eius labore soluta totam ullam? Deserunt quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat hic molestiae repellendus!">Lorem
+                    ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis cumque cupiditate eveniet exercitationem illo laudantium numquam officia quaerat, quo, quod sint, tempora unde! Accusamus accusantium aperiam aspernatur, dicta distinctio dolore
+                    dolorem doloribus dolorum earum eum, expedita harum hic iure molestiae molestias nesciunt nostrum obcaecati officiis optio porro provident quidem quo repellat repellendus sapiente sed sunt, voluptatem. At eius labore soluta totam ullam? Deserunt
+                    quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
+                    hic molestiae repellendus!</h3>
+                </div>
+                <div class="template__stock template__stock--unavailable">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--unavailable')}}
+                  {% endcall %}
+                  Available in 2 days
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?3)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
+                </div>
+                <div class="template__stock template__stock--out">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--out')}}
+                  {% endcall %}
+                  Out of stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?4)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
+                </div>
+                <div class="template__stock template__stock--available">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--available')}}
+                  {% endcall %}
+                  150 pcs in stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?1)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Technical news 2017">Technical news 2017</h3>
+                </div>
+                <div class="template__stock template__stock--available">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--available')}}
+                  {% endcall %}
+                  150 pcs in stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?2)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3
+                    title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Abdhahdiasgdhas blanditiis cumque cupiditate eveniet exercitationem illo laudantium numquam officia quaerat, quo, quod sint, tempora unde! Accusamus accusantium aperiam aspernatur, dicta distinctio dolore dolorem doloribus dolorum earum eum, expedita harum hic iure molestiae molestias nesciunt nostrum obcaecati officiis optio porro provident quidem quo repellat repellendus sapiente sed sunt, voluptatem. At eius labore soluta totam ullam? Deserunt quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat hic molestiae repellendus!">Lorem
+                    ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis cumque cupiditate eveniet exercitationem illo laudantium numquam officia quaerat, quo, quod sint, tempora unde! Accusamus accusantium aperiam aspernatur, dicta distinctio dolore
+                    dolorem doloribus dolorum earum eum, expedita harum hic iure molestiae molestias nesciunt nostrum obcaecati officiis optio porro provident quidem quo repellat repellendus sapiente sed sunt, voluptatem. At eius labore soluta totam ullam? Deserunt
+                    quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
+                    hic molestiae repellendus!</h3>
+                </div>
+                <div class="template__stock template__stock--unavailable">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--unavailable')}}
+                  {% endcall %}
+                  Available in 2 days
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?3)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
+                </div>
+                <div class="template__stock template__stock--out">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--out')}}
+                  {% endcall %}
+                  Out of stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+
+              <div class="col-lg-4 col-xl-3 template">
+                <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
+                  <div class="js-toggle">
+                    {% call svg.template('template__icon--filled icon-star') %}
+                    {{svg.use(name='star--filled')}}
+                    {% endcall %}
+                    {% call svg.template('template__icon--unfilled icon-star') %}
+                    {{svg.use(name='star--unfilled')}}
+                    {% endcall %}
+                  </div>
+                </div>
+                <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?4)"></div>
+                <div class="template__breadcrumbs">
+                  <span>BMW</span>
+                  <span>Manuals</span>
+                  <span>Engine</span>
+                </div>
+                <div class="template__title">
+                  <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
+                </div>
+                <div class="template__stock template__stock--available">
+                  {% call svg.template('icon-stock') %}
+                  {{svg.use(name='stock--available')}}
+                  {% endcall %}
+                  150 pcs in stock
+                </div>
+                <div class="template__use">
+                  <input type="number" class="input__text template__input" value="1">
+                  <a href="#" class="btn-action">Use template</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mailing-ready__block">
+            <h2 class="mailing-ready__header">Download your materials</h2>
+            <div class="mailing-ready__links">
+              <a href="#" class="link">
+                {% call svg.template('icon-download') %}
+                {{svg.use(name='download--blue')}}
+                {% endcall %}
+                Download processed file
+              </a>
+              <span>or</span>
+              <a href="#" class="link">
+                {% call svg.template('icon-download') %}
+                {{svg.use(name='download--green')}}
+                {% endcall %}
+                Good addresses only
+              </a>
+              <a href="#" class="link">
+                {% call svg.template('icon-download') %}
+                {{svg.use(name='download--orange')}}
+                {% endcall %}
+                Bad addresses only
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

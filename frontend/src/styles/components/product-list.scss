@@ -1,0 +1,38 @@
+.product-list {
+  &__row {
+    &:hover,
+    &--hover {
+      .product-list__btn-group {
+        visibility: visible;
+      }
+    }
+  }
+
+  &__span {
+    text-align: right;
+  }
+
+  &__entries {
+    @include rem(margin-left, 10px);
+    display: inline-block;
+    width: 70px;
+  }
+
+  &__btn-group {
+    visibility: hidden;
+    text-align: right;
+  }
+
+  &__btn {
+    &--primary {
+      @extend .ml-2;
+    }
+  }
+
+  &__preview {
+    @extend .inline-bg;
+    $size: 64px;
+    width: $size;
+    height: $size;
+  }
+}

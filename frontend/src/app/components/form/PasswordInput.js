@@ -40,11 +40,13 @@ export default class PasswordInput extends Component {
     return (
       <div className={className}>
         {labelElement}
-        <input
-          type={type}
-          className={`input__password ${errorClass}`}
-          {...inputProps} />
-        <span onClick={onClick} className="input__toggler">{ toggler }</span>
+        <div className="input__inner">
+          <input
+            type={type}
+            className={`input__password ${errorClass}`}
+            {...inputProps} />
+          <span onClick={onClick} className="input__toggler">{ toggler }</span>
+        </div>
         {errorElement}
       </div>
     );

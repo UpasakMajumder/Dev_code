@@ -111,6 +111,13 @@ module.exports = {
                         query: { jsx: true }
                     }
                 ]
+            },
+            {
+              test: /\.css$/,
+              use: [
+                { loader: "style-loader" },
+                { loader: "css-loader" },
+              ],
             }
         ]
     },

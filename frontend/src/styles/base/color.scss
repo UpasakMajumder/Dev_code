@@ -1,11 +1,11 @@
 // background color
 
 .bg-primary {
-  background-color: $brand-primary;
+  background-color: $brand-secondary;
 }
 
 .bg-secondary {
-  background-color: $brand-secondary;
+  background-color: $brand-primary;
 }
 
 .bg-info {
@@ -41,11 +41,11 @@
 }
 // font color
 .font-primary {
-  color: $brand-primary;
+  color: $brand-secondary;
 }
 
 .font-secondary {
-  color: $brand-secondary;
+  color: $brand-primary;
 }
 
 .font-info {
@@ -78,4 +78,8 @@
 
 .font-lightgrey {
   color: $brand-lightgrey;
+}
+
+.font-text {
+  color: $font-grey;
 }

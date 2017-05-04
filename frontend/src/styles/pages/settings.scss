@@ -1,0 +1,17 @@
+.settings {
+  &__block {
+    & > *:not(:last-child) {
+      @include rem(margin-bottom, 30px);
+    }
+  }
+
+  &__item {
+    h2 {
+      @extend h3;
+    }
+
+    & > *:not(:last-child) {
+      @include rem(margin-bottom, 20px);
+    }
+  }
+}

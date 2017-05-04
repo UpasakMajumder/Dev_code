@@ -1,0 +1,97 @@
+{% extends "layouts/default.nunj" %}
+
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+
+{% from "macro/sidebar.nunj" import sidebar %}
+
+{% from "macro/select.nunj" import select %}
+
+{% import "macro/svg.nunj" as svg %}
+
+{% set title = "March 2017 Events" %}
+
+{% block content %}
+
+  {{ sidebar('Products') }}
+
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">{{ title }}</h1>
+        </div>
+        {{ breadcrumb(['Home','Products','Category name','Category name','March 2017 Events']) }}
+      </div>
+
+      <div class="content-block product-template">
+        <div class="product-template__block">
+          {% include "components/product-view.nunj" %}
+        </div>
+        <div class="product-template__block">
+          <div class="product-template__item">
+            <h3>Manage products</h3>
+          </div>
+
+          <div class="product-template__item">
+            <table class="table table--opposite table--inside-border table--hover product-list">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Date changed</th>
+                  <th class="product-list__span">
+                    <div>
+                      Show entries:
+                      {{ select(options = ['10', '20', '50'], className='product-list__entries', name='entries') }}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in range(0, 11) %}
+                  <tr class="product-list__row js-redirection" data-url="#">
+                    <td>
+                      <div class="product-list__preview" style="background-image: url(http://satyr.io/250-300x250-300?{{ x }})"></div>
+                    </td>
+                    <td>
+                      <a class="link weight--normal" href="#">Andrei Fidelman v1</a>
+                    </td>
+                    <td>
+                      27.05.1970
+                    </td>
+                    <td>
+                      <div class="product-list__btn-group">
+                        <div class="confirmation js-confirmation" data-confirmation-active-element=".product-list__row" data-confirmation-active-class="product-list__row--hover" data-confirmation-button-text="Cancel" data-confirmation-position="top">
+                          <button type="button" class="btn-main btn-main--secondary js-confirmation-clicker js-redirection-ignore">
+                            Delete
+                          </button>
+                          <div class="js-confirmation-popper confirmation__popper">
+                            <p>Sure you want to delete it?</p>
+                            <button type="button" class="btn-main">Delete</button>
+                          </div>
+                        </div>
+                        <a href="#" class="btn-action product-list__btn--primary">Open in design</a>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="product-template__item">
+            <div class="row flex-align--center">
+              <div class="col-6">
+                <span>Showing 11 to 20 of 103 entries</span>
+              </div>
+              <div class="col-6 text--right">
+                {% include "components/pagination.nunj" %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
