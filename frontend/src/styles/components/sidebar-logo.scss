@@ -1,0 +1,9 @@
+.sidebar-logo {
+  @extend %flex--center--default;
+
+  &__text {
+    @include rem(padding-left, 10px);
+    color: $font-grey;
+    font-size: $font-xs;
+  }
+}
