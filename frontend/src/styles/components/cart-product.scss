@@ -52,7 +52,7 @@
     }
   }
 
-  &__action-btn {
+  &__btn {
     @extend .in-card-btn;
     @extend %flex--center--default;
     width: $btn-size;
