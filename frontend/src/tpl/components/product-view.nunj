@@ -22,54 +22,50 @@
     </div>
     <div class="product-view__tables">
       <table class="table">
-        <thead>
-        <tr>
-          <th colspan="2">
-            {% call svg.template('icon-deliver') %}
-            {{svg.use(name='deliver-car')}}
-            {% endcall %}Estimates
-          </th>
-        </tr>
-        </thead>
         <tbody>
-        <tr>
-          <td>Production time</td>
-          <td>7 days</td>
-        </tr>
-        <tr>
-          <td>Ship time</td>
-          <td>7 days</td>
-        </tr>
-        <tr>
-          <td>Shipping cost</td>
-          <td>$ 10 - $ 15</td>
-        </tr>
+          <tr>
+            <th colspan="2">
+              {% call svg.template('icon-deliver') %}
+              {{svg.use(name='deliver-car')}}
+              {% endcall %}Estimates
+            </th>
+          </tr>
+          <tr>
+            <td>Production time</td>
+            <td>7 days</td>
+          </tr>
+          <tr>
+            <td>Ship time</td>
+            <td>7 days</td>
+          </tr>
+          <tr>
+            <td>Shipping cost</td>
+            <td>$ 10 - $ 15</td>
+          </tr>
         </tbody>
       </table>
       <table class="table">
-        <thead>
-        <tr>
-          <th colspan="2">
-            {% call svg.template('icon-dollar') %}
-            {{svg.use(name='money')}}
-            {% endcall %}
-            Estimates
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>Production time</td>
-          <td>7 days</td>
-        </tr>
-        <tr>
-          <td>Ship time</td>
-          <td>7 days</td>
-        </tr>
-        <tr>
-          <td>Shipping cost</td>
-          <td>$ 10 - $ 15</td>
-        </tr>
+          <tbody>
+          <tr>
+            <th colspan="2">
+              {% call svg.template('icon-dollar') %}
+              {{svg.use(name='money')}}
+              {% endcall %}
+              Estimates
+            </th>
+          </tr>
+          <tr>
+            <td>Production time</td>
+            <td>7 days</td>
+          </tr>
+          <tr>
+            <td>Ship time</td>
+            <td>7 days</td>
+          </tr>
+          <tr>
+            <td>Shipping cost</td>
+            <td>$ 10 - $ 15</td>
+          </tr>
         </tbody>
       </table>
     </div>

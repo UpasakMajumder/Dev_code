@@ -34,7 +34,7 @@
 
           <div class="product-template__item">
             <table class="table table--opposite table--inside-border table--hover product-list">
-              <thead>
+                <tbody>
                 <tr>
                   <th>Image</th>
                   <th>Title</th>
@@ -46,8 +46,6 @@
                     </div>
                   </th>
                 </tr>
-              </thead>
-              <tbody>
                 {% for x in range(0, 11) %}
                   <tr class="product-list__row js-redirection" data-url="#">
                     <td>
