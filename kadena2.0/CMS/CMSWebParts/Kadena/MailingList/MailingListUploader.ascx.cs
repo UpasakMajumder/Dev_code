@@ -1,9 +1,11 @@
 ﻿using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
+using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,63 +71,67 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags for them.
 
             var dictionaryName = GetHTMLName(name);
-            var stringWriter = new StringWriter();
-            var html = new HtmlTextWriter(stringWriter);
-            html.AddAttribute(HtmlTextWriterAttribute.Class, "upload-mail__row");
-            html.RenderBeginTag(HtmlTextWriterTag.Div);
-            if (!string.IsNullOrWhiteSpace(name))
+            using (var stringWriter = new StringWriter())
             {
-                html.RenderBeginTag(HtmlTextWriterTag.H2);
-                html.Write(name);
-                html.RenderEndTag();
-            }
-            if (!string.IsNullOrWhiteSpace(description))
-            {
-                html.RenderBeginTag(HtmlTextWriterTag.P);
-                html.Write(description);
-                html.RenderEndTag();
-            }
-            if ((options?.Count()).GetValueOrDefault() > 0)
-            {
-                html.AddAttribute(HtmlTextWriterAttribute.Class, "row");
-                html.RenderBeginTag(HtmlTextWriterTag.Div);
-                bool isChecked = false;
-                foreach (var o in options)
+                using (var html = new HtmlTextWriter(stringWriter))
                 {
-                    var id = $"{dictionaryName}{o.Key}Id";
-
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "col-lg-4 col-xl-3");
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, "upload-mail__row");
                     html.RenderBeginTag(HtmlTextWriterTag.Div);
-
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
-                    html.RenderBeginTag(HtmlTextWriterTag.Div);
-
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "input__radio");
-                    html.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-                    html.AddAttribute(HtmlTextWriterAttribute.Name, dictionaryName);
-                    html.AddAttribute(HtmlTextWriterAttribute.Id, id);
-                    html.AddAttribute(HtmlTextWriterAttribute.Value, o.Key);
-                    if (!isChecked)
+                    if (!string.IsNullOrWhiteSpace(name))
                     {
-                        html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
-                        isChecked = true;
+                        html.RenderBeginTag(HtmlTextWriterTag.H2);
+                        html.Write(name);
+                        html.RenderEndTag();
                     }
-                    html.RenderBeginTag(HtmlTextWriterTag.Input);
-                    html.RenderEndTag();
+                    if (!string.IsNullOrWhiteSpace(description))
+                    {
+                        html.RenderBeginTag(HtmlTextWriterTag.P);
+                        html.Write(description);
+                        html.RenderEndTag();
+                    }
+                    if ((options?.Count()).GetValueOrDefault() > 0)
+                    {
+                        html.AddAttribute(HtmlTextWriterAttribute.Class, "row");
+                        html.RenderBeginTag(HtmlTextWriterTag.Div);
+                        bool isChecked = false;
+                        foreach (var o in options)
+                        {
+                            var id = $"{dictionaryName}{o.Key}Id";
 
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "input__label input__label--radio");
-                    html.AddAttribute(HtmlTextWriterAttribute.For, id);
-                    html.RenderBeginTag(HtmlTextWriterTag.Label);
-                    html.Write(o.Value);
-                    html.RenderEndTag();
+                            html.AddAttribute(HtmlTextWriterAttribute.Class, "col-lg-4 col-xl-3");
+                            html.RenderBeginTag(HtmlTextWriterTag.Div);
 
+                            html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                            html.RenderBeginTag(HtmlTextWriterTag.Div);
+
+                            html.AddAttribute(HtmlTextWriterAttribute.Class, "input__radio");
+                            html.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
+                            html.AddAttribute(HtmlTextWriterAttribute.Name, dictionaryName);
+                            html.AddAttribute(HtmlTextWriterAttribute.Id, id);
+                            html.AddAttribute(HtmlTextWriterAttribute.Value, o.Key);
+                            if (!isChecked)
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
+                                isChecked = true;
+                            }
+                            html.RenderBeginTag(HtmlTextWriterTag.Input);
+                            html.RenderEndTag();
+
+                            html.AddAttribute(HtmlTextWriterAttribute.Class, "input__label input__label--radio");
+                            html.AddAttribute(HtmlTextWriterAttribute.For, id);
+                            html.RenderBeginTag(HtmlTextWriterTag.Label);
+                            html.Write(o.Value);
+                            html.RenderEndTag();
+
+                            html.RenderEndTag();
+                            html.RenderEndTag();
+                        }
+                        html.RenderEndTag();
+                    }
                     html.RenderEndTag();
-                    html.RenderEndTag();
+                    return stringWriter.ToString();
                 }
-                html.RenderEndTag();
             }
-            html.RenderEndTag();
-            return stringWriter.ToString();
         }
 
         /// <summary>
@@ -148,11 +154,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var fileStream = inpFile.PostedFile.InputStream;
                 var fileName = inpFileName.Value;
 
-                
-
-                
+                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+                var fileId = ServiceHelper.UploadFile(fileStream, fileName);
 
                 var nextStepUrl = DocumentContext.CurrentDocument.GetStringValue("UrlNextPage", string.Empty);
+                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
                 Response.Redirect(nextStepUrl);
             }
         }
