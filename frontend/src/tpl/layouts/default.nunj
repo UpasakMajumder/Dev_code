@@ -6,7 +6,6 @@
    other requests
     - cookie is set, main.css is in cache, so we serve only link to main.css #}
 
-{% from "macro/sidebar.nunj" import sidebar %}
 
 {% set firstVisit = false %}
 <!DOCTYPE html>
@@ -62,7 +61,7 @@
         </script>
         {# Main content of the page #}
         {% block content %}
-  {{ sidebar('Products') }}
+
         {% endblock %}
       </main>
      {% include '../components/footer.nunj' %}
