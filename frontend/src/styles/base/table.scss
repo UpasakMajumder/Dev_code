@@ -33,7 +33,6 @@
   }
 
   &--opposite {
-    thead,
     tbody {
       tr:nth-child(n) {
         background-color: rgba(white, .5);
