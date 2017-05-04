@@ -1,49 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CMS;
 using CMS.Ecommerce;
+using Kadena2.FedExCarrier;
+using Kadena2.CarrierBase;
+using CMS.Helpers;
+using CMS.Base;
+using CMS.DataEngine;
+using Newtonsoft.Json;
 
 [assembly: AssemblyDiscoverable]
+[assembly: RegisterCustomClass("FedExCarrier", typeof(FedExCarrier))]
 
-namespace FedExCarrier
+namespace Kadena2.FedExCarrier
 {
-    [assembly: RegisterCustomClass("MyCustomCarrier", typeof(MyCustomCarrier))]
-    public class FedExCarrier : ICarrierProvider
+    public class FedExCarrier : CarrierBase.CarrierBase, ICarrierProvider
     {
+
         public string CarrierProviderName
         {
             get
             {
-                throw new NotImplementedException();
+                return "Fedex";
             }
+        }
+        public FedExCarrier() : base()
+        {
+            ProviderApiKey = "Fedex";
         }
 
         public bool CanDeliver(Delivery delivery)
         {
-            throw new NotImplementedException();
+            var requestObject = GetEstimatePriceRequest(delivery, ProviderApiKey, GetServices()[0].Key);
+            var requestString = JsonConvert.SerializeObject(requestObject);
+            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, $"estimatedeliveryprice|{requestString}"));
+            return result.success && result.response.serviceSuccess;
         }
 
         public Guid GetConfigurationUIElementGUID()
         {
-            throw new NotImplementedException();
+            return Guid.Empty;
         }
 
         public decimal GetPrice(Delivery delivery, string currencyCode)
         {
-            throw new NotImplementedException();
+            var requestObject = GetEstimatePriceRequest(delivery, ProviderApiKey, GetServices()[0].Key);
+            var requestString = JsonConvert.SerializeObject(requestObject);
+            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, $"estimatedeliveryprice|{requestString}"));
+            return (decimal)result.response.cost;
         }
 
         public Guid GetServiceConfigurationUIElementGUID(string serviceName)
         {
-            throw new NotImplementedException();
+            return Guid.Empty;
         }
 
         public List<KeyValuePair<string, string>> GetServices()
         {
-            throw new NotImplementedException();
+            var services = new SortedDictionary<string, string>
+            {
+                {"PRIORITY_OVERNIGHT", "Priority overnight"},
+                {"STANDARD_OVERNIGHT", "Standard overnight"},
+                {"FEDEX_2_DAY", "Fedex 2nd day"}
+            };
+
+            return services.ToList();
         }
     }
 }
