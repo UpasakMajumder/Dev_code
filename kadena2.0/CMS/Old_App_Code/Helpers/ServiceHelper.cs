@@ -101,12 +101,12 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if (fileStream == null || fileStream.Length == 0)
             {
-                throw new ArgumentNullException(_valueEmptyMessage, "fileStream");
+                throw new ArgumentException(_valueEmptyMessage, "fileStream");
             }
 
             if (string.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentNullException(_valueEmptyMessage, "fileName");
+                throw new ArgumentException(_valueEmptyMessage, "fileName");
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");

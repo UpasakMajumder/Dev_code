@@ -3,7 +3,6 @@ using Kadena.Old_App_Code.Helpers;
 using CMS.Tests;
 using NUnit.Framework;
 using CMS.DataEngine;
-using CMS.SiteProvider;
 
 namespace Kadena.Tests
 {
@@ -16,7 +15,7 @@ namespace Kadena.Tests
         private string _product = "product";
         private int _validity = 90;
         private string _customerNameSetting = "KDA_CustomerName";
-        private string _createContainerUrlSetting = "KDA_CreateContainerUrl";
+        private string _urlSetting = "KDA_CreateContainerUrl";
 
         [SetUp]
         public void SetUp()
@@ -44,7 +43,7 @@ namespace Kadena.Tests
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(
                 new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
-                new SettingsKeyInfo { KeyName = $"{_createContainerUrlSetting}", KeyValue = _whiteSpace }
+                new SettingsKeyInfo { KeyName = $"{_urlSetting}", KeyValue = _whiteSpace }
                 );
             exc = Assert.Catch(typeof(InvalidOperationException)
                 , () => ServiceHelper.CreateMailingContainer(_mailType, _product, _validity));
@@ -57,7 +56,7 @@ namespace Kadena.Tests
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(
                 new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
-                new SettingsKeyInfo { KeyName = $"{_createContainerUrlSetting}", KeyValue = "http://example.com" }
+                new SettingsKeyInfo { KeyName = $"{_urlSetting}", KeyValue = "http://example.com" }
                 );
 
             var exc = Assert.Catch(typeof(InvalidOperationException)
@@ -73,7 +72,7 @@ namespace Kadena.Tests
                 new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = "actum" },
                 new SettingsKeyInfo
                 {
-                    KeyName = $"{_createContainerUrlSetting}",
+                    KeyName = $"{_urlSetting}",
                     KeyValue = "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/Mailing"
                 }
                 );
