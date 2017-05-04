@@ -26,6 +26,31 @@ $padding: 15px;
     .content {
       padding-left: $sidebar-width-large;
     }
+
+    .sidebar-logo {
+      left: $sidebar-width-large/2;
+
+      &__text {
+        visibility: visible;
+        width: auto;
+        height: auto;
+        transition: visibility 0.3s ease-in 0.5s;
+      }
+    }
+  }
+
+  .sidebar-logo {
+    position: absolute;
+    bottom: 25px;
+    left: $sidebar-width-small/2;
+    transform: translate(-50%, 0);
+    transition: position 0.3s ease-in;
+
+    &__text {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
   }
 
   &:before {

@@ -1,31 +1,14 @@
 {% import "macro/svg.nunj" as svg %}
 
-{% set pages = [
-{'title': 'Dashboard', 'name': 'dashboard'},
-{'title': 'Products', 'name': 'products'},
-{'title': 'Mailing list', 'name': 'mailing-list'},
-{'title': 'Orders', 'name': 'orders'},
-{'title': 'Insights', 'name': 'insights'},
-{'title': 'Sourcing', 'name': 'sourcing'},
-{'title': 'Proofing', 'name': 'proofing'},
-{'title': 'DAM', 'name': 'dam'},
-{'title': 'Settings', 'name': 'settings'},
-{'title': 'Help', 'name': 'help'}
-] %}
+{% set pages = [ { 'title': 'Dashboard', 'name': 'dashboard' }, { 'title': 'Products', 'name': 'products' }, { 'title': 'Mailing list', 'name': 'mailing-list' }, { 'title': 'Orders', 'name': 'orders' }, { 'title': 'Insights', 'name': 'insights' }, {
+'title': 'Sourcing', 'name': 'sourcing' }, { 'title': 'Proofing', 'name': 'proofing' }, { 'title': 'DAM', 'name': 'dam' }, { 'title': 'Settings', 'name': 'settings' }, { 'title': 'Help', 'name': 'help' } ] %}
 
 {% macro sidebar(item) %}
   <div class="css-sidebar js-sidebar">
     <div class="css-sidebar__header">
-
-      <div>
-        {% call svg.template(class='css-sidebar__icon') %}
-        {{svg.use(name='kadena-xs')}}
-        {% endcall %}
-      </div>
-
-      <div class="js-toggle cursor--pointer js-storage" data-storage-active="false" data-storage-change="true"
-           data-storage-key="isSidebarCollapsed" data-storage-value="true">
-        {% call svg.template(class='icon-hamburger') %}
+      <div></div>
+      <div class="js-toggle cursor--pointer js-storage" data-storage-active="false" data-storage-change="true" data-storage-key="isSidebarCollapsed" data-storage-value="true">
+        {% call svg.template(class = 'icon-hamburger') %}
         {{svg.use(name='hamburger')}}
         {% endcall %}
       </div>
@@ -47,4 +30,6 @@
 
     </ul>
   </div>
+
+  {% include "../partials/sidebar-logo.nunj" %}
 {% endmacro %}
