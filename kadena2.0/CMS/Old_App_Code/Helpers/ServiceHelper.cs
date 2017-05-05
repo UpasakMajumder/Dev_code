@@ -181,7 +181,7 @@ namespace Kadena.Old_App_Code.Helpers
                 , UriKind.Absolute
                 , out getHeaderUrl))
             {
-                throw new InvalidOperationException(_getHeaderSettingKey);
+                throw new InvalidOperationException(_getHeadersIncorrectMessage);
             }
 
             string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.AbsoluteUri, "fileid", fileId.ToString());
