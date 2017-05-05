@@ -112,83 +112,16 @@ $sidebar-bottom-padding: 46px;  //To fit sidebal logo in the bottom
 // Hover/Active state to change SVG icons
 .css-sidebar__nav-item.active,
 .css-sidebar__nav-item:hover {
-  .icon-dashboard {
-    display: none;
 
-    &--color {
-      display: block;
-    }
-  }
+  $sidebar-elements: (dashboard, products, mailing-list, orders, insights, sourcing, proofing, dam, settings, help);
 
-  .icon-products {
-    display: none;
+  @each $element in $sidebar-elements {
+    .icon-#{$element} {
+      display: none;
 
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-mailing-list {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-orders {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-insights {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-sourcing {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-proofing {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-dam {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-settings {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-help {
-    display: none;
-
-    &--color {
-      display: block;
+      &--color {
+        display: block;
+      }
     }
   }
 }
