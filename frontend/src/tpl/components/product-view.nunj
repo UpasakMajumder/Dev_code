@@ -51,20 +51,20 @@
               {% call svg.template('icon-dollar') %}
               {{svg.use(name='money')}}
               {% endcall %}
-              Estimates
+              Unit price
             </th>
           </tr>
           <tr>
-            <td>Production time</td>
-            <td>7 days</td>
+            <td>0 - 50 pcs</td>
+            <td>$ 2.10</td>
           </tr>
           <tr>
-            <td>Ship time</td>
-            <td>7 days</td>
+            <td>51 - 100 pcs</td>
+            <td>$ 1.90</td>
           </tr>
           <tr>
-            <td>Shipping cost</td>
-            <td>$ 10 - $ 15</td>
+            <td>101+ pcs</td>
+            <td>$ 1.50</td>
           </tr>
         </tbody>
       </table>
