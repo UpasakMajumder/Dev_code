@@ -29,7 +29,7 @@
 
         <div class="alert--info isOpen js-collapse">
           <button type="button" class="alert__close btn--off js-toggle">
-            {% call svg.template(class = 'icon-modal') %}
+            {% call svg.template(class='icon-modal') %}
             {{svg.use(name='cross--darker')}}
             {% endcall %}
           </button>

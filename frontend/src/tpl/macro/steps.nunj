@@ -2,7 +2,7 @@
 
 {% macro steps(current, steps) %}
 
-  {% set width = (100 / steps.length) + "%" %}
+  {% set width=(100 / steps.length) + "%" %}
 
   <div class="steps">
     {% for step in steps %}

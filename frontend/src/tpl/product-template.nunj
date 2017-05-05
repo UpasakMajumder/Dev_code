@@ -42,7 +42,7 @@
                   <th class="product-list__span">
                     <div>
                       Show entries:
-                      {{ select(options = ['10', '20', '50'], className='product-list__entries', name='entries') }}
+                      {{ select(options=['10', '20', '50'], className='product-list__entries', name='entries') }}
                     </div>
                   </th>
                 </tr>

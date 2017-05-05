@@ -82,7 +82,7 @@
             <h2>Delivery</h2>
             <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
               <button type="button" class="alert__close btn--off js-toggle">
-                {% call svg.template(class = 'icon-modal') %}
+                {% call svg.template(class='icon-modal') %}
                 {{svg.use(name='cross--darker')}}
                 {% endcall %}
               </button>
@@ -94,7 +94,7 @@
             <h2>Payment</h2>
             <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
               <button type="button" class="alert__close btn--off js-toggle">
-                {% call svg.template(class = 'icon-modal') %}
+                {% call svg.template(class='icon-modal') %}
                 {{svg.use(name='cross--darker')}}
                 {% endcall %}
               </button>

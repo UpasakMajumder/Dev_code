@@ -30,7 +30,7 @@
     <p>{{ header }}</p>
     {% if closer==='yes' %}
       <button type="button" class="btn--off dialog__closer">
-        {% call svg.template(class = 'icon-modal') %}
+        {% call svg.template(class='icon-modal') %}
         {{svg.use(name='cross--darker')}}
         {% endcall %}
       </button>

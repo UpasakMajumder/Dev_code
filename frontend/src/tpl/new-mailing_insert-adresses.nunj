@@ -60,7 +60,7 @@
                     </div>
                   </td>
                   <td>
-                    {{select(optHolder = "Choose", options = ['option_1', 'option_2', 'option_3'],name = 'select-1' , data="data-name=state")}}
+                    {{select(optHolder="Choose", options=['option_1', 'option_2', 'option_3'],name='select-1' , data="data-name=state")}}
                   </td>
                   <td>
                     <div class="input__wrapper">

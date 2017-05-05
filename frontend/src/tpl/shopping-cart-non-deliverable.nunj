@@ -11,7 +11,7 @@
 
   {{ sidebar('None') }}
 
-  {% call dialog.wrapper(id = 'cart-add-adress') %}
+  {% call dialog.wrapper(id='cart-add-adress') %}
   {{ dialog.header(header='New adress:') }}
   {% call dialog.content() %}
   <table class="cart__dialog-table">
@@ -38,7 +38,7 @@
           </div>
         </td>
         <td>
-          {{select(optHolder = "CA", options = ['CA', 'option_2', 'option_3'],name = 'select-1')}}
+          {{select(optHolder="CA", options=['CA', 'option_2', 'option_3'],name='select-1')}}
         </td>
         <td>
           <div class="input__wrapper">

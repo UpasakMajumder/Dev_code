@@ -10,7 +10,7 @@
 {% block content %}
 
   {{ sidebar('Settings') }}
-  {% call dialog.wrapper(id = 'edit-adress') %}
+  {% call dialog.wrapper(id='edit-address') %}
   {{ dialog.header(header='New adress:') }}
   {% call dialog.content() %}
   <table class="cart__dialog-table">
@@ -35,7 +35,7 @@
         </div>
       </td>
       <td>
-        {{select(optHolder = "CA", options = ['CA', 'option_2', 'option_3'],name = 'select-1', label="State")}}
+        {{select(optHolder="CA", options=['CA', 'option_2', 'option_3'],name='select-1', label="State")}}
       </td>
       <td>
         <div class="input__wrapper">

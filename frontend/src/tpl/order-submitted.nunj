@@ -12,7 +12,7 @@
 
 {% block content %}
 
-  {{ sidebar('Products') }}
+  {{ sidebar('No') }}
 
   <div class="content">
     <div class="content__inner">
@@ -34,8 +34,8 @@
           </div>
 
           <div class="submitted__btn-group">
-            <a href="#" type="type" class="btn-action btn-action--secondary">Back to dashboard</a>
-            <a href="#" type="type" class="btn-action">See products</a>
+            <a href="#" type="type" class="btn-action btn-action--secondary">See products</a>
+            <a href="#" type="type" class="btn-action">Go to dashboard</a>
           </div>
         </div>
       </div>

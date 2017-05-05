@@ -18,7 +18,7 @@
     <div class="css-sidebar__header">
       <div></div>
       <div class="js-toggle cursor--pointer js-storage" data-storage-active="false" data-storage-change="true" data-storage-key="isSidebarCollapsed" data-storage-value="true">
-        {% call svg.template(class = 'icon-hamburger') %}
+        {% call svg.template(class='icon-hamburger') %}
         {{svg.use(name='hamburger')}}
         {% endcall %}
       </div>

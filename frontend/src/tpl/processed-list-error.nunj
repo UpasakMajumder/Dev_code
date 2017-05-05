@@ -11,7 +11,7 @@
 {% block content %}
   {{ sidebar('Mailing list') }}
 
-  {% call dialog.wrapper(id = 'mail-list-errors') %}
+  {% call dialog.wrapper(id='mail-list-errors') %}
   {{ dialog.header(header='We have found errors in the following entries:') }}
   {% call dialog.content() %}
   <div class="processed-list__table-dialog">
@@ -483,7 +483,7 @@
             </table>
             <span class="processed-list__table-helper">
               To correct your .csv file, view the line number, go to your original file and check the respective record.
-              {% call svg.template(class = 'help-arrow') %}
+              {% call svg.template(class='help-arrow') %}
               {{svg.use(name='info-arrow')}}
               {% endcall %}
             </span>
