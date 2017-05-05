@@ -51,8 +51,6 @@ $padding: 15px;
 .main-container {
   padding: 20px;
   background: $base-layout-gradient;
-  position: relative;
-  overflow: hidden;
 
   &__inner {
     background-color: $brand-white;
