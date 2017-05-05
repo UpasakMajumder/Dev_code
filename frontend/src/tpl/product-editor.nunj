@@ -53,7 +53,7 @@
               <div>
                 <div class="input__wrapper">
                   <span class="input__label">Quantity</span>
-                  <input type="number" class="input__text" placeholder="1234">
+                  <input type="number" class="input__text" value="1" min="1">
                 </div>
                 <button type="button" class="btn-action">Add to cart</button>
               </div>
