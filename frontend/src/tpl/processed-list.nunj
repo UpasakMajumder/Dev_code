@@ -23,7 +23,7 @@
             <h3>332 addresses have been processed successfuly</h3>
           </div>
           <div class="processed-list__table-inner">
-            <table class="table">
+            <table class="table processed-list__table--shadow">
             <tbody>
                 <tr>
                   <th>Name</th>
