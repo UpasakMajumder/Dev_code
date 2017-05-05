@@ -1,5 +1,11 @@
 .add-to-cart {
   @extend %flex--center--between;
+  flex-wrap: wrap;
+
+  & > div {
+    @include rem(margin-top, 8px);
+    @include rem(margin-bottom, 8px);
+  }
 
   &__info {
     @extend .weight--bold;
@@ -7,22 +13,26 @@
   }
 
   &__left {
+    @include rem(padding-right, 16px);
     flex-shrink: 0;
     flex-grow: 1;
   }
 
   &__right {
     flex-shrink: 0;
-    flex-grow: 1;
+    flex-grow: 0;
     text-align: right;
 
     & > * {
       display: inline-block;
     }
 
-    input[type="number"] {
+    .input__wrapper {
       @include rem(margin-right, 5px);
-      width: 70px;
+
+      input[type="number"] {
+        width: 145px;
+      }
     }
   }
 

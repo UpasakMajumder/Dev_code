@@ -1,8 +1,11 @@
 $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
+$sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
 
 .css-sidebar {
   @extend %flex--center--default;
+
+  @include rem(padding-bottom, $sidebar-bottom-padding);
   flex-direction: column;
   flex: 0 0 $sidebar-width-small;
   width: $sidebar-width-small;

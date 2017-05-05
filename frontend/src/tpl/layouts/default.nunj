@@ -5,6 +5,8 @@
     - cookie is created (main.css is in browser cache)
    other requests
     - cookie is set, main.css is in cache, so we serve only link to main.css #}
+
+
 {% set firstVisit = false %}
 <!DOCTYPE html>
 <html lang="cs">
@@ -58,7 +60,9 @@
           localStorage.getItem('isSidebarCollapsed') && main.classList.remove('isOpen');
         </script>
         {# Main content of the page #}
-        {% block content %}{% endblock %}
+        {% block content %}
+
+        {% endblock %}
       </main>
      {% include '../components/footer.nunj' %}
 
