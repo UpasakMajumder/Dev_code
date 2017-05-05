@@ -133,6 +133,88 @@
         </tr>
       </table>
 
+      <h2 class="h--underlined">A as Buttons</h2>
+
+      <table class="styleguide__table">
+        <tr>
+          <td></td>
+          <td>Main Primary</td>
+          <td>Main Secondary</td>
+          <td>Action Primary</td>
+          <td>Action Secondary</td>
+        </tr>
+        <tr>
+          <td>Normal</td>
+          <td>
+            <a href="#" class="btn-main">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-main btn-main--secondary">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-action">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-action btn-action--secondary">Add to cart</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Disabled</td>
+          <td>
+            <a href="#" class="disabled btn-main">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-main btn-main--secondary">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-action">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-action btn-action--secondary">Add to cart</a>
+          </td>
+        </tr>
+      </table>
+
+      <table class="styleguide__table">
+        <tr>
+          <td></td>
+          <td>Info Primary</td>
+          <td>Info Secondary</td>
+          <td>Success Primary</td>
+          <td>Success Secondary</td>
+        </tr>
+        <tr>
+          <td>Normal</td>
+          <td>
+            <a href="#" class="btn-info">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-info btn-info--secondary">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-success">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="btn-success btn-success--secondary">Add to cart</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Disabled</td>
+          <td>
+            <a href="#" class="disabled btn-info">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-info btn-info--secondary">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-success">Add to cart</a>
+          </td>
+          <td>
+            <a href="#" class="disabled btn-success btn-success--secondary">Add to cart</a>
+          </td>
+        </tr>
+      </table>
+
       <div class="styleguide__inputs">
         <h2 class="h--underlined">Inputs with React</h2>
         <div class="styleguide-input"></div>
