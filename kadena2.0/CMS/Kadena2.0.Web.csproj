@@ -704,6 +704,13 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx.cs">
+      <DependentUpon>ChiliIframe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx.designer.cs">
+      <DependentUpon>ChiliIframe.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -753,6 +760,7 @@
   <ItemGroup>
     <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
+    <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
