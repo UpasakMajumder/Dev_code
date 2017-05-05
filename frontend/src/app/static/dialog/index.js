@@ -4,6 +4,7 @@ class Dialog {
   constructor(clicker) {
     this.clicker = clicker;
     this.activeClass = 'active';
+    this.html = document.querySelector('html');
 
     const dialogSelector = clicker.dataset.dialog;
     this.dialog = document.querySelector(dialogSelector);
@@ -11,11 +12,13 @@ class Dialog {
 
     this.clicker.addEventListener('click', () => {
       !this.dialog.classList.contains(this.activeClass) && this.dialog.classList.add(this.activeClass);
+      this.html.classList.add('css-overflow-hidden');
     });
 
     Array.from(this.closerNodes).forEach((closer) => {
       closer.addEventListener('click', () => {
         this.dialog.classList.contains(this.activeClass) && this.dialog.classList.remove(this.activeClass);
+        this.html.classList.remove('css-overflow-hidden');
       });
     });
   }
