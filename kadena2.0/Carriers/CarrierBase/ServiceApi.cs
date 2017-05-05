@@ -41,6 +41,13 @@ namespace Kadena2.CarrierBase
     public class EstimateDeliveryPriceResponse
     {
         public bool success { get; set; }
-        public Response response { get; set; }
+        public EstimateDeliveryPricePayload payload { get; set; }
+        public string errorMessages { get; set; }
+    }
+
+    public class EstimateDeliveryPricePayload
+    {
+        public decimal cost { get; set; }
+        public string currency { get; set; }
     }
 }

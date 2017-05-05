@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{92DBD272-12DE-4558-84EA-2395E8DDE986}</ProjectGuid>
+    <ProjectGuid>{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CarrierBase</RootNamespace>
     <AssemblyName>CarrierBase</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,22 +31,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CMS.Base">
-      <HintPath>..\Lib\CMS.Base.dll</HintPath>
+      <HintPath>..\..\Lib\CMS.Base.dll</HintPath>
     </Reference>
     <Reference Include="CMS.Core">
-      <HintPath>..\Lib\CMS.Core.dll</HintPath>
+      <HintPath>..\..\Lib\CMS.Core.dll</HintPath>
     </Reference>
     <Reference Include="CMS.DataEngine">
-      <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
+      <HintPath>..\..\Lib\CMS.DataEngine.dll</HintPath>
     </Reference>
     <Reference Include="CMS.Ecommerce">
-      <HintPath>..\Lib\CMS.Ecommerce.dll</HintPath>
+      <HintPath>..\..\Lib\CMS.Ecommerce.dll</HintPath>
     </Reference>
     <Reference Include="CMS.Helpers">
-      <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
+      <HintPath>..\..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -61,10 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CarrierBase.cs" />
-    <Compile Include="ServiceApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceApi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

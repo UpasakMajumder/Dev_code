@@ -320,7 +320,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carriers", "Carriers", "{69
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FedExCarrier", "Carriers\FedExCarrier\FedExCarrier.csproj", "{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarrierBase", "CarrierBase\CarrierBase.csproj", "{92DBD272-12DE-4558-84EA-2395E8DDE986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarrierBase", "Carriers\CarrierBase\CarrierBase.csproj", "{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -347,10 +347,10 @@ Global
 		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92DBD272-12DE-4558-84EA-2395E8DDE986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92DBD272-12DE-4558-84EA-2395E8DDE986}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92DBD272-12DE-4558-84EA-2395E8DDE986}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92DBD272-12DE-4558-84EA-2395E8DDE986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -358,6 +358,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{04C3408E-84B8-4FF2-A2FE-7C79CEEF084D} = {16761108-9229-4A1A-88E0-02796DFAFA89}
 		{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
-		{92DBD272-12DE-4558-84EA-2395E8DDE986} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
+		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
 	EndGlobalSection
 EndGlobal

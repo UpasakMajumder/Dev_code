@@ -64,14 +64,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CarrierBase\CarrierBase.csproj">
-      <Project>{92DBD272-12DE-4558-84EA-2395E8DDE986}</Project>
-      <Name>CarrierBase</Name>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <ProjectReference Include="..\CarrierBase\CarrierBase.csproj">
+      <Project>{15ef35c6-b6e1-40e7-a423-9b1e3f856d4c}</Project>
+      <Name>CarrierBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

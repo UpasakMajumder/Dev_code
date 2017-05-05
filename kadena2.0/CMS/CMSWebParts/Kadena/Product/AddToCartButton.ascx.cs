@@ -114,6 +114,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
       if (product != null)
       {
         var cart = ECommerceContext.CurrentShoppingCart;
+        AssignCartShippingAddress(cart);
         ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
         var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
@@ -126,6 +127,17 @@ namespace Kadena.CMSWebParts.Kadena.Product
         }
         ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
       }
+    }
+
+    private void AssignCartShippingAddress(ShoppingCartInfo cart)
+    {
+        var currentCustomer = ECommerceContext.CurrentCustomer;
+
+        if (currentCustomer != null)
+        {
+            var address = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).FirstObject;
+            cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
+        }
     }
 
     private double GetUnitPriceForAmmount(int ammount)
