@@ -19,7 +19,7 @@ namespace Kadena.Tests
             , TestName = "GetHeaderCorrectFile", Description = "Testing for successful result from request.")]
         public void CorrectFileCase(string id, string customerName, string url)
         {
-            var headers = CallService(id, customerName, url);
+            var headers = CallService(new Guid(id), customerName, url);
             Assert.IsNotEmpty(headers);
             TestContext.WriteLine(string.Join(",", headers));
         }
@@ -31,11 +31,11 @@ namespace Kadena.Tests
             , Description = "Testing for exception throw when requested file not exists or empty.")]
         public void WrongFileCase(string id, string customerName, string url)
         {
-            var exception = Assert.Catch(typeof(HttpRequestException), () => CallService(id, customerName, url));
+            var exception = Assert.Catch(typeof(HttpRequestException), () => CallService(new Guid(id), customerName, url));
             TestContext.WriteLine(exception.Message);
         }
 
-        private IEnumerable<string> CallService(string id, string customerName, string url)
+        private IEnumerable<string> CallService(Guid id, string customerName, string url)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
@@ -46,7 +46,7 @@ namespace Kadena.Tests
                     KeyValue = url
                 }
             );
-            return ServiceHelper.GetHeaders(new Guid(id));
+            return ServiceHelper.GetHeaders(id);
         }
     }
 }
