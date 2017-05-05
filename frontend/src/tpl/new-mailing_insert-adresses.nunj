@@ -16,10 +16,11 @@
     <div class="content__inner">
       <div class="content-header">
         <div class="content-header__inner">
-          <h1 class="content-header__page-name">{{ title }}</h1>
+          <h1 class="content-header__page-name">Insert the addresses manually</h1>
         </div>
 
         {{ breadcrumb(['Home','Mailing list']) }}
+
       </div>
       <div class="content-block">
         <div class="mailing-lists">
@@ -84,8 +85,9 @@
             </table>
           </div>
 
-          <div class="mailing-lists__row">
-            <a href="#" class="btn-action">New mailing</a>
+          <div class="mailing-lists__row btn-group">
+            <button type="button" class="btn-action btn-action--secondary">Upload .csv</button>
+            <button type="button" class="btn-action">Save list</button>
           </div>
         </div>
       </div>
