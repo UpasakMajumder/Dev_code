@@ -179,23 +179,37 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new InvalidOperationException(_getHeaderSettingKey);
             }
 
-            string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.Query, "fileid", fileId.ToString());
+            string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.AbsoluteUri, "fileid", fileId.ToString());
             parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "customername", customerName);
             parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "buckettype", _bucketType);
 
+            IEnumerable<string> result;
             using (var client = new HttpClient())
             {
                 using (var message = client.GetAsync(parametrizeUrl))
                 {
-                    var awsResponse = message.Result;
-                    if (awsResponse.IsSuccessStatusCode)
+                    AwsResponseMessage response;
+                    try
                     {
-                        var response = JsonConvert.DeserializeObject<AwsResponseMessage>(awsResponse.Content.ReadAsStringAsync().Result);
-                        return (response.Response as JArray).ToObject<IEnumerable<string>>();
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response?.Success ?? false)
+                    {
+                        result = (response.Response as JArray).ToObject<IEnumerable<string>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
                     }
                 }
             }
-            return null;
+            return result;
         }
     }
 }

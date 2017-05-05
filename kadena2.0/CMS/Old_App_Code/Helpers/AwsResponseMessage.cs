@@ -11,7 +11,7 @@ namespace Kadena.Old_App_Code.Helpers
         [DataMember(Name = "payload")]
         public object Response { get; set; }
 
-        [DataMember(Name = "errorMessage")]
+        [DataMember(Name = "errorMessages")]
         public string ErrorMessages { get; set; }
     }
 }
