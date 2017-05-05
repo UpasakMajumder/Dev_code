@@ -16,7 +16,7 @@ namespace Kadena.Tests
         [TestCase("5b602141-33fa-4754-9eb4-af275b80087a"
             , "actum"
             , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Prod/Api/CsvParser/GetHeaders"
-            , TestName = "Correct file test", Description = "Testing for successful result from request.")]
+            , TestName = "GetHeaderCorrectFile", Description = "Testing for successful result from request.")]
         public void CorrectFileCase(string id, string customerName, string url)
         {
             var headers = CallService(id, customerName, url);
@@ -27,7 +27,7 @@ namespace Kadena.Tests
         [TestCase("46497e0d-696c-4bcb-bc47-5428e344f373"
             , "actum"
             , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Prod/Api/CsvParser/GetHeaders"
-            , TestName = "Wrong file test"
+            , TestName = "GetHeaderWrongFile"
             , Description = "Testing for exception throw when requested file not exists or empty.")]
         public void WrongFileCase(string id, string customerName, string url)
         {
