@@ -163,6 +163,11 @@ namespace Kadena.Old_App_Code.Helpers
             return fileId;
         }
 
+        /// <summary>
+        /// Requests for headers of specified file.
+        /// </summary>
+        /// <param name="fileId">Id for file to get headers for.</param>
+        /// <returns>List of header names.</returns>
         public static IEnumerable<string> GetHeaders(Guid fileId)
         {
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");

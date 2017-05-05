@@ -35,7 +35,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     var containerId = new Guid(Request.QueryString["containerid"]);
 
                     headers = ServiceHelper.GetHeaders(fileId);
-                    //string[] headers = { "name", "state" };
                 }
             }
 
@@ -45,6 +44,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             }
         }
 
+        /// <summary>
+        /// Creates column selector for specified column.
+        /// </summary>
+        /// <param name="columnName">Name of column to map.</param>
+        /// <param name="optional">Flag to show if column is optional.</param>
+        /// <param name="availableColumns">List of available columns to be mapped</param>
+        /// <returns>String with html-code of column selector.</returns>
         private static string GetColumnSelectorHtml(string columnName, bool optional, IEnumerable<string> availableColumns)
         {
             using (var writer = new StringWriter())
