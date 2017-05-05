@@ -23,6 +23,11 @@ $circle-btn-size: 25px;
     }
   }
 
+  &__add-link {
+    @extend .btn--off;
+    @extend .outline--off;
+  }
+
   .additional-row {
     padding: 5px 0;
 

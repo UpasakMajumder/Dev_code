@@ -136,19 +136,21 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
 
 .btn {
   &--off {
+    @extend .outline--off;
     background-color: transparent;
     border: none;
     padding: 0;
     margin: 0;
   }
-}
 
-.btn--circle {
-  @extend .line-height--off;
+  &--circle {
+    @extend .line-height--off;
+    @extend .outline--off;
 
-  @include rem(padding, 5px);
-  border-radius: 100%;
-  display: block;
+    @include rem(padding, 5px);
+    border-radius: 100%;
+    display: block;
+  }
 }
 
 .plus-btn {
