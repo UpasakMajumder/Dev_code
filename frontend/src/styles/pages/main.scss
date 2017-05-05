@@ -31,25 +31,12 @@ $padding: 15px;
       left: $sidebar-width-large/2;
 
       &__text {
+        @include rem(padding-left, 10px);
         visibility: visible;
         width: auto;
         height: auto;
         transition: visibility 0.3s ease-in 0.5s;
       }
-    }
-  }
-
-  .sidebar-logo {
-    position: absolute;
-    bottom: 25px;
-    left: $sidebar-width-small/2;
-    transform: translate(-50%, 0);
-    transition: position 0.3s ease-in;
-
-    &__text {
-      visibility: hidden;
-      width: 0;
-      height: 0;
     }
   }
 

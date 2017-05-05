@@ -1,9 +1,17 @@
 .sidebar-logo {
   @extend %flex--center--default;
+  position: absolute;
+  bottom: 25px;
+  left: $sidebar-width-small/2;
+  transform: translate(-50%, 0);
+  transition: position 0.3s ease-in;
 
   &__text {
-    @include rem(padding-left, 10px);
     color: $font-grey;
     font-size: $font-xs;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    padding-left: 0;
   }
 }
