@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -22,25 +21,24 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {"state", false },
             {"zip code", false },
         };
+        private string[] _headers;
+        private Guid _fileId;
+        private Guid _containerId;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            IEnumerable<string> headers = null;
-            if (!IsPostBack)
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["fileid"])
+                && !string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
             {
-                if (!string.IsNullOrWhiteSpace(Request.QueryString["fileid"])
-                    && !string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
-                {
-                    var fileId = new Guid(Request.QueryString["fileid"]);
-                    var containerId = new Guid(Request.QueryString["containerid"]);
+                _fileId = new Guid(Request.QueryString["fileid"]);
+                _containerId = new Guid(Request.QueryString["containerid"]);
 
-                    headers = ServiceHelper.GetHeaders(fileId);
-                }
+                _headers = ServiceHelper.GetHeaders(_fileId).ToArray();
             }
 
             foreach (var cs in _columnSelectors)
             {
-                phTitle.Controls.Add(new LiteralControl(GetColumnSelectorHtml(cs.Key, cs.Value, headers)));
+                phTitle.Controls.Add(new LiteralControl(GetColumnSelectorHtml(cs.Key, cs.Value, _headers)));
             }
         }
 
@@ -51,7 +49,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         /// <param name="optional">Flag to show if column is optional.</param>
         /// <param name="availableColumns">List of available columns to be mapped</param>
         /// <returns>String with html-code of column selector.</returns>
-        private static string GetColumnSelectorHtml(string columnName, bool optional, IEnumerable<string> availableColumns)
+        private static string GetColumnSelectorHtml(string columnName, bool optional, string[] availableColumns)
         {
             using (var writer = new StringWriter())
             {
@@ -88,17 +86,17 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
                     if (availableColumns != null)
                     {
-                        foreach (var i in availableColumns)
+                        for (int i = 0; i < availableColumns.Length; i++)
                         {
-                            if (i.Contains(columnName))
+                            if (availableColumns[i].Contains(columnName))
                                 htmlWriter.AddAttribute(HtmlTextWriterAttribute.Selected, string.Empty);
-                            htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, i);
+                            htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
                             htmlWriter.RenderBeginTag(HtmlTextWriterTag.Option);
-                            htmlWriter.Write(i);
+                            htmlWriter.Write(availableColumns[i]);
                             htmlWriter.RenderEndTag();
                         }
                     }
-
+                    
                     htmlWriter.RenderEndTag();
                     htmlWriter.RenderEndTag();
                     htmlWriter.RenderEndTag();
