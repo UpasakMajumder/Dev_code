@@ -74,11 +74,11 @@ $size: 50px;
     }
 
     &:before {
-      left: -$line-circle-size/2;
+      left: -$line-circle-size / 2;
     }
 
     &:after {
-      right: -$line-circle-size/2;
+      right: -$line-circle-size / 2;
     }
   }
 }
