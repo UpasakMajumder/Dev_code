@@ -60,9 +60,9 @@
         {# Main content of the page #}
         {% block content %}{% endblock %}
       </main>
-     {% include '../components/footer.nunj' %}
-
+      {% include '../components/footer.nunj' %}
     </div>
+    {% include '../components/snack-notification.nunj' %}
   </div>
 </form>
 
