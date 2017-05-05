@@ -100,9 +100,8 @@
         var newElement = createNewNotification(type);
         _this.notification[1] = newElement;
         _this.container.appendChild(newElement);
-        setTimeout(function () {
-          newElement.classList.add('show-1');
-        }, 0);
+        window.getComputedStyle(newElement).opacity;
+        newElement.classList.add('show-1');
 
         setTimeout(function () {
           newElement.classList.add('hide');

@@ -46,9 +46,8 @@ class Notification {
       const newElement = createNewNotification(type);
       _this.notification[1] = newElement;
       _this.container.appendChild(newElement);
-      setTimeout(() => {
-        newElement.classList.add('show-1');
-      }, 0);
+      window.getComputedStyle(newElement).opacity;
+      newElement.classList.add('show-1');
 
       setTimeout(() => {
         newElement.classList.add('hide');
