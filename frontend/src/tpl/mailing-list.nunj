@@ -32,15 +32,15 @@
                 <p class="sent-statistics__title">Sent in 90 days</p>
                 <p class="sent-statistics__value">6</p>
               </div>
-              <div class="sent-statistics__item">
+              <div class="sent-statistics__item sent-statistics__item--warning">
                 <p class="sent-statistics__title">Correct addresses</p>
                 <p class="sent-statistics__value">2105</p>
               </div>
-              <div class="sent-statistics__item">
+              <div class="sent-statistics__item sent-statistics__item--error">
                 <p class="sent-statistics__title">Bad addresses</p>
                 <p class="sent-statistics__value">10</p>
               </div>
-              <div class="sent-statistics__item">
+              <div class="sent-statistics__item sent-statistics__item--success">
                 <p class="sent-statistics__title">Success rate</p>
                 <p class="sent-statistics__value">99,9%</p>
               </div>
