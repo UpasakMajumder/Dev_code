@@ -12,8 +12,7 @@ $content-inner-padding: 24px;
     background-color: $brand-white;
     width: 100%;
     padding: $content-inner-padding $content-inner-padding $content-inner-padding 34px;
-    // Hardcoded height
-    min-height: calc(100vh - 190px);
+    min-height: calc(100vh - 110px - #{$footer-size});
   }
 
   &-header {
