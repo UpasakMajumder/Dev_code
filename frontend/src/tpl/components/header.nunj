@@ -2,10 +2,10 @@
 
 
 {% set headers = [
-{'title': 'Activity', 'icon': 'icon-activity', 'badge': 'true'},
-{'title': 'Drafts', 'icon': 'icon-newspaper'},
-{'title': 'Shopping cart', 'icon': 'icon-cart'},
-{'title': 'Log Out', 'icon': 'icon-sing-out'}
+{'title': 'Activity', 'icon': 'activity', 'badge': 'true'},
+{'title': 'Drafts', 'icon': 'newspaper'},
+{'title': 'Shopping cart', 'icon': 'cart'},
+{'title': 'Log Out', 'icon': 'sign-out'}
 ] %}
 
 <nav class="css-header navbar navbar-toggleable-md navbar-inverse bg-inverse">

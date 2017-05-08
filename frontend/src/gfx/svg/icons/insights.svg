@@ -1,23 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="BP-1200" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Page-Layout-V6-1200" transform="translate(-16.000000, -283.000000)" fill-rule="nonzero" fill="#404040">
-            <g id="Menu">
-                <g id="INSIGHTS" transform="translate(0.000000, 268.000000)">
-                    <g id="ui-48px-glyph-3_chart-bars" transform="translate(16.000000, 15.692308)">
-                        <g id="Group">
-                            <path d="M17.4493409,16.1013635 L0.387763132,16.1013635 C0.17333012,16.1013635 0,15.9119606 0,15.6776434 C0,15.4433262 0.17333012,15.2539233 0.387763132,15.2539233 L17.4493409,15.2539233 C17.663774,15.2539233 17.8371041,15.4433262 17.8371041,15.6776434 C17.8371041,15.9119606 17.663774,16.1013635 17.4493409,16.1013635 Z" id="Shape"></path>
-                            <path d="M4.65315758,5.08464111 L1.55105253,5.08464111 C1.33661952,5.08464111 1.1632894,5.27404399 1.1632894,5.5083612 L1.1632894,13.1353229 C1.1632894,13.3696401 1.33661952,13.559043 1.55105253,13.559043 L4.65315758,13.559043 C4.8675906,13.559043 5.04092072,13.3696401 5.04092072,13.1353229 L5.04092072,5.5083612 C5.04092072,5.27404399 4.8675906,5.08464111 4.65315758,5.08464111 Z" id="Shape"></path>
-                            <path d="M10.4696046,0 L7.36749951,0 C7.1530665,0 6.97973638,0.189402881 6.97973638,0.423720093 L6.97973638,13.1353229 C6.97973638,13.3696401 7.1530665,13.559043 7.36749951,13.559043 L10.4696046,13.559043 C10.6840376,13.559043 10.8573677,13.3696401 10.8573677,13.1353229 L10.8573677,0.423720093 C10.8573677,0.189402881 10.6840376,0 10.4696046,0 Z" id="Shape"></path>
-                            <path d="M16.2860515,8.47440185 L13.1839465,8.47440185 C12.9695135,8.47440185 12.7961834,8.66380473 12.7961834,8.89812194 L12.7961834,13.1353229 C12.7961834,13.3696401 12.9695135,13.559043 13.1839465,13.559043 L16.2860515,13.559043 C16.5004846,13.559043 16.6738147,13.3696401 16.6738147,13.1353229 L16.6738147,8.89812194 C16.6738147,8.66380473 16.5004846,8.47440185 16.2860515,8.47440185 Z" id="Shape"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<line data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" x1="2" y1="42" x2="46" y2="42" stroke-linejoin="miter"/>
+<rect x="5" y="18" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" width="8" height="18" stroke-linejoin="miter"/>
+<rect x="20" y="6" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" width="8" height="30" stroke-linejoin="miter"/>
+<rect x="35" y="26" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" width="8" height="10" stroke-linejoin="miter"/>
+</g></svg>
