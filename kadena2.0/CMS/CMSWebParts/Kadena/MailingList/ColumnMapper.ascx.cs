@@ -26,6 +26,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                btnProcess.InnerText = GetString("Kadena.MailingList.ProcessList", string.Empty);
+                btnReupload.InnerText = GetString("Kadena.MailingList.ReuploadList", string.Empty);
+            }
             string[] headers = null;
             if (!string.IsNullOrWhiteSpace(Request.QueryString["fileid"])
                 && !string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
