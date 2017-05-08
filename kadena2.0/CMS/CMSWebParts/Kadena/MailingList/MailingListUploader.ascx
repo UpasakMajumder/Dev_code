@@ -2,7 +2,7 @@
 
 <div class="upload-mail__drop-zone">
     <div class="drop-zone js-drop-zone">
-        <button runat="server" id="btnHelp" type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" data-tooltip-title="">
+        <button runat="server" id="btnHelp" type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="">
             <svg class="icon icon-question">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#question-mark" />
             </svg>

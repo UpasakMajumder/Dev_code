@@ -23,7 +23,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (!IsPostBack)
             {
-                btnHelp.Attributes["data-tooltip-title"] = GetString("Kadena.MailingList.HelpUpload");
+                btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
                 textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
                 textOr.InnerText = GetString("Kadena.MailingList.Or");
                 textSkipField.InnerText = GetString("Kadena.MailingList.SkipField");
