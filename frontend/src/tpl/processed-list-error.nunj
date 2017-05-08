@@ -1,404 +1,402 @@
 {% extends "layouts/default.nunj" %}
-
-{% from "macro/sidebar.nunj" import sidebar %}
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
 {% from "macro/select.nunj" import select %}
 {% import "macro/svg.nunj" as svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
-{% set title = "Mailing list" %}
+{% set title = 'K-List' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = ['K-List','New K-List'] %}
+{% set headerTitle = 'Your processed list' %}
 
 {% block content %}
-  {{ sidebar('Mailing list') }}
-
   {% call dialog.wrapper(id='mail-list-errors') %}
   {{ dialog.header(header='We have found errors in the following entries:') }}
   {% call dialog.content() %}
   <div class="processed-list__table-dialog">
     <table class="table">
-    <tbody>
-        <tr>
-          <td>Line</td>
-          <td>Name</td>
-          <td>Address Line 1</td>
-          <td>Address Line 2</td>
-          <td>City</td>
-          <td>State</td>
-          <td>Zip Code</td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="2167 225th Ave">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'], error='Error')}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>75</td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="Oliver Ustinovich">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text input--error" value="2167 225th Ave">
-              <span class="input__error input__error--noborder">Error</span>
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Empty">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="San Francisco">
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              {{select(options=['CA','option2','option3'])}}
-            </div>
-          </td>
-          <td>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" value="94116">
-            </div>
-          </td>
-        </tr>
+      <tbody>
+      <tr>
+        <td>Line</td>
+        <td>Name</td>
+        <td>Address Line 1</td>
+        <td>Address Line 2</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Zip Code</td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="2167 225th Ave">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'], error='Error')}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>75</td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="Oliver Ustinovich">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text input--error" value="2167 225th Ave">
+            <span class="input__error input__error--noborder">Error</span>
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" placeholder="Empty">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="San Francisco">
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            {{select(options=['CA','option2','option3'])}}
+          </div>
+        </td>
+        <td>
+          <div class="input__wrapper">
+            <input type="text" class="input__text" value="94116">
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -412,145 +410,134 @@
   {% endcall %}
   {% endcall %}
 
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">Your processed list</h1>
+  <div class="processed-list">
+
+    <div class="processed-list__table-block">
+      <div class="processed-list__table-heading processed-list__table-heading--error">
+        <h3>We have found 8 errors in your file</h3>
+
+        <div class="btn-group btn-group--right">
+          <button type="button" class="btn-action btn-action--secondary">Reload .csv</button>
+          <button type="button" data-dialog="#mail-list-errors" class="js-dialog btn-action btn-action--secondary">Correct errors</button>
         </div>
-        {{ breadcrumb(['Home','Mailing list','New mailing list']) }}
       </div>
-      <div class="content-block processed-list">
-
-        <div class="processed-list__table-block">
-          <div class="processed-list__table-heading processed-list__table-heading--error">
-            <h3>We have found 8 errors in your file</h3>
-
-            <div class="btn-group btn-group--right">
-              <button type="button" class="btn-action btn-action--secondary">Reload .csv</button>
-              <button type="button" data-dialog="#mail-list-errors" class="js-dialog btn-action btn-action--secondary">Correct errors</button>
-            </div>
-          </div>
-          <div class="processed-list__table-inner">
-            <table class="table processed-list__table--shadow">
-            <tbody>
-                <tr>
-                  <th>Line</th>
-                  <th>Name</th>
-                  <th>Address Line 1</th>
-                  <th>Address Line 2</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>Zip Code</th>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Jane Doe</td>
-                  <td>2167 225th Ave</td>
-                  <td>-</td>
-                  <td>San Francisco</td>
-                  <td>CA</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>42</td>
-                  <td>Oliver Ustinovich</td>
-                  <td>2167 5th Ave</td>
-                  <td>-</td>
-                  <td>San Francisco</td>
-                  <td>AB</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>56</td>
-                  <td>Denisa Lorencova</td>
-                  <td>2167/273a 25th Ave</td>
-                  <td>-</td>
-                  <td>Saint Joseph</td>
-                  <td>MS</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>75</td>
-                  <td>John Snow</td>
-                  <td>2167/273a 25th Ave</td>
-                  <td>-</td>
-                  <td>Old York</td>
-                  <td>GB</td>
-                  <td>94116</td>
-                </tr>
-              </tbody>
-            </table>
-            <span class="processed-list__table-helper">
+      <div class="processed-list__table-inner">
+        <table class="table processed-list__table--shadow">
+          <tbody>
+          <tr>
+            <th>Line</th>
+            <th>Name</th>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jane Doe</td>
+            <td>2167 225th Ave</td>
+            <td>-</td>
+            <td>San Francisco</td>
+            <td>CA</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>42</td>
+            <td>Oliver Ustinovich</td>
+            <td>2167 5th Ave</td>
+            <td>-</td>
+            <td>San Francisco</td>
+            <td>AB</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>56</td>
+            <td>Denisa Lorencova</td>
+            <td>2167/273a 25th Ave</td>
+            <td>-</td>
+            <td>Saint Joseph</td>
+            <td>MS</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>75</td>
+            <td>John Snow</td>
+            <td>2167/273a 25th Ave</td>
+            <td>-</td>
+            <td>Old York</td>
+            <td>GB</td>
+            <td>94116</td>
+          </tr>
+          </tbody>
+        </table>
+        <span class="processed-list__table-helper">
               To correct your .csv file, view the line number, go to your original file and check the respective record.
-              {% call svg.template(class='help-arrow') %}
-              {{svg.use(name='info-arrow')}}
-              {% endcall %}
+          {% call svg.template(class='help-arrow') %}
+          {{svg.use(name='info-arrow')}}
+          {% endcall %}
             </span>
-          </div>
-        </div>
-
-        <div class="processed-list__table-block">
-          <div class="processed-list__table-heading processed-list__table-heading--success">
-            <h3>332 addresses have been processed successfuly</h3>
-            <div class="btn-group btn-group--right">
-              <button type="button" class="btn-action btn-action--secondary">Use only correct</button>
-            </div>
-          </div>
-          <div class="processed-list__table-inner">
-            <table class="table processed-list__table--shadow">
-            <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Address Line 1</th>
-                  <th>Address Line 2</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>Zip Code</th>
-                </tr>
-                <tr>
-                  <td>Jane Doe</td>
-                  <td>2167 225th Ave</td>
-                  <td>-</td>
-                  <td>San Francisco</td>
-                  <td>CA</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>Oliver Ustinovich</td>
-                  <td>2167 5th Ave</td>
-                  <td>-</td>
-                  <td>San Francisco</td>
-                  <td>AB</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>Denisa Lorencova</td>
-                  <td>2167/273a 25th Ave</td>
-                  <td>-</td>
-                  <td>Saint Joseph</td>
-                  <td>MS</td>
-                  <td>94116</td>
-                </tr>
-                <tr>
-                  <td>John Snow</td>
-                  <td>2167/273a 25th Ave</td>
-                  <td>-</td>
-                  <td>Old York</td>
-                  <td>GB</td>
-                  <td>94116</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="btn-group btn-group--left">
-          <button type="button" class="btn-action">Save list</button>
-        </div>
-
       </div>
     </div>
-  </div>
 
+    <div class="processed-list__table-block">
+      <div class="processed-list__table-heading processed-list__table-heading--success">
+        <h3>332 addresses have been processed successfuly</h3>
+        <div class="btn-group btn-group--right">
+          <button type="button" class="btn-action btn-action--secondary">Use only correct</button>
+        </div>
+      </div>
+      <div class="processed-list__table-inner">
+        <table class="table processed-list__table--shadow">
+          <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+          </tr>
+          <tr>
+            <td>Jane Doe</td>
+            <td>2167 225th Ave</td>
+            <td>-</td>
+            <td>San Francisco</td>
+            <td>CA</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>Oliver Ustinovich</td>
+            <td>2167 5th Ave</td>
+            <td>-</td>
+            <td>San Francisco</td>
+            <td>AB</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>Denisa Lorencova</td>
+            <td>2167/273a 25th Ave</td>
+            <td>-</td>
+            <td>Saint Joseph</td>
+            <td>MS</td>
+            <td>94116</td>
+          </tr>
+          <tr>
+            <td>John Snow</td>
+            <td>2167/273a 25th Ave</td>
+            <td>-</td>
+            <td>Old York</td>
+            <td>GB</td>
+            <td>94116</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="btn-group btn-group--left">
+      <button type="button" class="btn-action">Save list</button>
+    </div>
+
+  </div>
 {% endblock %}

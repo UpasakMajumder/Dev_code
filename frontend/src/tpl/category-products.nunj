@@ -1,64 +1,36 @@
 {% extends "layouts/default.nunj" %}
-
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
-
-{% from "macro/sidebar.nunj" import sidebar %}
-
 {% import "macro/svg.nunj" as svg %}
 
-{% set title = "Category name" %}
+{% set title = 'Category name' %}
+{% set sidebarActive = 'Products' %}
+{% set breadcrumbs = [sidebarActive, title] %}
+{% set headerTitle = title %}
+{% set headerAdd = 'Request new product' %}
 
 {% block content %}
-
-  {{ sidebar('Products') }}
-
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">{{ title }}</h1>
-          <a href="#" class="content-header__btn js-tooltip"
-             data-tooltip-placement="right"
-             title="Request new product">
-            {% call svg.template('icon-modal') %}
-            {{svg.use(name='plus')}}
-            {% endcall %}
-          </a>
-        </div>
-
-        {{ breadcrumb(['Home','Products', 'Category name']) }}
-      </div>
-
-
-      <div class="content-block">
-        <div class="row">
-          {% for x in range(0, 11) %}
-            <div class="col-lg-4 col-xl-3">
-              <a href="#" class="category">
-                <div class="category__picture" style="background-image: url(http://satyr.io/250-500x150-300?{{ x }})"></div>
-                <div class="category__title">
-                  <h2>Category name</h2>
-                </div>
-              </a>
-            </div>
-          {% endfor %}
-
-          <div class="col-lg-4 col-xl-3">
-            <a href="#" class="category">
-              <div class="category__picture">
-                {% call svg.template() %}
-                {{svg.use(name='products--color')}}
-                {% endcall %}
-              </div>
-              <div class="category__title">
-                <h2>All products</h2>
-              </div>
-            </a>
+  <div class="row">
+    {% for x in range(0, 11) %}
+      <div class="col-lg-4 col-xl-3">
+        <a href="#" class="category">
+          <div class="category__picture" style="background-image: url(http://satyr.io/250-500x150-300?{{ x }})"></div>
+          <div class="category__title">
+            <h2>Category name</h2>
           </div>
-
-        </div>
+        </a>
       </div>
+    {% endfor %}
+
+    <div class="col-lg-4 col-xl-3">
+      <a href="#" class="category">
+        <div class="category__picture">
+          {% call svg.template() %}
+          {{svg.use(name='products--color')}}
+          {% endcall %}
+        </div>
+        <div class="category__title">
+          <h2>All products</h2>
+        </div>
+      </a>
     </div>
   </div>
-
 {% endblock %}

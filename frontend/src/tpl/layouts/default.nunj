@@ -1,3 +1,19 @@
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% import "macro/svg.nunj" as svg %}
+
+{% set sidebarItems = {
+  'dashboard':  'K-Center',
+  'products':   'Products',
+  'orders':     'Recent orders',
+  'mlist':      'K-List',
+  'insight':    'K-Insight',
+  'source':     'K-Source',
+  'proof':      'K-Proof',
+  'dam':        'K-DAM',
+  'settings':   'Settings',
+  'help':       'Help'
+} %}
+{% from "macro/sidebar.nunj" import sidebar %}
 {# first visit without cookie, without main css file in cache
     - critical css is inlined into page
     - main css file is loaded async with preload/onload technic
@@ -58,7 +74,32 @@
           localStorage.getItem('isSidebarCollapsed') && main.classList.remove('isOpen');
         </script>
         {# Main content of the page #}
-        {% block content %}{% endblock %}
+
+        {{ sidebar(sidebarActive) }}
+
+        <div class="content">
+          <div class="content__inner">
+            <div class="content-header">
+              <div class="content-header__inner">
+                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
+                {% if(headerAdd) %}
+                  <a href="#" class="content-header__btn js-tooltip"
+                     data-tooltip-placement="right"
+                     title="{{ headerAdd }}">
+                    {% call svg.template('icon-modal') %}
+                    {{svg.use(name='plus')}}
+                    {% endcall %}
+                  </a>
+                {% endif %}
+              </div>
+              {{ breadcrumb(breadcrumbs) }}
+            </div>
+            <div class="content-block">
+              {% block content %}{% endblock %}
+            </div>
+          </div>
+        </div>
+
       </main>
      {% include '../components/footer.nunj' %}
 
