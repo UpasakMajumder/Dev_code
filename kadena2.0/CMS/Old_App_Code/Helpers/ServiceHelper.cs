@@ -220,6 +220,12 @@ namespace Kadena.Old_App_Code.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Uploads specified mapping to microservice with binding to specified file and container.
+        /// </summary>
+        /// <param name="fileId">Id of file.</param>
+        /// <param name="containerId">Id of mailing container.</param>
+        /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
         public static void UploadMapping(Guid fileId, Guid containerId, Dictionary<string, int> mapping)
         {
             if ((mapping?.Count ?? 0) == 0)
