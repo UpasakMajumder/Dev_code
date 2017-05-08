@@ -1,10 +1,6 @@
 {% import "macro/svg.nunj" as svg %}
 
 <nav class="css-header navbar navbar-toggleable-md navbar-inverse bg-inverse">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
   <a class="navbar-brand" href="index.html">
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>

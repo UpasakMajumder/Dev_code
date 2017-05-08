@@ -20,6 +20,10 @@ $m-size: 22px;
     }
   }
 
+  &--dark {
+    background-color: $brand-dark;
+  }
+
   &--hover {
     &:hover {
       border: 1px solid $brand-lightgrey;

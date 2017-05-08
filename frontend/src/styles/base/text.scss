@@ -5,3 +5,23 @@
 .line-height--one {
   line-height: 1;
 }
+
+// text--left
+// text--right
+// text--center
+
+$aligns: (left, right, center);
+
+@each $align in $aligns {
+  .text--#{$align} {
+    text-align: $align;
+  }
+}
+
+$fonts-size: (large: 44px, xxl: 30px, xl: 26px, l: 24px, xm: 22px, m: 20px, s: 18px, xs: 14px, xxs: 12px, default: 16px);
+
+@each $font-key, $font-value in $fonts-size {
+  .font--#{$font-key} {
+    font-size: $font-value;
+  }
+}

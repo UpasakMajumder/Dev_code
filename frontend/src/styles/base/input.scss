@@ -1,6 +1,8 @@
 .input {
-  @include rem(padding-top, 8px);
-  @include rem(padding-bottom, 8px);
+  @extend .line-height--one;
+
+  @include rem(padding-top, 11px);
+  @include rem(padding-bottom, 11px);
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
   font-weight: 100;
@@ -19,6 +21,10 @@
     }
   }
 
+  &__inner {
+    position: relative;
+  }
+
   &:focus {
     border: 1px solid $brand-primary;
     box-shadow: 0 0 8px 0 $brand-primary;
@@ -30,8 +36,17 @@
   }
 
   &__text {
-    @extend .px-3;
     @extend .input;
+
+    @include rem(padding-left, 16px);
+    @include rem(padding-right, 16px);
+
+    &--small {
+      @include rem(padding-top, 5px);
+      @include rem(padding-bottom, 5px);
+      @include rem(padding-left, 10px);
+      @include rem(padding-right, 10px);
+    }
   }
 
   &__password {
@@ -46,13 +61,13 @@
     position: absolute;
     right: .75rem;
     text-transform: uppercase;
-    bottom: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &__label {
     color: $brand-dark;
     display: block;
-    font-weight: 100;
     text-transform: uppercase;
 
     &--radio,

@@ -51,8 +51,12 @@
   <div class="main-container">
     <div class="main-container__inner">
       {% include '../components/header.nunj' %}
-
-      <main class="css-main js-collapse isOpen">
+      <main class="css-main js-main js-collapse isOpen">
+        <script>
+          var main = document.querySelector('.js-main');
+          var isOpen = localStorage.getItem('isSidebarCollapsed');
+          localStorage.getItem('isSidebarCollapsed') && main.classList.remove('isOpen');
+        </script>
         {# Main content of the page #}
         {% block content %}{% endblock %}
       </main>

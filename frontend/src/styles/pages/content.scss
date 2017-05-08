@@ -1,0 +1,49 @@
+$offset-height: 55px;
+$padding: 10px;
+$sidebar-width-close: 70px;
+$content-inner-padding: 24px;
+
+.content {
+  width: 100%;
+  padding-left: $sidebar-width-close;
+  transition: all 0.4s ease-in-out;
+
+  &__inner {
+    background-color: $brand-white;
+    width: 100%;
+    padding: $content-inner-padding $content-inner-padding $content-inner-padding 34px;
+    // Hardcoded height
+    min-height: calc(100vh - 190px);
+  }
+
+  &-header {
+    @extend %flex--center--between;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    padding-bottom: 15px;
+    margin-bottom: 12px;
+
+    .breadcrumbs {
+      @extend .mb-3;
+      order: 1;
+      margin-right: auto;
+    }
+
+    &__inner {
+      @extend %flex--baseline--default;
+      order: 2;
+      flex-grow: 1;
+      margin-right: auto;
+      flex-wrap: nowrap;
+    }
+
+    &__btn {
+      @extend .bg-secondary;
+      @extend .btn--circle;
+      order: 2;
+
+      @include rem(margin-left, 10px);
+    }
+  }
+}

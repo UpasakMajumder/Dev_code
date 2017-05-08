@@ -1,0 +1,15 @@
+.my-account {
+  &__table {
+    tr {
+      line-height: 2;
+    }
+
+    td {
+      &:first-child {
+        @extend .mr-4;
+        display: block;
+        text-align: right;
+      }
+    }
+  }
+}

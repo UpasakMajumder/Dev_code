@@ -19,7 +19,7 @@
           <h1 class="content-header__page-name">{{ title }}</h1>
           <a href="#" class="content-header__btn js-tooltip"
              data-tooltip-placement="right"
-             data-tooltip-title="Request new product">
+             title="Request new product">
             {% call svg.template('icon-modal') %}
             {{svg.use(name='plus')}}
             {% endcall %}
@@ -32,8 +32,7 @@
 
       <div class="content-block">
         <div class="row">
-          {% set loop = [1,2,3,4,5,6,7,8,9,10,11] %}
-          {% for x in loop %}
+          {% for x in range(0, 11) %}
             <div class="col-lg-4 col-xl-3">
               <a href="#" class="category">
                 <div class="category__picture" style="background-image: url(http://satyr.io/250-500x150-300?{{ x }})"></div>

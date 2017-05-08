@@ -12,7 +12,9 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <h1 class="content-header__page-name">{{ title }}</h1>
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">{{ title }}</h1>
+        </div>
         {{ breadcrumb(['Home','DAM']) }}
       </div>
       <div class="content-block"></div>

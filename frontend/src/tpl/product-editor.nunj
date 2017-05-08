@@ -1,0 +1,72 @@
+{% extends "layouts/default.nunj" %}
+
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/sidebar.nunj" import sidebar %}
+{% import "macro/svg.nunj" as svg %}
+{% set title = "Products" %}
+{% import "macro/dialog.nunj" as dialog %}
+
+{% set tdContent1 = ['<span>Mar 1 2017</span>',
+'240',
+'1',
+'Mar 13 2017',
+'Ready for use',
+'<button type="button" class="btn-action">Use</button>']%}
+
+{% set tdContent2 = ['<span>Feb 10 2017</span>',
+'1333',
+'0',
+'Mar 13 2017',
+'Jan 15 2017',
+'']%}
+
+{% block content %}
+
+  {{ sidebar('Products') }}
+
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">Product Editor</h1>
+        </div>
+
+        {{ breadcrumb(['Home', 'Products', 'Category name', 'March 17 events']) }}
+
+      </div>
+      <div class="content-block">
+        <div class="product-editor">
+          <div class="product-editor__block">
+            <div class="product-editor__bar">
+              <div>
+                <div class="input__wrapper">
+                  <span class="input__label">Product name</span>
+                  <input type="text" class="input__text" placeholder="March 2017 Events">
+                </div>
+              </div>
+              <div>
+                <div class="btn-group">
+                  <button type="button" class="btn-main btn-main--secondary">Discard changes</button>
+                  <button type="button" class="btn-action btn-action--secondary">Save project</button>
+                </div>
+              </div>
+              <div>
+                <div class="input__wrapper">
+                  <span class="input__label">Quantity</span>
+                  <input type="number" class="input__text" placeholder="1234">
+                </div>
+                <button type="button" class="btn-action">Add to cart</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="product-editor__iframe">
+              <iframe src="" frameborder="0"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+.pagination {
+  &__item,
+  &__page {
+    &:not(:last-child) {
+      @include rem(margin-right, 5px);
+    }
+  }
+
+  &__item {
+    display: inline-block;
+  }
+
+  & a.pagination__page--active {
+    @extend .line-height--one;
+    @extend .link--no-decoration;
+    $padding-x: 2px;
+    $padding-y: 6px;
+
+    @include rem(padding-top, $padding-x);
+    @include rem(padding-bottom, $padding-x);
+    @include rem(padding-left, $padding-y);
+    @include rem(padding-right, $padding-y);
+    background-color: $brand-grey;
+    color: $brand-dark;
+    border-radius: 100%;
+  }
+
+  &__dots {
+    @include rem(margin-right, 5px);
+  }
+
+  a {
+    @extend .link;
+  }
+}

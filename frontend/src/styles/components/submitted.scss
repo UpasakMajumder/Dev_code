@@ -1,0 +1,21 @@
+.submitted {
+  &__central-img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 320px;
+    height: 370px;
+  }
+
+  &__text-group {
+    &--centered {
+      text-align: center;
+    }
+  }
+
+  &__btn-group {
+    @extend .btn-group;
+    @extend .mt-4;
+    @extend .btn-group--centered;
+  }
+}

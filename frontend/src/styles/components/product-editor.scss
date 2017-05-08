@@ -1,0 +1,81 @@
+.product-editor {
+  $bar-margins-x: 20px;
+  $product-block-y: 20px;
+  $product-bar-input: 100px;
+
+  &__block {
+    @include rem(margin-top, $product-block-y);
+  }
+
+  &__bar {
+    @extend %flex--center--between;
+    flex-wrap: wrap;
+
+    & > div {
+      @include rem(margin-bottom, 30px);
+      flex-shrink: 0;
+
+      & > * + * {
+        @include rem(margin-left, $bar-margins-x);
+      }
+    }
+
+    .input__label {
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+    }
+
+    .input__wrapper {
+      float: left;
+
+      input[type="number"] {
+        width: $product-bar-input;
+      }
+    }
+  }
+
+  &__iframe {
+    position: relative;
+    padding-top: 56.25%;
+    width: calc(100% + #{$content-inner-padding * 2});
+    margin: 0 #{-$content-inner-padding} #{-$content-inner-padding};
+
+    iframe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__table-select {
+    width: 100%;
+
+    tr > td:last-child {
+      text-align: center;
+    }
+
+    td > span,
+    th > span {
+      @include rem(height, 40px);
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+
+  &__bottom {
+    @extend %flex--center--between;
+
+    @include rem(margin-top, 30px);
+  }
+
+  &__left-text {
+    @include rem(padding-right, 30px);
+  }
+
+  &__right-btn-group {
+    flex-shrink: 0;
+  }
+}

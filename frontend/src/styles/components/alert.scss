@@ -14,6 +14,20 @@
     background-color: rgba($brand-yellow-light, .3);
   }
 
+  &--grey {
+    @extend .alert;
+    border: 3px solid $brand-grey;
+    background-color: rgba($brand-grey, .3);
+  }
+
+  &--smaller {
+    @include rem(padding, 20px);
+  }
+
+  &--full {
+    width: 100%;
+  }
+
   &--close {
     .alert__close {
       display: block;

@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: $zindex-modal-backdrop;
 
   &.active {
     display: flex;
@@ -27,6 +27,7 @@
   &__block {
     @include rem(padding, 20px);
     margin: auto;
+    align-self: flex-start;
     background-color: $brand-white;
     z-index: $zindex-modal;
     border-radius: $border-radius * 4;
@@ -37,9 +38,7 @@
   }
 
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    @extend %flex--baseline--between;
 
     p {
       margin: 0;

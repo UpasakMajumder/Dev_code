@@ -5,7 +5,6 @@
 {% from "macro/select.nunj" import select %}
 {% import "macro/svg.nunj" as svg %}
 
-
 {% set title = "Mailing list" %}
 
 {% block content %}
@@ -13,7 +12,9 @@
   <div class="content">
     <div class="content__inner">
       <div class="content-header">
-        <h1 class="content-header__page-name">Your processed list</h1>
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">Your processed list</h1>
+        </div>
         {{ breadcrumb(['Home','Mailing list','New mailing list']) }}
       </div>
       <div class="content-block processed-list">
@@ -23,7 +24,7 @@
           </div>
           <div class="processed-list__table-inner">
             <table class="table">
-              <thead>
+            <tbody>
                 <tr>
                   <th>Name</th>
                   <th>Address Line 1</th>
@@ -32,9 +33,6 @@
                   <th>State</th>
                   <th>Zip Code</th>
                 </tr>
-              </thead>
-
-              <tbody>
                 <tr>
                   <td>Jane Doe</td>
                   <td>2167 225th Ave</td>
