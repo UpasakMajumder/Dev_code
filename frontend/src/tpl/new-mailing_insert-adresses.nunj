@@ -70,15 +70,14 @@
                 <tr class="js-add-tr additional-row">
                   <td></td>
                   <td colspan="6">
-                    <a href="#" class="js-add-tr-toggler mailing-lists__add-link">
+                    <button type="button" class="js-add-tr-toggler mailing-lists__add-link">
                       <span class="mailing-lists__add-row-icon">
                         {% call svg.template('icon-modal') %}
                         {{svg.use(name='plus')}}
                         {% endcall %}
                       </span>
                       <span>Add an adress</span>
-                    </a>
-
+                    </button>
                   </td>
                 </tr>
               </tbody>

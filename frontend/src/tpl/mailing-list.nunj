@@ -66,15 +66,10 @@
                   <td>Ready to use</td>
                   <td>
                     <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
-                    <a href="#" class="mailing-lists__btn btn-action">Use</a>
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <div class="mailing-lists__row">
-            <a href="#" class="btn-action">New mailing</a>
           </div>
         </div>
       </div>
