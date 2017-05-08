@@ -31,6 +31,8 @@
           <div class="orange-bar"></div>
           <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
 
+            {% set icon = page.name %}
+
             {% include "components/svgs.nunj" %}
 
             <span>{{ page.title }}</span>

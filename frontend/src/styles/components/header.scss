@@ -3,7 +3,6 @@
   height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
-  font-size: $font-s;
   border-bottom: $main-layout-gutter solid $main-gutter-color;
 
   .navbar-brand {
@@ -15,12 +14,27 @@
     }
   }
 
+  .navbar-user {
+    font-size: $font-s;
+  }
+
   .navbar-nav {
     margin-left: auto;
 
     .nav-item {
       @extend %flex--center--default;
-      margin-left: 1.5rem;
+      cursor: pointer;
+
+      @include rem(padding, 10px);
+
+      &.active,
+      &:hover {
+        background-color: $main-gutter-color;
+
+        .nav-link {
+          color: $font-grey;
+        }
+      }
 
       .icon {
         display: inline-block;
@@ -28,39 +42,20 @@
         height: 100%;
       }
 
-      .icon-activity {
-        width: 14px;
-        height: 16px;
-      }
-
-      .icon-newspaper {
+      svg {
+        @extend .mr-2;
         width: 18px;
         height: 18px;
-      }
-
-      .icon-cart {
-        width: 16px;
-        height: 16px;
-      }
-
-      .icon-sing-out {
-        width: 16px;
-        height: 16px;
       }
 
       .nav-link {
         @extend %flex--center--default;
       }
 
-      a.nav-link {
-        @extend .link;
-        padding: 10px;
-        font-size: $font-xs;
+      .nav-link {
+        color: $brand-primary;
+        font-weight: 100;
       }
-    }
-
-    .navbar-user {
-      font-size: $font-xs;
     }
 
     .badge-custom-color {

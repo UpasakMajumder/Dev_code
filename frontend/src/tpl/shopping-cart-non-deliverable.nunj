@@ -6,6 +6,7 @@
 {% import "macro/dialog.nunj" as dialog %}
 
 {% set title = "Shopping cart" %}
+{% set headerActive = "Shopping cart" %}
 
 {% block content %}
 

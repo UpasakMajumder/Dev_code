@@ -8,7 +8,8 @@
 
 {% import "macro/svg.nunj" as svg %}
 
-{% set title = "New mailing list" %}
+{% set title = "Orders was submitted" %}
+{% set headerActive = "Shopping cart" %}
 
 {% block content %}
 
