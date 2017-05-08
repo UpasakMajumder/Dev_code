@@ -27,14 +27,6 @@
             <span>Quantity: </span>
             <input type="number" min="1" value="1">
           </div>
-          <div class="cart-product__delivery">
-            <p>
-              {% call svg.template() %}
-              {{svg.use(name='arrow')}}
-              {% endcall %}
-              <span>Delivery to USPS by Mar 27 2017 for 328 addresses.</span>
-            </p>
-          </div>
           <div class="cart-product__mlist">
             <p>
               {% call svg.template() %}
@@ -42,6 +34,9 @@
               {% endcall %}
               <span>Mailing list: <strong>FCLTR_Mar30_Lamp post</strong></span>
             </p>
+          </div>
+          <div class="cart-product__delivery">
+            <p>Delivery to USPS by Mar 27 2017 for 328 addresses.</p>
           </div>
         </div>
         <div class="cart-product__options">
@@ -60,7 +55,7 @@
             </button>
           </div>
           <div class="cart-product__price">
-            <span>$ 25.49</span>
+            <span>$ <span class="js-money-format">25.49</span></span>
           </div>
         </div>
       </div>
