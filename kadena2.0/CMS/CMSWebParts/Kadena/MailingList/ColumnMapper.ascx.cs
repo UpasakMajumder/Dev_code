@@ -106,7 +106,29 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnProcess_Click(object sender, EventArgs e)
         {
+            if (IsPostBack)
+            {
+                if (_fileId != Guid.Empty
+                    && _containerId != Guid.Empty)
+                {
+                    var mapping = new Dictionary<string, int>();
+                    foreach (var c in _columnSelectors)
+                    {
+                        var columnName = c.Item2;
+                        var columnIndex = string.IsNullOrWhiteSpace(Request.Form[columnName]) ?
+                            -1
+                            : int.Parse(Request.Form[columnName]);
+                        mapping.Add(columnName, columnIndex);
+                    }
 
+                    Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
+                }
+            }
+        }
+
+        protected void btnReupload_ServerClick(object sender, EventArgs e)
+        {
+            Response.Redirect(GetStringValue("ReuploadListPageUrl", string.Empty));
         }
     }
 }
