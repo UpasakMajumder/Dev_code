@@ -25,8 +25,8 @@
       <div class="product-view__properties">
         {% for i in range(0, 8) %}
           <span class="product-view__property">Size:
-                  <span class="product-view__property-val">310 x 200</span>
-                </span>
+            <span class="product-view__property-val">310 x 200</span>
+          </span>
         {% endfor %}
       </div>
       <div class="product-view__tables">
@@ -48,7 +48,7 @@
           </tr>
           <tr>
             <td>Shipping cost</td>
-            <td>$ 10 - $ 15</td>
+            <td>$ <span class="js-money-format">10</span> - $ <span class="js-money-format">15</span></td>
           </tr>
           </tbody>
         </table>
@@ -63,23 +63,22 @@
           </tr>
           <tr>
             <td>0 - 50 pcs</td>
-            <td>$ 2.10</td>
+            <td>$ <span class="js-money-format">2.10</span></td>
           </tr>
           <tr>
             <td>51 - 100 pcs</td>
-            <td>$ 1.90</td>
+            <td>$ <span class="js-money-format">1.90</span></td>
           </tr>
           <tr>
             <td>101 + pcs</td>
-            <td>$ 1.50</td>
+            <td>$ <span class="js-money-format">1.50</span></td>
           </tr>
           </tbody>
         </table>
       </div>
       <div class="add-to-cart">
         <div class="add-to-cart__left">
-                <span class="add-to-cart__info">These come in pack of 50 pcs
-                </span>
+        <span class="add-to-cart__info">These come in pack of 50 pcs</span>
         </div>
         <div class="add-to-cart__right">
           <div class="input__wrapper">

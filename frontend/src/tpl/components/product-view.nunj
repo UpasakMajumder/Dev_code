@@ -40,7 +40,7 @@
           </tr>
           <tr>
             <td>Shipping cost</td>
-            <td>$ 10 - $ 15</td>
+            <td>$ <span class="js-money-format">10</span> - $ <span class="js-money-format">15</span></td>
           </tr>
         </tbody>
       </table>
@@ -56,15 +56,15 @@
           </tr>
           <tr>
             <td>0 - 50 pcs</td>
-            <td>$ 2.10</td>
+            <td>$ <span class="js-money-format">2.10</span></td>
           </tr>
           <tr>
             <td>51 - 100 pcs</td>
-            <td>$ 1.90</td>
+            <td>$ <span class="js-money-format">1.90</span></td>
           </tr>
           <tr>
             <td>101+ pcs</td>
-            <td>$ 1.50</td>
+            <td>$ <span class="js-money-format">1.50</span></td>
           </tr>
         </tbody>
       </table>
