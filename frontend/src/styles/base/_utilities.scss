@@ -61,3 +61,11 @@
 .flex-align--center {
   align-items: center;
 }
+
+.outline--off {
+  &:focus,
+  &:active,
+  &:active:focus {
+    outline: none;
+  }
+}
