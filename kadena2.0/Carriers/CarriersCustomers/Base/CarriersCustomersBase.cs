@@ -34,7 +34,7 @@ namespace Kadena2.Carriers
 
         public decimal GetPrice(Delivery delivery, string currencyCode)
         {
-            return 0.10001m;
+            return 0.0m;
         }
 
         public List<KeyValuePair<string, string>> GetServices()
