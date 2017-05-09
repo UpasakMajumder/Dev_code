@@ -9,12 +9,18 @@ class Dropzone {
 
 
     this.file.addEventListener('change', (event) => {
-      const name = event.target.files[0].name;
+      const { name, type } = event.target.files[0];
+
+      if (type !== 'text/csv') {
+        this.file.value = '';
+        return;
+      }
 
       !this.container.classList.contains(this.selector) && this.container.classList.add(this.selector);
       this.nameNode.innerHTML = name;
       this.nameInput.value = name;
     });
+
 
     this.btn.addEventListener('click', (event) => {
       this.container.classList.remove(this.selector);

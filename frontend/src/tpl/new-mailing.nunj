@@ -29,7 +29,7 @@
             <button type="button" class="drop-zone__btn close js-drop-zone-btn">
               {{ svg('cross', 'icon-cross') }}
             </button>
-            {{ svg('csv', 'icon-csv') }}
+            <img src="{{ _imgPath + 'csv.png' }}" class="icon-csv">
           </div>
           <p class="js-drop-zone-name">File name</p>
         </div>
