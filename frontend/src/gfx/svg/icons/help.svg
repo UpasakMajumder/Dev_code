@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="19px" height="21px" viewBox="0 0 19 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
-    <title>Shape</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="BP-1200" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Page-Layout-V6-1200" transform="translate(-15.000000, -542.000000)" fill-rule="nonzero" fill="#404040">
-            <g id="Menu">
-                <g id="INSIGHTS-Copy-5" transform="translate(0.000000, 528.000000)">
-                    <g id="Icon-/-Menu-/-Help-Idle" transform="translate(15.855204, 14.715976)">
-                        <g id="ui-48px-glyph-2_alert-circle-i">
-                            <path d="M8.91855204,-1.77635684e-15 C4.00055223,-1.77635684e-15 0,4.37194392 0,9.74556213 C0,15.1191803 4.00055223,19.4911243 8.91855204,19.4911243 C13.8365518,19.4911243 17.8371041,15.1191803 17.8371041,9.74556213 C17.8371041,4.37194392 13.8365518,-1.77635684e-15 8.91855204,-1.77635684e-15 Z M9.88795987,4.66092102 C10.4234608,4.66092102 10.8573677,5.1350638 10.8573677,5.72022125 C10.8573677,6.3053787 10.4234608,6.77952148 9.88795987,6.77952148 C9.35245898,6.77952148 8.91855204,6.3053787 8.91855204,5.72022125 C8.91855204,5.1350638 9.35245898,4.66092102 9.88795987,4.66092102 Z M10.8085095,14.3064852 C9.8949396,14.6996975 9.62815857,14.8302032 9.04147295,14.8302032 C8.56219772,14.8302032 8.18994511,14.7026635 7.92432737,14.4471603 C7.65870962,14.1920808 7.52570687,13.8679349 7.52570687,13.4751464 C7.52570687,13.1285433 7.5768916,12.8086347 7.65134212,12.4671163 L8.14574011,10.5557149 C8.24074208,10.1625027 8.43423588,9.35912941 8.16396498,9.0765081 C7.89640842,8.79770028 7.27327307,8.96845948 6.89675507,9.12226987 L7.02859453,8.53329895 C7.55827897,8.29771057 8.22678261,8.00958091 8.79756994,8.00958091 C9.65646528,8.00958091 10.2846416,8.47863905 10.2846416,9.36463777 C10.2846416,9.59556522 10.2454775,10.0637759 10.1590063,10.3790237 L9.66654712,12.2836455 C9.60489278,12.5179627 9.51027858,13.0099017 9.51027858,13.2522696 C9.51027858,13.5052305 9.56185107,13.6776846 9.66577159,13.7692081 C9.94689986,14.0179318 10.6126892,13.8853074 10.9399612,13.7166668 L10.8085095,14.3064852 Z" id="Shape"></path>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="20.354" y1="14.697" x2="11.541" y2="5.884" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="5.884" y1="11.541" x2="14.698" y2="20.354" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="33.303" y1="20.354" x2="42.116" y2="11.541" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="36.459" y1="5.884" x2="27.646" y2="14.698" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="27.646" y1="33.303" x2="36.459" y2="42.116" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="42.116" y1="36.459" x2="33.302" y2="27.646" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="14.697" y1="27.646" x2="5.884" y2="36.459" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="11.541" y1="42.116" x2="20.354" y2="33.302" stroke-linejoin="miter" stroke-linecap="butt"/>
+<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.9411 24)" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" cx="24" cy="24" rx="22" ry="22" stroke-linejoin="miter"/>
+<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.9411 24)" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" cx="24" cy="24" rx="10" ry="10" stroke-linejoin="miter"/>
+</g></svg>

@@ -103,5 +103,11 @@
       @include rem(margin-left, 10px);
       flex-shrink: 0;
     }
+
+    input[type="number"] {
+      min-width: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
   }
 }

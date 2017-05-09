@@ -5,7 +5,7 @@
   $input-width: 90px;
   $icon-square: 15px;
   $icon-arrow: 40px;
-  $icon-margin: 3px;
+  $icon-margin: 7px;
 
   @include rem(padding, $padding-block);
   border-radius: $border-radius;
@@ -88,7 +88,6 @@
   }
 
   &__quantity {
-    @include rem(padding-left, $icon-square + $icon-margin);
     display: none;
 
     & > * {
@@ -113,14 +112,6 @@
 
     .cart-product__quantity {
       display: block;
-    }
-
-    .cart-product__delivery {
-      @include rem(padding-left, $icon-square + $icon-margin);
-
-      svg {
-        display: none;
-      }
     }
   }
 }

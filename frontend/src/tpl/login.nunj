@@ -16,7 +16,7 @@
     </div>
     <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
     <div class="login__kadena-logo">
-      {% call svg.template(class = 'logo') %}
+      {% call svg.template(class='logo') %}
       {{svg.use(name='logo')}}
       {% endcall %}
     </div>

@@ -29,6 +29,12 @@
     @include rem(margin-right, 5px);
   }
 
+  &__step {
+    svg {
+      vertical-align: middle;
+    }
+  }
+
   a {
     @extend .link;
   }

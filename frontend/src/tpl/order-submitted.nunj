@@ -1,45 +1,26 @@
 {% extends "layouts/default.nunj" %}
-
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
-
-{% from "macro/sidebar.nunj" import sidebar %}
-
 {% from "macro/steps.nunj" import steps %}
-
 {% import "macro/svg.nunj" as svg %}
 
-{% set title = "New mailing list" %}
+{% set title = 'Orders was submitted' %}
+{% set headerActive = "Shopping cart" %}
+{% set breadcrumbs = [headerActive] %}
+{% set headerTitle = title %}
 
 {% block content %}
+  <div class="submitted">
+    {% call svg.template('submitted__central-img') %}
+    {{svg.use(name='order-ready')}}
+    {% endcall %}
 
-  {{ sidebar('Products') }}
+    <div class="submitted__text-group submitted__text-group--centered">
+      <p class="p-info">Your order was submitted. We will now take care of the production.</p>
+      <p class="p-info">You can come here anytime to check the status and we will notify you when we are ready to ship</p>
+    </div>
 
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">Your order was submitted</h1>
-        </div>
-        {{ breadcrumb(['Home','Shopping cart']) }}
-      </div>
-      <div class="content-block">
-        <div class="submitted">
-          {% call svg.template('submitted__central-img') %}
-          {{svg.use(name='order-ready')}}
-          {% endcall %}
-
-          <div class="submitted__text-group submitted__text-group--centered">
-            <p class="p-info">Your order was submitted. We will now take care of the production.</p>
-            <p class="p-info">You can come here anytime to check the status and we will notify you when we are ready to ship</p>
-          </div>
-
-          <div class="submitted__btn-group">
-            <a href="#" type="type" class="btn-action btn-action--secondary">Back to dashboard</a>
-            <a href="#" type="type" class="btn-action">See products</a>
-          </div>
-        </div>
-      </div>
+    <div class="submitted__btn-group">
+      <a href="#" type="type" class="btn-action btn-action--secondary">See products</a>
+      <a href="#" type="type" class="btn-action">Go to dashboard</a>
     </div>
   </div>
-
 {% endblock %}

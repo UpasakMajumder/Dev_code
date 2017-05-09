@@ -2,7 +2,7 @@
 
 {% macro steps(current, steps) %}
 
-  {% set width = (100 / steps.length) + "%" %}
+  {% set width=(100 / steps.length) + "%" %}
 
   <div class="steps">
     {% for step in steps %}
@@ -15,9 +15,11 @@
           </div>
         {% elif(loop.index === current)  %}
           <div class="steps__circle current" data-tooltip-placement="right" title="{{ step }}">
-            {% call svg.template() %}
-            {{svg.use(name='gear')}}
-            {% endcall %}
+            <div class="steps__circle-inner">
+              {% call svg.template() %}
+              {{svg.use(name='gear')}}
+              {% endcall %}
+            </div>
           </div>
         {% else %}
           <div class="steps__circle" data-tooltip-placement="right" title="{{ step }}"></div>

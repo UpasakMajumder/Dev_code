@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <td>Budget amount</td>
-      <td>$ <span class="js-num-format">1000000</span></td>
+      <td>$ <span class="js-money-format">1000000</span></td>
     </tr>
     </tbody>
   </table>
