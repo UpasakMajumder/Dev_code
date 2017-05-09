@@ -62,16 +62,27 @@ namespace Kadena2.Carriers
             {
                 provider = provider,
                 providerService = service.Replace("#", ""),
-                sourceAddress = new Address()
-                {
-                    streetLines = new List<string>() { "SHIPPER ADDRESS LINE 1" },
-                    city = "COLLIERVILLE",
-                    state = "TN",
-                    postal = "38017",
-                    country = "US"
-                },
+                sourceAddress = GetSourceAddressFromConfig(),
                 targetAddress = GetAddress(delivery.DeliveryAddress),
                 weight = new Weight() { unit = "Lb", value = (double)delivery.Weight }
+            };
+        }
+
+        private Address GetSourceAddressFromConfig()
+        {
+            var addressLines = new[]
+            {
+                SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderAddressLine2")
+            }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+
+            return new Address()
+            {
+                city = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderCity"),
+                country = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderCountry"),
+                postal = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderPostal"),
+                state = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderState"),
+                streetLines = addressLines
             };
         }
 
