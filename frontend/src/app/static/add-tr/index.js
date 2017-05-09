@@ -5,13 +5,14 @@ export default class AddTr {
     this.tbody = this.lastRow.parentNode;
     this.firstRowClass = 'js-first-tr';
     this.firstRow = this.tbody.querySelector(`.${this.firstRowClass}`);
+    this.firstRowTemplate = this.firstRow.cloneNode(true);
 
     const togglers = Array.from(this.lastRow.getElementsByClassName('js-add-tr-toggler'));
 
     togglers.forEach((toggler) => {
       toggler.addEventListener('click', () => {
         this.count += 1;
-        const clonnedRow = this.firstRow.cloneNode(true);
+        const clonnedRow = this.firstRowTemplate.cloneNode(true);
         const newNode = this.getNewRow(clonnedRow);
         this.tbody.insertBefore(newNode, this.lastRow);
       });
