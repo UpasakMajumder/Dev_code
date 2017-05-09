@@ -118,7 +118,7 @@ namespace Kadena2.Carriers
             var requestObject = GetEstimatePriceRequest(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = JsonConvert.SerializeObject(requestObject);
             var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, $"estimatedeliveryprice|{requestString}"));
-            return (decimal)result.payload.cost;
+            return result.success ? (decimal)result.payload?.cost : 0.0m;
         }
 
         public abstract List<KeyValuePair<string, string>> GetServices();
