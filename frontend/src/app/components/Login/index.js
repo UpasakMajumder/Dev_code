@@ -89,7 +89,7 @@ class Login extends Component {
         </div>
         <div className="mb-4">
           <div className="text-center">
-            <button type="button" className="btn-action login__login-button" disabled={isLoading}
+            <button type="button" className="btn-action login__login-button btn--no-shadow" disabled={isLoading}
                     onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
           </div>
         </div>
