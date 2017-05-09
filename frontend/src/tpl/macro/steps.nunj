@@ -8,15 +8,17 @@
     {% for step in steps %}
       <div class="steps__item" style="width: {{ width }};">
         {% if(loop.index < current) %}
-          <div class="steps__circle previous" data-tooltip-placement="right">
+          <div class="steps__circle previous" data-tooltip-placement="right" title="Add a mailing list">
             {{ svg('tick') }}
           </div>
         {% elif(loop.index === current)  %}
-          <div class="steps__circle current" data-tooltip-placement="right">
-            {{ svg('gear') }}
+          <div class="steps__circle current" data-tooltip-placement="right" title="Map columns">
+            <div class="steps__circle-inner">
+              {{ svg('gear') }}
+            </div>
           </div>
         {% else %}
-          <div class="steps__circle" data-tooltip-placement="right"></div>
+          <div class="steps__circle" data-tooltip-placement="right" title="Wait for a proofing"></div>
         {% endif %}
       </div>
     {% endfor %}
