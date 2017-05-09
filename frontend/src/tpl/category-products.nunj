@@ -1,5 +1,5 @@
 {% extends "layouts/default.nunj" %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'Category name' %}
 {% set sidebarActive = 'Products' %}
@@ -23,9 +23,7 @@
     <div class="col-lg-4 col-xl-3">
       <a href="#" class="category">
         <div class="category__picture">
-          {% call svg.template() %}
-          {{svg.use(name='products--color')}}
-          {% endcall %}
+          {{ svg('products--color') }}
         </div>
         <div class="category__title">
           <h2>All products</h2>

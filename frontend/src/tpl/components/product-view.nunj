@@ -1,9 +1,9 @@
+{% from "macro/svg.nunj" import svg %}
+
 <div class="product-view">
   <div class="product-view__img" style="background-image: url(http://satyr.io/500-1000x700-1500)">
     <a href="#" class="product-view__zoom">
-      {% call svg.template('icon-zoom') %}
-      {{svg.use(name='zoom')}}
-      {% endcall %}
+      {{ svg('zoom', 'icon-zoom') }}
     </a>
   </div>
   <div class="product-view__block">
@@ -25,9 +25,7 @@
         <tbody>
           <tr>
             <th colspan="2">
-              {% call svg.template('icon-deliver') %}
-              {{svg.use(name='deliver-car')}}
-              {% endcall %}Estimates
+              {{ svg('deliver-car', 'icon-deliver') }}
             </th>
           </tr>
           <tr>
@@ -48,9 +46,7 @@
           <tbody>
           <tr>
             <th colspan="2">
-              {% call svg.template('icon-dollar') %}
-              {{svg.use(name='money')}}
-              {% endcall %}
+              {{ svg('money', 'icon-dollar') }}
               Unit price
             </th>
           </tr>

@@ -1,5 +1,5 @@
 {% extends "layouts/default.nunj" %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 {% from "macro/select.nunj" import select %}
 
@@ -125,9 +125,7 @@
               <div class="action-heading">
                 <h2>Shipping Address</h2>
                 <a href="#" class="plus-btn js-tooltip js-dialog" data-tooltip-placement="right" data-dialog="#edit-address" title="Add new shipping address">
-                  {% call svg.template('icon-modal') %}
-                  {{svg.use(name='plus')}}
-                  {% endcall %}
+                  {{ svg('plus', 'icon-modal') }}
                 </a>
               </div>
               <div>

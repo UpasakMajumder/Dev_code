@@ -1,4 +1,4 @@
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% macro steps(current, steps) %}
 
@@ -8,19 +8,15 @@
     {% for step in steps %}
       <div class="steps__item" style="width: {{ width }};">
         {% if(loop.index < current) %}
-          <div class="steps__circle previous" data-tooltip-placement="right" title="{{ step }}">
-            {% call svg.template() %}
-            {{svg.use(name='tick')}}
-            {% endcall %}
+          <div class="steps__circle previous" data-tooltip-placement="right">
+            {{ svg('tick') }}
           </div>
         {% elif(loop.index === current)  %}
-          <div class="steps__circle current" data-tooltip-placement="right" title="{{ step }}">
-            {% call svg.template() %}
-            {{svg.use(name='gear')}}
-            {% endcall %}
+          <div class="steps__circle current" data-tooltip-placement="right">
+            {{ svg('gear') }}
           </div>
         {% else %}
-          <div class="steps__circle" data-tooltip-placement="right" title="{{ step }}"></div>
+          <div class="steps__circle" data-tooltip-placement="right"></div>
         {% endif %}
       </div>
     {% endfor %}

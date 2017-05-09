@@ -1,6 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/select.nunj" import select %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'K-List' %}
 {% set sidebarActive = title %}
@@ -57,11 +57,9 @@
           <td></td>
           <td colspan="6">
             <button type="button" class="js-add-tr-toggler mailing-lists__add-link">
-                      <span class="mailing-lists__add-row-icon">
-                        {% call svg.template('icon-modal') %}
-                        {{svg.use(name='plus')}}
-                        {% endcall %}
-                      </span>
+              <span class="mailing-lists__add-row-icon">
+                {{ svg('plus', 'icon-modal') }}
+              </span>
               <span>Add an adress</span>
             </button>
           </td>

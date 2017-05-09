@@ -1,5 +1,5 @@
 {% extends "layouts/default.nunj" %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'Shopping cart' %}
 {% set headerActive = title %}
@@ -10,63 +10,14 @@
   <div class="shopping-cart">
     <div class="shopping-cart__block">
       <h2>Added items <span class="badge badge--dark ml-1 font--xs v--middle">3</span></h2>
-      <div class="cart-product">
-        <div class="cart-product__img">
-          <img src="http://satyr.io/150-300x100-200" alt="#">
-        </div>
-        <div class="cart-product__content">
-          <div class="cart-product__template">
-            <p>
-              {% call svg.template() %}
-              {{svg.use(name='products')}}
-              {% endcall %}
-              <span>Template: <strong>Information letter lamp post Mar 30 2017</strong></span>
-            </p>
-          </div>
-          <div class="cart-product__quantity">
-            <span>Quantity: </span>
-            <input type="number" min="1" value="1">
-          </div>
-          <div class="cart-product__mlist">
-            <p>
-              {% call svg.template() %}
-              {{svg.use(name='mailing-list')}}
-              {% endcall %}
-              <span>Mailing list: <strong>FCLTR_Mar30_Lamp post</strong></span>
-            </p>
-          </div>
-          <div class="cart-product__delivery">
-            <p>Delivery to USPS by Mar 27 2017 for 328 addresses.</p>
-          </div>
-        </div>
-        <div class="cart-product__options">
-          <div class="cart-product__action">
-            <button type="button" class="cart-product__btn">
-              {% call svg.template() %}
-              {{svg.use(name='edit')}}
-              {% endcall %}
-              Edit
-            </button>
-            <button type="button" class="cart-product__btn">
-              {% call svg.template() %}
-              {{svg.use(name='cross--dark')}}
-              {% endcall %}
-              Remove
-            </button>
-          </div>
-          <div class="cart-product__price">
-            <span>$ <span class="js-money-format">25.49</span></span>
-          </div>
-        </div>
-      </div>
+      {% include "components/cart-product.nunj" %}
     </div>
+
     <div class="shopping-cart__block">
       <h2>Delivery</h2>
       <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
         <button type="button" class="alert__close btn--off js-toggle">
-          {% call svg.template(class='icon-modal') %}
-          {{svg.use(name='cross--darker')}}
-          {% endcall %}
+          {{ svg('cross--darker', 'icon-modal') }}
         </button>
         <span>All items will be mailed according to the selected mailing list.</span>
       </div>
@@ -76,9 +27,7 @@
       <h2>Payment</h2>
       <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
         <button type="button" class="alert__close btn--off js-toggle">
-          {% call svg.template(class='icon-modal') %}
-          {{svg.use(name='cross--darker')}}
-          {% endcall %}
+          {{ svg('cross--darker', 'icon-modal') }}
         </button>
         <span>Your payment plan is set to monthly payment. To change this, contact the administrator.</span>
       </div>

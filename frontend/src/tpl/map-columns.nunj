@@ -1,7 +1,7 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/steps.nunj" import steps %}
 {% from "macro/select.nunj" import select %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'New K-List' %}
 {% set sidebarActive = 'K-List' %}
@@ -14,9 +14,7 @@
 
     <div class="alert--info isOpen js-collapse">
       <button type="button" class="alert__close btn--off js-toggle">
-        {% call svg.template(class='icon-modal') %}
-        {{svg.use(name='cross--darker')}}
-        {% endcall %}
+        {{ svg('cross--darker', 'icon-modal') }}
       </button>
       <p class="p-info weight--normal">
         We tried to map the items in your uploaded files into the correct address fields.</p>

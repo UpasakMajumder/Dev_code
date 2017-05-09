@@ -1,0 +1,7 @@
+{% from "macro/svg.nunj" import svg %}
+
+<a href="#" class="content-header__btn js-tooltip"
+   data-tooltip-placement="right"
+   title="{{ headerAdd }}">
+  {{ svg('plus', 'icon-modal') }}
+</a>

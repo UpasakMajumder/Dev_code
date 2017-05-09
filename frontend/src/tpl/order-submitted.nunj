@@ -1,6 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/steps.nunj" import steps %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'Orders was submitted' %}
 {% set headerActive = "Shopping cart" %}
@@ -9,9 +9,7 @@
 
 {% block content %}
   <div class="submitted">
-    {% call svg.template('submitted__central-img') %}
-    {{svg.use(name='order-ready')}}
-    {% endcall %}
+    {{ svg('order-ready', 'submitted__central-img') }}
 
     <div class="submitted__text-group submitted__text-group--centered">
       <p class="p-info">Your order was submitted. We will now take care of the production.</p>

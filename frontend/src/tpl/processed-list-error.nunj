@@ -1,6 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/select.nunj" import select %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
 {% set title = 'K-List' %}
@@ -472,11 +472,9 @@
           </tbody>
         </table>
         <span class="processed-list__table-helper">
-              To correct your .csv file, view the line number, go to your original file and check the respective record.
-          {% call svg.template(class='help-arrow') %}
-          {{svg.use(name='info-arrow')}}
-          {% endcall %}
-            </span>
+          To correct your .csv file, view the line number, go to your original file and check the respective record.
+          {{ svg('info-arrow', 'help-arrow') }}
+        </span>
       </div>
     </div>
 

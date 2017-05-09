@@ -1,5 +1,4 @@
-{% import "macro/svg.nunj" as svg %}
-
+{% from "macro/svg.nunj" import svg %}
 
 {% set headers = [
 {'title': 'Activity', 'icon': 'activity', 'badge': 'true'},
@@ -19,8 +18,7 @@
     {% for header in headers %}
       <li class="nav-item {% if(headerActive === header.title) %} active {% endif %}">
         <a class="nav-link" href="#">
-          {% set icon = header.icon %}
-          {% include "components/svgs.nunj" %}
+          {{ svg(header.icon, 'icon-navigation icon-dashboard') }}
           {{ header.title }}
           {% if(header.badge === 'true') %}<span class="badge badge-pill badge-custom-color">3</span>{% endif %}
         </a>

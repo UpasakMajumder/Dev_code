@@ -1,5 +1,5 @@
 {% extends "layouts/default.nunj" %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'List is ready' %}
 {% set sidebarActive = 'K-List' %}
@@ -23,12 +23,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?1)"></div>
@@ -41,9 +37,7 @@
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
           <div class="template__stock template__stock--available">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--available')}}
-            {% endcall %}
+            {{ svg('stock--available', 'icon-stock') }}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -55,12 +49,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?2)"></div>
@@ -78,9 +68,7 @@
               hic molestiae repellendus!</h3>
           </div>
           <div class="template__stock template__stock--unavailable">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--unavailable')}}
-            {% endcall %}
+            {{ svg('stock--unavailable', 'icon-stock') }}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -92,12 +80,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?3)"></div>
@@ -110,9 +94,7 @@
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
           <div class="template__stock template__stock--out">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--out')}}
-            {% endcall %}
+            {{ svg('stock--out', 'icon-stock') }}
             Out of stock
           </div>
           <div class="template__use">
@@ -124,12 +106,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?4)"></div>
@@ -142,9 +120,7 @@
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
           <div class="template__stock template__stock--available">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--available')}}
-            {% endcall %}
+            {{ svg('stock--available', 'icon-stock') }}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -155,12 +131,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?1)"></div>
@@ -173,9 +145,7 @@
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
           <div class="template__stock template__stock--available">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--available')}}
-            {% endcall %}
+            {{ svg('stock--available', 'icon-stock') }}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -187,12 +157,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?2)"></div>
@@ -210,9 +176,7 @@
               hic molestiae repellendus!</h3>
           </div>
           <div class="template__stock template__stock--unavailable">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--unavailable')}}
-            {% endcall %}
+            {{ svg('stock--unavailable', 'icon-stock') }}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -224,12 +188,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?3)"></div>
@@ -242,9 +202,7 @@
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
           <div class="template__stock template__stock--out">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--out')}}
-            {% endcall %}
+            {{ svg('stock--out', 'icon-stock') }}
             Out of stock
           </div>
           <div class="template__use">
@@ -256,12 +214,8 @@
         <div class="col-lg-4 col-xl-3 template">
           <div class="template__favourite js-collapse js-tooltip isOpen" data-tooltip-placement="right" title="Set product as favorite">
             <div class="js-toggle">
-              {% call svg.template('template__icon--filled icon-star') %}
-              {{svg.use(name='star--filled')}}
-              {% endcall %}
-              {% call svg.template('template__icon--unfilled icon-star') %}
-              {{svg.use(name='star--unfilled')}}
-              {% endcall %}
+              {{ svg('star--filled', 'template__icon--filled icon-star') }}
+              {{ svg('star--unfilled', 'template__icon--unfilled icon-star') }}
             </div>
           </div>
           <div class="template__img" style="background-image: url(http://satyr.io/250-500x150-300?4)"></div>
@@ -274,9 +228,7 @@
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
           <div class="template__stock template__stock--available">
-            {% call svg.template('icon-stock') %}
-            {{svg.use(name='stock--available')}}
-            {% endcall %}
+            {{ svg('stock--available', 'icon-stock') }}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -290,22 +242,16 @@
       <h2 class="mailing-ready__header">Download your materials</h2>
       <div class="mailing-ready__links">
         <a href="#" class="link">
-          {% call svg.template('icon-download') %}
-          {{svg.use(name='download--blue')}}
-          {% endcall %}
+          {{ svg('download--blue', 'icon-download') }}
           Download processed file
         </a>
         <span>or</span>
         <a href="#" class="link">
-          {% call svg.template('icon-download') %}
-          {{svg.use(name='download--green')}}
-          {% endcall %}
+          {{ svg('download--green', 'icon-download') }}
           Good addresses only
         </a>
         <a href="#" class="link">
-          {% call svg.template('icon-download') %}
-          {{svg.use(name='download--orange')}}
-          {% endcall %}
+          {{ svg('download--orange', 'icon-download') }}
           Bad addresses only
         </a>
       </div>

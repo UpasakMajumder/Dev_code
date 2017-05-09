@@ -1,5 +1,4 @@
 {% extends "layouts/default.nunj" %}
-{% import "macro/svg.nunj" as svg %}
 
 {% set title = 'K-List' %}
 {% set sidebarActive = title %}

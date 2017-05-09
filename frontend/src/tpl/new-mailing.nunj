@@ -1,6 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/steps.nunj" import steps %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'New K-List' %}
 {% set sidebarActive = 'K-List' %}
@@ -15,29 +15,21 @@
       <div class="drop-zone js-drop-zone">
 
         <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="Do you need a help with a bulk upload?">
-          {% call svg.template('icon-question') %}
-          {{svg.use(name='question-mark')}}
-          {% endcall %}
+          {{ svg('question-mark', 'icon-question') }}
         </button>
         <input accept="text/csv" type="file" name="file" class="js-drop-zone-file">
 
         <div class="drop-zone__dropping">
-          {% call svg.template('icon-drop') %}
-          {{svg.use(name='draganddrop')}}
-          {% endcall %}
+          {{ svg('draganddrop', 'icon-drop') }}
           <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
         </div>
 
         <div class="drop-zone__dropped">
           <div>
             <button type="button" class="drop-zone__btn close js-drop-zone-btn">
-              {% call svg.template('icon-cross') %}
-              {{svg.use(name='cross')}}
-              {% endcall %}
+              {{ svg('cross', 'icon-cross') }}
             </button>
-            {% call svg.template('icon-csv') %}
-            {{svg.use(name='csv')}}
-            {% endcall %}
+            {{ svg('csv', 'icon-csv') }}
           </div>
           <p class="js-drop-zone-name">File name</p>
         </div>
