@@ -1,8 +1,0 @@
-{% macro breadcrumb(arr) %}
-  <div class="breadcrumbs">
-    <a href="#">Home</a>
-    {% for item in arr %}
-      <a href="#">{{item}}</a>
-    {% endfor %}
-  </div>
-{% endmacro %}

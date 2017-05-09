@@ -1,0 +1,6 @@
+<div class="breadcrumbs">
+  <a href="#">Home</a>
+  {% for breadcrumb in breadcrumbs %}
+    <a href="#">{{ breadcrumb }}</a>
+  {% endfor %}
+</div>

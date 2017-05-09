@@ -1,3 +1,0 @@
-<svg class="icon-navigation icon-dashboard">
-  <use xlink:href="/gfx/svg/sprites/icons.svg#{{ icon }}" />
-</svg>

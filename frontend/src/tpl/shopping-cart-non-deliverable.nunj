@@ -1,6 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/select.nunj" import select %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
 {% set title = 'Shopping cart' %}
@@ -58,59 +58,8 @@
   <div class="shopping-cart">
     <div class="shopping-cart__block">
       <h2>Added items <span class="shopping-cart__badge">3</span></h2>
-      <div class="cart-product cart-product--non-deliverable">
-        <div class="cart-product__img">
-          <img src="http://satyr.io/150-300x100-200" alt="#">
-        </div>
-        <div class="cart-product__content">
-          <div class="cart-product__template">
-            <p>
-              {% call svg.template() %}
-              {{svg.use(name='products')}}
-              {% endcall %}
-              <span>Template:
-                <strong>Information letter lamp post Mar 30 2017</strong>
-              </span>
-            </p>
-          </div>
-          <div class="cart-product__quantity">
-            <span>Quantity: </span>
-            <input type="number" min="1" value="1">
-          </div>
-          <div class="cart-product__mlist">
-            <p>
-              {% call svg.template() %}
-              {{svg.use(name='mailing-list')}}
-              {% endcall %}
-              <span>Mailing list:
-                <strong>FCLTR_Mar30_Lamp post</strong>
-              </span>
-            </p>
-          </div>
-          <div class="cart-product__delivery">
-            <p>Delivery to USPS by Mar 27 2017 for 328 addresses.</p>
-          </div>
-        </div>
-        <div class="cart-product__options">
-          <div class="cart-product__action">
-            <button type="button" class="cart-product__btn">
-              {% call svg.template() %}
-              {{svg.use(name='edit')}}
-              {% endcall %}
-              Edit
-            </button>
-            <button type="button" class="cart-product__btn">
-              {% call svg.template() %}
-              {{svg.use(name='cross--dark')}}
-              {% endcall %}
-              Remove
-            </button>
-          </div>
-          <div class="cart-product__price">
-            <span>$ <span class="js-money-format">25.49</span></span>
-          </div>
-        </div>
-      </div>
+      {% set deliverable = 'true' %}
+      {% include "components/cart-product.nunj" %}
     </div>
     <div class="shopping-cart__block">
       <h2>Delivery</h2>

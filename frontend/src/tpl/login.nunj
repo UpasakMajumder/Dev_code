@@ -1,5 +1,5 @@
 {% extends "layouts/default-noheader.nunj" %}
-{% import "macro/svg.nunj" as svg %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = "Login" %}
 
@@ -16,9 +16,7 @@
     </div>
     <div class="login__bg" style="background-image: url({{ _imgPath + 'login_bg.png' }});"></div>
     <div class="login__kadena-logo">
-      {% call svg.template(class='logo') %}
-      {{svg.use(name='logo')}}
-      {% endcall %}
+      {{ svg('logo', 'logo') }}
     </div>
   </div>
 

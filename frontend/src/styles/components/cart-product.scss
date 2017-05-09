@@ -44,7 +44,7 @@
   }
 
   &__price {
-    @include rem(margin-top, $padding-block);
+    @include rem(margin-bottom, $padding-block);
 
     span {
       @extend .weight--bold;
