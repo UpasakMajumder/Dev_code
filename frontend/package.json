@@ -1,11 +1,11 @@
 {
-  "name": "gulp-dev-stack",
+  "name": "Kadena",
   "version": "2.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/actum/gulp-dev-stack"
+    "url": "http://gitlab.cvo.services/Kadena/kadena-k10-core"
   },
-  "description": "Gulp Development Stack",
+  "description": "Kadena",
   "engines": {
     "node": ">=5"
   },
