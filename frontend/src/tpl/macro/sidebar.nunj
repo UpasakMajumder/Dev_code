@@ -1,7 +1,17 @@
 {% import "macro/svg.nunj" as svg %}
 
-{% set pages = [ { 'title': 'Dashboard', 'name': 'dashboard' }, { 'title': 'Products', 'name': 'products' }, { 'title': 'Mailing list', 'name': 'mailing-list' }, { 'title': 'Orders', 'name': 'orders' }, { 'title': 'Insights', 'name': 'insights' }, {
-'title': 'Sourcing', 'name': 'sourcing' }, { 'title': 'Proofing', 'name': 'proofing' }, { 'title': 'DAM', 'name': 'dam' }, { 'title': 'Settings', 'name': 'settings' }, { 'title': 'Help', 'name': 'help' } ] %}
+{% set pages = [
+{'title': 'Dashboard', 'name': 'dashboard'},
+{'title': 'Products', 'name': 'products'},
+{'title': 'Mailing list', 'name': 'mailing-list'},
+{'title': 'Orders', 'name': 'orders'},
+{'title': 'Insights', 'name': 'insights'},
+{'title': 'Sourcing', 'name': 'sourcing'},
+{'title': 'Proofing', 'name': 'proofing'},
+{'title': 'DAM', 'name': 'dam'},
+{'title': 'Settings', 'name': 'settings'},
+{'title': 'Help', 'name': 'help'}
+] %}
 
 {% macro sidebar(item) %}
   <div class="css-sidebar js-sidebar">
