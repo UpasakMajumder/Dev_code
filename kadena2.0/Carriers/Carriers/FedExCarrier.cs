@@ -19,9 +19,20 @@ namespace Kadena2.Carriers
         {
             var services = new SortedDictionary<string, string>
             {
-                {"PRIORITY_OVERNIGHT", "Priority overnight"},
-                {"STANDARD_OVERNIGHT", "Standard overnight"},
-                {"FEDEX_2_DAY", "Fedex 2nd day"}
+                { "FEDEX_2_DAY","2nd Day" },
+                { "FIRST_OVERNIGHT","First Overnight" },
+                { "FEDEX_3_DAY_FREIGHT","3 Day" },
+                { "FEDEX_EXPRESS_SAVER","Express Saver" },
+                { "FEDEX_GROUND","Ground" },
+                { "STANDARD_OVERNIGHT","Standard Overnight" },
+                { "PRIORITY_OVERNIGHT","Priority Overnight" },
+                { "PRIORITY_OVERNIGHT#","Priority Overnight (10:30am)" },
+                { "PRIORITY_OVERNIGHT##","Priority Overnight(Saturday)" },
+                { "INTERNATIONAL_ECONOMY","Int'l Economy" },
+                { "INTERNATIONAL_ECONOMY#","International Ground" },
+                { "INTERNATIONAL_ECONOMY##","Ground(Canada Only)" },
+                { "INTERNATIONAL_ECONOMY###","Int'l Ground" },
+                { "INTERNATIONAL_PRIORITY","Int'l Priority" }
             };
 
             return services.ToList();

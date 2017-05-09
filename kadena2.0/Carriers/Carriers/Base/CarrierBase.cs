@@ -5,6 +5,7 @@ using Kadena2.Carriers.ServiceApi;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -18,7 +19,7 @@ namespace Kadena2.Carriers
 
         public string CarrierProviderName
         {
-            get; protected set;            
+            get; protected set;
         }
 
         public CarrierBase()
@@ -60,7 +61,7 @@ namespace Kadena2.Carriers
             return new EstimateDeliveryPriceRequest()
             {
                 provider = provider,
-                providerService = service,
+                providerService = service.Replace("#", ""),
                 sourceAddress = new Address()
                 {
                     streetLines = new List<string>() { "SHIPPER ADDRESS LINE 1" },
@@ -91,6 +92,10 @@ namespace Kadena2.Carriers
 
         public bool CanDeliver(Delivery delivery)
         {
+            if (delivery.Items.Count() == 0 ||
+                delivery.DeliveryAddress == null)
+                return false;
+
             var requestObject = GetEstimatePriceRequest(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = JsonConvert.SerializeObject(requestObject);
             var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, $"estimatedeliveryprice|{requestString}"));

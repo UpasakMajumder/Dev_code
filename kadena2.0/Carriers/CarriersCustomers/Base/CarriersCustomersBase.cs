@@ -1,6 +1,7 @@
 ﻿using CMS.Ecommerce;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena2.Carriers
 {
@@ -33,9 +34,17 @@ namespace Kadena2.Carriers
 
         public decimal GetPrice(Delivery delivery, string currencyCode)
         {
-            return 0.0m;
+            return 0.10001m;
         }
 
-        public abstract List<KeyValuePair<string, string>> GetServices();
+        public List<KeyValuePair<string, string>> GetServices()
+        {
+            var services = new SortedDictionary<string, string>
+            {
+                {$"{CarrierProviderName}_CUSTOMER_PRICE", $"{CarrierProviderName} customer price"}
+            };
+
+            return services.ToList();
+        }
     }
 }
