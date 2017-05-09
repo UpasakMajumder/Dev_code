@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F2A0ED9-FF60-4B70-8A42-B03D7162CEB2}</ProjectGuid>
+    <ProjectGuid>{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FedExCarrier</RootNamespace>
-    <AssemblyName>FedExCarrier</AssemblyName>
+    <RootNamespace>Kadena2.Carriers</RootNamespace>
+    <AssemblyName>Kadena2.Carriers</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,9 +45,9 @@
     <Reference Include="CMS.Helpers">
       <HintPath>..\..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CMS\CMSDependencies\Newtonsoft.Json.6.0.0.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,17 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CarrierBase.cs" />
+    <Compile Include="Base\ServiceApi.cs" />
     <Compile Include="FedExCarrier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CarrierBase\CarrierBase.csproj">
-      <Project>{15ef35c6-b6e1-40e7-a423-9b1e3f856d4c}</Project>
-      <Name>CarrierBase</Name>
-    </ProjectReference>
+    <Compile Include="UPSCarrier.cs" />
+    <Compile Include="USPSCarrier.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

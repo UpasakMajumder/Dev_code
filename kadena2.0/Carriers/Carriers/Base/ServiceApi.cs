@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Kadena2.CarrierBase
+namespace Kadena2.Carriers.ServiceApi
 {
     public class Address
     {

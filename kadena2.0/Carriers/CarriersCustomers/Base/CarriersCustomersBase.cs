@@ -1,0 +1,41 @@
+﻿using CMS.Ecommerce;
+using System;
+using System.Collections.Generic;
+
+namespace Kadena2.Carriers
+{
+    public abstract class CarriersCustomersBase : ICarrierProvider
+    {
+        public string CarrierProviderName
+        {
+            get; protected set;            
+        }
+
+        public CarriersCustomersBase()
+        {
+            
+        }
+
+        public Guid GetConfigurationUIElementGUID()
+        {
+            return Guid.Empty;
+        }
+
+        public Guid GetServiceConfigurationUIElementGUID(string serviceName)
+        {
+            return Guid.Empty;
+        }
+
+        public bool CanDeliver(Delivery delivery)
+        {
+            return true;
+        }
+
+        public decimal GetPrice(Delivery delivery, string currencyCode)
+        {
+            return 0.0m;
+        }
+
+        public abstract List<KeyValuePair<string, string>> GetServices();
+    }
+}

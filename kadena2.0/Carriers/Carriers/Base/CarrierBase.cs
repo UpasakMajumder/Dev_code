@@ -1,14 +1,14 @@
 ﻿using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
+using Kadena2.Carriers.ServiceApi;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Kadena2.CarrierBase
+namespace Kadena2.Carriers
 {
     public abstract class CarrierBase : ICarrierProvider
     {

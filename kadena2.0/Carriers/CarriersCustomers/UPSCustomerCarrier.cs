@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CMS;
-using Kadena2.FedExCarrier;
+using Kadena2.Carriers;
 
-[assembly: AssemblyDiscoverable]
-[assembly: RegisterCustomClass("FedExCarrier", typeof(FedExCarrier))]
+[assembly: RegisterCustomClass("UPSCustomerCarrier", typeof(UPSCustomerCarrier))]
 
-namespace Kadena2.FedExCarrier
-{
-    public class FedExCarrier : CarrierBase.CarrierBase
+namespace Kadena2.Carriers
+{ 
+    public class UPSCustomerCarrier : CarriersCustomersBase
     {
-        public FedExCarrier() : base()
+        public UPSCustomerCarrier() : base()
         {
-            ProviderApiKey = "Fedex";
-            CarrierProviderName = "FedEx";
+            CarrierProviderName = "UPS";
         }
 
         public override List<KeyValuePair<string, string>> GetServices()

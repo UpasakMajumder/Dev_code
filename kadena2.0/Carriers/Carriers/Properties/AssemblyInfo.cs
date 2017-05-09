@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FedExCarrier")]
+[assembly: AssemblyTitle("Carriers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FedExCarrier")]
+[assembly: AssemblyProduct("Carriers")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8f2a0ed9-ff60-4b70-8a42-b03d7162ceb2")]
+[assembly: Guid("ecb7a25f-6447-4a63-b9ba-c26aacdbc263")]
 
 // Version information for an assembly consists of the following four values:
 //
