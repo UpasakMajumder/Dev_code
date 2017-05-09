@@ -8,6 +8,10 @@ $content-inner-padding: 24px;
   padding-left: $sidebar-width-close;
   transition: all 0.4s ease-in-out;
 
+  .isOpen & {
+    padding-left: $sidebar-width-large;
+  }
+
   &__inner {
     background-color: $brand-white;
     width: 100%;

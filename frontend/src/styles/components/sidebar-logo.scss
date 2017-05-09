@@ -4,7 +4,7 @@
   bottom: 25px;
   left: $sidebar-width-small/2;
   transform: translate(-50%, 0);
-  transition: position 0.3s ease-in;
+  transition: position .3s ease-in;
 
   &__text {
     color: $font-grey;
@@ -13,5 +13,17 @@
     width: 0;
     height: 0;
     padding-left: 0;
+  }
+
+  .isOpen & {
+    left: $sidebar-width-large/2;
+
+    &__text {
+      @include rem(padding-left, 10px);
+      visibility: visible;
+      width: auto;
+      height: auto;
+      transition: visibility .3s ease-in .5s;
+    }
   }
 }

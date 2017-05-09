@@ -1,42 +1,10 @@
-$padding: 15px;
-
 .css-main {
   min-height: calc(100% - #{$header-size});
   position: relative;
 
   &.isOpen {
-    .css-sidebar {
-      width: $sidebar-width-large;
-      font-size: $font-s;
-
-      &__nav-link {
-        flex-direction: row;
-      }
-
-      &__nav-item {
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
-    }
-
     &:before {
       left: $sidebar-width-large;
-    }
-
-    .content {
-      padding-left: $sidebar-width-large;
-    }
-
-    .sidebar-logo {
-      left: $sidebar-width-large/2;
-
-      &__text {
-        @include rem(padding-left, 10px);
-        visibility: visible;
-        width: auto;
-        height: auto;
-        transition: visibility 0.3s ease-in 0.5s;
-      }
     }
   }
 
@@ -57,16 +25,5 @@ $padding: 15px;
     content: '';
     display: block;
     height: 0;
-  }
-}
-
-.main-container {
-  padding: 20px;
-  background: $base-layout-gradient;
-
-  &__inner {
-    background-color: $brand-white;
-    overflow: hidden;
-    border-radius: $border-radius-xl;
   }
 }

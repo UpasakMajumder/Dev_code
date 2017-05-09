@@ -1,6 +1,8 @@
 $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
 $sidebar-bottom-padding: 46px;  //To fit sidebal logo in the bottom
+$sidebar-item-padding-y: 12px;
+$sidebar-item-padding-y--shrinked: 5px;
 
 .css-sidebar {
   @extend %flex--center--default;
@@ -16,6 +18,20 @@ $sidebar-bottom-padding: 46px;  //To fit sidebal logo in the bottom
   &.isFixed {
     position: fixed;
     top: 0;
+  }
+
+  .isOpen & {
+    width: $sidebar-width-large;
+    font-size: $font-s;
+
+    &__nav-link {
+      flex-direction: row;
+    }
+
+    &__nav-item {
+      padding-top: $sidebar-item-padding-y;
+      padding-bottom: $sidebar-item-padding-y;
+    }
   }
 
   &__header {
@@ -51,22 +67,24 @@ $sidebar-bottom-padding: 46px;  //To fit sidebal logo in the bottom
   &__nav-link:hover,
   &__nav-link:active {
     @extend %flex--center--default;
+    @extend .weight--light;
     text-decoration: none;
     color: $font-grey;
-    font-weight: 100;
     flex-direction: column;
   }
 
   &__nav-item {
     position: relative;
     margin-bottom: 2px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    white-space: nowrap;
+    padding-top: $sidebar-item-padding-y--shrinked;
+    padding-bottom: $sidebar-item-padding-y--shrinked;
     cursor: pointer;
 
     svg {
       @extend .icon-star;
       margin-bottom: 2px;
+      flex-shrink: 0;
 
       .isOpen & {
         margin-right: 15px;
