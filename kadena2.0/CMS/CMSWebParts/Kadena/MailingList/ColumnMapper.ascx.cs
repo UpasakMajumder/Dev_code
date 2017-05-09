@@ -92,7 +92,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     {
                         for (int i = 0; i < availableColumns.Length; i++)
                         {
-                            if (availableColumns[i].Contains(displayName))
+                            if (availableColumns[i].ToLower().Contains(displayName.ToLower()))
                                 htmlWriter.AddAttribute(HtmlTextWriterAttribute.Selected, string.Empty);
                             htmlWriter.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
                             htmlWriter.RenderBeginTag(HtmlTextWriterTag.Option);
@@ -120,10 +120,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     foreach (var c in _columnSelectors)
                     {
                         var columnName = c.Item2;
-                        var columnIndex = string.IsNullOrWhiteSpace(Request.Form[columnName]) ?
-                            -1
-                            : int.Parse(Request.Form[columnName]);
-                        mapping.Add(columnName, columnIndex);
+                        if (!string.IsNullOrWhiteSpace(Request.Form[columnName]))
+                        {
+                            mapping.Add(columnName, int.Parse(Request.Form[columnName]));
+                        }
                     }
                     ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
                     Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
