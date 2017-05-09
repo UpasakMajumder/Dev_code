@@ -47,7 +47,7 @@
             150 pcs in stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -84,7 +84,7 @@
             Available in 2 days
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -116,7 +116,7 @@
             Out of stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -148,7 +148,7 @@
             150 pcs in stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -179,7 +179,7 @@
             150 pcs in stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -216,7 +216,7 @@
             Available in 2 days
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -248,7 +248,7 @@
             Out of stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>
@@ -280,7 +280,7 @@
             150 pcs in stock
           </div>
           <div class="template__use">
-            <input type="number" class="input__text template__input" value="1">
+            <input type="number" class="input__text template__input" value="1" min="1">
             <a href="#" class="btn-action">Use template</a>
           </div>
         </div>

@@ -1,6 +1,7 @@
 $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
-$sidebar-bottom-padding: 46px;  //To fit sidebal logo in the bottom
+$sidebar-bottom-padding: 46px;
+//To fit sidebal logo in the bottom
 $sidebar-item-padding-y: 12px;
 $sidebar-item-padding-y--shrinked: 5px;
 
@@ -24,7 +25,9 @@ $sidebar-item-padding-y--shrinked: 5px;
     width: $sidebar-width-large;
     font-size: $font-s;
 
-    &__nav-link {
+    &__nav-link,
+    &__nav-link:active,
+    &__nav-link:hover {
       flex-direction: row;
     }
 
@@ -64,8 +67,8 @@ $sidebar-item-padding-y--shrinked: 5px;
   }
 
   &__nav-link,
-  &__nav-link:hover,
-  &__nav-link:active {
+  &__nav-link:active,
+  &__nav-link:hover {
     @extend %flex--center--default;
     @extend .weight--light;
     text-decoration: none;
@@ -106,8 +109,8 @@ $sidebar-item-padding-y--shrinked: 5px;
         border-radius: 4px;
       }
 
-      &:before,
-      &:after {
+      &:after,
+      &:before {
         content: '';
         position: absolute;
         left: 0;
