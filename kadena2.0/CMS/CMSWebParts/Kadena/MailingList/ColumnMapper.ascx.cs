@@ -125,7 +125,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             : int.Parse(Request.Form[columnName]);
                         mapping.Add(columnName, columnIndex);
                     }
-
+                    ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
                     Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
                 }
             }
