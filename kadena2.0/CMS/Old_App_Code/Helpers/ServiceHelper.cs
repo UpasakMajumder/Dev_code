@@ -38,11 +38,11 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if (string.IsNullOrWhiteSpace(mailType))
             {
-                throw new ArgumentException(_valueEmptyMessage, "mailType");
+                throw new ArgumentException(_valueEmptyMessage, nameof(mailType));
             }
             if (string.IsNullOrWhiteSpace(product))
             {
-                throw new ArgumentException(_valueEmptyMessage, "product");
+                throw new ArgumentException(_valueEmptyMessage, nameof(product));
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
@@ -108,12 +108,12 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if (fileStream == null || fileStream.Length == 0)
             {
-                throw new ArgumentException(_valueEmptyMessage, "fileStream");
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileStream));
             }
 
             if (string.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentException(_valueEmptyMessage, "fileName");
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileName));
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
@@ -230,7 +230,7 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if ((mapping?.Count ?? 0) == 0)
             {
-                throw new ArgumentException(_valueEmptyMessage, "mapping");
+                throw new ArgumentException(_valueEmptyMessage, nameof(mapping));
             }
 
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
