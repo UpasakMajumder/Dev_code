@@ -227,23 +227,25 @@ $arrow-width: 10px;
 .tippy-tooltip {
   position: relative;
   font-size: $font-xs;
-  color: white;
+  color: $brand-darker;
   border-radius: 4px;
-  padding: .25rem .5rem;
+  padding: .3rem .5rem;
   text-align: center;
   will-change: transform;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: $brand-darker;
+  background-color: $brand-info-light;
+  border: 1px solid $brand-info;
+  line-height: 1;
 
   [x-arrow] {
     z-index: -1;
     position: absolute;
     width: $arrow-width;
     height: $arrow-width;
-    background-color: $brand-darker;
+    background-color: $brand-info-light;
     border: 1px solid;
-    border-color: transparent transparent #333 #333;
+    border-color: transparent transparent $brand-info $brand-info;
   }
 
   &[data-animatefill] {

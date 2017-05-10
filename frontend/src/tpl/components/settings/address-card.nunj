@@ -1,18 +1,16 @@
+{% from "macro/svg.nunj" import svg %}
+
 <div class="adress-card">
   <span>4001 Valley Industrial Blvd</span>
   <span>Shakopee</span>
   <span>MN 55379</span>
   <div class="adress-card__btn-block">
     <button type="button" class="in-card-btn">
-      {% call svg.template() %}
-      {{svg.use(name='edit')}}
-      {% endcall %}
+      {{ svg('edit') }}
       Edit
     </button>
     <button type="button" class="in-card-btn">
-      {% call svg.template() %}
-      {{svg.use(name='cross--dark')}}
-      {% endcall %}
+      {{ svg('cross--dark') }}
       Remove
     </button>
   </div>
