@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\CarrierBase.cs" />
+    <Compile Include="Base\EstimatePriceRequestFactory.cs" />
     <Compile Include="Base\ServiceApi.cs" />
     <Compile Include="FedExCarrier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
