@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
+using CMS.SiteProvider;
 using Kadena2.Carriers.ServiceApi;
 using Newtonsoft.Json;
 using System;
@@ -24,7 +25,7 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            ServiceUrl = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPriceServiceEndpoint");
+            ServiceUrl = SettingsKeyInfoProvider.GetValue( SiteContext.CurrentSiteName+".KDA_EstimateDeliveryPriceServiceEndpoint");
         }
 
         public Guid GetConfigurationUIElementGUID()

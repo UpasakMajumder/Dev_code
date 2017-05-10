@@ -1,5 +1,6 @@
 ﻿using CMS.DataEngine;
 using CMS.Ecommerce;
+using CMS.SiteProvider;
 using Kadena2.Carriers.ServiceApi;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +25,16 @@ namespace Kadena2.Carriers
         {
             var addressLines = new[]
             {
-                SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
-                SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderAddressLine2")
+                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
             }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
 
             return new Address()
             {
-                city = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderCity"),
-                country = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderCountry"),
-                postal = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderPostal"),
-                state = SettingsKeyInfoProvider.GetValue("KDA_EstimateDeliveryPrice_SenderState"),
+                city = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
+                country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
+                postal = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
+                state = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
                 streetLines = addressLines
             };
         }
