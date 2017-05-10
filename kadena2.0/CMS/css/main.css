@@ -3203,7 +3203,7 @@ button {
   cursor: pointer;
   border-radius: 2px;
   box-sizing: border-box;
-  font-weight: 100; }
+  font-weight: 400; }
   .btn-common:focus, .btn-main:focus, .btn-action:focus, .btn-info:focus, .btn-success:focus {
     outline: none; }
   .btn-common:not(.btn--no-shadow):active:after, .btn-main:not(.btn--no-shadow):active:after, .btn-action:not(.btn--no-shadow):active:after, .btn-info:not(.btn--no-shadow):active:after, .btn-success:not(.btn--no-shadow):active:after, .btn-common:not(.btn--no-shadow):hover:after, .btn-main:not(.btn--no-shadow):hover:after, .btn-action:not(.btn--no-shadow):hover:after, .btn-info:not(.btn--no-shadow):hover:after, .btn-success:not(.btn--no-shadow):hover:after {
@@ -3735,7 +3735,7 @@ h4 {
   padding-bottom: 0.6875rem;
   border: 1px solid #a6a6a6;
   border-radius: 2px;
-  font-weight: 100;
+  font-weight: 400;
   width: 100%; }
   .input:focus, .input__text:focus, .cart-product__quantity input[type="number"]:focus, .input__password:focus, .input:active, .input__text:active, .cart-product__quantity input[type="number"]:active, .input__password:active {
     outline: none; }
@@ -3797,7 +3797,7 @@ h4 {
     right: 0;
     top: 2px;
     font-size: 12px;
-    font-weight: 100;
+    font-weight: 400;
     color: #404040; }
   .input__checkbox, .input__radio {
     display: none; }
@@ -3828,7 +3828,7 @@ h4 {
       background: transparent;
       border: none;
       height: 42px;
-      font-weight: 100;
+      font-weight: 400;
       width: 100%; }
   .input--error {
     border-bottom: 1px solid #c91c23; }
@@ -4950,7 +4950,7 @@ a:focus {
   .table tr td,
   .table tr th {
     border: 1px solid #e4e7ea;
-    font-weight: 100; }
+    font-weight: 400; }
   .table--inside-border tr {
     border: 1px solid #e4e7ea; }
     .table--inside-border tr th,
@@ -5128,7 +5128,7 @@ body {
   margin-bottom: 1.875rem; }
   .mailing-ready__paragraph p {
     margin-bottom: 0.625rem;
-    font-weight: 100;
+    font-weight: 400;
     color: #404040; }
     .mailing-ready__paragraph p:last-child {
       margin: 0; }
@@ -5145,7 +5145,7 @@ body {
 
 .mailing-ready__links span {
   color: #777;
-  font-weight: 100;
+  font-weight: 400;
   vertical-align: top; }
 
 .mailing-ready__links a {
@@ -5155,7 +5155,7 @@ body {
       flex-wrap: nowrap;
   -ms-flex-align: center;
       align-items: center;
-  font-weight: 100; }
+  font-weight: 400; }
 
 .css-main {
   min-height: calc(100% - 60px);
@@ -5432,7 +5432,7 @@ body {
   border-color: transparent; }
 
 .upload-mail__row p {
-  font-weight: 100; }
+  font-weight: 400; }
 
 .upload-mail__drop-zone {
   position: relative; }
@@ -5441,7 +5441,7 @@ body {
   text-align: center; }
   .upload-mail__offer span,
   .upload-mail__offer p {
-    font-weight: 100; }
+    font-weight: 400; }
   .upload-mail__offer span:before, .upload-mail__offer span:after {
     content: '';
     width: 100px;
@@ -5785,7 +5785,7 @@ body {
   .drop-zone__dropping {
     margin: 51px; }
     .drop-zone__dropping p {
-      font-weight: 100;
+      font-weight: 400;
       margin: 0; }
   .drop-zone__dropped {
     display: none;
@@ -6084,7 +6084,7 @@ body {
   .css-sidebar__nav-link, .css-sidebar__nav-link:hover, .css-sidebar__nav-link:active {
     text-decoration: none;
     color: #777;
-    font-weight: 100;
+    font-weight: 400;
     -ms-flex-direction: column;
         flex-direction: column; }
   .css-sidebar__nav-item {
@@ -6338,7 +6338,7 @@ body {
   .template__stock {
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
-    font-weight: 100;
+    font-weight: 400;
     font-size: 14px; }
     .template__stock svg {
       margin-right: 0.3125rem; }

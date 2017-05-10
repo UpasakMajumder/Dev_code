@@ -11,7 +11,7 @@
     p {
       @extend .font-dark;
       @extend .mb-3;
-      font-weight: 100;
+      font-weight: 400;
     }
   }
 
@@ -25,7 +25,7 @@
     span,
     p {
       @extend .font-text;
-      font-weight: 100;
+      font-weight: 400;
     }
 
     p {
