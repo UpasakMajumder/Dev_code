@@ -718,6 +718,13 @@
     <Compile Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx.designer.cs">
       <DependentUpon>OpenTemplatedProductButton.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.cs">
+      <DependentUpon>TemplatesList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.designer.cs">
+      <DependentUpon>TemplatesList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -749,6 +756,7 @@
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceListResponseData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceResponseData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
@@ -772,6 +780,7 @@
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
+    <Content Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />

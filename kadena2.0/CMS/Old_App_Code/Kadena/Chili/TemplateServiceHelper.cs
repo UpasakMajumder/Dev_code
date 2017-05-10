@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Web.Script.Serialization;
@@ -62,6 +63,11 @@ namespace Kadena.Old_App_Code.Kadena.Chili
       return string.Empty;
     }
 
+    /// <summary>
+    /// Returns editor/iframe url for the given template ID
+    /// </summary>
+    /// <param name="templateID"></param>
+    /// <returns>iframe/editor url</returns>
     public string GetEditorUrl(string templateID)
     {
       var requestUrl = string.Format("{0}api/template/{1}", ServiceBaseUrl, templateID);
@@ -94,6 +100,46 @@ namespace Kadena.Old_App_Code.Kadena.Chili
         EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", response.StatusCode.ToString());
       }
       return string.Empty;
+    }
+
+    /// <summary>
+    /// Returns all copies for master templete for given user
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <param name="masterTemplateID"></param>
+    /// <returns>List of template data</returns>
+    public List<TemplateServiceDocumentResponse> GetMasterTemplateCopies(int userID, string masterTemplateID)
+    {
+      var requestUrl = string.Format("{0}api/template/{1}/users/{2}", ServiceBaseUrl, masterTemplateID, userID);
+      var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+      request.ContentType = "application/json";
+      request.Method = "GET";
+
+      var response = (HttpWebResponse)request.GetResponse();
+      if (response.StatusCode == HttpStatusCode.OK)
+      {
+        string resultString = string.Empty;
+
+        using (var streamReader = new StreamReader(response.GetResponseStream()))
+        {
+          resultString = streamReader.ReadToEnd();
+        }
+        var result = new JavaScriptSerializer().Deserialize<TemplateServiceListResponseData>(resultString);
+
+        if (result.success)
+        {
+          return result.payload.documents;
+        }
+        else
+        {
+          EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result.error);
+        }
+      }
+      else
+      {
+        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
+      }
+      return new List<TemplateServiceDocumentResponse>();
     }
   }
 }
