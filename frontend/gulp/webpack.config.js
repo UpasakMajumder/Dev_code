@@ -1,6 +1,6 @@
 /* Configuration */
 const config = require('./config');
-const DEVELOPMENT = process.env.isDevelopment;
+const DEVELOPMENT = process.env.isDevelopment !== 'false';
 
 /* Modules */
 const path = require('path');
@@ -20,7 +20,7 @@ const pluginsCollection = {
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-                'isDevelopment': DEVELOPMENT
+                'isDevelopment': JSON.stringify(DEVELOPMENT)
             }
         })
     ],
@@ -47,11 +47,11 @@ const pluginsCollection = {
             compress: {
                 warnings: false
             },
-            sourceMap: true,
+            sourceMap: false,
             mangle: false,
             comments: false
         }),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 };
 
@@ -73,7 +73,7 @@ module.exports = {
         chunkFilename: 'chunks/[name].js'
     },
     cache: true,
-    devtool: DEVELOPMENT && 'cheap-eval-source-map',
+    devtool: DEVELOPMENT && 'eval',
     plugins,
     module: {
         rules: [
