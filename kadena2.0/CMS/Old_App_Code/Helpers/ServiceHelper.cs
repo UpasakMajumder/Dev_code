@@ -45,11 +45,7 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new ArgumentException(_valueEmptyMessage, nameof(product));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri createContainerUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_createContainerSettingKey}")
@@ -97,7 +93,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
             return containerId;
         }
-
+        
         /// <summary>
         /// Uploads file with request to microservice.
         /// </summary>
@@ -116,11 +112,7 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new ArgumentException(_valueEmptyMessage, nameof(fileName));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri postFileUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}")
@@ -173,11 +165,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>List of header names.</returns>
         public static IEnumerable<string> GetHeaders(Guid fileId)
         {
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri getHeaderUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getHeaderSettingKey}")
@@ -233,11 +221,7 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new ArgumentException(_valueEmptyMessage, nameof(mapping));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri uploadMappingUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_uploadMappingSettingKey}")
@@ -293,6 +277,17 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                 }
             }
+        }
+
+        private static string GetCustomerName()
+        {
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                throw new InvalidOperationException(_customerNotSpecifiedMessage);
+            }
+
+            return customerName;
         }
     }
 }
