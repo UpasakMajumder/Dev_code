@@ -279,6 +279,10 @@ namespace Kadena.Old_App_Code.Helpers
             }
         }
 
+        /// <summary>
+        /// Gets name of customer from settings for current site.
+        /// </summary>
+        /// <returns>Customer's name</returns>
         private static string GetCustomerName()
         {
             string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
