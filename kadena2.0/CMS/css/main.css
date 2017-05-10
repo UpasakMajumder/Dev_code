@@ -5805,7 +5805,6 @@ body {
   background: linear-gradient(180deg, #003d5c 0%, #0588cc 100%); }
   .main-container__inner {
     background-color: #fff;
-    overflow: hidden;
     border-radius: 8px; }
 
 .my-account__table tr {
