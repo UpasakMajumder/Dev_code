@@ -5,7 +5,7 @@
   @include rem(padding-bottom, 11px);
   border: 1px solid $brand-darkgrey;
   border-radius: $border-radius;
-  font-weight: 100;
+  font-weight: 400;
   width: 100%;
 
   &:focus,
@@ -110,7 +110,7 @@
     right: 0;
     top: 2px;
     font-size: $font-xxs;
-    font-weight: 100;
+    font-weight: 400;
     color: $brand-dark;
   }
 
@@ -165,7 +165,7 @@
       background: transparent;
       border: none;
       height: 42px;
-      font-weight: 100;
+      font-weight: 400;
       width: 100%;
     }
   }
