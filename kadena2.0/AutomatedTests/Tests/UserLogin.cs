@@ -12,12 +12,18 @@ namespace AutomatedTests.Tests
     class UserLogin : BaseTest
     {
         [Test]
-        public void LogUserIn()
+        public void LogUserIns()
         {
             var login = new Login();
             login.Open();
             login.FillLogin(TestUser.Name, TestUser.Password);
             var dashboard = login.Submit();
+        }
+
+        [Test]
+        public void TestingTests()
+        {
+
         }
     }
 }
