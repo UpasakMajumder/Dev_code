@@ -5064,13 +5064,18 @@ body {
     height: 100%;
     width: 420px;
     background-color: #fff; }
+    .login__form a {
+      display: block;
+      text-align: center; }
+  .login__form-inner {
+    padding: 1.875rem 3.75rem;
+    overflow-y: auto;
+    width: 100%; }
   .login__login-button {
     text-align: center;
     width: 100%; }
   .login__custom-logo {
-    -ms-flex: 0 0 auto;
-        flex: 0 0 auto;
-    width: 205px;
+    text-align: center;
     height: 40px; }
   .login__kadena-logo {
     position: absolute;
