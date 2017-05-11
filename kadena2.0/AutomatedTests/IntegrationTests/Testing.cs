@@ -14,13 +14,12 @@ namespace AutomatedTests.IntegrationTests
         [Test]
         public void ApiTest()
         {
-            var product3 = Api.GetDocument<Response>("/Products/Product-category-1/Product-3");
-
             var category = new ProductCategory().Init();
             var categoryResponse = Api.InsertDocument("/Products", category);
             var product = new Product().Init();
             var productResponse = Api.InsertDocument($"{categoryResponse.NodeAliasPath}", product);
 
+            var deleteResponse = Api.DeleteDocument<ProductCategory>($"{categoryResponse.NodeAliasPath}");
         }
     }
 }
