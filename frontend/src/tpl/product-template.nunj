@@ -25,7 +25,7 @@
 
       <div class="content-block product-template">
         <div class="product-template__block">
-          {% include "components/product-view.nunj" %}
+          {% include 'components/product/open-design.nunj' %}
         </div>
         <div class="product-template__block">
           <div class="product-template__item">
