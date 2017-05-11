@@ -1,0 +1,55 @@
+.upload-mail {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+
+  &__row {
+    h2 {
+      @extend .mb-3;
+    }
+
+    p {
+      @extend .font-dark;
+      @extend .mb-3;
+      font-weight: 400;
+    }
+  }
+
+  &__drop-zone {
+    position: relative;
+  }
+
+  &__offer {
+    text-align: center;
+
+    span,
+    p {
+      @extend .font-text;
+      font-weight: 400;
+    }
+
+    p {
+      @extend .mt-3;
+      @extend .mb-0;
+    }
+
+    span {
+      &:before,
+      &:after {
+        @extend .bg-grey;
+        content: '';
+        width: 100px;
+        height: 2px;
+        display: inline-block;
+      }
+
+      &:before {
+        transform: translate(-10px, -3px);
+      }
+
+      &:after {
+        transform: translate(10px, -3px);
+      }
+    }
+  }
+}

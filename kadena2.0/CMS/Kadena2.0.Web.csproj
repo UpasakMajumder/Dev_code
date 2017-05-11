@@ -23,6 +23,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -627,6 +628,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\NetSpell.SpellChecker.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NuGet.Core, Version=2.8.50506.491, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\NuGet.Core.dll</HintPath>
@@ -652,6 +657,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\System.Data.HashFunction.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -676,6 +684,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.cs">
+      <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
+      <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.cs">
+      <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.designer.cs">
+      <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx.cs">
       <DependentUpon>Edit_Hierarchy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -690,6 +712,55 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.cs">
+      <DependentUpon>NewMailingList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.designer.cs">
+      <DependentUpon>NewMailingList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.cs">
+      <DependentUpon>ColumnMapper.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.designer.cs">
+      <DependentUpon>ColumnMapper.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.cs">
+      <DependentUpon>MailingListUploader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.designer.cs">
+      <DependentUpon>MailingListUploader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.cs">
+      <DependentUpon>StatisticLabel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.designer.cs">
+      <DependentUpon>StatisticLabel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
+      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
+      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.cs">
+      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.designer.cs">
+      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.cs">
+      <DependentUpon>EstimatesTable.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
+      <DependentUpon>EstimatesTable.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\KadenaModule.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
@@ -698,13 +769,19 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
+    <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
+    <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CMSFormControls\Kadena\Basic\" />
-    <Folder Include="CMSWebParts\Kadena\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
+    <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -714,9 +791,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSPages\Kadena\NewMailingList.aspx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
-    <Content Include="web.config" />
+    <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

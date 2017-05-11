@@ -1,22 +1,8 @@
-<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-    <g id="Icon-/-Menu-/-Mailings-Idle" transform="translate(-2.000000, -2.000000)" fill-rule="nonzero" fill="#FFFFFF">
-      <g id="shopping-48px-glyph_newsletter-(1)" transform="translate(2.000000, 2.000000)">
-        <g id="Group">
-          <path
-            d="M11.7391304,4.69565217 L6.26086957,4.69565217 C6.04447826,4.69565217 5.86956522,4.52073913 5.86956522,4.30434783 C5.86956522,4.08795652 6.04447826,3.91304348 6.26086957,3.91304348 L11.7391304,3.91304348 C11.9555217,3.91304348 12.1304348,4.08795652 12.1304348,4.30434783 C12.1304348,4.52073913 11.9555217,4.69565217 11.7391304,4.69565217 Z"
-            id="Shape"></path>
-          <path
-            d="M11.7391304,7.82608696 L6.26086957,7.82608696 C6.04447826,7.82608696 5.86956522,7.65117391 5.86956522,7.43478261 C5.86956522,7.2183913 6.04447826,7.04347826 6.26086957,7.04347826 L11.7391304,7.04347826 C11.9555217,7.04347826 12.1304348,7.2183913 12.1304348,7.43478261 C12.1304348,7.65117391 11.9555217,7.82608696 11.7391304,7.82608696 Z"
-            id="Shape"></path>
-          <path
-            d="M3.91304348,9.74347826 L3.91304348,0.782608696 L14.0869565,0.782608696 L14.0869565,5.86956522 L14.0869565,9.74347826 L17.6869565,7.78695652 L14.8695652,5.67391304 L14.8695652,0.391304348 C14.8695652,0.156521739 14.7130435,0 14.4782609,0 L3.52173913,0 C3.28695652,0 3.13043478,0.156521739 3.13043478,0.391304348 L3.13043478,5.75217391 L0.313043478,7.78695652 L3.91304348,9.74347826 Z"
-            id="Shape"></path>
-          <path
-            d="M9.19565217,13.2652174 C9.1173913,13.3043478 9.07826087,13.3043478 9,13.3043478 C8.92173913,13.3043478 8.8826087,13.3043478 8.80434783,13.2652174 L0,8.53043478 L0,17.2173913 C0,17.6497826 0.350217391,18 0.782608696,18 L17.2173913,18 C17.6497826,18 18,17.6497826 18,17.2173913 L18,8.53043478 L9.19565217,13.2652174 Z"
-            id="Shape"></path>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<polyline data-cap="butt" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" points="10,16.2 2,22 2,46 46,46 &#10;&#9;46,22 38,16.2 " stroke-linejoin="miter" stroke-linecap="butt"/>
+<polyline data-cap="butt" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" points="10,26.4 10,2 38,2 38,26.4 &#10;&#9;" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="2" y1="22" x2="46" y2="46" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-cap="butt" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="46" y1="22" x2="24" y2="34" stroke-linejoin="miter" stroke-linecap="butt"/>
+<line data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" x1="18" y1="12" x2="30" y2="12" stroke-linejoin="miter"/>
+<line data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" x1="18" y1="20" x2="30" y2="20" stroke-linejoin="miter"/>
+</g></svg>

@@ -1,0 +1,26 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/steps.nunj" import steps %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'New K-List' %}
+{% set sidebarActive = 'K-List' %}
+{% set breadcrumbs = [sidebarActive, title] %}
+{% set headerTitle = "We're now processing your list..." %}
+
+{% block content %}
+  {{ steps(3, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
+
+  <div class="submitted">
+    {{ svg('envelope', 'submitted__central-img') }}
+
+    <div class="submitted__text-group submitted__text-group--centered">
+      <p class="p-info">Your address list was sent to processing. This will take about 5-10 minutes.</p>
+      <p class="p-info">You can continue working, we will keep you informed once your list is ready to use.</p>
+    </div>
+
+    <div class="submitted__btn-group">
+      <a href="#" type="type" class="btn-action btn-action--secondary">Create new mailing list</a>
+      <a href="#" type="type" class="btn-action">See products</a>
+    </div>
+  </div>
+{% endblock %}

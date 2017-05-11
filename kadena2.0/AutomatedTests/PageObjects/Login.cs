@@ -11,14 +11,17 @@ namespace AutomatedTests.PageObjects
 {
     class Login : BasePage
     {
-        [FindsBy(How = How.Id, Using = "p_lt_ctl00_pageplaceholder_p_lt_WebPartZone1_zoneContent_LogonForm_Login1_UserName")]
+        [FindsBy(How = How.ClassName, Using = "input__text ")]
         private IWebElement txtUserName { get; set; }
 
-        [FindsBy(How = How.Id, Using = "p_lt_ctl00_pageplaceholder_p_lt_WebPartZone1_zoneContent_LogonForm_Login1_Password")]
+        [FindsBy(How = How.ClassName, Using = "input__password ")]
         private IWebElement txtPassword { get; set; }
 
-        [FindsBy(How = How.Id, Using = "p_lt_ctl00_pageplaceholder_p_lt_WebPartZone1_zoneContent_LogonForm_Login1_LoginButton")]
+        [FindsBy(How = How.ClassName, Using = "css-login__login-button")]
         private IWebElement btnSubmit { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "input__toggler")]
+        private IWebElement inputToggler { get; set; }
 
         public Login()
         {
@@ -42,6 +45,21 @@ namespace AutomatedTests.PageObjects
         {
             btnSubmit.ClickElement();
             return new Dashboard();
+        }
+
+        /// <summary>
+        /// Verify if password is shown as asterisks. Note: Password is shown as asterisks if type attribute equals "password"
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPasswordShownAsAsterisks()
+        {
+            string type = txtPassword.GetAttribute("type");
+            return (type == "password");            
+        }
+
+        public void ClickInputToggler()
+        {
+            inputToggler.ClickElement();
         }
     }
 }

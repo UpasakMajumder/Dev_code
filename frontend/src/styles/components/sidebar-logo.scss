@@ -1,0 +1,29 @@
+.sidebar-logo {
+  @extend %flex--center--default;
+  position: absolute;
+  bottom: 25px;
+  left: $sidebar-width-small/2;
+  transform: translate(-50%, 0);
+  transition: position .3s ease-in;
+
+  &__text {
+    color: $font-grey;
+    font-size: $font-xs;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    padding-left: 0;
+  }
+
+  .isOpen & {
+    left: $sidebar-width-large/2;
+
+    &__text {
+      @include rem(padding-left, 10px);
+      visibility: visible;
+      width: auto;
+      height: auto;
+      transition: visibility .3s ease-in .5s;
+    }
+  }
+}

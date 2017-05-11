@@ -1,0 +1,59 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'K-List' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+{% set headerAdd = 'Add new mailing list' %}
+
+{% block content %}
+  <div class="mailing-lists">
+    <div class="mailing-lists__row">
+      <div class="sent-statistics">
+        <div class="sent-statistics__item">
+          <p class="sent-statistics__title">Sent in 90 days</p>
+          <p class="sent-statistics__value">6</p>
+        </div>
+        <div class="sent-statistics__item sent-statistics__item--warning">
+          <p class="sent-statistics__title">Correct addresses</p>
+          <p class="sent-statistics__value">2105</p>
+        </div>
+        <div class="sent-statistics__item sent-statistics__item--error">
+          <p class="sent-statistics__title">Bad addresses</p>
+          <p class="sent-statistics__value">10</p>
+        </div>
+        <div class="sent-statistics__item sent-statistics__item--success">
+          <p class="sent-statistics__title">Success rate</p>
+          <p class="sent-statistics__value">99,9%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mailing-lists__row">
+      <table class="table">
+        <tbody>
+        <tr>
+          <th>Mailing name</th>
+          <th>Date added</th>
+          <th>Addresses</th>
+          <th>Errors</th>
+          <th>Valid through</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <td><a class="link" href="#">FCLTR_Lamp post 2nd AVE</a></td>
+          <td>Mar 3 2017</td>
+          <td>240</td>
+          <td>1</td>
+          <td>Mar 3 2017</td>
+          <td>Ready to use</td>
+          <td class="text--center">
+            <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

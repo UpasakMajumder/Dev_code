@@ -1,31 +1,38 @@
-h2,
-h3,
-h4 {
-  color: $brand-dark;
-  font-weight: 100;
-}
-
 h1 {
-  font-weight: bold;
-  font-size: $font-xxl;
+  font-weight: 900;
+  font-size: $font-xl;
+  color: $brand-dark;
 }
 
 h2 {
-  font-size: $font-xl;
+  font-weight: 600;
+  font-size: $font-xm;
+  color: $brand-darker;
 }
 
 h3 {
-  font-style: italic;
+  font-weight: 500;
   font-size: $font-l;
+  color: $font-black;
 }
 
 h4 {
-  font-weight: 500;
-  font-size: $font-l;
+  font-weight: 400;
+  font-size: $font-m;
+  color: $font-black;
 }
 
 .h--underlined {
   @extend .pb-1;
   border-bottom: 1px solid $brand-dark;
   max-width: 500px;
+}
+
+.action-heading {
+  @extend %flex--baseline--default;
+  flex-wrap: nowrap;
+
+  .plus-btn {
+    @include rem(margin-left, 10px);
+  }
 }

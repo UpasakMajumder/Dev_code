@@ -1,0 +1,97 @@
+.steps {
+  $size: 50px;
+  $steps-circle-border: 4px;
+
+  @extend %flex--center--default;
+  @extend .py-2;
+  @extend .px-3;
+
+  @include rem(padding-bottom, 40px);
+  border-radius: $border-radius * 4;
+  position: relative;
+
+  &__item {
+    z-index: 2;
+  }
+
+  &__circle {
+    background: $steps-icon-default-bg;
+    border: $steps-circle-border solid $brand-white;
+    box-shadow: $steps-icon-shadow;
+    position: relative;
+    border-radius: 100%;
+    height: $size;
+    width: $size;
+    margin: auto;
+    text-align: center;
+
+    &.previous {
+      background: $brand-primary;
+    }
+
+    &.current {
+      border-color: $brand-primary;
+      background: $brand-white;
+    }
+
+    & svg {
+      width: 24px;
+    }
+
+    &:after {
+      content: attr(title);
+      font-size: $font-xs;
+      white-space: nowrap;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &__circle-inner {
+    animation: rotation 4s linear infinite;
+    width: $size - 2 * $steps-circle-border;
+    height: $size - 2 * $steps-circle-border;
+  }
+
+  &__line {
+    $line-circle-size: 9px;
+    background-color: $font-grey;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+
+    &:after,
+    &:before {
+      content: '';
+      position: absolute;
+      width: $line-circle-size;
+      height: $line-circle-size;
+      border-radius: 100%;
+      background-color: $font-grey;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    &:before {
+      left: -$line-circle-size / 2;
+    }
+
+    &:after {
+      right: -$line-circle-size / 2;
+    }
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

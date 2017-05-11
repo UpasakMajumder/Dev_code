@@ -1,10 +1,9 @@
 .css-header {
   @extend .bg-white;
-  height: 60px;
-  border-bottom: 1px solid #c9cdd0;
-
-  /* ToDo: Place to variables */
-  font-size: $font-s;
+  height: $header-size + $main-layout-gutter;
+  border-top-left-radius: $border-radius-xl;
+  border-top-right-radius: $border-radius-xl;
+  border-bottom: $main-layout-gutter solid $main-gutter-color;
 
   .navbar-brand {
     color: inherit;
@@ -15,48 +14,41 @@
     }
   }
 
+  .navbar-user {
+    font-size: $font-s;
+  }
+
   .navbar-nav {
     margin-left: auto;
 
     .nav-item {
-      display: flex;
-      align-items: center;
+      @extend %flex--center--default;
+      cursor: pointer;
 
-      .icon {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
+      @include rem(padding, 10px);
+
+      &.active,
+      &:hover {
+        background-color: $main-gutter-color;
+
+        .nav-link {
+          color: $font-grey;
+        }
       }
 
-      .icon-activity {
-        width: 14px;
-        height: 16px;
-      }
-
-      .icon-newspaper {
+      svg {
+        @extend .mr-2;
         width: 18px;
         height: 18px;
       }
 
-      .icon-cart {
-        width: 16px;
-        height: 16px;
-      }
-
-      .icon-sing-out {
-        width: 16px;
-        height: 16px;
+      .nav-link {
+        @extend %flex--center--default;
       }
 
       .nav-link {
-        display: flex;
-        align-items: center;
-      }
-
-      a.nav-link {
-        color: $brand-secondary;
-        padding: 10px;
-        margin-right: 50px;
+        color: $brand-primary;
+        font-weight: 400;
       }
     }
 
@@ -64,8 +56,6 @@
       margin-left: 5px;
       background-color: #d0021b;
       padding: 2px 5px;
-
-      /* ToDo: Place to variables */
     }
   }
 }

@@ -11,6 +11,20 @@
     height: 1em;
     margin-right: 5px;
   }
+
+  &--darker {
+    stroke: $brand-darker;
+    fill: $brand-darker;
+
+    polygon {
+      stroke: $brand-darker;
+      fill: $brand-darker;
+    }
+  }
+
+  &--180 {
+    transform: rotate(180deg);
+  }
 }
 
 .icon-hamburger {
@@ -18,17 +32,47 @@
   height: 18px;
 }
 
-.icon-navigation {
+.icon-stock {
+  width: 15px;
+  height: 15px;
+}
+
+.icon-deliver {
+  width: 24px;
+  height: 23px;
+}
+
+.icon-dollar {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-zoom {
+  width: 35px;
+  height: 35px;
+}
+
+.icon-download {
+  width: 35px;
+  height: 24px;
+}
+
+.icon-star {
   width: 22px;
   height: 22px;
-  margin-bottom: 2px;
+}
 
-  .isOpen & {
-    margin-right: 15px;
-    margin-bottom: 0;
-  }
+.icon-chevron {
+  height: 15px;
+  width: 10px;
+}
 
-  &[class$="--color"] {
-    display: none;
-  }
+.icon-sidebar-logo {
+  width: 28px;
+  height: 18px;
+}
+
+.icon-modal {
+  height: 15px;
+  width: 15px;
 }

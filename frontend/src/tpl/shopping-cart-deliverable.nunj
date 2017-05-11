@@ -1,0 +1,70 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Shopping cart' %}
+{% set headerActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="shopping-cart">
+    <div class="shopping-cart__block">
+      <h2>Added items <span class="badge badge--dark ml-1 font--xs v--middle">3</span></h2>
+      {% include "components/cart-product.nunj" %}
+    </div>
+
+    <div class="shopping-cart__block">
+      <h2>Delivery</h2>
+      <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
+        <button type="button" class="alert__close btn--off js-toggle">
+          {{ svg('cross--darker', 'icon-modal') }}
+        </button>
+        <span>All items will be mailed according to the selected mailing list.</span>
+      </div>
+    </div>
+
+    <div class="shopping-cart__block">
+      <h2>Payment</h2>
+      <div class="alert--grey alert--full alert--smaller isOpen js-collapse">
+        <button type="button" class="alert__close btn--off js-toggle">
+          {{ svg('cross--darker', 'icon-modal') }}
+        </button>
+        <span>Your payment plan is set to monthly payment. To change this, contact the administrator.</span>
+      </div>
+    </div>
+
+    <div class="shopping-cart__block">
+      <h2>Total</h2>
+      <div class="cart-fill__block">
+        <div class="cart-fill__block-inner">
+          <div class="cart-fill__block-table">
+            <div class="cart-fill__block-table-row">
+              <span class="cart-fill__block-table-info">Summary</span>
+              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">1025.49</span></span>
+            </div>
+            <div class="cart-fill__block-table-row">
+              <span class="cart-fill__block-table-info">Shipping</span>
+              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">42.64</span></span>
+            </div>
+            <div class="cart-fill__block-table-row">
+              <span class="cart-fill__block-table-info">Subtotal</span>
+              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">67.49</span></span>
+            </div>
+            <div class="cart-fill__block-table-row">
+              <span class="cart-fill__block-table-info">Tax 8%</span>
+              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">16.20</span></span>
+            </div>
+            <div class="cart-fill__block-table-row">
+              <span class="cart-fill__block-table-info">Total</span>
+              <span class="cart-fill__block-table-amount cart-fill__block-table-amount--emphasized">$ <span class="js-money-format">1383.68</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shopping-cart__block">
+      <button type="button" class="btn-action">Place order</button>
+    </div>
+  </div>
+{% endblock %}

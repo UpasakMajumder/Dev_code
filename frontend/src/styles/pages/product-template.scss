@@ -1,0 +1,9 @@
+.product-template {
+  &__block:not(:last-child) {
+    @include rem(margin-bottom, 30px);
+  }
+
+  &__item:not(:last-child) {
+    @include rem(margin-bottom, 15px);
+  }
+}

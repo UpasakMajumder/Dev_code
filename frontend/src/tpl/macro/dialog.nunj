@@ -1,0 +1,49 @@
+{% from "macro/svg.nunj" import svg %}
+
+{#{% import "helpers/dialog.nunj" as dialog %}#}
+
+{#{% call dialog.wrapper(id='') %}#}
+  {#{{ dialog.header(header='') }}#}
+  {#{% call dialog.content() %}#}
+    {#CONTENT#}
+  {#{% endcall %}#}
+  {#{% call dialog.footer() %}#}
+    {#FOOTER#}
+  {#{% endcall %}#}
+{#{% endcall %}#}
+
+{#clicker#}
+{#<button type="button" data-dialog="DIALOG SELECTOR" class="js-dialog"></button>#}
+
+{% macro wrapper(class, id) %}
+  <div class="dialog {% if class %}{{ class }}{% endif %}"
+    {% if id %} id="{{ id }}"{% endif %}>
+    <div class="dialog__shadow dialog__closer"></div>
+    <div class="dialog__block">
+      {{ caller() }}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro header(header='', closer='yes') %}
+  <div class="dialog__header">
+    <p>{{ header }}</p>
+    {% if closer==='yes' %}
+      <button type="button" class="btn--off dialog__closer">
+        {{ svg('cross--darker', 'icon-modal') }}
+      </button>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro content() %}
+  <div class="dialog__content">
+    {{ caller() }}
+  </div>
+{% endmacro %}
+
+{% macro footer() %}
+  <div class="dialog__footer">
+    {{ caller() }}
+  </div>
+{% endmacro %}

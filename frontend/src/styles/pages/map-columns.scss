@@ -1,0 +1,13 @@
+.map-columns {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+
+  &-form {
+    @extend .form;
+
+    .btn-group {
+      @extend .pt-4;
+    }
+  }
+}

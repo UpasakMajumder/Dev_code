@@ -1,0 +1,42 @@
+.sent-statistics {
+  @extend %flex--default--around;
+
+  @include rem(padding, 15px);
+  background-color: $brand-lightgrey;
+  border-radius: $border-radius-xl;
+  flex-wrap: nowrap;
+
+  &__item {
+    text-align: center;
+    color: $brand-primary;
+
+    &--success {
+      color: $success-mark;
+    }
+
+    &--warning {
+      color: $brand-info;
+    }
+
+    &--error {
+      color: $brand-secondary;
+    }
+  }
+
+  &__title,
+  &__value {
+    @extend .line-height--one;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  &__title {
+    @include rem(margin-bottom, 10px);
+    text-transform: uppercase;
+    font-size: $font-xxs;
+  }
+
+  &__value {
+    font-size: $font-large;
+  }
+}

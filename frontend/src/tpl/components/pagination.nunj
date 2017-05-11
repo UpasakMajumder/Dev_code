@@ -1,0 +1,26 @@
+{% from "macro/svg.nunj" import svg %}
+
+<div class="pagination">
+  <div class="pagination__item">
+    <a href="#" class="pagination__step">
+      {{ svg('chevron', 'icon-chevron ml-1') }}
+      Previous
+    </a>
+  </div>
+  <div class="pagination__item">
+    <a href="#" class="pagination__page">1</a>
+    <span class="pagination__dots">...</span>
+    <a href="#" class="pagination__page">4</a>
+    <a href="#" class="pagination__page pagination__page--active">5</a>
+    <a href="#" class="pagination__page">6</a>
+    <span class="pagination__dots">...</span>
+    <a href="#" class="pagination__page">10</a>
+  </div>
+
+  <div class="pagination__item">
+    <a href="#" class="pagination__step">
+      Next
+      {{ svg('chevron', 'icon-chevron icon--180 ml-1') }}
+    </a>
+  </div>
+</div>

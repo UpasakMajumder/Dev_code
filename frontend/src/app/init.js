@@ -23,6 +23,7 @@ export function init(moduleName, containers, ...options) {
     request(moduleName, (Module) => { // eslint-disable-line arrow-body-style
       return containers.map(container => new Module.default(container, ...options)); // eslint-disable-line new-cap
     }, false);
+    /* eslint-enable */
   }
 
   return false;

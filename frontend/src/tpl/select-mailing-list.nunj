@@ -1,0 +1,76 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Products' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title, 'Category Name', 'Category Name', 'March 2017 Events'] %}
+{% set headerTitle = 'Select a mailing list to use' %}
+
+{% block content %}
+  <div class="product-editor">
+    <table class="table product-editor__table-select">
+      <tbody>
+      <tr>
+        <th>Date Added</th>
+        <th>Addresses</th>
+        <th>Errors</th>
+        <th>Valid through</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td>
+          <span>Mar 1 2017</span>
+        </td>
+        <td>240</td>
+        <td>1</td>
+        <td>Mar 13 2017</td>
+        <td>Ready for use</td>
+        <td>
+          <button type="button" class="btn-action">Use</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>Mar 1 2017</span>
+        </td>
+        <td>240</td>
+        <td>1</td>
+        <td>Mar 13 2017</td>
+        <td>Ready for use</td>
+        <td>
+          <button type="button" class="btn-action">Use</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>Feb 10 2017</span>
+        </td>
+        <td>1333</td>
+        <td>0</td>
+        <td>Mar 13 2017</td>
+        <td>Jan 15 2017</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <span>Feb 10 2017</span>
+        </td>
+        <td>1333</td>
+        <td>0</td>
+        <td>Mar 13 2017</td>
+        <td>Jan 15 2017</td>
+        <td>List expired</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="product-editor__bottom">
+      <div class="product-editor__left-text">
+        <span>Missing the right mailing list? Go ahead and create it. This will save your current progress in Drafts section where you can access it through top navigation bar.</span>
+      </div>
+      <div class="product-editor__right-btn-group btn-group btn-group--right">
+        <button type="button" class="btn-action btn-action--secondary">New mailing list</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

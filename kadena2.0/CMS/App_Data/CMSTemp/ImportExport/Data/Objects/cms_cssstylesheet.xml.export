@@ -1,0 +1,18 @@
+﻿<cms_cssstylesheet version="10.0">
+  <NewDataSet>
+    <cms_cssstylesheet>
+      <StylesheetID>1</StylesheetID>
+      <StylesheetDisplayName>Kadena</StylesheetDisplayName>
+      <StylesheetName>Kadena</StylesheetName>
+      <StylesheetText>@import url("/css/main.css");</StylesheetText>
+      <StylesheetVersionGUID>24a68669-4812-4ba4-932f-cd6456b3afab</StylesheetVersionGUID>
+      <StylesheetGUID>61f612ee-ed2f-4dfe-92ed-7575b8d93408</StylesheetGUID>
+      <StylesheetLastModified>2017-04-10T16:55:43.5312036+02:00</StylesheetLastModified>
+      <StylesheetDynamicLanguage>plaincss</StylesheetDynamicLanguage>
+    </cms_cssstylesheet>
+    <cms_cssstylesheetsite>
+      <StylesheetID>1</StylesheetID>
+      <SiteID>1</SiteID>
+    </cms_cssstylesheetsite>
+  </NewDataSet>
+</cms_cssstylesheet>

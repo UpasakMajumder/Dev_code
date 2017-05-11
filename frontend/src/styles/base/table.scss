@@ -1,6 +1,7 @@
 .table {
-  thead tr,
-  tr:nth-child(2n) {
+  width: 100%;
+
+  tr:nth-child(2n +1) {
     background-color: $brand-lightgrey;
   }
 
@@ -16,6 +17,49 @@
       @extend .py-2;
       @extend .px-2;
       border: 1px solid $brand-grey;
+      font-weight: 400;
     }
+  }
+
+  &--inside-border {
+    tr {
+      border: 1px solid $brand-grey;
+
+      th,
+      td {
+        border: none;
+      }
+    }
+  }
+
+  &--opposite {
+    tbody {
+      tr:nth-child(n) {
+        background-color: rgba(white, .5);
+      }
+    }
+
+    tbody tr:nth-child(2n - 1) {
+      background-color: rgba($brand-lightgrey, .5);
+    }
+  }
+
+  &--hover {
+    tbody tr {
+      @extend .cursor--pointer;
+
+      &:hover:not(:first-child) {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+
+.tbody-counter {
+  counter-reset: table-row;
+
+  & > tr > td:first-child:before {
+    counter-increment: table-row;
+    content: counter(table-row);
   }
 }

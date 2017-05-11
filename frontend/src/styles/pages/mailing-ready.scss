@@ -1,0 +1,54 @@
+.mailing-ready {
+  &__block {
+    &:first-child {
+      @include rem(padding-bottom, 30px);
+    }
+
+    &:not(:first-child) {
+      @include rem(padding-top, 30px);
+      border-top: 2px solid $brand-grey;
+    }
+  }
+
+  &__paragraph {
+    @include rem(margin-bottom, 30px);
+
+    p {
+      @include rem(margin-bottom, 10px);
+      font-weight: 400;
+      color: $brand-dark;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  &__header {
+    @include rem(margin-bottom, 30px);
+    font-size: $font-xm;
+  }
+
+  &__links {
+    & > *:not(:last-child) {
+      @include rem(margin-right, 30px);
+    }
+
+    svg {
+      @include rem(margin-right, 7px);
+    }
+
+    span {
+      color: $font-grey;
+      font-weight: 400;
+      vertical-align: top;
+    }
+
+    a {
+      display: inline-flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      font-weight: 400;
+    }
+  }
+}

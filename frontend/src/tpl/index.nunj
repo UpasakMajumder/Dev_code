@@ -1,23 +1,16 @@
-{% extends "layouts/default-fluid.nunj" %}
+{% extends "layouts/default.nunj" %}
 
-{% set title = "" %}
+{% set title = 'Pages' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
 
 {% block content %}
-
-  <div class="content">
-    <h1 class="content-header">Pages</h1>
-    <div class="content__breadcrumbs">
-      <a class="content__breadcrumbs-link" href="/">Home</a>
-    </div>
-    <div class="content__canvas">
-      <ul>
-        {% for path in _pages %}
-          <li>
-            <a href="{{ path }}.html">{{ path }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-
+  <ul>
+    {% for path in _pages %}
+      <li>
+        <a href="{{ path }}.html">{{ path }}</a>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}

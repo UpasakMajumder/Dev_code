@@ -1,18 +1,32 @@
 .p-intro {
-  font-size: $font-m;
-  font-style: italic;
+  font-size: $font-s;
+  color: $brand-dark;
+  font-weight: 400;
 }
 
 .p-primary {
-  font-size: $font-s;
+  font-size: initial;
+  color: $brand-dark;
+  font-weight: 400;
 }
 
 .p-quote {
   font-size: $font-l;
+  color: $brand-dark;
   font-style: italic;
   text-align: center;
+  font-weight: 400;
 }
 
 .p-small {
   font-size: $font-xxs;
+  color: $brand-dark;
+  font-weight: 400;
+}
+
+.p-note {
+  @extend .p-primary;
+  font-size: initial;
+  color: $font-grey;
+  font-style: italic;
 }

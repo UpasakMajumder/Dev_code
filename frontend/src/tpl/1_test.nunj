@@ -1,0 +1,13 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/select.nunj" import select %}
+{% import "macro/dialog.nunj" as dialog %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Test' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+
+{% endblock %}

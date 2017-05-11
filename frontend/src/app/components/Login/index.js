@@ -25,6 +25,12 @@ class Login extends Component {
     this.loginText = LOGIN.login;
     this.passwordPlaceholder = LOGIN.passwordPlaceholder;
     this.passwordText = LOGIN.password;
+
+    document.querySelector('body').addEventListener('keypress', (event) => {
+      if (event.keyCode === 13) {
+        this.props.requestLogin(this.state.loginEmail, this.state.password, this.state.isKeepMeLoggedIn);
+      }
+    });
   }
 
   handleLoginEmailChange(e) {
@@ -62,35 +68,29 @@ class Login extends Component {
 
     return (
       <div className="css-login">
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
-            <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
-                error={this.getErrorMessage('loginEmail', response)} />
+        <div className="mb-4">
+          <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
+                     error={this.getErrorMessage('loginEmail', response)} />
+        </div>
+        <div className="mb-4">
+          <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
+                         error={this.getErrorMessage('password', response)} />
+        </div>
+        <div className="mb-4">
+          <div className="input__wrapper">
+            <CheckboxInput
+              id="dom-1"
+              type="checkbox"
+              label={this.keepMeLoggedInText}
+              value={isKeepMeLoggedIn}
+              onChange={e => this.handleIsKeepMeLoggedIn(e)}
+            />
           </div>
         </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
-            <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
-                error={this.getErrorMessage('password', response)} />
-          </div>
-        </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12">
-            <div className="input__wrapper">
-              <CheckboxInput
-                id="dom-1"
-                type="checkbox"
-                label={this.keepMeLoggedInText}
-                value={isKeepMeLoggedIn}
-                onChange={e => this.handleIsKeepMeLoggedIn(e)}
-              />
-          </div>
-          </div>
-        </div>
-        <div className="row justify-content-center css-login__row mb-4">
-          <div className="col-12 text-center">
-            <button type="button" className="btn-main css-login__login-button" disabled={isLoading}
-             onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
+        <div className="mb-4">
+          <div className="text-center">
+            <button type="button" className="btn-action login__login-button btn--no-shadow" disabled={isLoading}
+                    onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
           </div>
         </div>
       </div>
