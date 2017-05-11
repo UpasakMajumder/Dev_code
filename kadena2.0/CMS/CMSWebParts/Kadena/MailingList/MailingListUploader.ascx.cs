@@ -135,21 +135,25 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (IsPostBack
+                && !string.IsNullOrWhiteSpace(Request.Form[GetString("Kadena.MailingList.MailType")])
+                && !string.IsNullOrWhiteSpace(Request.Form[GetString("Kadena.MailingList.Product")])
+                && !string.IsNullOrWhiteSpace(Request.Form[GetString("Kadena.MailingList.Validity")]))
             {
-                var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                var fileStream = inpFile.PostedFile.InputStream;
-                var fileName = inpFileName.Value;
+                var validity = -1;
+                if (int.TryParse(Request.Form[GetString("Kadena.MailingList.Validity")], out validity))
+                {
+                    var fileId = ServiceHelper.UploadFile(inpFile.PostedFile.InputStream, inpFileName.Value);
 
-                var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+                    var containerId = ServiceHelper.CreateMailingContainer(Request.Form[GetString("Kadena.MailingList.MailType")]
+                        , Request.Form[GetString("Kadena.MailingList.Product")]
+                        , validity);
 
-                var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-                Response.Redirect(nextStepUrl);
+                    var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
+                    Response.Redirect(nextStepUrl);
+                }
             }
         }
     }
