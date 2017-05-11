@@ -1,12 +1,12 @@
 ﻿using CMS.DataEngine;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.SiteProvider;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.IO;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -100,7 +100,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileStream">Stream to upload.</param>
         /// <param name="fileName">Name of file to pass to microservice.</param>
         /// <returns>Id of uploaded file.</returns>
-        public static Guid UploadFile(System.IO.Stream fileStream, string fileName)
+        public static Guid UploadFile(Stream fileStream, string fileName)
         {
             if (fileStream == null || fileStream.Length == 0)
             {
@@ -127,7 +127,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new MultipartFormDataContent())
                 {
-                    fileStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    fileStream.Seek(0, SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
                     content.Add(new StringContent(_bucketType), "bucketType");
                     content.Add(new StringContent(customerName), "customerName");
