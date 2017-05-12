@@ -18,9 +18,7 @@ namespace AutomatedTests.PageObjects
         
         public Dashboard()
         {
-            PageFactory.InitElements(Browser.Driver, this);
-            //waits for dashboard to be displayed
-            dashboard.WaitTillVisible();
+            PageFactory.InitElements(Browser.Driver, this);           
         }
 
         public bool IsDashboardDisplayed()
