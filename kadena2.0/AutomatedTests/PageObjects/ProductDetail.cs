@@ -18,14 +18,22 @@ namespace AutomatedTests.PageObjects
             PageFactory.InitElements(Browser.Driver, this);
         }
 
+        /// <summary>
+        /// Adds product to cart
+        /// </summary>
         public void ClickAddToCart()
         {
             AddToCart.ClickElement();
         }
 
+        /// <summary>
+        /// Navigates to the product you specify by its category and name
+        /// </summary>
+        /// <param name="categoryName">name of existing category</param>
+        /// <param name="productName">name of existing product</param>
         public void Open(string categoryName, string productName)
         {
-            Browser.Driver.Navigate().GoToUrl(TestEnvironment.Url + "/products/" + categoryName + "/" + productName);
+            Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/products/{categoryName}/{productName}");
         }
     }
 }

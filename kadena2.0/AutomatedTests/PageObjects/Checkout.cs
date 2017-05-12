@@ -19,12 +19,19 @@ namespace AutomatedTests.PageObjects
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
+
+        /// <summary>
+        /// Navigates to checkout page
+        /// </summary>
         public void Open()
         {
             Browser.Driver.Navigate().GoToUrl(TestEnvironment.Url + "/checkout");
-           
         }
 
+        /// <summary>
+        /// Returns Dropdown with shipping costs
+        /// </summary>
+        /// <returns></returns>
         public SelectElement ShippingCostDropDown()
         {
             return new SelectElement(ShippingCostDropdownElement);
