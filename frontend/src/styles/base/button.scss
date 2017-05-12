@@ -12,7 +12,7 @@ button {
   cursor: pointer;
   border-radius: $border-radius;
   box-sizing: border-box;
-  font-weight: 100;
+  font-weight: 400;
 
   &:focus {
     outline: none;
@@ -159,16 +159,12 @@ $colors: ( main: $brand-secondary, action: $brand-primary, info: $brand-info, su
 }
 
 .btn-group {
-  &--left {
-    text-align: left;
-  }
+  $aligns: (left, right, center);
 
-  &--right {
-    text-align: right;
-  }
-
-  &--centered {
-    text-align: center;
+  @each $align in $aligns {
+    &--#{$align} {
+      text-align: $align;
+    }
   }
 
   & > * {

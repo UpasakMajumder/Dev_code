@@ -11,12 +11,23 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
 
   &__form {
     @extend %flex--center--center;
+    flex-direction: column;
     position: fixed;
     z-index: $zindex-modal;
     height: 100%;
-    flex-direction: column;
     width: $login-form-width;
     background-color: $login-form-color;
+
+    a {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  &__form-inner {
+    @include rem(padding, 30px 60px);
+    overflow-y: auto;
+    width: 100%;
   }
 
   &__login-button {
@@ -25,8 +36,7 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
   }
 
   &__custom-logo {
-    flex: 0 0 auto;
-    width: 205px;
+    text-align: center;
     height: 40px;
   }
 

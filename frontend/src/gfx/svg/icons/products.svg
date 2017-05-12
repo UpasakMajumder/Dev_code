@@ -1,18 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="17px" height="18px" viewBox="0 0 17 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon-/-Menu-/-Products-Idle" transform="translate(-3.000000, -2.000000)" fill-rule="nonzero" fill="#404040">
-            <g id="design-48px-glyph_app" transform="translate(3.000000, 2.000000)">
-                <g id="Group">
-                    <path d="M8.14285714,6.81471429 L15.7688571,3.34842857 L8.49085714,0.114 C8.26928571,0.0154285714 8.01642857,0.0154285714 7.79442857,0.114 L0.516857143,3.34885714 L8.14285714,6.81471429 Z" id="Shape"></path>
-                    <path d="M8.57142857,7.56171429 L8.57142857,17.85 L15.7765714,14.6477143 C16.0864286,14.5101429 16.2857143,14.2032857 16.2857143,13.8642857 L16.2857143,4.05514286 L8.57142857,7.56171429 Z" id="Shape"></path>
-                    <path d="M7.71428571,7.56171429 L0,4.05514286 L0,13.8642857 C0,14.2028571 0.199285714,14.5101429 0.509142857,14.6477143 L7.71428571,17.85 L7.71428571,7.56171429 Z" id="Shape"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<line data-cap="butt" fill="none" stroke="#404040" stroke-width="4" stroke-miterlimit="10" x1="2" y1="12" x2="46" y2="12" stroke-linejoin="miter" stroke-linecap="butt"/>
+<polygon fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" points="46,12 34,2 14,2 &#10;&#9;2,12 2,46 46,46 " stroke-linejoin="miter"/>
+<polygon data-color="color-2" fill="none" stroke="#404040" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" points="&#10;&#9;30,26 18,26 18,12 22,2 26,2 30,12 " stroke-linejoin="miter"/>
+</g></svg>
