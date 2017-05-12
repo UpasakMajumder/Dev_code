@@ -107,10 +107,12 @@
     }
   };
 </script>
-<script src="js/common.js"></script>
+
 {% if _dev %}
+  <script src="js/common.js"></script>
   <script src="js/app.js" async></script>
 {% else %}
+  <script src="js/common.min.js"></script>
   <script src="js/app.min.js" async></script>
 {% endif %}
 </body>
