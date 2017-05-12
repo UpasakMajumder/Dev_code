@@ -17,7 +17,7 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.ClassName, Using = "input__password ")]
         private IWebElement txtPassword { get; set; }
 
-        [FindsBy(How = How.ClassName, Using = "css-login__login-button")]
+        [FindsBy(How = How.ClassName, Using = "login__login-button")]
         private IWebElement btnSubmit { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "input__toggler")]
