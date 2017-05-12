@@ -3136,6 +3136,62 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
         Font size
 ========================
 */
+/**
+ * Utilities
+ *
+ * weight: -5
+ *
+ * Styleguide Base - Utilities
+
+ * Hidden element
+ *
+ * markup:
+ * <p class="u-hidden">…</p>
+ *
+ * weight: -10
+ *
+ * Styleguide Base - Utilities - Hidden element
+ */
+.v--middle, .shopping-cart__badge {
+  vertical-align: middle; }
+
+.u-hidden {
+  display: none; }
+
+.height-full {
+  height: 100%; }
+
+.width-fill {
+  width: 100%; }
+
+.cursor--pointer, .table--hover tbody tr {
+  cursor: pointer; }
+
+.input__label-group,
+.clearfix {
+  zoom: 1; }
+  .input__label-group:after, .input__label-group:before,
+  .clearfix:after,
+  .clearfix:before {
+    content: "";
+    display: table; }
+  .input__label-group:after,
+  .clearfix:after {
+    clear: both; }
+
+.weight--normal, .product-view__property-val {
+  font-weight: normal; }
+
+.weight--bold, .add-to-cart__info, .cart-fill__block-table-amount--emphasized, .cart-product__price span {
+  font-weight: bold; }
+
+.flex-align--center {
+  -ms-flex-align: center;
+      align-items: center; }
+
+.outline--off:focus, .btn--off:focus, .mailing-lists__add-link:focus, .btn--circle:focus, .plus-btn:focus, .content-header__btn:focus, .mailing-lists__add-row-icon:focus, .outline--off:active, .btn--off:active, .mailing-lists__add-link:active, .btn--circle:active, .plus-btn:active, .content-header__btn:active, .mailing-lists__add-row-icon:active, .outline--off:active:focus, .btn--off:active:focus, .mailing-lists__add-link:active:focus, .btn--circle:active:focus, .plus-btn:active:focus, .content-header__btn:active:focus, .mailing-lists__add-row-icon:active:focus {
+  outline: none; }
+
 button {
   cursor: pointer; }
 
@@ -3315,7 +3371,7 @@ button {
     width: 10px;
     height: 10px; }
 
-.btn--off {
+.btn--off, .mailing-lists__add-link {
   background-color: transparent;
   border: none;
   padding: 0;
@@ -3338,7 +3394,7 @@ button {
 .bg-primary, .mailing-lists__add-row-icon {
   background-color: #ff6d19; }
 
-.bg-secondary, .plus-btn, .content-header__btn, .steps__circle.previous {
+.bg-secondary, .plus-btn, .content-header__btn {
   background-color: #009bd8; }
 
 .bg-info {
@@ -3359,7 +3415,7 @@ button {
 .bg-dangerous {
   background-color: #c91c23; }
 
-.bg-white, .btn-main--secondary, .btn-main--secondary.disabled, .btn-main--secondary[disabled], .btn-main--secondary:hover, .btn-action--secondary, .btn-action--secondary.disabled, .btn-action--secondary[disabled], .btn-action--secondary:hover, .btn-info--secondary, .btn-info--secondary.disabled, .btn-info--secondary[disabled], .btn-info--secondary:hover, .btn-success--secondary, .btn-success--secondary.disabled, .btn-success--secondary[disabled], .btn-success--secondary:hover, .input__select, .css-header, .steps__line {
+.bg-white, .btn-main--secondary, .btn-main--secondary.disabled, .btn-main--secondary[disabled], .btn-main--secondary:hover, .btn-action--secondary, .btn-action--secondary.disabled, .btn-action--secondary[disabled], .btn-action--secondary:hover, .btn-info--secondary, .btn-info--secondary.disabled, .btn-info--secondary[disabled], .btn-info--secondary:hover, .btn-success--secondary, .btn-success--secondary.disabled, .btn-success--secondary[disabled], .btn-success--secondary:hover, .input__select, .css-header {
   background-color: #fff; }
 
 .bg-lightgrey, .styleguide__text, .css-tabs__tab:hover {
@@ -4958,59 +5014,6 @@ a:focus {
 .font--default {
   font-size: 16px; }
 
-/**
- * Utilities
- *
- * weight: -5
- *
- * Styleguide Base - Utilities
-
- * Hidden element
- *
- * markup:
- * <p class="u-hidden">…</p>
- *
- * weight: -10
- *
- * Styleguide Base - Utilities - Hidden element
- */
-.v--middle, .shopping-cart__badge {
-  vertical-align: middle; }
-
-.u-hidden {
-  display: none; }
-
-.height-full {
-  height: 100%; }
-
-.width-fill {
-  width: 100%; }
-
-.cursor--pointer, .table--hover tbody tr {
-  cursor: pointer; }
-
-.input__label-group,
-.clearfix {
-  zoom: 1; }
-  .input__label-group:after, .input__label-group:before,
-  .clearfix:after,
-  .clearfix:before {
-    content: "";
-    display: table; }
-  .input__label-group:after,
-  .clearfix:after {
-    clear: both; }
-
-.weight--normal, .product-view__property-val {
-  font-weight: normal; }
-
-.weight--bold, .add-to-cart__info, .cart-fill__block-table-amount--emphasized, .cart-product__price span {
-  font-weight: bold; }
-
-.flex-align--center {
-  -ms-flex-align: center;
-      align-items: center; }
-
 html,
 body,
 form {
@@ -5959,7 +5962,8 @@ body {
 .product-view__zoom {
   position: absolute;
   bottom: 10px;
-  right: 10px; }
+  right: 10px;
+  display: none; }
 
 .product-view__block {
   overflow: hidden;
@@ -6191,28 +6195,58 @@ body {
     display: block; }
 
 .steps {
+  padding-bottom: 2.5rem;
   border-radius: 8px;
-  background-color: #efefef;
   position: relative; }
   .steps__item {
     z-index: 2; }
   .steps__circle {
-    background-color: #efefef;
+    background: linear-gradient(180deg, #e4e7ea 0%, #d9dbdc 100%);
     border: 4px solid #fff;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+    position: relative;
     border-radius: 100%;
     height: 50px;
     width: 50px;
+    margin: auto;
     text-align: center; }
-    .steps__circle.current svg {
-      animation: rotation 2s infinite; }
+    .steps__circle.previous {
+      background: #009bd8; }
+    .steps__circle.current {
+      border-color: #009bd8;
+      background: #fff; }
+      .steps__circle.current svg {
+        animation: rotation 2s infinite; }
     .steps__circle svg {
       width: 24px; }
+    .steps__circle:after {
+      content: attr(title);
+      font-size: 14px;
+      white-space: nowrap;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translate(-50%, 0); }
   .steps__line {
-    left: 1rem;
-    height: 4px;
-    width: calc(100% - 1rem);
+    background-color: #777;
     position: absolute;
+    height: 4px;
+    width: 100%;
+    left: 0;
     z-index: 1; }
+    .steps__line:after, .steps__line:before {
+      content: '';
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 100%;
+      background-color: #777;
+      top: 50%;
+      transform: translate(0, -50%); }
+    .steps__line:before {
+      left: -4.5px; }
+    .steps__line:after {
+      right: -4.5px; }
 
 @keyframes rotation {
   from {
