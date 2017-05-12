@@ -1,17 +1,6 @@
-<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-    <g id="Icon-/-Menu-/-Products" transform="translate(-2.000000, -3.000000)" fill-rule="nonzero">
-      <g id="shopping-color_box" transform="translate(2.000000, 3.000000)">
-        <g id="Group">
-          <path
-            d="M13.1306087,0.0657391304 C13.0664348,0.0230869565 12.9905217,0 12.9134348,0 L5.08695652,0 C5.00986957,0 4.93395652,0.0230869565 4.86978261,0.0657391304 L0,3.52173913 C0,3.52173913 0.219130435,3.91304348 0.391304348,3.91304348 L17.6086957,3.91304348 C17.7808696,3.91304348 18,3.52173913 18,3.52173913 L13.1306087,0.0657391304 Z"
-            id="Shape"
-            fill="#A67C52"></path>
-          <path d="M0,3.52173913 L0,15.6521739 C0,16.0845652 0.350217391,16.4347826 0.782608696,16.4347826 L17.2173913,16.4347826 C17.6497826,16.4347826 18,16.0845652 18,15.6521739 L18,3.52173913 L0,3.52173913 Z" id="Shape" fill="#C19F85"></path>
-          <polygon id="Shape" fill="#D1B43D" points="6.65217391 3.52173913 7.82608696 0 10.173913 0 11.3478261 3.52173913"></polygon>
-          <rect id="Rectangle-path" fill="#EFD358" x="6.65217391" y="3.52173913" width="4.69565217" height="5.08695652"></rect>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<path fill="#A67C52" d="M34.556,3.168C34.392,3.059,34.198,3,34.001,3H14c-0.197,0-0.391,0.059-0.555,0.168L1,12c0,0,0.56,1,1,1h44&#10;&#9;c0.44,0,1-1,1-1L34.556,3.168z"/>
+<path fill="#C19F85" d="M1,12v31c0,1.105,0.895,2,2,2h42c1.105,0,2-0.895,2-2V12H1z"/>
+<polygon fill="#D1B43D" points="18,12 21,3 27,3 30,12 "/>
+<rect x="18" y="12" fill="#EFD358" width="12" height="13"/>
+</g></svg>

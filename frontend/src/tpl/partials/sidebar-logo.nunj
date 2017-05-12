@@ -1,9 +1,0 @@
-{% import "macro/svg.nunj" as svg %}
-
-<div class="sidebar-logo">
-  {% call svg.template('icon-sidebar-logo') %}
-  {{svg.use(name='kadena-xs')}}
-  {% endcall %}
-
-  <span class="sidebar-logo__text">Powered by Kadena</span>
-</div>

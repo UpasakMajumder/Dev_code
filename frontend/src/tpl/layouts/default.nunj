@@ -25,14 +25,14 @@
       <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
     </noscript>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" async defer></script>
-    <link rel="prefetch" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,500,600,700,900' rel='prefetch'>
     <script>
       // TODO: load minified scripts
       {% include '../../../node_modules/fg-loadcss/src/loadCSS.js' %}
       {% include '../../../node_modules/fg-loadcss/src/cssrelpreload.js' %}
       WebFontConfig = {
         google: {
-          families: ['Roboto:400,700:latin']
+          families: ['Lato:400,600,700:latin']
         }
       };
       {# cookie expired after 24 hours #}
@@ -40,7 +40,7 @@
     </script>
   {% else %}
   <link rel="stylesheet" href="css/main{% if not _dev %}.min{% endif %}.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700:latin">
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,500,600,700,900' rel='stylesheet'>
   {% endif %}
 
   {% block header %}{% endblock %}
@@ -50,17 +50,37 @@
   {# Main content of the page #}
   <div class="main-container">
     <div class="main-container__inner">
-      {% include '../components/header.nunj' %}
+      {% include 'components/header.nunj' %}
+
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
           var isOpen = localStorage.getItem('isSidebarCollapsed');
           localStorage.getItem('isSidebarCollapsed') && main.classList.remove('isOpen');
         </script>
-        {# Main content of the page #}
-        {% block content %}{% endblock %}
+
+        {% include 'components/sidebar.nunj' %}
+        {% include "components/sidebar-logo.nunj" %}
+
+        <div class="content">
+          <div class="content__inner">
+            <div class="content-header">
+              <div class="content-header__inner">
+                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
+                {% if(headerAdd) %}
+                  {% include 'components/header-button.nunj' %}
+                {% endif %}
+              </div>
+              {% include 'components/breadcrumbs.nunj' %}
+            </div>
+            <div class="content-block">
+              {% block content %}{% endblock %}
+            </div>
+          </div>
+        </div>
+
       </main>
-     {% include '../components/footer.nunj' %}
+     {% include 'components/footer.nunj' %}
 
     </div>
   </div>
@@ -87,10 +107,12 @@
     }
   };
 </script>
-<script src="js/common.js"></script>
+
 {% if _dev %}
+  <script src="js/common.js"></script>
   <script src="js/app.js" async></script>
 {% else %}
+  <script src="js/common.min.js"></script>
   <script src="js/app.min.js" async></script>
 {% endif %}
 </body>

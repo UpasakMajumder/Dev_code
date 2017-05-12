@@ -75,7 +75,7 @@
   &__stock {
     @extend %flex--center--default;
     flex-wrap: nowrap;
-    font-weight: 100;
+    font-weight: 400;
     font-size: $font-xs;
 
     svg {
@@ -102,6 +102,12 @@
     a {
       @include rem(margin-left, 10px);
       flex-shrink: 0;
+    }
+
+    input[type="number"] {
+      min-width: 0;
+      padding-left: 4px;
+      padding-right: 4px;
     }
   }
 }
