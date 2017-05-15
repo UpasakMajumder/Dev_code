@@ -34,7 +34,8 @@
       </button>
 
       <div class="confirmation js-confirmation" data-confirmation-button-text="Cancel" data-confirmation-position="top">
-        <button type="button" class="btn-main btn-main--secondary js-confirmation-clicker js-redirection-ignore">
+        <button type="button" class="cart-product__btn js-confirmation-clicker js-redirection-ignore">
+        {{ svg('cross--dark') }} 
           Delete
         </button>
         <div class="js-confirmation-popper confirmation__popper">
