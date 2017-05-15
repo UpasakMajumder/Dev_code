@@ -1,31 +1,25 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
-using AutomatedTests.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenQA.Selenium.Support.UI;
 
 namespace AutomatedTests.PageObjects
 {
-    class Dashboard : BasePage
+    class ListProcessing : BasePage
     {
-        [FindsBy(How = How.Id, Using = "dashboard")]
-        private IWebElement dashboard { get; set; }
-
-        
-        public Dashboard()
+        [FindsBy(How = How.ClassName, Using = "submitted")]
+        private IWebElement SubmitConfirmation { get; set; }
+        public ListProcessing()
         {
             PageFactory.InitElements(Browser.Driver, this);
-            
         }
 
-        public bool IsDashboardDisplayed()
+        public bool WasMailingListSubmitted()
         {
-            return dashboard.IsDisplayed();
+            return SubmitConfirmation.Displayed;
         }
-
     }
 }
