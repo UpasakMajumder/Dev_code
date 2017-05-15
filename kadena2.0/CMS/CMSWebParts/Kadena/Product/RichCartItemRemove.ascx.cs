@@ -8,8 +8,6 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 
 
-
-
     /// <summary>
     /// Remove button control for shopping cart transformation
     /// </summary>
@@ -184,11 +182,11 @@ using CMS.PortalEngine.Web.UI;
         {
             get
             {
-                return btnRemove.CssClass;
+            return ""; //btnRemove.CssClass;
             }
             set
             {
-                btnRemove.CssClass = value;
+                //btnRemove.CssClass = value;
             }
         }
 
@@ -240,18 +238,18 @@ using CMS.PortalEngine.Web.UI;
             if (!StopProcessing)
             {
                 // Set common UniButton properties
-                btnRemove.ImageAltText = ResHelper.GetString("com.removecartitem");
-                btnRemove.Visible = true;
-                btnRemove.ShowAsButton = IsButton;
+                //btnRemove.ImageAltText = ResHelper.GetString("com.removecartitem");
+                //btnRemove.Visible = true;
+                //btnRemove.ShowAsButton = IsButton;
 
                 // The control is set up according to the chosen control type
                 if (IsImage)
                 {
-                    btnRemove.ImageUrl = ImageURL;
+                    //btnRemove.ImageUrl = ImageURL;
                 }
                 else if (IsLink || (string.IsNullOrEmpty(ImageURL) && IsImage) || IsButton)
                 {
-                    btnRemove.ResourceString = ControlLabel;
+                    //btnRemove.ResourceString = ControlLabel;
                 }
             }
         }
@@ -267,8 +265,8 @@ using CMS.PortalEngine.Web.UI;
             bool ItemIsProductOption = (ShoppingCartItemInfoObject != null) && ShoppingCartItemInfoObject.IsProductOption;
             bool CartContentIsReadOnly = ValidationHelper.GetBoolean(ShoppingCartContent.GetValue("ReadOnlyMode"), false);
             // Remove is invisible for product option or in ReadOnly mode
-            btnRemove.Visible = !(ItemIsProductOption || CartContentIsReadOnly);
+            //btnRemove.Visible = !(ItemIsProductOption || CartContentIsReadOnly);
         }
 
-        #endregion
-    }
+    #endregion
+}
