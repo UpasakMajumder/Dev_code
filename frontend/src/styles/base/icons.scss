@@ -72,20 +72,6 @@
   height: 18px;
 }
 
-.icon-navigation {
-  @extend .icon-star;
-  margin-bottom: 2px;
-
-  .isOpen & {
-    margin-right: 15px;
-    margin-bottom: 0;
-  }
-
-  &[class$="--color"] {
-    display: none;
-  }
-}
-
 .icon-modal {
   height: 15px;
   width: 15px;

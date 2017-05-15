@@ -418,7 +418,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetHeaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CreateContainerTest.cs" />
+    <Compile Include="UploadFileTest.cs" />
+    <Compile Include="UploadMappingTest.cs" />
     <Compile Include="UserHierarchyTest.cs" />
   </ItemGroup>
   <ItemGroup>

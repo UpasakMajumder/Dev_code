@@ -1,18 +1,13 @@
-﻿using AutomatedTests.PageObjects;
+using AutomatedTests.PageObjects;
 using AutomatedTests.Utilities;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutomatedTests.Tests
 {
     class UserLogin : BaseTest
     {
         [Test]
-        public void LogUserIn()
+        public void When_CorrectCredentialsEntered_Expect_UserLoggedIn()
         {
             var login = new Login();
             login.Open();
@@ -29,5 +24,7 @@ namespace AutomatedTests.Tests
             var dashboard = login.Submit();
             Assert.IsTrue(dashboard.IsDashboardDisplayed());
         }
+
+
     }
 }

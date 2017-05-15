@@ -1,0 +1,37 @@
+{% from "macro/svg.nunj" import svg %}
+
+{% set pages = [
+{'title': 'K-Center', 'name': 'dashboard'},
+{'title': 'Products', 'name': 'products'},
+{'title': 'Recent orders', 'name': 'orders'},
+{'title': 'K-List', 'name': 'mailing-list'},
+{'title': 'K-Insight', 'name': 'insights'},
+{'title': 'K-Source', 'name': 'sourcing'},
+{'title': 'K-Proof', 'name': 'proofing'},
+{'title': 'K-DAM', 'name': 'dam'},
+{'title': 'Settings', 'name': 'settings'},
+{'title': 'Help', 'name': 'help'}
+] %}
+
+<div class="css-sidebar js-sidebar">
+  <div class="css-sidebar__header">
+    <div></div>
+    <div class="js-toggle cursor--pointer js-storage" data-storage-active="false" data-storage-change="true" data-storage-key="isSidebarCollapsed" data-storage-value="true">
+      {{ svg('hamburger', 'icon-hamburger') }}
+    </div>
+  </div>
+
+  <ul class="css-sidebar__nav list-unstyled">
+
+    {% for page in pages %}
+      <li class="css-sidebar__nav-item {% if(sidebarActive === page.title) %} active {% endif %}">
+        <div class="orange-bar"></div>
+        <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
+          {{ svg(page.name) }}
+          <span>{{ page.title }}</span>
+        </a>
+      </li>
+    {% endfor %}
+
+  </ul>
+</div>

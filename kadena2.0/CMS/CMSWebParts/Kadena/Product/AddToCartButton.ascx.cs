@@ -135,7 +135,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         if (currentCustomer != null)
         {
-            var address = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).FirstObject;
             cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
         }
     }

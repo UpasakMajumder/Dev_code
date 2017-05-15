@@ -23252,12 +23252,6 @@
     <Content Include="CMSWebParts\Community\Polls\GroupPoll.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Carriers\FedExCarrier\FedExCarrier.csproj">
-      <Project>{8f2a0ed9-ff60-4b70-8a42-b03d7162ceb2}</Project>
-      <Name>FedExCarrier</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="CMSResources\CMS.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -23267,6 +23261,16 @@
   <ItemGroup>
     <Content Include="App_Data\DancingGoat\Resources\dancingGoat.resx" />
     <Content Include="App_Data\DancingGoat\Resources\es-ES\dancingGoat.es-ES.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\carriers\CarriersCustomers\CarriersCustomers.csproj">
+      <Project>{a2100bce-e8fb-4d02-ab61-22d0edfdf632}</Project>
+      <Name>CarriersCustomers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Carriers\Carriers\Carriers.csproj">
+      <Project>{15ef35c6-b6e1-40e7-a423-9b1e3f856d4c}</Project>
+      <Name>Carriers</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
