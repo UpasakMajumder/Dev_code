@@ -72,29 +72,6 @@
     }
   }
 
-  &__stock {
-    @extend %flex--center--default;
-    flex-wrap: nowrap;
-    font-weight: 400;
-    font-size: $font-xs;
-
-    svg {
-      @include rem(margin-right, 5px);
-    }
-
-    &--available {
-      color: $font-success;
-    }
-
-    &--unavailable {
-      color: $brand-dark;
-    }
-
-    &--out {
-      color: $error-mark;
-    }
-  }
-
   &__use {
     @extend %flex--default--between;
     flex-wrap: nowrap;
