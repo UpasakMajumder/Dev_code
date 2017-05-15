@@ -32,10 +32,16 @@
         {{ svg('edit') }}
         Edit
       </button>
-      <button type="button" class="cart-product__btn">
-        {{ svg('cross--dark') }}
-        Remove
-      </button>
+
+      <div class="confirmation js-confirmation" data-confirmation-active-element=".product-list__row" data-confirmation-active-class="product-list__row--hover" data-confirmation-button-text="Cancel" data-confirmation-position="top">
+        <button type="button" class="btn-main btn-main--secondary js-confirmation-clicker js-redirection-ignore">
+          Delete
+        </button>
+        <div class="js-confirmation-popper confirmation__popper">
+          <p>Sure you want to delete it?</p>
+          <button type="button" class="btn-main">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
