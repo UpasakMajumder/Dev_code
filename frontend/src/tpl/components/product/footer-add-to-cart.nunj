@@ -1,0 +1,12 @@
+<div class="add-to-cart">
+  <div class="add-to-cart__left">
+    <span class="add-to-cart__info">These come in pack of 50 pcs</span>
+  </div>
+  <div class="add-to-cart__right">
+    <div class="input__wrapper">
+      <input type="number" class="input__text" placeholder="1">
+    </div>
+    <span class="add-to-cart__right-label">pack of 50 (50)</span>
+    <button class="btn-action btn-action" type="button">Add to cart</button>
+  </div>
+</div>
