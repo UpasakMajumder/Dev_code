@@ -1,0 +1,7 @@
+<div class="product-view__img" style="background-image: url(http://satyr.io/500-1000x700-1500)">
+  <a href="#" class="product-view__zoom">
+    {% call svg.template('icon-zoom') %}
+    {{svg.use(name='zoom')}}
+    {% endcall %}
+  </a>
+</div>
