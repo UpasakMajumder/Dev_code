@@ -68,9 +68,6 @@ using CMS.PortalEngine.Web.UI;
 
         #endregion
 
-
-        #region "Public properties"
-
         /// <summary>
         /// ID of the cart item to handle.
         /// </summary>
@@ -131,18 +128,6 @@ using CMS.PortalEngine.Web.UI;
 
 
         /// <summary>
-        /// Indicates, if the control should be displayed as an image.
-        /// </summary>
-        public bool IsImage
-        {
-            get
-            {
-                return ControlType.ToLowerCSafe() == "image";
-            }
-        }
-
-
-        /// <summary>
         /// Indicates, if the control should be displayed as a link.
         /// </summary>
         public bool IsLink
@@ -174,27 +159,6 @@ using CMS.PortalEngine.Web.UI;
             }
         }
 
-
-        /// <summary>
-        /// Gets or sets the remove button CSS class.
-        /// </summary>
-        public string RemoveButtonCssClass
-        {
-            get
-            {
-            return ""; //btnRemove.CssClass;
-            }
-            set
-            {
-                //btnRemove.CssClass = value;
-            }
-        }
-
-        #endregion
-
-
-        #region "Event handling"
-
         /// <summary>
         /// Removes the current cart item and the associated product options from the shopping cart.
         /// </summary>
@@ -222,51 +186,4 @@ using CMS.PortalEngine.Web.UI;
             // Raise the change event for all subscribed web parts
             ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
         }
-
-        #endregion
-
-
-        #region "Page events"
-
-        /// <summary>
-        /// Initializes the control.
-        /// </summary>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            if (!StopProcessing)
-            {
-                // Set common UniButton properties
-                //btnRemove.ImageAltText = ResHelper.GetString("com.removecartitem");
-                //btnRemove.Visible = true;
-                //btnRemove.ShowAsButton = IsButton;
-
-                // The control is set up according to the chosen control type
-                if (IsImage)
-                {
-                    //btnRemove.ImageUrl = ImageURL;
-                }
-                else if (IsLink || (string.IsNullOrEmpty(ImageURL) && IsImage) || IsButton)
-                {
-                    //btnRemove.ResourceString = ControlLabel;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Handle the visibility of the control.
-        /// </summary>    
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            bool ItemIsProductOption = (ShoppingCartItemInfoObject != null) && ShoppingCartItemInfoObject.IsProductOption;
-            bool CartContentIsReadOnly = ValidationHelper.GetBoolean(ShoppingCartContent.GetValue("ReadOnlyMode"), false);
-            // Remove is invisible for product option or in ReadOnly mode
-            //btnRemove.Visible = !(ItemIsProductOption || CartContentIsReadOnly);
-        }
-
-    #endregion
 }
