@@ -1,13 +1,21 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AutomatedTests.Utilities
 {
     /// <summary>
     /// Generates random 'Lorem ipsum' text
     /// </summary>
-    public class Lorem
+    public static class Lorem
     {
+
+        public static Random Random { get; set; }
         private const string lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean faucibus aliquet dolor. Vivamus condimentum hendrerit ligula non tempus. Duis in risus eu arcu viverra tempor non vitae mauris. Aenean congue accumsan augue, ac suscipit nisl tempor ac. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus massa nisl, finibus quis interdum eu, mollis pretium lacus. Nunc facilisis odio et nulla feugiat euismod. Etiam tempor varius neque, sed elementum lacus varius vitae. Donec ultrices nunc enim, eu venenatis nunc vehicula non. Nulla facilisi. Vivamus scelerisque libero est, venenatis bibendum nulla volutpat sed. Nullam pellentesque odio mauris, eget eleifend dui congue at. Nulla aliquet metus eget nisi scelerisque vehicula. Cras tempor tempus est et vestibulum";
+
+        static Lorem()
+        {
+            Random = new Random();
+        }
 
         /// <summary>
         /// Whole string of lorem ipsum
@@ -21,7 +29,7 @@ namespace AutomatedTests.Utilities
         public static string Word()
         {
             string[] words = lorem.Replace(".", "").Replace(",", "").Split(' ');
-            return words[Browser.Random.Next(0, words.Count())];
+            return words[Random.Next(0, words.Count())];
         }
 
         /// <summary>
@@ -32,7 +40,7 @@ namespace AutomatedTests.Utilities
         public static string Word(int length)
         {
             string[] words = lorem.Replace(".", "").Replace(",", "").Split(' ').Where(r => r.Length >= length).ToArray();
-            return words[Browser.Random.Next(0, words.Count())];
+            return words[Random.Next(0, words.Count())];
         }
 
         /// <summary>
@@ -42,7 +50,7 @@ namespace AutomatedTests.Utilities
         public static string Sentence()
         {
             string[] sentence = lorem.Replace(". ", ".").Split('.');
-            return sentence[Browser.Random.Next(0, sentence.Count())];
+            return sentence[Random.Next(0, sentence.Count())];
         }
 
         /// <summary>
@@ -57,7 +65,7 @@ namespace AutomatedTests.Utilities
 
             for (int i = 0; i < sentences; i++)
             {
-                paragraph += sentence[Browser.Random.Next(0, sentence.Count())] + ". ";
+                paragraph += sentence[Random.Next(0, sentence.Count())] + ". ";
             }
 
             return paragraph;
@@ -70,7 +78,7 @@ namespace AutomatedTests.Utilities
         public static string RandomPeriod()
         {
             string[] period = { "denně", "týdně", "měsíčně", "ročně" };
-            return period[Browser.Random.Next(0, period.Count() - 1)];
+            return period[Random.Next(0, period.Count() - 1)];
         }
 
         /// <summary>
@@ -83,7 +91,7 @@ namespace AutomatedTests.Utilities
             string[] name = { "David ", "Jan ", "Jiří ", "Petr ", "Igor ", "Michal ", "Miroslav " };
             string[] surname = { "Novák", "Svoboda", "Novotný", "Dvořák", "Černý", "Veselý", "Procházka" };
 
-            return title[Browser.Random.Next(0, title.Count() - 1)] + name[Browser.Random.Next(0, name.Count() - 1)] + surname[Browser.Random.Next(0, surname.Count() - 1)];
+            return title[Random.Next(0, title.Count() - 1)] + name[Random.Next(0, name.Count() - 1)] + surname[Random.Next(0, surname.Count() - 1)];
 
         }
 
@@ -95,7 +103,7 @@ namespace AutomatedTests.Utilities
         /// <returns>Random number</returns>
         public static int RandomNumber(int min, int max)
         {
-            return Browser.Random.Next(min, max);
+            return Random.Next(min, max);
         }
 
     }
