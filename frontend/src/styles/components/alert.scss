@@ -1,11 +1,15 @@
 .alert {
-  @include rem(padding, 30px);
+  @include rem(padding, 20px);
   border-radius: $border-radius-xl;
   display: none;
   position: relative;
 
   &.isOpen {
     display: inline-block;
+  }
+
+  &--full.isOpen {
+    display: block;
   }
 
   &--info {
@@ -39,5 +43,18 @@
     @include rem(right, 10px);
     position: absolute;
     display: none;
+  }
+
+  ul {
+    @include rem(padding-left, 16px);
+    margin: 0;
+
+    li {
+      @extend .weight--bold;
+    }
+  }
+
+  p:not(.p-note) {
+    @extend .weight--bold;
   }
 }
