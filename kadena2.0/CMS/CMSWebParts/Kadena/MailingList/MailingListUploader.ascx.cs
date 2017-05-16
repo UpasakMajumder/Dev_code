@@ -143,19 +143,26 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-      var mailType = Request.Form[GetHTMLName(GetString("Kadena.MailingList.MailType"))];
-      var product = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Product"))];
-      var validity = int.Parse(Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))]);
-      var fileStream = inpFile.PostedFile.InputStream;
-      var fileName = inpFileName.Value;
+      if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel")
+      {
+        var mailType = Request.Form[GetHTMLName(GetString("Kadena.MailingList.MailType"))];
+        var product = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Product"))];
+        var validity = int.Parse(Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))]);
+        var fileStream = inpFile.PostedFile.InputStream;
+        var fileName = inpFileName.Value;
 
-      var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-      var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+        var fileId = ServiceHelper.UploadFile(fileStream, fileName);
+        var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
 
-      var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-      nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-      nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-      Response.Redirect(nextStepUrl);
+        var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
+        Response.Redirect(nextStepUrl);
+      }
+      else
+      {
+        divFileTypeError.Visible = true;
+      }
     }
   }
 }
