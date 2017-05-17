@@ -23,6 +23,12 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.ClassName, Using = "input__toggler")]
         private IWebElement inputToggler { get; set; }
 
+        [FindsBy(How = How.ClassName, Using = "input__error")]
+        private IWebElement inputError { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".login__custom-logo>img")]
+        private IWebElement customerLogo { get; set; }
+
         public Login()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -41,10 +47,22 @@ namespace AutomatedTests.PageObjects
             Log.WriteLine("User '{0}' filled into login", name);
         }
 
+        /// <summary>
+        /// Submits valid credentials
+        /// </summary>
+        /// <returns></returns>
         public Dashboard Submit()
         {
             btnSubmit.ClickElement();
             return new Dashboard();
+        }
+
+        /// <summary>
+        /// Submit with invalid credentials
+        /// </summary>
+        public void SubmitInvalid()
+        {
+            btnSubmit.ClickElement();
         }
 
         /// <summary>
@@ -54,12 +72,24 @@ namespace AutomatedTests.PageObjects
         public bool IsPasswordShownAsAsterisks()
         {
             string type = txtPassword.GetAttribute("type");
-            return (type == "password");            
+            return (type == "password");
         }
 
         public void ClickInputToggler()
         {
             inputToggler.ClickElement();
+        }
+
+        public bool IsErrorMessageDisplayed()
+        {
+            inputError.WaitTillVisible();
+            return inputError.IsDisplayed();
+        }
+
+        public bool IsCustomerLogoDisplayed()
+        {
+            customerLogo.WaitTillVisible();
+            return customerLogo.IsDisplayed();
         }
     }
 }
