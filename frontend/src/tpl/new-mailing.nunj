@@ -17,7 +17,7 @@
         <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="Do you need a help with a bulk upload?">
           {{ svg('question-mark', 'icon-question') }}
         </button>
-        <input accept="text/csv" type="file" name="file" class="js-drop-zone-file">
+        <input type="file" name="file" class="js-drop-zone-file">
 
         <div class="drop-zone__dropping">
           {{ svg('draganddrop', 'icon-drop') }}

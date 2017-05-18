@@ -9,9 +9,12 @@ class Dropzone {
 
 
     this.file.addEventListener('change', (event) => {
-      const { name, type } = event.target.files[0];
+      const { name } = event.target.files[0];
 
-      if (type !== 'text/csv') {
+      const arrayName = name.split('.');
+      const type = arrayName[arrayName.length - 1];
+
+      if (type !== 'csv') {
         this.file.value = '';
         return;
       }

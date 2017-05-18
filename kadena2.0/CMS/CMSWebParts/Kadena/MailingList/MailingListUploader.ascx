@@ -7,7 +7,7 @@
                 <use xlink:href="/gfx/svg/sprites/icons.svg#question-mark" />
             </svg>
         </button>
-        <input runat="server" id="inpFile" accept="text/csv" type="file" name="file" class="js-drop-zone-file">
+        <input runat="server" id="inpFile" type="file" name="file" class="js-drop-zone-file">
         <div class="drop-zone__dropping">
             <svg class="icon icon-drop">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#draganddrop" />
@@ -21,9 +21,7 @@
                         <use xlink:href="/gfx/svg/sprites/icons.svg#cross" />
                     </svg>
                 </button>
-                <svg class="icon icon-csv">
-                    <use xlink:href="/gfx/svg/sprites/icons.svg#csv" />
-                </svg>
+                <img src="/gfx/images/csv.png" class="icon-csv">
             </div>
             <p class="js-drop-zone-name">File name</p>
         </div>
