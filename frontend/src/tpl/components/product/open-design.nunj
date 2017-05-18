@@ -1,0 +1,9 @@
+<div class="product-view">
+  {% include 'components/product/image.nunj' %}
+  <div class="product-view__block">
+    {% include 'components/product/info.nunj' %}
+    {% include 'components/product/properties.nunj' %}
+    {% include 'components/product/tables.nunj' %}
+    {% include 'components/product/footer-open-design.nunj' %}
+  </div>
+</div>

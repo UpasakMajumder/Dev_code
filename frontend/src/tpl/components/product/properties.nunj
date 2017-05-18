@@ -1,0 +1,7 @@
+<div class="product-view__properties">
+  {% for i in range(0, 2) %}
+    <span class="product-view__property">Size:
+      <span class="product-view__property-val">310 x 200</span>
+    </span>
+  {% endfor %}
+</div>
