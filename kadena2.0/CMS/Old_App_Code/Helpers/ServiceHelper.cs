@@ -1,12 +1,12 @@
 ﻿using CMS.DataEngine;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.SiteProvider;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.IO;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -38,18 +38,14 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if (string.IsNullOrWhiteSpace(mailType))
             {
-                throw new ArgumentException(_valueEmptyMessage, "mailType");
+                throw new ArgumentException(_valueEmptyMessage, nameof(mailType));
             }
             if (string.IsNullOrWhiteSpace(product))
             {
-                throw new ArgumentException(_valueEmptyMessage, "product");
+                throw new ArgumentException(_valueEmptyMessage, nameof(product));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri createContainerUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_createContainerSettingKey}")
@@ -97,30 +93,26 @@ namespace Kadena.Old_App_Code.Helpers
             }
             return containerId;
         }
-
+        
         /// <summary>
         /// Uploads file with request to microservice.
         /// </summary>
         /// <param name="fileStream">Stream to upload.</param>
         /// <param name="fileName">Name of file to pass to microservice.</param>
         /// <returns>Id of uploaded file.</returns>
-        public static Guid UploadFile(System.IO.Stream fileStream, string fileName)
+        public static Guid UploadFile(Stream fileStream, string fileName)
         {
             if (fileStream == null || fileStream.Length == 0)
             {
-                throw new ArgumentException(_valueEmptyMessage, "fileStream");
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileStream));
             }
 
             if (string.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentException(_valueEmptyMessage, "fileName");
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileName));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri postFileUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}")
@@ -135,7 +127,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new MultipartFormDataContent())
                 {
-                    fileStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    fileStream.Seek(0, SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
                     content.Add(new StringContent(_bucketType), "bucketType");
                     content.Add(new StringContent(customerName), "customerName");
@@ -173,11 +165,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>List of header names.</returns>
         public static IEnumerable<string> GetHeaders(Guid fileId)
         {
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri getHeaderUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getHeaderSettingKey}")
@@ -230,14 +218,10 @@ namespace Kadena.Old_App_Code.Helpers
         {
             if ((mapping?.Count ?? 0) == 0)
             {
-                throw new ArgumentException(_valueEmptyMessage, "mapping");
+                throw new ArgumentException(_valueEmptyMessage, nameof(mapping));
             }
 
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
+            string customerName = GetCustomerName();
 
             Uri uploadMappingUrl;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_uploadMappingSettingKey}")
@@ -293,6 +277,21 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets name of customer from settings for current site.
+        /// </summary>
+        /// <returns>Customer's name</returns>
+        private static string GetCustomerName()
+        {
+            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            if (string.IsNullOrWhiteSpace(customerName))
+            {
+                throw new InvalidOperationException(_customerNotSpecifiedMessage);
+            }
+
+            return customerName;
         }
     }
 }

@@ -29,25 +29,25 @@ $sidebar-item-padding-y--shrinked: 5px;
     &__nav-link:active,
     &__nav-link:hover {
       flex-direction: row;
-    }
-
-    &__nav-item {
-      padding-top: $sidebar-item-padding-y;
-      padding-bottom: $sidebar-item-padding-y;
+      padding: $sidebar-item-padding-y $sidebar-padding-x;
     }
   }
 
   &__header {
     text-align: center;
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 15px;
     font-size: $font-s;
     color: $brand-grey;
 
     .isOpen & {
       text-align: right;
-      padding: 20px $sidebar-padding-x 15px;
+      padding-left: $sidebar-padding-x;
+      padding-right: $sidebar-padding-x;
+    }
+
+    & > div:last-child {
+      padding-top: 20px;
+      padding-bottom: 15px;
     }
   }
 
@@ -71,6 +71,8 @@ $sidebar-item-padding-y--shrinked: 5px;
   &__nav-link:hover {
     @extend %flex--center--default;
     @extend .weight--light;
+    padding-top: $sidebar-item-padding-y--shrinked;
+    padding-bottom: $sidebar-item-padding-y--shrinked;
     text-decoration: none;
     color: $font-grey;
     flex-direction: column;
@@ -80,8 +82,6 @@ $sidebar-item-padding-y--shrinked: 5px;
     position: relative;
     margin-bottom: 2px;
     white-space: nowrap;
-    padding-top: $sidebar-item-padding-y--shrinked;
-    padding-bottom: $sidebar-item-padding-y--shrinked;
     cursor: pointer;
 
     svg {
@@ -133,8 +133,6 @@ $sidebar-item-padding-y--shrinked: 5px;
 
     .isOpen & {
       flex-direction: row;
-      padding-right: $sidebar-padding-x;
-      padding-left: $sidebar-padding-x;
     }
   }
 }

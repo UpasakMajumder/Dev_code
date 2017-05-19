@@ -712,13 +712,6 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.cs">
-      <DependentUpon>NewMailingList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\NewMailingList.aspx.designer.cs">
-      <DependentUpon>NewMailingList.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.cs">
       <DependentUpon>ColumnMapper.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -823,7 +816,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CMSPages\Kadena\NewMailingList.aspx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
