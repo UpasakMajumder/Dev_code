@@ -37,6 +37,7 @@ const app = {
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
+    render('Payment', document.querySelectorAll('.js-credit-card-payment'));
   }
 };
 
