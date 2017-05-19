@@ -26,6 +26,7 @@ $m-size: 22px;
 
   &--hover {
     &:hover {
+      position: relative;
       border: 1px solid $brand-lightgrey;
 
       &:after {
