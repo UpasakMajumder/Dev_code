@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Cards from 'react-credit-cards';
-import PaymentForm from './PaymentForm';
-import 'react-credit-cards/lib/styles-compiled.css';
 import { connect } from 'react-redux';
+import 'react-credit-cards/lib/styles-compiled.css';
+import PaymentForm from './PaymentForm';
 import submitCard from '../../AC/card-payment';
+import { cardPaymentSymbols } from '../../helpers/validationRules';
 
 class Payment extends Component {
   constructor() {
@@ -38,13 +39,13 @@ class Payment extends Component {
 
     switch (type) {
     case 'number':
-      maxLength = cardType === 'amex' ? 15 : 16;
+      maxLength = cardType === 'amex' ? cardPaymentSymbols.number.amex : cardPaymentSymbols.number.rest;
       break;
     case 'expiry':
-      maxLength = 6;
+      maxLength = cardPaymentSymbols.expiry.max;
       break;
     case 'cvc':
-      maxLength = 4;
+      maxLength = cardPaymentSymbols.cvc.max;
       break;
     default:
       maxLength = 1000;
@@ -81,7 +82,7 @@ class Payment extends Component {
               ref="card"
               {...fields}
               focused={focused}
-              acceptedCards={['visa', 'mastercard', 'amex']}
+              acceptedCards={['visa', 'amex', 'mastercard']} // GLOBALS
             />
           </div>
 

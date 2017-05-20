@@ -1,10 +1,11 @@
 import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from '../constants';
+import { cardPaymentSymbols } from '../helpers/validationRules';
 
 export default function submitCard(fields, cardType) {
   const { name, cvc, number, expiry } = fields;
 
   return (dispatch) => {
-    const maxLength = cardType === 'amex' ? 15 : 16;
+    const maxLength = cardType === 'amex' ? cardPaymentSymbols.number.amex : cardPaymentSymbols.number.rest;
     if (number.length < maxLength) {
       dispatch({
         type: CARD_VALIDATION_ERROR,
@@ -16,7 +17,7 @@ export default function submitCard(fields, cardType) {
       return;
     }
 
-    if (!['visa', 'amex', 'mastercard'].includes(cardType)) {
+    if (!['visa', 'amex', 'mastercard'].includes(cardType)) { // GLOBALS
       dispatch({
         type: CARD_VALIDATION_ERROR,
         payload: {
@@ -27,7 +28,7 @@ export default function submitCard(fields, cardType) {
       return;
     }
 
-    if (name.length < 1) {
+    if (name.length < cardPaymentSymbols.name.min) {
       dispatch({
         type: CARD_VALIDATION_ERROR,
         payload: {
@@ -38,7 +39,7 @@ export default function submitCard(fields, cardType) {
       return;
     }
 
-    if (cvc.length < 3) {
+    if (cvc.length < cardPaymentSymbols.cvc.min) {
       dispatch({
         type: CARD_VALIDATION_ERROR,
         payload: {
@@ -49,7 +50,7 @@ export default function submitCard(fields, cardType) {
       return;
     }
 
-    if (expiry.length < 4) {
+    if (expiry.length < cardPaymentSymbols.expiry.min) {
       dispatch({
         type: CARD_VALIDATION_ERROR,
         payload: {
