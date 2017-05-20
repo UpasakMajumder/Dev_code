@@ -11,7 +11,8 @@ class TextInput extends Component {
   }
 
   handleFocus(e) {
-    console.log('hi');
+    const { changeFocusedField } = this.props;
+    if (changeFocusedField) changeFocusedField();
     const target = e.target;
     if (target.value.length) return;
     this.refs.label.classList.add('input__label--active');
@@ -34,24 +35,25 @@ class TextInput extends Component {
   render() {
     const { label, error, disabled, labelAnimation, innerElement } = this.props;
 
-    const inputProps = removeProps(this.props, ['label', 'error', 'labelAnimation', 'innerElement']);
+    const inputProps = removeProps(this.props, ['label', 'error', 'labelAnimation', 'innerElement', 'changeFocusedField']);
 
 
     let className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
     const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
     const errorClass = error ? 'input--error' : '';
 
-    let input, labelElement;
+    let input;
+    let labelElement;
     if (labelAnimation) {
       className += ' input__wrapper--label-animation';
-      input = <input onBlur={(e) => this.handleBlur(e)}
-                     onFocus={(e) => this.handleFocus(e)}
+      input = <input onBlur={(e) => { this.handleBlur(e); }}
+                     onFocus={(e) => { this.handleFocus(e); }}
                      ref="input"
                      type="text"
                      className={`input__text ${errorClass}`}
                      {...inputProps} />;
 
-      labelElement = label ? <span onClick={(e) => this.handleClick(e)}
+      labelElement = label ? <span onClick={(e) => { this.handleClick(e); }}
                                          ref="label"
                                          className="input__label">{label}</span> : null;
     } else {
