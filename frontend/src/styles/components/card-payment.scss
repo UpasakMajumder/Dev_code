@@ -6,6 +6,7 @@
 
   &__form {
     @include rem(padding, 20px);
+
     @extend %flex--center--default;
     width: $form-width;
     background-color: rgba($brand-grey, .5);
@@ -22,7 +23,7 @@
   }
 
   &__field {
-    @extend .mb-2;
+    @extend .mb-3;
     position: relative;
 
     &--half {
@@ -62,5 +63,3 @@
     }
   }
 }
-
-
