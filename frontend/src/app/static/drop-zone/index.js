@@ -15,7 +15,7 @@ class Dropzone {
       const type = arrayName[arrayName.length - 1];
 
       if (type !== 'csv') {
-        this.file.value = '';
+        // this.file.value = '';
         return;
       }
 
