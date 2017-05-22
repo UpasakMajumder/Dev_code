@@ -19,6 +19,28 @@
     &--disabled {
       opacity: .5;
     }
+
+    &--icon-label {
+      @extend %flex--center--default;
+
+      label {
+        @extend %flex--center--default;
+
+        @include rem(margin-bottom, 0);
+
+        > span {
+          @extend .weight--bold;
+
+          @include rem(padding-left, 16px);
+        }
+
+        &:before,
+        &:after {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
   }
 
   &__inner {

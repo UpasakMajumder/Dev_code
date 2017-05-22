@@ -1,0 +1,91 @@
+.select-accordion {
+  $transition-length: 700ms;
+
+  &__item {
+    label {
+      @extend %flex--center--default;
+      @extend .weight--bold;
+
+      &:before {
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+
+      svg {
+        @include rem(margin-right, 16px);
+      }
+    }
+
+    &--inner {
+      .input__label {
+        @extend .weight--normal;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        right: calc(100% + 5px);
+        top: 50%;
+        width: 15px;
+        height: 1px;
+        background-color: $brand-grey;
+      }
+    }
+  }
+
+  &__inner-label {
+    @extend .weight--normal;
+
+    @include rem(padding-left, 16px);
+    font-size: $font-xs;
+    color: $font-grey;
+    transition: all $transition-length ease-in-out;
+  }
+
+  &__main-label {
+    transition: all $transition-length ease-in-out;
+
+    &:before {
+      transition: all 100ms ease-in-out 300ms;
+    }
+
+    .isActive & {
+      padding-left: 0;
+
+      .select-accordion__inner-label {
+        opacity: 0;
+      }
+
+      &:before {
+        opacity: 0;
+        transition: none;
+      }
+    }
+  }
+
+  &__content {
+    @include rem(margin-left, 20px);
+    @include rem(padding-left, 20px);
+    @include rem(padding-top, 2px);
+    position: relative;
+    overflow: hidden;
+    transition: all $transition-length ease-in-out;
+    height: 0;
+    opacity: 0;
+
+    .isActive & {
+      height: auto;
+      opacity: 1;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 27px;
+      width: 1px;
+      height: 100%;
+      background-color: $brand-grey;
+    }
+  }
+}
