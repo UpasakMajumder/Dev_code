@@ -2,36 +2,34 @@ import findParentBySelector from '../../helpers/nodes';
 
 export default class SelectAccordion {
   constructor(accordion) {
-    let activeToggler = {};
     const activeTabClass = 'isActive';
     const itemClass = 'js-accordion-group';
     const togglerClass = 'js-select-accordion-item';
-    const togglers = Array.from(document.querySelectorAll(`.${togglerClass}`));
+    const togglers = Array.from(accordion.querySelectorAll(`.${togglerClass}`));
     const containers = Array.from(accordion.querySelectorAll(`.${itemClass}`));
     const inputs = Array.from(accordion.querySelectorAll('input'));
+    let activeToggler = togglers[0];
 
 
     togglers.forEach((toggler) => {
       toggler.addEventListener('click', (e) => {
-        console.log('click');
-        if (activeToggler !== e.target) {
-          activeToggler = e.target;
+        if (activeToggler === e.target) return;
 
-          SelectAccordion.unstyleItems(containers, activeTabClass);
+        SelectAccordion.unstyleItem(activeToggler, itemClass, activeTabClass);
 
-          SelectAccordion.disableCheckboxes(inputs, togglerClass);
+        SelectAccordion.disableCheckboxes(inputs, togglerClass);
 
-          SelectAccordion.styleActiveItem(e.target, itemClass, activeTabClass);
+        activeToggler = e.target;
 
-        }
+        SelectAccordion.styleActiveItem(e.target, itemClass, activeTabClass);
+
       });
     });
   }
 
-  static unstyleItems(items, cls) {
-    items.forEach((item) => {
-      item.classList.remove(cls);
-    });
+  static unstyleItem(toggler, itemCls, cls) {
+    const parent = findParentBySelector(toggler, `.${itemCls}`);
+    parent.classList.remove(cls);
   }
 
   static styleActiveItem(trigger, parentcls, addCls) {
