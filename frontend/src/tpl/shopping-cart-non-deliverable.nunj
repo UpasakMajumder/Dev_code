@@ -57,9 +57,7 @@
 
   <div class="shopping-cart">
     <div class="shopping-cart__block">
-      <h2>Added items
-        <span class="shopping-cart__badge">3</span>
-      </h2>
+      <p class="text-right">You have <span>3 items</span> in your cart</p>
       {% set deliverable = 'true' %}
       {% include "components/cart-product.nunj" %}
     </div>
@@ -95,86 +93,9 @@
 
     <div class="shopping-cart__block">
       <h2>Shipping Method</h2>
-      <div class='js-select-accordion select-accordion'>
-        <div class="select-accordion__item-group js-accordion-group">
-          <div class="input__wrapper select-accordion__item"><input type="radio" class="input__radio js-select-accordion-item" id="example1" name="del" value="1">
-            <label for="example1" class="input__label input__label--radio select-accordion__main-label">
-              {{ svg('credit-card', 'icon-shipping') }}
-              Label
-              <span class="select-accordion__item-label">(
-                <span>Price from $ 13.00</span>
-                |
-                <span>Get it May 16-20</span>)
-              </span>
-            </label>
-          </div>
-          <div class="select-accordion__content">
-            <div class="input__wrapper select-accordion__item  select-accordion__item--inner"><input type="radio" name="delivery" class="input__radio " id="example01" value="2">
-              <label for="example01" class="input__label input__label--radio">
-                Label
-                <span class="select-accordion__item-label">(
-                  <span>Price from $ 13.00</span>
-                  |
-                  <span>Get it May 16-20</span>)
-                </span>
-              </label>
-            </div>
-            <div class="input__wrapper select-accordion__item  select-accordion__item--inner"><input type="radio" name="delivery" class="input__radio " id="example02" value="3">
-              <label for="example02" class="input__label input__label--radio">
-                Label
-                <span class="select-accordion__item-label">(
-                  <span>Price from $ 13.00</span>
-                  |
-                  <span>Get it May 16-20</span>)
-                </span>
-              </label>
-            </div>
-            <div class="input__wrapper select-accordion__item  select-accordion__item--inner"><input type="radio" name="delivery" class="input__radio " id="example03" value="4">
-              <label for="example03" class="input__label input__label--radio">
-                Label
-                <span class="select-accordion__item-label">(
-                  <span>Price from $ 13.00</span>
-                  |
-                  <span>Get it May 16-20</span>)
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="select-accordion__item-group js-accordion-group">
-          <div class="input__wrapper select-accordion__item"><input type="radio" class="input__radio js-select-accordion-item" id="example2" name="del" value="1">
-            <label for="example2" class="input__label input__label--radio select-accordion__main-label">
-              {{ svg('credit-card', 'icon-shipping') }}
-              Label
-              <span class="select-accordion__item-label">(
-                <span>Price from $ 13.00</span>
-                |
-                <span>Get it May 16-20</span>)
-              </span>
-            </label>
-          </div>
-          <div class="select-accordion__content">
-            <div class="input__wrapper select-accordion__item  select-accordion__item--inner"><input type="radio" name="delivery" class="input__radio " id="example04" value="2">
-              <label for="example04" class="input__label input__label--radio">
-                Label
-                <span class="select-accordion__item-label">(
-                  <span>Price from $ 13.00</span>
-                  |
-                  <span>Get it May 16-20</span>)
-                </span>
-              </label>
-            </div>
-            <div class="input__wrapper select-accordion__item  select-accordion__item--inner"><input type="radio" name="delivery" class="input__radio " id="example05" value="3">
-              <label for="example05" class="input__label input__label--radio">
-                Label
-                <span class="select-accordion__item-label">(
-                  <span>Price from $ 13.00</span>
-                  |
-                  <span>Get it May 16-20</span>)
-                </span>
-              </label>
-            </div>
-          </div>
+      <div class="cart-fill__block">
+        <div class="cart-fill__block-inner">
+          {% include "components/shopping-cart/delivery-method.nunj" %}
         </div>
       </div>
     </div>
@@ -184,29 +105,7 @@
       <div class="cart-fill__block">
         <div class="cart-fill__block-inner">
 
-          <div class="input__wrapper">
-            <input id="dom-6" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-6" class="input__label input__label--radio">
-              <p>Credit card</p>
-            </label>
-          </div>
-
-          <div class="input__wrapper">
-            <input id="dom-7" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-7" class="input__label input__label--radio">
-              <p>Pay Pal</p>
-            </label>
-          </div>
-
-          <div class="input__wrapper cart-fill__block-input-wrapper">
-            <input id="dom-8" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-8" class="input__label input__label--radio">
-              <p>Purchase order</p>
-            </label>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Insert your PO number">
-            </div>
-          </div>
+          {% include "components/shopping-cart/payment-method.nunj" %}
 
         </div>
       </div>
@@ -216,34 +115,34 @@
       <h2>Total</h2>
       <div class="cart-fill__block">
         <div class="cart-fill__block-inner">
-          <div class="cart-fill__block-table">
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Summary</span>
-              <span class="cart-fill__block-table-amount">$
+          <div class="summary-table">
+            <div class="summary-table__row">
+              <span class="summary-table__info">Summary</span>
+              <span class="summary-table__amount">$
                 <span class="js-money-format">1025.49</span>
               </span>
             </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Shipping</span>
-              <span class="cart-fill__block-table-amount">$
+            <div class="summary-table__row">
+              <span class="summary-table__info">Shipping</span>
+              <span class="summary-table__amount">$
                 <span class="js-money-format">42.64</span>
               </span>
             </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Subtotal</span>
-              <span class="cart-fill__block-table-amount">$
+            <div class="summary-table__row">
+              <span class="summary-table__info">Subtotal</span>
+              <span class="summary-table__amount">$
                 <span class="js-money-format">67.49</span>
               </span>
             </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Tax 8%</span>
-              <span class="cart-fill__block-table-amount">$
+            <div class="summary-table__row">
+              <span class="summary-table__info">Tax 8%</span>
+              <span class="summary-table__amount">$
                 <span class="js-money-format">16.20</span>
               </span>
             </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Total</span>
-              <span class="cart-fill__block-table-amount cart-fill__block-table-amount--emphasized">$
+            <div class="summary-table__row">
+              <span class="summary-table__info">Total</span>
+              <span class="summary-table__amount summary-table__amount--emphasized">$
                 <span class="js-money-format">1383.68</span>
               </span>
             </div>

@@ -6,9 +6,6 @@
       @extend %flex--center--default;
       @extend .weight--bold;
 
-      @include rem(padding-top, 5px);
-      @include rem(padding-bottom, 5px);
-
       &:before {
         top: 50%;
         transform: translate(0, -50%);
@@ -36,7 +33,7 @@
     }
   }
 
-  &__item-label {
+  &__inner-label {
     @extend .weight--normal;
 
     @include rem(padding-left, 16px);
@@ -55,7 +52,7 @@
     .isActive & {
       padding-left: 0;
 
-      .select-accordion__item-label {
+      .select-accordion__inner-label {
         opacity: 0;
       }
 
@@ -69,11 +66,12 @@
   &__content {
     @include rem(margin-left, 20px);
     @include rem(padding-left, 20px);
+    @include rem(padding-top, 2px);
     position: relative;
-    height: 0;
-    opacity: 0;
     overflow: hidden;
     transition: all $transition-length ease-in-out;
+    height: 0;
+    opacity: 0;
 
     .isActive & {
       height: auto;
@@ -83,11 +81,11 @@
     &:after {
       content: '';
       position: absolute;
-      height: calc(100% - 10px);
-      width: 1px;
-      background-color: $brand-grey;
       left: 0;
-      bottom: 20px;
+      bottom: 27px;
+      width: 1px;
+      height: 100%;
+      background-color: $brand-grey;
     }
   }
 }
