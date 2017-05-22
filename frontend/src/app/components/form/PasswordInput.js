@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import InputMask from 'react-input-mask';
 import removeProps from '../../helpers/object';
 import { LOGIN } from '../../globals';
 
@@ -27,9 +26,9 @@ export default class PasswordInput extends Component {
 
   render() {
     const { isShown } = this.state;
-    const { error, label, disabled, mask, maskChar, formatChars } = this.props;
+    const { error, label, disabled } = this.props;
 
-    const inputProps = removeProps(this.props, ['error', 'label', 'mask', 'maskChar', 'formatChars']);
+    const inputProps = removeProps(this.props, ['error', 'label']);
 
     const labelElement = label ? <span className="input__label">{label}</span> : null;
     const toggler = isShown ? this.passwordHideText : this.passwordShowText;
@@ -39,29 +38,14 @@ export default class PasswordInput extends Component {
     const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
     const errorClass = error ? 'input--error' : '';
 
-    const defaultFormatChairs = {
-      9: '[0-9]',
-      a: '[A-Za-z]',
-      '*': '[A-Za-z0-9]'
-    };
-
-    const input = mask
-      ? <InputMask type={type}
-                  className={`input__password ${errorClass}`}
-                  {...inputProps}
-                  mask={mask}
-                  maskChar={maskChar}
-                  formatChars={formatChars || defaultFormatChairs}/>
-      : <input
-        type={type}
-        className={`input__password ${errorClass}`}
-        {...inputProps} />;
-
     return (
       <div className={className}>
         {labelElement}
         <div className="input__inner">
-          {input}
+          <input
+            type={type}
+            className={`input__password ${errorClass}`}
+            {...inputProps} />
           <span onClick={onClick} className="input__toggler">{ toggler }</span>
         </div>
         {errorElement}
@@ -74,8 +58,5 @@ PasswordInput.propTypes = {
   error: PropTypes.string,
   label: PropTypes.string,
   disabled: PropTypes.bool,
-  placeholder: PropTypes.string,
-  mask: PropTypes.string,
-  maskChar: PropTypes.string,
-  formatChars: PropTypes.obj
+  placeholder: PropTypes.string
 };

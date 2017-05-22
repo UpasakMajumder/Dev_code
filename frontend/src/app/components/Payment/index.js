@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import Cards from 'react-credit-cards';
 import { connect } from 'react-redux';
 import 'react-credit-cards/lib/styles-compiled.css';
-import PaymentForm from './PaymentForm';
+import PaymentForm from '../form/PaymentForm';
 import submitCard from '../../AC/card-payment';
 import { cardPaymentSymbols } from '../../helpers/validationRules';
+import { CARD_PAYMENT } from '../../globals';
 
 class Payment extends Component {
   constructor() {
@@ -16,7 +17,7 @@ class Payment extends Component {
         number: '',
         name: '',
         expiry: '',
-        cvc: ''
+        cvv: ''
       },
       cardType: 'unknown',
       focused: ''
@@ -44,8 +45,8 @@ class Payment extends Component {
     case 'expiry':
       maxLength = cardPaymentSymbols.expiry.max;
       break;
-    case 'cvc':
-      maxLength = cardPaymentSymbols.cvc.max;
+    case 'cvv':
+      maxLength = cardPaymentSymbols.cvv.max;
       break;
     default:
       maxLength = 1000;
@@ -82,7 +83,7 @@ class Payment extends Component {
               ref="card"
               {...fields}
               focused={focused}
-              acceptedCards={['visa', 'amex', 'mastercard']} // GLOBALS
+              acceptedCards={CARD_PAYMENT.acceptedCards}
             />
           </div>
 
@@ -97,7 +98,13 @@ class Payment extends Component {
           </div>
         </div>
         <div className="card-payment__submit">
-          <button disabled={isProceeded} onClick={this.submit} type='button' className='btn-action'>Proceed with payment</button>
+          <button disabled={isProceeded}
+                  onClick={this.submit}
+                  type='button'
+                  className='btn-action'
+          >
+            {CARD_PAYMENT.submitButtonText}
+          </button>
         </div>
 
       </div>

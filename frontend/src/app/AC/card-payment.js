@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from '../constants';
 import { cardPaymentSymbols } from '../helpers/validationRules';
+import { CARD_PAYMENT } from '../globals';
 
 export default function submitCard(fields, cardType) {
   const { name, cvc, number, expiry } = fields;
@@ -11,18 +13,18 @@ export default function submitCard(fields, cardType) {
         type: CARD_VALIDATION_ERROR,
         payload: {
           errorField: 'number',
-          errorMessage: 'number error'
+          errorMessage: CARD_PAYMENT.fields.number.inValidMessage
         }
       });
       return;
     }
 
-    if (!['visa', 'amex', 'mastercard'].includes(cardType)) { // GLOBALS
+    if (!CARD_PAYMENT.acceptedCards.includes(cardType)) {
       dispatch({
         type: CARD_VALIDATION_ERROR,
         payload: {
           errorField: 'number',
-          errorMessage: 'type error'
+          errorMessage: CARD_PAYMENT.cardTypeInValidMessage
         }
       });
       return;
@@ -33,7 +35,7 @@ export default function submitCard(fields, cardType) {
         type: CARD_VALIDATION_ERROR,
         payload: {
           errorField: 'name',
-          errorMessage: 'name error'
+          errorMessage: CARD_PAYMENT.fields.name.inValidMessage
         }
       });
       return;
@@ -44,7 +46,7 @@ export default function submitCard(fields, cardType) {
         type: CARD_VALIDATION_ERROR,
         payload: {
           errorField: 'cvc',
-          errorMessage: 'cvc error'
+          errorMessage: CARD_PAYMENT.fields.cvc.inValidMessage
         }
       });
       return;
@@ -55,7 +57,7 @@ export default function submitCard(fields, cardType) {
         type: CARD_VALIDATION_ERROR,
         payload: {
           errorField: 'expiry',
-          errorMessage: 'expiry error'
+          errorMessage: CARD_PAYMENT.fields.expiry.inValidMessage
         }
       });
       return;
@@ -66,5 +68,41 @@ export default function submitCard(fields, cardType) {
     });
 
     // AJAX REQUEST
+
+    const { URL3DSi, ResultURL, BrowserRedirectURL, SubmissionID,
+            CustomerIdentifier_MerchantCode,
+            CustomerIdentifier_LocationCode,
+            CustomerIdentifier_CustomerCode,
+            TerminalIdentifier_LocationCode,
+            TerminalIdentifier_TerminalCode,
+            TerminalIdentifier_MerchantCode
+    } = CARD_PAYMENT;
+
+    const data = {
+      CreditCard_CSCValue: cvc,
+      CreditCard_ExpirationMonth: expiry.substr(0, 2),
+      CreditCard_ExpirationYear: expiry.substr(2),
+      CreditCard_CardType: cardType,
+      CreditCard_NameOnCard: name,
+      CreditCard_CardAccountNumber: '', // -
+      APCount: '', // -
+      PTCount: '', // -
+      ResultURL,
+      BrowserRedirectURL,
+      SubmissionID,
+      CustomerIdentifier_MerchantCode,
+      CustomerIdentifier_LocationCode,
+      CustomerIdentifier_CustomerCode,
+      TerminalIdentifier_LocationCode,
+      TerminalIdentifier_TerminalCode,
+      TerminalIdentifier_MerchantCode
+    };
+
+    axios({
+      method: 'post',
+      url: URL3DSi,
+      headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+      data
+    });
   };
 }

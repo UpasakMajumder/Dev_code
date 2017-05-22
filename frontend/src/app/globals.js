@@ -1,9 +1,10 @@
 const { localization } = config; // eslint-disable-line no-undef
 
 const {
-  login
+  login,
+  cardPayment
 } = localization;
 
 
 export const LOGIN = login;
-export const blabla = '123';
+export const CARD_PAYMENT = cardPayment;
