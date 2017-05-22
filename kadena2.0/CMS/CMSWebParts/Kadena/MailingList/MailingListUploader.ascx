@@ -26,13 +26,18 @@
             <p class="js-drop-zone-name">File name</p>
         </div>
     </div>
-    <div class="input__wrapper j-submit-mailing-list-error" style="display:none;">
-    <span class="input__error">
-        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
-    </span> 
+    <div class="input__wrapper j-submit-mailing-list-error" style="display: none;">
+        <span class="input__error">
+            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
+        </span>
+    </div>
+    <div id="divFileTypeError" runat="server" enableviewstate="false" class="input__wrapper" visible="false">
+        <span class="input__error">
+            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileUnsupportedExtension" />
+        </span>
+    </div>
 </div>
-</div>
-<div class="upload-mail__row upload-mail__offer" style="display:none;">
+<div class="upload-mail__row upload-mail__offer" style="display: none;">
     <span runat="server" id="textOr"></span>
     <p runat="server" id="textSkipField"></p>
 </div>
