@@ -16,13 +16,13 @@ class PaymentForm extends Component {
   }
 
   render() {
-    const { number, name, cvv, expiry, changeFieldValue, changeFocus } = this.props;
+    const { number, name, cvc, expiry, changeFieldValue, changeFocus } = this.props;
     const cardNumbersSvgs = <div className="card-payment__icon-block">
       <SVG className='card-payment__icon' name='card-am'/>
       <SVG className='card-payment__icon' name='card-mc'/>
       <SVG className='card-payment__icon' name='card-vs'/>
     </div>;
-    const cvvSvgs = <div className="card-payment__icon-block">
+    const cvcSvgs = <div className="card-payment__icon-block">
       <SVG className='card-payment__icon' name='card'/>
     </div>;
 
@@ -52,13 +52,13 @@ class PaymentForm extends Component {
 
         <div className="card-payment__field card-payment__field--half">
           <TextInput
-            onChange={(e) => { changeFieldValue('cvv', e.target.value); }}
-            changeFocusedField={() => { changeFocus('cvv'); }}
-            label={CARD_PAYMENT.fields.cvv.label}
-            value={cvv}
+            onChange={(e) => { changeFieldValue('cvc', e.target.value); }}
+            changeFocusedField={() => { changeFocus('cvc'); }}
+            label={CARD_PAYMENT.fields.cvc.label}
+            value={cvc}
             labelAnimation={true}
-            error={this.getErrorMessage('cvv')}
-            innerElement={cvvSvgs} />
+            error={this.getErrorMessage('cvc')}
+            innerElement={cvcSvgs} />
         </div>
 
         <div className="card-payment__field card-payment__field--half">
@@ -78,7 +78,7 @@ class PaymentForm extends Component {
 PaymentForm.propTypes = {
   number: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  cvv: PropTypes.string.isRequired,
+  cvc: PropTypes.string.isRequired,
   expiry: PropTypes.string.isRequired,
   changeFieldValue: PropTypes.func.isRequired,
   changeFocus: PropTypes.func.isRequired

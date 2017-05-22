@@ -84,9 +84,9 @@
             label: 'Full name',
             inValidMessage: 'name error'
           },
-          cvv: {
-            label: 'CVV',
-            inValidMessage: 'cvv error'
+          cvc: {
+            label: 'cvc',
+            inValidMessage: 'cvc error'
           },
           expiry: {
             label: 'Expiration date',

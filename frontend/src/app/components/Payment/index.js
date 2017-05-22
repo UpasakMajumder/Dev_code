@@ -17,7 +17,7 @@ class Payment extends Component {
         number: '',
         name: '',
         expiry: '',
-        cvv: ''
+        cvc: ''
       },
       cardType: 'unknown',
       focused: ''
@@ -45,8 +45,8 @@ class Payment extends Component {
     case 'expiry':
       maxLength = cardPaymentSymbols.expiry.max;
       break;
-    case 'cvv':
-      maxLength = cardPaymentSymbols.cvv.max;
+    case 'cvc':
+      maxLength = cardPaymentSymbols.cvc.max;
       break;
     default:
       maxLength = 1000;
@@ -86,7 +86,6 @@ class Payment extends Component {
               acceptedCards={CARD_PAYMENT.acceptedCards}
             />
           </div>
-
           <div className="card-payment__block">
             <PaymentForm
               errorField={errorField}
@@ -106,7 +105,6 @@ class Payment extends Component {
             {CARD_PAYMENT.submitButtonText}
           </button>
         </div>
-
       </div>
     );
   }
