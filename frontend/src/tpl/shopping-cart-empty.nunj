@@ -1,0 +1,26 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/select.nunj" import select %}
+{% from "macro/svg.nunj" import svg %}
+{% import "macro/dialog.nunj" as dialog %}
+
+{% set title = 'Shopping cart' %}
+{% set headerActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+
+<div class="alert alert--full alert--info isOpen js-collapse">
+  <button type="button" class="alert__close btn--off js-toggle">
+    {{ svg('cross--darker', 'icon-modal') }}
+  </button>
+  <p class="p-info weight--normal">
+  Your shopping cart is empty.</p>
+</div>
+
+<div class="btn-group btn-group--center">
+  <a href="#" type="type" class="btn-action btn-action--secondary">Go to dashboard</a>
+  <a href="#" type="type" class="btn-action">See products</a>
+</div>
+
+{% endblock %}

@@ -18,7 +18,8 @@ namespace AutomatedTests.PageObjects
         
         public Dashboard()
         {
-            PageFactory.InitElements(Browser.Driver, this);           
+            PageFactory.InitElements(Browser.Driver, this);
+            
         }
 
         public bool IsDashboardDisplayed()

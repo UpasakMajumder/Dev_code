@@ -1,13 +1,18 @@
-using AutomatedTests.PageObjects;
+﻿using AutomatedTests.PageObjects;
 using AutomatedTests.Utilities;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AutomatedTests.Tests
 {
     class UserLogin : BaseTest
     {
         [Test]
-        public void When_CorrectCredentialsEntered_Expect_UserLoggedIn()
+        public void Login_LogUserInWithCorrectCredentials()
         {
             var login = new Login();
             login.Open();
@@ -25,6 +30,32 @@ namespace AutomatedTests.Tests
             Assert.IsTrue(dashboard.IsDashboardDisplayed());
         }
 
+        [Test]
+        public void Login_LoginWithIncorrectCredentials()
+        {
+            var login = new Login();
+            login.Open();
 
+            //enter no username and password
+            login.FillLogin(String.Empty, String.Empty);
+            login.SubmitInvalid();
+            Assert.IsTrue(login.IsErrorMessageDisplayed());
+
+            //enter correct username, no password
+            Browser.Refresh();
+            login.FillLogin(TestUser.Name, String.Empty);
+            login.SubmitInvalid();
+            Assert.IsTrue(login.IsErrorMessageDisplayed());
+        }
+
+        [Test]
+        public void Login_CustomerLogo()
+        {
+            var login = new Login();
+            login.Open();
+
+            //verify if customer logo is displayed
+            Assert.IsTrue(login.IsCustomerLogoDisplayed());
+        }
     }
 }
