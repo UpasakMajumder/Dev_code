@@ -3,13 +3,13 @@
 {% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
-{% set title = 'Shopping cart' %}
+{% set title='Shopping cart' %}
 {% set headerActive = title %}
 {% set breadcrumbs = [title] %}
 {% set headerTitle = title %}
 
 {% block content %}
-  {% call dialog.wrapper(id = 'cart-add-adress') %}
+  {% call dialog.wrapper(id='cart-add-adress') %}
   {{ dialog.header(header='New adress:') }}
   {% call dialog.content() %}
   <table class="cart__dialog-table">
@@ -58,7 +58,7 @@
   <div class="shopping-cart">
     <div class="shopping-cart__block">
       <p class="text-right">You have <span>3 items</span> in your cart</p>
-      {% set deliverable = 'true' %}
+      {% set deliverable='true' %}
       {% include "components/cart-product.nunj" %}
     </div>
     <div class="shopping-cart__block">
