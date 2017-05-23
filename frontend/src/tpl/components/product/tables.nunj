@@ -1,11 +1,12 @@
+{% from "macro/svg.nunj" import svg %}
+
 <div class="product-view__tables">
   <table class="table">
     <tbody>
     <tr>
       <th colspan="2">
-        {% call svg.template('icon-deliver') %}
-        {{svg.use(name='deliver-car')}}
-        {% endcall %}Estimates</th>
+          {{ svg('deliver-car', 'icon-deliver') }}
+          Estimates</th>
     </tr>
     <tr>
       <td>Production time</td>
@@ -25,9 +26,7 @@
     <tbody>
     <tr>
       <th colspan="2">
-        {% call svg.template('icon-dollar') %}
-        {{svg.use(name='money')}}
-        {% endcall %}
+        {{ svg('money', 'icon-dollar') }}
         Unit price</th>
     </tr>
     <tr>
