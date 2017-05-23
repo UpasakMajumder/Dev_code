@@ -1,26 +1,12 @@
 {% extends "layouts/default.nunj" %}
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
-{% from "macro/sidebar.nunj" import sidebar %}
-{% import "macro/svg.nunj" as svg %}
 
-{% set title = "Products" %}
+{% set title = 'March events 2017' %}
+{% set sidebarActive = 'Products' %}
+{% set breadcrumbs = ['Category name', title] %}
+{% set headerTitle = title %}
 
 {% block content %}
 
-  {{ sidebar('Products') }}
-
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">March 2017 Events</h1>
-        </div>
-        {{ breadcrumb(['Home','Products', 'Category Name', 'March 2017 Events']) }}
-      </div>
-      <div class="content-block">
-        {% include 'components/product/add-to-cart.nunj' %}
-      </div>
-    </div>
-  </div>
+  {% include 'components/product/add-to-cart.nunj' %}
 
 {% endblock %}
