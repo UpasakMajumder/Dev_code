@@ -1,0 +1,122 @@
+.show-table {
+  overflow: hidden;
+  width: 100%;
+
+  & tr td,
+  & tr th {
+    background-color: $brand-white;
+
+    &:first-child {
+      border-left: 1px solid $brand-grey;
+    }
+
+    &:last-child {
+      border-right: 1px solid $brand-grey;
+    }
+  }
+
+  & tr:nth-child(2n) {
+    & > * {
+      background-color: $brand-lightgrey;
+    }
+
+    .show-table__text-appear {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 42px;
+        height: 100%;
+        background: $show-table-row-gardient--gray;
+      }
+    }
+
+    &:hover {
+      .show-table__will-appear {
+        &:after {
+          content: '';
+          position: absolute;
+          right: 100%;
+          top: 0;
+          width: 42px;
+          height: 100%;
+          background: $show-table-row-gardient--gray;
+        }
+      }
+    }
+  }
+
+  td,
+  th {
+    @include rem(padding, 8px);
+    border-top: 1px solid $brand-grey;
+    border-bottom: 1px solid $brand-grey;
+  }
+
+  &__text-appear {
+    max-width: 250px;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 42px;
+      height: 100%;
+      background: $show-table-row-gardient;
+    }
+
+    tr:hover > & {
+      overflow: visible;
+
+      &:after {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &__will-hide {
+    tr:hover > & {
+      color: transparent;
+    }
+  }
+
+  &__will-appear {
+    position: relative;
+    text-align: center;
+
+    & > * {
+      visibility: hidden;
+    }
+
+    tr:hover > & > * {
+      visibility: visible;
+    }
+
+    tr:hover > & {
+      z-index: 1;
+    }
+
+    tr:hover > & {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 0;
+        width: 42px;
+        height: 100%;
+        background: $show-table-row-gardient;
+      }
+    }
+  }
+
+  tr > td,
+  tr > th {
+    border-left-color: transparent;
+    border-right-color: transparent;
+  }
+}
