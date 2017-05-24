@@ -1,4 +1,5 @@
 .show-table {
+  $transition-length: 300ms;
   overflow: hidden;
   width: 100%;
 
@@ -13,6 +14,17 @@
     &:last-child {
       border-right: 1px solid $brand-grey;
     }
+  }
+
+  td,
+  th {
+    @include rem(padding, 8px);
+    border-top: 1px solid $brand-grey;
+    border-bottom: 1px solid $brand-grey;
+  }
+
+  tr:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
   }
 
   & tr:nth-child(2n) {
@@ -47,13 +59,6 @@
     }
   }
 
-  td,
-  th {
-    @include rem(padding, 8px);
-    border-top: 1px solid $brand-grey;
-    border-bottom: 1px solid $brand-grey;
-  }
-
   &__text-appear {
     max-width: 250px;
     position: relative;
@@ -82,6 +87,12 @@
   &__will-hide {
     tr:hover > & {
       color: transparent;
+
+      & > * {
+        background-color: transparent;
+        color: transparent;
+        border-color: transparent;
+      }
     }
   }
 
@@ -91,10 +102,13 @@
 
     & > * {
       visibility: hidden;
+      opacity: 0;
+      transition: all $transition-length ease-in;
     }
 
     tr:hover > & > * {
       visibility: visible;
+      opacity: 1;
     }
 
     tr:hover > & {
@@ -112,11 +126,5 @@
         background: $show-table-row-gardient;
       }
     }
-  }
-
-  tr > td,
-  tr > th {
-    border-left-color: transparent;
-    border-right-color: transparent;
   }
 }

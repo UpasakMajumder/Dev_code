@@ -6,54 +6,73 @@
 {% set headerTitle = title %}
 
 {% block content %}
+  <div class="order-data__block">
 
-  <div class="sent-statistics sent-statistics--xs mb-4">
-    <div class="sent-statistics__item">
-      <p class="sent-statistics__title">Open orders</p>
-      <p class="sent-statistics__value">2</p>
+    <div class="sent-statistics sent-statistics--xs mb-4">
+      <div class="sent-statistics__item">
+        <p class="sent-statistics__title">Open orders</p>
+        <p class="sent-statistics__value">2</p>
+      </div>
+      <div class="sent-statistics__item">
+        <p class="sent-statistics__title">Average items per order</p>
+        <p class="sent-statistics__value">7</p>
+      </div>
+      <div class="sent-statistics__item">
+        <p class="sent-statistics__title">Average production days</p>
+        <p class="sent-statistics__value">7</p>
+      </div>
+      <div class="sent-statistics__item">
+        <p class="sent-statistics__title">Average delivery days</p>
+        <p class="sent-statistics__value">2</p>
+      </div>
     </div>
-    <div class="sent-statistics__item">
-      <p class="sent-statistics__title">Average items per order</p>
-      <p class="sent-statistics__value">7</p>
-    </div>
-    <div class="sent-statistics__item">
-      <p class="sent-statistics__title">Average production days</p>
-      <p class="sent-statistics__value">7</p>
-    </div>
-    <div class="sent-statistics__item">
-      <p class="sent-statistics__title">Average delivery days</p>
-      <p class="sent-statistics__value">2</p>
-    </div>
+    
   </div>
 
-  <table class="show-table">
-    <tbody>
-      <tr>
-        <th>Order date</th>
-        <th>Ordered</th>
-        <th>Order status</th>
-        <th>Order status</th>
-        <th></th>
-      </tr>
-      <tr>
-        <td>Mar 3 2017</td>
-        <td class="show-table__text-appear">
-          1,300 x Business cards / 350 x Monthly magazine /  12 x User manual HF746H74 / 1,300 x Business cards / 350 x Monthly magazine /  12 x User manual HF746H74
-        </td>
-        <td class="show-table__will-hide">In progress</td>
-        <td class="show-table__will-hide">May 24 2017</td>
-        <td class="show-table__will-appear"><button type="button" class="btn-action">View</button></td>
-      </tr>
-      <tr>
-        <td>Mar 3 2017</td>
-        <td class="show-table__text-appear">
-          1,300 x Business cards / 350 x Monthly magazine /  12 x User manual HF746H74 / 1,300 x Business cards / 350 x Monthly magazine /  12 x User manual HF746H74
-        </td>
-        <td class="show-table__will-hide">In progress</td>
-        <td class="show-table__will-hide">May 24 2017</td>
-        <td class="show-table__will-appear"><button type="button" class="btn-action">View</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="order-data__block">
+
+    <table class="show-table">
+      <tbody>
+        <tr>
+          <th>Order date</th>
+          <th>Ordered</th>
+          <th>Order status</th>
+          <th>Order status</th>
+          <th></th>
+        </tr>
+        {% for i in range(0, 10) -%}
+
+          <tr>
+            <td>Mar 3 2017</td>
+            <td class="show-table__text-appear">
+              <span class="badge badge--s badge--empty badge--bold">3</span>
+              1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74 / 1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74
+            </td>
+            <td class="show-table__will-hide">In progress</td>
+            <td class="show-table__will-hide">May 24 2017</td>
+            <td class="show-table__will-appear">
+              <button type="button" class="btn-action">View</button>
+            </td>
+          </tr>
+
+        {%- endfor %}
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="order-data__block">
+
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing 11 to 20 of 103 entries</span>
+      </div>
+      <div class="col-6 text--right">
+        {% include "components/pagination.nunj" %}
+      </div>
+    </div>
+
+  </div>
 
 {% endblock %}
