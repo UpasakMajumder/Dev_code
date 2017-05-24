@@ -3,9 +3,13 @@
   overflow: hidden;
   width: 100%;
 
+  tr {
+    position: relative;
+  }
+
   & tr td,
   & tr th {
-    background-color: $brand-white;
+    background-color: rgba($brand-white, 1);
 
     &:first-child {
       border-left: 1px solid $brand-grey;
@@ -25,11 +29,21 @@
 
   tr:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 0;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    }
   }
 
   & tr:nth-child(2n) {
     & > * {
-      background-color: $brand-lightgrey;
+      background-color: rgba($brand-lightgrey, 1);
     }
 
     .show-table__text-appear {
