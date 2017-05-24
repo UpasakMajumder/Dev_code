@@ -22,6 +22,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
                 textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
+                textWrongFileUploaded.InnerText = GetString("Kadena.MailingList.WrongFileUploaded");
                 textOr.InnerText = GetString("Kadena.MailingList.Or");
                 textSkipField.InnerText = GetString("Kadena.MailingList.SkipField");
                 btnSubmit.InnerText = GetString("Kadena.MailingList.Create");
@@ -158,10 +159,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
                 nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
                 Response.Redirect(nextStepUrl);
-            }
-            else
-            {
-                divFileTypeError.Visible = true;
             }
         }
     }

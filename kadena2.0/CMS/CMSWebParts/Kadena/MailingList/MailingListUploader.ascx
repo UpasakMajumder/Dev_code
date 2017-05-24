@@ -33,7 +33,7 @@
                         <use xlink:href="/gfx/svg/sprites/icons.svg#cross" />
                     </svg>
                 </button>
-                <img src="gfx/images/csv-error.png" class="icon-csv">
+                <img src="/gfx/images/csv-error.png" class="icon-csv">
             </div>
             <p runat="server" id="textWrongFileUploaded"></p>
         </div>
