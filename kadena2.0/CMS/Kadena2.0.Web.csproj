@@ -834,7 +834,6 @@
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
-    <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
