@@ -13,6 +13,7 @@ namespace Kadena.Old_App_Code.Helpers
     public static class ServiceHelper
     {
         private const string _bucketType = "original-mailing";
+        private const string _moduleName = "Klist";
         private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
         private const string _customerNameSettingKey = "KDA_CustomerName";
@@ -100,7 +101,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileStream">Stream to upload.</param>
         /// <param name="fileName">Name of file to pass to microservice.</param>
         /// <returns>Id of uploaded file.</returns>
-        public static Guid UploadFile(Stream fileStream, string fileName)
+        public static string UploadFile(Stream fileStream, string fileName)
         {
             if (fileStream == null || fileStream.Length == 0)
             {
@@ -122,15 +123,16 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new InvalidOperationException(_loadFileIncorrectMessage);
             }
 
-            var fileId = Guid.Empty;
+            var fileId = string.Empty;
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
                 {
                     fileStream.Seek(0, SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
-                    content.Add(new StringContent(_bucketType), "bucketType");
-                    content.Add(new StringContent(customerName), "customerName");
+                    content.Add(new StringContent(_bucketType), "ConsumerDetails.BucketType");
+                    content.Add(new StringContent(customerName), "ConsumerDetails.CustomerName");
+                    content.Add(new StringContent(_moduleName), "ConsumerDetails.Module");
                     using (var message = client.PostAsync(postFileUrl, content))
                     {
                         AwsResponseMessage response;
@@ -146,7 +148,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            fileId = new Guid(response?.Response?.ToString());
+                            fileId = response?.Response?.ToString();
                         }
                         else
                         {

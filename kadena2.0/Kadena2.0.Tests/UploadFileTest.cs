@@ -98,10 +98,10 @@ namespace Kadena.Tests
         {
             var fileId = UploadFile(customerName, url);
             TestContext.WriteLine($"File Id {fileId}");
-            Assert.AreNotEqual(Guid.Empty, fileId);
+            Assert.IsNotEmpty(fileId);
         }
 
-        private Guid UploadFile(string customerName, string url)
+        private string UploadFile(string customerName, string url)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                         .WithData(
