@@ -63,4 +63,4 @@
         </div>
     </div>
 </div>
-<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click" onclick="javascript: if(!$('.js-drop-zone').hasClass('isDropped')) { $('.j-submit-mailing-list-error').show(); return false; };"></button>
+<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click" onclick="javascript: if(!$('.js-drop-zone').hasClass('isDropped')) { $('.j-submit-mailing-list-error').show(); return false; }; if(!$('.js-drop-zone').hasClass('isNotDropped')) { return false; };"></button>
