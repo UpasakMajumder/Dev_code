@@ -1,4 +1,5 @@
 {% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'Recent orders' %}
 {% set sidebarActive = title %}
@@ -26,7 +27,7 @@
         <p class="sent-statistics__value">2</p>
       </div>
     </div>
-    
+
   </div>
 
   <div class="order-data__block">
@@ -34,10 +35,10 @@
     <table class="show-table">
       <tbody>
         <tr>
-          <th>Order date</th>
-          <th>Ordered</th>
-          <th>Order status</th>
-          <th>Order status</th>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Ordered</th>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
           <th></th>
         </tr>
         {% for i in range(0, 10) -%}
