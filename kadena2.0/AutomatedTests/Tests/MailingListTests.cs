@@ -16,9 +16,6 @@ namespace AutomatedTests.Tests
         [Test]
         public void When_UploadingMailingList_Expect_MailingListCorrectlyUploaded()
         {
-            
-
-            
             //login
             var login = new Login();
             login.Open();
@@ -40,7 +37,6 @@ namespace AutomatedTests.Tests
 
             //verify if the list is being processed
             Assert.True(listProcessing.WasMailingListSubmitted());
-            }
         }
     }
 }
