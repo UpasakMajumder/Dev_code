@@ -35,25 +35,24 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerShipToAddress 
         }
 
         var addresses = AddressInfoProvider.GetAddresses(Customer.CustomerID).ToArray();
-        if (addresses.Length > 0)
+        
+        foreach (AddressInfo addr in addresses)
         {
-            foreach (AddressInfo addr in addresses)
+            if (!this.IsPostBack)
             {
-                if (!this.IsPostBack)
-                {
-                    var li = new ListItem(addr.AddressID.ToString());
-                    li.Value = addr.AddressID.ToString();
-                    this.hiddenAddressesList.Items.Add(li);
-                }
-                
-                var transformation = TransformationInfoProvider.GetTransformation("kda.checkoutpage.ShippingAddress");
-                
-                var resolver = MacroResolver.GetInstance();
-                resolver.SetNamedSourceData("ShippingAddress", addr);
-                resolver.SetNamedSourceData("StateCode", addr.GetStateCode());
-                resolver.SetNamedSourceData("Checked", CurrentCartAddress.AddressID == addr.AddressID?"checked":"");
-                htmlContent.Text += resolver.ResolveMacros(transformation.TransformationCode);
+                var li = new ListItem(addr.AddressID.ToString());
+                li.Value = addr.AddressID.ToString();
+                li.Selected = CurrentCartAddress.AddressID == addr.AddressID;
+                this.hiddenAddressesList.Items.Add(li);
             }
+                
+            var transformation = TransformationInfoProvider.GetTransformation("kda.checkoutpage.ShippingAddress");
+                
+            var resolver = MacroResolver.GetInstance();
+            resolver.SetNamedSourceData("ShippingAddress", addr);
+            resolver.SetNamedSourceData("StateCode", addr.GetStateCode());
+            resolver.SetNamedSourceData("Checked", CurrentCartAddress.AddressID == addr.AddressID?"checked":"");
+            htmlContent.Text += resolver.ResolveMacros(transformation.TransformationCode);
         }
     }
 
