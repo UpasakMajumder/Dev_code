@@ -70,11 +70,16 @@
     <Compile Include="KenticoApi\Objects\Response.cs" />
     <Compile Include="PageObjects\Checkout.cs" />
     <Compile Include="PageObjects\Dashboard.cs" />
+    <Compile Include="PageObjects\KList.cs" />
+    <Compile Include="PageObjects\ListProcessing.cs" />
     <Compile Include="PageObjects\Login.cs" />
     <Compile Include="PageObjects\ProductDetail.cs" />
+	<Compile Include="PageObjects\NewKList.cs" />
+	<Compile Include="PageObjects\MapColumns.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumExtentions\GetMethods.cs" />
     <Compile Include="SeleniumExtentions\SetMethods.cs" />
+	<Compile Include="Tests\MailingListTests.cs" />
     <Compile Include="IntegrationTests\Testing.cs" />
     <Compile Include="Tests\CheckoutProcess.cs" />
     <Compile Include="Tests\UserLogin.cs" />
@@ -89,10 +94,13 @@
     <Compile Include="Utilities\TestUser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
+        
+    
     <None Include="packages.config" />
+    <None Include="TestFiles\testcsv.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PageObjects\_BasePage.cs" />

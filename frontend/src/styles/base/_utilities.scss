@@ -77,3 +77,27 @@
 .css-overflow-hidden {
   overflow: hidden;
 }
+
+.isInvisible {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  line-height: 0;
+
+  & * {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+  }
+}

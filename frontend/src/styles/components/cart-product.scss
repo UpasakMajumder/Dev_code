@@ -48,6 +48,7 @@
 
     span {
       @extend .weight--bold;
+      white-space: nowrap;
       font-size: $font-m;
     }
   }
