@@ -103,15 +103,21 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private bool Validate(string columnName, int value)
         {
-            var div = (FindControl($"div{columnName}") as HtmlGenericControl);
-            if (div != null)
+
+            var wrap = (FindControl($"wrap{columnName}") as HtmlGenericControl);
+            if (wrap != null)
             {
-                div.Attributes["class"] = value > -1 ? "input__select" : "input__select input--error";
-                var span = (FindControl($"span{columnName}") as HtmlGenericControl);
-                if (span != null)
+                wrap.Attributes["class"] = value > -1 ? "input__wrapper" : "input__wrapper mb-3";
+                var div = (FindControl($"div{columnName}") as HtmlGenericControl);
+                if (div != null)
                 {
-                    span.InnerText = GetString("Kadena.MailingList.EnterValidValue");
-                    span.Visible = (value < 0);
+                    div.Attributes["class"] = value > -1 ? "input__select" : "input__select input--error";
+                    var span = (FindControl($"span{columnName}") as HtmlGenericControl);
+                    if (span != null)
+                    {
+                        span.InnerText = GetString("Kadena.MailingList.EnterValidValue");
+                        span.Visible = (value < 0);
+                    }
                 }
             }
             return value > -1;
