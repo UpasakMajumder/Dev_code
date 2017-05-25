@@ -1,10 +1,7 @@
 ﻿using CMS.CustomTables;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
 using Kadena.Old_App_Code.Helpers;
 using System;
 using System.Collections.Generic;
@@ -25,6 +22,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
                 textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
+                textWrongFileUploaded.InnerText = GetString("Kadena.MailingList.WrongFileUploaded");
                 textOr.InnerText = GetString("Kadena.MailingList.Or");
                 textSkipField.InnerText = GetString("Kadena.MailingList.SkipField");
                 btnSubmit.InnerText = GetString("Kadena.MailingList.Create");
@@ -135,7 +133,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel")
             {
                 var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
                 var product = Request.Form[GetString("Kadena.MailingList.Product")];
@@ -144,7 +142,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var fileName = inpFileName.Value;
 
                 var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+                var containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
 
                 var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
                 nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());

@@ -1,18 +1,19 @@
 ﻿using CMS.DataEngine;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.SiteProvider;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.IO;
 
 namespace Kadena.Old_App_Code.Helpers
 {
     public static class ServiceHelper
     {
         private const string _bucketType = "original-mailing";
+        private const string _moduleName = "Klist";
         private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
         private const string _customerNameSettingKey = "KDA_CustomerName";
@@ -34,7 +35,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="product">Product type option for mailing container.</param>
         /// <param name="validityDays">Validity option for mailing container.</param>
         /// <returns>Id of mailing container.</returns>
-        public static Guid CreateMailingContainer(string mailType, string product, int validityDays)
+        public static Guid CreateMailingContainer(string name, string mailType, string product, int validityDays)
         {
             if (string.IsNullOrWhiteSpace(mailType))
             {
@@ -60,7 +61,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new StringContent(JsonConvert.SerializeObject(new
                 {
-                    name = $"Mailing container for {customerName}.",
+                    name = name,
                     customerName = customerName,
                     Validity = validityDays,
                     mailType = mailType,
@@ -100,7 +101,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileStream">Stream to upload.</param>
         /// <param name="fileName">Name of file to pass to microservice.</param>
         /// <returns>Id of uploaded file.</returns>
-        public static Guid UploadFile(System.IO.Stream fileStream, string fileName)
+        public static string UploadFile(Stream fileStream, string fileName)
         {
             if (fileStream == null || fileStream.Length == 0)
             {
@@ -122,15 +123,16 @@ namespace Kadena.Old_App_Code.Helpers
                 throw new InvalidOperationException(_loadFileIncorrectMessage);
             }
 
-            var fileId = Guid.Empty;
+            var fileId = string.Empty;
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
                 {
-                    fileStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    fileStream.Seek(0, SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
-                    content.Add(new StringContent(_bucketType), "bucketType");
-                    content.Add(new StringContent(customerName), "customerName");
+                    content.Add(new StringContent(_bucketType), "ConsumerDetails.BucketType");
+                    content.Add(new StringContent(customerName), "ConsumerDetails.CustomerName");
+                    content.Add(new StringContent(_moduleName), "ConsumerDetails.Module");
                     using (var message = client.PostAsync(postFileUrl, content))
                     {
                         AwsResponseMessage response;
@@ -146,7 +148,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            fileId = new Guid(response?.Response?.ToString());
+                            fileId = response?.Response?.ToString();
                         }
                         else
                         {
@@ -163,7 +165,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// </summary>
         /// <param name="fileId">Id for file to get headers for.</param>
         /// <returns>List of header names.</returns>
-        public static IEnumerable<string> GetHeaders(Guid fileId)
+        public static IEnumerable<string> GetHeaders(string fileId)
         {
             string customerName = GetCustomerName();
 
@@ -176,8 +178,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
 
             string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.AbsoluteUri, "fileid", fileId.ToString());
-            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "customername", customerName);
-            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "buckettype", _bucketType);
+            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "module", _moduleName);
 
             IEnumerable<string> result;
             using (var client = new HttpClient())
@@ -214,7 +215,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileId">Id of file.</param>
         /// <param name="containerId">Id of mailing container.</param>
         /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
-        public static void UploadMapping(Guid fileId, Guid containerId, Dictionary<string, int> mapping)
+        public static void UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
             if ((mapping?.Count ?? 0) == 0)
             {
@@ -253,8 +254,7 @@ namespace Kadena.Old_App_Code.Helpers
                     mapping = jsonMapping,
                     fileId = fileId,
                     customerName = customerName,
-                    containerId = containerId,
-                    bucketType = _bucketType
+                    containerId = containerId
                 }), System.Text.Encoding.UTF8, "application/json"))
                 {
                     using (var message = client.PostAsync(uploadMappingUrl, content))

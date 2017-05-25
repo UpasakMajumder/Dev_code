@@ -1,90 +1,26 @@
 {% extends "layouts/default.nunj" %}
-{% from "macro/svg.nunj" import svg %}
+{% from "macro/breadcrumb.nunj" import breadcrumb %}
+{% from "macro/sidebar.nunj" import sidebar %}
+{% import "macro/svg.nunj" as svg %}
 
-{% set title = 'Products' %}
-{% set sidebarActive = title %}
-{% set breadcrumbs = [title, 'Category Name', 'March 2017 Events'] %}
-{% set headerTitle = 'March 2017 Events' %}
+{% set title = "Products" %}
 
 {% block content %}
-  <div class="product-view">
-    <div class="product-view__img" style="background-image: url(http://satyr.io/500-1000x700-1500)">
-      <a href="#" class="product-view__zoom">
-        {{ svg('zoom', 'icon-zoom') }}
-      </a>
-    </div>
-    <div class="product-view__block">
-      <div class="product-view__info">
-        <div class="product-view__info-description">
-          <span>Product added: Feb 15 2017</span>
-          <span>Product code: 326B-0815</span>
+
+  {{ sidebar('Products') }}
+
+  <div class="content">
+    <div class="content__inner">
+      <div class="content-header">
+        <div class="content-header__inner">
+          <h1 class="content-header__page-name">March 2017 Events</h1>
         </div>
+        {{ breadcrumb(['Home','Products', 'Category Name', 'March 2017 Events']) }}
       </div>
-      <div class="product-view__properties">
-        {% for i in range(0, 8) %}
-          <span class="product-view__property">Size:
-            <span class="product-view__property-val">310 x 200</span>
-          </span>
-        {% endfor %}
-      </div>
-      <div class="product-view__tables">
-        <table class="table">
-          <tbody>
-          <tr>
-            <th colspan="2">
-              {{ svg('deliver-car', 'icon-deliver') }}
-              Estimates
-            </th>
-          </tr>
-          <tr>
-            <td>Production time</td>
-            <td>7 days</td>
-          </tr>
-          <tr>
-            <td>Ship time</td>
-            <td>7 days</td>
-          </tr>
-          <tr>
-            <td>Shipping cost</td>
-            <td>$ <span class="js-money-format">10</span> - $ <span class="js-money-format">15</span></td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table">
-          <tbody>
-          <tr>
-            <th colspan="2">
-              {{ svg('money', 'icon-dollar') }}
-              Unit price
-            </th>
-          </tr>
-          <tr>
-            <td>0 - 50 pcs</td>
-            <td>$ <span class="js-money-format">2.10</span></td>
-          </tr>
-          <tr>
-            <td>51 - 100 pcs</td>
-            <td>$ <span class="js-money-format">1.90</span></td>
-          </tr>
-          <tr>
-            <td>101 + pcs</td>
-            <td>$ <span class="js-money-format">1.50</span></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="add-to-cart">
-        <div class="add-to-cart__left">
-        <span class="add-to-cart__info">These come in pack of 50 pcs</span>
-        </div>
-        <div class="add-to-cart__right">
-          <div class="input__wrapper">
-            <input type="number" class="input__text" value="1" min="1">
-          </div>
-          <span class="add-to-cart__right-label">pack of 50 (50)</span>
-          <button class="btn-action btn-action" type="button">Add to cart</button>
-        </div>
+      <div class="content-block">
+        {% include 'components/product/add-to-cart.nunj' %}
       </div>
     </div>
   </div>
+
 {% endblock %}

@@ -25,36 +25,29 @@
             </div>
             <p class="js-drop-zone-name">File name</p>
         </div>
+
+        <div class="drop-zone__dropped drop-zone__dropped--not">
+            <div>
+                <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+                    <svg class="icon icon-cross">
+                        <use xlink:href="/gfx/svg/sprites/icons.svg#cross" />
+                    </svg>
+                </button>
+                <img src="/gfx/images/csv-error.png" class="icon-csv">
+            </div>
+            <p runat="server" id="textWrongFileUploaded"></p>
+        </div>
+    </div>
+    <div class="input__wrapper j-submit-mailing-list-error" style="display: none;">
+        <span class="input__error">
+            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
+        </span>
     </div>
 </div>
-<div class="upload-mail__row upload-mail__offer">
+<div class="upload-mail__row upload-mail__offer" style="display: none;">
     <span runat="server" id="textOr"></span>
     <p runat="server" id="textSkipField"></p>
 </div>
-<%--<div class="upload-mail__row">
-    <h2>Mail type</h2>
-    <p>First class guarantees next working day delivery, standart class usually takes 3-5 days</p>
-    <div class="row">
-        <div class="col-lg-4 col-xl-3">
-            <div class="input__wrapper">
-                <input name="mail-type" value="first-class" checked id="mail-type-first-class" type="radio" class="input__radio">
-                <label for="mail-type-first-class" class="input__label input__label--radio">First Class</label>
-            </div>
-        </div>
-        <div class="col-lg-4 col-xl-3">
-            <div class="input__wrapper">
-                <input name="mail-type" value="unsorted" id="mail-type-unsorted" type="radio" class="input__radio">
-                <label for="mail-type-unsorted" class="input__label input__label--radio">Standart - Unsorted</label>
-            </div>
-        </div>
-        <div class="col-lg-4 col-xl-3">
-            <div class="input__wrapper">
-                <input name="mail-type" value="sorted" id="mail-type-sorted" type="radio" class="input__radio">
-                <label for="mail-type-sorted" class="input__label input__label--radio">Standart - Sorted</label>
-            </div>
-        </div>
-    </div>
-</div>--%>
 <asp:PlaceHolder runat="server" ID="phMailType" />
 <asp:PlaceHolder runat="server" ID="phProduct" />
 <asp:PlaceHolder runat="server" ID="phValidity" />
@@ -70,4 +63,4 @@
         </div>
     </div>
 </div>
-<button type="submit" class="btn-action" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click"></button>
+<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click" onclick="javascript: if($('.js-drop-zone').hasClass('isNotDropped')) { $('.j-submit-mailing-list-error').hide(); return false; }; if(!$('.js-drop-zone').hasClass('isDropped')) { $('.j-submit-mailing-list-error').show(); return false; }; "></button>

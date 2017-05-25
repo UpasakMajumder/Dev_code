@@ -66,10 +66,11 @@
           <div class="content__inner">
             <div class="content-header">
               <div class="content-header__inner">
-                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
-                {% if(headerAdd) %}
-                  {% include 'components/header-button.nunj' %}
-                {% endif %}
+                <h1 class="content-header__page-name">{{ headerTitle }}
+                  {% if(headerAdd) %}
+                    {% include 'components/header-button.nunj' %}
+                  {% endif %}
+                </h1>
               </div>
               {% include 'components/breadcrumbs.nunj' %}
             </div>
@@ -107,10 +108,12 @@
     }
   };
 </script>
-<script src="js/common.js"></script>
+
 {% if _dev %}
+  <script src="js/common.js"></script>
   <script src="js/app.js" async></script>
 {% else %}
+  <script src="js/common.min.js"></script>
   <script src="js/app.min.js" async></script>
 {% endif %}
 </body>
