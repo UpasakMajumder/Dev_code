@@ -768,20 +768,6 @@
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.cs">
-      <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.designer.cs">
-      <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.cs">
-      <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.designer.cs">
-      <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.cs">
       <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -835,8 +821,6 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -851,6 +835,7 @@
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
+    <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
