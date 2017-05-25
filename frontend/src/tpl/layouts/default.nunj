@@ -128,7 +128,6 @@
           },
         },
         ResultURL: '',
-        BrowserRedirectURL: '',
         SubmissionID: '',
         CustomerIdentifier_MerchantCode: 'Kadena2.0',
         CustomerIdentifier_LocationCode: 'Kadena2.0',
