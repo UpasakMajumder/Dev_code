@@ -8,7 +8,7 @@
 
 {% block content %}
   <div class="dashboard">
-    <div class="notification js-close">
+    <div class="notification js-close" data-animation-length="400">
       <div class="notification__header">
         <p>Working with Kadena</p>
       </div>

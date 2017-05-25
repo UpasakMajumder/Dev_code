@@ -2,6 +2,9 @@
   $notification-padding: 20px;
   background-color: $brand-lightgrey;
   border-radius: $border-radius-xl;
+  transition: all .5s ease-in-out;
+  max-height: 400px;
+  overflow: hidden;
 
   @include rem(margin-bottom, 30px);
 
@@ -24,5 +27,10 @@
 
   &__body-footer {
     @include rem(margin-top,   $notification-padding);
+  }
+
+  &.hide {
+    opacity: 0;
+    max-height: 0;
   }
 }
