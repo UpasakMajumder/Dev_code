@@ -167,6 +167,11 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>List of header names.</returns>
         public static IEnumerable<string> GetHeaders(string fileId)
         {
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileId));
+            }
+
             string customerName = GetCustomerName();
 
             Uri getHeaderUrl;
@@ -217,6 +222,16 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
         public static void UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileId));
+            }
+
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
             if ((mapping?.Count ?? 0) == 0)
             {
                 throw new ArgumentException(_valueEmptyMessage, nameof(mapping));
