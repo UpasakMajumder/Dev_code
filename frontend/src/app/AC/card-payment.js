@@ -68,14 +68,14 @@ export default function submitCard(fields, cardType) {
     });
 
     // AJAX REQUEST
-
     const { URL3DSi, ResultURL, BrowserRedirectURL, SubmissionID,
             CustomerIdentifier_MerchantCode,
             CustomerIdentifier_LocationCode,
             CustomerIdentifier_CustomerCode,
             TerminalIdentifier_LocationCode,
             TerminalIdentifier_TerminalCode,
-            TerminalIdentifier_MerchantCode
+            TerminalIdentifier_MerchantCode,
+            APCount, PTCount
     } = CARD_PAYMENT;
 
     const data = {
@@ -84,9 +84,9 @@ export default function submitCard(fields, cardType) {
       CreditCard_ExpirationYear: expiry.substr(2),
       CreditCard_CardType: cardType,
       CreditCard_NameOnCard: name,
-      CreditCard_CardAccountNumber: '', // -
-      APCount: '', // -
-      PTCount: '', // -
+      CreditCard_CardAccountNumber: number,
+      APCount,
+      PTCount,
       ResultURL,
       BrowserRedirectURL,
       SubmissionID,

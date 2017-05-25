@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Cards from 'react-credit-cards';
+// import Cards from 'react-credit-cards';
 import { connect } from 'react-redux';
 import 'react-credit-cards/lib/styles-compiled.css';
 import PaymentForm from '../form/PaymentForm';
 import submitCard from '../../AC/card-payment';
 import { cardPaymentSymbols } from '../../helpers/validationRules';
 import { CARD_PAYMENT } from '../../globals';
+import Cards from '../CreditCards';
 
 class Payment extends Component {
   constructor() {

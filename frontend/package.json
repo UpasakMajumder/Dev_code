@@ -93,6 +93,7 @@
     "merge-stream": "^1.0.0",
     "nunjucks": "^3.0.0",
     "path": "^0.12.7",
+    "payment": "^2.2.1",
     "popper": "^0.2.7",
     "popper.js": "^1.8.6",
     "query-string": "^4.3.3",
