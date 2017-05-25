@@ -296,6 +296,11 @@ namespace Kadena.Old_App_Code.Helpers
             }
         }
 
+        /// <summary>
+        /// Forces microservices to start addresses validation for specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>If of file with valid addresses.</returns>
         public static string ValidateAddresses(Guid containerId)
         {
             if (containerId == Guid.Empty)
