@@ -1,4 +1,5 @@
 {% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'K-Center' %}
 {% set sidebarActive = title %}
@@ -6,5 +7,113 @@
 {% set headerTitle = title %}
 
 {% block content %}
+  <div class="dashboard">
+    <div class="notification">
+      <div class="notification__header">
+        <p>Working with Kadena</p>
+      </div>
+      <div class="notification__body">
+        <p>Welcome to Kadena K-Center, a responsive eCommerce portal built on the needs of our customers. Kadena™ is quickly configured to meet the needs of your business, and we can add products and add templates as needed. Within Kadena, you will find
+          access to relevant products, the ability to request new products, use our K-Source module to get bids on your projects, and create product kits to ease the delivery of frequently ordered sets of products. At any time use the
+          <a href="#">Help</a>
+          button in the left navigation to get help in using the platform or to directly contact your Cenveo rep for help with these tools.</p>
+
+        <div class="notification__body-footer btn-group btn-group--right">
+          <button type="button" class="btn-success btn-success--secondary">
+            Read user manual
+          </button>
+          <button type="button" class="btn-success">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="js-tabs" data-tab=".js-tab-example" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
+      <ul class="css-tabs__list">
+        <li class="css-tabs__tab js-tab-example active" data-tab-content=".js-tab-content-1">This month</li>
+        <li class="css-tabs__tab js-tab-example" data-tab-content=".js-tab-content-2">90 days</li>
+        <li class="css-tabs__tab js-tab-example" data-tab-content=".js-tab-content-3">This year</li>
+        <li>
+          <a href="#">View K-Insights</a>
+        </li>
+      </ul>
+
+      <div>
+        <div class="css-tabs__content js-tab-content-1 active show">
+
+          <div class="dashboard__block">
+
+            <div class="sent-statistics">
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Templates used</p>
+                <p class="sent-statistics__value">15</p>
+              </div>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Mailings sent</p>
+                <p class="sent-statistics__value">50</p>
+              </div>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Mailes Delivered</p>
+                <p class="sent-statistics__value">2513</p>
+              </div>
+              <div class="sent-statistics__item">
+                <p class="sent-statistics__title">Spent out of $1,000</p>
+                <p class="sent-statistics__value">$106</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="dashboard__block">
+            <div class="dashboard__block-heading">
+              <h2>Recent orders</h2>
+              <a href="#">View recent orders</a>
+            </div>
+          </div>
+
+          <div class="dashboard__block pb-0">
+            <div class="dashboard__block-heading">
+              <h2>New products</h2>
+              <a href="#">View all new products</a>
+            </div>
+
+            <div class="row">
+
+              {% for item in range(0, 4) %}
+
+                <div class="col-lg-6 col-xl-3">
+                  {% include "components/product/product-item.nunj" %}
+                </div>
+
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+          <div class="dashboard__block pb-0">
+            <div class="dashboard__block-heading">
+              <h2>Favorites</h2>
+            </div>
+
+            <div class="row">
+
+              {% for item in range(0, 8) %}
+
+                <div class="col-lg-6 col-xl-3">
+                  {% include "components/product/product-item.nunj" %}
+                </div>
+
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+        </div>
+        <div class="css-tabs__content js-tab-content-2">Content 2</div>
+        <div class="css-tabs__content js-tab-content-3">Content 3</div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

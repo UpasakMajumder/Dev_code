@@ -9,7 +9,7 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-lg-4 col-xl-3 template">
+    <div class="col-lg-3 col-xl-3 template">
       <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
         <div class="js-toggle">
           {{ svg('star--filled', 'template__icon--filled icon-star') }}
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="col-lg-4 col-xl-3 template">
+    <div class="col-lg-3 col-xl-3 template">
       <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
         <div class="js-toggle">
           {{ svg('star--filled', 'template__icon--filled icon-star') }}
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div class="col-lg-4 col-xl-3 template">
+    <div class="col-lg-3 col-xl-3 template">
       <div class="template__favourite js-collapse js-tooltip" data-tooltip-placement="right" title="Set product as favorite">
         <div class="js-toggle">
           {{ svg('star--filled', 'template__icon--filled icon-star') }}

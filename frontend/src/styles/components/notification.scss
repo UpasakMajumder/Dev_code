@@ -1,0 +1,28 @@
+.notification {
+  $notification-padding: 20px;
+  background-color: $brand-lightgrey;
+  border-radius: $border-radius-xl;
+
+  @include rem(margin-bottom, 30px);
+
+  &__header {
+    @include rem(padding,   $notification-padding);
+    background-color: $brand-success;
+    border-radius: $border-radius-xl;
+
+    p {
+      @extend .weight--bold;
+      margin: 0;
+      color: white;
+      font-size: $font-s;
+    }
+  }
+
+  &__body {
+    @include rem(padding,   $notification-padding);
+  }
+
+  &__body-footer {
+    @include rem(margin-top,   $notification-padding);
+  }
+}
