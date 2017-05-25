@@ -17,18 +17,19 @@ namespace Kadena.Tests
         [Test]
         public void CreateContainerEmptyProduct()
         {
+            var name = "CreateContainerEmptyProductTest";
             var argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer(_mailType, string.Empty, _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, _mailType, string.Empty, _validity))
                 as ArgumentException;
             Assert.AreEqual("product", argExc.ParamName);
 
             argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer(_mailType, null, _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, _mailType, null, _validity))
                 as ArgumentException;
             Assert.AreEqual("product", argExc.ParamName);
 
             argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer(_mailType, "    ", _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, _mailType, "    ", _validity))
                 as ArgumentException;
             Assert.AreEqual("product", argExc.ParamName);
         }
@@ -36,18 +37,19 @@ namespace Kadena.Tests
         [Test]
         public void CreateContainerEmptyMailType()
         {
+            var name = "CreateContainerEmptyMailTypeTest";
             var argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer(string.Empty, _product, _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, string.Empty, _product, _validity))
                 as ArgumentException;
             Assert.AreEqual("mailType", argExc.ParamName);
 
             argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer(null, _product, _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, null, _product, _validity))
                 as ArgumentException;
             Assert.AreEqual("mailType", argExc.ParamName);
 
             argExc = Assert.Catch(typeof(ArgumentException)
-                                    , () => ServiceHelper.CreateMailingContainer("   ", _product, _validity))
+                                    , () => ServiceHelper.CreateMailingContainer(name, "   ", _product, _validity))
                 as ArgumentException;
             Assert.AreEqual("mailType", argExc.ParamName);
         }
@@ -60,7 +62,7 @@ namespace Kadena.Tests
         public void CreateContainerIncorrectCustomerName(string customerName, string url)
         {
             var exc = Assert.Catch(typeof(InvalidOperationException)
-                , () => CreateMailingContainer(_mailType, _product, _validity, customerName, url));
+                , () => CreateMailingContainer("CreateContainerIncorrectCustomerNameTest", _mailType, _product, _validity, customerName, url));
             Assert.AreEqual("CustomerName not specified. Check settings for your site.", exc.Message);
         }
 
@@ -72,7 +74,7 @@ namespace Kadena.Tests
         public void CreateContainerIncorrectUrl(string customerName, string url)
         {
             var exc = Assert.Catch(typeof(InvalidOperationException)
-                , () => CreateMailingContainer(_mailType, _product, _validity, customerName, url));
+                , () => CreateMailingContainer("CreateContainerIncorrectUrlTest", _mailType, _product, _validity, customerName, url));
             Assert.AreEqual("Url for creating container is not in correct format. Check settings for your site.", exc.Message);
         }
 
@@ -84,7 +86,7 @@ namespace Kadena.Tests
         public void NotMicroserviceCallTest(string customerName, string url)
         {
             var exc = Assert.Catch(typeof(InvalidOperationException)
-                , () => CreateMailingContainer(_mailType, _product, _validity, customerName, url));
+                , () => CreateMailingContainer("CreateContainerFailTest", _mailType, _product, _validity, customerName, url));
             Assert.AreEqual("Response from microservice is not in correct format.", exc.Message);
         }
 
@@ -95,11 +97,11 @@ namespace Kadena.Tests
             )]
         public void CreateContainerSuccess(string customerName, string url)
         {
-            var containerId = CreateMailingContainer(_mailType, _product, _validity, customerName, url);
+            var containerId = CreateMailingContainer("CreateContainerSuccessTest", _mailType, _product, _validity, customerName, url);
             Assert.AreNotEqual(Guid.Empty, containerId);
         }
 
-        private Guid CreateMailingContainer(string mailType, string product, int validity, string customerName, string url)
+        private Guid CreateMailingContainer(string name, string mailType, string product, int validity, string customerName, string url)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(
@@ -111,7 +113,7 @@ namespace Kadena.Tests
                 }
                 );
 
-            return ServiceHelper.CreateMailingContainer(mailType, product, validity);
+            return ServiceHelper.CreateMailingContainer(name, mailType, product, validity);
         }
     }
 }

@@ -3198,6 +3198,27 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 .css-overflow-hidden {
   overflow: hidden; }
 
+.isInvisible {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  line-height: 0; }
+  .isInvisible * {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0; }
+
 button {
   cursor: pointer; }
 
@@ -3485,7 +3506,7 @@ button {
   -ms-flex-pack: start;
       justify-content: flex-start; }
 
-.dialog__header {
+.content-header__inner, .dialog__header {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: baseline;
@@ -3493,7 +3514,7 @@ button {
   -ms-flex-pack: justify;
       justify-content: space-between; }
 
-.action-heading, .content-header__inner {
+.action-heading {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: baseline;
@@ -5029,8 +5050,8 @@ body {
     width: 100%;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-    -ms-flex-direction: row-reverse;
-        flex-direction: row-reverse;
+    -ms-flex-direction: column;
+        flex-direction: column;
     padding-bottom: 15px;
     margin-bottom: 12px; }
     .content-header .breadcrumbs {
@@ -5042,10 +5063,12 @@ body {
           order: 2;
       -ms-flex-positive: 1;
           flex-grow: 1;
+      width: 100%;
       margin-right: auto;
       -ms-flex-wrap: nowrap;
           flex-wrap: nowrap; }
     .content-header__btn {
+      display: inline-block;
       -ms-flex-order: 2;
           order: 2;
       margin-left: 0.625rem; }
@@ -5612,6 +5635,7 @@ body {
   .cart-product__price {
     margin-bottom: 0.625rem; }
     .cart-product__price span {
+      white-space: nowrap;
       font-size: 20px; }
   .cart-product__btn {
     width: 100px; }
@@ -5622,7 +5646,6 @@ body {
     width: 15px;
     height: 15px; }
   .cart-product__delivery p {
-    font-size: 12px;
     color: #00bb89; }
   .cart-product__delivery svg {
     height: 40px; }
@@ -5710,6 +5733,14 @@ body {
   .drop-zone.isDropped .drop-zone__dropping {
     display: none; }
   .drop-zone.isDropped .drop-zone__dropped {
+    display: block; }
+  .drop-zone.isDropped .drop-zone__dropped--not {
+    display: none; }
+  .drop-zone.isNotDropped .drop-zone__dropping {
+    display: none; }
+  .drop-zone.isNotDropped .drop-zone__dropped {
+    display: none; }
+  .drop-zone.isNotDropped .drop-zone__dropped--not {
     display: block; }
   .drop-zone__btn {
     position: absolute;
@@ -5922,7 +5953,8 @@ body {
 .product-view__zoom {
   position: absolute;
   bottom: 10px;
-  right: 10px; }
+  right: 10px;
+  display: none; }
 
 .product-view__block {
   overflow: hidden;
@@ -6048,20 +6080,20 @@ body {
     font-size: 18px; }
     .isOpen .css-sidebar__nav-link, .isOpen .css-sidebar__nav-link:active, .isOpen .css-sidebar__nav-link:hover {
       -ms-flex-direction: row;
-          flex-direction: row; }
-    .isOpen .css-sidebar__nav-item {
-      padding-top: 12px;
-      padding-bottom: 12px; }
+          flex-direction: row;
+      padding: 12px 15px; }
   .css-sidebar__header {
     text-align: center;
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 15px;
     font-size: 18px;
     color: #e4e7ea; }
     .isOpen .css-sidebar__header {
       text-align: right;
-      padding: 20px 15px 15px; }
+      padding-left: 15px;
+      padding-right: 15px; }
+    .css-sidebar__header > div:last-child {
+      padding-top: 20px;
+      padding-bottom: 15px; }
   .css-sidebar__icon {
     display: none;
     width: 38px;
@@ -6072,6 +6104,8 @@ body {
     width: 100%;
     text-align: center; }
   .css-sidebar__nav-link, .css-sidebar__nav-link:active, .css-sidebar__nav-link:hover {
+    padding-top: 5px;
+    padding-bottom: 5px;
     text-decoration: none;
     color: #777;
     -ms-flex-direction: column;
@@ -6080,8 +6114,6 @@ body {
     position: relative;
     margin-bottom: 2px;
     white-space: nowrap;
-    padding-top: 5px;
-    padding-bottom: 5px;
     cursor: pointer; }
     .css-sidebar__nav-item svg {
       margin-bottom: 2px;
@@ -6116,9 +6148,7 @@ body {
         bottom: -2px; }
     .isOpen .css-sidebar__nav-item {
       -ms-flex-direction: row;
-          flex-direction: row;
-      padding-right: 15px;
-      padding-left: 15px; }
+          flex-direction: row; }
 
 .steps {
   padding-bottom: 2.5rem;
