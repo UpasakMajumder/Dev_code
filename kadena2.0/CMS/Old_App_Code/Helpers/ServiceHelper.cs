@@ -165,7 +165,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// </summary>
         /// <param name="fileId">Id for file to get headers for.</param>
         /// <returns>List of header names.</returns>
-        public static IEnumerable<string> GetHeaders(Guid fileId)
+        public static IEnumerable<string> GetHeaders(string fileId)
         {
             string customerName = GetCustomerName();
 
@@ -178,8 +178,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
 
             string parametrizeUrl = URLHelper.AddParameterToUrl(getHeaderUrl.AbsoluteUri, "fileid", fileId.ToString());
-            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "customername", customerName);
-            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "buckettype", _bucketType);
+            parametrizeUrl = URLHelper.AddParameterToUrl(parametrizeUrl, "module", _moduleName);
 
             IEnumerable<string> result;
             using (var client = new HttpClient())
@@ -216,7 +215,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileId">Id of file.</param>
         /// <param name="containerId">Id of mailing container.</param>
         /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
-        public static void UploadMapping(Guid fileId, Guid containerId, Dictionary<string, int> mapping)
+        public static void UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
             if ((mapping?.Count ?? 0) == 0)
             {
@@ -255,8 +254,7 @@ namespace Kadena.Old_App_Code.Helpers
                     mapping = jsonMapping,
                     fileId = fileId,
                     customerName = customerName,
-                    containerId = containerId,
-                    bucketType = _bucketType
+                    containerId = containerId
                 }), System.Text.Encoding.UTF8, "application/json"))
                 {
                     using (var message = client.PostAsync(uploadMappingUrl, content))
