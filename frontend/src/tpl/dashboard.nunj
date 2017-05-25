@@ -8,7 +8,7 @@
 
 {% block content %}
   <div class="dashboard">
-    <div class="notification">
+    <div class="notification js-close">
       <div class="notification__header">
         <p>Working with Kadena</p>
       </div>
@@ -22,7 +22,7 @@
           <button type="button" class="btn-success btn-success--secondary">
             Read user manual
           </button>
-          <button type="button" class="btn-success">Got it</button>
+          <button type="button" class="btn-success js-close-trigger">Got it</button>
         </div>
       </div>
     </div>
