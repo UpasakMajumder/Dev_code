@@ -294,6 +294,16 @@ namespace Kadena.Old_App_Code.Helpers
             }
         }
 
+        public static string ValidateAddresses(Guid containerId)
+        {
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>
         /// Gets name of customer from settings for current site.
         /// </summary>
