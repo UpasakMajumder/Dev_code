@@ -90,6 +90,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     if (isValid)
                     {
                         ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
+                        ServiceHelper.ValidateAddresses(_containerId);
                         Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
                     }
                 }
