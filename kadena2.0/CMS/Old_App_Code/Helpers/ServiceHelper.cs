@@ -35,7 +35,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="product">Product type option for mailing container.</param>
         /// <param name="validityDays">Validity option for mailing container.</param>
         /// <returns>Id of mailing container.</returns>
-        public static Guid CreateMailingContainer(string mailType, string product, int validityDays)
+        public static Guid CreateMailingContainer(string name, string mailType, string product, int validityDays)
         {
             if (string.IsNullOrWhiteSpace(mailType))
             {
@@ -61,7 +61,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new StringContent(JsonConvert.SerializeObject(new
                 {
-                    name = $"Mailing container for {customerName}.",
+                    name = name,
                     customerName = customerName,
                     Validity = validityDays,
                     mailType = mailType,

@@ -153,7 +153,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var fileName = inpFileName.Value;
 
                 var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+                var containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
 
                 var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
                 nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
