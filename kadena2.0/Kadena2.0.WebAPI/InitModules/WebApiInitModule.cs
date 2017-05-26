@@ -5,12 +5,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
+
+[assembly: CMS.RegisterModule(typeof(Kadena.WebAPI.InitModules.WebApiInitModule))]
+
 namespace Kadena.WebAPI.InitModules
 {
     public class WebApiInitModule : CMS.DataEngine.Module
     {
         public WebApiInitModule() 
-            : base("WebApiInit")
+            : base("KadenaWebAPI")
         {
         }
 
