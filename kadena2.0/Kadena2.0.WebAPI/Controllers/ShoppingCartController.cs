@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using Kadena.WebAPI.Contracts;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class ShoppingCartController : ApiController
     {
+        private readonly IShoppingCartService service;
+
+        public ShoppingCartController(IShoppingCartService service)
+        {
+            this.service = service;
+        }
+
         [HttpPost]
         public IHttpActionResult Test()
         {
@@ -17,7 +20,7 @@ namespace Kadena.WebAPI.Controllers
                 
             }
 
-            return this.Ok("All is ok");
+            return Ok(service.Test());
         }
     }
 }

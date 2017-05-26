@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using DryIoc.WebApi;
+using DryIoc;
+using Kadena.WebAPI.Contracts;
+using Kadena.WebAPI.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 
 namespace Kadena.WebAPI
@@ -17,6 +18,14 @@ namespace Kadena.WebAPI
             //var apiConfig = GlobalConfiguration.Configuration;
             RegisterApiRoutes(apiConfig);
             ConfigureJsonSerialization(apiConfig);
+            ConfigureContainer(apiConfig);
+        }
+
+        private static void ConfigureContainer(HttpConfiguration apiConfig)
+        {
+            var container = new DryIoc.Container();
+            container.Register<IShoppingCartService,ShoppingCartService>();
+            container.WithWebApi(apiConfig);
         }
 
         /// <summary>
