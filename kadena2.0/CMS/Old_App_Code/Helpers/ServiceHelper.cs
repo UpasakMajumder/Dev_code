@@ -35,6 +35,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <summary>
         /// Sends request to microservice to create mailing container.
         /// </summary>
+        /// <param name="name">Name for mailing container.</param>
         /// <param name="mailType">Mail type option for mailing container.</param>
         /// <param name="product">Product type option for mailing container.</param>
         /// <param name="validityDays">Validity option for mailing container.</param>
