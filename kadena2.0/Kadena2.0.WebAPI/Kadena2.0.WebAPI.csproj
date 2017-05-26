@@ -108,6 +108,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
     <Compile Include="InitModules\WebApiInitModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />

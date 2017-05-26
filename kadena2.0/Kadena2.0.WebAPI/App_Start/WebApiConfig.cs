@@ -5,6 +5,7 @@ using Kadena.WebAPI.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using System.Net.Http.Headers;
 
 namespace Kadena.WebAPI
 {
@@ -40,6 +41,8 @@ namespace Kadena.WebAPI
 
             config.Formatters.Clear();
             config.Formatters.Add(jsonFormatter);
+
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
         }
 
         /// <summary>
