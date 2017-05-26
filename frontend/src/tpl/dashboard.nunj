@@ -68,6 +68,34 @@
               <h2>Recent orders</h2>
               <a href="#">View recent orders</a>
             </div>
+            <table class="show-table">
+              <tbody>
+                <tr>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Ordered</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
+                  <th></th>
+                </tr>
+                {% for i in range(0, 5) -%}
+
+                  <tr>
+                    <td>Mar 3 2017</td>
+                    <td class="show-table__text-appear">
+                      <span class="badge badge--s badge--empty badge--bold">3</span>
+                      1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74 / 1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74
+                    </td>
+                    <td class="show-table__will-hide">In progress</td>
+                    <td class="show-table__will-hide">May 24 2017</td>
+                    <td class="show-table__will-appear">
+                      <button type="button" class="btn-action">View</button>
+                    </td>
+                  </tr>
+
+                {%- endfor %}
+
+              </tbody>
+            </table>
           </div>
 
           <div class="dashboard__block pb-0">
