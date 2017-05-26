@@ -40,8 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckoutPageDTO.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="ContainerDTO.cs" />
+    <Compile Include="DeliveryAddressDTO.cs" />
+    <Compile Include="DeliveryAddressesContainerDTO.cs" />
+    <Compile Include="DeliveryMethodContainerDTO.cs" />
+    <Compile Include="DeliveryMethodDTO.cs" />
+    <Compile Include="DeliveryMethodTypeDTO.cs" />
+    <Compile Include="PaymentMethodContainerDTO.cs" />
+    <Compile Include="PaymentMethodDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TotalsContainerDTO.cs" />
+    <Compile Include="TotalsDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
