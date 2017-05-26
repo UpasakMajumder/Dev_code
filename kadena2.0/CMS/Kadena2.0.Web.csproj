@@ -768,6 +768,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.designer.cs">
       <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx.cs">
+      <DependentUpon>MailingListSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx.designer.cs">
+      <DependentUpon>MailingListSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.cs">
       <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -827,6 +834,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
