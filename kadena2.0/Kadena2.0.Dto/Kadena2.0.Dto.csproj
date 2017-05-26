@@ -7,7 +7,7 @@
     <ProjectGuid>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2._0.Dto</RootNamespace>
+    <RootNamespace>Kadena.Dto</RootNamespace>
     <AssemblyName>Kadena2.0.Dto</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -40,19 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckoutPageDTO.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="ContainerDTO.cs" />
-    <Compile Include="DeliveryAddressDTO.cs" />
-    <Compile Include="DeliveryAddressesContainerDTO.cs" />
-    <Compile Include="DeliveryMethodContainerDTO.cs" />
-    <Compile Include="DeliveryMethodDTO.cs" />
-    <Compile Include="DeliveryMethodTypeDTO.cs" />
-    <Compile Include="PaymentMethodContainerDTO.cs" />
-    <Compile Include="PaymentMethodDTO.cs" />
+    <Compile Include="Checkout\CheckoutPageDTO.cs" />
+    <Compile Include="Checkout\ContainerDTO.cs" />
+    <Compile Include="Checkout\DeliveryAddressDTO.cs" />
+    <Compile Include="Checkout\DeliveryAddressesContainerDTO.cs" />
+    <Compile Include="Checkout\DeliveryMethodContainerDTO.cs" />
+    <Compile Include="Checkout\DeliveryMethodDTO.cs" />
+    <Compile Include="Checkout\DeliveryMethodTypeDTO.cs" />
+    <Compile Include="Checkout\PaymentMethodContainerDTO.cs" />
+    <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TotalsContainerDTO.cs" />
-    <Compile Include="TotalsDTO.cs" />
+    <Compile Include="Checkout\TotalsContainerDTO.cs" />
+    <Compile Include="Checkout\TotalsDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Kadena2._0.Dto
+namespace Kadena.Dto.Checkout
 {
     public class DeliveryAddressesContainerDTO : ContainerDTO
     {

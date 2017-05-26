@@ -1,9 +1,9 @@
 ﻿using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure.Communication;
 using System.Web.Http;
-using System.Web.Http.Results;
-using Newtonsoft.Json;
 using System;
+using Kadena.Dto.Checkout;
+using System.Linq;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -24,15 +24,38 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var serviceResponse = service.Test();
+            //var serviceResponse = service.Test();
 
-            var response = new BaseResponse<string>()
+            var result = new CheckoutPageDTO()
             {
-                Success = true,
-                Payload = serviceResponse
+                DeliveryAddresses = new DeliveryAddressesContainerDTO()
+                {
+                    AddAddressLabel ="add address",
+                    Description = "asdasdasd",
+                    Title = "Addresses",
+
+                    items = new[]
+                    {
+                        new DeliveryAddressDTO()
+                        {
+                            Checked = true,
+                            City = "asdasd",
+                            Id = 1,
+                            State = "CZ",
+                            Street = new[] { "Hlavni" }.ToList(),
+                            Zip = "11150"
+                        }
+                    }.ToList()
+                }
             };
 
-            return this.Json<object>(response);
+            var response = new BaseResponse<CheckoutPageDTO>()
+            {
+                Success = true,
+                Payload = result
+            };
+
+            return this.Json<BaseResponse<CheckoutPageDTO>>(response);
         }
     }
 }
