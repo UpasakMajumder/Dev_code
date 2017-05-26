@@ -39,21 +39,16 @@
           <th>Errors</th>
           <th>Valid through</th>
           <th>Status</th>
-          <th style="display: none;">Action</th>
+          <th>Action</th>
         </tr>
         <tr>
-          <td>
-            {#TODO: remove style when begin to work with the current story#}
-            <a class="link" href="#" style="display: none;">FCLTR_Lamp post 2nd AVE</a>
-            <span>FCLTR_Lamp post 2nd AVE</span>
-          </td>
+          <td><a class="link" href="#">FCLTR_Lamp post 2nd AVE</a></td>
           <td>Mar 3 2017</td>
           <td>240</td>
           <td>1</td>
           <td>Mar 3 2017</td>
           <td>Ready to use</td>
-          {#TODO: remove style when begin to work with the current story#}
-          <td class="text--center" style="display: none;">
+          <td class="text--center">
             <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
           </td>
         </tr>
