@@ -9,6 +9,12 @@
     background-color: rgba($brand-white, 1);
   }
 
+  & tr th {
+    @include rem(padding, 14px 8px);
+    text-transform: uppercase;
+    font-size: $font-xs;
+  }
+
   tr {
     position: relative;
     border: 1px solid $brand-grey;
@@ -116,6 +122,6 @@
   }
 
   &__sort-icon {
-    @include rem(margin-right, 12px);
+    @include rem(margin-right, 8px);
   }
 }

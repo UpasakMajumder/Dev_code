@@ -12,7 +12,7 @@
   &__block-heading {
     @extend %flex--center--between;
 
-    @include rem(padding-top, 35px);
+    @include rem(padding-top, 20px);
     @include rem(margin-bottom, 25px);
     width: 100%;
   }

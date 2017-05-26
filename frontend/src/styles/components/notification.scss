@@ -2,7 +2,7 @@
   $notification-padding: 20px;
   background-color: $brand-lightgrey;
   border-radius: $border-radius-xl;
-  transition: all .5s ease-in-out;
+  transition: all .5s ease;
   max-height: 400px;
   overflow: hidden;
 
@@ -32,5 +32,6 @@
   &.hide {
     opacity: 0;
     max-height: 0;
+    margin: 0;
   }
 }
