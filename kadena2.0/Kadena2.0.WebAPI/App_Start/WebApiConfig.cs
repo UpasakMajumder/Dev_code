@@ -23,7 +23,7 @@ namespace Kadena.WebAPI
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
-            var container = new DryIoc.Container();
+            var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
             container.WithWebApi(apiConfig);
         }

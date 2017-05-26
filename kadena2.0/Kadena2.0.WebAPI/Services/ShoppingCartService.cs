@@ -1,4 +1,5 @@
 ﻿using Kadena.WebAPI.Contracts;
+using CMS.Ecommerce;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Kadena.WebAPI.Services
     {
         public string Test()
         {
-            return "In service, all is ok";
+            return ECommerceContext.CurrentCustomer.ToString();
         }
     }
 }

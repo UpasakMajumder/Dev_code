@@ -12,7 +12,7 @@ namespace Kadena.WebAPI.Controllers
             this.service = service;
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult Test()
         {
             if (this.ModelState.IsValid)
