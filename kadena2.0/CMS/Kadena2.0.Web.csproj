@@ -719,6 +719,13 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.designer.cs">
       <DependentUpon>ColumnMapper.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingList.ascx.cs">
+      <DependentUpon>MailingList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingList.ascx.designer.cs">
+      <DependentUpon>MailingList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.cs">
       <DependentUpon>MailingListUploader.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -813,6 +820,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\MailingList\MailingListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -831,6 +839,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
@@ -850,6 +859,7 @@
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
+    <Content Include="web.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
