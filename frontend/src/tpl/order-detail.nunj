@@ -57,14 +57,14 @@
   <div class="order-block">
     <h2 class="order-block__header">Shipping</h2>
 
-    <p class="p-icon">   {{ svg('dollar', 'icon-p') }} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum doloremque aliquam fugit temporibus impedit labore qui optio minima facere corrupti? Voluptates mollitia voluptatibus, corrupti quo tempora accusantium dolorem beatae amet.</p>
+    <p class="p-icon">   {{ svg('fedex-delivery', 'icon-p') }} 4001 Valley Industrial Blvd, Shakopee, MN 55379</p>
 
   </div>
 
   <div class="order-block">
     <h2 class="order-block__header">Payment</h2>
 
-    <p class="p-icon">   {{ svg('dollar', 'icon-p') }} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum doloremque aliquam fugit temporibus impedit labore qui optio minima facere corrupti? Voluptates mollitia voluptatibus, corrupti quo tempora accusantium dolorem beatae amet.</p>
+    <p class="p-icon">   {{ svg('mastercard', 'icon-p') }} Paid by credit card, Mastercard •••• 4062</p>
 
   </div>
 

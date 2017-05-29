@@ -8,6 +8,7 @@
   $icon-arrow: 40px;
   $icon-margin: 7px;
   $min-height: 130px;
+  $block-border-radius: 4px;
 
   @include rem(padding, $padding-block);
   @include rem(margin,   $margin-block 0);
@@ -15,6 +16,7 @@
   border: 3px solid $brand-grey;
   display: flex;
   min-height: $min-height;
+  border-radius: $block-border-radius;
 
   p {
     margin: 0;
