@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using System.Net.Http.Headers;
+using Kadena.WebAPI.Infrastructure.Filters;
 
 namespace Kadena.WebAPI
 {
@@ -16,10 +17,18 @@ namespace Kadena.WebAPI
         /// </summary>
         public static void Configure(HttpConfiguration apiConfig)
         {
-            //var apiConfig = GlobalConfiguration.Configuration;
             RegisterApiRoutes(apiConfig);
+            ConfigureFilters(apiConfig);
             ConfigureJsonSerialization(apiConfig);
             ConfigureContainer(apiConfig);
+
+        }
+
+        private static void ConfigureFilters(HttpConfiguration config)
+        {
+            GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
+            GlobalConfiguration.Configuration.Filters.Add(new AuthorizationFilter());
+            GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
@@ -35,14 +44,16 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void ConfigureJsonSerialization(HttpConfiguration config)
         {
-            var jsonFormatter = new System.Net.Http.Formatting.JsonMediaTypeFormatter();
-            jsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
-            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
             config.Formatters.Clear();
-            config.Formatters.Add(jsonFormatter);
+            config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());
 
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            var jsonFormatter = config.Formatters.JsonFormatter;
+            jsonFormatter.UseDataContractJsonSerializer = false;
+
+            var settings = jsonFormatter.SerializerSettings;
+            settings.Formatting = Formatting.Indented;
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
         }
 
         /// <summary>

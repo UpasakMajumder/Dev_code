@@ -26,6 +26,8 @@ namespace Kadena.WebAPI.Controllers
         {
             //var serviceResponse = service.Test();
 
+            throw new Exception("shit");
+
             var result = new CheckoutPageDTO()
             {
                 DeliveryAddresses = new DeliveryAddressesContainerDTO()
@@ -55,7 +57,7 @@ namespace Kadena.WebAPI.Controllers
                 Payload = result
             };
 
-            return this.Json<BaseResponse<CheckoutPageDTO>>(response);
+            return this.Ok<BaseResponse<CheckoutPageDTO>>(response);
         }
     }
 }
