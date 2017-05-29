@@ -1,0 +1,29 @@
+.tile-bar {
+  &__item {
+    @extend %flex--center--start;
+
+    @include rem(padding, 13px 10px);
+    float: left;
+    width: 25%;
+    border-left: 3px solid $brand-success;
+
+    .icon-tile {
+      @include rem(margin-right, 8px);
+    }
+  }
+
+  &__title,
+  &__description {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    font-size: $font-xxs;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    @extend .weight--bold;
+    font-size: $font-s;
+  }
+}

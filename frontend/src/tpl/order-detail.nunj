@@ -1,0 +1,54 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Recent orders' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+{% set btns = [
+  {
+    name: 'Track package',
+    class: 'btn-action btn-action--secondary'
+  }, {
+    name: 'Print',
+    class: 'btn-action btn-action--secondary'
+  }, {
+    name: 'Reorder',
+    class: 'btn-action'
+  }
+] %}
+
+{% block content %}
+
+  <div class="tile-bar">
+    <div class="tile-bar__item">
+      {{ svg('flag', 'icon-tile') }}
+      <div>
+        <p class="tile-bar__title">Status</p>
+        <p class="tile-bar__description">In Progress</p>
+      </div>
+    </div>
+    <div class="tile-bar__item">
+      {{ svg('calendar', 'icon-tile') }}
+      <div>
+        <p class="tile-bar__title">Order date</p>
+        <p class="tile-bar__description">9/12/2017</p>
+      </div>
+    </div>
+    <div class="tile-bar__item">
+      {{ svg('truck', 'icon-tile') }}
+      <div>
+        <p class="tile-bar__title">Shipping date</p>
+        <p class="tile-bar__description">10/27/2017</p>
+      </div>
+    </div>
+    <div class="tile-bar__item">
+      {{ svg('dollar', 'icon-tile') }}
+      <div>
+        <p class="tile-bar__title">Status</p>
+        <p class="tile-bar__description">$ 1,383.68</p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
