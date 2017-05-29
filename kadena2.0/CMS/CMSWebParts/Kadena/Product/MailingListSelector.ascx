@@ -10,3 +10,11 @@
         <asp:TableHeaderCell></asp:TableHeaderCell>
     </asp:TableHeaderRow>
 </asp:Table>
+<asp:Panel runat="server" ID="pnlNewList" CssClass="product-editor__bottom">
+    <div class="product-editor__left-text">
+        <span>Missing the right mailing list? Go ahead and create it. This will save your current progress in Drafts section where you can access it through top navigation bar.</span> 
+    </div>
+    <div class="product-editor__right-btn-group btn-group btn-group--right">
+        <a href="#" class="btn-action btn-action--secondary">New mailing list</a>
+    </div>
+</asp:Panel>

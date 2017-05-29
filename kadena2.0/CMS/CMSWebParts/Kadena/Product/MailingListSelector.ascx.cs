@@ -43,10 +43,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     tblMalilingList.Rows.Add(tr);
                 }
                 tblMalilingList.Visible = true;
+                pnlNewList.Visible = false;
             }
             else
             {
                 tblMalilingList.Visible = false;
+                pnlNewList.Visible = true;
             }
         }
 
