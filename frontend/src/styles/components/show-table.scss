@@ -1,0 +1,121 @@
+.show-table {
+  $transition-length: 300ms;
+  overflow: hidden;
+  width: 100%;
+
+  & tr td,
+  & tr th {
+    @include rem(padding, 8px);
+    background-color: rgba($brand-white, 1);
+  }
+
+  tr {
+    position: relative;
+    border: 1px solid $brand-grey;
+  }
+
+  & tr:nth-child(2n) {
+    & > * {
+      background-color: rgba($brand-lightgrey, 1);
+    }
+
+    .show-table__text-appear {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 42px;
+        height: 100%;
+        background: $show-table-row-gardient--gray;
+      }
+    }
+
+    &:hover {
+      .show-table__will-appear {
+        &:after {
+          content: '';
+          position: absolute;
+          right: 100%;
+          top: 0;
+          width: 42px;
+          height: 100%;
+          background: $show-table-row-gardient--gray;
+        }
+      }
+    }
+  }
+
+  &__text-appear {
+    max-width: 250px;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 42px;
+      height: 100%;
+      background: $show-table-row-gardient;
+    }
+
+    tr:hover > & {
+      overflow: visible;
+
+      &:after {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &__will-hide {
+    tr:hover > & {
+      color: transparent;
+
+      & > * {
+        background-color: transparent;
+        color: transparent;
+        border-color: transparent;
+      }
+    }
+  }
+
+  &__will-appear {
+    position: relative;
+    text-align: center;
+
+    & > * {
+      visibility: hidden;
+      opacity: 0;
+      transition: all $transition-length ease-in;
+    }
+
+    tr:hover > & > * {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    tr:hover > & {
+      z-index: 1;
+    }
+
+    tr:hover > & {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 0;
+        width: 42px;
+        height: 100%;
+        background: $show-table-row-gardient;
+      }
+    }
+  }
+
+  &__sort-icon {
+    @include rem(margin-right, 12px);
+  }
+}

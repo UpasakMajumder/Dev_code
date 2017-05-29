@@ -1,0 +1,7 @@
+.order-data {
+  &__block {
+    &:not(:last-child) {
+      @include rem(margin-bottom, 30px);
+    }
+  }
+}

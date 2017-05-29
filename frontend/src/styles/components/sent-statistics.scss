@@ -38,5 +38,9 @@
 
   &__value {
     font-size: $font-large;
+
+    .sent-statistics--xs & {
+      font-size: $font-xl;
+    }
   }
 }
