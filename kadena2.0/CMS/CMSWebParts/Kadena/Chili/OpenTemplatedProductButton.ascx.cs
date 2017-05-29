@@ -6,6 +6,7 @@ using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.Chili;
 using System;
+using System.Linq;
 using System.Web;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
@@ -30,8 +31,6 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 return GetStringValue("SelectMailingListUrl", string.Empty);
             }
         }
-
-        #endregion
 
     #region Public methods
 
