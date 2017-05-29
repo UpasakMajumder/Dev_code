@@ -719,6 +719,13 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.designer.cs">
       <DependentUpon>ColumnMapper.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingList.ascx.cs">
+      <DependentUpon>MailingList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\MailingList.ascx.designer.cs">
+      <DependentUpon>MailingList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx.cs">
       <DependentUpon>MailingListUploader.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -761,20 +768,6 @@
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.cs">
-      <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.designer.cs">
-      <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.cs">
-      <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.designer.cs">
-      <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.cs">
       <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -806,6 +799,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\MailingList\MailingListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -824,10 +818,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
