@@ -54,6 +54,16 @@ namespace Kadena.WebAPI
                         Zip = ai.AddressZip
                     });
 
+                    config.CreateMap<CarrierInfo, DeliveryMethod>().ProjectUsing(ci => new DeliveryMethod()
+                    {
+                        Id = ci.CarrierID,
+                        Opened = false,
+                        Title = ci.CarrierName
+                    });
+
+                    
+                    config.CreateMap<DeliveryMethods, DeliveryMethodsDTO>();
+                    config.CreateMap<DeliveryMethod, DeliveryMethodDTO>();
                     config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
                     config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                     config.CreateMap<CheckoutPage, CheckoutPageDTO>();

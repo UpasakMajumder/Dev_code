@@ -1,6 +1,11 @@
-﻿namespace Kadena.Dto.Checkout
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Kadena.WebAPI.Models
 {
-    public class DeliveryMethodTypeDTO
+    public class DeliveryService
     {
         public int Id { get; set; }
         public string Title { get; set; }

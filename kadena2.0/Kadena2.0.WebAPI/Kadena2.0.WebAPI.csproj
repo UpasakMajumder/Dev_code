@@ -59,6 +59,10 @@
     <Reference Include="CMS.Ecommerce">
       <HintPath>..\Lib\CMS.Ecommerce.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.SiteProvider, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.SiteProvider.dll</HintPath>
+    </Reference>
     <Reference Include="DryIoc, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DryIoc.dll.2.10.0\lib\net45\DryIoc.dll</HintPath>
       <Private>True</Private>
@@ -122,6 +126,9 @@
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
     <Compile Include="Models\CheckoutPage.cs" />
+    <Compile Include="Models\DeliveryService.cs" />
+    <Compile Include="Models\DeliveryMethod.cs" />
+    <Compile Include="Models\DeliveryMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>

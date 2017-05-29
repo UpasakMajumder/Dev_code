@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
-namespace Kadena.Dto.Checkout
+namespace Kadena.WebAPI.Models
 {
-    public class DeliveryMethodDTO
+    public class DeliveryMethod
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,6 +16,6 @@ namespace Kadena.Dto.Checkout
         public string Price { get; set; }
         public string DatePrefix { get; set; }
         public string Date { get; set; }
-        public List<DeliveryServiceDTO> items { get; set; }
+        public List<DeliveryService> items { get; set; }
     }
 }

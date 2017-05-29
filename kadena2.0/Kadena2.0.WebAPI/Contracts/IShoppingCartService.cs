@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Models;
+﻿using CMS.Ecommerce;
+using Kadena.WebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace Kadena.WebAPI.Contracts
         CheckoutPage GetCheckoutPage();
 
         DeliveryAddress[] GetCustomerAddresses();
+        DeliveryMethod[] GetShippingCarriers();
+
+        DeliveryService[] GetShippingOptions();
     }
 }

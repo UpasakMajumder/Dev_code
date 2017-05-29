@@ -4,6 +4,7 @@ using Kadena.WebAPI.Models;
 using System;
 using AutoMapper;
 using System.Linq;
+using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.Services
 {
@@ -18,16 +19,26 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage GetCheckoutPage()
         {
             var addresses = GetCustomerAddresses();
+            var carriers = GetShippingCarriers();
 
             return new CheckoutPage()
             {
                 DeliveryAddresses = new DeliveryAddresses()
                 {
-                   AddAddressLabel = "New address",
-                   Title = "Delivery",
-                   Description = "Products will be delivered to selected address by",
-                   items = addresses.ToList()
-                }
+                    AddAddressLabel = "New address",
+                    Title = "Delivery",
+                    Description = "Products will be delivered to selected address by",
+                    items = addresses.ToList()
+                },
+
+                DeliveryMethods = new DeliveryMethods()
+                {
+                    Title = "Delivery",
+                    Description = "Select delivery carrier and option",
+                    items = carriers.ToList(),
+                },
+
+                SubmitLabel = "Place order"
             };
         }
 
@@ -40,6 +51,18 @@ namespace Kadena.WebAPI.Services
             var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
 
             return mapper.Map<DeliveryAddress[]>(addresses);
+        }
+
+        public DeliveryMethod[] GetShippingCarriers()
+        {
+            var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
+            return mapper.Map<DeliveryMethod[]>(carriers);
+        }
+
+        public DeliveryService[] GetShippingOptions()
+        {
+            //ShippingOptionInfo i;
+            return null;
         }
     }
 }

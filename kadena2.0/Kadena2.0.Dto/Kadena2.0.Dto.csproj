@@ -45,7 +45,7 @@
     <Compile Include="Checkout\DeliveryAddressesDTO.cs" />
     <Compile Include="Checkout\DeliveryMethodsDTO.cs" />
     <Compile Include="Checkout\DeliveryMethodDTO.cs" />
-    <Compile Include="Checkout\DeliveryMethodTypeDTO.cs" />
+    <Compile Include="Checkout\DeliveryServiceDTO.cs" />
     <Compile Include="Checkout\PaymentMethodsDTO.cs" />
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
