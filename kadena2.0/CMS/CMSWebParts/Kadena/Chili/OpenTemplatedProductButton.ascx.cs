@@ -23,6 +23,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
     }
 
     #endregion
+        public string SelectMailingListUrl
+        {
+            get
+            {
+                return GetStringValue("SelectMailingListUrl", string.Empty);
+            }
+        }
+
+        #endregion
 
     #region Public methods
 
