@@ -1,0 +1,11 @@
+.order-block {
+  @include rem(margin, 25px 0 40px);
+
+  &:last-child {
+    @include rem(margin, 25px 0 0);
+  }
+
+  &__header {
+    @include rem(margin-bottom, 20px);
+  }
+}

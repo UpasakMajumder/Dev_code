@@ -1,4 +1,6 @@
 .tile-bar {
+  @extend %flex--center--default;
+
   &__item {
     @extend %flex--center--start;
 
