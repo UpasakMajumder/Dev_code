@@ -37,7 +37,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         var btn = new HtmlButton();
                         btn.ID = d.id;
                         btn.ClientIDMode = ClientIDMode.Static;
-                        btn.InnerText = "Use";
+                        btn.InnerText = GetString("Kadena.MailingList.Use");
                         btn.Attributes["class"] = "btn-action";
                         btn.ServerClick += btnUse_ServerClick;
                         btnCell.Controls.Add(btn);
@@ -45,9 +45,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     }
                     else
                     {
-                        tr.Cells.Add(new TableCell { Text = "List expired" });
+                        tr.Cells.Add(new TableCell { Text = GetString("Kadena.MailingList.ListExpired") });
                     }
-
                     tblMalilingList.Rows.Add(tr);
                 }
                 tblMalilingList.Visible = true;
