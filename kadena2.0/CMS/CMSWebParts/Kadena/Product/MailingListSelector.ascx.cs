@@ -9,6 +9,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class MailingListSelector : CMSAbstractWebPart
     {
+        public string NewMailingListUrl
+        {
+            get
+            {
+                return GetStringValue("NewMailingListUrl", string.Empty);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists();
