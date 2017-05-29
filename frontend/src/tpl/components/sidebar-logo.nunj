@@ -2,5 +2,5 @@
 
 <div class="sidebar-logo">
   {{ svg('kadena-xs', 'icon-sidebar-logo') }}
-  <span class="sidebar-logo__text">Powered by Kadena</span>
+  {{ svg('logo-small', 'icon-sidebar-logo-small') }}
 </div>
