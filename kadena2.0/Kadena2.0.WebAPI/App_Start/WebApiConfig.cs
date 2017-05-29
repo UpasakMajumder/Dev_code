@@ -41,6 +41,7 @@ namespace Kadena.WebAPI
         {
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
+            container.Register<IKenticoProviderService, KenticoProviderService>();
 
             Mapper.Initialize(config =>
                 {
@@ -61,7 +62,14 @@ namespace Kadena.WebAPI
                         Title = ci.CarrierName
                     });
 
-                    
+                    config.CreateMap<ShippingOptionInfo, DeliveryService>().ProjectUsing(s => new DeliveryService()
+                    {
+                        Id = s.ShippingOptionID,
+                        CarrierId = s.ShippingOptionCarrierID,
+                        Title = s.ShippingOptionName
+                    });
+
+                    config.CreateMap<DeliveryService, DeliveryServiceDTO>();
                     config.CreateMap<DeliveryMethods, DeliveryMethodsDTO>();
                     config.CreateMap<DeliveryMethod, DeliveryMethodDTO>();
                     config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();

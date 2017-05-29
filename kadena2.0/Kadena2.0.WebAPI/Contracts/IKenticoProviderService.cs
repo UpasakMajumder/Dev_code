@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts
 {
-    public interface IShoppingCartService
+    public interface IKenticoProviderService
     {
-        CheckoutPage GetCheckoutPage();        
+        DeliveryAddress[] GetCustomerAddresses();
+        DeliveryMethod[] GetShippingCarriers();
+        DeliveryService[] GetShippingOptions();
     }
 }

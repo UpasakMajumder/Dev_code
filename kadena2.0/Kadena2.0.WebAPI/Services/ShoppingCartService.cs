@@ -1,25 +1,25 @@
 ﻿using Kadena.WebAPI.Contracts;
-using CMS.Ecommerce;
 using Kadena.WebAPI.Models;
-using System;
 using AutoMapper;
 using System.Linq;
-using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        IMapper mapper;
-        public ShoppingCartService(IMapper mapper)
+        private readonly IMapper mapper;
+        private readonly IKenticoProviderService kenticoProvider;
+
+        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider)
         {
             this.mapper = mapper;
+            this.kenticoProvider = kenticoProvider;
         }
 
         public CheckoutPage GetCheckoutPage()
         {
-            var addresses = GetCustomerAddresses();
-            var carriers = GetShippingCarriers();
+            var addresses = kenticoProvider.GetCustomerAddresses();
+            var carriers = kenticoProvider.GetShippingCarriers();
 
             return new CheckoutPage()
             {
@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.Services
                     items = addresses.ToList()
                 },
 
-                DeliveryMethods = new DeliveryMethods()
+                DeliveryMethod = new DeliveryMethods()
                 {
                     Title = "Delivery",
                     Description = "Select delivery carrier and option",
@@ -40,29 +40,6 @@ namespace Kadena.WebAPI.Services
 
                 SubmitLabel = "Place order"
             };
-        }
-
-        public DeliveryAddress[] GetCustomerAddresses()
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            if (customer == null)
-                throw new Exception("Unknown customer");
-
-            var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
-
-            return mapper.Map<DeliveryAddress[]>(addresses);
-        }
-
-        public DeliveryMethod[] GetShippingCarriers()
-        {
-            var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
-            return mapper.Map<DeliveryMethod[]>(carriers);
-        }
-
-        public DeliveryService[] GetShippingOptions()
-        {
-            //ShippingOptionInfo i;
-            return null;
         }
     }
 }

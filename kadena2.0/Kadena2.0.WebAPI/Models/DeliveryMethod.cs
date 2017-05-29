@@ -17,5 +17,10 @@ namespace Kadena.WebAPI.Models
         public string DatePrefix { get; set; }
         public string Date { get; set; }
         public List<DeliveryService> items { get; set; }
+
+        public void SetShippingOptions(IEnumerable<DeliveryService> services)
+        {
+            items = services.Where(s => s.CarrierId == this.Id).ToList();
+        }
     }
 }
