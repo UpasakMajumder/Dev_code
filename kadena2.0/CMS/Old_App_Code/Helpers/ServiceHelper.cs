@@ -1,12 +1,13 @@
 ﻿using CMS.DataEngine;
 using CMS.Helpers;
+using System.IO;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.IO;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -19,6 +20,8 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
+        private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
+        private const string _getMailingListsSettingKey = "KDA_GetMailingListsUrl";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -27,10 +30,12 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _createContainerIncorrectMessage = "Url for creating container is not in correct format. Check settings for your site.";
         private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
+        private const string _validateAddressIncorrectMessage = "Url for validating addresses is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
         /// </summary>
+        /// <param name="name">Name for mailing container.</param>
         /// <param name="mailType">Mail type option for mailing container.</param>
         /// <param name="product">Product type option for mailing container.</param>
         /// <param name="validityDays">Validity option for mailing container.</param>
@@ -94,7 +99,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
             return containerId;
         }
-        
+
         /// <summary>
         /// Uploads file with request to microservice.
         /// </summary>
@@ -167,6 +172,11 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>List of header names.</returns>
         public static IEnumerable<string> GetHeaders(string fileId)
         {
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileId));
+            }
+
             string customerName = GetCustomerName();
 
             Uri getHeaderUrl;
@@ -217,6 +227,16 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
         public static void UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
+            if (string.IsNullOrWhiteSpace(fileId))
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(fileId));
+            }
+
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
             if ((mapping?.Count ?? 0) == 0)
             {
                 throw new ArgumentException(_valueEmptyMessage, nameof(mapping));
@@ -280,6 +300,59 @@ namespace Kadena.Old_App_Code.Helpers
         }
 
         /// <summary>
+        /// Forces microservices to start addresses validation for specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>If of file with valid addresses.</returns>
+        public static string ValidateAddresses(Guid containerId)
+        {
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
+            Uri validateAddressUrl;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}")
+                , UriKind.Absolute
+                , out validateAddressUrl))
+            {
+                throw new InvalidOperationException(_validateAddressIncorrectMessage);
+            }
+
+            using (var client = new HttpClient())
+            {
+                using (var content = new StringContent(JsonConvert.SerializeObject(new
+                {
+                    ContainerId = containerId
+                }), System.Text.Encoding.UTF8, "application/json"))
+                {
+                    using (var message = client.PostAsync(validateAddressUrl, content))
+                    {
+                        AwsResponseMessage response;
+                        try
+                        {
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                                .Content.ReadAsStringAsync()
+                                .Result);
+                        }
+                        catch (JsonReaderException e)
+                        {
+                            throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        }
+                        if (response?.Success ?? false)
+                        {
+                            return response?.Response?.ToString();
+                        }
+                        else
+                        {
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets name of customer from settings for current site.
         /// </summary>
         /// <returns>Customer's name</returns>
@@ -292,6 +365,40 @@ namespace Kadena.Old_App_Code.Helpers
             }
 
             return customerName;
+        }
+
+        /// <summary>
+        /// Get all mailing lists for particular customer (whole site)
+        /// </summary>
+        public static IEnumerable<MailingListData> GetMailingLists()
+        {
+            var customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
+                {
+                    AwsResponseMessage response;
+                    try
+                    {
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return (response.Response as JArray).ToObject<IEnumerable<MailingListData>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
+                }
+            }
         }
     }
 }
