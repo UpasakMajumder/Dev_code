@@ -9,6 +9,6 @@ namespace Kadena.Dto.Checkout
 
         public string AddAddressLabel { get; set; }
 
-        public List<DeliveryAddressDTO> items { get; set; }
+        public List<DeliveryAddressDTO> Items { get; set; }
     }
 }

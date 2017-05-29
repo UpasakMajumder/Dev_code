@@ -13,6 +13,6 @@ namespace Kadena.Dto.Checkout
         public string Price { get; set; }
         public string DatePrefix { get; set; }
         public string Date { get; set; }
-        public List<DeliveryServiceDTO> items { get; set; }
+        public List<DeliveryServiceDTO> Items { get; set; }
     }
 }
