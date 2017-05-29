@@ -11,6 +11,6 @@ namespace Kadena.WebAPI.Contracts
     {
         CheckoutPage GetCheckoutPage();
 
-        Address[] GetCustomerAddresses();
+        DeliveryAddress[] GetCustomerAddresses();
     }
 }

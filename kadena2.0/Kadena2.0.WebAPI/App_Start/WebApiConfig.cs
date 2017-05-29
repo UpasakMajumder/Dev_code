@@ -11,6 +11,7 @@ using AutoMapper;
 using CMS.Ecommerce;
 using Kadena.WebAPI.Models;
 using System.Linq;
+using Kadena.Dto.Checkout;
 
 namespace Kadena.WebAPI
 {
@@ -42,15 +43,22 @@ namespace Kadena.WebAPI
             container.Register<IShoppingCartService,ShoppingCartService>();
 
             Mapper.Initialize(config =>
-                config.CreateMap<AddressInfo, Address>().ProjectUsing( ai => new Address()
                 {
-                    Id = ai.AddressID,
-                    Checked = false,
-                    City = ai.AddressCity,
-                    State = ai.GetStateCode(),
-                    Street = new[] { ai.AddressLine1 }.ToList(),
-                    Zip = ai.AddressZip
-                })
+                    config.CreateMap<AddressInfo, DeliveryAddress>().ProjectUsing(ai => new DeliveryAddress()
+                    {
+                        Id = ai.AddressID,
+                        Checked = false,
+                        City = ai.AddressCity,
+                        State = ai.GetStateCode(),
+                        Street = new[] { ai.AddressLine1 }.ToList(),
+                        Zip = ai.AddressZip
+                    });
+
+                    config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
+                    config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
+                    config.CreateMap<CheckoutPage, CheckoutPageDTO>();
+                    
+                }  
             );
 
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);

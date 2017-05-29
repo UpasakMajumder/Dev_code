@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Checkout
 {
-    public class TotalsContainerDTO: ContainerDTO
+    public class TotalsContainerDTO
     {
         public List<TotalsDTO> items { get; set; }
     }

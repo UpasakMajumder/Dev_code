@@ -2,7 +2,7 @@
 
 namespace Kadena.WebAPI.Models
 {
-    public class Address
+    public class DeliveryAddress
     {
         public List<string> Street { get; set; }
         public string City { get; set; }

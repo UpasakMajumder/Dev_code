@@ -2,9 +2,9 @@
 {
     public class CheckoutPageDTO
     {
-        public DeliveryAddressesContainerDTO DeliveryAddresses { get; set; }
-        public DeliveryMethodContainerDTO DeliveryMethod { get; set; }
-        public PaymentMethodContainerDTO PaymentMethod { get; set; }
+        public DeliveryAddressesDTO DeliveryAddresses { get; set; }
+        public DeliveryMethodsDTO DeliveryMethod { get; set; }
+        public PaymentMethodsDTO PaymentMethod { get; set; }
         public TotalsContainerDTO Totals { get; set; }
         public string SubmitLabel { get; set; }
     }

@@ -2,8 +2,11 @@
 
 namespace Kadena.Dto.Checkout
 {
-    public class DeliveryMethodContainerDTO : ContainerDTO
+    public class DeliveryMethodsDTO 
     {
+        public string Title { get; set; }
+        public string Description { get; set; }
+
         public List<DeliveryMethodDTO> items { get; set; }
     }
 }

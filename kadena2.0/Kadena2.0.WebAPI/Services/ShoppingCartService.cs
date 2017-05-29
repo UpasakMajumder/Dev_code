@@ -21,11 +21,17 @@ namespace Kadena.WebAPI.Services
 
             return new CheckoutPage()
             {
-                DeliveryAddresses = addresses.ToArray()
+                DeliveryAddresses = new DeliveryAddresses()
+                {
+                   AddAddressLabel = "New address",
+                   Title = "Delivery",
+                   Description = "Products will be delivered to selected address by",
+                   items = addresses.ToList()
+                }
             };
         }
 
-        public Address[] GetCustomerAddresses()
+        public DeliveryAddress[] GetCustomerAddresses()
         {
             var customer = ECommerceContext.CurrentCustomer;
             if (customer == null)
@@ -33,7 +39,7 @@ namespace Kadena.WebAPI.Services
 
             var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
 
-            return mapper.Map<Address[]>(addresses);
+            return mapper.Map<DeliveryAddress[]>(addresses);
         }
     }
 }
