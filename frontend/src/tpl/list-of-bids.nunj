@@ -1,0 +1,68 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Recent orders' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = 'K-Source' %}
+
+{% block content %}
+
+<div class="bids-list__block">
+
+<h2 class="bids-list__block-header">You have 2 open projects</h2>
+<table class="show-table">
+  <tbody>
+    <tr>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project name</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Request ID/th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project status</th>
+        <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Last update</th>
+    </tr>
+    {% for i in range(0, 2) -%}
+
+      <tr>
+        <td>Mar 3 2017</td>
+        <td>Brochure</td>
+        <td>123545</td>
+        <td>Waiting for bids</td>
+        <td>May 24 2017 16:45</td>
+      </tr>
+
+    {%- endfor %}
+  </tbody>
+</table>
+
+</div>
+
+<div class="bids-list__block">
+
+<h2 class="bids-list__block-header">You have 3 completed projects</h2>
+<table class="show-table">
+  <tbody>
+    <tr>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project name</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Request ID/th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project status</th>
+        <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Last update</th>
+    </tr>
+    {% for i in range(0, 3) -%}
+
+      <tr>
+        <td>Mar 3 2017</td>
+        <td>Brochure</td>
+        <td>123545</td>
+        <td>Waiting for bids</td>
+        <td>May 24 2017 16:45</td>
+      </tr>
+
+    {%- endfor %}
+
+  </tbody>
+</table>
+
+</div>
+
+{% endblock %}
