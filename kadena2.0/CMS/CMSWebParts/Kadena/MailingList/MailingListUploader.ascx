@@ -59,6 +59,9 @@
             <div class="input__wrapper">
                 <span class="input__label" runat="server" id="textFileName2"></span>
                 <input runat="server" id="inpFileName" type="text" name="name" class="input__text js-drop-zone-name-input" placeholder="">
+                <span class="input__error input__error--noborder">
+                    <cms:LocalizedLabel runat="server" ID="errFileName" EnableViewState="false" ResourceString="Kadena.MailingList.EnterValidValue" Visible="false" />
+                </span>
             </div>
         </div>
     </div>
