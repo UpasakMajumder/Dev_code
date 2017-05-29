@@ -69,7 +69,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
                 if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))
                 {
-                    var selectMailingList = URLHelper.AddParameterToUrl(SelectMailingListUrl, "url", destinationUrl);
+                    var selectMailingList = URLHelper.AddParameterToUrl(SelectMailingListUrl, "url", URLHelper.URLEncode(destinationUrl));
                     Response.Redirect(selectMailingList);
                 }
                 else
