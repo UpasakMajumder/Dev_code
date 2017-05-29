@@ -4,6 +4,7 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -39,6 +40,38 @@ namespace Kadena.WebAPI.Services
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
             return mapper.Map<DeliveryService[]>(services);
+        }
+
+        public List<Total> GetShoppingCartTotals()
+        {
+            return new List<Total>()
+            {
+                new Total()
+                {
+                    Title = "Summary",
+                    Value = ECommerceContext.CurrentShoppingCart.TotalItemsPrice.ToString()
+                },
+                new Total()
+                {
+                    Title = "Shipping",
+                    Value = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString()
+                },
+                new Total()
+                {
+                    Title = "Subtotal",
+                    Value = "0"
+                },
+                new Total()
+                {
+                    Title = "Tax 8%",
+                    Value = "0"
+                },
+                new Total()
+                {
+                    Title = "Totals",
+                    Value = ECommerceContext.CurrentShoppingCart.TotalPrice.ToString()
+                }
+            };
         }
     }
 }

@@ -130,6 +130,8 @@
     <Compile Include="Models\DeliveryService.cs" />
     <Compile Include="Models\DeliveryMethod.cs" />
     <Compile Include="Models\DeliveryMethods.cs" />
+    <Compile Include="Models\Totals.cs" />
+    <Compile Include="Models\Total.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
