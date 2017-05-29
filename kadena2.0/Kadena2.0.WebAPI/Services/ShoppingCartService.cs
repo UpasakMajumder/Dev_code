@@ -1,17 +1,39 @@
 ﻿using Kadena.WebAPI.Contracts;
 using CMS.Ecommerce;
+using Kadena.WebAPI.Models;
 using System;
-using System.Collections.Generic;
+using AutoMapper;
 using System.Linq;
-using System.Web;
 
 namespace Kadena.WebAPI.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        public string Test()
+        IMapper mapper;
+        public ShoppingCartService(IMapper mapper)
         {
-            return ECommerceContext.CurrentCustomer.ToString();
+            this.mapper = mapper;
+        }
+
+        public CheckoutPage GetCheckoutPage()
+        {
+            var addresses = GetCustomerAddresses();
+
+            return new CheckoutPage()
+            {
+                DeliveryAddresses = addresses.ToArray()
+            };
+        }
+
+        public Address[] GetCustomerAddresses()
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+            if (customer == null)
+                throw new Exception("Unknown customer");
+
+            var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
+
+            return mapper.Map<Address[]>(addresses);
         }
     }
 }

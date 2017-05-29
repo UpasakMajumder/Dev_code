@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.WebAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IShoppingCartService
     {
-        string Test();
+        CheckoutPage GetCheckoutPage();
+
+        Address[] GetCustomerAddresses();
     }
 }

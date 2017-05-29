@@ -7,6 +7,10 @@ using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using System.Net.Http.Headers;
 using Kadena.WebAPI.Infrastructure.Filters;
+using AutoMapper;
+using CMS.Ecommerce;
+using Kadena.WebAPI.Models;
+using System.Linq;
 
 namespace Kadena.WebAPI
 {
@@ -22,6 +26,7 @@ namespace Kadena.WebAPI
             ConfigureJsonSerialization(apiConfig);
             ConfigureContainer(apiConfig);
 
+            
         }
 
         private static void ConfigureFilters(HttpConfiguration config)
@@ -35,6 +40,20 @@ namespace Kadena.WebAPI
         {
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
+
+            Mapper.Initialize(config =>
+                config.CreateMap<AddressInfo, Address>().ProjectUsing( ai => new Address()
+                {
+                    Id = ai.AddressID,
+                    Checked = false,
+                    City = ai.AddressCity,
+                    State = ai.GetStateCode(),
+                    Street = new[] { ai.AddressLine1 }.ToList(),
+                    Zip = ai.AddressZip
+                })
+            );
+
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
 
