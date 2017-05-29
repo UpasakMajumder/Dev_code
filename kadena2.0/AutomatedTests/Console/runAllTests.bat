@@ -1,0 +1,1 @@
+%~dp0nunit3-console.exe %~dp0..\AutomatedTests.dll
