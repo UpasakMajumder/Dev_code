@@ -28,7 +28,7 @@
       public string errorPropertyName { get; set; }
     }
 
-    public class InitialPasswordSettingResult
+    public class GeneralResult
     {
       public bool success { get; set; }
       public string errorMessage { get; set; }
@@ -71,26 +71,33 @@
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod]
-    public InitialPasswordSettingResult InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
+    public GeneralResult InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
     {
       #region Validation
 
       if (string.IsNullOrWhiteSpace(password))
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
       }
       if (string.IsNullOrWhiteSpace(confirmPassword))
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
       }
       if (password != confirmPassword)
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
       }
 
       #endregion
 
       return InitialPasswordSettingInternal(password, confirmPassword, userGUID);
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public GeneralResult ContactPersonDetailsChange(Guid userGUID, string firstName, string lastName, string mobile, string phoneNumber)
+    {
+      return ContactPersonDetailsChangeInternal(userGUID, firstName, lastName, mobile, phoneNumber);
     }
 
     #endregion
@@ -127,18 +134,36 @@
       }
     }
 
-    private InitialPasswordSettingResult InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
+    private GeneralResult InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
     {
       var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
       if (ui == null)
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordCantBeSetUp", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordCantBeSetUp", LocalizationContext.CurrentCulture.CultureCode) };
       }
       UserInfoProvider.SetPassword(ui, password);
       ui.Enabled = true;
       ui.Update();
 
-      return new InitialPasswordSettingResult { success = true };
+      return new GeneralResult { success = true };
+    }
+
+    private GeneralResult ContactPersonDetailsChangeInternal(Guid userGUID, string firstName, string lastName, string mobile, string phoneNumber)
+    {
+      var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
+      if (ui == null)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.ContanctDetailsChange.UserNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      ui.FirstName = firstName;
+      ui.LastName = lastName;
+      ui.FullName = firstName + " " + lastName;
+      ui.SetValue("UserMobile", mobile);
+      ui.SetValue("UserPhone", phoneNumber);
+
+      ui.Update();
+
+      return new GeneralResult { success = true };
     }
 
     private bool IsEmailValid(string email)
