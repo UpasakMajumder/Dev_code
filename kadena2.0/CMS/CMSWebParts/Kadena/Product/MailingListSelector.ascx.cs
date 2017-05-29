@@ -1,9 +1,11 @@
-﻿using CMS.PortalEngine.Web.UI;
+﻿using CMS.Helpers;
+using CMS.PortalEngine.Web.UI;
 using System;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Kadena.Old_App_Code.Kadena.Chili;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -61,6 +63,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void btnUse_ServerClick(object sender, EventArgs e)
         {
+            var btn = sender as HtmlButton;
+            if (btn != null)
+            {
+                var url = URLHelper.URLDecode(Request.QueryString["url"]);
+                var containerId = btn.ID;
+                var templateId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "templateid");
+                if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId))
+                {
+                    new TemplateServiceHelper().SetMailingList(containerId, templateId);
+                    Response.Redirect(url);
+                }
+            }
         }
     }
 }
