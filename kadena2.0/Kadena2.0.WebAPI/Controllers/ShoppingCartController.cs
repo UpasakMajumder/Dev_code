@@ -46,5 +46,15 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
+
+        [HttpPost]
+        [Route("api/shoppingcart/selectaddress")]
+        public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
+        {
+            var result = service.SelectAddress(request.Id);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
     }
 }

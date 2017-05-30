@@ -102,5 +102,21 @@ namespace Kadena.WebAPI.Services
             checkoutPage.DeliveryMethod.CheckMethod(id);
             return checkoutPage;
         }
+
+        public CheckoutPage SelectAddress(int id)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            if (cart.ShoppingCartShippingAddress == null || cart.ShoppingCartShippingAddress.AddressID != id)
+            {
+                var address = AddressInfoProvider.GetAddressInfo(id);
+                cart.ShoppingCartShippingAddress = address;
+            }
+
+            var checkoutPage = GetCheckoutPage();
+            checkoutPage.DeliveryAddresses.CheckAddress(id);
+            return checkoutPage;
+
+        }
     }
 }
