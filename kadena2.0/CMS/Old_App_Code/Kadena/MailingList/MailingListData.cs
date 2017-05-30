@@ -9,6 +9,7 @@ namespace Kadena.Old_App_Code.Kadena.MailingList
     public string name { get; set; }
     public DateTime createDate { get; set; }
     public DateTime updateDate { get; set; }
+    public DateTime validTo { get; set; }
     public object state { get; set; }
     public string mailType { get; set; }
     public string productType { get; set; }
