@@ -1,0 +1,7 @@
+.block {
+  @include rem(margin, 16px 0 32px);
+
+  &__heading {
+    @include rem(margin, 4px 0 24px);
+  }
+}

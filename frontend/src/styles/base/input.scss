@@ -19,6 +19,24 @@
     &--disabled {
       opacity: .5;
     }
+
+    &--with-unit {
+      input {
+        @include rem(padding-right, 30px);
+      }
+    }
+
+    &--with-icon {
+      input {
+        @include rem(padding-right, 30px);
+      }
+
+      svg {
+        @include rem(right, 8px);
+        @include rem(bottom, 10px);
+        position: absolute;
+      }
+    }
   }
 
   &__inner {
@@ -47,6 +65,21 @@
       @include rem(padding-left, 10px);
       @include rem(padding-right, 10px);
     }
+  }
+
+  &__textarea {
+    @extend .input;
+
+    @include rem(padding-left, 16px);
+    @include rem(padding-right, 16px);
+    width: 100%;
+    min-height: 80px;
+  }
+
+  &__unit {
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
   }
 
   &__password {
@@ -158,13 +191,13 @@
     @extend .bg-white;
     border: 1px solid $brand-darkgrey;
     border-radius: $border-radius;
-    height: 42px;
+    height: 41px;
     width: 100%;
 
     select {
       background: transparent;
       border: none;
-      height: 42px;
+      height: 41px;
       font-weight: 400;
       width: 100%;
     }
