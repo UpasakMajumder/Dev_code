@@ -22,6 +22,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
         private const string _getMailingListsSettingKey = "KDA_GetMailingListsUrl";
+        private const string _getMailingListByIdSettingKey = "KDA_GetMailingListByIdUrl";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -31,6 +32,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
         private const string _validateAddressIncorrectMessage = "Url for validating addresses is not in correct format. Check settings for your site.";
+        private const string _getMailingListByIdIncorrectMessage = "Url for getting mailing container by id is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -392,6 +394,53 @@ namespace Kadena.Old_App_Code.Helpers
                     if (response.Success)
                     {
                         return (response.Response as JArray).ToObject<IEnumerable<MailingListData>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get all mailing list for particular customer (whole site) by specified Id.
+        /// </summary>
+        /// <param name="containerId">Id of container to get.</param>
+        public static MailingListData GetMailingList(Guid containerId)
+        {
+            var customerName = GetCustomerName();
+
+            Uri getMailingListUrl;
+            if (!Uri.TryCreate(
+                    string.Format("{0}/{1}/{2}",
+                    SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListByIdSettingKey}"),
+                    customerName,
+                    containerId)
+                , UriKind.Absolute
+                , out getMailingListUrl))
+            {
+                throw new InvalidOperationException(_getMailingListByIdIncorrectMessage);
+            }
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(getMailingListUrl))
+                {
+                    AwsResponseMessage response;
+                    try
+                    {
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return JsonConvert.DeserializeObject<MailingListData>(response.Response.ToString());
                     }
                     else
                     {
