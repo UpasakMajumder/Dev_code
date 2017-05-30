@@ -6,6 +6,7 @@ using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.Chili;
 using System;
+using System.Linq;
 using System.Web;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
@@ -23,6 +24,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
     }
 
     #endregion
+        public string SelectMailingListUrl
+        {
+            get
+            {
+                return GetStringValue("SelectMailingListUrl", string.Empty);
+            }
+        }
 
     #region Public methods
 
@@ -58,7 +66,16 @@ namespace Kadena.CMSWebParts.Kadena.Chili
           ECommerceContext.CurrentProduct.SKUID,
           newTemplateID);
 
-        Response.Redirect(destinationUrl);
+                var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
+                if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))
+                {
+                    var selectMailingList = URLHelper.AddParameterToUrl(SelectMailingListUrl, "url", URLHelper.URLEncode(destinationUrl));
+                    Response.Redirect(selectMailingList);
+                }
+                else
+                {
+                    Response.Redirect(destinationUrl);
+                }
       }
     }
 
