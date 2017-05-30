@@ -13,5 +13,6 @@ namespace Kadena.WebAPI.Contracts
         DeliveryAddress[] GetCustomerAddresses();
         DeliveryMethod[] GetShippingCarriers();
         DeliveryService[] GetShippingOptions();
+        Total[] GetShoppingCartTotals();
     }
 }

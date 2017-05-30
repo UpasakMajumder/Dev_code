@@ -4,7 +4,6 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
-using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -42,9 +41,9 @@ namespace Kadena.WebAPI.Services
             return mapper.Map<DeliveryService[]>(services);
         }
 
-        public List<Total> GetShoppingCartTotals()
+        public Total[] GetShoppingCartTotals()
         {
-            return new List<Total>()
+            return new Total[]
             {
                 new Total()
                 {

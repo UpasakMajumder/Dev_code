@@ -5,7 +5,6 @@ using Kadena.WebAPI.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
-using System.Net.Http.Headers;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
 using CMS.Ecommerce;
@@ -25,9 +24,8 @@ namespace Kadena.WebAPI
             RegisterApiRoutes(apiConfig);
             ConfigureFilters(apiConfig);
             ConfigureJsonSerialization(apiConfig);
+            ConfigureMapper();
             ConfigureContainer(apiConfig);
-
-            
         }
 
         private static void ConfigureFilters(HttpConfiguration config)
@@ -37,48 +35,50 @@ namespace Kadena.WebAPI
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
+        private static void ConfigureMapper()
+        {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<AddressInfo, DeliveryAddress>().ProjectUsing(ai => new DeliveryAddress()
+                {
+                    Id = ai.AddressID,
+                    Checked = false,
+                    City = ai.AddressCity,
+                    State = ai.GetStateCode(),
+                    Street = new[] { ai.AddressLine1 }.ToList(),
+                    Zip = ai.AddressZip
+                });
+
+                config.CreateMap<CarrierInfo, DeliveryMethod>().ProjectUsing(ci => new DeliveryMethod()
+                {
+                    Id = ci.CarrierID,
+                    Opened = false,
+                    Title = ci.CarrierName
+                });
+
+                config.CreateMap<ShippingOptionInfo, DeliveryService>().ProjectUsing(s => new DeliveryService()
+                {
+                    Id = s.ShippingOptionID,
+                    CarrierId = s.ShippingOptionCarrierID,
+                    Title = s.ShippingOptionName
+                });
+
+                config.CreateMap<Total, TotalDTO>();
+                config.CreateMap<Totals, TotalsDTO>();
+                config.CreateMap<DeliveryService, DeliveryServiceDTO>();
+                config.CreateMap<DeliveryMethods, DeliveryMethodsDTO>();
+                config.CreateMap<DeliveryMethod, DeliveryMethodDTO>();
+                config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
+                config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
+                config.CreateMap<CheckoutPage, CheckoutPageDTO>();
+            });
+        }
+
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
-
-            Mapper.Initialize(config =>
-                {
-                    config.CreateMap<AddressInfo, DeliveryAddress>().ProjectUsing(ai => new DeliveryAddress()
-                    {
-                        Id = ai.AddressID,
-                        Checked = false,
-                        City = ai.AddressCity,
-                        State = ai.GetStateCode(),
-                        Street = new[] { ai.AddressLine1 }.ToList(),
-                        Zip = ai.AddressZip
-                    });
-
-                    config.CreateMap<CarrierInfo, DeliveryMethod>().ProjectUsing(ci => new DeliveryMethod()
-                    {
-                        Id = ci.CarrierID,
-                        Opened = false,
-                        Title = ci.CarrierName
-                    });
-
-                    config.CreateMap<ShippingOptionInfo, DeliveryService>().ProjectUsing(s => new DeliveryService()
-                    {
-                        Id = s.ShippingOptionID,
-                        CarrierId = s.ShippingOptionCarrierID,
-                        Title = s.ShippingOptionName
-                    });
-
-                    config.CreateMap<DeliveryService, DeliveryServiceDTO>();
-                    config.CreateMap<DeliveryMethods, DeliveryMethodsDTO>();
-                    config.CreateMap<DeliveryMethod, DeliveryMethodDTO>();
-                    config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
-                    config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
-                    config.CreateMap<CheckoutPage, CheckoutPageDTO>();
-                    
-                }  
-            );
-
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
@@ -89,8 +89,8 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void ConfigureJsonSerialization(HttpConfiguration config)
         {
-            config.Formatters.Clear();
-            config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());
+            //config.Formatters.Clear();
+            //config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());
 
             var jsonFormatter = config.Formatters.JsonFormatter;
             jsonFormatter.UseDataContractJsonSerializer = false;
@@ -107,9 +107,6 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void RegisterApiRoutes(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // Web API routes
             //config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

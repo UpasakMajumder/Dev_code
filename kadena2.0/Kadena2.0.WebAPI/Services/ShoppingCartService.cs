@@ -20,6 +20,7 @@ namespace Kadena.WebAPI.Services
         {
             var addresses = kenticoProvider.GetCustomerAddresses();
             var carriers = kenticoProvider.GetShippingCarriers();
+            var totals = kenticoProvider.GetShoppingCartTotals();
 
             return new CheckoutPage()
             {
@@ -36,6 +37,13 @@ namespace Kadena.WebAPI.Services
                     Title = "Delivery",
                     Description = "Select delivery carrier and option",
                     items = carriers.ToList(),
+                },
+
+                Totals = new Totals()
+                {
+                    Title = "Total",
+                    Description = null,
+                    Items = totals.ToList()
                 },
 
                 SubmitLabel = "Place order"

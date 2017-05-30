@@ -7,6 +7,6 @@ namespace Kadena.Dto.Checkout
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public List<TotalsDTO> Items { get; set; }
+        public List<TotalDTO> Items { get; set; }
     }
 }

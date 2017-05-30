@@ -1,15 +1,13 @@
 ﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Infrastructure.Communication;
 using System.Web.Http;
 using System;
 using Kadena.Dto.Checkout;
-using System.Linq;
-using Kadena.WebAPI.Models;
 using AutoMapper;
+using Kadena.WebAPI.Infrastructure;
 
 namespace Kadena.WebAPI.Controllers
 {
-    public class ShoppingCartController : ApiController
+    public class ShoppingCartController : ApiControllerBase
     {
         private readonly IShoppingCartService service;
         private readonly IMapper mapper;
@@ -33,17 +31,9 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var serviceResponse = service.GetCheckoutPage();
-
-            var responseDto = mapper.Map<CheckoutPageDTO>(serviceResponse);
-
-            var response = new BaseResponse<CheckoutPageDTO>() 
-            {
-                Success = true,
-                Payload = responseDto
-            };
-
-            return this.Ok<BaseResponse<CheckoutPageDTO>>(response);
+            var checkoutPage = service.GetCheckoutPage();
+            var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
+            return ResponseJson(checkoutPageDto);
         }
     }
 }
