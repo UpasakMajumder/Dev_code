@@ -15,7 +15,9 @@ namespace Kadena.WebAPI.Infrastructure
         {
             var response = new BaseResponse<T>()
             {
-                Payload = payload
+                Success = true,
+                Payload = payload,
+                ErrorMessage = null
             };
 
             return Json(response, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);

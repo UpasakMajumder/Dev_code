@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.Models
 {
@@ -8,5 +10,10 @@ namespace Kadena.WebAPI.Models
         public string Description { get; set; }
 
         public List<DeliveryMethod> items { get; set; }
+
+        public void CheckMethod(int id)
+        {
+            items.ForEach(i => i.CheckMethod(id));
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace Kadena.WebAPI.Contracts
     {
         CheckoutPage GetCheckoutPage();
         List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] methods);
+
+        CheckoutPage SelectShipipng(int id);
     }
 }

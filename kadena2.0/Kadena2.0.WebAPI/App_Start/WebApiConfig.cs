@@ -93,6 +93,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
+            apiConfig.EnsureInitialized();
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void RegisterApiRoutes(HttpConfiguration config)
         {
-            //config.MapHttpAttributeRoutes();
+            config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

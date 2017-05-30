@@ -3,6 +3,8 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
+using CMS.Ecommerce;
+using CMS.Helpers;
 
 namespace Kadena.WebAPI.Services
 {
@@ -84,6 +86,21 @@ namespace Kadena.WebAPI.Services
             }
 
             return orderedMethods;
+        }
+
+        public CheckoutPage SelectShipipng(int id)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            if (cart.ShoppingCartShippingOptionID != id)
+            {
+                cart.ShoppingCartShippingOptionID = id;
+                //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+            }
+
+            var checkoutPage = GetCheckoutPage();
+            checkoutPage.DeliveryMethod.CheckMethod(id);
+            return checkoutPage;
         }
     }
 }

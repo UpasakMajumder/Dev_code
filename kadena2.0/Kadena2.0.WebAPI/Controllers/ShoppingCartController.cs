@@ -4,6 +4,7 @@ using System;
 using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Requests;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -29,11 +30,21 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/shoppingcart")]
         public IHttpActionResult Get()
         {
             var checkoutPage = service.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
+        }
+
+        [HttpPost]
+        [Route("api/shoppingcart/selectshipping")]
+        public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
+        {
+            var result = service.SelectShipipng(request.Id);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
         }
     }
 }
