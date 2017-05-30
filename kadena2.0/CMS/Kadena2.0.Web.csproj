@@ -806,6 +806,9 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
+    <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
+    <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
