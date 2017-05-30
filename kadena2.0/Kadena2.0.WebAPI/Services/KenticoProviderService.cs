@@ -38,8 +38,28 @@ namespace Kadena.WebAPI.Services
         public DeliveryService[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
-            return mapper.Map<DeliveryService[]>(services);
+
+            var result = mapper.Map<DeliveryService[]>(services);
+
+            GetShippingPrice(result);
+
+            return result;
         }
+
+        private void GetShippingPrice(DeliveryService[] services)
+        {
+            // this method's approach comes from origial kentico webpart (ShippingSeletion)
+            int originalCartShippingId = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
+
+            foreach (var s in services)
+            {
+                ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = s.Id;
+                s.Price = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString();
+            }
+
+            ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
+        }
+
 
         public PaymentMethod[] GetPaymentMethods()
         {
