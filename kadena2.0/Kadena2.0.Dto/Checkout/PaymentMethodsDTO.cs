@@ -6,7 +6,6 @@ namespace Kadena.Dto.Checkout
     {
         public string Title { get; set; }
         public string Description { get; set; }
-
         public List<PaymentMethodDTO> Items { get; set; }
     }
 }

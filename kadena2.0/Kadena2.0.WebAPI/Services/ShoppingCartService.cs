@@ -4,7 +4,6 @@ using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
 using CMS.Ecommerce;
-using CMS.Helpers;
 
 namespace Kadena.WebAPI.Services
 {

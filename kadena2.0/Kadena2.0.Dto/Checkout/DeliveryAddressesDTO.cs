@@ -6,9 +6,7 @@ namespace Kadena.Dto.Checkout
     {
         public string Title { get; set; }
         public string Description { get; set; }
-
         public string AddAddressLabel { get; set; }
-
         public List<DeliveryAddressDTO> Items { get; set; }
     }
 }

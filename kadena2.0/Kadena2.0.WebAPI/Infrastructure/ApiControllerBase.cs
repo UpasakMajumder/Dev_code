@@ -8,7 +8,7 @@ namespace Kadena.WebAPI.Infrastructure
     {
         protected JsonResult<ErrorResponse> ErrorJson(string errorMessage)
         {
-            return Json(new ErrorResponse("Failed  to retrieve person"), GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+            return Json(new ErrorResponse(errorMessage), GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
         }
 
         protected JsonResult<BaseResponse<T>> ResponseJson<T>(T payload)

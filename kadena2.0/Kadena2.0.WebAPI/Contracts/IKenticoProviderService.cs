@@ -1,10 +1,4 @@
-﻿using CMS.Ecommerce;
-using Kadena.WebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Kadena.WebAPI.Models;
 
 namespace Kadena.WebAPI.Contracts
 {

@@ -102,9 +102,6 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void ConfigureJsonSerialization(HttpConfiguration config)
         {
-            //config.Formatters.Clear();
-            //config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());
-
             var jsonFormatter = config.Formatters.JsonFormatter;
             jsonFormatter.UseDataContractJsonSerializer = false;
 

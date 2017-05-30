@@ -38,11 +38,8 @@ namespace Kadena.WebAPI.Services
         public DeliveryService[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
-
             var result = mapper.Map<DeliveryService[]>(services);
-
             GetShippingPrice(result);
-
             return result;
         }
 
