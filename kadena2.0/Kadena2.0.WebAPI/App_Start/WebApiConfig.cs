@@ -53,16 +53,28 @@ namespace Kadena.WebAPI
                 {
                     Id = ci.CarrierID,
                     Opened = false,
-                    Title = ci.CarrierName
+                    Title = ci.CarrierDisplayName
                 });
 
                 config.CreateMap<ShippingOptionInfo, DeliveryService>().ProjectUsing(s => new DeliveryService()
                 {
                     Id = s.ShippingOptionID,
                     CarrierId = s.ShippingOptionCarrierID,
-                    Title = s.ShippingOptionName
+                    Title = s.ShippingOptionDisplayName
                 });
 
+                config.CreateMap<PaymentOptionInfo, PaymentMethod>().ProjectUsing(p => new PaymentMethod()
+                {
+                    Id = p.PaymentOptionID,
+                    Checked = false,
+                    Disabled = false,
+                    Icon = "",
+                    Title = p.PaymentOptionDisplayName,
+                    ClassName = p.PaymentOptionClassName
+                });
+
+                config.CreateMap<PaymentMethod, PaymentMethodDTO>();
+                config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
                 config.CreateMap<Totals, TotalsDTO>();
                 config.CreateMap<DeliveryService, DeliveryServiceDTO>();

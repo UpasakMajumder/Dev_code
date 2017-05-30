@@ -41,6 +41,12 @@ namespace Kadena.WebAPI.Services
             return mapper.Map<DeliveryService[]>(services);
         }
 
+        public PaymentMethod[] GetPaymentMethods()
+        {
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();
+            return mapper.Map<PaymentMethod[]>(methods);
+        }
+
         public Total[] GetShoppingCartTotals()
         {
             return new Total[]

@@ -7,5 +7,7 @@
         public string Icon { get; set; }
         public bool Disabled { get; set; }
         public bool Checked { get; set; }
+        public bool HasInput { get; set; }
+        public string InputPlaceholder { get; set; }
     }
 }

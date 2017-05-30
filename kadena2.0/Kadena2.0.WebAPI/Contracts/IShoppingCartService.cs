@@ -10,6 +10,7 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IShoppingCartService
     {
-        CheckoutPage GetCheckoutPage();        
+        CheckoutPage GetCheckoutPage();
+        List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] methods);
     }
 }
