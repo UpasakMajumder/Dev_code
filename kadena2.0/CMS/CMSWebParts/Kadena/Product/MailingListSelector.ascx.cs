@@ -26,6 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 foreach (var d in mailingListData)
                 {
+                    // Generate table
                     var tr = new TableRow();
                     tr.Cells.Add(new TableCell { Text = d.createDate.ToString("MMM dd yyyy") });
                     tr.Cells.Add(new TableCell { Text = d.addressCount.ToString() });
