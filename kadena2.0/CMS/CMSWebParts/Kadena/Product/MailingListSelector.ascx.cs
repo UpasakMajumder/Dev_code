@@ -21,7 +21,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists();
+            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists().Where(l => l.addressCount > 0);
             if (mailingListData.Count() > 0)
             {
                 foreach (var d in mailingListData)
