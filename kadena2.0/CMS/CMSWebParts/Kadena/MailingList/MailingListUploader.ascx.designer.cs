@@ -130,6 +130,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlInputText inpFileName;
         
         /// <summary>
+        /// errFileName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel errFileName;
+        
+        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
