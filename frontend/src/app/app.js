@@ -36,8 +36,8 @@ const app = {
     /* Configure Redux store */
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-    render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
+    render('ShoppingCart', document.querySelectorAll('.shopping-cart'));
   }
 };
 

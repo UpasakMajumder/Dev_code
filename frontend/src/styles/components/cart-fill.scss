@@ -41,6 +41,16 @@
   &__block-inner {
     @include rem(padding, 5px 0 0 20px);
   }
+
+  &__block--flex {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > *:not(:last-child) {
+      @extend .mr-4;
+      margin-bottom: 0;
+    }
+  }
 }
 
 .cart__dialog-table {
