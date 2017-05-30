@@ -3,6 +3,7 @@ using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
+        private MailingListData _container;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            var containerId = Request.QueryString["containerid"];
+            if (!string.IsNullOrWhiteSpace(containerId))
+            {
+                var id = new Guid(containerId);
+                _container = ServiceHelper.GetMailingList(id);
+            }
             if (!IsPostBack)
             {
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
@@ -98,6 +106,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             html.AddAttribute(HtmlTextWriterAttribute.Class, "col-lg-4 col-xl-3");
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
+                            // <div class="input__wrapper">
                             html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
@@ -120,7 +129,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             html.Write(o.Value);
                             html.RenderEndTag();
 
-                            html.RenderEndTag();
+                            html.RenderEndTag(); // </div class="input__wrapper">
+
                             html.RenderEndTag();
                         }
                         html.RenderEndTag();
