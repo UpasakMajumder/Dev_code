@@ -21,3 +21,10 @@
     }
   }
 }
+
+.form-block {
+  @include rem(padding, 20px 10px);
+  background-color: rgba(238,238,238,0.5);
+  border-radius: $border-radius-xl;
+  max-width: 240px;
+}

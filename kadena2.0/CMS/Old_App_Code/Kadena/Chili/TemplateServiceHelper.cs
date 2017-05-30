@@ -141,5 +141,44 @@ namespace Kadena.Old_App_Code.Kadena.Chili
       }
       return new List<TemplateServiceDocumentResponse>();
     }
-  }
+
+        public string SetMailingList(string containerId, string templateId)
+        {
+            var requestUrl = string.Format("{0}api/template/datasource", ServiceBaseUrl);
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                var data = new { containerId, templateId };
+                streamWriter.Write(new JavaScriptSerializer().Serialize(data));
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var resultString = string.Empty;
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultString = streamReader.ReadToEnd();
+                }
+                var result = new JavaScriptSerializer().Deserialize<TemplateServiceResponseData>(resultString);
+
+                if (result.success)
+                {
+                    return result.payload.editorUrl;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", result.error);
+                }
+            }
+            else
+            {
+                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", response.StatusCode.ToString());
+            }
+            return resultString;
+        }
+    }
 }
