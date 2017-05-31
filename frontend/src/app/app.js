@@ -27,6 +27,7 @@ const app = {
     init('add-tr', document.getElementsByClassName('js-add-tr'));
     init('redirection', document.getElementsByClassName('js-redirection'));
     init('password', document.getElementsByClassName('js-password'));
+    init('closer', document.getElementsByClassName('js-close-this'));
 
   },
 
