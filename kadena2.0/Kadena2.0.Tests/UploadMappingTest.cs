@@ -33,10 +33,10 @@ namespace Kadena.Tests
             };
 
             Assert.Catch(typeof(HttpRequestException)
-                , () => CallService(new Guid(fileId), new Guid(containerId), customerName, url, mapping));
+                , () => CallService(fileId, new Guid(containerId), customerName, url, mapping));
         }
 
-        [TestCase("5b602141-33fa-4754-9eb4-af275b80087a",
+        [TestCase("actum/original-mailing/ee086770-6f5f-4905-bc87-be5248be36b3",
             "399c95a3-ce5d-46d9-ad1f-1f195ce95596",
             "actum",
             "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress",
@@ -56,10 +56,10 @@ namespace Kadena.Tests
                 { "Zip", 7}
             };
 
-            CallService(new Guid(fileId), new Guid(containerId), customerName, url, mapping);
+            CallService(fileId, new Guid(containerId), customerName, url, mapping);
         }
 
-        private void CallService(Guid fileId, Guid containerId, string customerName, string url, Dictionary<string, int> mapping)
+        private void CallService(string fileId, Guid containerId, string customerName, string url, Dictionary<string, int> mapping)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(

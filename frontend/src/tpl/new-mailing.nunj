@@ -33,6 +33,17 @@
           </div>
           <p class="js-drop-zone-name">File name</p>
         </div>
+
+        <div class="drop-zone__dropped drop-zone__dropped--not">
+          <div>
+            <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+              {{ svg('cross', 'icon-cross') }}
+            </button>
+            <img src="{{ _imgPath + 'csv-error.png' }}" class="icon-csv">
+          </div>
+          <p>This file format is not supported.
+Please drag & drop your . <br/>CSV file here or click anywhere to upload.</p>
+        </div>
       </div>
     </div>
 

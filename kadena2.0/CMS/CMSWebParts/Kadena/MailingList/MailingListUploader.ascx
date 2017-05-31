@@ -25,15 +25,22 @@
             </div>
             <p class="js-drop-zone-name">File name</p>
         </div>
+
+        <div class="drop-zone__dropped drop-zone__dropped--not">
+            <div>
+                <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+                    <svg class="icon icon-cross">
+                        <use xlink:href="/gfx/svg/sprites/icons.svg#cross" />
+                    </svg>
+                </button>
+                <img src="/gfx/images/csv-error.png" class="icon-csv">
+            </div>
+            <p runat="server" id="textWrongFileUploaded"></p>
+        </div>
     </div>
     <div class="input__wrapper j-submit-mailing-list-error" style="display: none;">
         <span class="input__error">
             <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
-        </span>
-    </div>
-    <div id="divFileTypeError" runat="server" enableviewstate="false" class="input__wrapper" visible="false">
-        <span class="input__error">
-            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileUnsupportedExtension" />
         </span>
     </div>
 </div>
@@ -52,8 +59,29 @@
             <div class="input__wrapper">
                 <span class="input__label" runat="server" id="textFileName2"></span>
                 <input runat="server" id="inpFileName" type="text" name="name" class="input__text js-drop-zone-name-input" placeholder="">
+                <span class="input__error input__error--noborder" style="display: none;">
+                    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.EnterValidValue" />
+                </span>
             </div>
         </div>
     </div>
 </div>
-<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click" onclick="javascript: if(!$('.js-drop-zone').hasClass('isDropped')) { $('.j-submit-mailing-list-error').show(); return false; };"></button>
+<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click"
+    onclick="javascript: 
+        if($('.js-drop-zone').hasClass('isNotDropped')) 
+        { 
+            $('.j-submit-mailing-list-error').hide();
+            return false; 
+        }; 
+        if(!$('.js-drop-zone').hasClass('isDropped')) 
+        { 
+            $('.j-submit-mailing-list-error').show();
+            return false; 
+        }; 
+        if ($('input.js-drop-zone-name-input').is(':empty'))
+        {
+            $('input.js-drop-zone-name-input').addClass('input--error');
+            $('span.input__error').show();
+            return false;
+        };">
+</button>
