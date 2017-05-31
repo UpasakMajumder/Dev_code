@@ -61,13 +61,13 @@ export default (state = defaultState, action) => {
       if (address.checked) deliveryAddress = address.id;
     });
 
-    state.ui.deliveryMethod.items.forEach((methodGroup) => {
+    state.ui.deliveryMethods.items.forEach((methodGroup) => {
       methodGroup.items.forEach((method) => {
         if (method.checked && !deliveryMethod) deliveryMethod = method.id;
       });
     });
 
-    state.ui.paymentMethod.items.forEach((method) => {
+    state.ui.paymentMethods.items.forEach((method) => {
       if (method.checked) paymentMethod = { id: method.id, invoice: '' };
     });
 

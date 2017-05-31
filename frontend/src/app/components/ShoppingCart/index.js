@@ -31,7 +31,7 @@ class ShoppingCart extends Component {
           validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedId={checkedData.deliveryMethod}
-          ui={ui.deliveryMethod} />
+          ui={ui.deliveryMethods} />
       </div>
 
       <div className="shopping-cart__block">
@@ -40,7 +40,7 @@ class ShoppingCart extends Component {
           validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedObj={checkedData.paymentMethod}
-          ui={ui.paymentMethod} />
+          ui={ui.paymentMethods} />
       </div>
 
       <div className="shopping-cart__block">
