@@ -87,6 +87,34 @@
       font-weight: 400;
       margin: 0;
     }
+
+    .font-text {
+      display: block;
+    }
+
+    .font-text--reserved {
+      display: none;
+    }
+
+    @supports (-ms-ime-align:auto) {
+      .font-text {
+        display: none;
+      }
+
+      .font-text--reserved {
+        display: block;
+      }
+    }
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      .font-text {
+        display: none;
+      }
+
+      .font-text--reserved {
+        display: block;
+      }
+    }
   }
 
   &__dropped {

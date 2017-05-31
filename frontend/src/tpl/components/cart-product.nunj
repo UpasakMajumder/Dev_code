@@ -1,4 +1,4 @@
-<div class="cart-product {% if(deliverable) %}cart-product--non-deliverable{% endif %}">
+<div class="cart-product {% if(deliverable) %}cart-product--non-deliverable{% endif %} {% if(ordereded) %}cart-product--ordereded{% endif %}">
   <div class="cart-product__img">
     <img src="http://satyr.io/150-300x100-200" alt="#">
   </div>
@@ -19,6 +19,12 @@
         <span>Mailing list: <strong>FCLTR_Mar30_Lamp post</strong></span>
       </p>
     </div>
+    <div class="cart-product__tracking">
+      <p>
+        {{ svg('location') }}
+        <span>Tracking ID: <strong> 1Z12345E029198079</strong></span>
+      </p>
+    </div>
     <div class="cart-product__delivery">
       <p>Delivery to USPS by Mar 27 2017 for 328 addresses.</p>
     </div>
@@ -26,6 +32,12 @@
   <div class="cart-product__options">
     <div class="cart-product__price">
       <span>$ <span class="js-money-format">25.49</span></span>
+    </div>
+    <div class="cart-product__optional">
+      <span>Adresses<span>134</span></span>
+    </div>
+    <div class="cart-product__file">
+      <a href="#">Download PDF</a>
     </div>
     <div class="cart-product__action">
       <button type="button" class="cart-product__btn">
