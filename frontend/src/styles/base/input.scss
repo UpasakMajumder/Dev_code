@@ -1,4 +1,6 @@
 .input {
+  $input-height: 41px;
+
   @extend .line-height--one;
 
   @include rem(padding-top, 11px);
@@ -191,13 +193,13 @@
     @extend .bg-white;
     border: 1px solid $brand-darkgrey;
     border-radius: $border-radius;
-    height: 41px;
+    height: $input-height;
     width: 100%;
 
     select {
       background: transparent;
       border: none;
-      height: 41px;
+      height: $input-height;
       font-weight: 400;
       width: 100%;
     }
