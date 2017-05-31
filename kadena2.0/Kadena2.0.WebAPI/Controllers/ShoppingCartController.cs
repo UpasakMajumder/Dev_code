@@ -56,5 +56,12 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
+        [HttpPost]
+        //[Route("api/shoppingcart/submit")]
+        public IHttpActionResult Submit([FromBody]SubmitRequestDto request)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

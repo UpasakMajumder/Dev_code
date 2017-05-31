@@ -55,7 +55,8 @@ namespace Kadena.WebAPI.Services
                     Items  = OrderPaymentMethods(paymentMethods)
                 },
 
-                SubmitLabel = "Place order"
+                SubmitLabel = "Place order",
+                ValidationMessage = "Error"
             };
         }
 

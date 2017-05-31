@@ -7,5 +7,6 @@
         public PaymentMethodsDTO PaymentMethods { get; set; }
         public TotalsDTO Totals { get; set; }
         public string SubmitLabel { get; set; }
+        public string ValidationMessage { get; set; }
     }
 }

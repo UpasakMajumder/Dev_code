@@ -32,7 +32,7 @@ namespace Kadena.WebAPI
             {
                 WebApiConfig.Configure(GlobalConfiguration.Configuration);
             }
-            catch(InvalidOperationException ioex)
+            catch(InvalidOperationException)
             {
 
             }

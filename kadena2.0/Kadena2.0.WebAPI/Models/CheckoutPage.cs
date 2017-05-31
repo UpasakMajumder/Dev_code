@@ -7,5 +7,6 @@
         public PaymentMethods PaymentMethods { get; set; }
         public Totals Totals { get; set; }
         public string SubmitLabel { get; set; }
+        public string ValidationMessage { get; set; }
     }
 }
