@@ -8,6 +8,7 @@
   <div class="drop-zone__dropping">
     {{ svg('draganddrop', 'icon-drop') }}
     <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
+    <p class="font-text font-text--reserved">Click anywhere to upload your .csv file</p>
   </div>
 
   <div class="drop-zone__dropped">
