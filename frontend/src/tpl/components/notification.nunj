@@ -1,0 +1,18 @@
+<div class="notification js-close-this" data-animation-length="400">
+  <div class="notification__header">
+    <p>Working with Kadena</p>
+  </div>
+  <div class="notification__body">
+    <p>Welcome to Kadena K-Center, a responsive eCommerce portal built on the needs of our customers. Kadena™ is quickly configured to meet the needs of your business, and we can add products and add templates as needed. Within Kadena, you will find
+      access to relevant products, the ability to request new products, use our K-Source module to get bids on your projects, and create product kits to ease the delivery of frequently ordered sets of products. At any time use the
+      <a href="#">Help</a>
+      button in the left navigation to get help in using the platform or to directly contact your Cenveo rep for help with these tools.</p>
+
+    <div class="notification__body-footer btn-group btn-group--right">
+      <button type="button" class="btn-success btn-success--secondary">
+        Read user manual
+      </button>
+      <button type="button" class="btn-success js-close-this-trigger">Got it</button>
+    </div>
+  </div>
+</div>
