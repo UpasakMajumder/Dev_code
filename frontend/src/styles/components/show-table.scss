@@ -5,8 +5,14 @@
 
   & tr td,
   & tr th {
-    @include rem(padding, 8px);
+    @include rem(padding, 16px 8px);
     background-color: rgba($brand-white, 1);
+  }
+
+  & tr th {
+    @include rem(padding, 14px 8px);
+    text-transform: uppercase;
+    font-size: $font-xs;
   }
 
   tr {
@@ -116,6 +122,6 @@
   }
 
   &__sort-icon {
-    @include rem(margin-right, 12px);
+    @include rem(margin-right, 8px);
   }
 }

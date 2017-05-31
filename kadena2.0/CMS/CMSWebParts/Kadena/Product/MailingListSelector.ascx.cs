@@ -21,11 +21,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists();
+            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists().Where(l => l.addressCount > 0);
             if (mailingListData.Count() > 0)
             {
                 foreach (var d in mailingListData)
                 {
+                    // Generate table
                     var tr = new TableRow();
                     tr.Cells.Add(new TableCell { Text = d.createDate.ToString("MMM dd yyyy") });
                     tr.Cells.Add(new TableCell { Text = d.addressCount.ToString() });
