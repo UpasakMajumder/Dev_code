@@ -56,13 +56,13 @@
     <p runat="server" id="textFileNameDescr"></p>
     <div class="row">
         <div class="col-lg-5 col-xl-3">
-            <div class="input__wrapper">
+            <asp:Panel runat="server" ID="divFileName" CssClass="input__wrapper">
                 <span class="input__label" runat="server" id="textFileName2"></span>
                 <input runat="server" id="inpFileName" type="text" name="name" class="input__text js-drop-zone-name-input" placeholder="">
                 <span class="input__error input__error--noborder">
                     <cms:LocalizedLabel runat="server" ID="errFileName" EnableViewState="false" ResourceString="Kadena.MailingList.EnterValidValue" Visible="false" />
                 </span>
-            </div>
+            </asp:Panel>
         </div>
     </div>
 </div>

@@ -67,6 +67,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                     , validity
                                     , _container != null ? (_container.validTo - _container.createDate).TotalDays.ToString() : null
                                     )));
+
+            if (_container != null)
+            {
+                divFileName.CssClass = "input__wrapper input__wrapper--disabled";
+                inpFileName.Value = _container.name;
+                inpFileName.Disabled = true;
+            }
         }
 
         /// <summary>
