@@ -78,7 +78,7 @@
             $('.j-submit-mailing-list-error').show();
             return false; 
         }; 
-        if ($('input.js-drop-zone-name-input').is(':empty'))
+        if (!$.trim($('input.js-drop-zone-name-input').val()).length)
         {
             $('input.js-drop-zone-name-input').addClass('input--error');
             $('span.input__error').show();
