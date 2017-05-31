@@ -168,9 +168,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel")
             {
-                var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
                 var fileStream = inpFile.PostedFile.InputStream;
                 var fileName = inpFileName.Value;
 
@@ -178,6 +175,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var containerId = Guid.Empty;
                 if (_container == null)
                 {
+                    var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+                    var product = Request.Form[GetString("Kadena.MailingList.Product")];
+                    var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
                     containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
                 }
                 else
