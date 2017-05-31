@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="28px" viewBox="0 0 29 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Calendar</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Ready" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Order-detail" transform="translate(-467.000000, -246.000000)" stroke="#444444">
+            <g id="Page" transform="translate(20.000000, 20.000000)">
+                <g id="Container" transform="translate(233.166667, 70.000000)">
+                    <g id="Status-Panel" transform="translate(20.000000, 136.000000)">
+                        <g id="Components/Metrics/Full-Copy-4" transform="translate(180.000000, 0.000000)">
+                            <g id="Content" transform="translate(15.000000, 15.000000)">
+                                <g id="Icon/Calendar" transform="translate(0.000000, 6.000000)">
+                                    <g id="Icon">
+                                        <polyline id="Shape" stroke-width="2" points="21.2727273 2.36363636 26 2.36363636 26 26 0 26 0 2.36363636 4.72727273 2.36363636"></polyline>
+                                        <path d="M7.09090909,2.36363636 L18.9090909,2.36363636" id="Shape" stroke-width="2"></path>
+                                        <rect id="Rectangle-path" stroke-width="2" x="4.72727273" y="0" width="2.36363636" height="4.72727273"></rect>
+                                        <rect id="Rectangle-path" stroke-width="2" x="18.9090909" y="0" width="2.36363636" height="4.72727273"></rect>
+                                        <path d="M0,9.45454545 L26,9.45454545" id="Shape" stroke-width="2"></path>
+                                        <rect id="Rectangle-path" stroke-width="2" x="4.72727273" y="14.1818182" width="2.36363636" height="1.18181818"></rect>
+                                        <rect id="Rectangle-path" stroke-width="2" x="11.8181818" y="14.1818182" width="2.36363636" height="1.18181818"></rect>
+                                        <rect id="Rectangle-path" stroke-width="2" x="4.72727273" y="20.0909091" width="2.36363636" height="1.18181818"></rect>
+                                        <rect id="Rectangle-path" stroke-width="2" x="11.8181818" y="20.0909091" width="2.36363636" height="1.18181818"></rect>
+                                        <rect id="Rectangle-path" stroke-width="2" x="18.9090909" y="14.1818182" width="2.36363636" height="1.18181818"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
