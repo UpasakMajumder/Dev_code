@@ -4,7 +4,7 @@ import Method from './Method';
 
 class PaymentMethod extends Component {
   render() {
-    const { ui, checkedObj, changeShoppingData } = this.props;
+    const { ui, checkedObj, changeShoppingData, validationField, validationMessage } = this.props;
     const { title, description, items } = ui;
 
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
@@ -17,6 +17,8 @@ class PaymentMethod extends Component {
                 checkedObj={checkedObj}
                 {...item}
                 className={className}
+                validationField={validationField}
+                validationMessage={validationMessage}
                 key={`pm-${item.id}`} />
       );
     });

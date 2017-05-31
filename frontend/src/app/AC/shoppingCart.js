@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_FETCH, RECALCULATE_SHIPPING_PRICE_SUCCESS,
   RECALCULATE_SHIPPING_PRICE_FAILURE, SEND_SHIPPING_DATA_FETCH, SEND_SHIPPING_DATA_FAILURE,
-  SEND_SHIPPING_DATA_SUCCESS, ERROR_SHIPPING_INVOICE_VALIDATION } from '../constants';
+  SEND_SHIPPING_DATA_SUCCESS, ERROR_SHIPPING_VALIDATION } from '../constants';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -81,10 +81,24 @@ export const sendData = (data) => {
       type: SEND_SHIPPING_DATA_FETCH
     });
 
+    Object.keys(data).forEach((key) => {
+      if (!data[key]) {
+        dispatch({
+          type: ERROR_SHIPPING_VALIDATION,
+          payload: {
+            field: key
+          }
+        });
+      }
+    });
+
     if (data.paymentMethod.id === 3) {
       if (!data.paymentMethod.invoice) {
         dispatch({
-          type: ERROR_SHIPPING_INVOICE_VALIDATION
+          type: ERROR_SHIPPING_VALIDATION,
+          payload: {
+            field: 'invoice'
+          }
         });
         return;
       }

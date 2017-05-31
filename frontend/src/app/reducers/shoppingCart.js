@@ -1,5 +1,6 @@
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
-  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_SUCCESS, SEND_SHIPPING_DATA_SUCCESS } from '../constants';
+  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_SUCCESS, SEND_SHIPPING_DATA_SUCCESS,
+  RECALCULATE_SHIPPING_PRICE_FETCH, SEND_SHIPPING_DATA_FETCH, ERROR_SHIPPING_VALIDATION } from '../constants';
 
 const defaultState = {
   ui: {},
@@ -14,6 +15,10 @@ const defaultState = {
   sendData: {
     status: '',
     redirectUrl: ''
+  },
+  isSending: false,
+  validation: {
+    field: ''
   }
 };
 
@@ -24,11 +29,27 @@ export default (state = defaultState, action) => {
   let paymentMethod = 0;
 
   switch (type) {
+  case ERROR_SHIPPING_VALIDATION:
+    return {
+      ...state,
+      validation: {
+        field: payload.field
+      }
+    };
+
+  case RECALCULATE_SHIPPING_PRICE_FETCH:
+  case SEND_SHIPPING_DATA_FETCH:
+    return {
+      ...state,
+      isSending: true
+    };
+
   case SHOPPING_CART_UI_SUCCESS:
   case RECALCULATE_SHIPPING_PRICE_SUCCESS:
     return {
       ...state,
-      ui: payload.ui
+      ui: payload.ui,
+      isSending: false
     };
 
   case INIT_CHECKED_SHOPPING_DATA:
@@ -74,7 +95,8 @@ export default (state = defaultState, action) => {
       sendData: {
         status: payload.status,
         redirectUrl: payload.redirectUrl
-      }
+      },
+      isSending: false
     };
 
   default:

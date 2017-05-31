@@ -201,5 +201,6 @@ export default {
         "value": "$ 1,383.68"
       }]
   },
-  "submitLabel": "Submit order"
+  "submitLabel": "Submit order",
+  "validationMessage": "Error"
 }

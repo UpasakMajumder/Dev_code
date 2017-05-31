@@ -4,17 +4,25 @@ import SVG from '../../SVG';
 
 class Method extends Component {
   render() {
-    const { title, icon, disabled, id, hasInput, placeholderInput, checkedObj, changeShoppingData } = this.props;
+    const { title, icon, disabled, id, hasInput, placeholderInput, checkedObj,
+      changeShoppingData, validationField, validationMessage } = this.props;
     let { className } = this.props;
+
+    const isValidationError = validationField === 'invoice';
 
     const additionalInput = hasInput
       ? <div className="input__wrapper">
           <input onChange={(e) => { changeShoppingData(e.target.name, id, e.target.value); }}
                  type="text"
-                 className="input__text"
+                 className={`input__text ${isValidationError ? 'input--error' : ''}`}
                  name="paymentMethod"
                  placeholder={placeholderInput}
                  value={checkedObj.invoice} />
+          {
+            isValidationError
+            ? <span className="input__error input__error--noborder">{validationMessage}</span>
+            : null
+          }
         </div>
       : null;
 

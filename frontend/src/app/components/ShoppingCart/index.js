@@ -14,11 +14,13 @@ class ShoppingCart extends Component {
 
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData } = shoppingCart;
+    const { ui, checkedData, isSending, validation } = shoppingCart;
 
     const content = <div>
       <div className="shopping-cart__block">
         <DeliveryAddress
+          validationField={validation.field}
+          validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedId={checkedData.deliveryAddress}
           ui={ui.deliveryAddresses} />
@@ -26,6 +28,8 @@ class ShoppingCart extends Component {
 
       <div className="shopping-cart__block">
         <DeliveryMethod
+          validationField={validation.field}
+          validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedId={checkedData.deliveryMethod}
           ui={ui.deliveryMethod} />
@@ -33,6 +37,8 @@ class ShoppingCart extends Component {
 
       <div className="shopping-cart__block">
         <PaymentMethod
+          validationField={validation.field}
+          validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedObj={checkedData.paymentMethod}
           ui={ui.paymentMethod} />
@@ -43,7 +49,12 @@ class ShoppingCart extends Component {
       </div>
 
       <div className="shopping-cart__block text--right">
-        <button onClick={() => { this.props.sendData(); }} type="button" className="btn-action">{ui.submitLabel}</button>
+        <button onClick={() => { this.props.sendData(); }}
+                type="button"
+                className="btn-action"
+                disabled={isSending}>
+          {ui.submitLabel}
+        </button>
       </div>
     </div>;
 
