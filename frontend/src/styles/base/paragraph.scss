@@ -30,3 +30,12 @@
   color: $font-grey;
   font-style: italic;
 }
+
+.p-icon {
+  @extend %flex--center--default;
+  width: 100%;
+
+  svg {
+    @include rem(margin-right, 8px);
+  }
+}

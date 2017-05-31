@@ -72,15 +72,13 @@
                   {% endif %}
                 </h1>
                 <div class="btn-group btn-group--right">
-
                 {% if (btns) %}
 
                   {% for btn in btns %}
                     <button type="button" class="{{ btn.class }}">{{ btn.name }}</button>
                   {% endfor %}
-                  
-                {% endif %}
 
+                {% endif %}
                 </div>
               </div>
               {% include 'components/breadcrumbs.nunj' %}
