@@ -16,7 +16,7 @@ export const getUI = () => {
         dispatch({
           type: SHOPPING_CART_UI_SUCCESS,
           payload: {
-            ui: response.payload
+            ui: response.data.payload
           }
         });
         dispatch({
@@ -57,7 +57,7 @@ export const changeShoppingData = (field, id, invoice) => {
         dispatch({
           type: RECALCULATE_SHIPPING_PRICE_SUCCESS,
           payload: {
-            ui: response.payload
+            ui: response.data.payload
           }
         });
       })
@@ -104,8 +104,8 @@ export const sendData = (data) => {
         dispatch({
           type: SEND_SHIPPING_DATA_SUCCESS,
           payload: {
-            status: response.success,
-            redirectURL: response.payload.redirectURL
+            status: response.data.success,
+            redirectURL: response.data.payload.redirectURL
           }
         });
       })
