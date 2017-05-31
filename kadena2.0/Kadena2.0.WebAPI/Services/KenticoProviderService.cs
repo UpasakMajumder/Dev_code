@@ -31,7 +31,22 @@ namespace Kadena.WebAPI.Services
             var deliveryMethods = mapper.Map<DeliveryMethod[]>(carriers);
 
             foreach (DeliveryMethod dm in deliveryMethods)
+            {
                 dm.SetShippingOptions(shippingOptions);
+
+                if (dm.Title.ToLower().Contains("fedex"))
+                {
+                    dm.Icon = "fedex-delivery";
+                }
+                else if (dm.Title.ToLower().Contains("usps"))
+                {
+                    dm.Icon = "usps-delivery";
+                }
+                else if (dm.Title.ToLower().Contains("ups"))
+                {
+                    dm.Icon = "ups-delivery";
+                }
+            }
 
             return deliveryMethods;
         }
@@ -61,7 +76,7 @@ namespace Kadena.WebAPI.Services
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();            
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
