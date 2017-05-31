@@ -4,12 +4,11 @@ import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Total from './Total';
-import { getUI, changeShoppingData, initCheckedShoppingData, sendData } from '../../AC/shoppingCart';
+import { getUI, changeShoppingData, sendData } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
   componentDidMount() {
     this.props.getUI();
-    this.props.initCheckedShoppingData();
   }
 
   render() {
@@ -72,6 +71,5 @@ export default connect((state) => {
 }, {
   getUI,
   changeShoppingData,
-  initCheckedShoppingData,
   sendData
 })(ShoppingCart);

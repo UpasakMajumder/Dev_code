@@ -19,6 +19,9 @@ export const getUI = () => {
             ui: response.payload
           }
         });
+        dispatch({
+          type: INIT_CHECKED_SHOPPING_DATA
+        });
       })
       .catch(() => {
         dispatch({
@@ -63,14 +66,6 @@ export const changeShoppingData = (field, id, invoice) => {
           type: RECALCULATE_SHIPPING_PRICE_FAILURE
         });
       });
-  };
-};
-
-export const initCheckedShoppingData = () => {
-  return (dispatch) => {
-    dispatch({
-      type: INIT_CHECKED_SHOPPING_DATA
-    });
   };
 };
 
