@@ -14,11 +14,11 @@
 <table class="show-table">
   <tbody>
     <tr>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project name</th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Request ID/th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project status</th>
-        <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Last update</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
     </tr>
     {% for i in range(0, 2) -%}
 
@@ -42,11 +42,11 @@
 <table class="show-table">
   <tbody>
     <tr>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project name</th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Request ID/th>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Project status</th>
-        <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Last update</th>
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID/</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
+      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
     </tr>
     {% for i in range(0, 3) -%}
 
