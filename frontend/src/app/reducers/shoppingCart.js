@@ -32,6 +32,7 @@ export default (state = defaultState, action) => {
   case ERROR_SHIPPING_VALIDATION:
     return {
       ...state,
+      isSending: false,
       validation: {
         field: payload.field
       }
@@ -41,6 +42,9 @@ export default (state = defaultState, action) => {
   case SEND_SHIPPING_DATA_FETCH:
     return {
       ...state,
+      validation: {
+        field: ''
+      },
       isSending: true
     };
 
@@ -94,7 +98,7 @@ export default (state = defaultState, action) => {
       ...state,
       sendData: {
         status: payload.status,
-        redirectUrl: payload.redirectUrl
+        redirectURL: payload.redirectURL
       },
       isSending: false
     };

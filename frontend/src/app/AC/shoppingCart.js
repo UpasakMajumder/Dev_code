@@ -11,20 +11,20 @@ export const getUI = () => {
       type: SHOPPING_CART_UI_FETCH
     });
 
-    // axios.get('/user?ID=12345') // TODO: GLOBAL
-    //   .then((response) => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_SUCCESS,
-    //       payload: {
-    //         ui: response.data
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_FAILURE
-    //     });
-    //   });
+    axios.get('/user?ID=12345') // TODO: GLOBAL
+      .then((response) => {
+        dispatch({
+          type: SHOPPING_CART_UI_SUCCESS,
+          payload: {
+            ui: response.data
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SHOPPING_CART_UI_FAILURE
+        });
+      });
 
     dispatch({
       type: SHOPPING_CART_UI_SUCCESS,
@@ -49,6 +49,9 @@ export const changeShoppingData = (field, id, invoice) => {
     dispatch({
       type: RECALCULATE_SHIPPING_PRICE_FETCH
     });
+
+    // selectaddress
+    // selectshipping
 
     // axios.get('/user?ID=12345', { field, id }) // TODO: GLOBAL
     //   .then((response) => {
@@ -80,17 +83,18 @@ export const sendData = (data) => {
     dispatch({
       type: SEND_SHIPPING_DATA_FETCH
     });
-
-    Object.keys(data).forEach((key) => {
-      if (!data[key]) {
-        dispatch({
-          type: ERROR_SHIPPING_VALIDATION,
-          payload: {
-            field: key
-          }
-        });
-      }
-    });
+    //
+    // const invalidField = Object.keys(data).filter(key => !data[key])[0];
+    //
+    // if (invalidField) {
+    //   dispatch({
+    //     type: ERROR_SHIPPING_VALIDATION,
+    //     payload: {
+    //       field: invalidField
+    //     }
+    //   });
+    //   return;
+    // }
 
     if (data.paymentMethod.id === 3) {
       if (!data.paymentMethod.invoice) {
@@ -110,7 +114,7 @@ export const sendData = (data) => {
     //       type: SEND_SHIPPING_DATA_SUCCESS,
     //       payload: {
     //         status: response.status,
-    //         redirectUrl: response.redirectUrl
+    //         redirectURL: response.redirectUrl
     //       }
     //     });
     //   })

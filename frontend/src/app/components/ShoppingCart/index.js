@@ -49,7 +49,7 @@ class ShoppingCart extends Component {
       </div>
 
       <div className="shopping-cart__block text--right">
-        <button onClick={() => { this.props.sendData(); }}
+        <button onClick={() => { this.props.sendData(checkedData); }}
                 type="button"
                 className="btn-action"
                 disabled={isSending}>
@@ -65,8 +65,8 @@ class ShoppingCart extends Component {
 export default connect((state) => {
   const { shoppingCart } = state;
 
-  const { status, redirectUrl } = shoppingCart.sendData;
-  if (status) location.assign(redirectUrl);
+  const { status, redirectURL } = shoppingCart.sendData;
+  if (status) location.assign(redirectURL);
 
   return { shoppingCart };
 }, {
