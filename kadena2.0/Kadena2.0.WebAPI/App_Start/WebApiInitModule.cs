@@ -1,4 +1,5 @@
 ﻿using CMS.Core;
+using System;
 using System.Web.Http;
 
 [assembly: CMS.RegisterModule(typeof(Kadena.WebAPI.WebApiInitModule))]
@@ -25,7 +26,16 @@ namespace Kadena.WebAPI
         protected override void OnInit()
         {
             base.OnInit();
-            WebApiConfig.Configure( GlobalConfiguration.Configuration );
+
+            // Workaround ok Kentico Ci - to supress exception during 'ContinuousIntegration.exe -r'
+            try
+            {
+                WebApiConfig.Configure(GlobalConfiguration.Configuration);
+            }
+            catch(InvalidOperationException ioex)
+            {
+
+            }
         }
     }
 }

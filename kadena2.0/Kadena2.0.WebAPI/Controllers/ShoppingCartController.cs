@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/shoppingcart")]
+        //[Route("api/shoppingcart")]
         public IHttpActionResult Get()
         {
             var checkoutPage = service.GetCheckoutPage();
@@ -39,7 +39,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/shoppingcart/selectshipping")]
+        //[Route("api/shoppingcart/selectshipping")]
         public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectShipipng(request.Id);
@@ -48,7 +48,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/shoppingcart/selectaddress")]
+        //[Route("api/shoppingcart/selectaddress")]
         public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectAddress(request.Id);
