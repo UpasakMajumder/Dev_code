@@ -69,9 +69,6 @@
     @include rem(padding-top, 2px);
     position: relative;
     overflow: hidden;
-    transition: all $transition-length ease-in-out;
-    height: 0;
-    opacity: 0;
 
     .isActive & {
       height: auto;
@@ -87,5 +84,28 @@
       height: 100%;
       background-color: $brand-grey;
     }
+  }
+
+  &__content--animation-enter,
+  &__content--animation-leave {
+    margin-bottom: 0;
+    overflow: hidden;
+    transition: all $transition-length;
+  }
+
+  &__content--animation-enter {
+    max-height: 1px;
+  }
+
+  &__content--animation-leave {
+    max-height: 150px;
+  }
+
+  &__content--animation-leave.select-accordion__content--animation-leave-active {
+    max-height: 1px;
+  }
+
+  &__content--animation-enter.select-accordion__content--animation-enter-active {
+    max-height: 150px;
   }
 }
