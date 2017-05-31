@@ -48,6 +48,7 @@
 
     span {
       @extend .weight--bold;
+      white-space: nowrap;
       font-size: $font-m;
     }
   }
@@ -78,7 +79,6 @@
 
   &__delivery {
     p {
-      font-size: $font-xxs;
       color: $brand-success;
     }
 
