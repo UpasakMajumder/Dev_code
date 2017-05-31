@@ -1,16 +1,17 @@
 export default class Close {
   constructor(closeContainer) {
-    const closeTogglerClass = 'js-close-trigger';
-    const hideClass = 'hide';
+    const closeTogglerClass = 'js-close-this-trigger';
+    const animateClass = 'isAnimated';
+    const hideClass = 'isHidden';
     const { animationLength } = closeContainer.dataset;
     const togglers = Array.from(closeContainer.querySelectorAll(`.${closeTogglerClass}`));
 
     togglers.forEach((toggler) => {
       toggler.addEventListener('click', () => {
 
-        closeContainer.classList.add(hideClass);
+        closeContainer.classList.add(animateClass);
         setTimeout(() => {
-          closeContainer.style.display = 'none';
+          closeContainer.classList.add(hideClass);
         }, animationLength);
 
       });

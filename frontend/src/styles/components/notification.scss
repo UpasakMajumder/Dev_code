@@ -9,7 +9,7 @@
   @include rem(margin-bottom, 30px);
 
   &__header {
-    @include rem(padding,   $notification-padding);
+    @include rem(padding, $notification-padding);
     background-color: $brand-success;
     border-radius: $border-radius-xl;
 
@@ -22,16 +22,20 @@
   }
 
   &__body {
-    @include rem(padding,   $notification-padding);
+    @include rem(padding, $notification-padding);
   }
 
   &__body-footer {
-    @include rem(margin-top,   $notification-padding);
+    @include rem(margin-top, $notification-padding);
   }
 
-  &.hide {
+  &.isAnimated {
     opacity: 0;
     max-height: 0;
     margin: 0;
+  }
+
+  &.isHidden {
+    display: none;
   }
 }
