@@ -1,0 +1,33 @@
+<div class="drop-zone js-drop-zone">
+
+  <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="Do you need a help with a bulk upload?">
+    {{ svg('question-mark', 'icon-question') }}
+  </button>
+  <input type="file" name="file" class="js-drop-zone-file">
+
+  <div class="drop-zone__dropping">
+    {{ svg('draganddrop', 'icon-drop') }}
+    <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
+  </div>
+
+  <div class="drop-zone__dropped">
+    <div>
+      <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+        {{ svg('cross', 'icon-cross') }}
+      </button>
+      <img src="{{ _imgPath + 'csv.png' }}" class="icon-csv">
+    </div>
+    <p class="js-drop-zone-name">File name</p>
+  </div>
+
+  <div class="drop-zone__dropped drop-zone__dropped--not">
+    <div>
+      <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+        {{ svg('cross', 'icon-cross') }}
+      </button>
+      <img src="{{ _imgPath + 'csv-error.png' }}" class="icon-csv">
+    </div>
+    <p>This file format is not supported.
+Please drag & drop your . <br/>CSV file here or click anywhere to upload.</p>
+  </div>
+</div>
