@@ -23,6 +23,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
         private const string _getMailingListsSettingKey = "KDA_GetMailingListsUrl";
         private const string _getMailingListByIdSettingKey = "KDA_GetMailingListByIdUrl";
+        private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -33,6 +34,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
         private const string _validateAddressIncorrectMessage = "Url for validating addresses is not in correct format. Check settings for your site.";
         private const string _getMailingListByIdIncorrectMessage = "Url for getting mailing container by id is not in correct format. Check settings for your site.";
+        private const string _deleteAddressesIncorrectMessage = "Url for deleting address from container is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -446,6 +448,42 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all address from specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container to be cleared.</param>
+        public static void RemoveAddresses(Guid containerId)
+        {
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
+            Uri deleteAddressesUrl;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_deleteAddressesSettingKey}")
+                , UriKind.Absolute
+                , out deleteAddressesUrl))
+            {
+                throw new InvalidOperationException(_deleteAddressesIncorrectMessage);
+            }
+
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        ContainerId = containerId
+                    }), System.Text.Encoding.UTF8, "application/json"),
+                    RequestUri = deleteAddressesUrl,
+                    Method = HttpMethod.Delete
+                })
+                {
+                    client.SendAsync(request).Wait();
                 }
             }
         }

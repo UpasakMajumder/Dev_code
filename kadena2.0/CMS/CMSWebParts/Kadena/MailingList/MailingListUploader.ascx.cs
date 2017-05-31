@@ -183,6 +183,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 else
                 {
                     containerId = new Guid(_container.id);
+                    ServiceHelper.RemoveAddresses(containerId);
                 }
 
                 var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
