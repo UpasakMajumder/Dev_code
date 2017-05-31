@@ -70,7 +70,7 @@
 
   <div class="order-block">
     <h2 class="order-block__header">Pricing</h2>
-    {% include "components/shopping-cart/summary-table.nunj" %}
+    {% include "components/shopping-cart/check-table.nunj" %}
   </div>
 
   <div class="order-block">

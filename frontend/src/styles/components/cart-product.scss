@@ -12,11 +12,10 @@
 
   @include rem(padding, $padding-block);
   @include rem(margin,   $margin-block 0);
-  border-radius: $border-radius;
+  border-radius: $block-border-radius;
   border: 3px solid $brand-grey;
   display: flex;
   min-height: $min-height;
-  border-radius: $block-border-radius;
 
   p {
     margin: 0;
