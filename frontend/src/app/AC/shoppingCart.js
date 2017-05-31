@@ -26,13 +26,6 @@ export const getUI = () => {
           type: SHOPPING_CART_UI_FAILURE
         });
       });
-
-    dispatch({
-      type: SHOPPING_CART_UI_SUCCESS,
-      payload: {
-        ui
-      }
-    });
   };
 };
 
