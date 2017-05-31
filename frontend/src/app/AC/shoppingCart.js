@@ -4,6 +4,7 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_FETCH, RECALCULATE_SHIPPING_PRICE_SUCCESS,
   RECALCULATE_SHIPPING_PRICE_FAILURE, SEND_SHIPPING_DATA_FETCH, SEND_SHIPPING_DATA_FAILURE,
   SEND_SHIPPING_DATA_SUCCESS, ERROR_SHIPPING_VALIDATION } from '../constants';
+import { CHECKOUT } from '../globals';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -11,12 +12,12 @@ export const getUI = () => {
       type: SHOPPING_CART_UI_FETCH
     });
 
-    axios.get('/user?ID=12345') // TODO: GLOBAL
+    axios.get(CHECKOUT.initUIURL)
       .then((response) => {
         dispatch({
           type: SHOPPING_CART_UI_SUCCESS,
           payload: {
-            ui: response.data
+            ui: response.payload
           }
         });
       })
@@ -50,23 +51,26 @@ export const changeShoppingData = (field, id, invoice) => {
       type: RECALCULATE_SHIPPING_PRICE_FETCH
     });
 
-    // selectaddress
-    // selectshipping
+    const url = field === 'deliveryMethod'
+      ? CHECKOUT.changeDeliveryMethodURL
+      : (field === 'deliveryAddress')
+        ? CHECKOUT.changeAddressURL
+        : '';
 
-    // axios.get('/user?ID=12345', { field, id }) // TODO: GLOBAL
-    //   .then((response) => {
-    //     dispatch({
-    //       type: RECALCULATE_SHIPPING_PRICE_SUCCESS,
-    //       payload: {
-    //         ui: response.data
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: RECALCULATE_SHIPPING_PRICE_FAILURE
-    //     });
-    //   });
+    axios.post(url, { id })
+      .then((response) => {
+        dispatch({
+          type: RECALCULATE_SHIPPING_PRICE_SUCCESS,
+          payload: {
+            ui: response.payload
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: RECALCULATE_SHIPPING_PRICE_FAILURE
+        });
+      });
   };
 };
 
@@ -108,20 +112,20 @@ export const sendData = (data) => {
       }
     }
 
-    // axios.get('/user?ID=12345', { data }) // TODO: GLOBAL
-    //   .then((response) => {
-    //     dispatch({
-    //       type: SEND_SHIPPING_DATA_SUCCESS,
-    //       payload: {
-    //         status: response.status,
-    //         redirectURL: response.redirectUrl
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: SEND_SHIPPING_DATA_FAILURE
-    //     });
-    //   });
+    axios.post(CHECKOUT.submitURL, { data })
+      .then((response) => {
+        dispatch({
+          type: SEND_SHIPPING_DATA_SUCCESS,
+          payload: {
+            status: response.success,
+            redirectURL: response.payload.redirectURL
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SEND_SHIPPING_DATA_FAILURE
+        });
+      });
   };
 };
