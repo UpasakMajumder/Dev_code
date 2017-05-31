@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\ICMSProviderService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Infrastructure\Filters\ExceptionFilter.cs" />
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
-    <Compile Include="InitModules\WebApiInitModule.cs" />
+    <Compile Include="App_Start\WebApiInitModule.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
     <Compile Include="Models\CheckoutPage.cs" />

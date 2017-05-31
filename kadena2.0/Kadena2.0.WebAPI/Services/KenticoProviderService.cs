@@ -4,10 +4,11 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
+using CMS.Helpers;
 
 namespace Kadena.WebAPI.Services
 {
-    public class KenticoProviderService : IKenticoProviderService
+    public class KenticoProviderService : ICMSProviderService
     {
         private readonly IMapper mapper;
         public KenticoProviderService(IMapper mapper)
@@ -94,6 +95,33 @@ namespace Kadena.WebAPI.Services
                     Value = ECommerceContext.CurrentShoppingCart.TotalPrice.ToString()
                 }
             };
+        }
+
+        public void SetShoppingCartAddres(int addressId)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            if (cart.ShoppingCartShippingAddress == null || cart.ShoppingCartShippingAddress.AddressID != addressId)
+            {
+                var address = AddressInfoProvider.GetAddressInfo(addressId);
+                cart.ShoppingCartShippingAddress = address;
+            }
+        }
+
+        public void SelectShipping(int shippingOptionId)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            if (cart.ShoppingCartShippingOptionID != shippingOptionId)
+            {
+                cart.ShoppingCartShippingOptionID = shippingOptionId;
+                //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+            }
+        }
+
+        public string GetResourceString(string name)
+        {
+            return ResHelper.GetString(name, useDefaultCulture:true);
         }
     }
 }

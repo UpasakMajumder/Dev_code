@@ -90,7 +90,7 @@ namespace Kadena.WebAPI
         {
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
-            container.Register<IKenticoProviderService, KenticoProviderService>();
+            container.Register<ICMSProviderService, KenticoProviderService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
             apiConfig.EnsureInitialized();

@@ -3,16 +3,15 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
-using CMS.Ecommerce;
 
 namespace Kadena.WebAPI.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IMapper mapper;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly ICMSProviderService kenticoProvider;
 
-        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider)
+        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -67,18 +66,21 @@ namespace Kadena.WebAPI.Services
             var creditCardMethod = allMethods.Where(m => m.ClassName.Contains("CreditCard")).FirstOrDefault();
             if (creditCardMethod != null)
             {
+                creditCardMethod.Disabled = true;
                 orderedMethods.Add(creditCardMethod);
             }
 
             var payPalMethod = allMethods.Where(m => m.ClassName.Contains("PayPal")).FirstOrDefault();
             if (payPalMethod != null)
             {
+                payPalMethod.Disabled = true;
                 orderedMethods.Add(payPalMethod);
             }
 
             var purchaseOrderMethod = allMethods.Where(m => m.ClassName.Contains("PurchaseOrder")).FirstOrDefault();
             if (purchaseOrderMethod != null)
             {
+                purchaseOrderMethod.Disabled = false;
                 purchaseOrderMethod.HasInput = true;
                 purchaseOrderMethod.InputPlaceholder = "Insert your PO number";
                 orderedMethods.Add(purchaseOrderMethod);
@@ -89,13 +91,7 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage SelectShipipng(int id)
         {
-            var cart = ECommerceContext.CurrentShoppingCart;
-
-            if (cart.ShoppingCartShippingOptionID != id)
-            {
-                cart.ShoppingCartShippingOptionID = id;
-                //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
-            }
+            kenticoProvider.SelectShipping(id);
 
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryMethod.CheckMethod(id);
@@ -104,13 +100,7 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage SelectAddress(int id)
         {
-            var cart = ECommerceContext.CurrentShoppingCart;
-
-            if (cart.ShoppingCartShippingAddress == null || cart.ShoppingCartShippingAddress.AddressID != id)
-            {
-                var address = AddressInfoProvider.GetAddressInfo(id);
-                cart.ShoppingCartShippingAddress = address;
-            }
+            kenticoProvider.SetShoppingCartAddres(id);
 
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);

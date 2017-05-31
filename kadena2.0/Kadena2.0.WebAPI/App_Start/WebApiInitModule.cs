@@ -1,9 +1,9 @@
 ﻿using CMS.Core;
 using System.Web.Http;
 
-[assembly: CMS.RegisterModule(typeof(Kadena.WebAPI.InitModules.WebApiInitModule))]
+[assembly: CMS.RegisterModule(typeof(Kadena.WebAPI.WebApiInitModule))]
 
-namespace Kadena.WebAPI.InitModules
+namespace Kadena.WebAPI
 {
     public class WebApiInitModule : CMS.DataEngine.Module
     {
