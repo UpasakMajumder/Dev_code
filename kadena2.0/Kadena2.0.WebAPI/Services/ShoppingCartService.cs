@@ -34,7 +34,7 @@ namespace Kadena.WebAPI.Services
                     items = addresses.ToList()
                 },
 
-                DeliveryMethod = new DeliveryMethods()
+                DeliveryMethods = new DeliveryMethods()
                 {
                     Title = "Delivery",
                     Description = "Select delivery carrier and option",
@@ -67,6 +67,7 @@ namespace Kadena.WebAPI.Services
             var creditCardMethod = allMethods.Where(m => m.ClassName.Contains("CreditCard")).FirstOrDefault();
             if (creditCardMethod != null)
             {
+                creditCardMethod.Icon = "credit-card";
                 creditCardMethod.Disabled = true;
                 orderedMethods.Add(creditCardMethod);
             }
@@ -74,6 +75,7 @@ namespace Kadena.WebAPI.Services
             var payPalMethod = allMethods.Where(m => m.ClassName.Contains("PayPal")).FirstOrDefault();
             if (payPalMethod != null)
             {
+                payPalMethod.Icon = "paypal-payment";
                 payPalMethod.Disabled = true;
                 orderedMethods.Add(payPalMethod);
             }
@@ -81,6 +83,7 @@ namespace Kadena.WebAPI.Services
             var purchaseOrderMethod = allMethods.Where(m => m.ClassName.Contains("PurchaseOrder")).FirstOrDefault();
             if (purchaseOrderMethod != null)
             {
+                purchaseOrderMethod.Icon = "order-payment";
                 purchaseOrderMethod.Disabled = false;
                 purchaseOrderMethod.HasInput = true;
                 purchaseOrderMethod.InputPlaceholder = "Insert your PO number";
@@ -95,7 +98,7 @@ namespace Kadena.WebAPI.Services
             kenticoProvider.SelectShipping(id);
 
             var checkoutPage = GetCheckoutPage();
-            checkoutPage.DeliveryMethod.CheckMethod(id);
+            checkoutPage.DeliveryMethods.CheckMethod(id);
             return checkoutPage;
         }
 
