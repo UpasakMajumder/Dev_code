@@ -24,9 +24,7 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
-  let deliveryAddress = 0;
-  let deliveryMethod = 0;
-  let paymentMethod = 0;
+  let { deliveryAddress, deliveryMethod, paymentMethod } = defaultState;
 
   switch (type) {
   case ERROR_SHIPPING_VALIDATION:
