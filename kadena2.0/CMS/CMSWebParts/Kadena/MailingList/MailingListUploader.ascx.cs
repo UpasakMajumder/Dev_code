@@ -29,14 +29,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (!IsPostBack)
             {
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
-                textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
-                textWrongFileUploaded.InnerText = GetString("Kadena.MailingList.WrongFileUploaded");
-                textOr.InnerText = GetString("Kadena.MailingList.Or");
-                textSkipField.InnerText = GetString("Kadena.MailingList.SkipField");
-                btnSubmit.InnerText = GetString("Kadena.MailingList.Create");
-                textFileName1.InnerText = GetString("Kadena.MailingList.FileName");
-                textFileName2.InnerText = GetString("Kadena.MailingList.FileName");
-                textFileNameDescr.InnerText = GetString("Kadena.MailingList.FileNameDescription");
                 inpFileName.Attributes["placeholder"] = GetString("Kadena.MailingList.FileName");
             }
 
