@@ -100,6 +100,34 @@
       return ContactPersonDetailsChangeInternal(userGUID, firstName, lastName, mobile, phoneNumber);
     }
 
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public GeneralResult ChangePassword(Guid userGUID, string oldPassword, string newPassword, string confirmPassword)
+    {
+      #region Validation
+
+      if (string.IsNullOrEmpty(oldPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (string.IsNullOrEmpty(newPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.NewPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (string.IsNullOrEmpty(confirmPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (newPassword != confirmPassword)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.PasswordsDontMatch", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+
+      #endregion
+
+      return ChangePasswordInternal(userGUID, oldPassword, newPassword);
+    }
+
     #endregion
 
     #region Private methods
@@ -161,6 +189,23 @@
       ui.SetValue("UserMobile", mobile);
       ui.SetValue("UserPhone", phoneNumber);
 
+      ui.Update();
+
+      return new GeneralResult { success = true };
+    }
+
+    private GeneralResult ChangePasswordInternal(Guid userGUID, string oldPassword, string newPassword)
+    {
+      var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
+      if (ui == null)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.UserNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (!UserInfoProvider.ValidateUserPassword(ui, oldPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      UserInfoProvider.SetPassword(ui, newPassword);
       ui.Update();
 
       return new GeneralResult { success = true };
