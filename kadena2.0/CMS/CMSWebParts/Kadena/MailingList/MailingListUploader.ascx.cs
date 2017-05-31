@@ -46,7 +46,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phMailType.Controls.Add(new LiteralControl(
                     GetDictionaryHTML(GetString("Kadena.MailingList.MailType")
                                     , GetString("Kadena.MailingList.MailTypeDescription")
-                                    , mailTypes)));
+                                    , mailTypes
+                                    , _container?.mailType)));
 
             var products = CustomTableItemProvider.GetItems(_productTableName)
                     .OrderBy("ItemOrder")
@@ -54,7 +55,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phProduct.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
                                     , GetString("Kadena.MailingList.ProductDescription")
-                                    , products)));
+                                    , products
+                                    , _container?.productType)));
 
             var validity = CustomTableItemProvider.GetItems(_validityTableName)
                     .OrderBy("ItemOrder")
@@ -62,7 +64,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phValidity.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
                                     , GetString("Kadena.MailingList.ValidityDescription")
-                                    , validity)));
+                                    , validity
+                                    , _container != null ? (_container.validTo - _container.createDate).TotalDays.ToString() : null
+                                    )));
         }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         /// <param name="description">Description of set.</param>
         /// <param name="options">Set of options.</param>
         /// <returns>String with html-code of radio button group.</returns>
-        private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options)
+        private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options, string predefinedOption = null)
         {
             // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags for them.
 
@@ -107,7 +111,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
                             // <div class="input__wrapper">
-                            html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                            if (string.IsNullOrWhiteSpace(predefinedOption))
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                            }
+                            else
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper input__wrapper--disabled");
+                            }
+
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
                             html.AddAttribute(HtmlTextWriterAttribute.Class, "input__radio");
@@ -115,10 +127,22 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             html.AddAttribute(HtmlTextWriterAttribute.Name, name);
                             html.AddAttribute(HtmlTextWriterAttribute.Id, id);
                             html.AddAttribute(HtmlTextWriterAttribute.Value, o.Key);
-                            if (!isChecked)
+                            if (string.IsNullOrWhiteSpace(predefinedOption))
                             {
-                                html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
-                                isChecked = true;
+                                if (!isChecked)
+                                {
+                                    html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
+                                    isChecked = true;
+                                }
+                            }
+                            else
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Disabled, string.Empty);
+                                if (predefinedOption.Equals(o.Key))
+                                {
+                                    html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
+                                    isChecked = true;
+                                }
                             }
                             html.RenderBeginTag(HtmlTextWriterTag.Input);
                             html.RenderEndTag();
