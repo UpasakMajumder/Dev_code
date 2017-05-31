@@ -1,4 +1,3 @@
-import ui from './ui';
 import axios from 'axios';
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_FETCH, RECALCULATE_SHIPPING_PRICE_SUCCESS,
@@ -47,8 +46,8 @@ export const changeShoppingData = (field, id, invoice) => {
     const url = field === 'deliveryMethod'
       ? CHECKOUT.changeDeliveryMethodURL
       : (field === 'deliveryAddress')
-        ? CHECKOUT.changeAddressURL
-        : '';
+      ? CHECKOUT.changeAddressURL
+      : '';
 
     axios.post(url, { id })
       .then((response) => {
