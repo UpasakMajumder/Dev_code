@@ -1,0 +1,153 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+{% from "macro/select.nunj" import select %}
+
+{% set title = 'K-Source' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title, 'New request'] %}
+{% set headerTitle = 'New request' %}
+
+{% set btns = [
+  {
+    name: 'Submit a request',
+    class: 'btn-action'
+  }
+] %}
+
+{% block content %}
+
+  <div class="block">
+    <h2 class="block__heading">Main informations</h2>
+
+    <div class="form-block form-block--fixed">
+      <div class="input__wrapper">
+        <span class="input__label">Name</span>
+        <input type="text" class="input__text" placeholder="Name ">
+      </div>
+      <div class="input__wrapper">
+        <span class="input__label">Description</span>
+        <textarea class="input__textarea" placeholder="Placeholder"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Size</h2>
+
+    <div class="row">
+      <div class="col-lg-4">
+
+        <div class="form-block">
+
+          <div class="form-block__multiply-group input__wrapper">
+            <div class="input__wrapper input__wrapper--with-unit">
+              <span class="input__label">Width</span>
+              <input type="text" class="input__text input--with-value" placeholder="120">
+              <span class="input__unit">in</span>
+            </div>
+            <div class="input__wrapper input__wrapper--with-unit">
+              <span class="input__label">Height</span>
+              <input type="text" class="input__text input--with-value" placeholder="360">
+              <span class="input__unit">in</span>
+            </div>
+          </div>
+
+          <div class="input__wrapper input__wrapper--with-icon">
+            <span class="input__label">Production date</span>
+            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            {{ svg('calendar_1', 'icon-input') }}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <div class="form-block">
+          {{select(label="paper type", optHolder="choose paper type", options=['option 1', 'option 2', 'option 3']) }}
+
+          {{select(label="finishing", optHolder="choose finishing", options=['option 1', 'option 2', 'option 3']) }}
+        </div>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <div class="form-block">
+          <div class="input__wrapper">
+            <span class="input__label">Number of pages</span>
+            <input type="number" class="input__text" min="1" placeholder="1">
+          </div>
+
+          <div class="input__wrapper">
+            <span class="input__label">Number of copies</span>
+            <input type="number" class="input__text" min="1" placeholder="1">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Attachment</h2>
+
+    {% include "components/drop-zone.nunj" %}
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Bidding</h2>
+    <p>Specify how many parties do you want to receive a bid from</p>
+
+    <div class="form-block">
+      <div class="form-block__checkbox-group">
+        <div class="input__wrapper">
+          <input id="dom-4" name="bid" type="radio" class="input__radio">
+          <label for="dom-4" class="input__label input__label--radio">Label</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-5" name="bid" type="radio" class="input__radio">
+          <label for="dom-5" class="input__label input__label--radio">Label</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-6" name="bid" type="radio" class="input__radio">
+          <label for="dom-6" class="input__label input__label--radio">Label</label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="block">
+        <h2 class="block_heading">Bid deadline</h2>
+        <p>When do you want to receive proposals?</p>
+        <div class="form-block">
+          <div class="input__wrapper input__wrapper--with-icon">
+            <span class="input__label">Production date</span>
+            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            {{ svg('calendar_1', 'icon-input') }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="block">
+        <h2 class="block_heading">Date of selection</h2>
+        <p>When will you make a selection?</p>
+        <div class="form-block">
+          <div class="input__wrapper input__wrapper--with-icon">
+            <span class="input__label">Production date</span>
+            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            {{ svg('calendar_1', 'icon-input') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

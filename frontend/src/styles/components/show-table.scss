@@ -10,7 +10,9 @@
   }
 
   & tr th {
-    @include rem(padding, 12px 8px);
+    @include rem(padding, 14px 8px);
+    text-transform: uppercase;
+    font-size: $font-xs;
   }
 
   tr {
@@ -120,6 +122,6 @@
   }
 
   &__sort-icon {
-    @include rem(margin-right, 12px);
+    @include rem(margin-right, 8px);
   }
 }
