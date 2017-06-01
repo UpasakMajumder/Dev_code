@@ -14,6 +14,7 @@ class MethodsGroup extends Component {
     });
 
     let className = 'input__wrapper select-accordion__item';
+
     if (openId === id) className += ' isActive';
 
     if (disabled) className += ' input__wrapper--disabled';

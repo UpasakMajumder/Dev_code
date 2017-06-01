@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
-  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_FETCH, RECALCULATE_SHIPPING_PRICE_SUCCESS,
-  RECALCULATE_SHIPPING_PRICE_FAILURE, SEND_SHIPPING_DATA_FETCH, SEND_SHIPPING_DATA_FAILURE,
-  SEND_SHIPPING_DATA_SUCCESS, ERROR_SHIPPING_VALIDATION } from '../constants';
+  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_FETCH, RECALCULATE_SHOPPING_PRICE_SUCCESS,
+  RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
+  SEND_SHOPPING_DATA_SUCCESS, ERROR_SHOPPING_VALIDATION } from '../constants';
 import { CHECKOUT } from '../globals';
+import ui from './ui';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -11,23 +12,38 @@ export const getUI = () => {
       type: SHOPPING_CART_UI_FETCH
     });
 
-    axios.get(CHECKOUT.initUIURL)
-      .then((response) => {
-        dispatch({
-          type: SHOPPING_CART_UI_SUCCESS,
-          payload: {
-            ui: response.data.payload
-          }
-        });
-        dispatch({
-          type: INIT_CHECKED_SHOPPING_DATA
-        });
-      })
-      .catch(() => {
-        dispatch({
-          type: SHOPPING_CART_UI_FAILURE
-        });
-      });
+    dispatch({
+      type: SHOPPING_CART_UI_SUCCESS,
+      payload: {
+        ui: ui.payload
+      }
+    });
+
+    // axios.get(CHECKOUT.initUIURL)
+    //   .then((response) => {
+    //     dispatch({
+    //       type: SHOPPING_CART_UI_SUCCESS,
+    //       payload: {
+    //         ui: response.data.payload
+    //       }
+    //     });
+    //   })
+    //   .catch(() => {
+    //     dispatch({
+    //       type: SHOPPING_CART_UI_FAILURE
+    //     });
+    //   });
+  };
+};
+
+export const initCheckedShoppingData = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: INIT_CHECKED_SHOPPING_DATA,
+      payload: {
+        ...data
+      }
+    });
   };
 };
 
@@ -43,7 +59,7 @@ export const changeShoppingData = (field, id, invoice) => {
     if (field === 'paymentMethod') return;
 
     dispatch({
-      type: RECALCULATE_SHIPPING_PRICE_FETCH
+      type: RECALCULATE_SHOPPING_PRICE_FETCH
     });
 
     const url = field === 'deliveryMethod'
@@ -55,7 +71,7 @@ export const changeShoppingData = (field, id, invoice) => {
     axios.post(url, { id })
       .then((response) => {
         dispatch({
-          type: RECALCULATE_SHIPPING_PRICE_SUCCESS,
+          type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
           payload: {
             ui: response.data.payload
           }
@@ -63,7 +79,7 @@ export const changeShoppingData = (field, id, invoice) => {
       })
       .catch(() => {
         dispatch({
-          type: RECALCULATE_SHIPPING_PRICE_FAILURE
+          type: RECALCULATE_SHOPPING_PRICE_FAILURE
         });
       });
   };
@@ -72,14 +88,14 @@ export const changeShoppingData = (field, id, invoice) => {
 export const sendData = (data) => {
   return (dispatch) => {
     dispatch({
-      type: SEND_SHIPPING_DATA_FETCH
+      type: SEND_SHOPPING_DATA_FETCH
     });
     //
     // const invalidField = Object.keys(data).filter(key => !data[key])[0];
     //
     // if (invalidField) {
     //   dispatch({
-    //     type: ERROR_SHIPPING_VALIDATION,
+    //     type: ERROR_SHOPPING_VALIDATION,
     //     payload: {
     //       field: invalidField
     //     }
@@ -90,7 +106,7 @@ export const sendData = (data) => {
     if (data.paymentMethod.id === 3) {
       if (!data.paymentMethod.invoice) {
         dispatch({
-          type: ERROR_SHIPPING_VALIDATION,
+          type: ERROR_SHOPPING_VALIDATION,
           payload: {
             field: 'invoice'
           }
@@ -102,7 +118,7 @@ export const sendData = (data) => {
     axios.post(CHECKOUT.submitURL, { data })
       .then((response) => {
         dispatch({
-          type: SEND_SHIPPING_DATA_SUCCESS,
+          type: SEND_SHOPPING_DATA_SUCCESS,
           payload: {
             status: response.data.success,
             redirectURL: response.data.payload.redirectURL
@@ -111,7 +127,7 @@ export const sendData = (data) => {
       })
       .catch(() => {
         dispatch({
-          type: SEND_SHIPPING_DATA_FAILURE
+          type: SEND_SHOPPING_DATA_FAILURE
         });
       });
   };

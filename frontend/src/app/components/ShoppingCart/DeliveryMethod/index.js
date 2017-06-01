@@ -16,6 +16,9 @@ class DeliveryMethod extends Component {
   componentDidMount() {
     const { items } = this.props.ui;
     const openedMethodGroup = items.filter((item) => { return item.opened; })[0];
+
+    if (!openedMethodGroup) return;
+
     this.setState({
       openId: openedMethodGroup.id
     });

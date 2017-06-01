@@ -1,6 +1,7 @@
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
-  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHIPPING_PRICE_SUCCESS, SEND_SHIPPING_DATA_SUCCESS,
-  RECALCULATE_SHIPPING_PRICE_FETCH, SEND_SHIPPING_DATA_FETCH, ERROR_SHIPPING_VALIDATION } from '../constants';
+  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_SUCCESS, SEND_SHOPPING_DATA_SUCCESS,
+  RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, ERROR_SHOPPING_VALIDATION, RECALCULATE_SHOPPING_PRICE_FAILURE,
+  SEND_SHOPPING_DATA_FAILURE } from '../constants';
 
 const defaultState = {
   ui: {},
@@ -24,10 +25,9 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
-  let { deliveryAddress, deliveryMethod, paymentMethod } = defaultState;
 
   switch (type) {
-  case ERROR_SHIPPING_VALIDATION:
+  case ERROR_SHOPPING_VALIDATION:
     return {
       ...state,
       isSending: false,
@@ -36,8 +36,8 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case RECALCULATE_SHIPPING_PRICE_FETCH:
-  case SEND_SHIPPING_DATA_FETCH:
+  case RECALCULATE_SHOPPING_PRICE_FETCH:
+  case SEND_SHOPPING_DATA_FETCH:
     return {
       ...state,
       validation: {
@@ -47,7 +47,7 @@ export default (state = defaultState, action) => {
     };
 
   case SHOPPING_CART_UI_SUCCESS:
-  case RECALCULATE_SHIPPING_PRICE_SUCCESS:
+  case RECALCULATE_SHOPPING_PRICE_SUCCESS:
     return {
       ...state,
       ui: payload.ui,
@@ -55,26 +55,12 @@ export default (state = defaultState, action) => {
     };
 
   case INIT_CHECKED_SHOPPING_DATA:
-    state.ui.deliveryAddresses.items.forEach((address) => {
-      if (address.checked) deliveryAddress = address.id;
-    });
-
-    state.ui.deliveryMethods.items.forEach((methodGroup) => {
-      methodGroup.items.forEach((method) => {
-        if (method.checked && !deliveryMethod) deliveryMethod = method.id;
-      });
-    });
-
-    state.ui.paymentMethods.items.forEach((method) => {
-      if (method.checked) paymentMethod = { id: method.id, invoice: '' };
-    });
-
     return {
       ...state,
       checkedData: {
-        deliveryAddress,
-        deliveryMethod,
-        paymentMethod
+        deliveryAddress: payload.deliveryAddress,
+        deliveryMethod: payload.deliveryMethod,
+        paymentMethod: payload.paymentMethod
       }
     };
 
@@ -91,13 +77,20 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case SEND_SHIPPING_DATA_SUCCESS:
+  case SEND_SHOPPING_DATA_SUCCESS:
     return {
       ...state,
       sendData: {
         status: payload.status,
         redirectURL: payload.redirectURL
       },
+      isSending: false
+    };
+
+  case RECALCULATE_SHOPPING_PRICE_FAILURE:
+  case SEND_SHOPPING_DATA_FAILURE:
+    return {
+      ...state,
       isSending: false
     };
 

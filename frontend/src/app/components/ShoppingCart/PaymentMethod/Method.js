@@ -4,7 +4,7 @@ import SVG from '../../SVG';
 
 class Method extends Component {
   render() {
-    const { title, icon, disabled, id, hasInput, placeholderInput, checkedObj,
+    const { title, icon, disabled, id, hasInput, inputPlaceholder, checkedObj,
       changeShoppingData, validationField, validationMessage } = this.props;
     let { className } = this.props;
 
@@ -16,7 +16,7 @@ class Method extends Component {
                  type="text"
                  className={`input__text ${isValidationError ? 'input--error' : ''}`}
                  name="paymentMethod"
-                 placeholder={placeholderInput}
+                 placeholder={inputPlaceholder}
                  value={checkedObj.invoice} />
           {
             isValidationError
