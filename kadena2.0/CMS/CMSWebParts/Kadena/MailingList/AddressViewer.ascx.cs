@@ -1,4 +1,5 @@
-﻿using CMS.PortalEngine.Web.UI;
+﻿using CMS.Helpers;
+using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
@@ -27,14 +28,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 if (badAddresses.Count() > 0)
                 {
                     pnlBadAddresses.Visible = true;
-
+                    textBadAddresses.InnerText = string.Format(GetString("Kadena.MailingList.BadAddressesFound", string.Empty)
+                        , badAddresses.Count());
                     FillTable(tblBadAddresses, badAddresses);
                 }
 
                 if (goodAddresses.Count() > 0)
                 {
                     pnlGoodAddresses.Visible = true;
-
+                    textGoodAddresses.InnerText = string.Format(GetString("Kadena.MailingList.GoodAddressesFound", string.Empty)
+                        , goodAddresses.Count());
                     FillTable(tblGoodAddresses, goodAddresses);
                 }
             }
@@ -49,18 +52,18 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             var header = new TableRow();
             if (haveTitle)
             {
-                header.Cells.Add(new TableHeaderCell { Text = "Title" });
+                header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.Title", string.Empty) });
             }
-            header.Cells.Add(new TableHeaderCell { Text = "Name" });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.Name", string.Empty) });
             if (haveLastName)
             {
-                header.Cells.Add(new TableHeaderCell { Text = "LastName" });
+                header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.LastName", string.Empty) });
             }
-            header.Cells.Add(new TableHeaderCell { Text = "Address1" });
-            header.Cells.Add(new TableHeaderCell { Text = "Address2" });
-            header.Cells.Add(new TableHeaderCell { Text = "City" });
-            header.Cells.Add(new TableHeaderCell { Text = "State" });
-            header.Cells.Add(new TableHeaderCell { Text = "Zip" });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.Address1", string.Empty) });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.Address2", string.Empty) });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.City", string.Empty) });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.State", string.Empty) });
+            header.Cells.Add(new TableHeaderCell { Text = ResHelper.GetString("Kadena.MailingList.Zip", string.Empty) });
             table.Rows.Add(header);
             #endregion
 
