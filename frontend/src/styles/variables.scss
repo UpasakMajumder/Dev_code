@@ -22,12 +22,18 @@ $font-black:          #00011d;
 $main-gutter-color:   #edf1f5;
 
 $table-bottom-shadow: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+$show-table-row-gardient: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+$show-table-row-gardient--gray: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $brand-lightgrey 100%);
 $steps-icon-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+$show-table-row-gardient:  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+$show-table-row-gardient--gray:  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $brand-lightgrey 100%);
+$form-bg: rgba(238, 238, 238, .5);
 $steps-icon-default-bg: linear-gradient(180deg, #e4e7ea 0%, #d9dbdc 100%);
 $error-mark: #ff6d2e;
 $success-mark: #00bd8c;
 $font-success: #028b66;
 $brand-yellow-light: #ffbd61;
+$brand-info-light: #fff5e1;
 
 /*
 ========================
@@ -60,7 +66,7 @@ $main-layout-gutter: 10px;
 $svg-path: '/gfx/svg/';
 $img-path: '/gfx/images/';
 $header-size: 60px;
-$footer-size: 80px;
+$footer-size: 55px;
 $sidebar-transition: all .4s ease-in-out;
 $sidebar-width-small: 70px;
 $sidebar-width-large: 220px;

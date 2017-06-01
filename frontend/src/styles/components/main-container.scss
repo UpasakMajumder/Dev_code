@@ -1,0 +1,9 @@
+.main-container {
+  padding: 20px;
+  background: $base-layout-gradient;
+
+  &__inner {
+    background-color: $brand-white;
+    border-radius: $border-radius-xl;
+  }
+}

@@ -1,6 +1,7 @@
 .footer {
+  @extend %flex--center--center;
   height: $footer-size;
-  padding: 24px 0;
+  font-size: $font-xxs;
   background-color: $brand-white;
   text-align: center;
   border-top: $main-layout-gutter solid $main-gutter-color;
@@ -9,5 +10,9 @@
 
   & a {
     @extend .link;
+  }
+
+  p {
+    margin: 0;
   }
 }

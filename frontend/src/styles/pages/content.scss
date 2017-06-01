@@ -8,19 +8,22 @@ $content-inner-padding: 24px;
   padding-left: $sidebar-width-close;
   transition: all 0.4s ease-in-out;
 
+  .isOpen & {
+    padding-left: $sidebar-width-large;
+  }
+
   &__inner {
     background-color: $brand-white;
     width: 100%;
     padding: $content-inner-padding $content-inner-padding $content-inner-padding 34px;
-    // Hardcoded height
-    min-height: calc(100vh - 190px);
+    min-height: calc(100vh - 110px - #{$footer-size});
   }
 
   &-header {
     @extend %flex--center--between;
     width: 100%;
     flex-wrap: wrap;
-    flex-direction: row-reverse;
+    flex-direction: column;
     padding-bottom: 15px;
     margin-bottom: 12px;
 
@@ -31,9 +34,10 @@ $content-inner-padding: 24px;
     }
 
     &__inner {
-      @extend %flex--baseline--default;
+      @extend %flex--baseline--between;
       order: 2;
       flex-grow: 1;
+      width: 100%;
       margin-right: auto;
       flex-wrap: nowrap;
     }
@@ -41,6 +45,7 @@ $content-inner-padding: 24px;
     &__btn {
       @extend .bg-secondary;
       @extend .btn--circle;
+      display: inline-block;
       order: 2;
 
       @include rem(margin-left, 10px);

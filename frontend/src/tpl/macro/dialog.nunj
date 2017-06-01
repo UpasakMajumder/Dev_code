@@ -1,3 +1,5 @@
+{% from "macro/svg.nunj" import svg %}
+
 {#{% import "helpers/dialog.nunj" as dialog %}#}
 
 {#{% call dialog.wrapper(id='') %}#}
@@ -12,8 +14,6 @@
 
 {#clicker#}
 {#<button type="button" data-dialog="DIALOG SELECTOR" class="js-dialog"></button>#}
-
-{% import "macro/svg.nunj" as svg %}
 
 {% macro wrapper(class, id) %}
   <div class="dialog {% if class %}{{ class }}{% endif %}"
@@ -30,9 +30,7 @@
     <p>{{ header }}</p>
     {% if closer==='yes' %}
       <button type="button" class="btn--off dialog__closer">
-        {% call svg.template(class = 'icon-modal') %}
-        {{svg.use(name='cross--darker')}}
-        {% endcall %}
+        {{ svg('cross--darker', 'icon-modal') }}
       </button>
     {% endif %}
   </div>

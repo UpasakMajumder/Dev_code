@@ -37,9 +37,24 @@
   height: 15px;
 }
 
+.icon-input {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-sort {
+  width: 22px;
+  height: 14px;
+}
+
 .icon-deliver {
   width: 24px;
   height: 23px;
+}
+
+.icon-tile {
+  width: 34px;
+  height: 27px;
 }
 
 .icon-dollar {
@@ -67,23 +82,19 @@
   width: 10px;
 }
 
-.icon-sidebar-logo {
-  width: 28px;
-  height: 18px;
+.icon-p {
+  width: 43px;
+  height: 39px;
 }
 
-.icon-navigation {
-  @extend .icon-star;
-  margin-bottom: 2px;
+.icon-sidebar-logo {
+  width: 110px;
+  height: 32px;
+}
 
-  .isOpen & {
-    margin-right: 15px;
-    margin-bottom: 0;
-  }
-
-  &[class$="--color"] {
-    display: none;
-  }
+.icon-sidebar-logo-small {
+  width: 38px;
+  height: 32px;
 }
 
 .icon-modal {

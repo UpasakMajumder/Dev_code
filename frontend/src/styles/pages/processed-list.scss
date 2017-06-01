@@ -75,10 +75,6 @@ $heading-round-mark-size: 19px;
   }
 
   &__table-dialog {
-    @include rem(padding-right, 10px);
-    max-height: 475px;
-    overflow: scroll;
-
     tbody tr td {
       @include rem(padding-top, 22px);
       @include rem(padding-bottom, 22px);

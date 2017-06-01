@@ -12,13 +12,14 @@ $circle-btn-size: 25px;
   }
 
   &__add-row-icon {
-    @extend .bg-primary;
+    @extend .bg-info;
     @extend .btn--circle;
     float: left;
 
     @include rem(margin-right, 7px);
 
     & + span {
+      font-weight: 400;
       color: $brand-dark;
     }
   }

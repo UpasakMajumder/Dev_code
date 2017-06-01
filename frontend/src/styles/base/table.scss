@@ -17,7 +17,7 @@
       @extend .py-2;
       @extend .px-2;
       border: 1px solid $brand-grey;
-      font-weight: 100;
+      font-weight: 400;
     }
   }
 
@@ -48,8 +48,8 @@
     tbody tr {
       @extend .cursor--pointer;
 
-      &:hover {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
+      &:hover:not(:first-child) {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
       }
     }
   }

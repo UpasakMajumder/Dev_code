@@ -1,0 +1,32 @@
+<div class="check-table">
+  <div class="check-table__row">
+    <span class="check-table__info">Summary</span>
+    <span class="check-table__amount">$
+      <span class="js-money-format">1025.49</span>
+    </span>
+  </div>
+  <div class="check-table__row">
+    <span class="check-table__info">Shipping</span>
+    <span class="check-table__amount">$
+      <span class="js-money-format">42.64</span>
+    </span>
+  </div>
+  <div class="check-table__row">
+    <span class="check-table__info">Subtotal</span>
+    <span class="check-table__amount">$
+      <span class="js-money-format">67.49</span>
+    </span>
+  </div>
+  <div class="check-table__row">
+    <span class="check-table__info">Tax 8%</span>
+    <span class="check-table__amount">$
+      <span class="js-money-format">16.20</span>
+    </span>
+  </div>
+  <div class="check-table__row">
+    <span class="check-table__info">Total</span>
+    <span class="check-table__amount check-table__amount--emphasized">$
+      <span class="js-money-format">1383.68</span>
+    </span>
+  </div>
+</div>

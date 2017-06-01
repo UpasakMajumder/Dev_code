@@ -3,12 +3,24 @@
 
   @include rem(padding, 15px);
   background-color: $brand-lightgrey;
-  color: $success-mark;
   border-radius: $border-radius-xl;
   flex-wrap: nowrap;
 
   &__item {
     text-align: center;
+    color: $brand-primary;
+
+    &--success {
+      color: $success-mark;
+    }
+
+    &--warning {
+      color: $brand-info;
+    }
+
+    &--error {
+      color: $brand-secondary;
+    }
   }
 
   &__title,
@@ -26,5 +38,9 @@
 
   &__value {
     font-size: $font-large;
+
+    .sent-statistics--xs & {
+      font-size: $font-xl;
+    }
   }
 }

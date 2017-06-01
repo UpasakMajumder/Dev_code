@@ -47,6 +47,7 @@ namespace AutomatedTests
         public static void CreateDriver(int waitsec = 20)
         {
             Driver = new ChromeDriver();
+            Maximize();
             Log.WriteLine("Driver created ({0})", Driver.GetType().Name);
             Edr = new EventFiringWebDriver(Driver);
             Log.WriteLine("Event firing driver created");

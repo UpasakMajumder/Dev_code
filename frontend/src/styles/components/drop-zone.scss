@@ -14,6 +14,24 @@
     .drop-zone__dropped {
       display: block;
     }
+
+    .drop-zone__dropped--not {
+      display: none;
+    }
+  }
+
+  &.isNotDropped {
+    .drop-zone__dropping {
+      display: none;
+    }
+
+    .drop-zone__dropped {
+      display: none;
+    }
+
+    .drop-zone__dropped--not {
+      display: block;
+    }
   }
 
   &__btn {
@@ -66,14 +84,42 @@
     margin: 51px;
 
     p {
-      font-weight: 100;
+      font-weight: 400;
       margin: 0;
+    }
+
+    .font-text {
+      display: block;
+    }
+
+    .font-text--reserved {
+      display: none;
+    }
+
+    @supports (-ms-ime-align:auto) {
+      .font-text {
+        display: none;
+      }
+
+      .font-text--reserved {
+        display: block;
+      }
+    }
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      .font-text {
+        display: none;
+      }
+
+      .font-text--reserved {
+        display: block;
+      }
     }
   }
 
   &__dropped {
     display: none;
-    margin: 36px;
+    margin: 39px;
 
     div {
       display: inline-block;

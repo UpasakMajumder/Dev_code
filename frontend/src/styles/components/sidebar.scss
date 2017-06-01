@@ -1,6 +1,9 @@
 $sidebar-padding-x: 15px;
 $sidebar-font-size: 11px;
-$sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
+$sidebar-bottom-padding: 46px;
+//To fit sidebal logo in the bottom
+$sidebar-item-padding-y: 12px;
+$sidebar-item-padding-y--shrinked: 5px;
 
 .css-sidebar {
   @extend %flex--center--default;
@@ -18,18 +21,33 @@ $sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
     top: 0;
   }
 
+  .isOpen & {
+    width: $sidebar-width-large;
+    font-size: $font-s;
+
+    &__nav-link,
+    &__nav-link:active,
+    &__nav-link:hover {
+      flex-direction: row;
+      padding: $sidebar-item-padding-y $sidebar-padding-x;
+    }
+  }
+
   &__header {
-    @extend %flex--default--center;
-    flex-direction: row;
+    text-align: center;
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 15px;
     font-size: $font-s;
     color: $brand-grey;
 
     .isOpen & {
-      justify-content: space-between;
-      padding: 25px $sidebar-padding-x;
+      text-align: right;
+      padding-left: $sidebar-padding-x;
+      padding-right: $sidebar-padding-x;
+    }
+
+    & > div:last-child {
+      padding-top: 20px;
+      padding-bottom: 15px;
     }
   }
 
@@ -49,21 +67,33 @@ $sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
   }
 
   &__nav-link,
-  &__nav-link:hover,
-  &__nav-link:active {
+  &__nav-link:active,
+  &__nav-link:hover {
     @extend %flex--center--default;
+    @extend .weight--light;
+    padding-top: $sidebar-item-padding-y--shrinked;
+    padding-bottom: $sidebar-item-padding-y--shrinked;
     text-decoration: none;
     color: $font-grey;
-    font-weight: 100;
     flex-direction: column;
   }
 
   &__nav-item {
     position: relative;
     margin-bottom: 2px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    white-space: nowrap;
     cursor: pointer;
+
+    svg {
+      @extend .icon-star;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+
+      .isOpen & {
+        margin-right: 15px;
+        margin-bottom: 0;
+      }
+    }
 
     &.active,
     &:hover {
@@ -79,8 +109,8 @@ $sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
         border-radius: 4px;
       }
 
-      &:before,
-      &:after {
+      &:after,
+      &:before {
         content: '';
         position: absolute;
         left: 0;
@@ -103,92 +133,6 @@ $sidebar-bottom-padding: 70px;  //To fit sidebal logo in the bottom
 
     .isOpen & {
       flex-direction: row;
-      padding-right: $sidebar-padding-x;
-      padding-left: $sidebar-padding-x;
-    }
-  }
-}
-
-// Hover/Active state to change SVG icons
-.css-sidebar__nav-item.active,
-.css-sidebar__nav-item:hover {
-  .icon-dashboard {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-products {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-mailing-list {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-orders {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-insights {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-sourcing {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-proofing {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-dam {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-settings {
-    display: none;
-
-    &--color {
-      display: block;
-    }
-  }
-
-  .icon-help {
-    display: none;
-
-    &--color {
-      display: block;
     }
   }
 }

@@ -1,47 +1,26 @@
 {% extends "layouts/default.nunj" %}
-
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
-
-{% from "macro/sidebar.nunj" import sidebar %}
-
 {% from "macro/steps.nunj" import steps %}
+{% from "macro/svg.nunj" import svg %}
 
-{% import "macro/svg.nunj" as svg %}
-
-{% set title = "New mailing list" %}
+{% set title = 'New K-List' %}
+{% set sidebarActive = 'K-List' %}
+{% set breadcrumbs = [sidebarActive, title] %}
+{% set headerTitle = "We're now processing your list..." %}
 
 {% block content %}
+  {{ steps(3, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
-  {{ sidebar('Mailing list') }}
+  <div class="submitted">
+    {{ svg('envelope', 'submitted__central-img') }}
 
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">We're now processing your list...</h1>
-        </div>
-        {{ breadcrumb(['Home','Mailing list', 'New mailing list']) }}
-      </div>
-      <div class="content-block">
-        {{ steps(3, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
+    <div class="submitted__text-group submitted__text-group--centered">
+      <p class="p-info">Your address list was sent to processing. This will take about 5-10 minutes.</p>
+      <p class="p-info">You can continue working, we will keep you informed once your list is ready to use.</p>
+    </div>
 
-        <div class="submitted">
-          {% call svg.template('submitted__central-img') %}
-          {{svg.use(name='envelope')}}
-          {% endcall %}
-
-          <div class="submitted__text-group submitted__text-group--centered">
-            <p class="p-info">Your address list was sent to processing. This will take about 5-10 minutes.</p>
-            <p class="p-info">You can continue working, we will keep you informed once your list is ready to use.</p>
-          </div>
-
-          <div class="submitted__btn-group">
-            <a href="#" type="type" class="btn-action btn-action--secondary">Create new mailing list</a>
-            <a href="#" type="type" class="btn-action">See products</a>
-          </div>
-        </div>
-      </div>
+    <div class="submitted__btn-group">
+      <a href="#" type="type" class="btn-action btn-action--secondary">Create new mailing list</a>
+      <a href="#" type="type" class="btn-action">See products</a>
     </div>
   </div>
-
 {% endblock %}
