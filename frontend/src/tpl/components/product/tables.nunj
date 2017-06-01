@@ -27,7 +27,7 @@
     <tbody>
     <tr>
       <th colspan="2">
-          {{ svg('money', 'icon-dollar') }}
+        {{ svg('money', 'icon-dollar') }}
         Unit price</th>
     </tr>
     <tr>
