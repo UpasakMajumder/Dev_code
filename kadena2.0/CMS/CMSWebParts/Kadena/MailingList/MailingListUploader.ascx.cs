@@ -166,7 +166,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel")
+            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel" 
+                || inpFile.PostedFile.ContentType == "text/csv")
             {
                 var fileStream = inpFile.PostedFile.InputStream;
                 var fileName = inpFileName.Value;
