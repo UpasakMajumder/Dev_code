@@ -5,6 +5,7 @@ using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
@@ -78,7 +79,7 @@ namespace Kadena.WebAPI.Services
             {
                 ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = s.Id;
                 s.PriceAmount = ECommerceContext.CurrentShoppingCart.TotalShipping;
-                s.Price = $"$ {ECommerceContext.CurrentShoppingCart.TotalShipping}";
+                s.Price = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping);
             }
 
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
@@ -98,27 +99,27 @@ namespace Kadena.WebAPI.Services
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
-                    Value = ECommerceContext.CurrentShoppingCart.TotalItemsPrice.ToString()
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalItemsPrice)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
-                    Value = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString()
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
-                    Value = "0"
+                    Value = String.Format("$ {0:#,0.00}", 0)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
-                    Value = "0"
+                    Value = String.Format("$ {0:#,0.00}", 0)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
-                    Value = ECommerceContext.CurrentShoppingCart.TotalPrice.ToString()
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalPrice)
                 }
             };
         }
