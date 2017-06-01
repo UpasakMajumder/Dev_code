@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Kadena.Old_App_Code.Kadena.MailingList
 {
+    [DataContract]
     public class MailingAddressData
     {
         [DataMember(IsRequired = true, Name = "id")]

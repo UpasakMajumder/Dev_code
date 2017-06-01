@@ -22,6 +22,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
         private const string _getMailingListsSettingKey = "KDA_GetMailingListsUrl";
+        private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -31,6 +32,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
         private const string _validateAddressIncorrectMessage = "Url for validating addresses is not in correct format. Check settings for your site.";
+        private const string _getAddressesIncorrectMessage = "Url for getting addresses is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -392,6 +394,50 @@ namespace Kadena.Old_App_Code.Helpers
                     if (response.Success)
                     {
                         return (response.Response as JArray).ToObject<IEnumerable<MailingListData>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
+        {
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getAddressesSettingKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                throw new InvalidOperationException(_getAddressesIncorrectMessage);
+            }
+
+            var parameterizedUrl = $"{url.AbsoluteUri}/{containerId}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parameterizedUrl))
+                {
+                    AwsResponseMessage response;
+                    try
+                    {
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return (response.Response as JArray).ToObject<IEnumerable<MailingAddressData>>();
                     }
                     else
                     {
