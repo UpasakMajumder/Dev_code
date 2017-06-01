@@ -4,7 +4,7 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
   SEND_SHOPPING_DATA_SUCCESS, ERROR_SHOPPING_VALIDATION } from '../constants';
 import { CHECKOUT } from '../globals';
-import ui from './ui';
+// import ui from './ui';
 
 export const getUI = () => {
   return (dispatch) => {

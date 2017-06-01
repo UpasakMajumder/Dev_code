@@ -9,7 +9,7 @@ class Total extends Component {
 
     const prices = items.map((item, index) => {
       let className = 'summary-table__row';
-      if (index === item.length - 1) className += ' summary-table__amount--emphasized';
+      if (index === items.length - 1) className += ' summary-table__amount--emphasized';
       return <Price className={className} key={item.title} {...item} />;
     });
 
