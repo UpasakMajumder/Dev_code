@@ -99,7 +99,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(GetStringValue("ReuploadListPageUrl", string.Empty));
+            var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
+                , "containerid", _containerId.ToString());
+            Response.Redirect(url);
         }
 
         private bool Validate(string columnName, int value)
