@@ -12,27 +12,27 @@ export const getUI = () => {
       type: SHOPPING_CART_UI_FETCH
     });
 
-    dispatch({
-      type: SHOPPING_CART_UI_SUCCESS,
-      payload: {
-        ui: ui.payload
-      }
-    });
+    // dispatch({
+    //   type: SHOPPING_CART_UI_SUCCESS,
+    //   payload: {
+    //     ui: ui.payload
+    //   }
+    // });
 
-    // axios.get(CHECKOUT.initUIURL)
-    //   .then((response) => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_SUCCESS,
-    //       payload: {
-    //         ui: response.data.payload
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_FAILURE
-    //     });
-    //   });
+    axios.get(CHECKOUT.initUIURL)
+      .then((response) => {
+        dispatch({
+          type: SHOPPING_CART_UI_SUCCESS,
+          payload: {
+            ui: response.data.payload
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SHOPPING_CART_UI_FAILURE
+        });
+      });
   };
 };
 
