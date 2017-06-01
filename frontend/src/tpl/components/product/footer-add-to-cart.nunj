@@ -1,5 +1,9 @@
 <div class="add-to-cart">
   <div class="add-to-cart__left">
+    <div class="stock stock--available">
+      {% include 'components/stock.nunj' %}
+      150 pcs in stock
+    </div>
     <span class="add-to-cart__info">These come in pack of 50 pcs</span>
   </div>
   <div class="add-to-cart__right">

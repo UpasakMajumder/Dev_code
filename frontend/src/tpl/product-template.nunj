@@ -1,31 +1,27 @@
 {% extends "layouts/default.nunj" %}
 
-{% from "macro/breadcrumb.nunj" import breadcrumb %}
-
-{% from "macro/sidebar.nunj" import sidebar %}
-
 {% from "macro/select.nunj" import select %}
+{% from "macro/svg.nunj" import svg %}
 
-{% import "macro/svg.nunj" as svg %}
-
-{% set title = "March 2017 Events" %}
+{% set title = 'Products' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title, 'Category Name', 'March 2017 Events'] %}
+{% set headerTitle = "March 2017 events" %}
 
 {% block content %}
-
-  {{ sidebar('Products') }}
-
-  <div class="content">
-    <div class="content__inner">
-      <div class="content-header">
-        <div class="content-header__inner">
-          <h1 class="content-header__page-name">{{ title }}</h1>
-        </div>
-        {{ breadcrumb(['Home','Products','Category name','Category name','March 2017 Events']) }}
-      </div>
-
       <div class="content-block product-template">
         <div class="product-template__block">
           {% include 'components/product/open-design.nunj' %}
+
+          <div class="alert alert--full alert--info isOpen js-collapse">
+            <button type="button" class="alert__close btn--off js-toggle">
+             {{ svg('cross--darker', 'icon-modal') }}
+            </button>
+            <ul>
+             <li>This product is not intended to be sent to any mail list. Only signle address is possible.</li>
+            </ul>
+          </div>
+          
         </div>
         <div class="product-template__block">
           <div class="product-template__item">
@@ -89,7 +85,4 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
 {% endblock %}
