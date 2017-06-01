@@ -47,5 +47,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table tblGoodAddresses;
+        
+        /// <summary>
+        /// btnSaveList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnSaveList;
     }
 }

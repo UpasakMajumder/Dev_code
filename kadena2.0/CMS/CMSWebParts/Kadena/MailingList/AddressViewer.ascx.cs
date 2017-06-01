@@ -86,5 +86,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             }
             #endregion
         }
+
+        protected void btnSaveList_ServerClick(object sender, EventArgs e)
+        {
+            Response.Redirect(Request.UrlReferrer.ToString());
+        }
     }
 }

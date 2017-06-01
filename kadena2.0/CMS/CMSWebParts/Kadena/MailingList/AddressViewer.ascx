@@ -29,5 +29,5 @@
     </div>
 </asp:Panel>
 <div class="btn-group btn-group--left">
-    <button type="button" class="btn-action">Save list</button>
+    <button runat="server" id="btnSaveList" type="button" class="btn-action" onserverclick="btnSaveList_ServerClick">Save list</button>
 </div>
