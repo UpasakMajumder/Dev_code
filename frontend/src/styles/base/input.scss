@@ -78,6 +78,19 @@
     min-height: 80px;
   }
 
+  &__select-area {
+    @extend .input;
+
+    @include rem(padding, 12px 20px 12px 12px);
+    max-height: 250px;
+    background: $brand-white;
+    overflow-y: auto;
+
+    .input__wrapper {
+      line-height: 1.5;
+    }
+  }
+
   &__unit {
     position: absolute;
     right: 8px;
