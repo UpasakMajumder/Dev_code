@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Services
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethods = kenticoProvider.GetPaymentMethods();
 
-            return new CheckoutPage()
+            var checkoutPage = new CheckoutPage()
             {
                 DeliveryAddresses = new DeliveryAddresses()
                 {
@@ -58,6 +58,42 @@ namespace Kadena.WebAPI.Services
                 SubmitLabel = "Place order",
                 ValidationMessage = "Error"
             };
+
+            CheckCurrentOrDefaultAddress(checkoutPage);
+            CheckCurrentOrDefaultShipping(checkoutPage);
+            checkoutPage.PaymentMethods.CheckDefault();
+
+            return checkoutPage;
+        }
+
+        private void CheckCurrentOrDefaultAddress(CheckoutPage page)
+        {
+            int currentAddress = kenticoProvider.GetCurrentCartAddresId();
+            if (currentAddress != 0)
+            {
+                page.DeliveryAddresses.CheckAddress(currentAddress);
+            }
+            else
+            {
+                int defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
+                kenticoProvider.SetShoppingCartAddres(defaultAddressId);
+                page.DeliveryAddresses.CheckAddress(defaultAddressId);
+            }
+        }
+
+        private void CheckCurrentOrDefaultShipping(CheckoutPage page)
+        { 
+            int currentShippingMethod = kenticoProvider.GetCurrentCartShippingMethodId();
+            if (currentShippingMethod != 0)
+            {
+                page.DeliveryMethods.CheckMethod(currentShippingMethod);
+            }
+            else
+            {
+                int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
+                kenticoProvider.SelectShipping(defaultMethodId);
+                page.DeliveryMethods.CheckMethod(defaultMethodId);
+            }
         }
 
         public List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] allMethods)
@@ -109,7 +145,6 @@ namespace Kadena.WebAPI.Services
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
-
         }
     }
 }

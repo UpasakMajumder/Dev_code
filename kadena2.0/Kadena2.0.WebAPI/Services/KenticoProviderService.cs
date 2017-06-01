@@ -120,6 +120,7 @@ namespace Kadena.WebAPI.Services
             {
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
+                cart.SubmitChanges(true);
             }
         }
 
@@ -130,8 +131,24 @@ namespace Kadena.WebAPI.Services
             if (cart.ShoppingCartShippingOptionID != shippingOptionId)
             {
                 cart.ShoppingCartShippingOptionID = shippingOptionId;
+                cart.SubmitChanges(true);
                 //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
             }
+        }
+
+        public int GetCurrentCartAddresId()
+        {
+            var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
+
+            if (address == null)
+                return 0;
+
+            return address.AddressID;
+        }
+
+        public int GetCurrentCartShippingMethodId()
+        {
+            return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
         public string GetResourceString(string name)

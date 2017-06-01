@@ -22,20 +22,30 @@ namespace Kadena.WebAPI.Models
             items = services.Where(s => s.CarrierId == this.Id).ToList();
         }
 
+        public void UncheckAll()
+        {
+            this.Opened = false;
+            items.ForEach(i => i.Checked = false);
+        }
+
         public void CheckMethod(int id)
         {
-            items.ForEach(i => i.Checked = false);
-            var checkedItem = items.Where(i => i.Id == id).FirstOrDefault();
+            UncheckAll();
 
+            var checkedItem = items.Where(i => i.Id == id).FirstOrDefault();
             if (checkedItem != null)
             {
                 this.Opened = true;
                 checkedItem.Checked = true;
             }
-            else
-            {
-                this.Opened = false;
-            }
+        }
+
+        public int GetDefaultMethodId()
+        {
+            if (items.Count < 1)
+                return 0;
+
+            return items[0].Id;
         }
     }
 }

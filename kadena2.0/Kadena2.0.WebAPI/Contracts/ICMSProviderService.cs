@@ -12,5 +12,8 @@ namespace Kadena.WebAPI.Contracts
         void SetShoppingCartAddres(int addressId);
         void SelectShipping(int shippingOptionsId);
         string GetResourceString(string name);
+
+        int GetCurrentCartAddresId();
+        int GetCurrentCartShippingMethodId();
     }
 }
