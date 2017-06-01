@@ -94,6 +94,9 @@
 
     </div>
   </div>
+  
+  {% include 'components/snack-notification.nunj' %}
+
 </form>
 
 {# Scripts #}
