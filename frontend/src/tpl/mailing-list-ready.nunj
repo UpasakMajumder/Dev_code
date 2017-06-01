@@ -36,8 +36,8 @@
           <div class="template__title">
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -67,8 +67,8 @@
               quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
               hic molestiae repellendus!</h3>
           </div>
-          <div class="template__stock template__stock--unavailable">
-            {{ svg('stock--unavailable', 'icon-stock') }}
+          <div class="stock stock--unavailable">
+            {% include 'components/stock.nunj' %}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -93,8 +93,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--out">
-            {{ svg('stock--out', 'icon-stock') }}
+          <div class="stock stock--out">
+            {% include 'components/stock.nunj' %}
             Out of stock
           </div>
           <div class="template__use">
@@ -119,8 +119,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -144,8 +144,8 @@
           <div class="template__title">
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -175,8 +175,8 @@
               quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
               hic molestiae repellendus!</h3>
           </div>
-          <div class="template__stock template__stock--unavailable">
-            {{ svg('stock--unavailable', 'icon-stock') }}
+          <div class="stock stock--unavailable">
+            {% include 'components/stock.nunj' %}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -201,8 +201,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--out">
-            {{ svg('stock--out', 'icon-stock') }}
+          <div class="stock stock--out">
+            {% include 'components/stock.nunj' %}
             Out of stock
           </div>
           <div class="template__use">
@@ -227,8 +227,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
