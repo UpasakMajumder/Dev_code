@@ -31,7 +31,7 @@ class Dropzone {
       this.container.classList.contains(this.reverseSelector) && this.container.classList.remove(this.reverseSelector);
       !this.container.classList.contains(this.selector) && this.container.classList.add(this.selector);
       this.nameNode.innerHTML = name;
-      this.nameInput.value = name;
+      if (!this.nameInput.hasAttribute('disabled')) { this.nameInput.value = name; }
     });
 
     this.btns.forEach((btn) => {
