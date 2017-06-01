@@ -133,7 +133,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel")
+            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel" 
+                || inpFile.PostedFile.ContentType == "text/csv")
             {
                 var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
                 var product = Request.Form[GetString("Kadena.MailingList.Product")];
