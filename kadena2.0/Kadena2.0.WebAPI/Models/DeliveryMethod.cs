@@ -47,5 +47,23 @@ namespace Kadena.WebAPI.Models
 
             return items[0].Id;
         }
+
+        public void UpdateSummaryText(string priceFrom, string cannotBeDelivered)
+        {
+            items.ForEach(i => i.UpdateSummaryText(priceFrom, cannotBeDelivered));
+
+            var cheapestItem = items.Where(i => !i.Disabled).OrderBy(i => i.PriceAmount).FirstOrDefault();
+
+            if (cheapestItem != null)
+            {
+                this.PricePrefix = priceFrom;
+                this.Price = cheapestItem.Price;
+            }
+            else
+            {
+                this.PricePrefix = cannotBeDelivered;
+                this.Price = string.Empty;
+            }
+        }
     }
 }

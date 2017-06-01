@@ -23,5 +23,10 @@ namespace Kadena.WebAPI.Models
 
             return items[0].GetDefaultMethodId();
         }
+
+        public void UpdateSummaryText(string priceFrom, string cannotBeDelivered)
+        {
+            items.ForEach(i => i.UpdateSummaryText(priceFrom, cannotBeDelivered));
+        }
     }
 }

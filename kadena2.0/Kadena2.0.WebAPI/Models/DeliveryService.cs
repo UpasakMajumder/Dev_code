@@ -8,8 +8,22 @@
         public bool Checked { get; set; }
         public string PricePrefix { get; set; }
         public string Price { get; set; }
+        public double PriceAmount { get; set; }
         public string DatePrefix { get; set; }
         public string Date { get; set; }
         public bool Disabled { get; set; }
+
+        public void UpdateSummaryText(string price, string cannotBeDelivered)
+        {
+            if (Disabled)
+            {
+                PricePrefix = cannotBeDelivered;
+                Price = string.Empty;
+            }
+            else
+            {
+                PricePrefix = price;
+            }
+        }
     }
 }

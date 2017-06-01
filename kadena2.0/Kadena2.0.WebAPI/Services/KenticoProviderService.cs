@@ -11,9 +11,12 @@ namespace Kadena.WebAPI.Services
     public class KenticoProviderService : ICMSProviderService
     {
         private readonly IMapper mapper;
-        public KenticoProviderService(IMapper mapper)
+        private readonly IResourceStringService resources;
+
+        public KenticoProviderService(IMapper mapper, IResourceStringService resources)
         {
             this.mapper = mapper;
+            this.resources = resources;
         }
         
         public DeliveryAddress[] GetCustomerAddresses()
@@ -33,22 +36,29 @@ namespace Kadena.WebAPI.Services
             foreach (DeliveryMethod dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-
-                if (dm.Title.ToLower().Contains("fedex"))
-                {
-                    dm.Icon = "fedex-delivery";
-                }
-                else if (dm.Title.ToLower().Contains("usps"))
-                {
-                    dm.Icon = "usps-delivery";
-                }
-                else if (dm.Title.ToLower().Contains("ups"))
-                {
-                    dm.Icon = "ups-delivery";
-                }
+                SetShippingProviderIcon(dm);
             }
 
             return deliveryMethods;
+        }
+
+        /// <summary>
+        /// Hardcoded until finding some convinient way to configure it in Kentico
+        /// </summary>
+        private void SetShippingProviderIcon(DeliveryMethod dm)
+        {
+            if (dm.Title.ToLower().Contains("fedex"))
+            {
+                dm.Icon = "fedex-delivery";
+            }
+            else if (dm.Title.ToLower().Contains("usps"))
+            {
+                dm.Icon = "usps-delivery";
+            }
+            else if (dm.Title.ToLower().Contains("ups"))
+            {
+                dm.Icon = "ups-delivery";
+            }
         }
 
         public DeliveryService[] GetShippingOptions()
@@ -67,7 +77,8 @@ namespace Kadena.WebAPI.Services
             foreach (var s in services)
             {
                 ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = s.Id;
-                s.Price = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString();
+                s.PriceAmount = ECommerceContext.CurrentShoppingCart.TotalShipping;
+                s.Price = $"$ {ECommerceContext.CurrentShoppingCart.TotalShipping}";
             }
 
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
@@ -86,27 +97,27 @@ namespace Kadena.WebAPI.Services
             {
                 new Total()
                 {
-                    Title = "Summary",
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
                     Value = ECommerceContext.CurrentShoppingCart.TotalItemsPrice.ToString()
                 },
                 new Total()
                 {
-                    Title = "Shipping",
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
                     Value = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString()
                 },
                 new Total()
                 {
-                    Title = "Subtotal",
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
                     Value = "0"
                 },
                 new Total()
                 {
-                    Title = "Tax 8%",
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
                     Value = "0"
                 },
                 new Total()
                 {
-                    Title = "Totals",
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
                     Value = ECommerceContext.CurrentShoppingCart.TotalPrice.ToString()
                 }
             };
@@ -132,7 +143,6 @@ namespace Kadena.WebAPI.Services
             {
                 cart.ShoppingCartShippingOptionID = shippingOptionId;
                 cart.SubmitChanges(true);
-                //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
             }
         }
 
