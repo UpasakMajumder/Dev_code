@@ -17,7 +17,7 @@
         </span>
     </div>
 </asp:Panel>
-<div class="processed-list__table-block">
+<asp:Panel runat="server" ID="pnlGoodAddresses" CssClass="processed-list__table-block" Visible="false">
     <div class="processed-list__table-heading processed-list__table-heading--success">
         <h3>332 addresses have been processed successfuly</h3>
         <div class="btn-group btn-group--right">
@@ -27,7 +27,7 @@
     <div class="processed-list__table-inner">
         <asp:Table runat="server" ID="tblGoodAddresses" CssClass="table processed-list__table--shadow" />
     </div>
-</div>
+</asp:Panel>
 <div class="btn-group btn-group--left">
     <button type="button" class="btn-action">Save list</button>
 </div>
