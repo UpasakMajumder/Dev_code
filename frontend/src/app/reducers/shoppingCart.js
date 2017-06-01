@@ -19,7 +19,7 @@ const defaultState = {
   },
   isSending: false,
   validation: {
-    field: ''
+    fields: []
   }
 };
 
@@ -32,7 +32,7 @@ export default (state = defaultState, action) => {
       ...state,
       isSending: false,
       validation: {
-        field: payload.field
+        fields: payload.fields
       }
     };
 
@@ -41,7 +41,7 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       validation: {
-        field: ''
+        fields: []
       },
       isSending: true
     };

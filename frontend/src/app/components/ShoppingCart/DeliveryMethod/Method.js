@@ -8,6 +8,10 @@ class Method extends Component {
     let className = 'input__wrapper select-accordion__item  select-accordion__item--inner';
     if (disabled) className += ' input__wrapper--disabled';
 
+    const dating = (datePrefix && date)
+      ? <span> | <span>{datePrefix} {date}</span></span>
+      : null;
+
     return (
       <div className={className}>
         <input disabled={disabled}
@@ -20,7 +24,7 @@ class Method extends Component {
         <label htmlFor={`dm-${id}`} className="input__label input__label--radio">
           {title}
           <span className="select-accordion__inner-label">
-            (<span>{pricePrefix} {price}</span> | <span>{datePrefix} {date}</span>)
+            (<span>{pricePrefix} {price}</span>{dating} )
           </span>
         </label>
       </div>

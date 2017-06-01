@@ -19,6 +19,10 @@ class MethodsGroup extends Component {
 
     if (disabled) className += ' input__wrapper--disabled';
 
+    const dating = (datePrefix && date)
+      ? <span> | <span>{datePrefix} {date}</span></span>
+      : null;
+
     return (
       <div>
         <div className={className}>
@@ -32,7 +36,7 @@ class MethodsGroup extends Component {
             <SVG name={icon} className="icon-shipping"/>
             {title}
             <span className="select-accordion__inner-label">
-            (<span>{pricePrefix} {price}</span> | <span>{datePrefix} {date}</span>)
+            (<span>{pricePrefix} {price}</span>{dating} )
           </span>
           </label>
         </div>

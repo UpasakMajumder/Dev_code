@@ -90,29 +90,25 @@ export const sendData = (data) => {
     dispatch({
       type: SEND_SHOPPING_DATA_FETCH
     });
-    //
-    // const invalidField = Object.keys(data).filter(key => !data[key])[0];
-    //
-    // if (invalidField) {
-    //   dispatch({
-    //     type: ERROR_SHOPPING_VALIDATION,
-    //     payload: {
-    //       field: invalidField
-    //     }
-    //   });
-    //   return;
-    // }
+
+    const invalidFields = Object.keys(data).filter(key => !data[key]);
+
+    if (!data.paymentMethod.id) invalidFields.push('paymentMethod');
 
     if (data.paymentMethod.id === 3) {
       if (!data.paymentMethod.invoice) {
-        dispatch({
-          type: ERROR_SHOPPING_VALIDATION,
-          payload: {
-            field: 'invoice'
-          }
-        });
-        return;
+        invalidFields.push('invoice');
       }
+    }
+
+    if (invalidFields.length) {
+      dispatch({
+        type: ERROR_SHOPPING_VALIDATION,
+        payload: {
+          fields: invalidFields
+        }
+      });
+      return;
     }
 
     axios.post(CHECKOUT.submitURL, { data })

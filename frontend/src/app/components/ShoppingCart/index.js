@@ -49,7 +49,7 @@ class ShoppingCart extends Component {
     const content = <div>
       <div className="shopping-cart__block">
         <DeliveryAddress
-          validationField={validation.field}
+          validationFields={validation.fields}
           validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedId={checkedData.deliveryAddress}
@@ -58,7 +58,7 @@ class ShoppingCart extends Component {
 
       <div className="shopping-cart__block">
         <DeliveryMethod
-          validationField={validation.field}
+          validationFields={validation.fields}
           validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedId={checkedData.deliveryMethod}
@@ -67,7 +67,7 @@ class ShoppingCart extends Component {
 
       <div className="shopping-cart__block">
         <PaymentMethod
-          validationField={validation.field}
+          validationFields={validation.fields}
           validationMessage={ui.validationMessage}
           changeShoppingData={this.props.changeShoppingData}
           checkedObj={checkedData.paymentMethod}

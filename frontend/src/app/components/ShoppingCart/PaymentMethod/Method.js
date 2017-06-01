@@ -3,24 +3,35 @@ import PropTypes from 'prop-types';
 import SVG from '../../SVG';
 
 class Method extends Component {
+  constructor() {
+    super();
+
+    this.isInvalidField = this.isInvalidField.bind(this);
+  }
+
+  isInvalidField(field) {
+    const { validationFields, validationMessage } = this.props;
+    return validationFields.includes(field) ? validationMessage : '';
+  }
+
   render() {
     const { title, icon, disabled, id, hasInput, inputPlaceholder, checkedObj,
-      changeShoppingData, validationField, validationMessage } = this.props;
+      changeShoppingData } = this.props;
     let { className } = this.props;
 
-    const isValidationError = validationField === 'invoice';
+    const invoiceInvalidMessage = this.isInvalidField('invoice');
 
     const additionalInput = hasInput
       ? <div className="input__wrapper">
           <input onChange={(e) => { changeShoppingData(e.target.name, id, e.target.value); }}
                  type="text"
-                 className={`input__text ${isValidationError ? 'input--error' : ''}`}
+                 className={`input__text ${invoiceInvalidMessage ? 'input--error' : ''}`}
                  name="paymentMethod"
                  placeholder={inputPlaceholder}
                  value={checkedObj.invoice} />
           {
-            isValidationError
-            ? <span className="input__error input__error--noborder">{validationMessage}</span>
+            invoiceInvalidMessage
+            ? <span className="input__error input__error--noborder">{invoiceInvalidMessage}</span>
             : null
           }
         </div>
