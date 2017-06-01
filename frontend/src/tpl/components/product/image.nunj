@@ -2,6 +2,6 @@
 
 <div class="product-view__img" style="background-image: url(http://satyr.io/500-1000x700-1500)">
   <a href="#" class="product-view__zoom">
-    {{ svg('zoom') }}
+    {{ svg('zoom', 'icon-zoom') }}
   </a>
 </div>

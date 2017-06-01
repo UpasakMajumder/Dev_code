@@ -3,11 +3,19 @@
 
 {% set title = 'Products' %}
 {% set sidebarActive = title %}
-{% set breadcrumbs = [title, 'March events 2017'] %}
-{% set headerTitle = 'March events 2017' %}
+{% set breadcrumbs = [title, 'Category Name', 'March 2017 Events'] %}
+{% set headerTitle = "March 2017 events" %}
 
 {% block content %}
+        {% include 'components/product/open-design.nunj' %}
 
-  {% include 'components/product/open-design.nunj' %}
+        <div class="alert alert--full alert--info isOpen js-collapse">
+          <button type="button" class="alert__close btn--off js-toggle">
+            {{ svg('cross--darker', 'icon-modal') }}
+          </button>
+          <ul>
+            <li>This is a static product. No design changes allowed.</li>
+          </ul>
+        </div>
 
 {% endblock %}

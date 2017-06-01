@@ -10,4 +10,32 @@
 
 {% block content %}
 
+  <div class="alert alert--full alert--info isOpen js-collapse">
+    <button type="button" class="alert__close btn--off js-toggle">
+      {{ svg('cross--darker', 'icon-modal') }}
+    </button>
+    <ul>
+      <li>This is a static product. No design changes allowed.</li>
+      <li>This product is not intended to be sent to any mail list. Only signle address is possible.</li>
+    </ul>
+  </div>
+
+  <div class="alert alert--full alert--info isOpen js-collapse">
+    <button type="button" class="alert__close btn--off js-toggle">
+      {{ svg('cross--darker', 'icon-modal') }}
+    </button>
+    <ul>
+      <li>This is a static product. No design changes allowed.</li>
+    </ul>
+  </div>
+
+  <div class="alert alert--full alert--info isOpen js-collapse">
+    <button type="button" class="alert__close btn--off js-toggle">
+      {{ svg('cross--darker', 'icon-modal') }}
+    </button>
+    <ul>
+      <li>This product is not intended to be sent to any mail list. Only signle address is possible.</li>
+    </ul>
+  </div>
+
 {% endblock %}
