@@ -1,0 +1,18 @@
+<div class="sent-statistics">
+  <div class="sent-statistics__item">
+    <p class="sent-statistics__title">Templates used</p>
+    <p class="sent-statistics__value">15</p>
+  </div>
+  <div class="sent-statistics__item">
+    <p class="sent-statistics__title">Mailings sent</p>
+    <p class="sent-statistics__value">50</p>
+  </div>
+  <div class="sent-statistics__item">
+    <p class="sent-statistics__title">Mailes Delivered</p>
+    <p class="sent-statistics__value">2513</p>
+  </div>
+  <div class="sent-statistics__item">
+    <p class="sent-statistics__title">Spent out of $1,000</p>
+    <p class="sent-statistics__value">$106</p>
+  </div>
+</div>

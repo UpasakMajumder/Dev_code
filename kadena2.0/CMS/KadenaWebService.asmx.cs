@@ -28,7 +28,7 @@
       public string errorPropertyName { get; set; }
     }
 
-    public class InitialPasswordSettingResult
+    public class GeneralResult
     {
       public bool success { get; set; }
       public string errorMessage { get; set; }
@@ -71,26 +71,61 @@
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod]
-    public InitialPasswordSettingResult InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
+    public GeneralResult InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
     {
       #region Validation
 
       if (string.IsNullOrWhiteSpace(password))
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
       }
       if (string.IsNullOrWhiteSpace(confirmPassword))
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
       }
       if (password != confirmPassword)
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
       }
 
       #endregion
 
       return InitialPasswordSettingInternal(password, confirmPassword, userGUID);
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public GeneralResult ContactPersonDetailsChange(Guid userGUID, string firstName, string lastName, string mobile, string phoneNumber)
+    {
+      return ContactPersonDetailsChangeInternal(userGUID, firstName, lastName, mobile, phoneNumber);
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public GeneralResult ChangePassword(Guid userGUID, string oldPassword, string newPassword, string confirmPassword)
+    {
+      #region Validation
+
+      if (string.IsNullOrEmpty(oldPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (string.IsNullOrEmpty(newPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.NewPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (string.IsNullOrEmpty(confirmPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (newPassword != confirmPassword)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.PasswordsDontMatch", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+
+      #endregion
+
+      return ChangePasswordInternal(userGUID, oldPassword, newPassword);
     }
 
     #endregion
@@ -127,18 +162,53 @@
       }
     }
 
-    private InitialPasswordSettingResult InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
+    private GeneralResult InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
     {
       var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
       if (ui == null)
       {
-        return new InitialPasswordSettingResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordCantBeSetUp", LocalizationContext.CurrentCulture.CultureCode) };
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordCantBeSetUp", LocalizationContext.CurrentCulture.CultureCode) };
       }
       UserInfoProvider.SetPassword(ui, password);
       ui.Enabled = true;
       ui.Update();
 
-      return new InitialPasswordSettingResult { success = true };
+      return new GeneralResult { success = true };
+    }
+
+    private GeneralResult ContactPersonDetailsChangeInternal(Guid userGUID, string firstName, string lastName, string mobile, string phoneNumber)
+    {
+      var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
+      if (ui == null)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.ContanctDetailsChange.UserNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      ui.FirstName = firstName;
+      ui.LastName = lastName;
+      ui.FullName = firstName + " " + lastName;
+      ui.SetValue("UserMobile", mobile);
+      ui.SetValue("UserPhone", phoneNumber);
+
+      ui.Update();
+
+      return new GeneralResult { success = true };
+    }
+
+    private GeneralResult ChangePasswordInternal(Guid userGUID, string oldPassword, string newPassword)
+    {
+      var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
+      if (ui == null)
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.UserNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (!UserInfoProvider.ValidateUserPassword(ui, oldPassword))
+      {
+        return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      UserInfoProvider.SetPassword(ui, newPassword);
+      ui.Update();
+
+      return new GeneralResult { success = true };
     }
 
     private bool IsEmailValid(string email)

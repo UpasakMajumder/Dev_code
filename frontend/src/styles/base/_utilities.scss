@@ -62,6 +62,10 @@
   font-weight: bold;
 }
 
+.weight--black {
+  font-weight: 900;
+}
+
 .flex-align--center {
   align-items: center;
 }
@@ -76,6 +80,10 @@
 
 .css-overflow-hidden {
   overflow: hidden;
+}
+
+.hidden {
+  display: none;
 }
 
 .isInvisible {

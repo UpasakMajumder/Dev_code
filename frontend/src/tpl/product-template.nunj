@@ -1,5 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/select.nunj" import select %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'March events 2017' %}
 {% set sidebarActive = 'Products' %}
@@ -7,10 +8,19 @@
 {% set headerTitle = title %}
 
 {% block content %}
-
       <div class="content-block product-template">
         <div class="product-template__block">
           {% include 'components/product/open-design.nunj' %}
+
+          <div class="alert alert--full alert--info isOpen js-collapse">
+            <button type="button" class="alert__close btn--off js-toggle">
+             {{ svg('cross--darker', 'icon-modal') }}
+            </button>
+            <ul>
+             <li>This product is not intended to be sent to any mail list. Only signle address is possible.</li>
+            </ul>
+          </div>
+
         </div>
         <div class="product-template__block">
           <div class="product-template__item">
@@ -55,24 +65,24 @@
                         </div>
                         <a href="#" class="btn-action product-list__btn--primary">Open in design</a>
                       </div>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                    <a href="#" class="btn-action product-list__btn--primary">Open in design</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-          <div class="product-template__item">
-            <div class="row flex-align--center">
-              <div class="col-6">
-                <span>Showing 11 to 20 of 103 entries</span>
-              </div>
-              <div class="col-6 text--right">
-                {% include "components/pagination.nunj" %}
-              </div>
-            </div>
+      <div class="product-template__item">
+        <div class="row flex-align--center">
+          <div class="col-6">
+            <span>Showing 11 to 20 of 103 entries</span>
+          </div>
+          <div class="col-6 text--right">
+            {% include "components/pagination.nunj" %}
           </div>
         </div>
       </div>
-
 {% endblock %}

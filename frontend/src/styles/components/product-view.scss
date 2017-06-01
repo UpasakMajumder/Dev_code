@@ -91,4 +91,12 @@
       }
     }
   }
+
+  &__footer {
+    @extend %flex--center--between;
+
+    .stock {
+      @include rem(font-size, 16px);
+    }
+  }
 }

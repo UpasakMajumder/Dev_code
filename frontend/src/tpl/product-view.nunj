@@ -1,4 +1,5 @@
 {% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'March events 2017' %}
 {% set sidebarActive = 'Products' %}
@@ -6,7 +7,13 @@
 {% set headerTitle = title %}
 
 {% block content %}
-
   {% include 'components/product/open-design.nunj' %}
-
+  <div class="alert alert--full alert--info isOpen js-collapse">
+    <button type="button" class="alert__close btn--off js-toggle">
+      {{ svg('cross--darker', 'icon-modal') }}
+    </button>
+    <ul>
+      <li>This is a static product. No design changes allowed.</li>
+    </ul>
+  </div>
 {% endblock %}

@@ -5,8 +5,9 @@
     <tbody>
     <tr>
       <th colspan="2">
-          {{ svg('deliver-car', 'icon-deliver') }}
-          Estimates</th>
+        {{ svg('deliver-car', 'icon-deliver') }}
+        Delivery
+      </th>
     </tr>
     <tr>
       <td>Production time</td>

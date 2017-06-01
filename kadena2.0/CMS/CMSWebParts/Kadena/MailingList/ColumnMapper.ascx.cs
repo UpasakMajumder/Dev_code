@@ -24,7 +24,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
         };
-        private Guid _fileId;
+        private string _fileId;
         private Guid _containerId;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -32,7 +32,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (!string.IsNullOrWhiteSpace(Request.QueryString["fileid"])
                     && !string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
             {
-                _fileId = new Guid(Request.QueryString["fileid"]);
+                _fileId = Request.QueryString["fileid"];
                 _containerId = new Guid(Request.QueryString["containerid"]);
             }
 
@@ -41,7 +41,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 btnProcess.InnerText = GetString("Kadena.MailingList.ProcessList", string.Empty);
                 btnReupload.InnerText = GetString("Kadena.MailingList.ReuploadList", string.Empty);
 
-                if (_fileId != Guid.Empty && _containerId != Guid.Empty)
+                if (!string.IsNullOrWhiteSpace(_fileId) && _containerId != Guid.Empty)
                 {
                     var headers = ServiceHelper.GetHeaders(_fileId).ToArray();
                     foreach (var cs in _columnSelectors)
@@ -71,7 +71,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (IsPostBack)
             {
-                if (_fileId != Guid.Empty
+                if (!string.IsNullOrWhiteSpace(_fileId)
                     && _containerId != Guid.Empty)
                 {
                     var mapping = new Dictionary<string, int>();
@@ -90,6 +90,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     if (isValid)
                     {
                         ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
+                        ServiceHelper.ValidateAddresses(_containerId);
                         Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
                     }
                 }
@@ -98,20 +99,28 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(GetStringValue("ReuploadListPageUrl", string.Empty));
+            var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
+                , "containerid", _containerId.ToString());
+            Response.Redirect(url);
         }
 
         private bool Validate(string columnName, int value)
         {
-            var div = (FindControl($"div{columnName}") as HtmlGenericControl);
-            if (div != null)
+
+            var wrap = (FindControl($"wrap{columnName}") as HtmlGenericControl);
+            if (wrap != null)
             {
-                div.Attributes["class"] = value > -1 ? "input__select" : "input__select input--error";
-                var span = (FindControl($"span{columnName}") as HtmlGenericControl);
-                if (span != null)
+                wrap.Attributes["class"] = value > -1 ? "input__wrapper" : "input__wrapper mb-3";
+                var div = (FindControl($"div{columnName}") as HtmlGenericControl);
+                if (div != null)
                 {
-                    span.InnerText = GetString("Kadena.MailingList.EnterValidValue");
-                    span.Visible = (value < 0);
+                    div.Attributes["class"] = value > -1 ? "input__select" : "input__select input--error";
+                    var span = (FindControl($"span{columnName}") as HtmlGenericControl);
+                    if (span != null)
+                    {
+                        span.InnerText = GetString("Kadena.MailingList.EnterValidValue");
+                        span.Visible = (value < 0);
+                    }
                 }
             }
             return value > -1;

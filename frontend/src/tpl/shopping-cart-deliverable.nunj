@@ -9,8 +9,7 @@
 {% block content %}
   <div class="shopping-cart">
     <div class="shopping-cart__block">
-        <p class="text-right">You have <span>2 items</span> in your cart</p>
-      {% include "components/cart-product.nunj" %}
+      <h2>Added items <span class="badge badge--dark ml-1 font--xs v--middle">3</span></h2>
       {% include "components/cart-product.nunj" %}
     </div>
 
@@ -38,9 +37,7 @@
       <h2>Total</h2>
       <div class="cart-fill__block">
         <div class="cart-fill__block-inner">
-
-          {% include "components/shopping-cart/summary-table.nunj" %}
-
+          {% include "components/shopping-cart/check-table.nunj" %}
         </div>
       </div>
     </div>

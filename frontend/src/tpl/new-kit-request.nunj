@@ -1,0 +1,43 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'New kit request' %}
+{% set sidebarActive = 'Products' %}
+{% set breadcrumbs = [sidebarActive, 'New request'] %}
+{% set headerTitle = title %}
+
+{% block content %}
+
+  <div class="block">
+    <h2 class="block__heading">Main informations</h2>
+
+    <div class="form-block form-block--fixed">
+      <div class="input__wrapper">
+        <span class="input__label">Name</span>
+        <input type="text" class="input__text" placeholder="Name ">
+      </div>
+      <div class="input__wrapper">
+        <span class="input__label">Description</span>
+        <textarea class="input__textarea" placeholder="Placeholder"></textarea>
+      </div>
+      <div class="input__wrapper">
+        <span class="input__label">Select up to 5 products</span>
+        <div class="input__select-area">
+
+          {% for item in range(0, 15) %}
+              <div class="input__wrapper">
+                <input id="dom-{{item}}" type="checkbox" class="input__checkbox">
+                <label for="dom-{{item}}" class="input__label input__label--checkbox">lorem ipsum dolor</label>
+              </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="btn-group btn-group--left">
+  <a href="#" class="btn-action">Submit a request</a>
+  </div>
+
+{% endblock %}

@@ -9,7 +9,7 @@
 
 {% block content %}
   <div class="mb-4">
-    <div class="sent-statistics">
+    <div class="sent-statistics sent-statistics--xs">
       <div class="sent-statistics__item">
         <p class="sent-statistics__title">Sent in 90 days</p>
         <p class="sent-statistics__value">6</p>

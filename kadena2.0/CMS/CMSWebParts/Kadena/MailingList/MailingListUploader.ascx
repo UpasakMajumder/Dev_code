@@ -12,7 +12,12 @@
             <svg class="icon icon-drop">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#draganddrop" />
             </svg>
-            <p runat="server" id="textFileToUpload" class="font-text"></p>
+            <p class="font-text">
+                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileToUpload" />
+            </p>
+            <p class="font-text font-text--reserved">
+                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.ClickToUpload" />
+            </p>
         </div>
         <div class="drop-zone__dropped">
             <div>
@@ -25,35 +30,76 @@
             </div>
             <p class="js-drop-zone-name">File name</p>
         </div>
+
+        <div class="drop-zone__dropped drop-zone__dropped--not">
+            <div>
+                <button type="button" class="drop-zone__btn close js-drop-zone-btn">
+                    <svg class="icon icon-cross">
+                        <use xlink:href="/gfx/svg/sprites/icons.svg#cross" />
+                    </svg>
+                </button>
+                <img src="/gfx/images/csv-error.png" class="icon-csv">
+            </div>
+            <p>
+                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.WrongFileUploaded" />
+            </p>
+        </div>
     </div>
     <div class="input__wrapper j-submit-mailing-list-error" style="display: none;">
         <span class="input__error">
             <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
         </span>
     </div>
-    <div id="divFileTypeError" runat="server" enableviewstate="false" class="input__wrapper" visible="false">
-        <span class="input__error">
-            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileUnsupportedExtension" />
-        </span>
-    </div>
 </div>
 <div class="upload-mail__row upload-mail__offer" style="display: none;">
-    <span runat="server" id="textOr"></span>
-    <p runat="server" id="textSkipField"></p>
+    <span>
+        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.Or" />
+    </span>
+    <p>
+        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.SkipField" />
+    </p>
 </div>
 <asp:PlaceHolder runat="server" ID="phMailType" />
 <asp:PlaceHolder runat="server" ID="phProduct" />
 <asp:PlaceHolder runat="server" ID="phValidity" />
 <div class="upload-mail__row">
-    <h2 runat="server" id="textFileName1"></h2>
-    <p runat="server" id="textFileNameDescr"></p>
+    <h2>
+        <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileName" />
+    </h2>
+    <p>
+        <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNameDescription" />
+    </p>
     <div class="row">
         <div class="col-lg-5 col-xl-3">
-            <div class="input__wrapper">
-                <span class="input__label" runat="server" id="textFileName2"></span>
+            <asp:Panel runat="server" ID="divFileName" CssClass="input__wrapper">
+                <span class="input__label">
+                    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileName" />
+                </span>
                 <input runat="server" id="inpFileName" type="text" name="name" class="input__text js-drop-zone-name-input" placeholder="">
-            </div>
+                <span class="input__error input__error--noborder" style="display: none;">
+                    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.EnterValidValue" />
+                </span>
+            </asp:Panel>
         </div>
     </div>
 </div>
-<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click" onclick="javascript: if(!$('.js-drop-zone').hasClass('isDropped')) { $('.j-submit-mailing-list-error').show(); return false; };"></button>
+<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click"
+    onclick="javascript: 
+        if($('.js-drop-zone').hasClass('isNotDropped')) 
+        { 
+            $('.j-submit-mailing-list-error').hide();
+            return false; 
+        }; 
+        if(!$('.js-drop-zone').hasClass('isDropped')) 
+        { 
+            $('.j-submit-mailing-list-error').show();
+            return false; 
+        }; 
+        if (!$.trim($('input.js-drop-zone-name-input').val()).length)
+        {
+            $('input.js-drop-zone-name-input').addClass('input--error');
+            $('span.input__error').show();
+            return false;
+        };">
+    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.Create" />
+</button>

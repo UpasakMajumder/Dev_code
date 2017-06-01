@@ -9,24 +9,9 @@
 {% block content %}
   <div class="mailing-lists">
     <div class="mailing-lists__row">
-      <div class="sent-statistics">
-        <div class="sent-statistics__item">
-          <p class="sent-statistics__title">Sent in 90 days</p>
-          <p class="sent-statistics__value">6</p>
-        </div>
-        <div class="sent-statistics__item sent-statistics__item--warning">
-          <p class="sent-statistics__title">Correct addresses</p>
-          <p class="sent-statistics__value">2105</p>
-        </div>
-        <div class="sent-statistics__item sent-statistics__item--error">
-          <p class="sent-statistics__title">Bad addresses</p>
-          <p class="sent-statistics__value">10</p>
-        </div>
-        <div class="sent-statistics__item sent-statistics__item--success">
-          <p class="sent-statistics__title">Success rate</p>
-          <p class="sent-statistics__value">99,9%</p>
-        </div>
-      </div>
+
+      {% include "components/statistics.nunj" %}
+      
     </div>
 
     <div class="mailing-lists__row">
@@ -39,16 +24,21 @@
           <th>Errors</th>
           <th>Valid through</th>
           <th>Status</th>
-          <th>Action</th>
+          <th style="display: none;">Action</th>
         </tr>
         <tr>
-          <td><a class="link" href="#">FCLTR_Lamp post 2nd AVE</a></td>
+          <td>
+            {#TODO: remove style when begin to work with the current story#}
+            <a class="link" href="#" style="display: none;">FCLTR_Lamp post 2nd AVE</a>
+            <span>FCLTR_Lamp post 2nd AVE</span>
+          </td>
           <td>Mar 3 2017</td>
           <td>240</td>
           <td>1</td>
           <td>Mar 3 2017</td>
           <td>Ready to use</td>
-          <td class="text--center">
+          {#TODO: remove style when begin to work with the current story#}
+          <td class="text--center" style="display: none;">
             <a href="#" class="mailing-lists__btn btn-action btn-action--secondary">View</a>
           </td>
         </tr>

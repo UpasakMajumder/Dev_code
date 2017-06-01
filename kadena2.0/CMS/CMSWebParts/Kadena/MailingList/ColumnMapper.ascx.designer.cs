@@ -31,6 +31,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlSelect selTitle;
         
         /// <summary>
+        /// wrapFirstName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapFirstName;
+        
+        /// <summary>
         /// divFirstName control.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlSelect selLastName;
         
         /// <summary>
+        /// wrapAddress1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapAddress1;
+        
+        /// <summary>
         /// divAddress1 control.
         /// </summary>
         /// <remarks>
@@ -92,6 +110,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanAddress1;
+        
+        /// <summary>
+        /// wrapAddress2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapAddress2;
         
         /// <summary>
         /// divAddress2 control.
@@ -121,6 +148,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanAddress2;
         
         /// <summary>
+        /// wrapCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapCity;
+        
+        /// <summary>
         /// divCity control.
         /// </summary>
         /// <remarks>
@@ -148,6 +184,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanCity;
         
         /// <summary>
+        /// wrapState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapState;
+        
+        /// <summary>
         /// divState control.
         /// </summary>
         /// <remarks>
@@ -173,6 +218,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanState;
+        
+        /// <summary>
+        /// wrapZip control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapZip;
         
         /// <summary>
         /// divZip control.

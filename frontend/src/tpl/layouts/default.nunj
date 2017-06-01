@@ -66,10 +66,20 @@
           <div class="content__inner">
             <div class="content-header">
               <div class="content-header__inner">
-                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
-                {% if(headerAdd) %}
-                  {% include 'components/header-button.nunj' %}
+                <h1 class="content-header__page-name">{{ headerTitle }}
+                  {% if(headerAdd) %}
+                    {% include 'components/header-button.nunj' %}
+                  {% endif %}
+                </h1>
+                <div class="btn-group btn-group--right">
+                {% if (btns) %}
+
+                  {% for btn in btns %}
+                    <button type="button" class="{{ btn.class }}">{{ btn.name }}</button>
+                  {% endfor %}
+
                 {% endif %}
+                </div>
               </div>
               {% include 'components/breadcrumbs.nunj' %}
             </div>
@@ -84,6 +94,9 @@
 
     </div>
   </div>
+  
+  {% include 'components/snack-notification.nunj' %}
+
 </form>
 
 {# Scripts #}

@@ -1,4 +1,6 @@
 .input {
+  $input-height: 41px;
+
   @extend .line-height--one;
 
   @include rem(padding-top, 11px);
@@ -20,25 +22,21 @@
       opacity: .5;
     }
 
-    &--icon-label {
-      @extend %flex--center--default;
+    &--with-unit {
+      input {
+        @include rem(padding-right, 30px);
+      }
+    }
 
-      label {
-        @extend %flex--center--default;
+    &--with-icon {
+      input {
+        @include rem(padding-right, 30px);
+      }
 
-        @include rem(margin-bottom, 0);
-
-        > span {
-          @extend .weight--bold;
-
-          @include rem(padding-left, 16px);
-        }
-
-        &:before,
-        &:after {
-          top: 50%;
-          transform: translateY(-50%);
-        }
+      svg {
+        @include rem(right, 8px);
+        @include rem(bottom, 10px);
+        position: absolute;
       }
     }
   }
@@ -69,6 +67,34 @@
       @include rem(padding-left, 10px);
       @include rem(padding-right, 10px);
     }
+  }
+
+  &__textarea {
+    @extend .input;
+
+    @include rem(padding-left, 16px);
+    @include rem(padding-right, 16px);
+    width: 100%;
+    min-height: 80px;
+  }
+
+  &__select-area {
+    @extend .input;
+
+    @include rem(padding, 12px 20px 12px 12px);
+    max-height: 250px;
+    background: $brand-white;
+    overflow-y: auto;
+
+    .input__wrapper {
+      line-height: 1.5;
+    }
+  }
+
+  &__unit {
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
   }
 
   &__password {
@@ -180,13 +206,13 @@
     @extend .bg-white;
     border: 1px solid $brand-darkgrey;
     border-radius: $border-radius;
-    height: 42px;
+    height: $input-height;
     width: 100%;
 
     select {
       background: transparent;
       border: none;
-      height: 42px;
+      height: $input-height;
       font-weight: 400;
       width: 100%;
     }

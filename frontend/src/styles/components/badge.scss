@@ -1,6 +1,6 @@
-$m-size: 22px;
-
 .badge {
+  $m-size: 22px;
+  $s-size: 18px;
   display: inline-block;
   border-radius: 100%;
   text-align: center;
@@ -20,10 +20,6 @@ $m-size: 22px;
     }
   }
 
-  &--dark {
-    background-color: $brand-dark;
-  }
-
   &--hover {
     &:hover {
       border: 1px solid $brand-lightgrey;
@@ -39,5 +35,27 @@ $m-size: 22px;
         border-radius: 100%;
       }
     }
+  }
+
+  &--s {
+    width: $s-size;
+    height: $s-size;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 0;
+  }
+
+  &--dark {
+    background-color: $brand-dark;
+  }
+
+  &--empty {
+    background-color: transparent;
+    color: $brand-dark;
+    border: 1px solid $brand-dark;
+  }
+
+  &--bold {
+    @extend .weight--black;
   }
 }

@@ -42,8 +42,9 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerShipToAddress 
             {
                 var li = new ListItem(addr.AddressID.ToString());
                 li.Value = addr.AddressID.ToString();
-                li.Selected = CurrentCartAddress.AddressID == addr.AddressID;
+                           
                 this.hiddenAddressesList.Items.Add(li);
+                li.Selected = CurrentCartAddress != null ? CurrentCartAddress.AddressID == addr.AddressID : addresses.FirstOrDefault().Equals(addr);
             }
                 
             var transformation = TransformationInfoProvider.GetTransformation("kda.checkoutpage.ShippingAddress");
@@ -51,7 +52,7 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerShipToAddress 
             var resolver = MacroResolver.GetInstance();
             resolver.SetNamedSourceData("ShippingAddress", addr);
             resolver.SetNamedSourceData("StateCode", addr.GetStateCode());
-            resolver.SetNamedSourceData("Checked", CurrentCartAddress.AddressID == addr.AddressID?"checked":"");
+            resolver.SetNamedSourceData("Checked", (CurrentCartAddress != null ? CurrentCartAddress.AddressID == addr.AddressID : addresses.FirstOrDefault().Equals(addr)) ? "checked":"");
             htmlContent.Text += resolver.ResolveMacros(transformation.TransformationCode);
         }
     }
