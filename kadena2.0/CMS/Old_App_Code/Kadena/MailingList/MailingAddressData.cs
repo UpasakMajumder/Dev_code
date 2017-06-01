@@ -12,8 +12,14 @@ namespace Kadena.Old_App_Code.Kadena.MailingList
         [DataMember(IsRequired = true, Name = "mailingContainerId")]
         public Guid ContainerId { get; set; }
 
+        [DataMember(Name = "title")]
+        public string Title { get; set; }
+
         [DataMember(Name = "firstName")]
         public string Name { get; set; }
+
+        [DataMember(Name = "lastName")]
+        public string LastName { get; set; }
 
         [DataMember(Name = "address1")]
         public string Address1 { get; set; }
