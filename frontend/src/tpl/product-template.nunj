@@ -66,22 +66,23 @@
                         </div>
                         <a href="#" class="btn-action product-list__btn--primary">Open in design</a>
                       </div>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                    <a href="#" class="btn-action product-list__btn--primary">Open in design</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
 
-          <div class="product-template__item">
-            <div class="row flex-align--center">
-              <div class="col-6">
-                <span>Showing 11 to 20 of 103 entries</span>
-              </div>
-              <div class="col-6 text--right">
-                {% include "components/pagination.nunj" %}
-              </div>
-            </div>
+      <div class="product-template__item">
+        <div class="row flex-align--center">
+          <div class="col-6">
+            <span>Showing 11 to 20 of 103 entries</span>
+          </div>
+          <div class="col-6 text--right">
+            {% include "components/pagination.nunj" %}
           </div>
         </div>
       </div>

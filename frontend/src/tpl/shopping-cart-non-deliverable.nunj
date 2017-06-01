@@ -128,28 +128,7 @@
       <h2>Total</h2>
       <div class="cart-fill__block">
         <div class="cart-fill__block-inner">
-          <div class="cart-fill__block-table">
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Summary</span>
-              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">1025.49</span></span>
-            </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Shipping</span>
-              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">42.64</span></span>
-            </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Subtotal</span>
-              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">67.49</span></span>
-            </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Tax 8%</span>
-              <span class="cart-fill__block-table-amount">$ <span class="js-money-format">16.20</span></span>
-            </div>
-            <div class="cart-fill__block-table-row">
-              <span class="cart-fill__block-table-info">Total</span>
-              <span class="cart-fill__block-table-amount cart-fill__block-table-amount--emphasized">$ <span class="js-money-format">1383.68</span></span>
-            </div>
-          </div>
+          {% include "components/shopping-cart/check-table.nunj" %}
         </div>
       </div>
     </div>
