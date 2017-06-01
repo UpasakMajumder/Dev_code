@@ -26,6 +26,7 @@ namespace Kadena.WebAPI
             ConfigureJsonSerialization(apiConfig);
             ConfigureMapper();
             ConfigureContainer(apiConfig);
+            apiConfig.EnsureInitialized();
         }
 
         private static void ConfigureFilters(HttpConfiguration config)
@@ -116,7 +117,7 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void RegisterApiRoutes(HttpConfiguration config)
         {
-            //config.MapHttpAttributeRoutes();
+            config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
