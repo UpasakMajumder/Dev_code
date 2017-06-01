@@ -48,9 +48,9 @@ namespace Kadena.WebAPI.Models
             return items[0].Id;
         }
 
-        public void UpdateSummaryText(string priceFrom, string cannotBeDelivered)
+        public void UpdateSummaryText(string priceFrom, string price, string cannotBeDelivered)
         {
-            items.ForEach(i => i.UpdateSummaryText(priceFrom, cannotBeDelivered));
+            items.ForEach(i => i.UpdateSummaryText(price, cannotBeDelivered));
 
             var cheapestItem = items.Where(i => !i.Disabled).OrderBy(i => i.PriceAmount).FirstOrDefault();
 

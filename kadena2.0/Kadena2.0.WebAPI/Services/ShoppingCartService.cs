@@ -66,6 +66,7 @@ namespace Kadena.WebAPI.Services
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
+                    resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
                     resources.GetResourceString("Kadena.Checkout.CannotBeDelivered")
                 );
             return checkoutPage;
