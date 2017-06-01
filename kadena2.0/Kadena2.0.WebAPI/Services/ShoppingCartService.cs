@@ -10,11 +10,13 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper mapper;
         private readonly ICMSProviderService kenticoProvider;
+        private readonly IResourceStringService resources;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider)
+        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceStringService resources)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
+            this.resources = resources;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -24,40 +26,79 @@ namespace Kadena.WebAPI.Services
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethods = kenticoProvider.GetPaymentMethods();
 
-            return new CheckoutPage()
+            var checkoutPage = new CheckoutPage()
             {
                 DeliveryAddresses = new DeliveryAddresses()
                 {
-                    AddAddressLabel = "New address",
-                    Title = "Delivery",
-                    Description = "Products will be delivered to selected address by",
+                    AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
+                    Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
+                    Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
                     items = addresses.ToList()
                 },
 
                 DeliveryMethods = new DeliveryMethods()
                 {
-                    Title = "Delivery",
-                    Description = "Select delivery carrier and option",
-                    items = carriers.ToList(),
+                    Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
+                    Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
+                    items = carriers.ToList()
                 },
 
                 Totals = new Totals()
                 {
-                    Title = "Total",
-                    Description = null,
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Title"),
+                    Description = null, // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
                     Items = totals.ToList()
                 },
 
                 PaymentMethods = new PaymentMethods()
                 {
-                    Title = "Payment",
-                    Description = null,
-                    Items  = OrderPaymentMethods(paymentMethods)
+                    Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
+                    Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
+                    Items = OrderPaymentMethods(paymentMethods)
                 },
 
-                SubmitLabel = "Place order",
-                ValidationMessage = "Error"
+                SubmitLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
+                ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
+
+            CheckCurrentOrDefaultAddress(checkoutPage);
+            CheckCurrentOrDefaultShipping(checkoutPage);
+            checkoutPage.PaymentMethods.CheckDefault();
+            checkoutPage.DeliveryMethods.UpdateSummaryText(
+                    resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
+                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered")
+                );
+            return checkoutPage;
+        }
+
+        private void CheckCurrentOrDefaultAddress(CheckoutPage page)
+        {
+            int currentAddress = kenticoProvider.GetCurrentCartAddresId();
+            if (currentAddress != 0)
+            {
+                page.DeliveryAddresses.CheckAddress(currentAddress);
+            }
+            else
+            {
+                int defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
+                kenticoProvider.SetShoppingCartAddres(defaultAddressId);
+                page.DeliveryAddresses.CheckAddress(defaultAddressId);
+            }
+        }
+
+        private void CheckCurrentOrDefaultShipping(CheckoutPage page)
+        { 
+            int currentShippingMethod = kenticoProvider.GetCurrentCartShippingMethodId();
+            if (currentShippingMethod != 0)
+            {
+                page.DeliveryMethods.CheckMethod(currentShippingMethod);
+            }
+            else
+            {
+                int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
+                kenticoProvider.SelectShipping(defaultMethodId);
+                page.DeliveryMethods.CheckMethod(defaultMethodId);
+            }
         }
 
         public List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] allMethods)
@@ -86,7 +127,7 @@ namespace Kadena.WebAPI.Services
                 purchaseOrderMethod.Icon = "order-payment";
                 purchaseOrderMethod.Disabled = false;
                 purchaseOrderMethod.HasInput = true;
-                purchaseOrderMethod.InputPlaceholder = "Insert your PO number";
+                purchaseOrderMethod.InputPlaceholder = resources.GetResourceString("Kadena.Checkout.InsertPONumber");
                 orderedMethods.Add(purchaseOrderMethod);
             }
 
@@ -109,7 +150,6 @@ namespace Kadena.WebAPI.Services
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
-
         }
     }
 }

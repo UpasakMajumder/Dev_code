@@ -26,6 +26,7 @@ namespace Kadena.WebAPI
             ConfigureJsonSerialization(apiConfig);
             ConfigureMapper();
             ConfigureContainer(apiConfig);
+            apiConfig.EnsureInitialized();
         }
 
         private static void ConfigureFilters(HttpConfiguration config)
@@ -91,6 +92,7 @@ namespace Kadena.WebAPI
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
             container.Register<ICMSProviderService, KenticoProviderService>();
+            container.Register<IResourceStringService, KenticoResourceStringService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
@@ -116,7 +118,7 @@ namespace Kadena.WebAPI
         /// <param name="config">The configuration holder object.</param>
         private static void RegisterApiRoutes(HttpConfiguration config)
         {
-            //config.MapHttpAttributeRoutes();
+            config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

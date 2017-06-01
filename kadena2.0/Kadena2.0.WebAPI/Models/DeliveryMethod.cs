@@ -22,19 +22,47 @@ namespace Kadena.WebAPI.Models
             items = services.Where(s => s.CarrierId == this.Id).ToList();
         }
 
+        public void UncheckAll()
+        {
+            this.Opened = false;
+            items.ForEach(i => i.Checked = false);
+        }
+
         public void CheckMethod(int id)
         {
-            items.ForEach(i => i.Checked = false);
-            var checkedItem = items.Where(i => i.Id == id).FirstOrDefault();
+            UncheckAll();
 
+            var checkedItem = items.Where(i => i.Id == id).FirstOrDefault();
             if (checkedItem != null)
             {
                 this.Opened = true;
                 checkedItem.Checked = true;
             }
+        }
+
+        public int GetDefaultMethodId()
+        {
+            if (items.Count < 1)
+                return 0;
+
+            return items[0].Id;
+        }
+
+        public void UpdateSummaryText(string priceFrom, string cannotBeDelivered)
+        {
+            items.ForEach(i => i.UpdateSummaryText(priceFrom, cannotBeDelivered));
+
+            var cheapestItem = items.Where(i => !i.Disabled).OrderBy(i => i.PriceAmount).FirstOrDefault();
+
+            if (cheapestItem != null)
+            {
+                this.PricePrefix = priceFrom;
+                this.Price = cheapestItem.Price;
+            }
             else
             {
-                this.Opened = false;
+                this.PricePrefix = cannotBeDelivered;
+                this.Price = string.Empty;
             }
         }
     }

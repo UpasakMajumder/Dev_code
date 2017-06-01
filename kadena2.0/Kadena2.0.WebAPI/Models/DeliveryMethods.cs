@@ -15,5 +15,18 @@ namespace Kadena.WebAPI.Models
         {
             items.ForEach(i => i.CheckMethod(id));
         }
+
+        public int GetDefaultMethodId()
+        {
+            if (items.Count == 0)
+                return 0;
+
+            return items[0].GetDefaultMethodId();
+        }
+
+        public void UpdateSummaryText(string priceFrom, string cannotBeDelivered)
+        {
+            items.ForEach(i => i.UpdateSummaryText(priceFrom, cannotBeDelivered));
+        }
     }
 }

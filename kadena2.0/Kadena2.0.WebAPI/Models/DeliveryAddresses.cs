@@ -23,5 +23,13 @@ namespace Kadena.WebAPI.Models
                 address.Checked = true;
             }
         }
+
+        public int GetDefaultAddressId()
+        {
+            if (items.Count == 0)
+                return 0;
+
+            return items[0].Id;
+        }
     }
 }

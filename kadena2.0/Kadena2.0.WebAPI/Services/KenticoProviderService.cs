@@ -5,15 +5,19 @@ using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
     public class KenticoProviderService : ICMSProviderService
     {
         private readonly IMapper mapper;
-        public KenticoProviderService(IMapper mapper)
+        private readonly IResourceStringService resources;
+
+        public KenticoProviderService(IMapper mapper, IResourceStringService resources)
         {
             this.mapper = mapper;
+            this.resources = resources;
         }
         
         public DeliveryAddress[] GetCustomerAddresses()
@@ -33,22 +37,29 @@ namespace Kadena.WebAPI.Services
             foreach (DeliveryMethod dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-
-                if (dm.Title.ToLower().Contains("fedex"))
-                {
-                    dm.Icon = "fedex-delivery";
-                }
-                else if (dm.Title.ToLower().Contains("usps"))
-                {
-                    dm.Icon = "usps-delivery";
-                }
-                else if (dm.Title.ToLower().Contains("ups"))
-                {
-                    dm.Icon = "ups-delivery";
-                }
+                SetShippingProviderIcon(dm);
             }
 
             return deliveryMethods;
+        }
+
+        /// <summary>
+        /// Hardcoded until finding some convinient way to configure it in Kentico
+        /// </summary>
+        private void SetShippingProviderIcon(DeliveryMethod dm)
+        {
+            if (dm.Title.ToLower().Contains("fedex"))
+            {
+                dm.Icon = "fedex-delivery";
+            }
+            else if (dm.Title.ToLower().Contains("usps"))
+            {
+                dm.Icon = "usps-delivery";
+            }
+            else if (dm.Title.ToLower().Contains("ups"))
+            {
+                dm.Icon = "ups-delivery";
+            }
         }
 
         public DeliveryService[] GetShippingOptions()
@@ -67,7 +78,8 @@ namespace Kadena.WebAPI.Services
             foreach (var s in services)
             {
                 ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = s.Id;
-                s.Price = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString();
+                s.PriceAmount = ECommerceContext.CurrentShoppingCart.TotalShipping;
+                s.Price = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping);
             }
 
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
@@ -86,28 +98,28 @@ namespace Kadena.WebAPI.Services
             {
                 new Total()
                 {
-                    Title = "Summary",
-                    Value = ECommerceContext.CurrentShoppingCart.TotalItemsPrice.ToString()
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalItemsPrice)
                 },
                 new Total()
                 {
-                    Title = "Shipping",
-                    Value = ECommerceContext.CurrentShoppingCart.TotalShipping.ToString()
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping)
                 },
                 new Total()
                 {
-                    Title = "Subtotal",
-                    Value = "0"
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
+                    Value = String.Format("$ {0:#,0.00}", 0)
                 },
                 new Total()
                 {
-                    Title = "Tax 8%",
-                    Value = "0"
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
+                    Value = String.Format("$ {0:#,0.00}", 0)
                 },
                 new Total()
                 {
-                    Title = "Totals",
-                    Value = ECommerceContext.CurrentShoppingCart.TotalPrice.ToString()
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
+                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalPrice)
                 }
             };
         }
@@ -120,6 +132,7 @@ namespace Kadena.WebAPI.Services
             {
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
+                cart.SubmitChanges(true);
             }
         }
 
@@ -130,8 +143,23 @@ namespace Kadena.WebAPI.Services
             if (cart.ShoppingCartShippingOptionID != shippingOptionId)
             {
                 cart.ShoppingCartShippingOptionID = shippingOptionId;
-                //ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+                cart.SubmitChanges(true);
             }
+        }
+
+        public int GetCurrentCartAddresId()
+        {
+            var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
+
+            if (address == null)
+                return 0;
+
+            return address.AddressID;
+        }
+
+        public int GetCurrentCartShippingMethodId()
+        {
+            return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
         public string GetResourceString(string name)
