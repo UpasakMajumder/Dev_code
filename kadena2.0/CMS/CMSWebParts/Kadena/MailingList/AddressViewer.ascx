@@ -4,8 +4,8 @@
     <div class="processed-list__table-heading processed-list__table-heading--error">
         <h3>We have found 8 errors in your file</h3>
         <div class="btn-group btn-group--right">
-            <button type="button" class="btn-action btn-action--secondary">Reload .csv</button>
-            <button type="button" data-dialog="#mail-list-errors" class="js-dialog btn-action btn-action--secondary">Correct errors</button>
+            <button type="button" class="btn-action btn-action--secondary" style="display:none">Reload .csv</button>
+            <button type="button" data-dialog="#mail-list-errors" class="js-dialog btn-action btn-action--secondary" style="display: none">Correct errors</button>
         </div>
     </div>
     <div class="processed-list__table-inner">
@@ -73,7 +73,7 @@
     <div class="processed-list__table-heading processed-list__table-heading--success">
         <h3>332 addresses have been processed successfuly</h3>
         <div class="btn-group btn-group--right">
-            <button type="button" class="btn-action btn-action--secondary">Use only correct</button>
+            <button type="button" class="btn-action btn-action--secondary" style="display:none">Use only correct</button>
         </div>
     </div>
     <div class="processed-list__table-inner">
