@@ -37,6 +37,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         , badAddresses.Count());
                     FillTable(tblBadAddresses, badAddresses);
                 }
+                else
+                {
+                    btnUseOnlyGoodAddresses.Visible = false;
+                }
 
                 if (goodAddresses.Count() > 0)
                 {
@@ -105,6 +109,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
                 , "containerid", _containerId.ToString());
             Response.Redirect(url);
+        }
+
+        protected void btnUseOnlyGoodAddresses_ServerClick(object sender, EventArgs e)
+        {
+
         }
     }
 }
