@@ -15,11 +15,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                Session["PrevPageUrl"] = Request.UrlReferrer.ToString();
+            }
+
             if (!string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
             {
                 _containerId = new Guid(Request.QueryString["containerid"]);
             }
-
             if (_containerId != Guid.Empty)
             {
                 var addresses = ServiceHelper.GetMailingAddresses(_containerId);
@@ -93,7 +97,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSaveList_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(Request.UrlReferrer.ToString());
+            Response.Redirect(Session["PrevPageUrl"].ToString());
         }
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
