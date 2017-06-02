@@ -28,7 +28,6 @@ const app = {
     init('redirection', document.getElementsByClassName('js-redirection'));
     init('password', document.getElementsByClassName('js-password'));
     init('closer', document.getElementsByClassName('js-close-this'));
-
   },
 
   /* React */
@@ -36,8 +35,8 @@ const app = {
     /* Configure Redux store */
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-    render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
+    render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
   }
 };
 

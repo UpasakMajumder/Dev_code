@@ -23,7 +23,7 @@
 
       .input__wrapper {
         @include rem(left, 16px);
-        @include rem(top, -8px);
+        @include rem(margin-bottom, 0);
         visibility: hidden;
         position: relative;
 
@@ -34,12 +34,22 @@
     }
 
     .btn-group {
-      @include rem(margin-top, 16px);
+      @include rem(margin, 20px 0 20px);
     }
   }
 
   &__block-inner {
-    @include rem(padding-left, 20px);
+    @include rem(padding, 5px 0 0 20px);
+  }
+
+  &__block--flex {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > *:not(:last-child) {
+      @extend .mr-4;
+      margin-bottom: 0;
+    }
   }
 }
 
