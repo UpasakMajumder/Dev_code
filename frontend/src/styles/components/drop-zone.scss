@@ -94,6 +94,7 @@
     margin: 39px;
 
     div {
+      @include rem(margin-bottom, 5px);
       display: inline-block;
       position: relative;
     }
