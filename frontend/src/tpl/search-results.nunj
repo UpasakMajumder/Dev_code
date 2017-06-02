@@ -1,0 +1,17 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Search results for "Lorem ipsum"' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="row">
+    {% for x in range(0, 10) %}
+      <div class="col-lg-4 col-xl-3">
+        {% include 'components/product/template.nunj' %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
