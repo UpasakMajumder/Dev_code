@@ -10,56 +10,56 @@ class Notification {
   }
 
   addNotification(type) {
-    const _this = this;
+    const that = this;
     hideLastElement();
     changeRestElements();
-    showNewNotification(type);
+    showNewNotification();
 
     function hideLastElement() {
-      const lastNumber = Object.keys(_this.notification).length;
-      const element = _this.notification[lastNumber];
+      const lastNumber = Object.keys(that.notification).length;
+      const element = that.notification[lastNumber];
       if (element) {
         element.classList.add('hide');
-        _this.notification[lastNumber] = undefined;
+        that.notification[lastNumber] = undefined;
         setTimeout(() => {
           element.remove();
-        }, _this.timeForAnimation);
+        }, that.timeForAnimation);
       }
     }
 
     function changeRestElements() {
-      const elementNumbers = Object.keys(_this.notification).length;
+      const elementNumbers = Object.keys(that.notification).length;
       for (let index = elementNumbers; index > 0; index -= 1) {
         if (index !== elementNumbers) {
-          const element = _this.notification[index];
+          const element = that.notification[index];
           if (element) {
             element.classList.remove(`show-${index}`);
             const newIndex = index + 1;
             element.classList.add(`show-${newIndex}`);
-            _this.notification[newIndex] = element;
+            that.notification[newIndex] = element;
           }
         }
       }
     }
 
-    function showNewNotification(type) {
-      const newElement = createNewNotification(type);
-      _this.notification[1] = newElement;
-      _this.container.appendChild(newElement);
+    function showNewNotification() {
+      const newElement = createNewNotification();
+      that.notification[1] = newElement;
+      that.container.appendChild(newElement);
       window.getComputedStyle(newElement).opacity;
       newElement.classList.add('show-1');
 
       setTimeout(() => {
         newElement.classList.add('hide');
-      }, _this.timeToRemove);
+      }, that.timeToRemove);
 
       setTimeout(() => {
         newElement.remove();
-      }, _this.timeForAnimation + _this.timeToRemove);
+      }, that.timeForAnimation + that.timeToRemove);
     }
 
-    function createNewNotification(type) {
-      const idealElement = _this.container.querySelector(`[data-notification-type="${type}"]`);
+    function createNewNotification() {
+      const idealElement = that.container.querySelector(`[data-notification-type="${type}"]`);
       const newElement = idealElement.cloneNode(true);
       const closer = newElement.querySelector('.js-notification-closer');
 
@@ -71,27 +71,27 @@ class Notification {
 
         setTimeout(() => {
           notification.remove();
-        }, _this.timeForAnimation);
+        }, that.timeForAnimation);
       });
 
       return newElement;
     }
 
     function pullDownNotificationsAbove(notification) {
-      const keys = Object.keys(_this.notification);
-      const values = Object.values(_this.notification);
+      const keys = Object.keys(that.notification);
+      const values = Object.values(that.notification);
       const value = values.indexOf(notification);
       const key = keys[value];
-      _this.notification[key] = undefined;
+      that.notification[key] = undefined;
 
-      Object.keys(_this.notification).forEach((index) => {
-        if (index > key && _this.notification[index]) {
-          const element = _this.notification[index];
+      Object.keys(that.notification).forEach((index) => {
+        if (index > key && that.notification[index]) {
+          const element = that.notification[index];
           const newIndex = index - 1;
           element.classList.remove(`show-${index}`);
           element.classList.add(`show-${newIndex}`);
-          _this.notification[newIndex] = element;
-          _this.notification[index] = undefined;
+          that.notification[newIndex] = element;
+          that.notification[index] = undefined;
         }
       });
     }
