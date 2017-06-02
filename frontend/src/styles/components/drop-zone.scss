@@ -87,34 +87,6 @@
       font-weight: 400;
       margin: 0;
     }
-
-    .font-text {
-      display: block;
-    }
-
-    .font-text--reserved {
-      display: none;
-    }
-
-    @supports (-ms-ime-align:auto) {
-      .font-text {
-        display: none;
-      }
-
-      .font-text--reserved {
-        display: block;
-      }
-    }
-
-    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-      .font-text {
-        display: none;
-      }
-
-      .font-text--reserved {
-        display: block;
-      }
-    }
   }
 
   &__dropped {
@@ -143,5 +115,33 @@
   .icon-csv {
     width: 73px;
     height: 100px;
+  }
+
+  .default-text {
+    display: block;
+  }
+
+  .reserved-text {
+    display: none;
+  }
+
+  @supports (-ms-ime-align:auto) {
+    .default-text {
+      display: none;
+    }
+
+    .reserved-text {
+      display: block;
+    }
+  }
+
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .default-text {
+      display: none;
+    }
+
+    .reserved-text {
+      display: block;
+    }
   }
 }
