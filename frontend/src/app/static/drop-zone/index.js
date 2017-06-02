@@ -4,34 +4,38 @@ class Dropzone {
     this.file = container.querySelector('.js-drop-zone-file');
     this.btns = Array.from(container.querySelectorAll('.js-drop-zone-btn'));
     this.nameNode = container.querySelector('.js-drop-zone-name');
+    this.extensionNode = container.querySelector('.js-drop-zone-ext');
     this.nameInput = document.querySelector('.js-drop-zone-name-input');
     this.selector = 'isDropped';
     this.reverseSelector = 'isNotDropped';
+    this.acceptedFormatsStr = container.dataset.accepted;
+    this.acceptedFormats = this.acceptedFormatsStr ? this.acceptedFormatsStr.split(',') : [];
 
     this.file.addEventListener('change', (event) => {
 
       if (!this.file.value) {
-        this.container.classList.contains(this.reverseSelector) && this.container.classList.remove(this.reverseSelector);
-        this.container.classList.contains(this.selector) && this.container.classList.remove(this.selector);
-        if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = '';
+        this.container.classList.remove(this.reverseSelector);
+        this.container.classList.remove(this.selector);
+        this.changeNameInput('');
         return;
       }
 
       const { name } = event.target.files[0];
       const arrayName = name.split('.');
-      const type = arrayName[arrayName.length - 1];
+      const extension = arrayName[arrayName.length - 1];
 
-      if (type !== 'csv') {
-        this.container.classList.contains(this.selector) && this.container.classList.remove(this.selector);
-        !this.container.classList.contains(this.reverseSelector) && this.container.classList.add(this.reverseSelector);
-        if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = name;
+      if (!this.isFormatAccepted(extension)) {
+        this.container.classList.remove(this.selector);
+        this.container.classList.add(this.reverseSelector);
+        this.changeNameInput(name);
         return;
       }
 
-      this.container.classList.contains(this.reverseSelector) && this.container.classList.remove(this.reverseSelector);
-      !this.container.classList.contains(this.selector) && this.container.classList.add(this.selector);
+      this.container.classList.remove(this.reverseSelector);
+      this.container.classList.add(this.selector);
       this.nameNode.innerHTML = name;
-      if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = name;
+      this.extensionNode.innerHTML = `.${extension.toUpperCase()}`;
+      this.changeNameInput(name);
     });
 
     this.btns.forEach((btn) => {
@@ -40,10 +44,19 @@ class Dropzone {
         this.container.classList.remove(this.selector);
         this.container.classList.remove(this.reverseSelector);
         this.file.value = '';
-        this.nameInput.value = '';
+        this.changeNameInput('');
         event.preventDefault();
       });
     });
+  }
+
+  changeNameInput(value) {
+    if (this.nameInput) if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = value;
+  }
+
+  isFormatAccepted(extension) {
+    if (!this.acceptedFormatsStr) return true;
+    return this.acceptedFormats.includes(extension);
   }
 }
 

@@ -80,6 +80,14 @@
     cursor: pointer;
   }
 
+  &__ext {
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+
   &__dropping {
     margin: 51px;
 
