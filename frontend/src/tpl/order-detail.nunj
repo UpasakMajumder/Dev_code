@@ -56,12 +56,20 @@
 
   <div class="order-block">
     <h2 class="order-block__header">Shipping</h2>
-    <p class="p-icon">   {{ svg('fedex-delivery', 'icon-p') }} 4001 Valley Industrial Blvd, Shakopee, MN 55379</p>
+    <p class="p-icon delivery delivery--usps">
+      {{ svg('fedex-delivery', 'icon-p delivery--fedex') }}
+      {{ svg('ups-delivery', 'icon-p delivery--ups') }}
+      {{ svg('usps-delivery', 'icon-p delivery--usps') }}
+      4001 Valley Industrial Blvd, Shakopee, MN 55379</p>
   </div>
 
   <div class="order-block">
     <h2 class="order-block__header">Payment</h2>
-    <p class="p-icon">   {{ svg('mastercard', 'icon-p') }} Paid by credit card, Mastercard •••• 4062</p>
+    <p class="p-icon payment payment--amex">
+      {{ svg('mastercard-payment', 'icon-p payment--mastercard') }}
+      {{ svg('visa-payment', 'icon-p payment--visa') }}
+      {{ svg('amex-payment', 'icon-p payment--amex') }}
+      Paid by credit card, Mastercard •••• 4062</p>
   </div>
 
   <div class="order-block">
