@@ -5,6 +5,7 @@ using Kadena.WebAPI.Infrastructure.Responses;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Web.Http;
 
 namespace Kadena.WebAPI.Services
 {
@@ -14,7 +15,7 @@ namespace Kadena.WebAPI.Services
         {
             using (var httpClient = new HttpClient())
             {
-                var requestBody = JsonConvert.SerializeObject(orderData);
+                var requestBody = JsonConvert.SerializeObject(orderData, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 var response = httpClient.PostAsync(serviceEndpoint, content).Result;
 
