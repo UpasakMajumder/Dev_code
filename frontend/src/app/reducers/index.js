@@ -1,12 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import login from './login';
-import mailing from './mailing';
+import shoppingCart from './shoppingCart';
 
 const rootReducer = combineReducers({
   login,
-  mailing,
-  router: routerReducer
+  shoppingCart
 });
 
 export default rootReducer;
