@@ -12,7 +12,28 @@
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
 
-  <div class="navbar-user">Welcome, <span>Oliver</span></div>
+  {#<div class="navbar-user">Welcome, <span>Oliver</span></div>#}
+  <div class="search">
+    <div class="input__wrapper">
+      <input type="text" class="input__text" placeholder="Search">
+    </div>
+
+    <div class="search__dropdown">
+      <div class="search__header">
+        <h2>Products</h2>
+      </div>
+
+      <div class="search__results">
+        {% for x in range(0, 3) %}
+          {% include "components/search-result.nunj" %}
+        {% endfor %}
+      </div>
+
+      <div class="search__footer">
+        <a href="#" class="link">Show all results</a>
+      </div>
+    </div>
+  </div>
 
   <ul class="navbar-nav mr-auto">
     {% for header in headers %}
