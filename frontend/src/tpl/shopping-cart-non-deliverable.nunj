@@ -3,138 +3,19 @@
 {% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
-{% set title = 'Shopping cart' %}
+{% set title='Shopping cart' %}
 {% set headerActive = title %}
 {% set breadcrumbs = [title] %}
 {% set headerTitle = title %}
 
 {% block content %}
-  {% call dialog.wrapper(id='cart-add-adress') %}
-  {{ dialog.header(header='New adress:') }}
-  {% call dialog.content() %}
-  <table class="cart__dialog-table">
-    <tbody>
-    <tr>
-      <td>
-        <div class="input__wrapper">
-          <input type="text" class="input__text" placeholder="Name" name='name-1'>
-        </div>
-      </td>
-      <td>
-        <div class="input__wrapper">
-          <input type="text" class="input__text" placeholder="Adderess Line 1" name='adress-1'>
-        </div>
-      </td>
-      <td>
-        <div class="input__wrapper">
-          <input type="text" class="input__text" placeholder="Adderess Line 2" name='adress1-1'>
-        </div>
-      </td>
-      <td>
-        <div class="input__wrapper">
-          <input type="text" class="input__text" placeholder="City" name='city-1'>
-        </div>
-      </td>
-      <td>
-        {{select(optHolder="CA", options=['CA', 'option_2', 'option_3'],name='select-1')}}
-      </td>
-      <td>
-        <div class="input__wrapper">
-          <input type="text" class="input__text" placeholder="Zip Code" name="zip-1">
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  {% endcall %}
-  {% call dialog.footer() %}
-  <div class="btn-group btn-group--right">
-    <button type="button" class="btn-action btn-action--secondary">Discard changes</button>
-    <button type="button" class="btn-action">Confirm & use address</button>
-  </div>
-  {% endcall %}
-  {% endcall %}
-
   <div class="shopping-cart">
     <div class="shopping-cart__block">
-      <h2>Added items <span class="shopping-cart__badge">3</span></h2>
-      {% set deliverable = 'true' %}
+      <p class="text-right">You have <span>2 items</span> in your cart</p>
+      {% include "components/cart-product.nunj" %}
       {% include "components/cart-product.nunj" %}
     </div>
-    <div class="shopping-cart__block">
-      <h2>Delivery</h2>
-      <div class="cart-fill__block">
-        <p class="cart-fill__info">Products will be delivered to selected address by</p>
-        <div class="cart-fill__block-inner">
 
-          <div class="input__wrapper">
-            <input id="dom-4" name="adress" type="radio" class="input__radio">
-            <label for="dom-4" class="input__label input__label--radio">
-              <p>4001 Valley Industrial Blvd</p>
-              <p>Shakopee</p>
-              <p>MN 55379</p>
-            </label>
-          </div>
-
-          <div class="input__wrapper">
-            <input id="dom-5" name="adress" type="radio" class="input__radio">
-            <label for="dom-5" class="input__label input__label--radio">
-              <p>4001 Valley Industrial Blvd</p>
-              <p>Shakopee</p>
-              <p>MN 55379</p>
-            </label>
-          </div>
-        </div>
-        <div class="btn-group btn-grout--left">
-          <button type="button" data-dialog="#cart-add-adress" class="btn-action btn-action--secondary js-dialog">New adress</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="shopping-cart__block">
-      <h2>Payment</h2>
-      <div class="cart-fill__block">
-        <div class="cart-fill__block-inner">
-
-          <div class="input__wrapper">
-            <input id="dom-6" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-6" class="input__label input__label--radio">
-              <p>Credit card</p>
-            </label>
-          </div>
-
-          <div class="input__wrapper">
-            <input id="dom-7" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-7" class="input__label input__label--radio">
-              <p>Pay Pal</p>
-            </label>
-          </div>
-
-          <div class="input__wrapper cart-fill__block-input-wrapper">
-            <input id="dom-8" name="pay-method" type="radio" class="input__radio">
-            <label for="dom-8" class="input__label input__label--radio">
-              <p>Purchase order</p>
-            </label>
-            <div class="input__wrapper">
-              <input type="text" class="input__text" placeholder="Insert your PO number">
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="shopping-cart__block">
-      <h2>Total</h2>
-      <div class="cart-fill__block">
-        <div class="cart-fill__block-inner">
-          {% include "components/shopping-cart/check-table.nunj" %}
-        </div>
-      </div>
-    </div>
-
-    <div class="shopping-cart__block">
-      <button type="button" class="btn-action">Place order</button>
-    </div>
+    <div id="r-shopping-cart"></div>
   </div>
 {% endblock %}

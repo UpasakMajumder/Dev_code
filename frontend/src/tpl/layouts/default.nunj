@@ -116,6 +116,12 @@
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in'
+      },
+      checkout: {
+          initUIURL: '',
+          changeAddressURL: '',
+          changeDeliveryMethodURL: '',
+          submitURL: ''
       }
     }
   };
