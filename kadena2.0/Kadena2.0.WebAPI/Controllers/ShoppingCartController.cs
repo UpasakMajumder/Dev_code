@@ -6,6 +6,8 @@ using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
+using System.Threading.Tasks;
+using Kadena.WebAPI.Infrastructure.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -59,13 +61,12 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/submit")]
-        public IHttpActionResult Submit([FromBody]SubmitRequestDto request)
+        public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
         {
             var submitRequest = mapper.Map<SubmitOrderRequest>(request);
-            var serviceResponse = service.SubmitOrder(submitRequest);
-            //var result = Mapper.Map<Submi>
-
-            return null;
+            var serviceResponse = await service.SubmitOrder(submitRequest);
+            var resultDto = Mapper.Map<RedirectUrlDTO>(serviceResponse);
+            return ResponseJson(resultDto);
         }
     }
 }

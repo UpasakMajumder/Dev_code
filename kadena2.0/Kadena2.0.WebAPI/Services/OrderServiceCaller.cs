@@ -6,18 +6,19 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Services
 {
     public class OrderServiceCaller : IOrderServiceCaller
     {
-        public OrderServiceResultDTO SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<OrderServiceResultDTO> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
             using (var httpClient = new HttpClient())
             {
                 var requestBody = JsonConvert.SerializeObject(orderData, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                var response = httpClient.PostAsync(serviceEndpoint, content).Result;
+                var response = await httpClient.PostAsync(serviceEndpoint, content);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

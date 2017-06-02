@@ -10,6 +10,6 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IOrderServiceCaller
     {
-        OrderServiceResultDTO SubmitOrder(string serviceEndpoint, OrderDTO orderData);
+        Task<OrderServiceResultDTO> SubmitOrder(string serviceEndpoint, OrderDTO orderData);
     }
 }

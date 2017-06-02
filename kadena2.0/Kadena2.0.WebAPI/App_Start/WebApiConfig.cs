@@ -14,6 +14,7 @@ using Kadena.Dto.Checkout;
 using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
+using Kadena.WebAPI.Infrastructure.Responses;
 
 namespace Kadena.WebAPI
 {
@@ -88,6 +89,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
+                config.CreateMap<SubmitOrderResult, RedirectUrlDTO>();
+                config.CreateMap<OrderServiceResultDTO, SubmitOrderResult>();
                 config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
             });
         }

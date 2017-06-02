@@ -5,8 +5,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
-using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.Dto.SubmitOrder;
+using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 
 namespace Kadena.WebAPI.Services
 {
@@ -162,16 +162,12 @@ namespace Kadena.WebAPI.Services
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-
             var orderData = new OrderDTO();
-
-            var serviceResult = orderCaller.SubmitOrder(serviceEndpoint, orderData);
-
+            var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
 
             // todo process service result
 
-
-            return await Task.FromResult<SubmitOrderResult>(new SubmitOrderResult());
+            return mapper.Map<SubmitOrderResult>(serviceResult);
         }
     }
 }
