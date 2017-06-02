@@ -111,7 +111,7 @@ export const sendData = (data) => {
       return;
     }
 
-    axios.post(CHECKOUT.submitURL, { data })
+    axios.post(CHECKOUT.submitURL, { ...data })
       .then((response) => {
         dispatch({
           type: SEND_SHOPPING_DATA_SUCCESS,
