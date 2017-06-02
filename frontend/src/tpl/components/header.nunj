@@ -20,7 +20,7 @@
         <a class="nav-link" href="#">
           {{ svg(header.icon, 'icon-navigation icon-dashboard') }}
           {{ header.title }}
-          {% if(header.badge === 'true') %}<span class="badge badge-pill badge-custom-color">3</span>{% endif %}
+          {% if(header.badge === 'true') %}<span class="nav-badge"></span>{% endif %}
         </a>
       </li>
     {% endfor %}

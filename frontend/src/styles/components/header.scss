@@ -25,37 +25,45 @@
       @extend %flex--center--default;
       cursor: pointer;
 
-      @include rem(padding, 10px);
+      @include rem(padding, 9px 20px);
 
       &.active,
       &:hover {
         background-color: $main-gutter-color;
 
-        .nav-link {
-          color: $font-grey;
+        .nav-badge {
+          border-color: $main-gutter-color;
         }
       }
 
       svg {
-        @extend .mr-2;
-        width: 18px;
-        height: 18px;
+        @extend .mb-1;
+        $size: 21px;
+        width: $size;
+        height: $size;
       }
 
       .nav-link {
         @extend %flex--center--default;
-      }
-
-      .nav-link {
-        color: $brand-primary;
+        flex-direction: column;
+        font-size: $font-xxs;
+        color: $brand-dark;
         font-weight: 400;
+        padding: 0;
+        position: relative;
       }
     }
 
-    .badge-custom-color {
-      margin-left: 5px;
+    .nav-badge {
       background-color: #d0021b;
-      padding: 2px 5px;
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 100%;
+      position: absolute;
+      right: 7px;
+      border: 1px solid white;
+      top: 12px;
     }
   }
 }
