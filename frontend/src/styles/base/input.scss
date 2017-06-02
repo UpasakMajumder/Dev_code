@@ -220,12 +220,16 @@
 
   &--error {
     border-bottom: 1px solid $brand-dangerous;
+
+    & ~ .input__error {
+      display: block;
+    }
   }
 
   &__error {
     @extend .font-dangerous;
     border-top: 1px solid $brand-dangerous;
-    display: block;
+    display: none;
     font-size: $font-xxs;
     position: absolute;
     width: 100%;
