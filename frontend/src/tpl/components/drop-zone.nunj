@@ -7,8 +7,8 @@
 
   <div class="drop-zone__dropping">
     {{ svg('draganddrop', 'icon-drop') }}
-    <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
-    <p class="font-text font-text--reserved">Click anywhere to upload your .csv file</p>
+    <p class="font-text default-text">Drag and drop your .CSV file here or click anywhere to upload</p>
+    <p class="font-text reserved-text">Click anywhere to upload your .CSV file</p>
   </div>
 
   <div class="drop-zone__dropped">
@@ -28,7 +28,12 @@
       </button>
       <img src="{{ _imgPath + 'csv-error.png' }}" class="icon-csv">
     </div>
-    <p>This file format is not supported.
-Please drag & drop your . <br/>CSV file here or click anywhere to upload.</p>
+    <p class="default-text">
+      This file format is not supported.<br/>
+      Please drag & drop your .CSV file here or click anywhere to upload.
+    </p>
+    <p class="reserved-text">This file format is not supported.<br/>
+      Please click anywhere to upload your CSV file.
+    </p>
   </div>
 </div>
