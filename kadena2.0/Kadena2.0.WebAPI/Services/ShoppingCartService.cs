@@ -3,6 +3,9 @@ using Kadena.WebAPI.Models;
 using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
+using Kadena.WebAPI.Models.SubmitOrder;
+using System.Threading.Tasks;
+using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 
 namespace Kadena.WebAPI.Services
 {
@@ -11,12 +14,14 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper mapper;
         private readonly ICMSProviderService kenticoProvider;
         private readonly IResourceService resources;
+        private readonly IOrderServiceCaller orderCaller;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources)
+        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
+            this.orderCaller = orderCaller;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -151,6 +156,11 @@ namespace Kadena.WebAPI.Services
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
+        }
+
+        public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
+        {
+            return await Task.FromResult<SubmitOrderResult>(new SubmitOrderResult());
         }
     }
 }
