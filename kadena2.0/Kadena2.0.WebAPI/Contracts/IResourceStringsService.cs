@@ -2,8 +2,10 @@
 
 namespace Kadena.WebAPI.Contracts
 {
-    public interface IResourceStringService
+    public interface IResourceService
     {
         string GetResourceString(string name);
+
+        string GetSettingsKey(string key);
     }
 }

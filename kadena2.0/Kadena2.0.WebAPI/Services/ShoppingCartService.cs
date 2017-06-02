@@ -10,9 +10,9 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper mapper;
         private readonly ICMSProviderService kenticoProvider;
-        private readonly IResourceStringService resources;
+        private readonly IResourceService resources;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceStringService resources)
+        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;

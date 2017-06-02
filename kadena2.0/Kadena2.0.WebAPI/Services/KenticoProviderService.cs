@@ -12,9 +12,9 @@ namespace Kadena.WebAPI.Services
     public class KenticoProviderService : ICMSProviderService
     {
         private readonly IMapper mapper;
-        private readonly IResourceStringService resources;
+        private readonly IResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IResourceStringService resources)
+        public KenticoProviderService(IMapper mapper, IResourceService resources)
         {
             this.mapper = mapper;
             this.resources = resources;
