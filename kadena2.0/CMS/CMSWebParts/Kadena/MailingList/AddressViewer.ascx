@@ -2,7 +2,7 @@
 
 <asp:Panel runat="server" ID="pnlBadAddresses" CssClass="processed-list__table-block" Visible="false">
     <div class="processed-list__table-heading processed-list__table-heading--error">
-        <h3 runat="server" id="textBadAddresses">We have found 0 errors in your file</h3>
+        <h3 runat="server" id="textBadAddresses"></h3>
         <div class="btn-group btn-group--right">
             <button runat="server" id="btnReupload" type="button" class="btn-action btn-action--secondary" onserverclick="btnReupload_ServerClick">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.ReuploadList" />
@@ -24,7 +24,7 @@
 </asp:Panel>
 <asp:Panel runat="server" ID="pnlGoodAddresses" CssClass="processed-list__table-block" Visible="false">
     <div class="processed-list__table-heading processed-list__table-heading--success">
-        <h3 runat="server" id="textGoodAddresses">0 addresses have been processed successfuly</h3>
+        <h3 runat="server" id="textGoodAddresses"></h3>
         <div class="btn-group btn-group--right">
             <button type="button" class="btn-action btn-action--secondary" style="display: none">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.UseOnlyCorrect" />
