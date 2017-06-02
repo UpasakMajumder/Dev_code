@@ -61,16 +61,10 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/shoppingcart/submit")]
         public IHttpActionResult Submit([FromBody]SubmitRequestDto request)
         {
-            request.DeliveryAddress = 1;
-            request.DeliveryMethod = 8;
-            request.PaymentMethod = new PaymentMethodDto()
-            {
-                Id = 3,
-                Invoice = "123456"
-            };
-
             var submitRequest = mapper.Map<SubmitOrderRequest>(request);
-            //var serviceResponse = service.SubmitOrder();
+            var serviceResponse = service.SubmitOrder(submitRequest);
+            //var result = Mapper.Map<Submi>
+
             return null;
         }
     }

@@ -134,6 +134,7 @@
     <Compile Include="App_Start\WebApiInitModule.cs" />
     <Compile Include="Infrastructure\Requests\PaymentMethodDto.cs" />
     <Compile Include="Infrastructure\Requests\SubmitRequestDto.cs" />
+    <Compile Include="Infrastructure\Responses\OrderServiceResultDTO.cs" />
     <Compile Include="Infrastructure\Responses\RedirectUrlDTO.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
