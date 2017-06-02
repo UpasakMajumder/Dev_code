@@ -11,17 +11,18 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class AddressViewer : CMSAbstractWebPart
     {
+        private Guid _containerId;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var containerId = Guid.Empty;
             if (!string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
             {
-                containerId = new Guid(Request.QueryString["containerid"]);
+                _containerId = new Guid(Request.QueryString["containerid"]);
             }
 
-            if (containerId != Guid.Empty)
+            if (_containerId != Guid.Empty)
             {
-                var addresses = ServiceHelper.GetMailingAddresses(containerId);
+                var addresses = ServiceHelper.GetMailingAddresses(_containerId);
                 var badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
 
@@ -93,6 +94,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         protected void btnSaveList_ServerClick(object sender, EventArgs e)
         {
             Response.Redirect(Request.UrlReferrer.ToString());
+        }
+
+        protected void btnReupload_ServerClick(object sender, EventArgs e)
+        {
+            var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
+                , "containerid", _containerId.ToString());
+            Response.Redirect(url);
         }
     }
 }
