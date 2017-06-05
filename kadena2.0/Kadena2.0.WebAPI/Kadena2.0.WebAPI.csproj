@@ -146,6 +146,7 @@
     <Compile Include="Models\KenticoSite.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\SubmitOrder\PaymentMethod.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderRequest.cs" />

@@ -15,6 +15,7 @@ using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.WebAPI.Infrastructure.Responses;
+using Kadena.Dto.SubmitOrder;
 
 namespace Kadena.WebAPI
 {
@@ -80,6 +81,29 @@ namespace Kadena.WebAPI
                     ClassName = p.PaymentOptionClassName
                 });
 
+                config.CreateMap<ShoppingCartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
+                {
+                    DesignFilePath = p.DesignFilePath,
+                    LineNumber = p.LineNumber,
+                    MailingList = new MailingListDTO()
+                    {
+                       MailingListID = p.MailingListId
+                    },
+                    SKU = new SKUDTO()
+                    {
+                        KenticoSKUID = 1, // TODO
+                        Name = p.SKUName,
+                        SKUNumber = p.SKUNumber
+                    },
+                    TotalPrice = p.TotalPrice,
+                    TotalTax = p.TotalTax,
+                    Type = OrderItemTypeDTO.StandardOnStockItem, // TODO
+                    UnitCount = p.UnitCount,
+                    UnitOfMeasure = p.UnitOfMeasure,
+                    UnitPrice = p.UnitPrice
+                });
+
+
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -92,6 +116,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
+                //config.CreateMap<ShoppingCartItem, OrderItemDTO>();
                 //config.CreateMap<OrderServiceResult, SubmitOrderResult>();
                 config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
             });

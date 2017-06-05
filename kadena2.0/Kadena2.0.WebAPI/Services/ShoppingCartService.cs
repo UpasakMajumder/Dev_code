@@ -215,6 +215,7 @@ namespace Kadena.WebAPI.Services
             var site = resources.GetKenticoSite();
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
+            var cartItems = kenticoProvider.GetShoppingCartItems();
 
             return new OrderDTO()
             {
@@ -224,8 +225,14 @@ namespace Kadena.WebAPI.Services
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
                     State = billingAddress.State,
+                    KenticoStateID = 1, //TODO
+                    KenticoCountryID = 1, //TODO
+                    AddressCompanyName = "Cenveo",
+                    isoCountryCode = billingAddress.Country,
+                    AddressPersonalName = "Billing personal name",//TODO
                     Zip = billingAddress.Zip,
-                    Country = billingAddress.Country
+                    Country = billingAddress.Country,
+                    KenticoAddressID = 0
                },
                ShippingAddress = new AddressDTO()
                {
@@ -233,6 +240,11 @@ namespace Kadena.WebAPI.Services
                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
                    City = shippingAddress.City,
                    State = shippingAddress.State,
+                   KenticoStateID = 1, //TODO
+                   KenticoCountryID = 1, //TODO
+                   AddressCompanyName = "Cenveo",
+                   isoCountryCode = shippingAddress.Country,
+                   AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                    Zip = shippingAddress.Zip,
                    Country = shippingAddress.Country,
                    KenticoAddressID = shippingAddress.Id
@@ -258,18 +270,33 @@ namespace Kadena.WebAPI.Services
                ShippingOption = new ShippingOptionDTO()
                {
                   KenticoShippingOptionID = deliveryMethod.Id,
-                  CarrierCode = deliveryMethod.CarrierCode,
-                  ShippingCompany = deliveryMethod.Title,
-                  ShippingService = deliveryMethod.Service
+                  CarrierCode = deliveryMethod.Title,
+                  ShippingCompany = deliveryMethod.CarrierCode,
+                  ShippingService = deliveryMethod.Service.Replace("#","")
                },
                Site = new SiteDTO()
                {
                    KenticoSiteID = site.Id,
                    KenticoSiteName = site.Name
                },
+               OrderCurrency = new CurrencyDTO()
+               {
+                   CurrencyCode = "USD", //TODO dynamic
+                   KenticoCurrencyID = 1
+               },
+               OrderStatus = new OrderStatusDTO()
+               {
+                   KenticoOrderStatusID = 4,
+                   OrderStatusName = "PENDING" //TODO dynamic
+               },
+               OrderTracking = new OrderTrackingDTO()
+               {
+                   OrderTrackingNumber = ""
+               },
                TotalPrice = totals.TotalItemsPrice,
                TotalShipping = totals.TotalShipping,
-               TotalTax = totals.TotalTax
+               TotalTax = totals.TotalTax,
+               Items = mapper.Map<OrderItemDTO[]>(cartItems)
             };
         }
     }

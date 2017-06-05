@@ -211,5 +211,26 @@ namespace Kadena.WebAPI.Services
                 UserID = customer.CustomerUserID
             };
         }
+
+        public ShoppingCartItem[] GetShoppingCartItems()
+        {
+            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            var result = items.Select(i => new ShoppingCartItem()
+                {
+                    DesignFilePath = "design/file/path",// TODO
+                    MailingListId = Guid.NewGuid(), // TODO
+                    OrderItemType = "", // TODO
+                    SKUName = i.SKU?.SKUName,
+                    SKUNumber = i.SKU?.SKUNumber,
+                    TotalPrice = i.TotalPrice,
+                    TotalTax = i.TotalTax, //TODO
+                    UnitPrice = i.UnitPrice,
+                    UnitCount = i.CartItemUnits,
+                    UnitOfMeasure = "EA" //TODO
+                }
+            ).ToArray();
+
+            return result;
+        }
     }
 }

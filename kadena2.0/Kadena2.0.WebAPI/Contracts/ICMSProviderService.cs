@@ -22,5 +22,7 @@ namespace Kadena.WebAPI.Contracts
         Customer GetCurrentCustomer();
 
         DeliveryService GetShippingOption(int id);
+
+        ShoppingCartItem[] GetShoppingCartItems();
     }
 }
