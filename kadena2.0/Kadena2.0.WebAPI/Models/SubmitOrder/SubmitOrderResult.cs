@@ -9,6 +9,6 @@ namespace Kadena.WebAPI.Models.SubmitOrder
     {
         public string Payload { get; set; }
         public bool Success { get; set; }
-        public string Error { get; set; }
+        public SubmitOrderError Error { get; set; }
     }
 }

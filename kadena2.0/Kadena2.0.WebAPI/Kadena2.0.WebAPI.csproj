@@ -160,6 +160,7 @@
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\SubmitOrder\PaymentMethod.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderRequest.cs" />
+    <Compile Include="Models\SubmitOrder\SubmitOrderError.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderResult.cs" />
     <Compile Include="Models\Totals.cs" />
     <Compile Include="Models\Total.cs" />

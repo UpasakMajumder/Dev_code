@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Services
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string responseContent = response.Content.ReadAsStringAsync().Result;
-                    var submitResponse = JsonConvert.DeserializeObject<SubmitOrderResult>(responseContent);
+                    var submitResponse = JsonConvert.DeserializeObject<SubmitOrderResult>(responseContent, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
                     return submitResponse;
                 }
                 else
@@ -34,7 +34,10 @@ namespace Kadena.WebAPI.Services
                         
                         Success = false,
                         Payload = null,
-                        Error = $"HTTP error - {response.StatusCode}"
+                        Error = new SubmitOrderError()
+                        {
+                            Message = $"HTTP error - {response.StatusCode}"
+                        }
                     };
                 }
             }

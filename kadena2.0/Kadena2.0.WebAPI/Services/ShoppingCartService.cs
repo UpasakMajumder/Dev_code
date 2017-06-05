@@ -207,7 +207,7 @@ namespace Kadena.WebAPI.Services
             }
             else
             {
-                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} failed to create. {serviceResult?.Error}");
+                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
             }
 
             return serviceResult;
