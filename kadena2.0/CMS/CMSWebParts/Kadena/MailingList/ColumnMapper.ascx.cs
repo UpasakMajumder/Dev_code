@@ -87,7 +87,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         }
                         else
                         {
-                            isValid = false;
+                            isValid = optional;
                         }
                     }
                     if (isValid)
