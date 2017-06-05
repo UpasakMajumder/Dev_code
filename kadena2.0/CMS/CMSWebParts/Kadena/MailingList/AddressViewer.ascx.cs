@@ -45,6 +45,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 }
                 else
                 {
+                    pnlBadAddresses.Visible = false;
                     btnUseOnlyGoodAddresses.Visible = false;
                 }
 
@@ -54,6 +55,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     textGoodAddresses.InnerText = string.Format(GetString("Kadena.MailingList.GoodAddressesFound", string.Empty)
                         , goodAddresses.Count());
                     FillTable(tblGoodAddresses, goodAddresses);
+                }
+                else
+                {
+                    pnlGoodAddresses.Visible = false;
                 }
             }
         }
