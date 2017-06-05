@@ -458,7 +458,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Removes all address from specified container.
         /// </summary>
         /// <param name="containerId">Id of container to be cleared.</param>
-        public static void RemoveAddresses(Guid containerId)
+        public static void RemoveAddresses(Guid containerId, Guid[] addressIds = null)
         {
             if (containerId == Guid.Empty)
             {
@@ -479,7 +479,8 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        ContainerId = containerId
+                        ContainerId = containerId,
+                        ids = JsonConvert.SerializeObject(addressIds)
                     }), System.Text.Encoding.UTF8, "application/json"),
                     RequestUri = deleteAddressesUrl,
                     Method = HttpMethod.Delete
@@ -490,6 +491,11 @@ namespace Kadena.Old_App_Code.Helpers
             }
         }
 
+        /// <summary>
+        /// Gets list of addresses in specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>List of addresses.</returns>
         public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
         {
             if (containerId == Guid.Empty)
