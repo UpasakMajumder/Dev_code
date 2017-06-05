@@ -1,0 +1,13 @@
+.shadow {
+  width: 100%;
+  height: calc(100% - 70px);
+  position: absolute;
+  left: 0;
+  background: rgba($brand-lightblue, .5);
+  z-index: 1;
+  display: none;
+
+  .search--active ~ & {
+    display: block;
+  }
+}

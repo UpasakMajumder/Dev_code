@@ -1,16 +1,26 @@
 .search {
-  $max-width: 375px;
+  $max-width: 600px;
   width: 100%;
-  max-width: $max-width;
   position: relative;
+
+  &__input {
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+  }
 
   &__dropdown {
     position: absolute;
     top: 100%;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     border-radius: $border-radius;
     background: white;
+    display: none;
+
+    .search--active & {
+      display: block;
+    }
   }
 
   &__header {

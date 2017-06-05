@@ -14,8 +14,10 @@
 
   {#<div class="navbar-user">Welcome, <span>Oliver</span></div>#}
   <div class="search">
-    <div class="input__wrapper">
-      <input type="text" class="input__text" placeholder="Search">
+    <div class="search__input">
+      <div class="input__wrapper">
+        <input type="text" class="input__text" placeholder="Search">
+      </div>
     </div>
 
     <div class="search__dropdown">
