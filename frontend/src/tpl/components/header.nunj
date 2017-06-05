@@ -2,8 +2,8 @@
 
 {% set headers = [
 {'title': 'Activity', 'icon': 'activity', 'badge': 'true'},
-{'title': 'Drafts', 'icon': 'newspaper'},
-{'title': 'Shopping cart', 'icon': 'cart'},
+{'title': 'Drafts', 'icon': 'newspaper', 'badge': 'true'},
+{'title': 'Shopping cart', 'icon': 'cart', 'badge': 'true'},
 {'title': 'Log Out', 'icon': 'sign-out'}
 ] %}
 
@@ -12,7 +12,6 @@
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
 
-  {#<div class="navbar-user">Welcome, <span>Oliver</span></div>#}
   <div class="search">
     <div class="search__input">
       <div class="input__wrapper">
@@ -43,7 +42,7 @@
         <a class="nav-link" href="#">
           {{ svg(header.icon, 'icon-navigation icon-dashboard') }}
           {{ header.title }}
-          {% if(header.badge === 'true') %}<span class="nav-badge"></span>{% endif %}
+          {% if(header.badge === 'true') %}<div class="nav-badge"><span class="nav-badge__text">10</span></div>{% endif %}
         </a>
       </li>
     {% endfor %}
