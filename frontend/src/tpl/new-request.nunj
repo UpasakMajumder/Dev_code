@@ -22,11 +22,11 @@
     <div class="form-block form-block--fixed">
       <div class="input__wrapper">
         <span class="input__label">Name</span>
-        <input type="text" class="input__text" placeholder="Name ">
+        <input type="text" class="input__text" placeholder="Name">
       </div>
       <div class="input__wrapper">
         <span class="input__label">Description</span>
-        <textarea class="input__textarea" placeholder="Placeholder"></textarea>
+        <textarea class="input__textarea" placeholder="Describe your request"></textarea>
       </div>
     </div>
 
@@ -55,7 +55,7 @@
 
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
-            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            <input type="date" class="input__text">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
 
@@ -130,7 +130,7 @@
         <div class="form-block">
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
-            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            <input type="date" class="input__text">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
         </div>
@@ -143,7 +143,7 @@
         <div class="form-block">
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
-            <input type="text" class="input__text" placeholder="mm / dd / yy">
+            <input type="date" class="input__text">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
         </div>

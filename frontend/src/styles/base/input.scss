@@ -206,7 +206,6 @@
     @extend .bg-white;
     border: 1px solid $brand-darkgrey;
     border-radius: $border-radius;
-    height: $input-height;
     width: 100%;
 
     select {
@@ -216,6 +215,11 @@
       font-weight: 400;
       width: 100%;
     }
+  }
+
+  &__select,
+  &__text {
+    height: $input-height;
   }
 
   &--error {
