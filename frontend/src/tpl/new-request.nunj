@@ -9,6 +9,7 @@
 
 {% set btns = [
   {
+    type: 'button',
     name: 'Submit a request',
     class: 'btn-action'
   }
