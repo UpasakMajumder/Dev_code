@@ -12,6 +12,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class AddressViewer : CMSAbstractWebPart
     {
         private Guid _containerId;
+        private IEnumerable<MailingAddressData> _badAddresses;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,15 +33,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (_containerId != Guid.Empty)
             {
                 var addresses = ServiceHelper.GetMailingAddresses(_containerId);
-                var badAddresses = addresses.Where(a => a.Error != null);
+                _badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
 
-                if (badAddresses.Count() > 0)
+                if (_badAddresses.Count() > 0)
                 {
                     pnlBadAddresses.Visible = true;
                     textBadAddresses.InnerText = string.Format(GetString("Kadena.MailingList.BadAddressesFound", string.Empty)
-                        , badAddresses.Count());
-                    FillTable(tblBadAddresses, badAddresses);
+                        , _badAddresses.Count());
+                    FillTable(tblBadAddresses, _badAddresses);
                 }
                 else
                 {
