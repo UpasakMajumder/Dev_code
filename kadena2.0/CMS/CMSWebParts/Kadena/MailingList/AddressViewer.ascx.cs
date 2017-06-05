@@ -122,7 +122,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnUseOnlyGoodAddresses_ServerClick(object sender, EventArgs e)
         {
-
+            if (_containerId != Guid.Empty && _badAddresses != null && _badAddresses.Count() > 0)
+            {
+                ServiceHelper.RemoveAddresses(_containerId, _badAddresses.Select(a => a.Id).ToArray());
+                LoadData();
+            }
         }
     }
 }
