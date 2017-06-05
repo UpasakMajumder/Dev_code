@@ -65,7 +65,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var submitRequest = mapper.Map<SubmitOrderRequest>(request);
             var serviceResponse = await service.SubmitOrder(submitRequest);
-            var resultDto = Mapper.Map<RedirectUrlDTO>(serviceResponse);
+            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
             return ResponseJson(resultDto);
         }
     }

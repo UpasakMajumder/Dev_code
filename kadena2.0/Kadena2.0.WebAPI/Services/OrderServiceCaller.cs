@@ -7,12 +7,13 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Web.Http;
 using System.Threading.Tasks;
+using Kadena.WebAPI.Models.SubmitOrder;
 
 namespace Kadena.WebAPI.Services
 {
     public class OrderServiceCaller : IOrderServiceCaller
     {
-        public async Task<OrderServiceResultDTO> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<SubmitOrderResult> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
             using (var httpClient = new HttpClient())
             {
@@ -23,14 +24,15 @@ namespace Kadena.WebAPI.Services
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string responseContent = response.Content.ReadAsStringAsync().Result;
-                    return JsonConvert.DeserializeObject<OrderServiceResultDTO>(responseContent);
+                    var submitResponse = JsonConvert.DeserializeObject<SubmitOrderResult>(responseContent);
+                    return submitResponse;
                 }
                 else
                 {
-                    return new OrderServiceResultDTO()
+                    return new SubmitOrderResult()
                     {
-                        Success = false,
-                        ErrorMessage = $"HTTP error - {response.StatusCode}"
+                        //Success = false,
+                        //ErrorMessage = $"HTTP error - {response.StatusCode}"
                     };
                 }
             }

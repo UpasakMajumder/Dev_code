@@ -6,6 +6,8 @@ using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
 using System;
+using System.Collections.Generic;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.Services
 {
@@ -25,6 +27,35 @@ namespace Kadena.WebAPI.Services
             var customer = ECommerceContext.CurrentCustomer;
             var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
             return mapper.Map<DeliveryAddress[]>(addresses);
+        }
+
+        public DeliveryAddress GetCurrentCartShippingAddress()
+        {
+            var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
+
+            if (address == null)
+                return null;
+
+            return mapper.Map<DeliveryAddress>(address);
+        }
+
+        public BillingAddress GetDefaultBillingAddress()
+        {
+            var streets = new[]
+            {
+                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
+            }.Where(i => !string.IsNullOrEmpty(i)).ToList();
+
+
+            return new BillingAddress()
+            {
+                Street = streets,
+                City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
+                Country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
+                Zip = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
+                State = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
+            };
         }
 
         public DeliveryMethod[] GetShippingCarriers()
@@ -70,6 +101,15 @@ namespace Kadena.WebAPI.Services
             return result;
         }
 
+        public DeliveryService GetShippingOption(int id)
+        {
+            var service = ShippingOptionInfoProvider.GetShippingOptionInfo(id);
+            var result = mapper.Map<DeliveryService>(service);
+            var carrier = CarrierInfoProvider.GetCarrierInfo(service.ShippingOptionCarrierID);
+            result.CarrierCode = carrier.CarrierName;
+            return result;
+        }
+
         private void GetShippingPrice(DeliveryService[] services)
         {
             // this method's approach comes from origial kentico webpart (ShippingSeletion)
@@ -92,35 +132,20 @@ namespace Kadena.WebAPI.Services
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
-        public Total[] GetShoppingCartTotals()
+        public PaymentMethod GetPaymentMethod(int id)
         {
-            return new Total[]
+            var method = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
+            return mapper.Map<PaymentMethod>(method);
+        }
+
+        public ShoppingCartTotals GetShoppingCartTotals()
+        {
+            return new ShoppingCartTotals()
             {
-                new Total()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
-                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalItemsPrice)
-                },
-                new Total()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
-                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping)
-                },
-                new Total()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
-                    Value = String.Format("$ {0:#,0.00}", 0)
-                },
-                new Total()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
-                    Value = String.Format("$ {0:#,0.00}", 0)
-                },
-                new Total()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
-                    Value = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalPrice)
-                }
+                TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
+                TotalShipping = ECommerceContext.CurrentShoppingCart.TotalShipping,
+                TotalPrice = ECommerceContext.CurrentShoppingCart.TotalPrice,
+                TotalTax = 0.0d //TODO
             };
         }
 
@@ -165,6 +190,26 @@ namespace Kadena.WebAPI.Services
         public string GetResourceString(string name)
         {
             return ResHelper.GetString(name, useDefaultCulture:true);
+        }
+
+
+        public Customer GetCurrentCustomer()
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+
+            if (customer == null)
+                return null;
+
+            return new Customer()
+            {
+                Id = customer.CustomerID,
+                FirstName = customer.CustomerFirstName,
+                LastName = customer.CustomerLastName,
+                Email = customer.CustomerEmail,
+                CustomerNumber = customer.CustomerGUID.ToString(),
+                Phone = customer.CustomerPhone,
+                UserID = customer.CustomerUserID
+            };
         }
     }
 }

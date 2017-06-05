@@ -7,5 +7,7 @@ namespace Kadena.WebAPI.Contracts
         string GetResourceString(string name);
 
         string GetSettingsKey(string key);
+
+        KenticoSite GetKenticoSite();
     }
 }

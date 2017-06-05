@@ -50,6 +50,7 @@ namespace Kadena.WebAPI
                     Checked = false,
                     City = ai.AddressCity,
                     State = ai.GetStateCode(),
+                    Country = ai.GetCountryTwoLetterCode(),
                     Street = new[] { ai.AddressLine1 }.ToList(),
                     Zip = ai.AddressZip
                 });
@@ -65,7 +66,8 @@ namespace Kadena.WebAPI
                 {
                     Id = s.ShippingOptionID,
                     CarrierId = s.ShippingOptionCarrierID,
-                    Title = s.ShippingOptionDisplayName
+                    Title = s.ShippingOptionDisplayName,
+                    Service = s.ShippingOptionCarrierServiceName
                 });
 
                 config.CreateMap<PaymentOptionInfo, PaymentMethod>().ProjectUsing(p => new PaymentMethod()
@@ -89,8 +91,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
-                config.CreateMap<SubmitOrderResult, RedirectUrlDTO>();
-                config.CreateMap<OrderServiceResultDTO, SubmitOrderResult>();
+                config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
+                //config.CreateMap<OrderServiceResult, SubmitOrderResult>();
                 config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
             });
         }

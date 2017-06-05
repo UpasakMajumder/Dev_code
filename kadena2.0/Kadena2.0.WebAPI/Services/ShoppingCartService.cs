@@ -7,6 +7,7 @@ using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
 using Kadena.Dto.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
@@ -30,6 +31,7 @@ namespace Kadena.WebAPI.Services
             var addresses = kenticoProvider.GetCustomerAddresses();
             var carriers = kenticoProvider.GetShippingCarriers();
             var totals = kenticoProvider.GetShoppingCartTotals();
+
             var paymentMethods = kenticoProvider.GetPaymentMethods();
 
             var checkoutPage = new CheckoutPage()
@@ -53,7 +55,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
-                    Items = totals.ToList()
+                    Items = MapTotals(totals)
                 },
 
                 PaymentMethods = new PaymentMethods()
@@ -76,6 +78,38 @@ namespace Kadena.WebAPI.Services
                     resources.GetResourceString("Kadena.Checkout.CannotBeDelivered")
                 );
             return checkoutPage;
+        }
+
+        private List<Total> MapTotals(ShoppingCartTotals totals)
+        {
+            return new Total[]
+            {
+                new Total()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
+                    Value = String.Format("$ {0:#,0.00}", totals.TotalItemsPrice)
+                },
+                new Total()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
+                    Value = String.Format("$ {0:#,0.00}", totals.TotalShipping)
+                },
+                new Total()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
+                    Value = String.Format("$ {0:#,0.00}", 0)
+                },
+                new Total()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
+                    Value = String.Format("$ {0:#,0.00}", 0)
+                },
+                new Total()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
+                    Value = String.Format("$ {0:#,0.00}", totals.TotalPrice)
+                }
+            }.ToList();
         }
 
         private void CheckCurrentOrDefaultAddress(CheckoutPage page)
@@ -162,12 +196,82 @@ namespace Kadena.WebAPI.Services
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            var orderData = new OrderDTO();
+            var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+
             var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
 
             // todo process service result
 
             return mapper.Map<SubmitOrderResult>(serviceResult);
         }
+
+
+        private OrderDTO GetSubmitOrderData(int deliveryMethodId, int paymentMethodId, string invoice)
+        {
+            var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            var billingAddress = kenticoProvider.GetDefaultBillingAddress();
+            var customer = kenticoProvider.GetCurrentCustomer();
+            var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
+            var site = resources.GetKenticoSite();
+            var totals = kenticoProvider.GetShoppingCartTotals();
+            var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
+
+            return new OrderDTO()
+            {
+                BillingAddress = new AddressDTO()
+                {
+                    AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
+                    AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
+                    City = billingAddress.City,
+                    State = billingAddress.State,
+                    Zip = billingAddress.Zip,
+                    Country = billingAddress.Country
+               },
+               ShippingAddress = new AddressDTO()
+               {
+                   AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
+                   AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
+                   City = shippingAddress.City,
+                   State = shippingAddress.State,
+                   Zip = shippingAddress.Zip,
+                   Country = shippingAddress.Country,
+                   KenticoAddressID = shippingAddress.Id
+               },
+               Customer = new CustomerDTO()
+               {
+                   CustomerNumber = customer.CustomerNumber,
+                   Email = customer.Email,
+                   FirstName = customer.FirstName,
+                   LastName = customer.LastName,
+                   KenticoCustomerID = customer.Id,
+                   KenticoUserID = customer.UserID,
+                   Phone = customer.Phone
+               },
+               KenticoOrderCreatedByUserID = customer.UserID,
+               OrderDate = DateTime.Now,
+               PaymentOption = new PaymentOptionDTO()
+               {
+                   KenticoPaymentOptionID = paymentMethod.Id,
+                   PaymentOptionName = paymentMethod.Title,
+                   PONumber = invoice
+               },
+               ShippingOption = new ShippingOptionDTO()
+               {
+                  KenticoShippingOptionID = deliveryMethod.Id,
+                  CarrierCode = deliveryMethod.CarrierCode,
+                  ShippingCompany = deliveryMethod.Title,
+                  ShippingService = deliveryMethod.Service
+               },
+               Site = new SiteDTO()
+               {
+                   KenticoSiteID = site.Id,
+                   KenticoSiteName = site.Name
+               },
+               TotalPrice = totals.TotalItemsPrice,
+               TotalShipping = totals.TotalShipping,
+               TotalTax = totals.TotalTax
+            };
+        }
     }
 }
+ 

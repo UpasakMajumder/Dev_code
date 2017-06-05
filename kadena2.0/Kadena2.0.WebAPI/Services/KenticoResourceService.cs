@@ -2,6 +2,7 @@
 using CMS.Helpers;
 using CMS.DataEngine;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Models;
 
 namespace Kadena.WebAPI.Services
 {
@@ -16,6 +17,15 @@ namespace Kadena.WebAPI.Services
         {
             string resourceKey = $"{SiteContext.CurrentSiteName}.{key}";
             return SettingsKeyInfoProvider.GetValue(resourceKey);
+        }
+
+        public KenticoSite GetKenticoSite()
+        {
+            return new KenticoSite()
+            {
+                Id = SiteContext.CurrentSiteID,
+                Name = SiteContext.CurrentSiteName
+            };
         }
     }
 }

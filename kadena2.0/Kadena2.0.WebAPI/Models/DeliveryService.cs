@@ -12,6 +12,9 @@
         public string DatePrefix { get; set; }
         public string Date { get; set; }
         public bool Disabled { get; set; }
+        public string CarrierCode { get; set; }
+        public string Service { get; set; }
+
 
         public void UpdateSummaryText(string price, string cannotBeDelivered)
         {
