@@ -87,6 +87,10 @@
       {
         return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
       }
+      if (!SecurityHelper.CheckPasswordPolicy(password, SiteContext.CurrentSiteName))
+      {
+        return new GeneralResult { success = false, errorMessage = AuthenticationHelper.GetPolicyViolationMessage(SiteContext.CurrentSiteName) };
+      }
 
       #endregion
 
@@ -121,6 +125,10 @@
       if (newPassword != confirmPassword)
       {
         return new GeneralResult { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.PasswordsDontMatch", LocalizationContext.CurrentCulture.CultureCode) };
+      }
+      if (!SecurityHelper.CheckPasswordPolicy(newPassword, SiteContext.CurrentSiteName))
+      {
+        return new GeneralResult { success = false, errorMessage = AuthenticationHelper.GetPolicyViolationMessage(SiteContext.CurrentSiteName) };
       }
 
       #endregion
