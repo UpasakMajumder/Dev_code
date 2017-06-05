@@ -60,6 +60,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private static void FillTable(Table table, IEnumerable<MailingAddressData> addresses)
         {
+            table.Rows.Clear();
             var haveTitle = addresses.Count(a => a.Title != null) > 0;
             var haveLastName = addresses.Count(a => a.LastName != null) > 0;
 
