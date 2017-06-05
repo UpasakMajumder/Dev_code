@@ -52,6 +52,8 @@ namespace Kadena.WebAPI
                     City = ai.AddressCity,
                     State = ai.GetStateCode(),
                     Country = ai.GetCountryTwoLetterCode(),
+                    StateId = ai.AddressStateID,
+                    CountryId = ai.AddressCountryID,
                     Street = new[] { ai.AddressLine1 }.ToList(),
                     Zip = ai.AddressZip
                 });
@@ -91,7 +93,7 @@ namespace Kadena.WebAPI
                     },
                     SKU = new SKUDTO()
                     {
-                        KenticoSKUID = 1, // TODO
+                        KenticoSKUID = p.KenticoSKUId,
                         Name = p.SKUName,
                         SKUNumber = p.SKUNumber
                     },
@@ -129,6 +131,7 @@ namespace Kadena.WebAPI
             container.Register<ICMSProviderService, KenticoProviderService>();
             container.Register<IResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
+            container.Register<IKenticoLogger, KenticoLogger>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }

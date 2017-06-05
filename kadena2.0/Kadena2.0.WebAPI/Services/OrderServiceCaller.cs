@@ -31,8 +31,10 @@ namespace Kadena.WebAPI.Services
                 {
                     return new SubmitOrderResult()
                     {
-                        //Success = false,
-                        //ErrorMessage = $"HTTP error - {response.StatusCode}"
+                        
+                        Success = false,
+                        Payload = null,
+                        Error = $"HTTP error - {response.StatusCode}"
                     };
                 }
             }

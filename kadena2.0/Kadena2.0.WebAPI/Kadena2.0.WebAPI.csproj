@@ -59,6 +59,14 @@
     <Reference Include="CMS.Ecommerce">
       <HintPath>..\Lib\CMS.Ecommerce.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Globalization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Globalization.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Helpers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
@@ -118,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IOrderServiceCaller.cs" />
     <Compile Include="Contracts\IResourceStringsService.cs" />
     <Compile Include="Contracts\ICMSProviderService.cs" />
@@ -136,6 +145,7 @@
     <Compile Include="Infrastructure\Requests\SubmitRequestDto.cs" />
     <Compile Include="Infrastructure\Responses\SubmitOrderResponseDto.cs" />
     <Compile Include="Models\BillingAddress.cs" />
+    <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
@@ -154,6 +164,7 @@
     <Compile Include="Models\Totals.cs" />
     <Compile Include="Models\Total.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
     <Compile Include="Services\OrderServiceCaller.cs" />

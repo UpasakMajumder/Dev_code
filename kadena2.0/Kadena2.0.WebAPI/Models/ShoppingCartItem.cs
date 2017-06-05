@@ -7,6 +7,7 @@ namespace Kadena.WebAPI.Models
 {
     public class ShoppingCartItem
     {
+        public int KenticoSKUId { get; set; }
         public string SKUNumber { get; set; }
         public string SKUName { get; set; }
         

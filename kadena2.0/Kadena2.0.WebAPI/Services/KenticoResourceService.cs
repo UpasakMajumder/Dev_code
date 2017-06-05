@@ -3,6 +3,7 @@ using CMS.Helpers;
 using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena.WebAPI.Models;
+using CMS.Ecommerce;
 
 namespace Kadena.WebAPI.Services
 {
@@ -25,6 +26,17 @@ namespace Kadena.WebAPI.Services
             {
                 Id = SiteContext.CurrentSiteID,
                 Name = SiteContext.CurrentSiteName
+            };
+        }
+
+        public Currency GetSiteCurrency()
+        {
+            var currency = ECommerceContext.CurrentCurrency;
+
+            return new Currency()
+            {
+                Code = currency.CurrencyCode,
+                Id = currency.CurrencyID
             };
         }
     }

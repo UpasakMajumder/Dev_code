@@ -8,6 +8,7 @@ using CMS.Helpers;
 using System;
 using System.Collections.Generic;
 using CMS.DataEngine;
+using CMS.Globalization;
 
 namespace Kadena.WebAPI.Services
 {
@@ -47,14 +48,20 @@ namespace Kadena.WebAPI.Services
                 SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
             }.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
+            string countryName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry");
+            string stateName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState");
+            int countryId = CountryInfoProvider.GetCountryInfoByCode(countryName).CountryID;
+            int stateId = StateInfoProvider.GetStateInfoByCode(stateName).StateID;
 
             return new BillingAddress()
             {
                 Street = streets,
                 City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
-                Country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
+                Country = countryName,
+                CountryId = countryId,
                 Zip = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
-                State = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
+                State = stateName,
+                StateId = stateId
             };
         }
 
@@ -222,11 +229,12 @@ namespace Kadena.WebAPI.Services
                     OrderItemType = "", // TODO
                     SKUName = i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
+                    KenticoSKUId = i.SKUID,
                     TotalPrice = i.TotalPrice,
                     TotalTax = i.TotalTax, //TODO
                     UnitPrice = i.UnitPrice,
                     UnitCount = i.CartItemUnits,
-                    UnitOfMeasure = "EA" //TODO
+                    UnitOfMeasure = "EA" 
                 }
             ).ToArray();
 

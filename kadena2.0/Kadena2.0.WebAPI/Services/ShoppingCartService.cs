@@ -17,13 +17,15 @@ namespace Kadena.WebAPI.Services
         private readonly ICMSProviderService kenticoProvider;
         private readonly IResourceService resources;
         private readonly IOrderServiceCaller orderCaller;
+        private readonly IKenticoLogger kenticoLog;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller)
+        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
             this.orderCaller = orderCaller;
+            this.kenticoLog = kenticoLog;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -197,12 +199,18 @@ namespace Kadena.WebAPI.Services
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
-
             var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
 
-            // todo process service result
+            if (serviceResult.Success)
+            {
+                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+            }
+            else
+            {
+                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} failed to create. {serviceResult?.Error}");
+            }
 
-            return mapper.Map<SubmitOrderResult>(serviceResult);
+            return serviceResult;
         }
 
 
@@ -216,6 +224,7 @@ namespace Kadena.WebAPI.Services
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();
+            var currency = resources.GetSiteCurrency();
 
             return new OrderDTO()
             {
@@ -225,9 +234,9 @@ namespace Kadena.WebAPI.Services
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
                     State = billingAddress.State,
-                    KenticoStateID = 1, //TODO
-                    KenticoCountryID = 1, //TODO
-                    AddressCompanyName = "Cenveo",
+                    KenticoStateID = billingAddress.StateId,
+                    KenticoCountryID = billingAddress.CountryId,
+                    AddressCompanyName = "Cenveo", //TODO
                     isoCountryCode = billingAddress.Country,
                     AddressPersonalName = "Billing personal name",//TODO
                     Zip = billingAddress.Zip,
@@ -240,9 +249,9 @@ namespace Kadena.WebAPI.Services
                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
                    City = shippingAddress.City,
                    State = shippingAddress.State,
-                   KenticoStateID = 1, //TODO
-                   KenticoCountryID = 1, //TODO
-                   AddressCompanyName = "Cenveo",
+                   KenticoStateID = shippingAddress.StateId,
+                   KenticoCountryID = shippingAddress.CountryId,
+                   AddressCompanyName = "Cenveo", //TODO
                    isoCountryCode = shippingAddress.Country,
                    AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                    Zip = shippingAddress.Zip,
@@ -281,8 +290,8 @@ namespace Kadena.WebAPI.Services
                },
                OrderCurrency = new CurrencyDTO()
                {
-                   CurrencyCode = "USD", //TODO dynamic
-                   KenticoCurrencyID = 1
+                   CurrencyCode = currency.Code,
+                   KenticoCurrencyID = currency.Id
                },
                OrderStatus = new OrderStatusDTO()
                {
