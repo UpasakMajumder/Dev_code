@@ -17,7 +17,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (!IsPostBack)
             {
-                Session["PrevPageUrl"] = Request.UrlReferrer.ToString();
+                Session["PrevPageUrl"] = Request.UrlReferrer?.ToString();
             }
 
             if (!string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
@@ -101,7 +101,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSaveList_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(Session["PrevPageUrl"].ToString());
+            if (!string.IsNullOrWhiteSpace(Session["PrevPageUrl"]?.ToString()))
+            {
+                Response.Redirect(Session["PrevPageUrl"].ToString());
+            }
         }
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
