@@ -172,9 +172,9 @@ export default {
           "opened": false,
           "disabled": false,
           "pricePrefix": null,
-          "price": null,
+          "price": "1",
           "datePrefix": null,
-          "date": null,
+          "date": "Tomorrow",
           "items": [
             {
               "id": 1,
