@@ -1,18 +1,18 @@
 {% extends "layouts/default.nunj" %}
+{% from "macro/steps.nunj" import steps %}
 {% from "macro/svg.nunj" import svg %}
 
-{% set title = 'Orders was submitted' %}
-{% set headerActive = "Shopping cart" %}
-{% set breadcrumbs = [headerActive] %}
+{% set title = 'Your message was sent' %}
+{% set breadcrumbs = ['Contact Us', title] %}
 {% set headerTitle = title %}
 
 {% block content %}
   <div class="submitted">
-    {{ svg('order-ready', 'submitted__central-img') }}
+    {{ svg('mail', 'submitted__central-img') }}
 
     <div class="submitted__text-group submitted__text-group--centered">
-      <p class="p-info">Your order was submitted. We will now take care of the production.</p>
-      <p class="p-info">You can come here anytime to check the status and we will notify you when we are ready to ship</p>
+      <p class="p-info">Your message was successfully sent and will be processed soon.</p>
+      <p class="p-info">Our customer service will contact you in 5 working days.</p>
     </div>
 
     <div class="submitted__btn-group">

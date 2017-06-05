@@ -22,6 +22,7 @@
 
       <div class="input__wrapper">
         <span class="input__label">Email</span>
+        <span class="input__right-label">Optional</span>
         <input type="email" class="input__text" placeholder="Your email address">
         <span class="input__error input__error--noborder">Enter your email address</span>
       </div>
