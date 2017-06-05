@@ -35,7 +35,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     pnlBadAddresses.Visible = true;
                     textBadAddresses.InnerText = string.Format(GetString("Kadena.MailingList.BadAddressesFound", string.Empty)
                         , badAddresses.Count());
-                    FillTable(tblBadAddresses, badAddresses);
+                    FillTable(tblBadAddresses, badAddresses.Take(4));
                 }
 
                 if (goodAddresses.Count() > 0)
@@ -43,7 +43,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     pnlGoodAddresses.Visible = true;
                     textGoodAddresses.InnerText = string.Format(GetString("Kadena.MailingList.GoodAddressesFound", string.Empty)
                         , goodAddresses.Count());
-                    FillTable(tblGoodAddresses, goodAddresses);
+                    FillTable(tblGoodAddresses, goodAddresses.Take(4));
                 }
             }
         }
