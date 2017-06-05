@@ -5,6 +5,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
   public partial class MailingList : CMSAbstractWebPart
   {
+        public string ViewListUrl
+        {
+            get
+            {
+                return GetStringValue("ViewListUrl", string.Empty);
+            }
+        }
+
     #region Public methods
 
     public override void OnContentLoaded()
