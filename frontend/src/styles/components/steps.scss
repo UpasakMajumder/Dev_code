@@ -12,6 +12,10 @@
     z-index: 2;
   }
 
+  .content-block & {
+    @include rem(margin-bottom, 50px);
+  }
+
   &__circle {
     background: $steps-icon-default-bg;
     border: $steps-circle-border solid $brand-white;
