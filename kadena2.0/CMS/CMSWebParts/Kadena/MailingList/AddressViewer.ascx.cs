@@ -24,6 +24,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 _containerId = new Guid(Request.QueryString["containerid"]);
             }
+            LoadData();
+        }
+
+        private void LoadData()
+        {
             if (_containerId != Guid.Empty)
             {
                 var addresses = ServiceHelper.GetMailingAddresses(_containerId);
