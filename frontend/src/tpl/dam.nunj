@@ -22,8 +22,10 @@
   <div class="block">
 
     <p>This is a dummy text. TBD brief intro about the module. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor nisi, finibus non mi in, maximus sodales erat.</p>
-    <div class="iframe">
-      <video src="https://www.youtube.com/embed/MhkGQAoc7bc?list=PLoYCgNOIyGABj2GQSlDRjgvXtqfDxKm5b"></video>
+    <div class="iframe iframe--fixed">
+      <video controls>
+        <source src="" type="video/mp4">
+      </video>
     </div>
 
   </div>
@@ -34,9 +36,24 @@
     <div class="row">
       {% for item in range(0, 4) %}
 
-      <div class="col-lg-3 col-md-6">
-        {% include "components/link-tile.nunj" %}
-      </div>
+        <div class="col-lg-3 col-md-6">
+          {% include "components/link-tile.nunj" %}
+        </div>
+
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <div class="block">
+
+    <h2 class="block__heading">Leverage assets</h2>
+    <div class="row">
+      {% for item in range(0, 4) %}
+
+        <div class="col-lg-3 col-md-6">
+          {% include "components/link-tile.nunj" %}
+        </div>
 
       {% endfor %}
     </div>
