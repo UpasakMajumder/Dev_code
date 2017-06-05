@@ -11,14 +11,14 @@ namespace Kadena.Tests
         private string _urlSetting = "KDA_DeleteAddressesUrl";
 
         [TestCase("b44486be-e70d-460d-b81a-affa4834e3ed",
-            "02434870-ac23-4cf1-9afc-cfeb8fe7c18a",
+            "08944471-c881-4cf1-8ed6-505faa81e572",
             "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/api/DeliveryAddress/BulkDelete",
             TestName = "RemoveAddressSuccess",
             Description = "Test for removing specified address from existing container."
             )]
         public void RemoveAddressSuccess(string containerId, string addressId, string url)
         {
-            Assert.DoesNotThrow(() => RemoveAddresses(new Guid(containerId), null, url));
+            Assert.DoesNotThrow(() => RemoveAddresses(new Guid(containerId), new[] { new Guid(addressId) }, url));
         }
 
         [TestCase("b44486be-e70d-460d-b81a-affa4834e3ed",

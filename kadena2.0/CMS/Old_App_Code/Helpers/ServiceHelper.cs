@@ -480,13 +480,30 @@ namespace Kadena.Old_App_Code.Helpers
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
                         ContainerId = containerId,
-                        ids = JsonConvert.SerializeObject(addressIds)
+                        ids = addressIds
                     }), System.Text.Encoding.UTF8, "application/json"),
                     RequestUri = deleteAddressesUrl,
                     Method = HttpMethod.Delete
                 })
                 {
-                    client.SendAsync(request).Wait();
+                    using (var message = client.SendAsync(request))
+                    {
+                        AwsResponseMessage response;
+                        try
+                        {
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                                .Content.ReadAsStringAsync()
+                                .Result);
+                        }
+                        catch (JsonReaderException e)
+                        {
+                            throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        }
+                        if (!(response?.Success ?? false))
+                        {
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        }
+                    }
                 }
             }
         }
