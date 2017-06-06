@@ -9,23 +9,23 @@ class Method extends Component {
     if (disabled) className += ' input__wrapper--disabled';
 
     const priceElement = (pricePrefix && price)
-      ? <span>{pricePrefix} {price}</span>
+      ? <span> | <span>{pricePrefix} {price}</span></span>
       : (pricePrefix)
-        ? <span>{pricePrefix}</span>
-        : (price)
-          ? <span>{price}</span>
-          : null;
+      ? <span> | <span>{pricePrefix}</span></span>
+      : (price)
+      ? <span> | <span>{price}</span></span>
+      : null;
 
     const dateElement = (datePrefix && date)
-      ? <span> | <span>{datePrefix} {date}</span></span>
+      ? <span>{datePrefix} {date}</span>
       : (datePrefix)
-        ? <span> | <span>{datePrefix}</span></span>
-        : (date)
-          ? <span> | <span>{date}</span></span>
-          : null;
+      ? <span>{datePrefix}</span>
+      : (date)
+      ? <span>{date}</span>
+      : null;
 
     const extraInfo = (priceElement || dateElement)
-      ? <span>({priceElement}{dateElement})</span>
+      ? <span>({dateElement}{priceElement})</span>
       : null;
 
     return (
