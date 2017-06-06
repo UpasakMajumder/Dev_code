@@ -14,16 +14,18 @@ namespace Kadena.WebAPI.Services
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IMapper mapper;
-        private readonly ICMSProviderService kenticoProvider;
+        private readonly IKenticoProviderService kenticoProvider;
         private readonly IResourceService resources;
         private readonly IOrderServiceCaller orderCaller;
+        private readonly IKenticoLogger kenticoLog;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller)
+        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
             this.orderCaller = orderCaller;
+            this.kenticoLog = kenticoLog;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -44,7 +46,7 @@ namespace Kadena.WebAPI.Services
                     items = addresses.ToList()
                 },
 
-                DeliveryMethods = new DeliveryMethods()
+                DeliveryMethods = new DeliveryCarriers()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
@@ -75,7 +77,8 @@ namespace Kadena.WebAPI.Services
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
-                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered")
+                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
+                    resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
             return checkoutPage;
         }
@@ -97,7 +100,7 @@ namespace Kadena.WebAPI.Services
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
-                    Value = String.Format("$ {0:#,0.00}", 0)
+                    Value = String.Format("$ {0:#,0.00}", totals.Subtotal)
                 },
                 new Total()
                 {
@@ -128,18 +131,24 @@ namespace Kadena.WebAPI.Services
         }
 
         private void CheckCurrentOrDefaultShipping(CheckoutPage page)
-        { 
-            int currentShippingMethod = kenticoProvider.GetCurrentCartShippingMethodId();
-            if (currentShippingMethod != 0)
+        {
+            int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
+
+            if (!page.DeliveryMethods.IsDisabled(currentShipping))
             {
-                page.DeliveryMethods.CheckMethod(currentShippingMethod);
+                page.DeliveryMethods.CheckMethod(currentShipping);
             }
             else
             {
-                int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
-                kenticoProvider.SelectShipping(defaultMethodId);
-                page.DeliveryMethods.CheckMethod(defaultMethodId);
+                SetDefaultShipping(page);
             }
+        }
+
+        private void SetDefaultShipping(CheckoutPage page)
+        { 
+            int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
+            kenticoProvider.SelectShipping(defaultMethodId);
+            page.DeliveryMethods.CheckMethod(defaultMethodId);
         }
 
         public List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] allMethods)
@@ -178,10 +187,7 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage SelectShipipng(int id)
         {
             kenticoProvider.SelectShipping(id);
-
-            var checkoutPage = GetCheckoutPage();
-            checkoutPage.DeliveryMethods.CheckMethod(id);
-            return checkoutPage;
+            return GetCheckoutPage();
         }
 
         public CheckoutPage SelectAddress(int id)
@@ -197,12 +203,18 @@ namespace Kadena.WebAPI.Services
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
-
             var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
 
-            // todo process service result
+            if (serviceResult.Success)
+            {
+                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+            }
+            else
+            {
+                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
+            }
 
-            return mapper.Map<SubmitOrderResult>(serviceResult);
+            return serviceResult;
         }
 
 
@@ -216,6 +228,7 @@ namespace Kadena.WebAPI.Services
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();
+            var currency = resources.GetSiteCurrency();
 
             return new OrderDTO()
             {
@@ -225,9 +238,9 @@ namespace Kadena.WebAPI.Services
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
                     State = billingAddress.State,
-                    KenticoStateID = 1, //TODO
-                    KenticoCountryID = 1, //TODO
-                    AddressCompanyName = "Cenveo",
+                    KenticoStateID = billingAddress.StateId,
+                    KenticoCountryID = billingAddress.CountryId,
+                    AddressCompanyName = "Cenveo", //TODO
                     isoCountryCode = billingAddress.Country,
                     AddressPersonalName = "Billing personal name",//TODO
                     Zip = billingAddress.Zip,
@@ -240,9 +253,9 @@ namespace Kadena.WebAPI.Services
                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
                    City = shippingAddress.City,
                    State = shippingAddress.State,
-                   KenticoStateID = 1, //TODO
-                   KenticoCountryID = 1, //TODO
-                   AddressCompanyName = "Cenveo",
+                   KenticoStateID = shippingAddress.StateId,
+                   KenticoCountryID = shippingAddress.CountryId,
+                   AddressCompanyName = "Cenveo", //TODO
                    isoCountryCode = shippingAddress.Country,
                    AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                    Zip = shippingAddress.Zip,
@@ -281,8 +294,8 @@ namespace Kadena.WebAPI.Services
                },
                OrderCurrency = new CurrencyDTO()
                {
-                   CurrencyCode = "USD", //TODO dynamic
-                   KenticoCurrencyID = 1
+                   CurrencyCode = currency.Code,
+                   KenticoCurrencyID = currency.Id
                },
                OrderStatus = new OrderStatusDTO()
                {

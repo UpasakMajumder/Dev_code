@@ -7,7 +7,8 @@ namespace Kadena.WebAPI.Models.SubmitOrder
 {
     public class SubmitOrderResult
     {
-        public string RedirectURL { get; set; }
-        public string OrderId { get; set; }
+        public string Payload { get; set; }
+        public bool Success { get; set; }
+        public SubmitOrderError Error { get; set; }
     }
 }

@@ -11,5 +11,13 @@ namespace Kadena.WebAPI.Models
         public double TotalShipping { get; set; }
         public double TotalTax { get; set; }
         public double TotalPrice { get; set; }
+
+        public double Subtotal
+        {
+            get
+            {
+                return TotalItemsPrice + TotalShipping;
+            }
+        }
     }
 }

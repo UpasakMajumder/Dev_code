@@ -52,23 +52,25 @@ namespace Kadena.WebAPI
                     City = ai.AddressCity,
                     State = ai.GetStateCode(),
                     Country = ai.GetCountryTwoLetterCode(),
+                    StateId = ai.AddressStateID,
+                    CountryId = ai.AddressCountryID,
                     Street = new[] { ai.AddressLine1 }.ToList(),
                     Zip = ai.AddressZip
                 });
 
-                config.CreateMap<CarrierInfo, DeliveryMethod>().ProjectUsing(ci => new DeliveryMethod()
+                config.CreateMap<CarrierInfo, DeliveryCarrier>().ProjectUsing(ci => new DeliveryCarrier()
                 {
                     Id = ci.CarrierID,
                     Opened = false,
                     Title = ci.CarrierDisplayName
                 });
 
-                config.CreateMap<ShippingOptionInfo, DeliveryService>().ProjectUsing(s => new DeliveryService()
+                config.CreateMap<ShippingOptionInfo, DeliveryOption>().ProjectUsing(s => new DeliveryOption()
                 {
                     Id = s.ShippingOptionID,
                     CarrierId = s.ShippingOptionCarrierID,
                     Title = s.ShippingOptionDisplayName,
-                    Service = s.ShippingOptionCarrierServiceName
+                    Service = s.ShippingOptionCarrierServiceName,
                 });
 
                 config.CreateMap<PaymentOptionInfo, PaymentMethod>().ProjectUsing(p => new PaymentMethod()
@@ -91,7 +93,7 @@ namespace Kadena.WebAPI
                     },
                     SKU = new SKUDTO()
                     {
-                        KenticoSKUID = 1, // TODO
+                        KenticoSKUID = p.KenticoSKUId,
                         Name = p.SKUName,
                         SKUNumber = p.SKUNumber
                     },
@@ -108,9 +110,9 @@ namespace Kadena.WebAPI
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
                 config.CreateMap<Totals, TotalsDTO>();
-                config.CreateMap<DeliveryService, DeliveryServiceDTO>();
-                config.CreateMap<DeliveryMethods, DeliveryMethodsDTO>();
-                config.CreateMap<DeliveryMethod, DeliveryMethodDTO>();
+                config.CreateMap<DeliveryOption, DeliveryServiceDTO>();
+                config.CreateMap<DeliveryCarriers, DeliveryMethodsDTO>();
+                config.CreateMap<DeliveryCarrier, DeliveryMethodDTO>();
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
@@ -126,9 +128,10 @@ namespace Kadena.WebAPI
         {
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
-            container.Register<ICMSProviderService, KenticoProviderService>();
+            container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
+            container.Register<IKenticoLogger, KenticoLogger>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
