@@ -20,8 +20,8 @@
             <div runat="server" id="divFirstName" class="input__select ">
                 <select runat="server" id="selFirstName" name="FirstName">
                 </select>
-                <span runat="server" id="spanFirstName" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanFirstName" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--LastName-->
@@ -40,8 +40,8 @@
             <div runat="server" id="divAddress1" class="input__select ">
                 <select runat="server" id="selAddress1" name="Address1">
                 </select>
-                <span runat="server" id="spanAddress1" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanAddress1" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--Address2-->
@@ -50,8 +50,8 @@
             <div runat="server" id="divAddress2" class="input__select ">
                 <select runat="server" id="selAddress2" name="Address2">
                 </select>
-                <span runat="server" id="spanAddress2" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanAddress2" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--City-->
@@ -60,8 +60,8 @@
             <div runat="server" id="divCity" class="input__select ">
                 <select runat="server" id="selCity" name="City">
                 </select>
-                <span runat="server" id="spanCity" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanCity" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--State-->
@@ -70,8 +70,8 @@
             <div runat="server" id="divState" class="input__select ">
                 <select runat="server" id="selState" name="State">
                 </select>
-                <span runat="server" id="spanState" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanState" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--Zip-->
@@ -80,8 +80,8 @@
             <div runat="server" id="divZip" class="input__select ">
                 <select runat="server" id="selZip" name="Zip">
                 </select>
-                <span runat="server" id="spanZip" class="input__error input__error--noborder" visible="false">Error</span>
             </div>
+            <span runat="server" id="spanZip" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
     </div>
 </div>
