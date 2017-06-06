@@ -68,15 +68,15 @@ class Login extends Component {
 
     return (
       <div className="css-login">
-        <div className="mb-4">
+        <div className="mb-2">
           <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
                      error={this.getErrorMessage('loginEmail', response)} />
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
                          error={this.getErrorMessage('password', response)} />
         </div>
-        <div className="mb-4">
+        <div className="mb-3">
           <div className="input__wrapper">
             <CheckboxInput
               id="dom-1"
@@ -87,7 +87,7 @@ class Login extends Component {
             />
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-3">
           <div className="text-center">
             <button type="button" className="btn-action login__login-button btn--no-shadow" disabled={isLoading}
                     onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
