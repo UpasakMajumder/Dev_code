@@ -230,9 +230,9 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new ShoppingCartItem()
                 {
-                    DesignFilePath = "design/file/path",// TODO
-                    MailingListId = Guid.NewGuid(), // TODO
-                    OrderItemType =  "", // TODO
+                    DesignFilePath = "design/file/path",// TODO via calling service for templated, TODO from kentico for static
+                    MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
+                    OrderItemType =  i.GetValue("ProductType", string.Empty),
                     SKUName = i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     KenticoSKUId = i.SKUID,

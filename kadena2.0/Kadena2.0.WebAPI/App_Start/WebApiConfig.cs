@@ -83,7 +83,7 @@ namespace Kadena.WebAPI
                     ClassName = p.PaymentOptionClassName
                 });
 
-                config.CreateMap<ShoppingCartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
+                config.CreateMap<ShoppingCartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
@@ -99,7 +99,6 @@ namespace Kadena.WebAPI
                     },
                     TotalPrice = p.TotalPrice,
                     TotalTax = p.TotalTax,
-                    Type = OrderItemTypeDTO.StandardOnStockItem, // TODO
                     UnitCount = p.UnitCount,
                     UnitOfMeasure = p.UnitOfMeasure,
                     UnitPrice = p.UnitPrice
