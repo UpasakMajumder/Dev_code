@@ -109,11 +109,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private bool Validate(string columnName, int value)
         {
-
             var wrap = (FindControl($"wrap{columnName}") as HtmlGenericControl);
             if (wrap != null)
             {
-                wrap.Attributes["class"] = value > -1 ? "input__wrapper" : "input__wrapper mb-3";
                 var div = (FindControl($"div{columnName}") as HtmlGenericControl);
                 if (div != null)
                 {
