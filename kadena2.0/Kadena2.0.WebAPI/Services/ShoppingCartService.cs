@@ -240,9 +240,9 @@ namespace Kadena.WebAPI.Services
                     State = billingAddress.State,
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
-                    AddressCompanyName = "Cenveo", //TODO
+                    AddressCompanyName = resources.GetDefaultSiteCompanyName(),
                     isoCountryCode = billingAddress.Country,
-                    AddressPersonalName = "Billing personal name",//TODO
+                    AddressPersonalName = resources.GetDefaultSitePersonalName(),
                     Zip = billingAddress.Zip,
                     Country = billingAddress.Country,
                     KenticoAddressID = 0
@@ -255,7 +255,7 @@ namespace Kadena.WebAPI.Services
                    State = shippingAddress.State,
                    KenticoStateID = shippingAddress.StateId,
                    KenticoCountryID = shippingAddress.CountryId,
-                   AddressCompanyName = "Cenveo", //TODO
+                   AddressCompanyName = customer.Company,
                    isoCountryCode = shippingAddress.Country,
                    AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                    Zip = shippingAddress.Zip,

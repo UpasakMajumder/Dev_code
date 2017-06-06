@@ -10,6 +10,10 @@ namespace Kadena.WebAPI.Contracts
 
         KenticoSite GetKenticoSite();
 
-        Currency GetSiteCurrency();        
+        Currency GetSiteCurrency();
+
+        string GetDefaultSiteCompanyName();
+
+        string GetDefaultSitePersonalName();
     }
 }

@@ -2,7 +2,48 @@
 export default {
   "success": true,
   "payload": {
+    "products": {
+      "number": "You have 3 items in your cart",
+      "items": [{
+        "id": 1,
+        "image": "",
+        "template": "Information letter lamp post Mar 30 2017",
+        "isMailingList": false,
+        "mailingList": "FCLTR_Mar30_Lamp post",
+        "delivery": "Delivery to USPS by Mar 2017 2017 for 328 addresses.",
+        "pricePrefix": "$",
+        "price": "25.49",
+        "isEditable": false,
+        "quantityPrefix": "Quantity",
+        "quantity": 1
+      }, {
+        "id": 2,
+        "image": "",
+        "template": "Information letter lamp post Mar 30 2017",
+        "isMailingList": false,
+        "mailingList": "FCLTR_Mar30_Lamp post",
+        "delivery": "Delivery to USPS by Mar 2017 2017 for 328 addresses.",
+        "pricePrefix": "$",
+        "price": "25.49",
+        "isEditable": false,
+        "quantityPrefix": "Quantity",
+        "quantity": 1
+      }, {
+        "id": 3,
+        "image": "",
+        "template": "Information letter lamp post Mar 30 2017",
+        "isMailingList": true,
+        "mailingList": "FCLTR_Mar30_Lamp post",
+        "delivery": "Delivery to USPS by Mar 2017 2017 for 328 addresses.",
+        "pricePrefix": "$",
+        "price": "25.49",
+        "isEditable": false,
+        "quantityPrefix": "Quantity",
+        "quantity": 1
+      }]
+    },
     "deliveryAddresses": {
+      "isDeliverable": true,
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
       "addAddressLabel": "New address",
@@ -225,6 +266,7 @@ export default {
     },
     "paymentMethods": {
       "title": "Payment",
+      "isPayable": true,
       "description": null,
       "items": [
         {

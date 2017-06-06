@@ -14,5 +14,6 @@ namespace Kadena.WebAPI.Models
         public string Phone { get; set; }
         public int UserID { get; set; }
         public string CustomerNumber { get; set; }
+        public string Company { get; set; }
     }
 }
