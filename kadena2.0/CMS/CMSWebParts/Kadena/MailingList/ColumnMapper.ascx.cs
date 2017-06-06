@@ -81,10 +81,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         var columnName = c.Item2;
                         var optional = c.Item3;
                         var selectedValue = GetColumnValue(columnName);
-                        isValid = Validate(columnName, selectedValue);
-                        if (isValid)
+                        if (Validate(columnName, selectedValue))
                         {
                             mapping.Add(columnName, selectedValue);
+                        }
+                        else
+                        {
+                            isValid = optional;
                         }
                     }
                     if (isValid)

@@ -14,8 +14,6 @@ class ShoppingCart extends Component {
   componentWillReceiveProps(nextProps) {
     const { ui } = nextProps.shoppingCart;
 
-    if (!Object.keys(ui).length || Object.keys(this.props.shoppingCart.ui).length) return;
-
     let deliveryAddress = 0;
     let deliveryMethod = 0;
     let paymentMethod = {
