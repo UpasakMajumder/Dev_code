@@ -27,6 +27,17 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                         }
                     }
                     );
+                tblCompletedProjects.Rows.Add(
+                    new HtmlTableRow
+                    {
+                        Cells = {
+                        new HtmlTableCell { InnerText = i.projectName},
+                        new HtmlTableCell { InnerText = i.requestId},
+                        new HtmlTableCell { InnerText = i.projectStatus},
+                        new HtmlTableCell { InnerText = i.lastUpdate}
+                        }
+                    }
+                    );
             }
         }
     }
