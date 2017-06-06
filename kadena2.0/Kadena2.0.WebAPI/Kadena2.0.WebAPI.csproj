@@ -128,7 +128,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IOrderServiceCaller.cs" />
-    <Compile Include="Contracts\IResourceStringsService.cs" />
+    <Compile Include="Contracts\IResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />

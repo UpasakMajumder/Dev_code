@@ -4,6 +4,7 @@ using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena.WebAPI.Models;
 using CMS.Ecommerce;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
@@ -38,6 +39,16 @@ namespace Kadena.WebAPI.Services
                 Code = currency.CurrencyCode,
                 Id = currency.CurrencyID
             };
+        }
+
+        public string GetDefaultSiteCompanyName()
+        {
+            return GetSettingsKey("KDA_CustomerFullName");
+        }
+
+        public string GetDefaultSitePersonalName()
+        {
+            return GetSettingsKey("KDA_CustomerPersonalName");
         }
     }
 }
