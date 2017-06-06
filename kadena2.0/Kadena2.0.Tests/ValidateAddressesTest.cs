@@ -11,8 +11,8 @@ namespace Kadena.Tests
     {
         private string _urlSetting = "KDA_ValidateAddressUrl";
         
-        [TestCase("e08081ab-03b8-4389-9b68-85602c812206",
-            "https://05p387rwel.execute-api.us-east-1.amazonaws.com/Prod/Api/AddressValidator",
+        [TestCase("b44486be-e70d-460d-b81a-affa4834e3ed",
+            "https://o31vibmca2.execute-api.us-east-1.amazonaws.com/Qa/Api/AddressValidator",
             TestName = "ValidateAddressesSuccess",
             Description = "Test for validation address on correct container."
             )]
@@ -24,7 +24,7 @@ namespace Kadena.Tests
         }
 
         [TestCase("8F266B1E-0677-4085-BAAB-20F0905F4C8F",
-            "https://05p387rwel.execute-api.us-east-1.amazonaws.com/Prod/Api/AddressValidator",
+            "https://o31vibmca2.execute-api.us-east-1.amazonaws.com/Qa/Api/AddressValidator",
             TestName = "ValidateAddressesHttpException",
             Description = "Test for validation address on container that doesn't exists."
             )]
