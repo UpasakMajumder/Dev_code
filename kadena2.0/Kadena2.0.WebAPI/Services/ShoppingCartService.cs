@@ -299,8 +299,8 @@ namespace Kadena.WebAPI.Services
                },
                OrderStatus = new OrderStatusDTO()
                {
-                   KenticoOrderStatusID = 4,
-                   OrderStatusName = "PENDING" //TODO dynamic
+                   KenticoOrderStatusID = resources.GetOrderStatusId("Pending"),
+                   OrderStatusName = "PENDING" 
                },
                OrderTracking = new OrderTrackingDTO()
                {

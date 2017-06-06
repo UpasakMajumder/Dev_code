@@ -5,6 +5,7 @@ using CMS.SiteProvider;
 using Kadena.WebAPI.Models;
 using CMS.Ecommerce;
 using System;
+using System.Linq;
 
 namespace Kadena.WebAPI.Services
 {
@@ -49,6 +50,16 @@ namespace Kadena.WebAPI.Services
         public string GetDefaultSitePersonalName()
         {
             return GetSettingsKey("KDA_CustomerPersonalName");
+        }
+
+        public int GetOrderStatusId(string name)
+        {
+            var status = OrderStatusInfoProvider.GetOrderStatuses().Where(s => s.StatusName == name).FirstOrDefault();
+
+            if (status == null)
+                return 0;
+
+            return status.StatusID;
         }
     }
 }

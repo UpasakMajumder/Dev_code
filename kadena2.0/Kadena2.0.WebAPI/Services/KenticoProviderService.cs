@@ -157,7 +157,7 @@ namespace Kadena.WebAPI.Services
                 TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
                 TotalShipping = ECommerceContext.CurrentShoppingCart.TotalShipping,
                 TotalPrice = ECommerceContext.CurrentShoppingCart.TotalPrice,
-                TotalTax = 0.0d //TODO
+                TotalTax = 0.0d //TODO call tax service
             };
         }
 
@@ -230,14 +230,14 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new ShoppingCartItem()
                 {
-                    DesignFilePath = "design/file/path",// TODO via calling service for templated, TODO from kentico for static
+                    DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
                     MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
                     OrderItemType =  i.GetValue("ProductType", string.Empty),
                     SKUName = i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     KenticoSKUId = i.SKUID,
                     TotalPrice = i.TotalPrice,
-                    TotalTax = i.TotalTax, //TODO
+                    TotalTax = i.TotalTax, //TODO tax
                     UnitPrice = i.UnitPrice,
                     UnitCount = i.CartItemUnits,
                     UnitOfMeasure = "EA" 
