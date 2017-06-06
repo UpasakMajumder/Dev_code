@@ -13,9 +13,7 @@ class DeliveryMethod extends Component {
     this.changeOpenId = this.changeOpenId.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.ui === this.props.ui) return;
-
+  componentWillReceiveProps() {
     const { items } = this.props.ui;
     const openedMethodGroup = items.filter((item) => { return item.opened; })[0];
 
