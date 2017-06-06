@@ -425,18 +425,18 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        // redirect to message sent page
+                        window.location.href = base.attr("data-thank-you-page");
                     } else {
-                        //base.find(settings.generalErrorLabel).html(data.d.errorMessage);
-                        ///base.find(settings.generalErrorLabel).show();
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    //base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
-                    //base.find(settings.generalErrorLabel).show();
+                    base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
+                    base.find(settings.generalErrorLabel).show();
 
-                    //base.find(settings.submitButton).removeAttr("disabled");
+                    base.find(settings.submitButton).removeAttr("disabled");
                 }
             });
         });
