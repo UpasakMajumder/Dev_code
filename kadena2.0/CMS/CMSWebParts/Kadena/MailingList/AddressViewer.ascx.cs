@@ -41,7 +41,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     pnlBadAddresses.Visible = true;
                     textBadAddresses.InnerText = string.Format(GetString("Kadena.MailingList.BadAddressesFound", string.Empty)
                         , _badAddresses.Count());
-                    FillTable(tblBadAddresses, _badAddresses);
+                    FillTable(tblBadAddresses, _badAddresses.Take(4));
                 }
                 else
                 {
