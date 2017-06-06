@@ -48,7 +48,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             if (IsAddedAmmountValid(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) + previouslyAddedAmmount))
             {
-                if (int.Parse(inpNumberOfItems.Value) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0))
+                if (ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0))
                 {
                     lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode);
                     SetErrorLblVisible();
