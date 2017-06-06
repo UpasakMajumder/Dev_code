@@ -12,10 +12,10 @@
             <svg class="icon icon-drop">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#draganddrop" />
             </svg>
-            <p class="font-text">
+            <p class="font-text default-text">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileToUpload" />
             </p>
-            <p class="font-text font-text--reserved">
+            <p class="font-text reserved-text">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.ClickToUpload" />
             </p>
         </div>
@@ -40,8 +40,11 @@
                 </button>
                 <img src="/gfx/images/csv-error.png" class="icon-csv">
             </div>
-            <p>
+            <p class="default-text">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.WrongFileUploaded" />
+            </p>
+            <p class="reserved-text">
+                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.WrongFileUploadedIE" />
             </p>
         </div>
     </div>
