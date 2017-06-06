@@ -14,12 +14,12 @@ namespace Kadena.WebAPI.Services
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IMapper mapper;
-        private readonly ICMSProviderService kenticoProvider;
+        private readonly IKenticoProviderService kenticoProvider;
         private readonly IResourceService resources;
         private readonly IOrderServiceCaller orderCaller;
         private readonly IKenticoLogger kenticoLog;
 
-        public ShoppingCartService(IMapper mapper, ICMSProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
+        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Services
                     items = addresses.ToList()
                 },
 
-                DeliveryMethods = new DeliveryMethods()
+                DeliveryMethods = new DeliveryCarriers()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
@@ -77,7 +77,8 @@ namespace Kadena.WebAPI.Services
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
-                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered")
+                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
+                    resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
             return checkoutPage;
         }
@@ -99,7 +100,7 @@ namespace Kadena.WebAPI.Services
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
-                    Value = String.Format("$ {0:#,0.00}", 0)
+                    Value = String.Format("$ {0:#,0.00}", totals.Subtotal)
                 },
                 new Total()
                 {
@@ -130,18 +131,24 @@ namespace Kadena.WebAPI.Services
         }
 
         private void CheckCurrentOrDefaultShipping(CheckoutPage page)
-        { 
-            int currentShippingMethod = kenticoProvider.GetCurrentCartShippingMethodId();
-            if (currentShippingMethod != 0)
+        {
+            int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
+
+            if (!page.DeliveryMethods.IsDisabled(currentShipping))
             {
-                page.DeliveryMethods.CheckMethod(currentShippingMethod);
+                page.DeliveryMethods.CheckMethod(currentShipping);
             }
             else
             {
-                int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
-                kenticoProvider.SelectShipping(defaultMethodId);
-                page.DeliveryMethods.CheckMethod(defaultMethodId);
+                SetDefaultShipping(page);
             }
+        }
+
+        private void SetDefaultShipping(CheckoutPage page)
+        { 
+            int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
+            kenticoProvider.SelectShipping(defaultMethodId);
+            page.DeliveryMethods.CheckMethod(defaultMethodId);
         }
 
         public List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] allMethods)
@@ -180,10 +187,7 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage SelectShipipng(int id)
         {
             kenticoProvider.SelectShipping(id);
-
-            var checkoutPage = GetCheckoutPage();
-            checkoutPage.DeliveryMethods.CheckMethod(id);
-            return checkoutPage;
+            return GetCheckoutPage();
         }
 
         public CheckoutPage SelectAddress(int id)

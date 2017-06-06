@@ -6,13 +6,12 @@ using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
 using System;
-using System.Collections.Generic;
 using CMS.DataEngine;
 using CMS.Globalization;
 
 namespace Kadena.WebAPI.Services
 {
-    public class KenticoProviderService : ICMSProviderService
+    public class KenticoProviderService : IKenticoProviderService
     {
         private readonly IMapper mapper;
         private readonly IResourceService resources;
@@ -65,14 +64,14 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public DeliveryMethod[] GetShippingCarriers()
+        public DeliveryCarrier[] GetShippingCarriers()
         {
             var shippingOptions = GetShippingOptions();
             var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
 
-            var deliveryMethods = mapper.Map<DeliveryMethod[]>(carriers);
+            var deliveryMethods = mapper.Map<DeliveryCarrier[]>(carriers);
 
-            foreach (DeliveryMethod dm in deliveryMethods)
+            foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
                 SetShippingProviderIcon(dm);
@@ -84,7 +83,7 @@ namespace Kadena.WebAPI.Services
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        private void SetShippingProviderIcon(DeliveryMethod dm)
+        private void SetShippingProviderIcon(DeliveryCarrier dm)
         {
             if (dm.Title.ToLower().Contains("fedex"))
             {
@@ -100,33 +99,39 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        public DeliveryService[] GetShippingOptions()
+        public DeliveryOption[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
-            var result = mapper.Map<DeliveryService[]>(services);
+            var result = mapper.Map<DeliveryOption[]>(services);
             GetShippingPrice(result);
             return result;
         }
 
-        public DeliveryService GetShippingOption(int id)
+        public DeliveryOption GetShippingOption(int id)
         {
             var service = ShippingOptionInfoProvider.GetShippingOptionInfo(id);
-            var result = mapper.Map<DeliveryService>(service);
+            var result = mapper.Map<DeliveryOption>(service);
             var carrier = CarrierInfoProvider.GetCarrierInfo(service.ShippingOptionCarrierID);
             result.CarrierCode = carrier.CarrierName;
             return result;
         }
 
-        private void GetShippingPrice(DeliveryService[] services)
+        private void GetShippingPrice(DeliveryOption[] services)
         {
             // this method's approach comes from origial kentico webpart (ShippingSeletion)
             int originalCartShippingId = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
 
             foreach (var s in services)
             {
-                ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = s.Id;
-                s.PriceAmount = ECommerceContext.CurrentShoppingCart.TotalShipping;
+                var cart = ECommerceContext.CurrentShoppingCart;
+                cart.ShoppingCartShippingOptionID = s.Id;
+                s.PriceAmount = cart.TotalShipping;
                 s.Price = String.Format("$ {0:#,0.00}", ECommerceContext.CurrentShoppingCart.TotalShipping);
+
+                if (cart.TotalShipping == 0.0d && !s.IsCustomerPrice)
+                {
+                    s.Disabled = true;
+                }
             }
 
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
@@ -189,7 +194,7 @@ namespace Kadena.WebAPI.Services
             return address.AddressID;
         }
 
-        public int GetCurrentCartShippingMethodId()
+        public int GetCurrentCartShippingOptionId()
         {
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
@@ -226,7 +231,7 @@ namespace Kadena.WebAPI.Services
                 {
                     DesignFilePath = "design/file/path",// TODO
                     MailingListId = Guid.NewGuid(), // TODO
-                    OrderItemType = "", // TODO
+                    OrderItemType =  "", // TODO
                     SKUName = i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     KenticoSKUId = i.SKUID,

@@ -2,13 +2,13 @@
 
 namespace Kadena.WebAPI.Contracts
 {
-    public interface ICMSProviderService
+    public interface IKenticoProviderService
     {
         DeliveryAddress[] GetCustomerAddresses();
         DeliveryAddress GetCurrentCartShippingAddress();
         BillingAddress GetDefaultBillingAddress();
-        DeliveryMethod[] GetShippingCarriers();
-        DeliveryService[] GetShippingOptions();
+        DeliveryCarrier[] GetShippingCarriers();
+        DeliveryOption[] GetShippingOptions();
         ShoppingCartTotals GetShoppingCartTotals();
         PaymentMethod[] GetPaymentMethods();
         PaymentMethod GetPaymentMethod(int id);
@@ -17,11 +17,11 @@ namespace Kadena.WebAPI.Contracts
         string GetResourceString(string name);
 
         int GetCurrentCartAddresId();
-        int GetCurrentCartShippingMethodId();
+        int GetCurrentCartShippingOptionId();
 
         Customer GetCurrentCustomer();
 
-        DeliveryService GetShippingOption(int id);
+        DeliveryOption GetShippingOption(int id);
 
         ShoppingCartItem[] GetShoppingCartItems();
     }

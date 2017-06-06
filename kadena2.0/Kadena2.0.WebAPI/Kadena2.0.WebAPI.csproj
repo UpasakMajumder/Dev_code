@@ -129,7 +129,7 @@
     <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IOrderServiceCaller.cs" />
     <Compile Include="Contracts\IResourceStringsService.cs" />
-    <Compile Include="Contracts\ICMSProviderService.cs" />
+    <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
@@ -150,9 +150,9 @@
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
     <Compile Include="Models\CheckoutPage.cs" />
-    <Compile Include="Models\DeliveryService.cs" />
-    <Compile Include="Models\DeliveryMethod.cs" />
-    <Compile Include="Models\DeliveryMethods.cs" />
+    <Compile Include="Models\DeliveryOption.cs" />
+    <Compile Include="Models\DeliveryCarrier.cs" />
+    <Compile Include="Models\DeliveryCarriers.cs" />
     <Compile Include="Models\KenticoSite.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
