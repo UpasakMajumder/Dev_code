@@ -10,9 +10,7 @@ namespace Kadena.Tests
     class ValidateAddressesTest : UnitTests
     {
         private string _urlSetting = "KDA_ValidateAddressUrl";
-
-        //http://localhost:56000/k-list/map-columns?containerid=e08081ab-03b8-4389-9b68-85602c812206&fileid=actum/original-mailing/ad8ec6fc-95dc-450e-9b13-fb303451347c
-
+        
         [TestCase("e08081ab-03b8-4389-9b68-85602c812206",
             "https://05p387rwel.execute-api.us-east-1.amazonaws.com/Prod/Api/AddressValidator",
             TestName = "ValidateAddressesSuccess",
