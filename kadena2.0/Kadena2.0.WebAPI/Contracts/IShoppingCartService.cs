@@ -15,5 +15,8 @@ namespace Kadena.WebAPI.Contracts
 
         CheckoutPage SelectAddress(int id);
         Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request);
+
+        CheckoutPage ChangeItemQuantity(int id, int quantity);
+        CheckoutPage RemoveItem(int id);
     }
 }

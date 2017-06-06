@@ -2,7 +2,7 @@
 
 namespace Kadena.WebAPI.Contracts
 {
-    public interface IResourceService
+    public interface IKenticoResourceService
     {
         string GetResourceString(string name);
 

@@ -15,11 +15,11 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
-        private readonly IResourceService resources;
+        private readonly IKenticoResourceService resources;
         private readonly IOrderServiceCaller orderCaller;
         private readonly IKenticoLogger kenticoLog;
 
-        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider, IResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
+        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider, IKenticoResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -311,6 +311,16 @@ namespace Kadena.WebAPI.Services
                TotalTax = totals.TotalTax,
                Items = mapper.Map<OrderItemDTO[]>(cartItems)
             };
+        }
+
+        public CheckoutPage ChangeItemQuantity(int id, int quantity)
+        {
+            return GetCheckoutPage();
+        }
+
+        public CheckoutPage RemoveItem(int id)
+        {
+            return GetCheckoutPage();
         }
     }
 }
