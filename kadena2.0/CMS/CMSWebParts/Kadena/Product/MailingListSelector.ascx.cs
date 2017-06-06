@@ -28,6 +28,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     // Generate table
                     var tr = new TableRow();
+                    tr.Cells.Add(new TableCell { Text = d.name });
                     tr.Cells.Add(new TableCell { Text = d.createDate.ToString("MMM dd yyyy") });
                     tr.Cells.Add(new TableCell { Text = d.addressCount.ToString() });
                     tr.Cells.Add(new TableCell { Text = d.errorCount.ToString() });

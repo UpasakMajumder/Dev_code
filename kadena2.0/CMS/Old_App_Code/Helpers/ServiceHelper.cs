@@ -24,6 +24,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getMailingListsSettingKey = "KDA_GetMailingListsUrl";
         private const string _getMailingListByIdSettingKey = "KDA_GetMailingListByIdUrl";
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
+        private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -35,6 +36,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _validateAddressIncorrectMessage = "Url for validating addresses is not in correct format. Check settings for your site.";
         private const string _getMailingListByIdIncorrectMessage = "Url for getting mailing container by id is not in correct format. Check settings for your site.";
         private const string _deleteAddressesIncorrectMessage = "Url for deleting address from container is not in correct format. Check settings for your site.";
+        private const string _getAddressesIncorrectMessage = "Url for getting addresses is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -456,7 +458,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Removes all address from specified container.
         /// </summary>
         /// <param name="containerId">Id of container to be cleared.</param>
-        public static void RemoveAddresses(Guid containerId)
+        public static void RemoveAddresses(Guid containerId, Guid[] addressIds = null)
         {
             if (containerId == Guid.Empty)
             {
@@ -477,13 +479,80 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        ContainerId = containerId
+                        ContainerId = containerId,
+                        ids = addressIds
                     }), System.Text.Encoding.UTF8, "application/json"),
                     RequestUri = deleteAddressesUrl,
                     Method = HttpMethod.Delete
                 })
                 {
-                    client.SendAsync(request).Wait();
+                    using (var message = client.SendAsync(request))
+                    {
+                        AwsResponseMessage response;
+                        try
+                        {
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                                .Content.ReadAsStringAsync()
+                                .Result);
+                        }
+                        catch (JsonReaderException e)
+                        {
+                            throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        }
+                        if (!(response?.Success ?? false))
+                        {
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets list of addresses in specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>List of addresses.</returns>
+        public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
+        {
+            if (containerId == Guid.Empty)
+            {
+                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
+            }
+
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getAddressesSettingKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                throw new InvalidOperationException(_getAddressesIncorrectMessage);
+            }
+
+            var parameterizedUrl = $"{url.AbsoluteUri}/{containerId}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parameterizedUrl))
+                {
+                    AwsResponseMessage response;
+                    try
+                    {
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return (response.Response as JArray).ToObject<IEnumerable<MailingAddressData>>();
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
                 }
             }
         }

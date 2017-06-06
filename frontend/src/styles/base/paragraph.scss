@@ -38,4 +38,30 @@
   svg {
     @include rem(margin-right, 8px);
   }
+
+  &.delivery,
+  &.payment {
+    svg {
+      display: none;
+    }
+
+    $delivery-methods: (fedex, ups, usps);
+    $payment-methods: (mastercard, visa, amex);
+
+    @each $method in $delivery-methods {
+      &.delivery--#{$method} {
+        .delivery--#{$method} {
+          display: inline-block;
+        }
+      }
+    }
+
+    @each $method in $payment-methods {
+      &.payment--#{$method} {
+        .payment--#{$method} {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
