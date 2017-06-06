@@ -458,7 +458,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Removes all address from specified container.
         /// </summary>
         /// <param name="containerId">Id of container to be cleared.</param>
-        public static void RemoveAddresses(Guid containerId)
+        public static void RemoveAddresses(Guid containerId, Guid[] addressIds = null)
         {
             if (containerId == Guid.Empty)
             {
@@ -479,17 +479,40 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        ContainerId = containerId
+                        ContainerId = containerId,
+                        ids = addressIds
                     }), System.Text.Encoding.UTF8, "application/json"),
                     RequestUri = deleteAddressesUrl,
                     Method = HttpMethod.Delete
                 })
                 {
-                    client.SendAsync(request).Wait();
+                    using (var message = client.SendAsync(request))
+                    {
+                        AwsResponseMessage response;
+                        try
+                        {
+                            response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                                .Content.ReadAsStringAsync()
+                                .Result);
+                        }
+                        catch (JsonReaderException e)
+                        {
+                            throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        }
+                        if (!(response?.Success ?? false))
+                        {
+                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        }
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// Gets list of addresses in specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>List of addresses.</returns>
         public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
         {
             if (containerId == Guid.Empty)

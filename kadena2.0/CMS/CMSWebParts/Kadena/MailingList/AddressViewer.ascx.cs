@@ -12,30 +12,41 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class AddressViewer : CMSAbstractWebPart
     {
         private Guid _containerId;
+        private IEnumerable<MailingAddressData> _badAddresses;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                Session["PrevPageUrl"] = Request.UrlReferrer.ToString();
+                Session["PrevPageUrl"] = Request.UrlReferrer?.ToString();
             }
 
             if (!string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
             {
                 _containerId = new Guid(Request.QueryString["containerid"]);
             }
+            LoadData();
+        }
+
+        private void LoadData()
+        {
             if (_containerId != Guid.Empty)
             {
                 var addresses = ServiceHelper.GetMailingAddresses(_containerId);
-                var badAddresses = addresses.Where(a => a.Error != null);
+                _badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
 
-                if (badAddresses.Count() > 0)
+                if (_badAddresses.Count() > 0)
                 {
                     pnlBadAddresses.Visible = true;
                     textBadAddresses.InnerText = string.Format(GetString("Kadena.MailingList.BadAddressesFound", string.Empty)
-                        , badAddresses.Count());
-                    FillTable(tblBadAddresses, badAddresses);
+                        , _badAddresses.Count());
+                    FillTable(tblBadAddresses, _badAddresses);
+                }
+                else
+                {
+                    pnlBadAddresses.Visible = false;
+                    btnUseOnlyGoodAddresses.Visible = false;
                 }
 
                 if (goodAddresses.Count() > 0)
@@ -45,11 +56,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         , goodAddresses.Count());
                     FillTable(tblGoodAddresses, goodAddresses);
                 }
+                else
+                {
+                    pnlGoodAddresses.Visible = false;
+                }
             }
         }
 
         private static void FillTable(Table table, IEnumerable<MailingAddressData> addresses)
         {
+            table.Rows.Clear();
             var haveTitle = addresses.Count(a => a.Title != null) > 0;
             var haveLastName = addresses.Count(a => a.LastName != null) > 0;
 
@@ -97,7 +113,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSaveList_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect(Session["PrevPageUrl"].ToString());
+            if (!string.IsNullOrWhiteSpace(Session["PrevPageUrl"]?.ToString()))
+            {
+                Response.Redirect(Session["PrevPageUrl"].ToString());
+            }
         }
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
@@ -105,6 +124,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
                 , "containerid", _containerId.ToString());
             Response.Redirect(url);
+        }
+
+        protected void btnUseOnlyGoodAddresses_ServerClick(object sender, EventArgs e)
+        {
+            if (_containerId != Guid.Empty && _badAddresses != null && _badAddresses.Count() > 0)
+            {
+                ServiceHelper.RemoveAddresses(_containerId, _badAddresses.Select(a => a.Id).ToArray());
+                LoadData();
+            }
         }
     }
 }
