@@ -1,7 +1,5 @@
-﻿using System;
-using Kadena.Dto.SubmitOrder;
+﻿using Kadena.Dto.SubmitOrder;
 using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Infrastructure.Responses;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
@@ -23,7 +21,7 @@ namespace Kadena.WebAPI.Services
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    string responseContent = response.Content.ReadAsStringAsync().Result;
+                    string responseContent = await response.Content.ReadAsStringAsync();
                     var submitResponse = JsonConvert.DeserializeObject<SubmitOrderResult>(responseContent, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
                     return submitResponse;
                 }

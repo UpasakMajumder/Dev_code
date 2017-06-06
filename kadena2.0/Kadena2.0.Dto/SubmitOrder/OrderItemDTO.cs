@@ -4,6 +4,26 @@ namespace Kadena.Dto.SubmitOrder
 {
     public class OrderItemDTO
   {
+        public OrderItemDTO(string itemType)
+        {
+            switch (itemType)
+            {
+                case "KDA.POD":
+                case "KDA.StaticProduct":
+                case "KDA.InventoryProduct":
+                    Type = OrderItemTypeDTO.StandardOnStockItem;
+                    break;
+
+                case "KDA.TemplatedProduct":
+                    Type = OrderItemTypeDTO.TemplatedProduct;
+                    break;
+
+                case "KDA.MailingProduct":
+                    Type = OrderItemTypeDTO.Mailing;
+                    break;
+            }
+        }
+
         public SKUDTO SKU { get; set; }
 
         /// <summary>
