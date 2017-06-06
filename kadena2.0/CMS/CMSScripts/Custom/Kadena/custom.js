@@ -210,7 +210,7 @@ if (!String.prototype.format) {
                         base.find(settings.errorMassage).html(data.d.errorMessage);
                         base.find(settings.errorMassage).show();
                     }
-                    base.find(settings.submitButton).removeAttr("disabled");                    
+                    base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
@@ -333,6 +333,116 @@ if (!String.prototype.format) {
     }
 }(jQuery));
 
+// CONTACT FORM
+
+(function ($) {
+    $.fn.contactUsForm = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            fullNameInput: ".j-full-name",
+            fullNameErrorLabel: ".j-full-name-error-message",
+            companyNameInput: ".j-company-name",
+            emailInput: ".j-email",
+            emailErrorLabel: ".j-email-error-message",
+            phoneInput: ".j-phone",
+            messageInput: ".j-message",
+            messageErrorLabel: ".j-message-error-message",
+            submitButton: ".j-submit-button",
+            generalErrorLabel: ".j-general-error-message"
+        }, options);
+
+        base.find(settings.fullNameInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.companyNameInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.emailInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.phoneInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.submitButton).click(function (e) {
+            e.preventDefault();
+
+            base.find(settings.fullNameErrorLabel).hide();
+            base.find(settings.fullNameInput).removeClass("input--error");
+            base.find(settings.emailErrorLabel).hide();
+            base.find(settings.emailInput).removeClass("input--error");
+            base.find(settings.messageErrorLabel).hide();
+            base.find(settings.messageInput).removeClass("input--error");
+            base.find(settings.generalErrorLabel).hide();
+
+            if (base.find(settings.fullNameInput).val() == '') {
+                base.find(settings.fullNameInput).addClass("input--error");
+                base.find(settings.fullNameErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.emailInput).val() != '' && !IsEmailValid(base.find(settings.emailInput).val())) {
+                base.find(settings.emailInput).addClass("input--error");
+                base.find(settings.emailErrorLabel).show();
+            }
+
+            if (base.find(settings.messageInput).val() == '') {
+                base.find(settings.messageInput).addClass("input--error");
+                base.find(settings.messageErrorLabel).show();
+                return;
+            }
+
+            var passedData = {
+                fullName: base.find(settings.fullNameInput).val(),
+                companyName: base.find(settings.companyNameInput).val(),
+                email: base.find(settings.emailInput).val(),
+                phone: base.find(settings.phoneInput).val(),
+                message: base.find(settings.messageInput).val()
+            };
+
+            base.find(settings.submitButton).attr("disabled", "disabled");
+
+            $.ajax({
+                type: "POST",
+                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
+                data: JSON.stringify(passedData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.d.success) {
+                        // redirect to message sent page
+                    } else {
+                        //base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        ///base.find(settings.generalErrorLabel).show();
+                    }
+                    base.find(settings.submitButton).removeAttr("disabled");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
+                    //base.find(settings.generalErrorLabel).show();
+
+                    //base.find(settings.submitButton).removeAttr("disabled");
+                }
+            });
+        });
+    }
+}(jQuery));
+
 // custom script initialization
 
 var customScripts = {
@@ -348,6 +458,9 @@ var customScripts = {
     changePasswordInit: function () {
         $(".j-password-change-form").changePassword();
     },
+    contactUsFormInit: function () {
+        $(".j-contact-us-form").contactUsForm();
+    },
     init: function () {
         var base = this;
 
@@ -355,6 +468,7 @@ var customScripts = {
         base.createPasswordInit();
         base.setPersonContactInformationInit();
         base.changePasswordInit();
+        base.contactUsFormInit();
     }
 }
 

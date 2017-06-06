@@ -128,6 +128,15 @@
       return ChangePasswordInternal(userGUID, oldPassword, newPassword);
     }
 
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod]
+    public GeneralResult SubmitContactUsForm(string fullName, string companyName, string email, string phone, string message)
+    {
+
+
+      return new GeneralResult();
+    }
+
     #endregion
 
     #region Private methods
