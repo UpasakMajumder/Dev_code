@@ -13,7 +13,7 @@ class Dropzone {
       if (!this.file.value) {
         this.container.classList.contains(this.reverseSelector) && this.container.classList.remove(this.reverseSelector);
         this.container.classList.contains(this.selector) && this.container.classList.remove(this.selector);
-        this.nameInput.value = '';
+        if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = '';
         return;
       }
 
@@ -24,14 +24,14 @@ class Dropzone {
       if (type !== 'csv') {
         this.container.classList.contains(this.selector) && this.container.classList.remove(this.selector);
         !this.container.classList.contains(this.reverseSelector) && this.container.classList.add(this.reverseSelector);
-        this.nameInput.value = name;
+        if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = name;
         return;
       }
 
       this.container.classList.contains(this.reverseSelector) && this.container.classList.remove(this.reverseSelector);
       !this.container.classList.contains(this.selector) && this.container.classList.add(this.selector);
       this.nameNode.innerHTML = name;
-      this.nameInput.value = name;
+      if (!this.nameInput.hasAttribute('disabled')) this.nameInput.value = name;
     });
 
     this.btns.forEach((btn) => {

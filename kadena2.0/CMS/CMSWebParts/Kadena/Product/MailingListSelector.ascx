@@ -3,6 +3,9 @@
 <asp:Table runat="server" ID="tblMalilingList" CssClass="table product-editor__table-select" Visible="false">
     <asp:TableHeaderRow>
         <asp:TableHeaderCell>
+            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.MailingName" />
+        </asp:TableHeaderCell>
+        <asp:TableHeaderCell>
             <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.DateAdded" />
         </asp:TableHeaderCell>
         <asp:TableHeaderCell>
