@@ -1,0 +1,16 @@
+<div class="block">
+  <h2 class="block__heading pt-4 pb-4 ">Related products</h2>
+
+  <div class="row">
+
+    {% for item in range(0, 4) %}
+      <div class="col-lg-6 col-xl-3">
+
+        {% include "components/product/product-item.nunj" %}
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+</div>

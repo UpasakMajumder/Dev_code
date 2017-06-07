@@ -82,6 +82,28 @@
     cursor: pointer;
   }
 
+  &__ext {
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+
+  &__item {
+    max-width: 125px;
+
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:not(:last-child) {
+      @extend .mr-3;
+    }
+  }
+
   &__dropping {
     margin: 51px;
 
