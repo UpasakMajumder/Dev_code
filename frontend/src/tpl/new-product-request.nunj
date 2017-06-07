@@ -28,7 +28,7 @@
     <h2 class="block__heading">Attachment</h2>
     {% set description = 'Drag & drop your files here or click anywhere to upload' %}
     {% set descriptionIE = 'Click anywhere to upload your files' %}
-
+    {% set maxItems = 4 %}
     {% include "components/drop-zone.nunj" %}
   </div>
 
