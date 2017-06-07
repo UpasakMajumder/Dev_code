@@ -12,6 +12,10 @@
     {{ steps(1, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
     <div class="upload-mail__drop-zone">
+      {% set acceptedFormats = 'csv' %}
+      {% set description = 'Drag and drop your .csv file here or click anywhere to upload' %}
+      {% set descriptionIE = 'Click anywhere to upload your .csv file' %}
+      {% set maxItems = 1 %}
       {% include "components/drop-zone.nunj" %}
     </div>
 
@@ -62,6 +66,6 @@
       </div>
     </div>
 
-    <button type="button" class="btn-action">Create mailing list</button>
+    <button type="button" class="btn-action js-drop-zone-submit">Create mailing list</button>
   </div>
 {% endblock %}

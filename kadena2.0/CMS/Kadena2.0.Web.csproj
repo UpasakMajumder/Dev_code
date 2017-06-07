@@ -775,6 +775,13 @@
     <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.designer.cs">
       <DependentUpon>TemplatesList.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.cs">
+      <DependentUpon>DashboardMetrics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.designer.cs">
+      <DependentUpon>DashboardMetrics.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -834,6 +841,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
@@ -862,6 +870,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
+    <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
