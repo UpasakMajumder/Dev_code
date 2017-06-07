@@ -147,6 +147,8 @@
     <Compile Include="Infrastructure\Requests\SubmitRequestDto.cs" />
     <Compile Include="Infrastructure\Responses\SubmitOrderResponseDto.cs" />
     <Compile Include="Models\BillingAddress.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\CartItems.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />

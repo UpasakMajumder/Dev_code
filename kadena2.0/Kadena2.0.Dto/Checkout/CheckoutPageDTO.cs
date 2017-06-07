@@ -2,6 +2,7 @@
 {
     public class CheckoutPageDTO
     {
+        public CartItemsDTO Products { get; set; }
         public DeliveryAddressesDTO DeliveryAddresses { get; set; }
         public DeliveryMethodsDTO DeliveryMethods { get; set; }
         public PaymentMethodsDTO PaymentMethods { get; set; }

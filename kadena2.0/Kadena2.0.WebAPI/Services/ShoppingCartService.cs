@@ -33,13 +33,21 @@ namespace Kadena.WebAPI.Services
             var addresses = kenticoProvider.GetCustomerAddresses();
             var carriers = kenticoProvider.GetShippingCarriers();
             var totals = kenticoProvider.GetShoppingCartTotals();
-
             var paymentMethods = kenticoProvider.GetPaymentMethods();
+            var cartItems = kenticoProvider.GetShoppingCartItems();
+            var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
 
             var checkoutPage = new CheckoutPage()
             {
+                Products = new CartItems()
+                {
+                    Number = $"You have {cartItems.Length} {items} in your shopping cart",
+                    Items = cartItems.ToList()
+                },
+
                 DeliveryAddresses = new DeliveryAddresses()
                 {
+                    IsDeliverable = true, //TODO
                     AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
@@ -62,6 +70,7 @@ namespace Kadena.WebAPI.Services
 
                 PaymentMethods = new PaymentMethods()
                 {
+                    IsPayable = true, // TODO
                     Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
                     Items = OrderPaymentMethods(paymentMethods)
@@ -227,7 +236,7 @@ namespace Kadena.WebAPI.Services
             var site = resources.GetKenticoSite();
             var totals = kenticoProvider.GetShoppingCartTotals();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
-            var cartItems = kenticoProvider.GetShoppingCartItems();
+            var cartItems = kenticoProvider.GetShoppingCartOrderItems();
             var currency = resources.GetSiteCurrency();
 
             return new OrderDTO()

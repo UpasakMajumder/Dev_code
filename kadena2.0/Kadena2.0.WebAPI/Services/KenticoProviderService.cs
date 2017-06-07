@@ -225,10 +225,10 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public ShoppingCartItem[] GetShoppingCartItems()
+        public OrderItem[] GetShoppingCartOrderItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
-            var result = items.Select(i => new ShoppingCartItem()
+            var result = items.Select(i => new OrderItem()
                 {
                     DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
                     MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
@@ -242,6 +242,28 @@ namespace Kadena.WebAPI.Services
                     UnitCount = i.CartItemUnits,
                     UnitOfMeasure = "EA" 
                 }
+            ).ToArray();
+
+            return result;
+        }
+
+        public CartItem[] GetShoppingCartItems()
+        {
+            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            var result = items.Select(i => new CartItem()
+            {
+                Id = i.CartItemID,
+                Image = "", //TODO icon
+                IsEditable = false,
+                Quantity = i.CartItemUnits,
+                Price = i.CartItemPrice * i.CartItemUnits,
+                PricePrefix = "$", //TODO loc
+                QuantityPrefix = "Quantity:", //TODO loc
+                Delivery = "", //TODO not known yet
+                IsMailingList = false, //TODO
+                MailingList = "Mailing list", //TODO
+                Template = "Template" // TODO
+            }
             ).ToArray();
 
             return result;

@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\CartItemsDTO.cs" />
+    <Compile Include="Checkout\CartItemDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressesDTO.cs" />
