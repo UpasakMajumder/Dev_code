@@ -1,7 +1,8 @@
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_SUCCESS, SEND_SHOPPING_DATA_SUCCESS,
   RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, ERROR_SHOPPING_VALIDATION, RECALCULATE_SHOPPING_PRICE_FAILURE,
-  SEND_SHOPPING_DATA_FAILURE } from '../constants';
+  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_FAILURE, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
+  CHANGE_PRODUCT_QUANTITY_FETCH, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
 
 const defaultState = {
   ui: {},
@@ -20,7 +21,9 @@ const defaultState = {
   isSending: false,
   validation: {
     fields: []
-  }
+  },
+  loadingProducts: false,
+  loadingQuantities: false
 };
 
 export default (state = defaultState, action) => {
@@ -34,6 +37,44 @@ export default (state = defaultState, action) => {
       validation: {
         fields: payload.fields
       }
+    };
+
+  case CHANGE_PRODUCT_QUANTITY_FETCH:
+    return {
+      ...state,
+      loadingQuantities: true
+    };
+
+  case CHANGE_PRODUCT_QUANTITY_FAILURE:
+    return {
+      ...state,
+      loadingQuantities: false
+    };
+
+  case CHANGE_PRODUCT_QUANTITY_SUCCESS:
+    return {
+      ...state,
+      loadingQuantities: false,
+      ui: payload.ui
+    };
+
+  case REMOVE_PRODUCT_FETCH:
+    return {
+      ...state,
+      loadingProducts: true
+    };
+
+  case REMOVE_PRODUCT_FAILURE:
+    return {
+      ...state,
+      loadingProducts: false
+    };
+
+  case REMOVE_PRODUCT_SUCCESS:
+    return {
+      ...state,
+      loadingProducts: false,
+      ui: payload.ui
     };
 
   case RECALCULATE_SHOPPING_PRICE_FETCH:

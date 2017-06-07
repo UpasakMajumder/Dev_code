@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
+import Products from './Products';
 import Total from './Total';
-import { getUI, changeShoppingData, sendData, initCheckedShoppingData } from '../../AC/shoppingCart';
+import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
   componentDidMount() {
@@ -44,9 +45,19 @@ class ShoppingCart extends Component {
 
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, validation } = shoppingCart;
+    const { ui, checkedData, isSending, validation, loadingProducts, loadingQuantities } = shoppingCart;
 
     const content = <div>
+      <div className="shopping-cart__block">
+        <Products
+          removeProduct={this.props.removeProduct}
+          loadingProducts={loadingProducts}
+          changeProductQuantity={this.props.changeProductQuantity}
+          loadingQuantities={loadingQuantities}
+          ui={ui.products}
+        />
+      </div>
+
       <div className="shopping-cart__block">
         <DeliveryAddress
           validationFields={validation.fields}
@@ -103,5 +114,7 @@ export default connect((state) => {
   getUI,
   initCheckedShoppingData,
   changeShoppingData,
-  sendData
+  sendData,
+  removeProduct,
+  changeProductQuantity
 })(ShoppingCart);
