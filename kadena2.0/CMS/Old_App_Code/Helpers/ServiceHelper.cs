@@ -371,7 +371,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// </summary>
         public static IEnumerable<MailingListData> GetMailingLists()
         {
-            var customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
+            var customerName = GetCustomerName();
 
             using (var client = new HttpClient())
             {
