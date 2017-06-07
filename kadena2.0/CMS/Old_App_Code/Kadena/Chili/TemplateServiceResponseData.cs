@@ -2,7 +2,7 @@
 {
   public class TemplateServiceResponseData
   {
-    public TemplateServiceResponsePayload payload { get; set; }
+    public string payload { get; set; }
     public bool success { get; set; }
     public string error { get; set; }
   }
