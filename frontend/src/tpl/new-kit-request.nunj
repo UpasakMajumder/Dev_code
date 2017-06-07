@@ -24,6 +24,11 @@
         <span class="input__label">Select up to 5 products</span>
         <div class="input__select-area">
 
+          <div class="input__wrapper input__wrapper--disabled">
+            <input id="dom-88" type="checkbox" class="input__checkbox" checked disabled>
+            <label for="dom-88" class="input__label input__label--checkbox">First item</label>
+          </div>
+
           {% for item in range(0, 15) %}
               <div class="input__wrapper">
                 <input id="dom-{{item}}" type="checkbox" class="input__checkbox">
@@ -35,7 +40,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="btn-group btn-group--left">
   <a href="#" class="btn-action">Submit a request</a>
   </div>
