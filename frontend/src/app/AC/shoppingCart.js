@@ -7,6 +7,7 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
 import { CHECKOUT } from '../globals';
 // import ui from './ui';
+// import ui2 from './ui2';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -133,6 +134,15 @@ export const changeShoppingData = (field, id, invoice) => {
       : (field === 'deliveryAddress')
       ? CHECKOUT.changeAddressURL
       : '';
+
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
+    //     payload: {
+    //       ui: ui2.payload
+    //     }
+    //   });
+    // }, 1000);
 
     axios.post(url, { id })
       .then((response) => {

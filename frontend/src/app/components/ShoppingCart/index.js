@@ -70,6 +70,7 @@ class ShoppingCart extends Component {
               validationMessage={ui.validationMessage}
               changeShoppingData={this.props.changeShoppingData}
               checkedId={checkedData.deliveryMethod}
+              isSending={isSending}
               ui={ui.deliveryMethods}/>
           </div>
         </div>

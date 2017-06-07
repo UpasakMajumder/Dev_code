@@ -109,7 +109,7 @@ export default {
           "id": 2,
           "title": "FedEx Customer",
           "icon": "fedex-delivery",
-          "opened": true,
+          "opened": false,
           "disabled": false,
           "pricePrefix": "Price based on your contract",
           "price": "",
@@ -119,7 +119,7 @@ export default {
             {
               "id": 2,
               "title": "FedEx customer price",
-              "checked": true,
+              "checked": false,
               "pricePrefix": "Price based on your contract",
               "price": "",
               "datePrefix": null,
@@ -132,7 +132,7 @@ export default {
           "id": 3,
           "title": "UPS",
           "icon": "ups-delivery",
-          "opened": false,
+          "opened": true,
           "disabled": false,
           "pricePrefix": "Price from",
           "price": "$ 11.40",
@@ -142,7 +142,7 @@ export default {
             {
               "id": 4,
               "title": "Ground",
-              "checked": false,
+              "checked": true,
               "pricePrefix": "Price",
               "price": "$ 11.40",
               "datePrefix": null,
@@ -286,11 +286,11 @@ export default {
         },
         {
           "title": "Shipping",
-          "value": "$ 0.00"
+          "value": "$ 11.40"
         },
         {
           "title": "Subtotal",
-          "value": "$ 112.20"
+          "value": "$ 123.60"
         },
         {
           "title": "Tax",
@@ -298,7 +298,7 @@ export default {
         },
         {
           "title": "Totals",
-          "value": "$ 112.20"
+          "value": "$ 123.60"
         }
       ]
     },
