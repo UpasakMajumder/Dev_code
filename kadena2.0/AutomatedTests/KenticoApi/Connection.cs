@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace AutomatedTests.KenticoApi
 {
@@ -34,6 +35,13 @@ namespace AutomatedTests.KenticoApi
                 const string message = "Error retrieving response from Kentico API.";
                 throw new ApplicationException(message, response.ErrorException);
             }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                const string invalidCredentials = "The credentials you entered are invalid";
+                throw new UnauthorizedAccessException(invalidCredentials);
+            }
+
             return response.Data;
         }
     }

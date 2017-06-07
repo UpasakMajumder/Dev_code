@@ -39,7 +39,13 @@ namespace AutomatedTests.Tests
             //Go to checkout and verify if shipping cost is estimated
             Checkout checkout = new Checkout();
             checkout.Open();
-            Assert.IsTrue(checkout.IsShippingCostEstimated(), "Shipping Cost is not estimated");
+            checkout.SelectAddress(1);
+            Assert.IsTrue(checkout.AreShippingCostEstimated(), "Shipping Cost is not estimated");
+            checkout.SelectEstimatedCarrier();
+
+            //verify if total and subtotal numbers are correct
+            Assert.IsTrue(checkout.IsSubTotalCorrect());
+            Assert.IsTrue(checkout.isTotalCorrect());
 
             //Delete the category with the product using Kentico Api
             var deleteResponse = Api.DeleteDocument<ProductCategory>($"{categoryResponse.NodeAliasPath}");
