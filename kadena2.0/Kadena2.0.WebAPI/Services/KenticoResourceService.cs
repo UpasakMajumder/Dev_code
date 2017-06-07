@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Kadena.WebAPI.Services
 {
-    public class KenticoResourceService : IResourceService
+    public class KenticoResourceService : IKenticoResourceService
     {
         public string GetResourceString(string name)
         {

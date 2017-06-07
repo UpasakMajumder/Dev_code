@@ -5,8 +5,9 @@ using System.Web;
 
 namespace Kadena.WebAPI.Models
 {
-    public class ShoppingCartItem
+    public class OrderItem
     {
+
         public int KenticoSKUId { get; set; }
         public string SKUNumber { get; set; }
         public string SKUName { get; set; }

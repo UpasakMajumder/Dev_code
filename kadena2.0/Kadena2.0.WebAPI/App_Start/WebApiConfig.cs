@@ -83,7 +83,7 @@ namespace Kadena.WebAPI
                     ClassName = p.PaymentOptionClassName
                 });
 
-                config.CreateMap<ShoppingCartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
+                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
@@ -104,7 +104,8 @@ namespace Kadena.WebAPI
                     UnitPrice = p.UnitPrice
                 });
 
-
+                config.CreateMap<CartItems, CartItemsDTO>();
+                config.CreateMap<CartItem, CartItemDTO>();
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -117,7 +118,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-                //config.CreateMap<ShoppingCartItem, OrderItemDTO>();
+                config.CreateMap<CartItem, CartItemDTO>();
                 //config.CreateMap<OrderServiceResult, SubmitOrderResult>();
                 config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
             });
@@ -128,7 +129,7 @@ namespace Kadena.WebAPI
             var container = new Container();
             container.Register<IShoppingCartService,ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
-            container.Register<IResourceService, KenticoResourceService>();
+            container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);

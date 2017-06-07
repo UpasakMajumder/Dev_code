@@ -60,6 +60,25 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Route("api/shoppingcart/removeitem")]
+        public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
+        {
+            var result = service.RemoveItem(request.Id);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
+        [HttpPost]
+        [Route("api/shoppingcart/changequantity")]
+        public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
+        {
+            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
+
+        [HttpPost]
         [Route("api/shoppingcart/submit")]
         public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
         {

@@ -128,12 +128,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IOrderServiceCaller.cs" />
-    <Compile Include="Contracts\IResourceService.cs" />
+    <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
+    <Compile Include="Infrastructure\Requests\ChangeItemQuantityRequestDto.cs" />
+    <Compile Include="Infrastructure\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="Infrastructure\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizationFilter.cs" />
@@ -145,6 +147,8 @@
     <Compile Include="Infrastructure\Requests\SubmitRequestDto.cs" />
     <Compile Include="Infrastructure\Responses\SubmitOrderResponseDto.cs" />
     <Compile Include="Models\BillingAddress.cs" />
+    <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\CartItems.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />

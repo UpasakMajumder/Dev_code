@@ -14,14 +14,14 @@ namespace Kadena.WebAPI.Services
     public class KenticoProviderService : IKenticoProviderService
     {
         private readonly IMapper mapper;
-        private readonly IResourceService resources;
+        private readonly IKenticoResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IResourceService resources)
+        public KenticoProviderService(IMapper mapper, IKenticoResourceService resources)
         {
             this.mapper = mapper;
             this.resources = resources;
         }
-        
+
         public DeliveryAddress[] GetCustomerAddresses()
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -140,7 +140,7 @@ namespace Kadena.WebAPI.Services
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();            
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
@@ -201,7 +201,7 @@ namespace Kadena.WebAPI.Services
 
         public string GetResourceString(string name)
         {
-            return ResHelper.GetString(name, useDefaultCulture:true);
+            return ResHelper.GetString(name, useDefaultCulture: true);
         }
 
 
@@ -225,26 +225,93 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public ShoppingCartItem[] GetShoppingCartItems()
+        public OrderItem[] GetShoppingCartOrderItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
-            var result = items.Select(i => new ShoppingCartItem()
-                {
-                    DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
-                    MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
-                    OrderItemType =  i.GetValue("ProductType", string.Empty),
-                    SKUName = i.SKU?.SKUName,
-                    SKUNumber = i.SKU?.SKUNumber,
-                    KenticoSKUId = i.SKUID,
-                    TotalPrice = i.TotalPrice,
-                    TotalTax = i.TotalTax, //TODO tax
-                    UnitPrice = i.UnitPrice,
-                    UnitCount = i.CartItemUnits,
-                    UnitOfMeasure = "EA" 
-                }
+            var result = items.Select(i => new OrderItem()
+            {
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
+                MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
+                OrderItemType = i.GetValue("ProductType", string.Empty),
+                SKUName = i.SKU?.SKUName,
+                SKUNumber = i.SKU?.SKUNumber,
+                KenticoSKUId = i.SKUID,
+                TotalPrice = i.TotalPrice,
+                TotalTax = i.TotalTax, //TODO tax
+                UnitPrice = i.UnitPrice,
+                UnitCount = i.CartItemUnits,
+                UnitOfMeasure = "EA"
+            }
             ).ToArray();
 
             return result;
+        }
+
+        public CartItem[] GetShoppingCartItems()
+        {
+            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            var result = items.Select(i => new CartItem()
+            {
+                Id = i.CartItemID,
+                Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
+                IsEditable = false,
+                Quantity = i.CartItemUnits,
+                Price = i.CartItemPrice * i.CartItemUnits,
+                PricePrefix = "$", //TODO loc
+                QuantityPrefix = "Quantity:", //TODO loc
+                Delivery = "", //TODO not known yet
+                IsMailingList = false, //TODO
+                MailingList = "Mailing list", //TODO
+                Template = "Template" // TODO
+            }
+            ).ToArray();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
+        /// </summary>
+        public void RemoveCartItem(int id)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var item = cart.CartItems.FirstOrDefault(i => i.CartItemID == id);
+
+            if (item == null)
+                return;
+
+            // Delete all the children from the database if available        
+            foreach (ShoppingCartItemInfo scii in cart.CartItems)
+            {
+                if ((scii.CartItemBundleGUID == item.CartItemGUID) || (scii.CartItemParentGUID == item.CartItemGUID))
+                {
+                    ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(scii);
+                }
+            }
+
+            // Deletes the CartItem from the database
+            ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(item.CartItemGUID);
+            // Delete the CartItem form the shopping cart object (session)
+            ShoppingCartInfoProvider.RemoveShoppingCartItem(cart, item.CartItemGUID);
+
+            // Recalculate shopping cart
+            ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        public void SetCartItemQuantity(int id, int quantity)
+        {
+            if (quantity < 1)
+                return;
+
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
+            if (item != null)
+            {
+                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+                cart.InvalidateCalculations();
+                ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+            }
         }
     }
 }

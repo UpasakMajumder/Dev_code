@@ -4,6 +4,7 @@ namespace Kadena.WebAPI.Models
 {
     public class CheckoutPage
     {
+        public CartItems Products { get;set;}
         public DeliveryAddresses DeliveryAddresses { get; set; }
         public DeliveryCarriers DeliveryMethods { get; set; }
         public PaymentMethods PaymentMethods { get; set; }
