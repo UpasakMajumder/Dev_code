@@ -2,11 +2,24 @@
   $transition-length: 300ms;
   overflow: hidden;
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid $brand-grey;
 
   & tr td,
   & tr th {
     @include rem(padding, 16px 8px);
     background-color: rgba($brand-white, 1);
+    border-top: 1px solid $brand-grey;
+    border-bottom: 1px solid $brand-grey;
+
+    &:last-child {
+      border-right: 1px solid $brand-grey;
+    }
+
+    &:first-child {
+      border-left: 1px solid $brand-grey;
+    }
   }
 
   & tr th {
@@ -17,7 +30,6 @@
 
   tr {
     position: relative;
-    border: 1px solid $brand-grey;
   }
 
   & tr:nth-child(2n) {
