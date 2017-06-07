@@ -10,7 +10,7 @@
 {% set btns = [
   {
     name: 'Submit a request',
-    class: 'btn-action'
+    class: 'btn-action js-drop-zone-submit'
   }
 ] %}
 
