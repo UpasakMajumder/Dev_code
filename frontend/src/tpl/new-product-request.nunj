@@ -1,0 +1,35 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Request new product' %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% set btns = [
+  {
+    name: 'Send message',
+    class: 'btn-action js-drop-zone-submit'
+  }
+] %}
+
+{% block content %}
+
+  <div class="block">
+
+    <h2 class="block__heading">Product Description</h2>
+    <div class="form-block">
+      <div class="input__wrapper">
+        <span class="input__label">Description</span>
+        <textarea class="input__textarea" placeholder="Describe your product request..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Attachment</h2>
+    {% set description = 'Drag & drop your files here or click anywhere to upload' %}
+    {% set descriptionIE = 'Click anywhere to upload your files' %}
+
+    {% include "components/drop-zone.nunj" %}
+  </div>
+
+{% endblock %}
