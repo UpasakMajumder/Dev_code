@@ -48,6 +48,17 @@
 
   </div>
 
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing 11 to 20 of 103 entries</span>
+      </div>
+      <div class="col-6 text--right">
+        {% include "components/pagination1.nunj" %}
+      </div>
+    </div>
+  </div>
+
   <div class="bids-list__block">
 
     <h2 class="bids-list__block-header">You have 3 completed projects</h2>
@@ -80,6 +91,17 @@
       </tbody>
     </table>
 
+  </div>
+
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing 11 to 20 of 103 entries</span>
+      </div>
+      <div class="col-6 text--right">
+        {% include "components/pagination1.nunj" %}
+      </div>
+    </div>
   </div>
 
 {% endblock %}

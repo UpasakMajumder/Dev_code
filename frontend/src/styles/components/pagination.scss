@@ -39,3 +39,125 @@
     @extend .link;
   }
 }
+
+.pagination1 {
+  &__item,
+  &__page {
+    &:not(:last-child) {
+      @include rem(margin-right, 5px);
+    }
+    display: none;
+  }
+
+  &__active-item {
+    @extend .line-height--one;
+    @extend .link--no-decoration;
+    $padding-x: 2px;
+    $padding-y: 6px;
+
+    @include rem(padding-top, $padding-x);
+    @include rem(padding-bottom, $padding-x);
+    @include rem(padding-left, $padding-y);
+    @include rem(padding-right, $padding-y);
+    background-color: $brand-grey;
+    color: $brand-dark;
+    border-radius: 100%;
+  }
+
+  &__default-item {
+    background-color: transparent;
+    color: $brand-primary;
+  }
+
+  &__item:nth-child(2) {
+    & *:nth-child(3),
+    & *:nth-child(4),
+    & *:nth-child(5) {
+      display: inline-block;
+    }
+  }
+
+  &.l-arrow {
+    .pagination1__item:first-child {
+      display: inline-block;
+
+      .pagination1__step {
+        display: inline-block;
+      }
+    }
+  }
+
+  &.r-arrow {
+    .pagination1__item:last-child {
+      display: inline-block;
+
+      .pagination1__step {
+        display: inline-block;
+      }
+    }
+  }
+
+  &.l-dots {
+    .pagination1__item:nth-child(2) {
+      display: inline-block;
+
+      & *:nth-child(2) {
+        display: inline-block;
+      }
+    }
+  }
+
+  &.r-dots {
+    .pagination1__item:nth-child(2) {
+      display: inline-block;
+
+      & *:nth-child(6) {
+        display: inline-block;
+      }
+    }
+  }
+
+  &.l-num {
+    .pagination1__item:nth-child(2) {
+      display: inline-block;
+
+      & *:first-child {
+        display: inline-block;
+      }
+    }
+  }
+
+  &.r-num {
+    .pagination1__item:nth-child(2) {
+      display: inline-block;
+
+      & *:last-child {
+        display: inline-block;
+      }
+    }
+  }
+
+  &__item {
+    display: none;
+  }
+
+  & a.pagination1__page--active {
+    @extend .pagination1__active-item;
+  }
+
+  &__dots {
+    @include rem(margin-right, 5px);
+    display: none;
+  }
+
+  &__step {
+    svg {
+      vertical-align: middle;
+    }
+    display: none;
+  }
+
+  a {
+    @extend .link;
+  }
+}
