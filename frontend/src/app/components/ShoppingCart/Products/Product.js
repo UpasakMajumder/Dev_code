@@ -2,10 +2,46 @@ import React, { Component } from 'react';
 import SVG from '../../SVG';
 
 class Products extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      quantity: 1,
+      workingProcess: 0
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.quantity === this.state.quantity) return;
+
+    this.setState({
+      quantity: nextProps.quantity
+    });
+  }
+
+  handleChange(quantity) {
+    if (!quantity) return;
+
+    const { id } = this.props;
+
+    clearTimeout(this.state.workingProcess);
+
+    const workingProcess = setTimeout(() => {
+      this.props.changeProductQuantity(id, quantity);
+    }, 1000);
+
+    this.setState({
+      workingProcess,
+      quantity
+    });
+  }
+
   render() {
-    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix,
-      quantity, quantityPrefix, template, loadingProducts, removeProduct, changeProductQuantity,
+    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, loadingProducts, removeProduct, changeProductQuantity,
       loadingQuantities } = this.props;
+    const { quantity } = this.state;
 
     const productDifference = isMailingList
     ? <div className="cart-product__mlist">
@@ -17,7 +53,7 @@ class Products extends Component {
     : <div className="cart-product__quantity">
         <span>{quantityPrefix}</span>
         <input disabled={loadingQuantities}
-               onChange={(e) => { changeProductQuantity(id, e.target.value); }}
+               onChange={(e) => { this.handleChange(e.target.value); }}
                type="number"
                min="1"
                value={quantity}/>

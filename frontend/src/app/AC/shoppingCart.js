@@ -6,7 +6,7 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
   CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
 import { CHECKOUT } from '../globals';
-import ui from './ui';
+// import ui from './ui';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -14,27 +14,27 @@ export const getUI = () => {
       type: SHOPPING_CART_UI_FETCH
     });
 
-    dispatch({
-      type: SHOPPING_CART_UI_SUCCESS,
-      payload: {
-        ui: ui.payload
-      }
-    });
+    // dispatch({
+    //   type: SHOPPING_CART_UI_SUCCESS,
+    //   payload: {
+    //     ui: ui.payload
+    //   }
+    // });
 
-    // axios.get(CHECKOUT.initUIURL)
-    //   .then((response) => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_SUCCESS,
-    //       payload: {
-    //         ui: response.data.payload
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_FAILURE
-    //     });
-    //   });
+    axios.get(CHECKOUT.initUIURL)
+      .then((response) => {
+        dispatch({
+          type: SHOPPING_CART_UI_SUCCESS,
+          payload: {
+            ui: response.data.payload
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: SHOPPING_CART_UI_FAILURE
+        });
+      });
   };
 };
 
@@ -84,7 +84,8 @@ export const removeProduct = (id) => {
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
     dispatch({
-      type: CHANGE_PRODUCT_QUANTITY_FETCH
+      type: CHANGE_PRODUCT_QUANTITY_FETCH,
+      payload: { id }
     });
 
     const url = CHECKOUT.changeQuantityURL;
