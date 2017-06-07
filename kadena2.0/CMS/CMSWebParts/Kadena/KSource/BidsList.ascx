@@ -35,7 +35,7 @@
     </table>
 </div>
 <div class="bids-list__block">
-    <h2 runat="server" id="lblCompletedProjects" class="bids-list__block-header">You have 3 completed projects</h2>
+    <h2 runat="server" id="lblCompletedProjects" class="bids-list__block-header"></h2>
     <table runat="server" id="tblCompletedProjects" class="show-table">
         <!-- TODO: Remove ".hidden" after sorting is avalible-->
         <tbody>

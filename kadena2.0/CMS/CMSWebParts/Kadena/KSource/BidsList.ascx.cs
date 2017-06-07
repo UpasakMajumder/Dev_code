@@ -14,6 +14,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                 new { projectName = "Brochure2", requestId = "123545", projectStatus="Waiting for bids", lastUpdate= "May 24 2017 16:45"}
             };
             lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), items.Count());
+            lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), items.Count());
             foreach (var i in items)
             {
                 tblOpenProjects.Rows.Add(
