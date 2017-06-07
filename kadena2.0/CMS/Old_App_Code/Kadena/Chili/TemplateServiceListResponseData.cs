@@ -4,7 +4,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
 {
   public class TemplateServiceListResponseData
   {
-    public TemplateServiceListResponsePayload payload { get; set; }
+    public List<TemplateServiceDocumentResponse> payload { get; set; }
     public bool success { get; set; }
     public string error { get; set; }
   }

@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Kadena.Old_App_Code.Kadena.Orders;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -25,6 +26,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getMailingListByIdSettingKey = "KDA_GetMailingListByIdUrl";
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
         private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
+        private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -37,6 +39,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getMailingListByIdIncorrectMessage = "Url for getting mailing container by id is not in correct format. Check settings for your site.";
         private const string _deleteAddressesIncorrectMessage = "Url for deleting address from container is not in correct format. Check settings for your site.";
         private const string _getAddressesIncorrectMessage = "Url for getting addresses is not in correct format. Check settings for your site.";
+        private const string _getOrderStatisticsIncorrectMessage = "Url of order statistics is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Sends request to microservice to create mailing container.
@@ -530,6 +533,52 @@ namespace Kadena.Old_App_Code.Helpers
                     if (response.Success)
                     {
                         return response?.Response;
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns order statistics for current customer (website).
+        /// </summary>
+        /// <returns></returns>
+        public static OrderStatisticsData GetOrderStatistics()
+        {
+            var customerName = GetCustomerName();
+
+            Uri orderStatisticsUrl;
+            if (!Uri.TryCreate(
+                    string.Format("{0}?customerName={1}",
+                    SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getGetOrderStatisticsSettingsKey}"),
+                    customerName)
+                , UriKind.Absolute
+                , out orderStatisticsUrl))
+            {
+                throw new InvalidOperationException(_getOrderStatisticsIncorrectMessage);
+            }
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(orderStatisticsUrl))
+                {
+                    AwsResponseMessage response;
+                    try
+                    {
+                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
+                            .Content.ReadAsStringAsync()
+                            .Result);
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return JsonConvert.DeserializeObject<OrderStatisticsData>(response.Response.ToString());
                     }
                     else
                     {
