@@ -565,12 +565,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(orderStatisticsUrl))
                 {
-                    AwsResponseMessage response;
+                    AwsResponseMessage<OrderStatisticsData> response;
                     try
                     {
-                        response = JsonConvert.DeserializeObject<AwsResponseMessage>(message.Result
-                            .Content.ReadAsStringAsync()
-                            .Result);
+                        response = (AwsResponseMessage<OrderStatisticsData>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -578,7 +576,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return JsonConvert.DeserializeObject<OrderStatisticsData>(response.Response.ToString());
+                        return response?.Response;
                     }
                     else
                     {
