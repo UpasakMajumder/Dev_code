@@ -44,6 +44,7 @@ export default {
     },
     "deliveryAddresses": {
       "isDeliverable": true,
+      "unDeliverableText": "All items will be mailed according to the selected mailing list.",
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
       "addAddressLabel": "New address",
@@ -267,6 +268,7 @@ export default {
     "paymentMethods": {
       "title": "Payment",
       "isPayable": true,
+      "unPayableText": "Your payment plan is set to monthly payment. To change this, contact the administrator.",
       "description": null,
       "items": [
         {

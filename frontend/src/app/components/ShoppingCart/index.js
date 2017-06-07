@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DeliveryAddress from './DeliveryAddress';
+import Undeliverable from './DeliveryAddress/Undeliverable';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
@@ -47,59 +48,76 @@ class ShoppingCart extends Component {
     const { shoppingCart } = this.props;
     const { ui, checkedData, isSending, validation, loadingProducts, loadingQuantities } = shoppingCart;
 
-    const content = <div>
-      <div className="shopping-cart__block">
-        <Products
-          removeProduct={this.props.removeProduct}
-          loadingProducts={loadingProducts}
-          changeProductQuantity={this.props.changeProductQuantity}
-          loadingQuantities={loadingQuantities}
-          ui={ui.products}
-        />
-      </div>
+    let content = null;
 
-      <div className="shopping-cart__block">
-        <DeliveryAddress
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedId={checkedData.deliveryAddress}
-          ui={ui.deliveryAddresses} />
-      </div>
+    if (Object.keys(ui).length) {
+      const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
 
-      <div className="shopping-cart__block">
-        <DeliveryMethod
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedId={checkedData.deliveryMethod}
-          ui={ui.deliveryMethods} />
-      </div>
+      const deliveryContent = isDeliverable
+        ? <div>
+          <div className="shopping-cart__block">
+            <DeliveryAddress
+              validationFields={validation.fields}
+              validationMessage={ui.validationMessage}
+              changeShoppingData={this.props.changeShoppingData}
+              checkedId={checkedData.deliveryAddress}
+              ui={ui.deliveryAddresses}/>
+          </div>
 
-      <div className="shopping-cart__block">
-        <PaymentMethod
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedObj={checkedData.paymentMethod}
-          ui={ui.paymentMethods} />
-      </div>
+          <div className="shopping-cart__block">
+            <DeliveryMethod
+              validationFields={validation.fields}
+              validationMessage={ui.validationMessage}
+              changeShoppingData={this.props.changeShoppingData}
+              checkedId={checkedData.deliveryMethod}
+              ui={ui.deliveryMethods}/>
+          </div>
+        </div>
+        : <div className="shopping-cart__block">
+          <h2>{title}</h2>
+          <Undeliverable unDeliverableText={unDeliverableText}/>
+        </div>;
 
-      <div className="shopping-cart__block">
-        <Total ui={ui.totals} />
-      </div>
+      content = <div>
+        <div className="shopping-cart__block">
+          <Products
+            removeProduct={this.props.removeProduct}
+            loadingProducts={loadingProducts}
+            changeProductQuantity={this.props.changeProductQuantity}
+            loadingQuantities={loadingQuantities}
+            ui={ui.products}
+          />
+        </div>
 
-      <div className="shopping-cart__block text--right">
-        <button onClick={() => { this.props.sendData(checkedData); }}
-                type="button"
-                className="btn-action"
-                disabled={isSending}>
-          {ui.submitLabel}
-        </button>
-      </div>
-    </div>;
+        {deliveryContent}
 
-    return Object.keys(ui).length ? content : null;
+        <div className="shopping-cart__block">
+          <PaymentMethod
+            validationFields={validation.fields}
+            validationMessage={ui.validationMessage}
+            changeShoppingData={this.props.changeShoppingData}
+            checkedObj={checkedData.paymentMethod}
+            ui={ui.paymentMethods}/>
+        </div>
+
+        <div className="shopping-cart__block">
+          <Total ui={ui.totals}/>
+        </div>
+
+        <div className="shopping-cart__block text--right">
+          <button onClick={() => {
+            this.props.sendData(checkedData);
+          }}
+                  type="button"
+                  className="btn-action"
+                  disabled={isSending}>
+            {ui.submitLabel}
+          </button>
+        </div>
+      </div>;
+    }
+
+    return content;
   }
 }
 
