@@ -324,11 +324,13 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage ChangeItemQuantity(int id, int quantity)
         {
+            kenticoProvider.SetCartItemQuantity(id, quantity);
             return GetCheckoutPage();
         }
 
         public CheckoutPage RemoveItem(int id)
         {
+            kenticoProvider.RemoveCartItem(id);
             return GetCheckoutPage();
         }
     }

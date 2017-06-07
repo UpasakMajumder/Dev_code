@@ -26,5 +26,8 @@ namespace Kadena.WebAPI.Contracts
         OrderItem[] GetShoppingCartOrderItems();
 
         CartItem[] GetShoppingCartItems();
+
+        void RemoveCartItem(int id);
+        void SetCartItemQuantity(int id, int quantity);
     }
 }
