@@ -152,14 +152,22 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             var product = SKUInfoProvider.GetSKUInfo(DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0));
 
+            var artworkLocation = DocumentContext.CurrentDocument.GetStringValue("ProductArtworkLocation", string.Empty);
+            var chiliTemplateId = DocumentContext.CurrentDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
+            var productType = DocumentContext.CurrentDocument.GetStringValue("ProductType", string.Empty);
+
             if (product != null)
             {
                 var cart = ECommerceContext.CurrentShoppingCart;
                 AssignCartShippingAddress(cart);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-
+                
                 var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
                 var cartItem = cart.SetShoppingCartItem(parameters);
+
+                cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
+                cartItem.SetValue("ArtworkLocation", artworkLocation);
+                cartItem.SetValue("ProductType", productType);
 
                 var dynamicUnitPrice = GetUnitPriceForAmmount(ammount + previouslyAddedAmmount);
                 if (dynamicUnitPrice > 0)
