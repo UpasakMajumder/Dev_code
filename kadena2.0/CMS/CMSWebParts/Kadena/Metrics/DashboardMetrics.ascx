@@ -32,6 +32,7 @@
             </p>
             <p class="sent-statistics__value">
                 <asp:Literal ID="ltlAverageProductionTime" runat="server" />
+                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.Days" />
             </p>
         </div>
     </div>
