@@ -89,7 +89,7 @@ namespace Kadena.WebAPI
                     LineNumber = p.LineNumber,
                     MailingList = new MailingListDTO()
                     {
-                       MailingListID = p.MailingListId
+                        MailingListID = p.MailingListId
                     },
                     SKU = new SKUDTO()
                     {

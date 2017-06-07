@@ -6,6 +6,7 @@ namespace Kadena.WebAPI.Models
     public class DeliveryAddresses
     {
         public bool IsDeliverable { get; set; }
+        public string UnDeliverableText { get; set; }
 
         public string Title { get; set; }
         public string Description { get; set; }
