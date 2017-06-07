@@ -46,7 +46,8 @@ class MethodsGroup extends Component {
     return (
       <div>
         <div className={className}>
-          <input disabled={disabled}
+          <input checked={openId === id}
+                 disabled={disabled}
                  onChange={() => changeOpenId(id)}
                  type="radio"
                  name="methodGroup"
