@@ -131,6 +131,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (_containerId != Guid.Empty && _badAddresses != null && _badAddresses.Count() > 0)
             {
                 ServiceHelper.RemoveAddresses(_containerId, _badAddresses.Select(a => a.Id).ToArray());
+                ServiceHelper.ValidateAddresses(_containerId);
                 LoadData();
             }
         }
