@@ -105,7 +105,7 @@ namespace Kadena.WebAPI
                 });
 
                 config.CreateMap<CartItems, CartItemsDTO>();
-                config.CreateMap<CartItem, CartItemDTO>();
+                config.CreateMap<CartItem, CartItemDTO>().AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -118,8 +118,6 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-                config.CreateMap<CartItem, CartItemDTO>();
-                //config.CreateMap<OrderServiceResult, SubmitOrderResult>();
                 config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
             });
         }
