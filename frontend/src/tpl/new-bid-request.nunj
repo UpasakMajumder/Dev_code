@@ -46,7 +46,10 @@
   </div>
 
   <div class="block">
-    <h2 class="block__heading">Attachment</h2>
+    <div class="block__heading">
+      <h2>Attachment</h2>
+      <span class="block__right-label">Optional</span>
+    </div>
     {% set description = 'Drag & drop your file here or click anywhere to upload' %}
     {% set descriptionIE = 'Click anywhere to upload your file' %}
     {% include "components/drop-zone.nunj" %}
@@ -96,6 +99,7 @@
         <div class="form-block">
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
+            <span class="input__right-label">Optional</span>
             <input type="text" readonly class="input__text js-datepicker">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
