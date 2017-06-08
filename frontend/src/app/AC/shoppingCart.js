@@ -2,9 +2,12 @@ import axios from 'axios';
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_FETCH, RECALCULATE_SHOPPING_PRICE_SUCCESS,
   RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
-  SEND_SHOPPING_DATA_SUCCESS, ERROR_SHOPPING_VALIDATION } from '../constants';
+  SEND_SHOPPING_DATA_SUCCESS, ERROR_SHOPPING_VALIDATION, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
+  REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
+  CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
 import { CHECKOUT } from '../globals';
 // import ui from './ui';
+// import ui2 from './ui2';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -47,6 +50,70 @@ export const initCheckedShoppingData = (data) => {
   };
 };
 
+export const removeProduct = (id) => {
+  return (dispatch) => {
+    dispatch({
+      type: REMOVE_PRODUCT_FETCH
+    });
+
+    const url = CHECKOUT.removeProductURL;
+
+    axios.post(url, { id })
+      .then((response) => {
+        dispatch({
+          type: REMOVE_PRODUCT_SUCCESS,
+          payload: {
+            ui: response.data.payload
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: REMOVE_PRODUCT_FAILURE
+        });
+      });
+
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: REMOVE_PRODUCT_FAILURE
+    //   });
+    // }, 2000);
+
+  };
+};
+
+export const changeProductQuantity = (id, quantity) => {
+  return (dispatch) => {
+    dispatch({
+      type: CHANGE_PRODUCT_QUANTITY_FETCH,
+      payload: { id }
+    });
+
+    const url = CHECKOUT.changeQuantityURL;
+
+    axios.post(url, { id, quantity })
+      .then((response) => {
+        dispatch({
+          type: CHANGE_PRODUCT_QUANTITY_SUCCESS,
+          payload: {
+            ui: response.data.payload
+          }
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: CHANGE_PRODUCT_QUANTITY_FAILURE
+        });
+      });
+
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: CHANGE_PRODUCT_QUANTITY_FAILURE
+    //   });
+    // }, 2000);
+  };
+};
+
 export const changeShoppingData = (field, id, invoice) => {
   return (dispatch) => {
     dispatch({
@@ -67,6 +134,15 @@ export const changeShoppingData = (field, id, invoice) => {
       : (field === 'deliveryAddress')
       ? CHECKOUT.changeAddressURL
       : '';
+
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
+    //     payload: {
+    //       ui: ui2.payload
+    //     }
+    //   });
+    // }, 1000);
 
     axios.post(url, { id })
       .then((response) => {
@@ -111,7 +187,7 @@ export const sendData = (data) => {
       return;
     }
 
-    axios.post(CHECKOUT.submitURL, { data })
+    axios.post(CHECKOUT.submitURL, { ...data })
       .then((response) => {
         dispatch({
           type: SEND_SHOPPING_DATA_SUCCESS,
