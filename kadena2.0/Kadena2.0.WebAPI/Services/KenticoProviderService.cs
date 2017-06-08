@@ -230,9 +230,9 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
-                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
+                DesignFilePath = i.GetValue("ArtworkLocation", /*string.Empty*/"defaultartworklocation"),// TODO via calling service for templated
                 MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
-                OrderItemType = i.GetValue("ProductType", string.Empty),
+                OrderItemType = i.GetValue("ProductType", /*string.Empty*/ "KDA.StaticProduct"), // TODO
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 KenticoSKUId = i.SKUID,
@@ -257,8 +257,8 @@ namespace Kadena.WebAPI.Services
                 IsEditable = false,
                 Quantity = i.CartItemUnits,
                 Price = i.CartItemPrice * i.CartItemUnits,
-                PricePrefix = "$", //TODO loc
-                QuantityPrefix = "Quantity:", //TODO loc
+                PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
                 IsMailingList = false, //TODO
                 MailingList = "Mailing list", //TODO
