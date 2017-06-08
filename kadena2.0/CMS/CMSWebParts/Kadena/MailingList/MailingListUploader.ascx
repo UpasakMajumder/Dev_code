@@ -106,3 +106,4 @@
         };">
     <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.Create" />
 </button>
+<span runat="server" id="txtError" class="input__error input__error--noborder"></span>
