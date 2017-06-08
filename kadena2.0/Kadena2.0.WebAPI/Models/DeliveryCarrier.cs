@@ -48,11 +48,7 @@ namespace Kadena.WebAPI.Models
         public int GetDefaultMethodId()
         {
             var firstAvailable = items.Where(i => !i.Disabled).OrderBy(i => i.PriceAmount).FirstOrDefault();
-
-            if (firstAvailable != null)
-                return firstAvailable.Id;
-
-            return 0;
+            return firstAvailable?.Id ?? 0;
         }
 
         public void UpdateSummaryText(string priceFrom, string price, string cannotBeDelivered, string customerPrice)

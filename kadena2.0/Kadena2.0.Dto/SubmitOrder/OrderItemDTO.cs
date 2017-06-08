@@ -26,9 +26,6 @@ namespace Kadena.Dto.SubmitOrder
 
         public SKUDTO SKU { get; set; }
 
-        /// <summary>
-        ///  0
-        /// </summary>
         public int LineNumber { get; set; }
 
         public OrderItemTypeDTO Type { get; set; }

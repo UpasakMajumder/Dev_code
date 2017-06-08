@@ -55,11 +55,7 @@ namespace Kadena.WebAPI.Services
         public int GetOrderStatusId(string name)
         {
             var status = OrderStatusInfoProvider.GetOrderStatuses().Where(s => s.StatusName == name).FirstOrDefault();
-
-            if (status == null)
-                return 0;
-
-            return status.StatusID;
+            return status?.StatusID ?? 0;
         }
     }
 }

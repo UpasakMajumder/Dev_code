@@ -187,11 +187,7 @@ namespace Kadena.WebAPI.Services
         public int GetCurrentCartAddresId()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-
-            if (address == null)
-                return 0;
-
-            return address.AddressID;
+            return address?.AddressID ?? 0;
         }
 
         public int GetCurrentCartShippingOptionId()

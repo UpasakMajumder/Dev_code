@@ -6,11 +6,7 @@ namespace Kadena.Dto.SubmitOrder
 {
     public class OrderDTO
     {
-        /// <summary>
-        ///  empty
-        /// </summary>
          public string OrderID { get; set; }
-         
          
          public AddressDTO BillingAddress { get; set; }
 
