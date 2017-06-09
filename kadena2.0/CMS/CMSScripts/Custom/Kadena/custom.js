@@ -355,17 +355,11 @@ if (!String.prototype.format) {
             productionDateEmptyErrorMessage: ".j-production-date-empty-error-message",
             productionDateInvalidMessage: ".j-production-date-invalid-error-message",
             selectionDateInput: ".j-selection-date",
+            selectionDateInvalidMessage: ".j-selection-date-invalid-error-message",
             submitButton: ".j-submit-button"
         }, options);
 
         base.find(settings.nameInput).keyup(function (e) {
-            if (e.which == 13) {
-                e.preventDefault();
-                base.find(settings.submitButton).trigger("click");
-            }
-        });
-
-        base.find(settings.descriptionInput).keyup(function (e) {
             if (e.which == 13) {
                 e.preventDefault();
                 base.find(settings.submitButton).trigger("click");
@@ -382,6 +376,8 @@ if (!String.prototype.format) {
             base.find(settings.productionDateEmptyErrorMessage).hide();
             base.find(settings.productionDateInvalidMessage).hide();
             base.find(settings.productionDateInput).removeClass("input--error");
+            base.find(settings.selectionDateInvalidMessage).hide();
+            base.find(settings.selectionDateInput).removeClass("input--error");
 
             base.find(settings.attachmentsFileExtensionErrorMessage).hide();
             base.find(settings.attachmentsNumberErrorMessage).hide();
@@ -432,21 +428,36 @@ if (!String.prototype.format) {
                 base.find(settings.productionDateEmptyErrorMessage).show();
                 return;
             }
-            // date format validation
+            // production date format validation
+            if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
+                base.find(settings.productionDateInput).addClass("input--error");
+                base.find(settings.productionDateInvalidMessage).show();
+                return;
+            }
+            // selection date format validation
+            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {                
+                base.find(settings.selectionDateInput).addClass("input--error");
+                base.find(settings.selectionDateInvalidMessage).show();
+                return;
+            }
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 
             var formData = new FormData()
             formData.append('name', base.find(settings.nameInput).val());
-            formData.append('description', base.find(settings.nameInput).val());
+            formData.append('description', base.find(settings.descriptionInput).val());
             formData.append('requestType', base.find(settings.requestTypeGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWay', base.find(settings.biddingWayGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWayNumber', base.find(settings.biddingWayGroup).find("input:checked").attr("data-number"));
+            formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            if (base.find(settings.selectionDateInput).val() != '') {
+                formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+            }            
+
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
                 base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
                     if (index != 0) {
-                        formData.append('file' + index, base.find(settings.attachments).find(".js-drop-zone-file")[1].files[0]);
-                         $(this)[0].files[0];
+                        formData.append('file' + index, $(this)[0].files[0]);
                     }
                 });
             }            

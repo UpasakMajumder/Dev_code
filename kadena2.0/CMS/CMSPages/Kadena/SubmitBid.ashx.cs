@@ -39,7 +39,12 @@ namespace Kadena.CMSPages.Kadena
             string requestType = context.Request.Form["requestType"];
             string biddingWay = context.Request.Form["biddingWay"];
             int biddingWayNumber = ValidationHelper.GetInteger(context.Request.Form["biddingWayNumber"], 0);
-
+            DateTime productionDate = ValidationHelper.GetDate(context.Request.Form["productionDate"], DateTime.MinValue);
+            DateTime? selectionDate = null;
+            if (context.Request.Form["selectionDate"] != null)
+            {
+                selectionDate = new DateTime?(ValidationHelper.GetDate(context.Request.Form["selectionDate"], DateTime.MinValue));
+            }            
             var files = new List<HttpPostedFile>();
             if (context.Request.Files.Count > 0)
             {
@@ -87,10 +92,15 @@ namespace Kadena.CMSPages.Kadena
                     return;
                 }
             }
+            if (productionDate == DateTime.MinValue)
+            {
+                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
+                return;
+            }
 
             #endregion
 
-            result = SubmitBidInternal(name, description, requestType, biddingWay, biddingWayNumber, files);
+            result = SubmitBidInternal(name, description, requestType, biddingWay, biddingWayNumber, files, productionDate, selectionDate);
             context.Response.Write(JsonConvert.SerializeObject(result));
         }
 
@@ -106,7 +116,7 @@ namespace Kadena.CMSPages.Kadena
 
         #region Private methods
 
-        private GeneralResultDTO SubmitBidInternal(string name, string description, string requestType, string biddingWay, int numberOfBidings, List<HttpPostedFile> files)
+        private GeneralResultDTO SubmitBidInternal(string name, string description, string requestType, string biddingWay, int numberOfBidings, List<HttpPostedFile> files, DateTime productionDate, DateTime? selectionDate)
         {
             var bidForm = BizFormInfoProvider.GetBizFormInfo(_BidFormCodeName, SiteContext.CurrentSiteID);
             if (bidForm != null)
@@ -122,6 +132,12 @@ namespace Kadena.CMSPages.Kadena
                 newFormItem.SetValue("BiddingWayText", biddingWay);
                 newFormItem.SetValue("BiddingWayNumber", numberOfBidings);
 
+                newFormItem.SetValue("ProductionDate", productionDate);
+                if (selectionDate.HasValue)
+                {
+                    newFormItem.SetValue("SelectionDate", selectionDate);
+                }
+
                 newFormItem.SetValue("FormInserted", DateTime.Now);
                 newFormItem.SetValue("FormUpdated", DateTime.Now);
 
@@ -134,7 +150,7 @@ namespace Kadena.CMSPages.Kadena
                         string extension = System.IO.Path.GetExtension(files[i].FileName);
                         string fileName = GetNewGuidName(extension);
                         string formFilesFolderPath = FormHelper.GetBizFormFilesFolderPath(SiteContext.CurrentSiteName);
-                        string fileNameString = fileName + "/" + CMS.IO.Path.GetFileName(files[i].FileName);
+                        string fileNameString = fileName + "/" + Path.GetFileName(files[i].FileName);
                         this.SaveFileToDisk(files[i], fileName, formFilesFolderPath);
                         newFormItem.SetValue(string.Format("File{0}", i + 1), (object)fileNameString);
                     }
