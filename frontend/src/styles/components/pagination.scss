@@ -40,16 +40,21 @@
   }
 }
 
-.pagination1 {
-  &__item,
-  &__page {
-    &:not(:last-child) {
-      @include rem(margin-right, 5px);
-    }
-    display: none;
+.generated-paginator {
+  p {
+    @include rem(padding, 0 8px);
+    margin: 0;
+    display: inline-block;
+    color: $brand-primary;
+    cursor: pointer;
   }
 
-  &__active-item {
+  &__prev:hover,
+  &__next:hover {
+    text-decoration: underline;
+  }
+
+  p.generated-paginator__current {
     @extend .line-height--one;
     @extend .link--no-decoration;
     $padding-x: 2px;
@@ -64,100 +69,7 @@
     border-radius: 100%;
   }
 
-  &__default-item {
-    background-color: transparent;
+  & * {
     color: $brand-primary;
-  }
-
-  &__item:nth-child(2) {
-    & *:nth-child(3),
-    & *:nth-child(4),
-    & *:nth-child(5) {
-      display: inline-block;
-    }
-  }
-
-  &.l-arrow {
-    .pagination1__item:first-child {
-      display: inline-block;
-
-      .pagination1__step {
-        display: inline-block;
-      }
-    }
-  }
-
-  &.r-arrow {
-    .pagination1__item:last-child {
-      display: inline-block;
-
-      .pagination1__step {
-        display: inline-block;
-      }
-    }
-  }
-
-  &.l-dots {
-    .pagination1__item:nth-child(2) {
-      display: inline-block;
-
-      & *:nth-child(2) {
-        display: inline-block;
-      }
-    }
-  }
-
-  &.r-dots {
-    .pagination1__item:nth-child(2) {
-      display: inline-block;
-
-      & *:nth-child(6) {
-        display: inline-block;
-      }
-    }
-  }
-
-  &.l-num {
-    .pagination1__item:nth-child(2) {
-      display: inline-block;
-
-      & *:first-child {
-        display: inline-block;
-      }
-    }
-  }
-
-  &.r-num {
-    .pagination1__item:nth-child(2) {
-      display: inline-block;
-
-      & *:last-child {
-        display: inline-block;
-      }
-    }
-  }
-
-  &__item {
-    display: none;
-  }
-
-  & a.pagination1__page--active {
-    @extend .pagination1__active-item;
-  }
-
-  &__dots {
-    @include rem(margin-right, 5px);
-    display: none;
-  }
-
-  &__step {
-    svg {
-      vertical-align: middle;
-    }
-    display: none;
-  }
-
-  a {
-    @extend .link;
   }
 }

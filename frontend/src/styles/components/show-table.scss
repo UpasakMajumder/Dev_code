@@ -6,6 +6,16 @@
   border-spacing: 0;
   border: 1px solid $brand-grey;
 
+  &--hide-rows {
+    tr:not(:first-child) {
+      display: none;
+    }
+
+    tr.active {
+      display: table-row;
+    }
+  }
+
   & tr td,
   & tr th {
     @include rem(padding, 16px 8px);
