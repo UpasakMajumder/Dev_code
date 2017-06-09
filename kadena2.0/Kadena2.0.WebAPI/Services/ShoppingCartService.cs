@@ -219,6 +219,7 @@ namespace Kadena.WebAPI.Services
             if (serviceResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+                OrderCurrentCart();
             }
             else
             {
@@ -336,6 +337,13 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage RemoveItem(int id)
         {
             kenticoProvider.RemoveCartItem(id);
+            return GetCheckoutPage();
+        }
+
+        public CheckoutPage OrderCurrentCart()
+        {
+            kenticoProvider.RemoveCurrentItemsFromStock();
+            kenticoProvider.RemoveCurrentItemsFromCart();
             return GetCheckoutPage();
         }
     }

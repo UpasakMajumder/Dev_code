@@ -303,7 +303,7 @@ namespace Kadena.WebAPI.Services
             var cart = ECommerceContext.CurrentShoppingCart;
 
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-            if (item != null)
+            if (item != null && quantity <= item.SKU.SKUAvailableItems)
             {
                 ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
                 cart.InvalidateCalculations();
@@ -319,6 +319,26 @@ namespace Kadena.WebAPI.Services
         public void SetProductStockQuantity(int productId, int quantity)
         {
             
+        }
+
+        public void RemoveCurrentItemsFromStock()
+        {
+            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+
+            foreach (var i in items)
+            {
+                if (i.GetValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                {
+                    int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
+                    i.SKU.SKUAvailableItems -= toRemove;
+                    i.SKU.SubmitChanges(true);
+                }
+            }
+        }
+
+        public void RemoveCurrentItemsFromCart()
+        {
+            // TODO   
         }
     }
 }
