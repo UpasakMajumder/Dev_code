@@ -241,6 +241,9 @@ namespace Kadena.WebAPI.Services
             var cartItems = kenticoProvider.GetShoppingCartOrderItems();
             var currency = resources.GetSiteCurrency();
 
+            if (string.IsNullOrWhiteSpace(customer.Company))
+                customer.Company = resources.GetDefaultCustomerCompanyName();
+
             return new OrderDTO()
             {
                 BillingAddress = new AddressDTO()

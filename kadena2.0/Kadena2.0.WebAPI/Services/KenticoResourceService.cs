@@ -57,5 +57,10 @@ namespace Kadena.WebAPI.Services
             var status = OrderStatusInfoProvider.GetOrderStatuses().Where(s => s.StatusName == name).FirstOrDefault();
             return status?.StatusID ?? 0;
         }
+
+        public string GetDefaultCustomerCompanyName()
+        {
+            return GetSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
+        }
     }
 }
