@@ -7,13 +7,6 @@
 {% set breadcrumbs = [title, 'New request'] %}
 {% set headerTitle = 'New request' %}
 
-{% set btns = [
-  {
-    name: 'Submit a request',
-    class: 'btn-action js-drop-zone-submit'
-  }
-] %}
-
 {% block content %}
 
   <div class="block">
@@ -53,7 +46,10 @@
   </div>
 
   <div class="block">
-    <h2 class="block__heading">Attachment</h2>
+    <div class="block__heading">
+      <h2>Attachment</h2>
+      <span class="block__right-label">Optional</span>
+    </div>
     {% set description = 'Drag & drop your file here or click anywhere to upload' %}
     {% set descriptionIE = 'Click anywhere to upload your file' %}
     {% include "components/drop-zone.nunj" %}
@@ -89,7 +85,7 @@
         <div class="form-block">
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
-            <input type="date" class="input__text">
+            <input type="text" readonly class="input__text js-datepicker">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
         </div>
@@ -103,12 +99,17 @@
         <div class="form-block">
           <div class="input__wrapper input__wrapper--with-icon">
             <span class="input__label">Production date</span>
-            <input type="date" class="input__text">
+            <span class="input__right-label">Optional</span>
+            <input type="text" readonly class="input__text js-datepicker">
             {{ svg('calendar_1', 'icon-input') }}
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="block">
+    <button class="btn-action js-drop-zone-submit">Submit a request</button>
   </div>
 
 {% endblock %}
