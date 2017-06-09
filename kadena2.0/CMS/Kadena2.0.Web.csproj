@@ -712,6 +712,13 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx.cs">
       <DependentUpon>AddressViewer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -864,6 +871,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
