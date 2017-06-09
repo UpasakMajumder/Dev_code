@@ -24,7 +24,11 @@ class Products extends Component {
   handleChange(quantity) {
     if (!quantity) return;
 
-    const { id } = this.props;
+    const { id, stockQuantity } = this.props;
+
+    if (stockQuantity) {
+      if (quantity < 1 || quantity > stockQuantity || isNaN(quantity)) return;
+    }
 
     clearTimeout(this.state.workingProcess);
 
@@ -39,7 +43,7 @@ class Products extends Component {
   }
 
   render() {
-    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, loadingProducts, removeProduct, changeProductQuantity,
+    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, loadingProducts, removeProduct,
       loadingQuantities } = this.props;
     const { quantity } = this.state;
 
