@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DeliveryAddress from './DeliveryAddress';
-import Undeliverable from './DeliveryAddress/Undeliverable';
+import Alert from '../Alert';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
@@ -76,7 +76,7 @@ class ShoppingCart extends Component {
         </div>
         : <div className="shopping-cart__block">
           <h2>{title}</h2>
-          <Undeliverable unDeliverableText={unDeliverableText}/>
+          <Alert type="grey" text={unDeliverableText}/>
         </div>;
 
       content = <div>

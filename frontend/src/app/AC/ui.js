@@ -23,6 +23,7 @@ export default {
     },
     "deliveryAddresses": {
       "isDeliverable": true,
+      "unDeliverableText": "Text",
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
       "addAddressLabel": "New address",
@@ -245,7 +246,8 @@ export default {
       ]
     },
     "paymentMethods": {
-      "isPayable": true,
+      "isPayable": false,
+      "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
       "items": [

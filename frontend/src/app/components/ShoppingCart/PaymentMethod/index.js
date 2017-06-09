@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Method from './Method';
-import Unpayable from './Unpayable';
+import Alert from '../../Alert';
 
 class PaymentMethod extends Component {
   render() {
@@ -31,7 +31,7 @@ class PaymentMethod extends Component {
           {methods}
         </div>
       </div>
-    : <Unpayable unPayableText={unPayableText} />;
+    : <Alert type="grey" text={unPayableText} />;
 
     return (
       <div>
