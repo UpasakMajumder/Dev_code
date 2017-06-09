@@ -19,6 +19,14 @@ class MethodsGroup extends Component {
 
     if (disabled) className += ' input__wrapper--disabled';
 
+    const dateElement = (datePrefix && date)
+      ? <span>{datePrefix} {date}</span>
+      : (datePrefix)
+      ? <span>{datePrefix}</span>
+      : (date)
+      ? <span>{date}</span>
+      : null;
+
     const priceElement = (pricePrefix && price)
       ? <span>{pricePrefix} {price}</span>
       : (pricePrefix)
@@ -27,22 +35,19 @@ class MethodsGroup extends Component {
       ? <span>{price}</span>
       : null;
 
-    const dateElement = (datePrefix && date)
-      ? <span> | <span>{datePrefix} {date}</span></span>
-      : (datePrefix)
-      ? <span> | <span>{datePrefix}</span></span>
-      : (date)
-      ? <span> | <span>{date}</span></span>
+    const stick = dateElement
+      ? <span> | </span>
       : null;
 
     const extraInfo = (priceElement || dateElement)
-      ? <span>({priceElement}{dateElement})</span>
+      ? <span>({dateElement}{stick}{priceElement})</span>
       : null;
 
     return (
       <div>
         <div className={className}>
-          <input disabled={disabled}
+          <input checked={openId === id}
+                 disabled={disabled}
                  onChange={() => changeOpenId(id)}
                  type="radio"
                  name="methodGroup"

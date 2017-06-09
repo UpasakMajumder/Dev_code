@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Method from './Method';
+import Unpayable from './Unpayable';
 
 class PaymentMethod extends Component {
   render() {
     const { ui, checkedObj, changeShoppingData, validationFields, validationMessage } = this.props;
-    const { title, description, items } = ui;
+    const { title, description, items, isPayable, unPayableText } = ui;
 
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
@@ -23,15 +24,19 @@ class PaymentMethod extends Component {
       );
     });
 
+    const content = isPayable
+    ? <div className="cart-fill__block">
+        {descriptionElement}
+        <div className="cart-fill__block-inner">
+          {methods}
+        </div>
+      </div>
+    : <Unpayable unPayableText={unPayableText} />;
+
     return (
       <div>
         <h2>{title}</h2>
-        <div className="cart-fill__block">
-          {descriptionElement}
-          <div className="cart-fill__block-inner">
-            {methods}
-          </div>
-        </div>
+        {content}
       </div>
     );
   }
