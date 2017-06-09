@@ -351,6 +351,10 @@ if (!String.prototype.format) {
             attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
             attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
             biddingWayGroup: ".j-bidding-way-checkbox-group",
+            productionDateInput: ".j-production-date",
+            productionDateEmptyErrorMessage: ".j-production-date-empty-error-message",
+            productionDateInvalidMessage: ".j-production-date-invalid-error-message",
+            selectionDateInput: ".j-selection-date",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -375,6 +379,9 @@ if (!String.prototype.format) {
             base.find(settings.nameInput).removeClass("input--error");
             base.find(settings.descriptionErrorMessage).hide();
             base.find(settings.descriptionInput).removeClass("input--error");
+            base.find(settings.productionDateEmptyErrorMessage).hide();
+            base.find(settings.productionDateInvalidMessage).hide();
+            base.find(settings.productionDateInput).removeClass("input--error");
 
             base.find(settings.attachmentsFileExtensionErrorMessage).hide();
             base.find(settings.attachmentsNumberErrorMessage).hide();
@@ -419,7 +426,13 @@ if (!String.prototype.format) {
                     base.find(settings.attachmentsSizeErrorMessage).show();
                     return;
                 }
-            }   
+            }
+            if (base.find(settings.productionDateInput).val() == '') {
+                base.find(settings.productionDateInput).addClass("input--error");
+                base.find(settings.productionDateEmptyErrorMessage).show();
+                return;
+            }
+            // date format validation
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 

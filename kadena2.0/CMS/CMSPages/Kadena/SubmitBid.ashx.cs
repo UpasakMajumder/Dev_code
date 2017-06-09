@@ -1,10 +1,12 @@
 ﻿using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.EmailEngine;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Localization;
+using CMS.MacroEngine;
 using CMS.OnlineForms;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
@@ -12,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 
 namespace Kadena.CMSPages.Kadena
@@ -138,7 +141,7 @@ namespace Kadena.CMSPages.Kadena
                 }
                 newFormItem.Insert();
 
-                //SendFormEmail(newFormItem);
+                SendFormEmail(newFormItem, files.Count);
 
                 return new GeneralResultDTO { success = true };
             }
@@ -169,6 +172,57 @@ namespace Kadena.CMSPages.Kadena
             {
                 WebFarmHelper.CreateIOTask("UPDATEBIZFORMFILE", path, (BinaryData)postedFile.InputStream, "updatebizformfile", SiteContext.CurrentSiteName, fileName);
             }
+        }
+
+        private void SendFormEmail(BizFormItem item, int attachmentsCount)
+        {
+            if (item.BizFormInfo != null)
+            {
+                MacroResolver resolver = MacroContext.CurrentResolver.CreateChild();
+                resolver.SetAnonymousSourceData(item);
+                resolver.Settings.EncodeResolvedValues = true;
+                resolver.Culture = CultureHelper.GetPreferredCulture();
+
+                string body = DataHelper.GetNotEmpty(item.BizFormInfo.FormEmailTemplate, string.Empty);
+                body = resolver.ResolveMacros(body);
+
+                EmailMessage message = new CMS.EmailEngine.EmailMessage();
+                message.From = item.BizFormInfo.FormSendFromEmail;
+                message.Recipients = resolver.ResolveMacros(item.BizFormInfo.FormSendToEmail);
+                message.Subject = resolver.ResolveMacros(item.BizFormInfo.FormEmailSubject);
+                message.Body = URLHelper.MakeLinksAbsolute(body);
+                message.EmailFormat = CMS.EmailEngine.EmailFormatEnum.Html;
+
+                for (int i = 1; i <= attachmentsCount; i++)
+                {
+                    Attachment attachment = GetAttachment(item.GetStringValue("File" + i, string.Empty));
+                    if (attachment != null)
+                    {
+                        message.Attachments.Add(attachment);
+                    }
+                }                
+                EmailSender.SendEmail(message);
+            }
+        }
+
+        private Attachment GetAttachment(string attachmentGuid)
+        {
+            if (string.IsNullOrEmpty(attachmentGuid))
+            {
+                return null;
+            }
+
+            string formFilesFolderPath = FormHelper.GetBizFormFilesFolderPath(SiteContext.CurrentSiteName, (string)null);
+            string path = formFilesFolderPath + FormHelper.GetGuidFileName(attachmentGuid);
+            if (CMS.IO.File.Exists(path))
+            {
+                Attachment attachment = new Attachment(
+                    (System.IO.Stream)CMS.IO.FileStream.New(path, CMS.IO.FileMode.Open, CMS.IO.FileAccess.Read),
+                    FormHelper.GetGuidFileName(attachmentGuid));
+                return attachment;
+            }
+
+            return null;
         }
 
         #endregion
