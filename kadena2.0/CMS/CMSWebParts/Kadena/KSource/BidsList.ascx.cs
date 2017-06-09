@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace Kadena.CMSWebParts.Kadena.KSource
 {
@@ -18,40 +20,93 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 projects = BidServiceHelper.GetProjects();
             }
-            catch(HttpRequestException) { }
+            catch (HttpRequestException) { }
 
             int openCount = 0, completedCount = 0;
             if (projects != null)
             {
-                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate);
-                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate);
+                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate).ToArray();
+                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate).ToArray();
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
 
-                FillTable(tblOpenProjects, openProjects);
-                FillTable(tblCompletedProjects, completedProjects);
+                FillTable(tblOpenProjects, phOpenPagination, openProjects);
+                FillTable(tblCompletedProjects, phCompletedPagination, completedProjects);
             }
-
+            
             lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), openCount);
             lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), completedCount);
         }
 
-        private static void FillTable(HtmlTable table, IEnumerable<ProjectData> data)
+        private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data)
         {
-            foreach (var i in data)
+            int recordsPerPage = 10;
+            for (int i = 0; i < data.Count(); i++)
             {
-                table.Rows.Add(
-                    new HtmlTableRow
-                    {
-                        Cells = {
-                        new HtmlTableCell { InnerText = i.Name},
-                        new HtmlTableCell { InnerText = i.RequestId.ToString()},
-                        new HtmlTableCell { InnerText = i.Status},
-                        new HtmlTableCell { InnerText = i.UpdateDate.ToString("MMM dd yyyy")}
+                var pr = data[i];
+                var page = i / recordsPerPage + 1;
+                var row = new HtmlTableRow
+                {
+                    Cells = {
+                        new HtmlTableCell { InnerText = pr.Name},
+                        new HtmlTableCell { InnerText = pr.RequestId.ToString()},
+                        new HtmlTableCell { InnerText = pr.Status},
+                        new HtmlTableCell { InnerText = pr.UpdateDate.ToString("MMM dd yyyy")}
                         }
-                    }
-                    );
+                };
+                if (page == 1)
+                {
+                    row.Attributes["class"] = "active";
+                }
+                row.Attributes["data-page"] = page.ToString();
+                table.Rows.Add(row);
+            }
+
+            // Adding pagination
+            if (data.Count() > recordsPerPage)
+            {
+                var divBlock = new HtmlGenericControl("div");
+                divBlock.Attributes["class"] = "block";
+
+                var divRow = new HtmlGenericControl("div");
+                divRow.Attributes["class"] = "row flex-align--center";
+
+                var divMessage = new HtmlGenericControl("div");
+                divMessage.Attributes["class"] = "col-6";
+
+                var divPagesOuter = new HtmlGenericControl("div");
+                divPagesOuter.Attributes["class"] = "col-6 text--right";
+
+                var divPagesInner = new HtmlGenericControl("div");
+                divPagesInner.Attributes["class"] = "js-table-paginator-wrapper generated-paginator";
+                divPagesInner.Attributes["data-pages"] = (data.Count() / recordsPerPage + 1).ToString();
+
+                var span = new HtmlGenericControl("span");
+
+                var spanFrom = new HtmlGenericControl("span");
+                spanFrom.Attributes["class"] = "js-table-paginator-from";
+
+                var spanTo = new HtmlGenericControl("span");
+                spanTo.Attributes["class"] = "js-table-paginator-to";
+
+                var spanTotal = new HtmlGenericControl("span");
+                spanTotal.InnerText = $"{data.Count()}";
+
+                divBlock.Controls.Add(divRow);
+                divRow.Controls.Add(divMessage);
+                divMessage.Controls.Add(span);
+                span.Controls.Add(new LiteralControl("Showing "));
+                span.Controls.Add(spanFrom);
+                span.Controls.Add(new LiteralControl(" to "));
+                span.Controls.Add(spanTo);
+                span.Controls.Add(new LiteralControl(" from "));
+                span.Controls.Add(spanTotal);
+                span.Controls.Add(new LiteralControl(" entries"));
+                divRow.Controls.Add(divPagesOuter);
+                divPagesOuter.Controls.Add(divPagesInner);
+
+                placeHolder.Controls.Add(divBlock);
             }
         }
     }
