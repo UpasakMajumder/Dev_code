@@ -9,13 +9,5 @@
 {% set headerTitle = title %}
 
 {% block content %}
-  <div class="shopping-cart">
-    <div class="shopping-cart__block">
-      <p class="text-right">You have <span>2 items</span> in your cart</p>
-      {% include "components/cart-product.nunj" %}
-      {% include "components/cart-product.nunj" %}
-    </div>
-
-    <div id="r-shopping-cart"></div>
-  </div>
+    <div class="shopping-cart" id="r-shopping-cart"></div>
 {% endblock %}
