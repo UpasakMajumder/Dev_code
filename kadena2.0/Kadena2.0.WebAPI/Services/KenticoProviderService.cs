@@ -226,9 +226,9 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
-                DesignFilePath = i.GetValue("ArtworkLocation", /*string.Empty*/"defaultartworklocation"),// TODO via calling service for templated
-                MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
-                OrderItemType = i.GetValue("ProductType", /*string.Empty*/ "KDA.StaticProduct"), // TODO
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
+                MailingListId = Guid.Empty, // seem to be redundant parameter, microservise doesn't use it
+                OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 KenticoSKUId = i.SKUID,
@@ -256,7 +256,7 @@ namespace Kadena.WebAPI.Services
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                IsMailingList = false, //TODO
+                IsMailingList = i.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct"),
                 MailingList = "Mailing list", //TODO
                 Template = "Template", // TODO
                 StockQuantity = i.SKU.SKUAvailableItems
@@ -331,7 +331,7 @@ namespace Kadena.WebAPI.Services
                 {
                     int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
                     i.SKU.SKUAvailableItems -= toRemove;
-                    i.SKU.SubmitChanges(true);
+                    i.SKU.SubmitChanges(false);
                 }
             }
         }
