@@ -12,7 +12,7 @@ namespace Kadena.Tests
         private const string _urlSetting = "KDA_ValidateAddressUrl";
         private const string _customerNameSettingKey = "KDA_CustomerName";
 
-        [TestCase("b44486be-e70d-460d-b81a-affa4834e3ed",
+        [TestCase("611d1292-dc07-4464-a729-c1d4cd542b15",
             "actum",
             "https://o31vibmca2.execute-api.us-east-1.amazonaws.com/Qa/Api/AddressValidator",
             TestName = "ValidateAddressesSuccess",
