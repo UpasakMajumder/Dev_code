@@ -719,6 +719,13 @@
     <Compile Include="CMSWebParts\Kadena\General\Button.ascx.designer.cs">
       <DependentUpon>Button.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx.cs">
       <DependentUpon>AddressViewer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -824,6 +831,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
       <DependentUpon>EstimatesTable.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx.cs">
+      <DependentUpon>ReletedDocumentsWithPermissions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx.designer.cs">
+      <DependentUpon>ReletedDocumentsWithPermissions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\KadenaModule.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
@@ -865,6 +879,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
+    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
@@ -874,6 +889,7 @@
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
+    <Content Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>
