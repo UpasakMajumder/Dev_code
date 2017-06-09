@@ -4,6 +4,7 @@ using Kadena.Old_App_Code.Kadena.KSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.UI.HtmlControls;
 
 namespace Kadena.CMSWebParts.Kadena.KSource
@@ -12,7 +13,13 @@ namespace Kadena.CMSWebParts.Kadena.KSource
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var projects = BidServiceHelper.GetProjects();
+            IEnumerable<ProjectData> projects = null;
+            try
+            {
+                projects = BidServiceHelper.GetProjects();
+            }
+            catch(HttpRequestException) { }
+
             int openCount = 0, completedCount = 0;
             if (projects != null)
             {
