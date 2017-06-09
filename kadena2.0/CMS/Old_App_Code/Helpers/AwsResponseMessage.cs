@@ -18,7 +18,17 @@ namespace Kadena.Old_App_Code.Helpers
 
         [DataMember(Name = "errorMessages")]
         [Obsolete("Will be removed after all microservices will use Error property.")]
-        public string ErrorMessages { get; set; }
+        public string ErrorMessages
+        {
+            get
+            {
+                return Error.Message;
+            }
+            set
+            {
+                Error = new ErrorMessage { Message = value };
+            }
+        }
 
         [DataMember(Name = "error")]
         public ErrorMessage Error { get; set; }
