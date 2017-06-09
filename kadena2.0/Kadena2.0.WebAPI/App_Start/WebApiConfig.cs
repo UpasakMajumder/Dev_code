@@ -118,7 +118,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-                config.CreateMap<Kadena.WebAPI.Infrastructure.Requests.PaymentMethodDto, Kadena.WebAPI.Models.SubmitOrder.PaymentMethod>();
+                config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             });
         }
 

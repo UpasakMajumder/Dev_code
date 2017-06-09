@@ -213,6 +213,8 @@ namespace Kadena.WebAPI.Services
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
             var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
+            var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
+            serviceResult.RedirectURL = redirectUrl;
 
             if (serviceResult.Success)
             {
