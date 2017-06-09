@@ -47,7 +47,8 @@ namespace Kadena.WebAPI.Services
 
                 DeliveryAddresses = new DeliveryAddresses()
                 {
-                    IsDeliverable = true, //TODO
+                    IsDeliverable = true,
+                    UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
                     AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
@@ -70,7 +71,8 @@ namespace Kadena.WebAPI.Services
 
                 PaymentMethods = new PaymentMethods()
                 {
-                    IsPayable = true, // TODO
+                    IsPayable = true,
+                    UnPayableText = resources.GetResourceString("Kadena.Checkout.UnpayableText"),
                     Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
                     Items = OrderPaymentMethods(paymentMethods)
@@ -89,6 +91,7 @@ namespace Kadena.WebAPI.Services
                     resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
                     resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
+            checkoutPage.SetDisplayType();
             return checkoutPage;
         }
 
