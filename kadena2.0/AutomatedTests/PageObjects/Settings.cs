@@ -26,7 +26,7 @@ namespace AutomatedTests.PageObjects
 
         public void Open()
         {
-            Browser.Driver.Navigate().GoToUrl(TestEnvironment.Url + "/settings");
+            Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/settings");
         }
 
         public void WaitUntilSettingsBlockIsDisplayed()
