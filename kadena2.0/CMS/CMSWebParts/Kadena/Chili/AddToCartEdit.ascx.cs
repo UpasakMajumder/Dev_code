@@ -63,38 +63,44 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private void AddItemsToShoppingCart(int ammount)
         {
+            int skuID;
+            int documentId;
 
-            var product = string.IsNullOrEmpty(Request.QueryString["skuId"]) ? null : SKUInfoProvider.GetSKUInfo(int.Parse(Request.QueryString["skuId"]));
-            var document = string.IsNullOrEmpty(Request.QueryString["id"]) ? null : DocumentHelper.GetDocument(int.Parse(Request.QueryString["id"]), new TreeProvider(MembershipContext.AuthenticatedUser));
-
-            if (document != null && product != null)
+            if (int.TryParse(Request.QueryString["skuId"], out skuID) && int.TryParse(Request.QueryString["id"], out documentId))
             {
-                var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
-                var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
-                var productType = document.GetStringValue("ProductType", string.Empty);
+                var product = SKUInfoProvider.GetSKUInfo(skuID);
+                var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
 
-                var cart = ECommerceContext.CurrentShoppingCart;
-                AssignCartShippingAddress(cart);
-                ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-
-                var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
-                var cartItem = cart.SetShoppingCartItem(parameters);
-
-                cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
-                cartItem.SetValue("ArtworkLocation", artworkLocation);
-                cartItem.SetValue("ProductType", productType);
-
-                var dynamicUnitPrice = GetUnitPriceForAmmount(ammount);
-                if (dynamicUnitPrice > 0)
+                if (document != null && product != null)
                 {
-                    cartItem.CartItemPrice = dynamicUnitPrice;
-                }
+                    var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
+                    var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
+                    var productType = document.GetStringValue("ProductType", string.Empty);
 
-                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-               
-                lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
-                SetErrorLblVisible();
+                    var cart = ECommerceContext.CurrentShoppingCart;
+                    AssignCartShippingAddress(cart);
+                    ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
+
+                    var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
+                    var cartItem = cart.SetShoppingCartItem(parameters);
+
+                    cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
+                    cartItem.SetValue("ArtworkLocation", artworkLocation);
+                    cartItem.SetValue("ProductType", productType);
+
+                    var dynamicUnitPrice = GetUnitPriceForAmmount(ammount);
+                    if (dynamicUnitPrice > 0)
+                    {
+                        cartItem.CartItemPrice = dynamicUnitPrice;
+                    }
+
+                    ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
+
+                    lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
+                    SetErrorLblVisible();
+                }
             }
+                   
         }
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
