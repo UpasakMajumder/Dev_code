@@ -250,15 +250,14 @@ namespace Kadena.WebAPI.Services
             {
                 Id = i.CartItemID,
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
-                IsEditable = false,
+                ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 Price = i.CartItemPrice * i.CartItemUnits,
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                IsMailingList = i.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct"),
-                MailingList = "Mailing list", //TODO
-                Template = "Template", // TODO
+                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data
+                Template = i.GetValue("ChilliTemplateID", string.Empty),
                 StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
@@ -297,18 +296,17 @@ namespace Kadena.WebAPI.Services
 
         public void SetCartItemQuantity(int id, int quantity)
         {
-            if (quantity < 1)
-                return;
-
             var cart = ECommerceContext.CurrentShoppingCart;
-
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-            if (item != null && quantity <= item.SKU.SKUAvailableItems)
+
+            if (item == null || quantity < 1 || quantity > item.SKU.SKUAvailableItems)
             {
-                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
-                cart.InvalidateCalculations();
-                ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}");
             }
+
+            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+            cart.InvalidateCalculations();
+            ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
         public int GetProductStockQuantity(int productId)
@@ -338,7 +336,7 @@ namespace Kadena.WebAPI.Services
 
         public void RemoveCurrentItemsFromCart()
         {
-            // TODO   
+            ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
         }
     }
 }
