@@ -14,7 +14,7 @@ namespace Kadena.Tests
         private string _urlSetting = "KDA_GetMailingAddressesUrl";
 
         [TestCase("b44486be-e70d-460d-b81a-affa4834e3ed",
-            "https://1ww2symxp5.execute-api.us-east-1.amazonaws.com/Prod/api/DeliveryAddress/ByContainer",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/api/DeliveryAddress/ByContainer",
             TestName = "GetAddressesSuccess",
             Description = "Test for getting addresses on existing container."
             )]

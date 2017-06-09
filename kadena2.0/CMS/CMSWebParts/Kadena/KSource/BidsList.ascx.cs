@@ -1,6 +1,10 @@
 ﻿using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Helpers;
+using Kadena.Old_App_Code.Kadena.KSource;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.UI.HtmlControls;
 
 namespace Kadena.CMSWebParts.Kadena.KSource
@@ -9,33 +13,42 @@ namespace Kadena.CMSWebParts.Kadena.KSource
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var items = new[] {
-                new { projectName = "Brochure", requestId = "123545", projectStatus="Waiting for bids", lastUpdate= "May 24 2017 16:45"},
-                new { projectName = "Brochure2", requestId = "123545", projectStatus="Waiting for bids", lastUpdate= "May 24 2017 16:45"}
-            };
-            lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), items.Count());
-            lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), items.Count());
-            foreach (var i in items)
+            IEnumerable<ProjectData> projects = null;
+            try
             {
-                tblOpenProjects.Rows.Add(
+                projects = BidServiceHelper.GetProjects();
+            }
+            catch(HttpRequestException) { }
+
+            int openCount = 0, completedCount = 0;
+            if (projects != null)
+            {
+                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate);
+                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate);
+
+                openCount = openProjects.Count();
+                completedCount = completedProjects.Count();
+
+                FillTable(tblOpenProjects, openProjects);
+                FillTable(tblCompletedProjects, completedProjects);
+            }
+
+            lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), openCount);
+            lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), completedCount);
+        }
+
+        private static void FillTable(HtmlTable table, IEnumerable<ProjectData> data)
+        {
+            foreach (var i in data)
+            {
+                table.Rows.Add(
                     new HtmlTableRow
                     {
                         Cells = {
-                        new HtmlTableCell { InnerText = i.projectName},
-                        new HtmlTableCell { InnerText = i.requestId},
-                        new HtmlTableCell { InnerText = i.projectStatus},
-                        new HtmlTableCell { InnerText = i.lastUpdate}
-                        }
-                    }
-                    );
-                tblCompletedProjects.Rows.Add(
-                    new HtmlTableRow
-                    {
-                        Cells = {
-                        new HtmlTableCell { InnerText = i.projectName},
-                        new HtmlTableCell { InnerText = i.requestId},
-                        new HtmlTableCell { InnerText = i.projectStatus},
-                        new HtmlTableCell { InnerText = i.lastUpdate}
+                        new HtmlTableCell { InnerText = i.Name},
+                        new HtmlTableCell { InnerText = i.RequestId.ToString()},
+                        new HtmlTableCell { InnerText = i.Status},
+                        new HtmlTableCell { InnerText = i.UpdateDate.ToString("MMM dd yyyy")}
                         }
                     }
                     );

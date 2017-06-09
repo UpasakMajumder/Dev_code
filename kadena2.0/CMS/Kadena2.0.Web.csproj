@@ -775,6 +775,13 @@
     <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.designer.cs">
       <DependentUpon>TemplatesList.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.cs">
+      <DependentUpon>DashboardMetrics.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.designer.cs">
+      <DependentUpon>DashboardMetrics.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -817,6 +824,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
       <DependentUpon>EstimatesTable.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx.cs">
+      <DependentUpon>ReletedDocumentsWithPermissions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx.designer.cs">
+      <DependentUpon>ReletedDocumentsWithPermissions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Kadena\KadenaModule.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfo.cs" />
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.cs" />
@@ -825,15 +839,18 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Helpers\ErrorMessage.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceListResponseData.cs" />
-    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceResponseData.cs" />
+    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceDocumentResponse.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
+    <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
@@ -862,9 +879,11 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
+    <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
+    <Content Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>

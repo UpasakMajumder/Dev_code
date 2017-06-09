@@ -88,6 +88,10 @@
     &:not(:last-child) {
       @include rem(margin-bottom, $padding-block);
     }
+
+    &[disabled] {
+      opacity: .5;
+    }
   }
 
   &__delivery,
