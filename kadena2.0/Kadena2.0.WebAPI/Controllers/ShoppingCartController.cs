@@ -5,6 +5,9 @@ using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Requests;
+using Kadena.WebAPI.Models.SubmitOrder;
+using System.Threading.Tasks;
+using Kadena.WebAPI.Infrastructure.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -57,11 +60,32 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/shoppingcart/submit")]
-        public IHttpActionResult Submit([FromBody]SubmitRequestDto request)
+        [Route("api/shoppingcart/removeitem")]
+        public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
-            throw new NotImplementedException();
+            var result = service.RemoveItem(request.Id);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
         }
 
+        [HttpPost]
+        [Route("api/shoppingcart/changequantity")]
+        public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
+        {
+            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
+            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
+
+        [HttpPost]
+        [Route("api/shoppingcart/submit")]
+        public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
+        {
+            var submitRequest = mapper.Map<SubmitOrderRequest>(request);
+            var serviceResponse = await service.SubmitOrder(submitRequest);
+            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            return ResponseJson(resultDto);
+        }
     }
 }
