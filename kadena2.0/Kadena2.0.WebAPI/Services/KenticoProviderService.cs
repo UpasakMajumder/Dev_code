@@ -258,7 +258,8 @@ namespace Kadena.WebAPI.Services
                 Delivery = "", //TODO not known yet
                 IsMailingList = false, //TODO
                 MailingList = "Mailing list", //TODO
-                Template = "Template" // TODO
+                Template = "Template", // TODO
+                StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
 
@@ -308,6 +309,16 @@ namespace Kadena.WebAPI.Services
                 cart.InvalidateCalculations();
                 ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
             }
+        }
+
+        public int GetProductStockQuantity(int productId)
+        {
+            return 0;
+        }
+
+        public void SetProductStockQuantity(int productId, int quantity)
+        {
+            
         }
     }
 }
