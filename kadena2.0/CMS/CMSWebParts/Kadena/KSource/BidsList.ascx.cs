@@ -1,4 +1,5 @@
-﻿using CMS.PortalEngine.Web.UI;
+﻿using CMS.Helpers;
+using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.KSource;
 using System;
@@ -96,13 +97,13 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                 divBlock.Controls.Add(divRow);
                 divRow.Controls.Add(divMessage);
                 divMessage.Controls.Add(span);
-                span.Controls.Add(new LiteralControl("Showing "));
+                span.Controls.Add(new LiteralControl($"{ResHelper.GetString("Kadena.KSource.Showing")} "));
                 span.Controls.Add(spanFrom);
-                span.Controls.Add(new LiteralControl(" to "));
+                span.Controls.Add(new LiteralControl($" {ResHelper.GetString("Kadena.KSource.To")} "));
                 span.Controls.Add(spanTo);
-                span.Controls.Add(new LiteralControl(" from "));
+                span.Controls.Add(new LiteralControl($" {ResHelper.GetString("Kadena.KSource.Of")} "));
                 span.Controls.Add(spanTotal);
-                span.Controls.Add(new LiteralControl(" entries"));
+                span.Controls.Add(new LiteralControl($" {ResHelper.GetString("Kadena.KSource.Entries")}"));
                 divRow.Controls.Add(divPagesOuter);
                 divPagesOuter.Controls.Add(divPagesInner);
 
