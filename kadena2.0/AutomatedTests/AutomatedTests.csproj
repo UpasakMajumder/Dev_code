@@ -76,12 +76,14 @@
     <Compile Include="PageObjects\ProductDetail.cs" />
     <Compile Include="PageObjects\NewKList.cs" />
     <Compile Include="PageObjects\MapColumns.cs" />
+    <Compile Include="PageObjects\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumExtentions\GetMethods.cs" />
     <Compile Include="SeleniumExtentions\SetMethods.cs" />
     <Compile Include="Tests\MailingListTests.cs" />
     <Compile Include="IntegrationTests\Testing.cs" />
     <Compile Include="Tests\CheckoutProcess.cs" />
+    <Compile Include="Tests\SettingsTests.cs" />
     <Compile Include="Tests\UserLogin.cs" />
     <Compile Include="IntegrationTests\_BaseIntegrationTest.cs" />
     <Compile Include="Utilities\TestCustomer.cs" />
