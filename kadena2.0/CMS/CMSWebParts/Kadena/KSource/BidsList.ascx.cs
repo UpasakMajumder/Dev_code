@@ -1,4 +1,5 @@
-﻿using CMS.Helpers;
+﻿using CMS.EventLog;
+using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.KSource;
@@ -21,7 +22,10 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 projects = BidServiceHelper.GetProjects();
             }
-            catch (HttpRequestException) { }
+            catch (HttpRequestException exc)
+            {
+                EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
+            }
 
             int openCount = 0, completedCount = 0;
             if (projects != null)
