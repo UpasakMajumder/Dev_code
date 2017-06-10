@@ -1,9 +1,13 @@
 ﻿namespace CMSApp
 {
     using CMS.Activities.Loggers;
+    using CMS.DataEngine;
+    using CMS.EmailEngine;
     using CMS.Helpers;
     using CMS.Localization;
+    using CMS.MacroEngine;
     using CMS.Membership;
+    using CMS.OnlineForms;
     using CMS.SiteProvider;
     using Kadena.Dto.General;
     using Kadena.Dto.Logon;
@@ -18,6 +22,14 @@
     [ScriptService]
     public class KadenaWebService : System.Web.Services.WebService
     {
+        #region Static members
+
+        public const string _ForgottenPasswordFormCodeName = "KDA_ForgottenPasswordForm";
+        public const string _RequestAccessFormCodeName = "KDA_RequestAccessForm";
+        public const string _ContactUsFormCodeName = "KDA_ContactUsForm";
+
+        #endregion
+
         #region Public methods
 
         [WebMethod(EnableSession = true)]
@@ -118,6 +130,70 @@
             return ChangePasswordInternal(userGUID, oldPassword, newPassword);
         }
 
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod]
+        public GeneralResultDTO SubmitContactUsForm(string fullName, string companyName, string email, string phone, string message)
+        {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ContactForm.EnterYourFullName", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (!string.IsNullOrWhiteSpace(email) && !IsEmailValid(email))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ContactForm.EmailAddressIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ContactForm.EnterYourRequest", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+
+            #endregion
+
+            return SubmitContactUsFormInternal(fullName, companyName, email, phone, message);
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod]
+        public GeneralResultDTO SubmitForgottenPasswordForm(string email)
+        {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (!IsEmailValid(email))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+
+            #endregion
+
+            return SubmitForgottenPasswordFormInternal(email);
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod]
+        public GeneralResultDTO SubmitRequestAccessForm(string email)
+        {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (!IsEmailValid(email))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+
+            #endregion
+
+            return SubmitRequestAccessFormInternal(email);
+        }
+
         #endregion
 
         #region Private methods
@@ -199,6 +275,114 @@
             ui.Update();
 
             return new GeneralResultDTO { success = true };
+        }
+
+        private GeneralResultDTO SubmitForgottenPasswordFormInternal(string email)
+        {
+            var forgottenPasswordForm = BizFormInfoProvider.GetBizFormInfo(_ForgottenPasswordFormCodeName, SiteContext.CurrentSiteID);
+            if (forgottenPasswordForm != null)
+            {
+                var forgottenPasswordFormClass = DataClassInfoProvider.GetDataClassInfo(forgottenPasswordForm.FormClassID);
+                string forgottenPasswordFormClassName = forgottenPasswordFormClass.ClassName;
+
+                BizFormItem newFormItem = BizFormItem.New(forgottenPasswordFormClassName);
+
+                newFormItem.SetValue("Email", email);
+                newFormItem.SetValue("Site", SiteContext.CurrentSite.DisplayName);
+                newFormItem.SetValue("FormInserted", DateTime.Now);
+                newFormItem.SetValue("FormUpdated", DateTime.Now);
+
+                newFormItem.Insert();
+
+                SendFormEmail(newFormItem);
+
+                return new GeneralResultDTO { success = true };
+            }
+            else
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.ForgottenPasswordRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+        }
+
+        private GeneralResultDTO SubmitRequestAccessFormInternal(string email)
+        {
+            var requestAccessForm = BizFormInfoProvider.GetBizFormInfo(_RequestAccessFormCodeName, SiteContext.CurrentSiteID);
+            if (requestAccessForm != null)
+            {
+                var requestAccessFormClass = DataClassInfoProvider.GetDataClassInfo(requestAccessForm.FormClassID);
+                string requestAccessFormClassName = requestAccessFormClass.ClassName;
+
+                BizFormItem newFormItem = BizFormItem.New(requestAccessFormClassName);
+
+                newFormItem.SetValue("Email", email);
+                newFormItem.SetValue("Site", SiteContext.CurrentSite.DisplayName);
+                newFormItem.SetValue("FormInserted", DateTime.Now);
+                newFormItem.SetValue("FormUpdated", DateTime.Now);
+
+                newFormItem.Insert();
+
+                SendFormEmail(newFormItem);
+
+                return new GeneralResultDTO { success = true };
+            }
+            else
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.ForgottenPasswordRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+        }
+
+        public GeneralResultDTO SubmitContactUsFormInternal(string fullName, string companyName, string email, string phone, string message)
+        {
+            var contactUsForm = BizFormInfoProvider.GetBizFormInfo(_ContactUsFormCodeName, SiteContext.CurrentSiteID);
+            if (contactUsForm != null)
+            {
+                var contactUsFormClass = DataClassInfoProvider.GetDataClassInfo(contactUsForm.FormClassID);
+                string contactUsFormClassName = contactUsFormClass.ClassName;
+
+                BizFormItem newFormItem = BizFormItem.New(contactUsFormClassName);
+
+                newFormItem.SetValue("FullName", fullName);
+                newFormItem.SetValue("CompanyName", companyName);
+                newFormItem.SetValue("Email", email);
+                newFormItem.SetValue("Phone", phone);
+                newFormItem.SetValue("Message", message);
+                newFormItem.SetValue("Site", SiteContext.CurrentSite.DisplayName);
+                newFormItem.SetValue("FormInserted", DateTime.Now);
+                newFormItem.SetValue("FormUpdated", DateTime.Now);
+
+                newFormItem.Insert();
+
+                SendFormEmail(newFormItem);
+
+                return new GeneralResultDTO { success = true };
+            }
+            else
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ContactForm.ContactFormRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+        }
+
+        private void SendFormEmail(BizFormItem item)
+        {
+            if (item.BizFormInfo != null)
+            {
+                MacroResolver resolver = MacroContext.CurrentResolver.CreateChild();
+                resolver.SetAnonymousSourceData(item);
+                resolver.Settings.EncodeResolvedValues = true;
+                resolver.Culture = CultureHelper.GetPreferredCulture();
+
+                string body = DataHelper.GetNotEmpty(item.BizFormInfo.FormEmailTemplate, string.Empty);
+                body = resolver.ResolveMacros(body);
+
+                EmailMessage message = new EmailMessage();
+                message.From = item.BizFormInfo.FormSendFromEmail;
+                message.Recipients = resolver.ResolveMacros(item.BizFormInfo.FormSendToEmail);
+                message.Subject = resolver.ResolveMacros(item.BizFormInfo.FormEmailSubject);
+                message.Body = URLHelper.MakeLinksAbsolute(body);
+                message.EmailFormat = EmailFormatEnum.Html;
+
+                EmailSender.SendEmail(message);
+            }
         }
 
         private bool IsEmailValid(string email)
