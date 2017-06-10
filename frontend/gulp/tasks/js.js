@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('../webpack.config.js');
 
-gulp.task('js', () => {
+gulp.task('js', ['eslint'], () => {
     return gulp.src(config.JS_ENTRY)
         .pipe(plumber(function() { this.emit('end'); }))
         .pipe(webpackStream(webpackConfig, webpack))

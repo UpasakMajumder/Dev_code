@@ -17,8 +17,8 @@ const lint = (globs) => {
 
   return gulp.src(globs)
     .pipe(eslint(options))
-    .pipe(eslint.format())
-    .pipe(gulpif(PRODUCTION, eslint.failOnError()));
+    .pipe(eslint.format());
+    // .pipe(gulpif(PRODUCTION, eslint.failOnError()));
 };
 
 gulp.task('eslint:app', () => lint(config.JS_ALL));
