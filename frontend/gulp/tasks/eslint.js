@@ -15,7 +15,6 @@ const lint = (globs) => {
     }
   };
 
-
   return gulp.src(globs)
     .pipe(eslint(options))
     .pipe(eslint.format())
