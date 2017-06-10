@@ -38,6 +38,7 @@ const app = {
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Login', document.querySelectorAll('.js-login'));
     render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
+    render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
   }
 };
 

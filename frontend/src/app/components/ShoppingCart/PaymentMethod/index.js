@@ -4,6 +4,13 @@ import Method from './Method';
 import Alert from '../../Alert';
 
 class PaymentMethod extends Component {
+  componentDidMount() {
+    const { ui, changeShoppingData } = this.props;
+
+    if (ui.isPayable) return;
+    changeShoppingData('paymentMethod', 3, ' ');
+  }
+
   render() {
     const { ui, checkedObj, changeShoppingData, validationFields, validationMessage } = this.props;
     const { title, description, items, isPayable, unPayableText } = ui;

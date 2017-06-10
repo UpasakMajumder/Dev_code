@@ -246,7 +246,7 @@ export default {
       ]
     },
     "paymentMethods": {
-      "isPayable": false,
+      "isPayable": true,
       "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,

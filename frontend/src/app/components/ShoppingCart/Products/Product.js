@@ -21,7 +21,9 @@ class Products extends Component {
     });
   }
 
-  handleChange(quantity) {
+  handleChange(target) {
+    const quantity = target.value;
+
     if (!quantity) return;
 
     const { id, stockQuantity } = this.props;
@@ -34,6 +36,7 @@ class Products extends Component {
 
     const workingProcess = setTimeout(() => {
       this.props.changeProductQuantity(id, quantity);
+      target.blur();
     }, 1000);
 
     this.setState({
@@ -43,8 +46,7 @@ class Products extends Component {
   }
 
   render() {
-    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, loadingProducts, removeProduct,
-      loadingQuantities } = this.props;
+    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct } = this.props;
     const { quantity } = this.state;
 
     const productDifference = isMailingList
@@ -56,8 +58,7 @@ class Products extends Component {
       </div>
     : <div className="cart-product__quantity">
         <span>{quantityPrefix}</span>
-        <input disabled={loadingQuantities}
-               onChange={(e) => { this.handleChange(e.target.value); }}
+        <input onChange={(e) => { this.handleChange(e.target); }}
                type="number"
                min="1"
                value={quantity}/>
@@ -109,7 +110,7 @@ class Products extends Component {
           <div className="cart-product__action">
             {editButton}
 
-            <button onClick={() => { removeProduct(id); }} type="button" disabled={loadingProducts} className="cart-product__btn">
+            <button onClick={() => { removeProduct(id); }} type="button" className="cart-product__btn">
               <SVG name="cross--dark"/>
               Remove
             </button>
