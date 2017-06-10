@@ -13,11 +13,9 @@
     "lint": "gulp eslint stylelint",
     "prepush-msg": "echo 'Running lint task...' && exit 0",
     "build": "gulp build",
-    "start": "gulp --dev",
-    "test1": "echo \"Error: I SHOULD FAIL LOLOLOLOLOL \" && exit 1"
+    "start": "gulp --dev"
   },
   "prepush": [
-    "test1",
     "prepush-msg",
     "lint"
   ],
