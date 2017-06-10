@@ -15,6 +15,14 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 {
     public partial class BidsList : CMSAbstractWebPart
     {
+        public int RecordsPerPage
+        {
+            get
+            {
+                return int.Parse(GetStringValue("RecordsPerPage", "10"));
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             IEnumerable<ProjectData> projects = null;
