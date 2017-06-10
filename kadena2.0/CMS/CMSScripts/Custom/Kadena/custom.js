@@ -466,6 +466,7 @@ if (!String.prototype.format) {
             productionDateInvalidMessage: ".j-production-date-invalid-error-message",
             selectionDateInput: ".j-selection-date",
             selectionDateInvalidMessage: ".j-selection-date-invalid-error-message",
+            generalErrorMessage: ".j-general-error-message",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -492,6 +493,8 @@ if (!String.prototype.format) {
             base.find(settings.attachmentsFileExtensionErrorMessage).hide();
             base.find(settings.attachmentsNumberErrorMessage).hide();
             base.find(settings.attachmentsSizeErrorMessage).hide();
+
+            base.find(settings.generalErrorMessage).hide();
 
             if (base.find(settings.nameInput).val() == '') {
                 base.find(settings.nameInput).addClass("input--error");
@@ -574,43 +577,22 @@ if (!String.prototype.format) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", base.attr("data-handler"), true);
             
+            xhr.addEventListener("load", function (evt) {
+                var target = evt.target || evt.srcElement;
+                var data = JSON.parse(target.response);
+                if (data.success) {
+                    base.find(settings.submitButton).removeAttr("disabled");
 
-
-        //    xhr.addEventListener("load", function (evt) {
-        //        var target = evt.target || evt.srcElement;
-        //        var data = JSON.parse(target.response);
-        //        if (data.Success) {
-        //            //$(settings.closeButton).trigger("click");
-        //            base.find(settings.thanksButton).trigger("click");
-
-        //            base.find(settings.submitButton).removeClass("disabled");
-
-        //            // clearing the form
-        //            base.find(settings.location).find("select").val("");
-        //            base.find(settings.location).find("div").remove();
-        //            base.find(settings.location).find("select").styledSelect({ selectClass: "select" });
-
-        //            base.find(settings.country).val("");
-        //            base.find("div" + settings.country).remove();
-        //            base.find(settings.country).styledSelect({ selectClass: "select" });
-
-        //            base.find(settings.firstName).val("");
-        //            base.find(settings.state).val("");
-        //            base.find(settings.lastName).val("");
-        //            base.find(settings.email).val("");
-        //            base.find(settings.company).val("");
-        //            base.find(settings.phone).val("");
-        //            base.find(settings.text).val("");
-        //            base.find("#" + settings.file).val("");
-        //            base.find("#" + settings.file).parent().removeClass("attached");
-        //        } else {
-        //            base.find(settings.message).html(data.Message);
-        //            base.find(settings.message).show();
-        //        }
-        //    }, false);
-        //    xhr.addEventListener("error", function (evt) { base.find(settings.submitButton).removeClass("disabled"); }, false);
+                    window.location.href = base.attr("data-thank-you-page");
+                } else {
+                    base.find(settings.generalErrorMessage).html(data.errorMassage);
+                    base.find(settings.generalErrorMessage).show();
+                }
+            }, false);
+            xhr.addEventListener("error", function (evt) {
+                base.find(settings.submitButton).removeAttr("disabled");
+            }, false);
        
-
             xhr.send(formData);
         });
     }
