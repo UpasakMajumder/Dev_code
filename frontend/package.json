@@ -14,10 +14,10 @@
     "prepush-msg": "echo 'Running lint task...' && exit 0",
     "build": "gulp build",
     "start": "gulp --dev",
-    "test": "echo \"Error: I SHOULD FAIL LOLOLOLOLOL \" && exit 1"
+    "test1": "echo \"Error: I SHOULD FAIL LOLOLOLOLOL \" && exit 1"
   },
   "prepush": [
-    "test",
+    "test1",
     "prepush-msg",
     "lint"
   ],
