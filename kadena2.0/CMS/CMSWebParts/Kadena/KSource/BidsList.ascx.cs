@@ -43,18 +43,17 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
-
-                FillTable(tblOpenProjects, phOpenPagination, openProjects);
-                FillTable(tblCompletedProjects, phCompletedPagination, completedProjects);
+                
+                FillTable(tblOpenProjects, phOpenPagination, openProjects, RecordsPerPage);
+                FillTable(tblCompletedProjects, phCompletedPagination, completedProjects, RecordsPerPage);
             }
-            
+
             lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), openCount);
             lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), completedCount);
         }
 
-        private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data)
+        private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data, int recordsPerPage)
         {
-            int recordsPerPage = 10;
             for (int i = 0; i < data.Count(); i++)
             {
                 var pr = data[i];
