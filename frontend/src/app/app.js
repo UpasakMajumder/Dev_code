@@ -28,6 +28,8 @@ const app = {
     init('redirection', document.getElementsByClassName('js-redirection'));
     init('password', document.getElementsByClassName('js-password'));
     init('closer', document.getElementsByClassName('js-close-this'));
+    init('datepicker', document.getElementsByClassName('js-datepicker'));
+    init('table-paginator', document.getElementsByClassName('js-table-paginator'));
   },
 
   /* React */

@@ -26,7 +26,7 @@
     <div class="processed-list__table-heading processed-list__table-heading--success">
         <h3 runat="server" id="textGoodAddresses"></h3>
         <div class="btn-group btn-group--right">
-            <button type="button" class="btn-action btn-action--secondary" style="display: none">
+            <button runat="server" id="btnUseOnlyGoodAddresses" type="button" class="btn-action btn-action--secondary" onserverclick="btnUseOnlyGoodAddresses_ServerClick">
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.UseOnlyCorrect" />
             </button>
         </div>

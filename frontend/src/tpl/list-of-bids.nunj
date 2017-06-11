@@ -6,63 +6,125 @@
 {% set breadcrumbs = [title] %}
 {% set headerTitle = 'K-Source' %}
 
+{% set btns = [
+  {
+    name: 'Request a bid',
+    class: 'btn-action'
+  }
+] %}
+
 {% block content %}
 
-<div class="bids-list__block">
+  <div class="bids-list__block">
 
-<h2 class="bids-list__block-header">You have 2 open projects</h2>
-<table class="show-table">
-  <tbody>
-    <tr>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-    </tr>
-    {% for i in range(0, 2) -%}
+    <h2 class="bids-list__block-header">You have 2 open projects</h2>
 
-      <tr>
-        <td>Mar 3 2017</td>
-        <td>Brochure</td>
-        <td>123545</td>
-        <td>Waiting for bids</td>
-        <td>May 24 2017 16:45</td>
-      </tr>
+    <div class="js-table-paginator">
 
-    {%- endfor %}
-  </tbody>
-</table>
+    <table class="show-table show-table--hide-rows">
+      <tbody>
+        <tr>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+        </tr>
 
-</div>
+          <tr class="active" data-page="1">
+            <td>Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
 
-<div class="bids-list__block">
+          <tr data-page="2">
+            <td>Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
 
-<h2 class="bids-list__block-header">You have 3 completed projects</h2>
-<table class="show-table">
-  <tbody>
-    <tr>
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID/</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-      <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th> <!-- TODO: Remove ".hidden" after sorting is avalible-->
-    </tr>
-    {% for i in range(0, 3) -%}
+      </tbody>
+    </table>
 
-      <tr>
-        <td>Mar 3 2017</td>
-        <td>Brochure</td>
-        <td>123545</td>
-        <td>Waiting for bids</td>
-        <td>May 24 2017 16:45</td>
-      </tr>
 
-    {%- endfor %}
 
-  </tbody>
-</table>
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of <span>103</span> entries</span>
+      </div>
+      <div class="col-6 text--right">
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2"></div>
+      </div>
+    </div>
+  </div>
+  </div>
 
-</div>
+  </div>
+
+  <div class="bids-list__block">
+
+    <h2 class="bids-list__block-header">You have 2 open projects</h2>
+
+    <div class="js-table-paginator">
+
+    <table class="show-table show-table--hide-rows">
+      <tbody>
+        <tr>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th>
+          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+        </tr>
+
+          <tr class="active" data-page="1">
+            <td>Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr data-page="2">
+            <td>Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+      </tbody>
+    </table>
+
+
+
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of 103 entries</span>
+      </div>
+      <div class="col-6 text--right">
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  </div>
 
 {% endblock %}

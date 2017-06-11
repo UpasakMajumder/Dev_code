@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -8,140 +9,129 @@ using System.Web.Script.Serialization;
 
 namespace Kadena.Old_App_Code.Kadena.Chili
 {
-  public class TemplateServiceHelper
-  {
-    public string ServiceBaseUrl
+    public class TemplateServiceHelper
     {
-      get
-      {
-        return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
-      }
-    }
-
-    /// <summary>
-    /// Creates new template from master template for particular user
-    /// </summary>
-    /// <param name="userID"></param>
-    /// <param name="masterTemplateID"></param>
-    /// <returns>Editor url (for iframe)</returns>
-    public string CreateNewTemplate(int userID, string masterTemplateID)
-    {
-      var requestUrl = string.Format("{0}api/template", ServiceBaseUrl);
-      var request = (HttpWebRequest)WebRequest.Create(requestUrl);
-      request.ContentType = "application/json";
-      request.Method = "POST";
-
-      using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-      {
-        var data = new NewTemplateRequestData { user = userID.ToString(), templateId = masterTemplateID };
-        streamWriter.Write(new JavaScriptSerializer().Serialize(data));
-      }
-
-      var response = (HttpWebResponse)request.GetResponse();
-      if (response.StatusCode == HttpStatusCode.OK)
-      {
-        var resultString = string.Empty;
-        using (var streamReader = new StreamReader(response.GetResponseStream()))
+        public string ServiceBaseUrl
         {
-          resultString = streamReader.ReadToEnd();
+            get
+            {
+                return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
+            }
         }
-        var result = new JavaScriptSerializer().Deserialize<TemplateServiceResponseData>(resultString);
 
-        if (result.success)
+        /// <summary>
+        /// Creates new template from master template for particular user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="masterTemplateID"></param>
+        /// <returns>Editor url (for iframe)</returns>
+        public string CreateNewTemplate(int userID, string masterTemplateID)
         {
-          return result.payload.editorUrl;
+            var requestUrl = string.Format("{0}api/template", ServiceBaseUrl);
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                var data = new NewTemplateRequestData { user = userID.ToString(), templateId = masterTemplateID };
+                streamWriter.Write(new JavaScriptSerializer().Serialize(data));
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var result = (AwsResponseMessage<string>)response;
+
+                if (result.Success)
+                {
+                    return result.Response;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", result.Error.Message);
+                }
+            }
+            else
+            {
+                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", response.StatusCode.ToString());
+            }
+            return string.Empty;
         }
-        else
+
+        /// <summary>
+        /// Returns editor/iframe url for the given template ID
+        /// </summary>
+        /// <param name="templateID"></param>
+        /// <returns>iframe/editor url</returns>
+        public string GetEditorUrl(string templateID)
         {
-          EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", result.error);
+            var requestUrl = string.Format("{0}api/template/{1}", ServiceBaseUrl, templateID);
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            request.ContentType = "application/json";
+            request.Method = "GET";
+
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var result = (AwsResponseMessage<string>)response;
+
+                if (result.Success)
+                {
+                    return result.Response;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", result.Error.Message);
+                }
+            }
+            else
+            {
+                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", response.StatusCode.ToString());
+            }
+            return string.Empty;
         }
-      }
-      else
-      {
-        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", response.StatusCode.ToString());
-      }
-      return string.Empty;
-    }
 
-    /// <summary>
-    /// Returns editor/iframe url for the given template ID
-    /// </summary>
-    /// <param name="templateID"></param>
-    /// <returns>iframe/editor url</returns>
-    public string GetEditorUrl(string templateID)
-    {
-      var requestUrl = string.Format("{0}api/template/{1}", ServiceBaseUrl, templateID);
-      var request = (HttpWebRequest)WebRequest.Create(requestUrl);
-      request.ContentType = "application/json";
-      request.Method = "GET";
-
-      var response = (HttpWebResponse)request.GetResponse();
-      if (response.StatusCode == HttpStatusCode.OK)
-      {
-        string resultString = string.Empty;
-
-        using (var streamReader = new StreamReader(response.GetResponseStream()))
+        /// <summary>
+        /// Returns all copies for master templete for given user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="masterTemplateID"></param>
+        /// <returns>List of template data</returns>
+        public List<TemplateServiceDocumentResponse> GetMasterTemplateCopies(int userID, string masterTemplateID)
         {
-          resultString = streamReader.ReadToEnd();
-        }
-        var result = new JavaScriptSerializer().Deserialize<TemplateServiceResponseData>(resultString);
+            var requestUrl = string.Format("{0}api/template/{1}/users/{2}", ServiceBaseUrl, masterTemplateID, userID);
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            request.ContentType = "application/json";
+            request.Method = "GET";
 
-        if (result.success)
-        {
-          return result.payload.editorUrl;
-        }
-        else
-        {
-          EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", result.error);
-        }
-      }
-      else
-      {
-        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", response.StatusCode.ToString());
-      }
-      return string.Empty;
-    }
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var result = (AwsResponseMessage<List<TemplateServiceDocumentResponse>>)response;
 
-    /// <summary>
-    /// Returns all copies for master templete for given user
-    /// </summary>
-    /// <param name="userID"></param>
-    /// <param name="masterTemplateID"></param>
-    /// <returns>List of template data</returns>
-    public List<TemplateServiceDocumentResponse> GetMasterTemplateCopies(int userID, string masterTemplateID)
-    {
-      var requestUrl = string.Format("{0}api/template/{1}/users/{2}", ServiceBaseUrl, masterTemplateID, userID);
-      var request = (HttpWebRequest)WebRequest.Create(requestUrl);
-      request.ContentType = "application/json";
-      request.Method = "GET";
-
-      var response = (HttpWebResponse)request.GetResponse();
-      if (response.StatusCode == HttpStatusCode.OK)
-      {
-        string resultString = string.Empty;
-
-        using (var streamReader = new StreamReader(response.GetResponseStream()))
-        {
-          resultString = streamReader.ReadToEnd();
+                if (result.Success)
+                {
+                    return result.Response;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result.Error.Message);
+                }
+            }
+            else
+            {
+                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
+            }
+            return new List<TemplateServiceDocumentResponse>();
         }
-        var result = new JavaScriptSerializer().Deserialize<TemplateServiceListResponseData>(resultString);
 
-        if (result.success)
-        {
-          return result.payload.documents;
-        }
-        else
-        {
-          EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result.error);
-        }
-      }
-      else
-      {
-        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
-      }
-      return new List<TemplateServiceDocumentResponse>();
-    }
-
+        /// <summary>
+        /// Assign specified container to specified template.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <param name="templateId">Id of template.</param>
+        /// <returns>Url to Chilli's editor.</returns>
         public string SetMailingList(string containerId, string templateId)
         {
             var requestUrl = string.Format("{0}api/template/datasource", ServiceBaseUrl);
@@ -156,29 +146,24 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             }
 
             var response = (HttpWebResponse)request.GetResponse();
-            var resultString = string.Empty;
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                using (var streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    resultString = streamReader.ReadToEnd();
-                }
-                var result = new JavaScriptSerializer().Deserialize<TemplateServiceResponseData>(resultString);
+                var result = (AwsResponseMessage<string>)response;
 
-                if (result.success)
+                if (result.Success)
                 {
-                    return result.payload.editorUrl;
+                    return result.Response;
                 }
                 else
                 {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", result.error);
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", result.Error.Message);
                 }
             }
             else
             {
                 EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", response.StatusCode.ToString());
             }
-            return resultString;
+            return string.Empty;
         }
     }
 }
