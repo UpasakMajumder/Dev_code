@@ -7,7 +7,9 @@
         public string Image { get; set; }
         public string Template { get; set; }
         public string EditorTemplateId { get; set; }
-        public string ProductPageId { get; set; }
+        public int ProductPageId { get; set; }
+
+        public int SKUID { get;set;}
 
         public bool IsMailingList
         {
@@ -30,5 +32,13 @@
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
+
+        public string EditorURL
+        {
+            get
+            {
+                return $"/products/product-tools/product-editor?id={ProductPageId}&skuid={SKUID}&templateid={EditorTemplateId}";
+            }
+        }
     }
 }

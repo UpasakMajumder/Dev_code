@@ -259,7 +259,8 @@ namespace Kadena.WebAPI.Services
                 MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data, remove default?
                 Template = i.GetValue("ChilliTemplateID", string.Empty),
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
-                ProductPageId = i.GetValue("ProductPageID", string.Empty),
+                ProductPageId = i.GetIntegerValue("ProductPageID", 0),
+                SKUID = i.SKUID,
                 StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
