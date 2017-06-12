@@ -3255,14 +3255,14 @@ button {
     .form .input__label--checkbox, .map-columns-form .input__label--checkbox, .form .input__label--radio, .map-columns-form .input__label--radio {
       font-size: 16px; }
 
-.form-block {
+.form-block, .contact__form {
   padding: 1.25rem 0.625rem;
   background-color: rgba(238, 238, 238, 0.5);
   border-radius: 8px;
   width: 100%; }
-  .form-block--fixed {
+  .form-block--fixed, .contact__form {
     max-width: 480px; }
-  .form-block .input__wrapper:not(:last-child) {
+  .form-block .input__wrapper:not(:last-child), .contact__form .input__wrapper:not(:last-child) {
     margin-bottom: 1rem; }
   .form-block__multiply-group .input__wrapper {
     float: left;
@@ -3544,7 +3544,7 @@ h4 {
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
-    min-height: 80px; }
+    min-height: 95px; }
   .input__select-area {
     padding: 0.75rem 1.25rem 0.75rem 0.75rem;
     max-height: 250px;
@@ -3593,7 +3593,7 @@ h4 {
     position: absolute;
     right: 0;
     top: 2px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: #404040; }
   .input__checkbox, .input__radio {
@@ -3630,9 +3630,11 @@ h4 {
     height: 41px; }
   .input--error {
     border-bottom: 1px solid #c91c23; }
+    .input--error ~ .input__error {
+      display: block; }
   .input__error {
     border-top: 1px solid #c91c23;
-    display: block;
+    display: none;
     font-size: 12px;
     width: 100%; }
     .input__error--noborder {
@@ -3803,7 +3805,7 @@ a:focus {
 .mr-4, .cart-fill__block--flex > *:not(:last-child), .my-account__table td:first-child {
   margin-right: 1.5rem; }
 
-.mb-4, .mailing-lists > *:not(:last-child), .map-columns > *:not(:last-child), .shopping-cart__block:not(:last-child), .upload-mail > *:not(:last-child), .category {
+.mb-4, .contact > *:not(:last-child), .mailing-lists > *:not(:last-child), .map-columns > *:not(:last-child), .shopping-cart__block:not(:last-child), .upload-mail > *:not(:last-child), .category {
   margin-bottom: 1.5rem; }
 
 .ml-4 {
