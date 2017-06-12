@@ -16,6 +16,8 @@ namespace Kadena.WebAPI.Contracts
 
         string GetDefaultSitePersonalName();
 
+        string GetDefaultCustomerCompanyName();
+
         int GetOrderStatusId(string name);
     }
 }

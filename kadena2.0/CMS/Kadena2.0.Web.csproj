@@ -712,6 +712,16 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\SubmitBid.ashx.cs">
+      <DependentUpon>SubmitBid.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.cs">
+      <DependentUpon>BidsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.designer.cs">
+      <DependentUpon>BidsList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\General\Button.ascx.cs">
       <DependentUpon>Button.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -725,13 +735,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
       <DependentUpon>AddToCartEdit.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.cs">
-      <DependentUpon>BidsList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.designer.cs">
-      <DependentUpon>BidsList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx.cs">
       <DependentUpon>AddressViewer.ascx</DependentUpon>
@@ -890,15 +893,19 @@
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
+      <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
+      <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
       <Name>CMSApp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
-    <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
@@ -924,6 +931,9 @@
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CMSPages\Kadena\SubmitBid.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

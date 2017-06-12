@@ -8,21 +8,24 @@ class Method extends Component {
     let className = 'input__wrapper select-accordion__item  select-accordion__item--inner';
     if (disabled) className += ' input__wrapper--disabled';
 
-    const dateElement = (datePrefix && date)
-      ? <span>{datePrefix} {date}</span>
-      : (datePrefix)
-      ? <span>{datePrefix}</span>
-      : (date)
-      ? <span>{date}</span>
-      : null;
 
-    const priceElement = (pricePrefix && price)
-      ? <span>{pricePrefix} {price}</span>
-      : (pricePrefix)
-      ? <span>{pricePrefix}</span>
-      : (price)
-      ? <span>{price}</span>
-      : null;
+    let dateElement = null;
+    if (datePrefix && date) {
+      dateElement = <span>{datePrefix} {date}</span>;
+    } else if (datePrefix) {
+      dateElement = <span>{datePrefix}</span>;
+    } else if (date) {
+      dateElement = <span>{date}</span>;
+    }
+
+    let priceElement = null;
+    if (pricePrefix && price) {
+      priceElement = <span>{pricePrefix} {price}</span>;
+    } else if (pricePrefix) {
+      priceElement = <span>{pricePrefix}</span>;
+    } else if (price) {
+      priceElement = <span>{price}</span>;
+    }
 
     const stick = dateElement
       ? <span> | </span>

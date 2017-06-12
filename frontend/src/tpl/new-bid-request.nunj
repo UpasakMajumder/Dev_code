@@ -52,6 +52,7 @@
     </div>
     {% set description = 'Drag & drop your file here or click anywhere to upload' %}
     {% set descriptionIE = 'Click anywhere to upload your file' %}
+    {% set maxItems = 4 %}
     {% include "components/drop-zone.nunj" %}
   </div>
 
