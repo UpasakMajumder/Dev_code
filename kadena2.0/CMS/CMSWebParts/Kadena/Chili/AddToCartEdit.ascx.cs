@@ -29,14 +29,22 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         }
 
-        private int NumberOfAddresses { get; set; }
+        private int NumberOfAddressesReturnedByService { get; set; }
+
+        private int NumberOfItemsInInput
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
+            }
+          
+        }
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (IsAddedAmmountValid(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0)) && ValidationHelper.GetInteger(inpNumberOfItems.Value, 0).Equals(NumberOfAddresses))
+            if (IsAddedAmmountValid(NumberOfItemsInInput) && NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
             {
-                AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0));
-
+                AddItemsToShoppingCart(NumberOfItemsInInput);
             }
             else
             {
@@ -56,7 +64,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 lblNumberOfItemsError.Visible = false;
 
                 lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
-                inpNumberOfItems.Value = NumberOfAddresses.ToString();
+                inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
             }
 
         }
@@ -71,7 +79,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                 if (listData != null)
                 {
-                    NumberOfAddresses = listData.addressCount;
+                    NumberOfAddressesReturnedByService = listData.addressCount;
                 }
             }
         }
