@@ -1,11 +1,11 @@
 {% from "macro/svg.nunj" import svg %}
 
 <div class="adress-card">
-  <span>4001 Valley Industrial Blvd</span>
-  <span>Shakopee</span>
-  <span>MN 55379</span>
+  <span class="js-replace-value-from" data-replace-value-id="{{ x }}" data-replace-id="street">400{{ x }} Valley Industrial Blvd</span>
+  <span class="js-replace-value-from" data-replace-value-id="{{ x }}" data-replace-id="city">Shakopee</span>
+  <span><span class="js-replace-value-from" data-replace-type="select" data-replace-value-id="{{ x }}" data-replace-id="state">MN</span> <span class="js-replace-value-from" data-replace-value-id="{{ x }}" data-replace-id="zip">55379</span></span>
   <div class="adress-card__btn-block">
-    <button type="button" class="in-card-btn">
+    <button type="button" class="in-card-btn js-dialog js-replace-value" data-replace-value-id="{{ x }}" data-dialog="#edit-address">
       {{ svg('edit') }}
       Edit
     </button>

@@ -1,12 +1,15 @@
 export default class Tabs {
   constructor(container) {
     this.container = container;
+    const { hash } = location;
     const { tabActiveDefault, tab: tabSelector } = this.container.dataset;
 
     this.activeClass = 'active';
     this.showClass = 'show';
 
-    this.activeTab = this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
+    const activeTab = this.container.querySelector(`[data-id="${hash}"]`);
+
+    this.activeTab = activeTab || this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
 
     this.styleActiveTab();
 
@@ -21,6 +24,9 @@ export default class Tabs {
         this.unstyleActiveTab();
         this.activeTab = target;
         this.styleActiveTab();
+
+        const { id } = target.dataset;
+        location.hash = id;
       });
     });
   }

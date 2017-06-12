@@ -86,6 +86,6 @@
     </div>
 </div>
 <div class="btn-group btn-group--left">
-    <button type="submit" class="btn-action btn-action--secondary" runat="server" id="btnReupload" onserverclick="btnReupload_ServerClick"></button>
-    <button type="submit" class="btn-action" runat="server" id="btnProcess" onserverclick="btnProcess_Click"></button>
+    <button type="button" class="btn-action btn-action--secondary" runat="server" id="btnReupload" onserverclick="btnReupload_ServerClick"></button>
+    <button type="button" class="btn-action" runat="server" id="btnProcess" onserverclick="btnProcess_Click"></button>
 </div>
