@@ -11,6 +11,7 @@ class TablePaginator {
     const paginatorToPage = this.tableWrapper.querySelector(`.${paginatorPageToClass}`);
     const paginatorWrapper = this.tableWrapper.querySelector(`.${paginatorWrapperClass}`);
     const paginatorPagesNumber = +paginatorWrapper.dataset.pages;
+    const paginatorRowsToShow = +paginatorWrapper.dataset.rowsOnPage;
 
     if (!paginatorWrapper) return;
 
@@ -22,19 +23,19 @@ class TablePaginator {
         callback: TablePaginator.callback,
         wrapper: this.tableWrapper,
         toPage: paginatorToPage,
-        fromPage: paginatorFromPage
+        fromPage: paginatorFromPage,
+        rowsOnPage: paginatorRowsToShow
       });
     };
 
     init();
   }
 
-  static callback(prevPage, currPage, wrapper, to, from) {
-
+  static callback(prevPage, currPage, wrapper, to, from, rowsOnPage) {
 
     const rowActiveClass = 'active';
-    const fromNumber = (((currPage - 1) * 10) + 1);
-    const toNumber = (currPage * 10);
+    const fromNumber = (((currPage - 1) * rowsOnPage) + 1);
+    const toNumber = (currPage * rowsOnPage);
 
     const findRows = (num, wr) => {
       return Array.from(wr.querySelectorAll(`tr[data-page="${num}"`));

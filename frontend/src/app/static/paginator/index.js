@@ -21,6 +21,7 @@ class Pagination {
     this.wrapper = data.wrapper;
     this.toPage = data.toPage;
     this.fromPage = data.fromPage;
+    this.rowsOnPage = data.rowsOnPage;
   }
 
   // add pages by number (from [s] to [f])
@@ -82,7 +83,7 @@ class Pagination {
       if (+a[i].innerHTML === this.page) a[i].className = 'generated-paginator__current';
       a[i].addEventListener('click', event => this.Click.call(this, event), false);
     }
-    this.callback(this.prevPage, this.page, this.wrapper, this.toPage, this.fromPage);
+    this.callback(this.prevPage, this.page, this.wrapper, this.toPage, this.fromPage, this.rowsOnPage);
   }
 
   // write pagination

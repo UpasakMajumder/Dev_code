@@ -63,7 +63,7 @@
         <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of <span>103</span> entries</span>
       </div>
       <div class="col-6 text--right">
-        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2"></div>
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2" data-rows-on-page="2"></div>
       </div>
     </div>
   </div>
@@ -119,7 +119,7 @@
         <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of 103 entries</span>
       </div>
       <div class="col-6 text--right">
-        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2"></div>
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2" data-rows-on-page="2"></div>
       </div>
     </div>
   </div>
