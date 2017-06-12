@@ -227,7 +227,7 @@ namespace Kadena.WebAPI.Services
             var result = items.Select(i => new OrderItem()
             {
                 DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
-                MailingListId = Guid.Empty, // seem to be redundant parameter, microservise doesn't use it
+                MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
@@ -256,7 +256,8 @@ namespace Kadena.WebAPI.Services
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data, remove default?
+                MailingListName = i.GetValue("MailingListName", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", string.Empty),
                 Template = i.GetValue("ChilliTemplateID", string.Empty),
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),

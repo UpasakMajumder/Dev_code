@@ -83,30 +83,22 @@ namespace Kadena.WebAPI
                     ClassName = p.PaymentOptionClassName
                 });
 
-                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
-                {
-                    DesignFilePath = p.DesignFilePath,
-                    LineNumber = p.LineNumber,
-                    MailingList = new MailingListDTO()
+                config.CreateMap<OrderItem, OrderItemDTO>()
+                    .AfterMap((src, dest) => dest.MailingList = new MailingListDTO
                     {
-                        MailingListID = p.MailingListId
-                    },
-                    SKU = new SKUDTO()
+                        MailingListID = src.MailingListId
+                    })
+                    .AfterMap((src, dest) => dest.SKU = new SKUDTO()
                     {
-                        KenticoSKUID = p.KenticoSKUId,
-                        Name = p.SKUName,
-                        SKUNumber = p.SKUNumber
-                    },
-                    TotalPrice = p.TotalPrice,
-                    TotalTax = p.TotalTax,
-                    UnitCount = p.UnitCount,
-                    UnitOfMeasure = p.UnitOfMeasure,
-                    UnitPrice = p.UnitPrice
-                });
+                        KenticoSKUID = src.KenticoSKUId,
+                        Name = src.SKUName,
+                        SKUNumber = src.SKUNumber
+                    });
 
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();

@@ -18,7 +18,8 @@
                 return ProductType.Contains("KDA.MailingProduct");
             }
         }
-        public string MailingList { get; set; }
+        public string MailingListName { get; set; }
+        public string MailingListGuid { get; set; }
         public string Delivery { get; set; }
         public string PricePrefix { get; set; }
         public double Price { get; set; }
