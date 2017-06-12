@@ -5323,7 +5323,16 @@ body {
 .block {
   margin: 1rem 0 2rem; }
   .block__heading {
-    margin: 0.5rem 0 1.875rem; }
+    margin: 0.5rem 0 0.5rem;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: justify;
+        justify-content: space-between; }
+  .block__right-label {
+    font-size: 12px;
+    font-weight: 400; }
 
 .breadcrumbs a {
   font-size: 14px; }
@@ -5426,6 +5435,8 @@ body {
     width: 100px; }
     .cart-product__btn:not(:last-child) {
       margin-bottom: 0.625rem; }
+    .cart-product__btn[disabled] {
+      opacity: .5; }
   .cart-product__delivery svg, .cart-product__mlist svg, .cart-product__template svg, .cart-product__tracking svg {
     margin-right: 7px;
     width: 15px;
