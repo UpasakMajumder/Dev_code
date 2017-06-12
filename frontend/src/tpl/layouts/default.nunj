@@ -49,6 +49,7 @@
 <form>
   {# Main content of the page #}
   <div class="main-container">
+    <div class="r-spinner"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
 

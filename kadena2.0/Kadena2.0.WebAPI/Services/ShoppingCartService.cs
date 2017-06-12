@@ -47,7 +47,8 @@ namespace Kadena.WebAPI.Services
 
                 DeliveryAddresses = new DeliveryAddresses()
                 {
-                    IsDeliverable = true, //TODO
+                    IsDeliverable = true,
+                    UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
                     AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
@@ -70,7 +71,8 @@ namespace Kadena.WebAPI.Services
 
                 PaymentMethods = new PaymentMethods()
                 {
-                    IsPayable = true, // TODO
+                    IsPayable = true,
+                    UnPayableText = resources.GetResourceString("Kadena.Checkout.UnpayableText"),
                     Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
                     Items = OrderPaymentMethods(paymentMethods)
@@ -89,6 +91,7 @@ namespace Kadena.WebAPI.Services
                     resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
                     resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
+            checkoutPage.SetDisplayType();
             return checkoutPage;
         }
 
@@ -213,10 +216,13 @@ namespace Kadena.WebAPI.Services
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
             var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
+            var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
+            serviceResult.RedirectURL = redirectUrl;
 
             if (serviceResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+                OrderCurrentCart();
             }
             else
             {
@@ -238,6 +244,9 @@ namespace Kadena.WebAPI.Services
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartOrderItems();
             var currency = resources.GetSiteCurrency();
+
+            if (string.IsNullOrWhiteSpace(customer.Company))
+                customer.Company = resources.GetDefaultCustomerCompanyName();
 
             return new OrderDTO()
             {
@@ -331,6 +340,13 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage RemoveItem(int id)
         {
             kenticoProvider.RemoveCartItem(id);
+            return GetCheckoutPage();
+        }
+
+        public CheckoutPage OrderCurrentCart()
+        {
+            kenticoProvider.RemoveCurrentItemsFromStock();
+            kenticoProvider.RemoveCurrentItemsFromCart();
             return GetCheckoutPage();
         }
     }

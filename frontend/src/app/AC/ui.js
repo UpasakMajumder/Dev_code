@@ -16,15 +16,18 @@ export default {
           "price": "112.2",
           "isEditable": false,
           "quantityPrefix": "Quantity:",
-          "quantity": 11
+          "quantity": 11,
+          "stockQuantity": 15
         }
       ]
     },
     "deliveryAddresses": {
       "isDeliverable": true,
+      "unDeliverableText": "Text",
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
       "addAddressLabel": "New address",
+      "emptyMessage": "Fill at least one address",
       "items": [
         {
           "street": [
@@ -244,6 +247,7 @@ export default {
     },
     "paymentMethods": {
       "isPayable": true,
+      "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
       "items": [

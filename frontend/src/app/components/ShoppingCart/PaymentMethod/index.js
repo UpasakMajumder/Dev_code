@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Method from './Method';
-import Unpayable from './Unpayable';
+import Alert from '../../Alert';
 
 class PaymentMethod extends Component {
+  componentDidMount() {
+    const { ui, changeShoppingData } = this.props;
+
+    if (ui.isPayable) return;
+    changeShoppingData('paymentMethod', 3, ' ');
+  }
+
   render() {
     const { ui, checkedObj, changeShoppingData, validationFields, validationMessage } = this.props;
     const { title, description, items, isPayable, unPayableText } = ui;
@@ -31,7 +38,7 @@ class PaymentMethod extends Component {
           {methods}
         </div>
       </div>
-    : <Unpayable unPayableText={unPayableText} />;
+    : <Alert type="grey" text={unPayableText} />;
 
     return (
       <div>

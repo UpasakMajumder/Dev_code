@@ -226,9 +226,9 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
-                DesignFilePath = i.GetValue("ArtworkLocation", /*string.Empty*/"defaultartworklocation"),// TODO via calling service for templated
-                MailingListId = Guid.NewGuid(), // seem to be redundant parameter, microservise doesn't use it
-                OrderItemType = i.GetValue("ProductType", /*string.Empty*/ "KDA.StaticProduct"), // TODO
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
+                MailingListId = Guid.Empty, // seem to be redundant parameter, microservise doesn't use it
+                OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 KenticoSKUId = i.SKUID,
@@ -250,15 +250,15 @@ namespace Kadena.WebAPI.Services
             {
                 Id = i.CartItemID,
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
-                IsEditable = false,
+                ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 Price = i.CartItemPrice * i.CartItemUnits,
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                IsMailingList = false, //TODO
-                MailingList = "Mailing list", //TODO
-                Template = "Template" // TODO
+                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data
+                Template = i.GetValue("ChilliTemplateID", string.Empty),
+                StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
 
@@ -296,18 +296,47 @@ namespace Kadena.WebAPI.Services
 
         public void SetCartItemQuantity(int id, int quantity)
         {
-            if (quantity < 1)
-                return;
-
             var cart = ECommerceContext.CurrentShoppingCart;
-
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-            if (item != null)
+
+            if (item == null || quantity < 1 || quantity > item.SKU.SKUAvailableItems)
             {
-                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
-                cart.InvalidateCalculations();
-                ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}");
             }
+
+            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+            cart.InvalidateCalculations();
+            ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        public int GetProductStockQuantity(int productId)
+        {
+            return 0;
+        }
+
+        public void SetProductStockQuantity(int productId, int quantity)
+        {
+            
+        }
+
+        public void RemoveCurrentItemsFromStock()
+        {
+            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+
+            foreach (var i in items)
+            {
+                if (i.GetValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                {
+                    int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
+                    i.SKU.SKUAvailableItems -= toRemove;
+                    i.SKU.SubmitChanges(false);
+                }
+            }
+        }
+
+        public void RemoveCurrentItemsFromCart()
+        {
+            ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
         }
     }
 }
