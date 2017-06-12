@@ -3255,14 +3255,14 @@ button {
     .form .input__label--checkbox, .map-columns-form .input__label--checkbox, .form .input__label--radio, .map-columns-form .input__label--radio {
       font-size: 16px; }
 
-.form-block {
+.form-block, .contact__form {
   padding: 1.25rem 0.625rem;
   background-color: rgba(238, 238, 238, 0.5);
   border-radius: 8px;
   width: 100%; }
-  .form-block--fixed {
+  .form-block--fixed, .contact__form {
     max-width: 480px; }
-  .form-block .input__wrapper:not(:last-child) {
+  .form-block .input__wrapper:not(:last-child), .contact__form .input__wrapper:not(:last-child) {
     margin-bottom: 1rem; }
   .form-block__multiply-group .input__wrapper {
     float: left;
@@ -3544,7 +3544,7 @@ h4 {
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
-    min-height: 80px; }
+    min-height: 95px; }
   .input__select-area {
     padding: 0.75rem 1.25rem 0.75rem 0.75rem;
     max-height: 250px;
@@ -3593,7 +3593,7 @@ h4 {
     position: absolute;
     right: 0;
     top: 2px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: #404040; }
   .input__checkbox, .input__radio {
@@ -3630,9 +3630,11 @@ h4 {
     height: 41px; }
   .input--error {
     border-bottom: 1px solid #c91c23; }
+    .input--error ~ .input__error {
+      display: block; }
   .input__error {
     border-top: 1px solid #c91c23;
-    display: block;
+    display: none;
     font-size: 12px;
     width: 100%; }
     .input__error--noborder {
@@ -3649,7 +3651,7 @@ a:focus {
   .link:focus, .breadcrumbs a:focus, .footer a:focus, .pagination a:focus, .link:active, .breadcrumbs a:active, .footer a:active, .pagination a:active {
     color: #0076a5;
     text-decoration: none; }
-  .link--no-decoration:hover, .pagination a.pagination__page--active:hover, .link--no-decoration:focus, .pagination a.pagination__page--active:focus, .link--no-decoration:active, .pagination a.pagination__page--active:active {
+  .link--no-decoration:hover, .pagination a.pagination__page--active:hover, .generated-paginator p.generated-paginator__current:hover, .link--no-decoration:focus, .pagination a.pagination__page--active:focus, .generated-paginator p.generated-paginator__current:focus, .link--no-decoration:active, .pagination a.pagination__page--active:active, .generated-paginator p.generated-paginator__current:active {
     text-decoration: none; }
 
 .list--unstyled, .styleguide__list, .css-tabs__list {
@@ -3803,7 +3805,7 @@ a:focus {
 .mr-4, .cart-fill__block--flex > *:not(:last-child), .my-account__table td:first-child {
   margin-right: 1.5rem; }
 
-.mb-4, .mailing-lists > *:not(:last-child), .map-columns > *:not(:last-child), .shopping-cart__block:not(:last-child), .upload-mail > *:not(:last-child), .category {
+.mb-4, .contact > *:not(:last-child), .mailing-lists > *:not(:last-child), .map-columns > *:not(:last-child), .shopping-cart__block:not(:last-child), .upload-mail > *:not(:last-child), .category {
   margin-bottom: 1.5rem; }
 
 .ml-4 {
@@ -4789,7 +4791,7 @@ a:focus {
 .line-height--off, .btn--circle, .plus-btn, .content-header__btn, .mailing-lists__add-row-icon {
   line-height: .1; }
 
-.line-height--one, .input, .input__text, .cart-product__quantity input[type="number"], .input__textarea, .input__select-area, .input__password, .pagination a.pagination__page--active, .sent-statistics__title, .sent-statistics__value {
+.line-height--one, .input, .input__text, .cart-product__quantity input[type="number"], .input__textarea, .input__select-area, .input__password, .pagination a.pagination__page--active, .generated-paginator p.generated-paginator__current, .sent-statistics__title, .sent-statistics__value {
   line-height: 1.1; }
 
 .text--left {
@@ -5772,6 +5774,28 @@ body {
 .pagination__step svg {
   vertical-align: middle; }
 
+.generated-paginator p {
+  padding: 0 0.5rem;
+  margin: 0;
+  display: inline-block;
+  color: #009bd8;
+  cursor: pointer; }
+
+.generated-paginator__prev:hover, .generated-paginator__next:hover {
+  text-decoration: underline; }
+
+.generated-paginator p.generated-paginator__current {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  background-color: #e4e7ea;
+  color: #404040;
+  border-radius: 100%; }
+
+.generated-paginator * {
+  color: #009bd8; }
+
 .product-editor__block {
   margin-top: 1.25rem; }
 
@@ -6017,18 +6041,32 @@ body {
 
 .show-table {
   overflow: hidden;
-  width: 100%; }
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e4e7ea; }
+  .show-table--hide-rows tr:not(:first-child) {
+    display: none; }
+  .show-table--hide-rows tr.active {
+    display: table-row; }
   .show-table tr td,
   .show-table tr th {
     padding: 1rem 0.5rem;
-    background-color: white; }
+    background-color: white;
+    border-top: 1px solid #e4e7ea;
+    border-bottom: 1px solid #e4e7ea; }
+    .show-table tr td:last-child,
+    .show-table tr th:last-child {
+      border-right: 1px solid #e4e7ea; }
+    .show-table tr td:first-child,
+    .show-table tr th:first-child {
+      border-left: 1px solid #e4e7ea; }
   .show-table tr th {
     padding: 0.875rem 0.5rem;
     text-transform: uppercase;
     font-size: 14px; }
   .show-table tr {
-    position: relative;
-    border: 1px solid #e4e7ea; }
+    position: relative; }
   .show-table tr:nth-child(2n) > * {
     background-color: #f6f6f6; }
   .show-table tr:nth-child(2n) .show-table__text-appear:after {

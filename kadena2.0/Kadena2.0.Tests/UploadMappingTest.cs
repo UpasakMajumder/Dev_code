@@ -16,7 +16,7 @@ namespace Kadena.Tests
         [TestCase("5b602141-33fa-4754-9eb4-af275b80087a",
             "399c95a3-ce5d-46d9-ad1f-1f195ce95596",
             "actum",
-            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/Api/DeliveryAddress",
             TestName = "UploadMappingFail",
             Description = "Testing incorrect parameters passed to microservice.")]
         public void IncorrectMappingExceptionCase(string fileId, string containerId, string customerName, string url)
@@ -36,10 +36,10 @@ namespace Kadena.Tests
                 , () => CallService(fileId, new Guid(containerId), customerName, url, mapping));
         }
 
-        [TestCase("actum/original-mailing/ee086770-6f5f-4905-bc87-be5248be36b3",
+        [TestCase("actum/original-mailing/cc122b9c-f0cc-43f8-a9a8-b5a429976844",
             "399c95a3-ce5d-46d9-ad1f-1f195ce95596",
             "actum",
-            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/Api/DeliveryAddress",
             TestName = "UploadMappingCorrectMapping",
             Description = "Testing for successful call of service.")]
         public void CorrectMappingCase(string fileId, string containerId, string customerName, string url)

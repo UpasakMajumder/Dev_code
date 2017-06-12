@@ -119,8 +119,10 @@ class Dropzone {
 
     this.count -= 1;
     const { item, input } = this.data[id];
-    item.remove();
-    input.remove();
+
+    item.parentNode.removeChild(item);
+    input.parentNode.removeChild(input);
+
     this.container.querySelector('.js-drop-zone-file').style.display = 'block';
 
     if (this.count === 0) {
