@@ -27,6 +27,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
         private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
         private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
+        private const string _getOrderHistorySettingsKey = "KDA_OrderHistoryServiceEndpoint";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -569,6 +570,43 @@ namespace Kadena.Old_App_Code.Helpers
                     try
                     {
                         response = (AwsResponseMessage<OrderStatisticsData>)message.Result;
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                    }
+                    if (response.Success)
+                    {
+                        return response?.Response;
+                    }
+                    else
+                    {
+                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<OrderHistoryData> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
+        {
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                throw new InvalidOperationException(_getAddressesIncorrectMessage);
+            }
+
+            var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parameterizedUrl))
+                {
+                    AwsResponseMessage<IEnumerable<OrderHistoryData>> response;
+                    try
+                    {
+                        response = (AwsResponseMessage<IEnumerable<OrderHistoryData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {

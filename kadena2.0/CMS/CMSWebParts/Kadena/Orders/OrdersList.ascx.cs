@@ -1,15 +1,12 @@
-﻿using CMS.Helpers;
+﻿using CMS.Ecommerce;
+using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using System;
-using System.Collections.Generic;
+using Kadena.Old_App_Code.Helpers;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Kadena.CMSWebParts.Kadena.Orders
 {
-  public partial class OrdersList : CMSAbstractWebPart
+    public partial class OrdersList : CMSAbstractWebPart
   {
     #region Public properties
 
@@ -43,7 +40,28 @@ namespace Kadena.CMSWebParts.Kadena.Orders
     {
       if (!StopProcessing)
       {
-      
+                if (IsForCurrentUser)
+                {
+                    if (ECommerceContext.CurrentCustomer != null)
+                    {
+                        var orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
+
+                        if (orderData != null && orderData.ToList().Count > 0)
+                        {
+                            repOrderList.DataSource = orderData;
+                            repOrderList.DataBind();
+                        }
+                        else
+                        {
+                            repOrderList.Visible = false;
+                            lblNoOrderItems.Visible = true;
+                        }
+                    }
+                }
+                else
+                {
+
+                }
       }
     }
 
