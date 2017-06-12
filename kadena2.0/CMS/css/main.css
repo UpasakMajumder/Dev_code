@@ -2917,6 +2917,12 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     font-size: 0;
     line-height: 0; }
 
+@keyframes rotation {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
 button {
   cursor: pointer; }
 
@@ -3175,7 +3181,7 @@ button {
 .upload-mail__offer p {
   color: #777; }
 
-.login__form, .drop-zone, .footer {
+.login__form, .drop-zone, .footer, .spinner__wrapper {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -6240,6 +6246,25 @@ body {
   .snack-notification.show-1 {
     transform: translateY(0%); }
 
+.main-container {
+  position: relative; }
+
+.spinner {
+  text-align: center; }
+  .spinner svg {
+    width: 70px;
+    animation: rotation 1s linear infinite; }
+  .spinner__wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    background: rgba(28, 97, 125, 0.5);
+    z-index: 100000; }
+
 .steps {
   border-radius: 8px;
   position: relative; }
@@ -6298,12 +6323,6 @@ body {
       left: -4.5px; }
     .steps__line:after {
       right: -4.5px; }
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg); }
-  to {
-    transform: rotate(360deg); } }
 
 .stock {
   -ms-flex-wrap: nowrap;
