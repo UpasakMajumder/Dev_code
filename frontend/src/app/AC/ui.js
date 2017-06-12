@@ -15,6 +15,7 @@ export default {
           "pricePrefix": "$",
           "price": "112.2",
           "isEditable": false,
+          "editorURL": "#",
           "quantityPrefix": "Quantity:",
           "quantity": 11,
           "stockQuantity": 15
