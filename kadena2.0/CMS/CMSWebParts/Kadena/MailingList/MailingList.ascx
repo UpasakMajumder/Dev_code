@@ -17,6 +17,9 @@
                     <th>
                         <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.NumberOfErrors" />
                     </th>
+                    <th>
+                        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.Action" />
+                    </th>
                 </tr>
     </HeaderTemplate>
     <ItemTemplate>
@@ -32,6 +35,11 @@
             </td>
             <td>
                 <%# Eval("errorCount") %>
+            </td>
+            <td class="text--center">
+                <a href="<%# ViewListUrl %>?containerid=<%# Eval("id") %>" class="mailing-lists__btn btn-action btn-action--secondary">
+                    <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.View" />
+                </a> 
             </td>
         </tr>
     </ItemTemplate>

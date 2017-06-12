@@ -2,10 +2,32 @@
 export default {
   "success": true,
   "payload": {
+    "products": {
+      "number": "You have 1 item in your shopping cart",
+      "items": [
+        {
+          "id": 33,
+          "image": "http://localhost:56000/getmetafile/8a32283f-214e-4b9b-84f8-6a0736d069ad/my-product",
+          "template": "Template",
+          "isMailingList": false,
+          "mailingList": "Mailing list",
+          "delivery": "",
+          "pricePrefix": "$",
+          "price": "112.2",
+          "isEditable": false,
+          "quantityPrefix": "Quantity:",
+          "quantity": 11,
+          "stockQuantity": 15
+        }
+      ]
+    },
     "deliveryAddresses": {
-      "title": "Delivery",
+      "isDeliverable": true,
+      "unDeliverableText": "Text",
+      "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
       "addAddressLabel": "New address",
+      "emptyMessage": "Fill at least one address",
       "items": [
         {
           "street": [
@@ -15,7 +37,7 @@ export default {
           "state": "TN",
           "zip": "38017",
           "id": 1,
-          "checked": false
+          "checked": true
         },
         {
           "street": [
@@ -50,7 +72,7 @@ export default {
       ]
     },
     "deliveryMethods": {
-      "title": "Delivery",
+      "title": "Delivery method",
       "description": "Select delivery carrier and option",
       "items": [
         {
@@ -59,8 +81,8 @@ export default {
           "icon": "fedex-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Cannot be delivered",
+          "price": "",
           "datePrefix": null,
           "date": null,
           "items": [
@@ -68,21 +90,21 @@ export default {
               "id": 5,
               "title": "Int'l Economy",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Cannot be delivered",
+              "price": "",
               "datePrefix": null,
               "date": null,
-              "disabled": false
+              "disabled": true
             },
             {
               "id": 6,
               "title": "Int'l Ground",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Cannot be delivered",
+              "price": "",
               "datePrefix": null,
               "date": null,
-              "disabled": false
+              "disabled": true
             }
           ]
         },
@@ -90,19 +112,19 @@ export default {
           "id": 2,
           "title": "FedEx Customer",
           "icon": "fedex-delivery",
-          "opened": false,
+          "opened": true,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Price based on your contract",
+          "price": "",
           "datePrefix": null,
           "date": null,
           "items": [
             {
               "id": 2,
               "title": "FedEx customer price",
-              "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "checked": true,
+              "pricePrefix": "Price based on your contract",
+              "price": "",
               "datePrefix": null,
               "date": null,
               "disabled": false
@@ -115,8 +137,8 @@ export default {
           "icon": "ups-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Price from",
+          "price": "$ 11.40",
           "datePrefix": null,
           "date": null,
           "items": [
@@ -124,8 +146,8 @@ export default {
               "id": 4,
               "title": "Ground",
               "checked": false,
-              "pricePrefix": null,
-              "price": "9.4",
+              "pricePrefix": "Price",
+              "price": "$ 11.40",
               "datePrefix": null,
               "date": null,
               "disabled": false
@@ -134,11 +156,11 @@ export default {
               "id": 7,
               "title": "NextDayStd",
               "checked": false,
-              "pricePrefix": null,
-              "price": "30.58",
+              "pricePrefix": "Cannot be delivered",
+              "price": "",
               "datePrefix": null,
               "date": null,
-              "disabled": false
+              "disabled": true
             }
           ]
         },
@@ -148,8 +170,8 @@ export default {
           "icon": "ups-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Price based on your contract",
+          "price": "",
           "datePrefix": null,
           "date": null,
           "items": [
@@ -157,8 +179,8 @@ export default {
               "id": 8,
               "title": "UPS customer price",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Price based on your contract",
+              "price": "",
               "datePrefix": null,
               "date": null,
               "disabled": false
@@ -171,8 +193,8 @@ export default {
           "icon": "usps-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Cannot be delivered",
+          "price": "",
           "datePrefix": null,
           "date": null,
           "items": [
@@ -180,21 +202,21 @@ export default {
               "id": 1,
               "title": "1st class",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Cannot be delivered",
+              "price": "",
               "datePrefix": null,
               "date": null,
-              "disabled": false
+              "disabled": true
             },
             {
               "id": 3,
               "title": "First Class",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Cannot be delivered",
+              "price": "",
               "datePrefix": null,
               "date": null,
-              "disabled": false
+              "disabled": true
             }
           ]
         },
@@ -204,8 +226,8 @@ export default {
           "icon": "usps-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": null,
-          "price": null,
+          "pricePrefix": "Price based on your contract",
+          "price": "",
           "datePrefix": null,
           "date": null,
           "items": [
@@ -213,8 +235,8 @@ export default {
               "id": 9,
               "title": "USPS customer price",
               "checked": false,
-              "pricePrefix": null,
-              "price": "0",
+              "pricePrefix": "Price based on your contract",
+              "price": "",
               "datePrefix": null,
               "date": null,
               "disabled": false
@@ -224,6 +246,8 @@ export default {
       ]
     },
     "paymentMethods": {
+      "isPayable": true,
+      "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
       "items": [
@@ -250,35 +274,35 @@ export default {
           "title": "Purchase order",
           "icon": "order-payment",
           "disabled": false,
-          "checked": false,
+          "checked": true,
           "hasInput": true,
           "inputPlaceholder": "Insert your PO number"
         }
       ]
     },
     "totals": {
-      "title": "Total",
+      "title": "Totals",
       "description": null,
       "items": [
         {
           "title": "Summary",
-          "value": "20"
+          "value": "$ 112.20"
         },
         {
           "title": "Shipping",
-          "value": "0"
+          "value": "$ 0.00"
         },
         {
           "title": "Subtotal",
-          "value": "0"
+          "value": "$ 112.20"
         },
         {
-          "title": "Tax 8%",
-          "value": "0"
+          "title": "Tax",
+          "value": "$ 0.00"
         },
         {
           "title": "Totals",
-          "value": "20"
+          "value": "$ 112.20"
         }
       ]
     },

@@ -49,7 +49,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
 
         if (result.success)
         {
-          return result.payload.editorUrl;
+          return result.payload;
         }
         else
         {
@@ -88,7 +88,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
 
         if (result.success)
         {
-          return result.payload.editorUrl;
+          return result.payload;
         }
         else
         {
@@ -128,7 +128,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
 
         if (result.success)
         {
-          return result.payload.documents;
+          return result.payload;
         }
         else
         {
@@ -167,7 +167,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
 
                 if (result.success)
                 {
-                    return result.payload.editorUrl;
+                    return result.payload;
                 }
                 else
                 {

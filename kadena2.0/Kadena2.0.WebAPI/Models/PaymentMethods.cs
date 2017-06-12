@@ -5,6 +5,8 @@ namespace Kadena.WebAPI.Models
 {
     public class PaymentMethods
     {
+        public bool IsPayable { get; set; }
+        public string UnPayableText { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 

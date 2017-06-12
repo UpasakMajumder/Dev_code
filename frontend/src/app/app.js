@@ -28,6 +28,8 @@ const app = {
     init('redirection', document.getElementsByClassName('js-redirection'));
     init('password', document.getElementsByClassName('js-password'));
     init('closer', document.getElementsByClassName('js-close-this'));
+    init('datepicker', document.getElementsByClassName('js-datepicker'));
+    init('replace-value', document.getElementsByClassName('js-replace-value'));
   },
 
   /* React */
@@ -37,6 +39,7 @@ const app = {
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Login', document.querySelectorAll('.js-login'));
     render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
+    render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
   }
 };
 
