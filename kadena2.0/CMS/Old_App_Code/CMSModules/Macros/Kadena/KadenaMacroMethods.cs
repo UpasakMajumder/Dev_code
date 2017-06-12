@@ -18,12 +18,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
             var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
-            // Static product - can be of type Inventory or can be print on demand (POD)
+            // Static product - can be of type Inventory or can be print on demand (POD) or can be withh add-on
             if (selectedProductTypeCodeNames.Contains("KDA.StaticProduct"))
             {
                 if (selectedProductTypeCodeNames.Contains("KDA.MailingProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.ProductWithAddOns"))
+                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
                 {
                     return false;
                 }
@@ -46,8 +45,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 if (!selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
                     selectedProductTypeCodeNames.Contains("KDA.POD") ||
                     selectedProductTypeCodeNames.Contains("KDA.MailingProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.ProductWithAddOns"))
+                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
                 {
                     return false;
                 }
@@ -70,8 +68,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 if (!selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct") ||
                     selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
                     selectedProductTypeCodeNames.Contains("KDA.InventoryProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.POD") ||
-                    selectedProductTypeCodeNames.Contains("KDA.ProductWithAddOns"))
+                    selectedProductTypeCodeNames.Contains("KDA.POD"))
                 {
                     return false;
                 }
@@ -93,8 +90,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 if (selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
                     selectedProductTypeCodeNames.Contains("KDA.InventoryProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.POD") ||
-                    selectedProductTypeCodeNames.Contains("KDA.ProductWithAddOns"))
+                    selectedProductTypeCodeNames.Contains("KDA.POD"))
                 {
                     return false;
                 }

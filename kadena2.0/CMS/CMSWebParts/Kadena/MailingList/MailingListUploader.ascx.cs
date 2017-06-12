@@ -1,4 +1,5 @@
 ﻿using CMS.CustomTables;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
@@ -32,7 +33,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
                 inpFileName.Attributes["placeholder"] = GetString("Kadena.MailingList.FileName");
             }
-            
+
             var mailTypes = CustomTableItemProvider.GetItems(_mailTypeTableName)
                     .OrderBy("ItemOrder")
                     .ToDictionary(row => row["CodeName"].ToString(), row => row["DisplayName"].ToString());
@@ -198,6 +199,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 catch (Exception exc)
                 {
                     txtError.InnerText = exc.Message;
+                    EventLogProvider.LogException("Mailing List Create", "EXCEPTION", exc, CurrentSite.SiteID);
                 }
             }
         }
