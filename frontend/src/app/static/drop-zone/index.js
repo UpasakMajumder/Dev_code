@@ -68,12 +68,10 @@ class Dropzone {
     Dropzone.setNameToItem(name, ext, this.data[id].item);
     this.changeNameInput(name);
 
-    if (this.count === this.maxItems) return;
+    this.container.classList.remove(this.reverseSelector);
+    this.container.classList.add(this.selector);
 
-    if (this.count === 0) {
-      this.container.classList.remove(this.reverseSelector);
-      this.container.classList.add(this.selector);
-    }
+    if (this.count === this.maxItems) return;
 
     this.count += 1;
     this.number += 1;

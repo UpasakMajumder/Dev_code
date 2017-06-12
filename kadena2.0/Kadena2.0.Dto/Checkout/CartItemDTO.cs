@@ -13,6 +13,6 @@
         public bool IsEditable { get; set; }
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
-        
+        public int StockQuantity { get; set; }
     }
 }

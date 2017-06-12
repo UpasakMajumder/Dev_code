@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DeliveryAddress from './DeliveryAddress';
-import Undeliverable from './DeliveryAddress/Undeliverable';
+import Alert from '../Alert';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
+import Spinner from '../Spinner';
 import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
@@ -46,9 +47,9 @@ class ShoppingCart extends Component {
 
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, validation, loadingProducts, loadingQuantities } = shoppingCart;
+    const { ui, checkedData, isSending, validation } = shoppingCart;
 
-    let content = null;
+    let content = <Spinner />;
 
     if (Object.keys(ui).length) {
       const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
@@ -76,16 +77,14 @@ class ShoppingCart extends Component {
         </div>
         : <div className="shopping-cart__block">
           <h2>{title}</h2>
-          <Undeliverable unDeliverableText={unDeliverableText}/>
+          <Alert type="grey" text={unDeliverableText}/>
         </div>;
 
       content = <div>
         <div className="shopping-cart__block">
           <Products
             removeProduct={this.props.removeProduct}
-            loadingProducts={loadingProducts}
             changeProductQuantity={this.props.changeProductQuantity}
-            loadingQuantities={loadingQuantities}
             ui={ui.products}
           />
         </div>
@@ -106,12 +105,9 @@ class ShoppingCart extends Component {
         </div>
 
         <div className="shopping-cart__block text--right">
-          <button onClick={() => {
-            this.props.sendData(checkedData);
-          }}
+          <button onClick={() => { this.props.sendData(checkedData); }}
                   type="button"
-                  className="btn-action"
-                  disabled={isSending}>
+                  className="btn-action">
             {ui.submitLabel}
           </button>
         </div>

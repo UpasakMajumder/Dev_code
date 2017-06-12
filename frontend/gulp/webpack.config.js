@@ -6,11 +6,7 @@ const DEVELOPMENT = process.env.isDevelopment !== 'false';
 const path = require('path');
 const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const eslintConfig = require('eslint-config-actum').getConfig({
-    environment: {
-        isDevelopment: DEVELOPMENT
-    }
-});
+const eslintConfig = require('eslint-config-actum').getConfig({ environment: false });
 
 /* Plugins for Webpack */
 const pluginsCollection = {

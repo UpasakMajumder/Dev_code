@@ -23271,6 +23271,10 @@
       <Project>{15ef35c6-b6e1-40e7-a423-9b1e3f856d4c}</Project>
       <Name>Carriers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
+      <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
+      <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
       <Project>{fb19606b-d327-4f43-ab3f-825000079b1a}</Project>
       <Name>Kadena2.0.WebAPI</Name>
