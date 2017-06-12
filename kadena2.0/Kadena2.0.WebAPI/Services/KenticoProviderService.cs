@@ -256,8 +256,10 @@ namespace Kadena.WebAPI.Services
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data
+                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data, remove default?
                 Template = i.GetValue("ChilliTemplateID", string.Empty),
+                EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
+                ProductPageId = i.GetValue("ProductPageID", string.Empty),
                 StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();

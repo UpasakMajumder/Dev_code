@@ -6,6 +6,9 @@
         public string ProductType { get; set; }
         public string Image { get; set; }
         public string Template { get; set; }
+        public string EditorTemplateId { get; set; }
+        public string ProductPageId { get; set; }
+
         public bool IsMailingList
         {
             get
