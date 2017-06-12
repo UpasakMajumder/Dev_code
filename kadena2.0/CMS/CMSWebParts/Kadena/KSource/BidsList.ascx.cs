@@ -93,6 +93,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                 var divPagesInner = new HtmlGenericControl("div");
                 divPagesInner.Attributes["class"] = "js-table-paginator-wrapper generated-paginator";
                 divPagesInner.Attributes["data-pages"] = (data.Count() / recordsPerPage + 1).ToString();
+                divPagesInner.Attributes["data-rows-on-page"] = recordsPerPage.ToString();
 
                 var span = new HtmlGenericControl("span");
 
