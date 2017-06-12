@@ -15,7 +15,7 @@ class ReplaceValue {
       const { replaceId } = fieldFrom.dataset;
       const fieldsTo = document.querySelectorAll(`.${this.fieldToClass}[data-replace-id="${replaceId}"]`);
 
-      fieldsTo.forEach((fieldTo) => {
+      Array.from(fieldsTo).forEach((fieldTo) => {
         fieldTo.value = value;
       });
     });
