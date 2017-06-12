@@ -1,10 +1,10 @@
 class Pagination {
 
-  constructor(e, data) {
+  constructor(wrapper, data) {
     this.code = '';
-    this.Extend(data);
-    this.Create(e);
-    this.Start();
+    this.extend(data);
+    this.create(wrapper);
+    this.start();
   }
 
   // --------------------
@@ -12,32 +12,32 @@ class Pagination {
   // --------------------
 
   // converting initialize data
-  Extend(data) {
+  extend(data) {
     data = data || {};
     this.size = data.size || 300;
     this.page = data.page || 1;
     this.step = data.step || 3;
     this.callback = data.callback;
-    this.wrapper = data.wrapper;
+    this.container = data.container;
     this.toPage = data.toPage;
     this.fromPage = data.fromPage;
     this.rowsOnPage = data.rowsOnPage;
   }
 
   // add pages by number (from [s] to [f])
-  Add(s, f) {
+  add(s, f) {
     for (let i = s; i < f; i += 1) {
       this.code += `<p data-page-number="${i}">${i}</p>`;
     }
   }
 
   // add last page with separator
-  Last() {
+  last() {
     this.code += `<i>...</i><p> ${this.size}</p>`;
   }
 
   // add first page with separator
-  First() {
+  first() {
     this.code += '<p>1</p><i>...</i>';
   }
 
@@ -46,30 +46,24 @@ class Pagination {
   // --------------------
 
   // change page
-  Click(event) {
+  click(event) {
     this.prevPage = this.page;
     this.page = +event.target.innerHTML;
-    this.Start();
+    this.start();
   }
 
   // previous page
-  Prev() {
+  prev() {
     this.prevPage = this.page;
-    this.page -= 1;
-    if (this.page < 1) {
-      this.page = 1;
-    }
-    this.Start();
+    this.page = (this.page < 1) ? 1 : this.page - 1;
+    this.start();
   }
 
   // next page
-  Next() {
+  next() {
     this.prevPage = this.page;
-    this.page += 1;
-    if (this.page > this.size) {
-      this.page = this.size;
-    }
-    this.Start();
+    this.page = (this.page > this.size) ? this.size : this.page + 1;
+    this.start();
   }
 
   // --------------------
@@ -77,58 +71,59 @@ class Pagination {
   // --------------------
 
   // binding pages
-  Bind() {
-    const a = this.e.getElementsByTagName('p');
+  bind() {
+    const a = this.wrapper.getElementsByTagName('p');
     for (let i = 0; i < a.length; i += 1) {
       if (+a[i].innerHTML === this.page) a[i].className = 'generated-paginator__current';
-      a[i].addEventListener('click', event => this.Click.call(this, event), false);
+      a[i].addEventListener('click', event => this.click.call(this, event), false);
     }
-    this.callback(this.prevPage, this.page, this.wrapper, this.toPage, this.fromPage, this.rowsOnPage);
+    this.callback(this.prevPage, this.page, this.container, this.toPage, this.fromPage, this.rowsOnPage);
   }
 
   // write pagination
-  Finish() {
-    this.e.innerHTML = this.code;
+  finish() {
+    this.wrapper.innerHTML = this.code;
     this.code = '';
-    this.Bind();
+    this.bind();
   }
 
   // find pagination type
-  Start() {
+  start() {
     if (this.size < (this.step * 2) + 6) {
-      this.Add(1, this.size + 1);
+      this.add(1, this.size + 1);
     } else if (this.page < (this.step * 2) + 1) {
-      this.Add(1, (this.step * 2) + 4);
-      this.Last();
+      this.add(1, (this.step * 2) + 4);
+      this.last();
     } else if (this.page > this.size - (this.step * 2)) {
-      this.First();
-      this.Add(this.size - (this.step * 2) - 2, this.size + 1);
+      this.first();
+      this.add(this.size - (this.step * 2) - 2, this.size + 1);
     } else {
-      this.First();
-      this.Add(this.page - this.step, (this.page + this.step + 1));
-      this.Last();
+      this.first();
+      this.add(this.page - this.step, (this.page + this.step + 1));
+      this.last();
     }
-    this.Finish();
+    this.finish();
   }
 
   // binding buttons
-  Buttons(e) {
-    const nav = e.getElementsByTagName('p');
-    nav[0].addEventListener('click', this.Prev.bind(this), false);
-    nav[1].addEventListener('click', this.Next.bind(this), false);
+
+  buttons(wrapper) {
+    const nav = wrapper.getElementsByTagName('p');
+    nav[0].addEventListener('click', this.prev.bind(this), false);
+    nav[1].addEventListener('click', this.next.bind(this), false);
   }
 
   // create skeleton
-  Create(e) {
+  create(wrapper) {
     const html = [
       '<p class="generated-paginator__prev">&#60; Previous</p>', // previous button
       '<span></span>', // pagination container
       '<p class="generated-paginator__next">Next &#62;</p>' // next button
     ];
 
-    e.innerHTML = html.join('');
-    this.e = e.getElementsByTagName('span')[0];
-    this.Buttons(e);
+    wrapper.innerHTML = html.join('');
+    this.wrapper = wrapper.getElementsByTagName('span')[0];
+    this.buttons(wrapper);
   }
 }
 
