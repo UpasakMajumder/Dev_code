@@ -31,6 +31,15 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
         protected global::System.Web.UI.HtmlControls.HtmlTable tblOpenProjects;
         
         /// <summary>
+        /// phOpenPagination control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phOpenPagination;
+        
+        /// <summary>
         /// lblCompletedProjects control.
         /// </summary>
         /// <remarks>
@@ -47,5 +56,14 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblCompletedProjects;
+        
+        /// <summary>
+        /// phCompletedPagination control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phCompletedPagination;
     }
 }

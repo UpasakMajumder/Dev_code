@@ -75,7 +75,7 @@
     @include rem(padding-left, 16px);
     @include rem(padding-right, 16px);
     width: 100%;
-    min-height: 80px;
+    min-height: 95px;
   }
 
   &__select-area {
@@ -157,7 +157,7 @@
     position: absolute;
     right: 0;
     top: 2px;
-    font-size: $font-xxs;
+    font-size: $font-xs;
     font-weight: 400;
     color: $brand-dark;
   }
@@ -224,12 +224,16 @@
 
   &--error {
     border-bottom: 1px solid $brand-dangerous;
+
+    & ~ .input__error {
+      display: block;
+    }
   }
 
   &__error {
     @extend .font-dangerous;
     border-top: 1px solid $brand-dangerous;
-    display: block;
+    display: none;
     font-size: $font-xxs;
     width: 100%;
 

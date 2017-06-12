@@ -12,9 +12,9 @@ namespace Kadena.Tests
         private string _customerNameSetting = "KDA_CustomerName";
         private string _urlSetting = "KDA_GetHeadersUrl";
 
-        [TestCase("actum/original-mailing/29d459f3-c39d-4a2b-b253-95a0e9b4519c"
+        [TestCase("actum/original-mailing/cc122b9c-f0cc-43f8-a9a8-b5a429976844"
             , "actum"
-            , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Prod/Api/CsvParser/GetHeaders"
+            , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Qa/Api/CsvParser/GetHeaders"
             , TestName = "GetHeaderCorrectFile", Description = "Testing for successful result from request.")]
         public void CorrectFileCase(string id, string customerName, string url)
         {
@@ -25,7 +25,7 @@ namespace Kadena.Tests
 
         [TestCase("46497e0d-696c-4bcb-bc47-5428e344f373"
             , "actum"
-            , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Prod/Api/CsvParser/GetHeaders"
+            , "https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Qa/Api/CsvParser/GetHeaders"
             , TestName = "GetHeaderWrongFile"
             , Description = "Testing for exception throw when requested file not exists or empty.")]
         public void WrongFileCase(string id, string customerName, string url)
