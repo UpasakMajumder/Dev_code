@@ -252,7 +252,7 @@ namespace Kadena.WebAPI.Services
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                Price = i.CartItemPrice * i.CartItemUnits,
+                Price = i.UnitPrice * i.CartItemUnits,
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
@@ -267,12 +267,11 @@ namespace Kadena.WebAPI.Services
 
             return result;
         }
-
-        /// <summary>
-        /// Inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
-        /// </summary>
+        
         public void RemoveCartItem(int id)
         {
+            // Method approach inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
+
             var cart = ECommerceContext.CurrentShoppingCart;
             var item = cart.CartItems.FirstOrDefault(i => i.CartItemID == id);
 
