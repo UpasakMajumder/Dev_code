@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.Models
 {
@@ -11,5 +12,14 @@ namespace Kadena.WebAPI.Models
         public Totals Totals { get; set; }
         public string SubmitLabel { get; set; }
         public string ValidationMessage { get; set; }
+
+        public void SetDisplayType()
+        {
+            if (Products.Items.TrueForAll(p => p.IsMailingList))
+            {
+                DeliveryAddresses.IsDeliverable = false;
+                PaymentMethods.IsPayable = false;
+            }
+        }
     }
 }

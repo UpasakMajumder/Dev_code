@@ -307,6 +307,8 @@ namespace Kadena.Old_App_Code.Helpers
         /// <returns>If of file with valid addresses.</returns>
         public static string ValidateAddresses(Guid containerId)
         {
+            var customerName = GetCustomerName();
+
             if (containerId == Guid.Empty)
             {
                 throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
@@ -324,7 +326,8 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var content = new StringContent(JsonConvert.SerializeObject(new
                 {
-                    ContainerId = containerId
+                    ContainerId = containerId,
+                    CustomerName = customerName
                 }), System.Text.Encoding.UTF8, "application/json"))
                 {
                     using (var message = client.PostAsync(validateAddressUrl, content))
@@ -449,6 +452,8 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="containerId">Id of container to be cleared.</param>
         public static void RemoveAddresses(Guid containerId, Guid[] addressIds = null)
         {
+            var customerName = GetCustomerName();
+
             if (containerId == Guid.Empty)
             {
                 throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
@@ -469,7 +474,8 @@ namespace Kadena.Old_App_Code.Helpers
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
                         ContainerId = containerId,
-                        ids = addressIds
+                        ids = addressIds,
+                        CustomerName = customerName
                     }), System.Text.Encoding.UTF8, "application/json"),
                     RequestUri = deleteAddressesUrl,
                     Method = HttpMethod.Delete
