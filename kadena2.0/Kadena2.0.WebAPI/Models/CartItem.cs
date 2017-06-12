@@ -26,7 +26,7 @@
         {
             get
             {
-                return IsMailingList;
+                return ProductType.Contains("KDA.TemplatedProduct");
             }
         }
         public string QuantityPrefix { get; set; }
