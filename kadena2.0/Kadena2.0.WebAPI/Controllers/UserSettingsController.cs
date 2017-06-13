@@ -53,13 +53,15 @@ namespace Kadena.WebAPI.Controllers
                 },
                 Dialog = new EditorDto
                 {
-                    Types = new List<EditorTypeDto> {
-                        new EditorTypeDto { Type = "add", Title = "Add address:" },
-                        new EditorTypeDto { Type="edit", Title = "Edit address:"}
+                    Types = new EditorTypeDto
+                    {
+                        Add = "Add address:",
+                        Edit = "Edit address:"
                     },
-                    Buttons = new List<EditorButtonDto> {
-                        new EditorButtonDto {Text = "Discard changes", IsSubmit = false },
-                        new EditorButtonDto {Text = "Save address", IsSubmit = true }
+                    Buttons = new EditorButtonDto
+                    {
+                        Discard = "Discard changes",
+                        Save = "Save address"
                     },
                     Fields = new List<EditorFieldDto> {
                         new EditorFieldDto { Label = "Address line 1", Type = "text"},

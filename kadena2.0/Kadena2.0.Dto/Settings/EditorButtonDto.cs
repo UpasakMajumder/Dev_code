@@ -2,7 +2,7 @@
 {
     public class EditorButtonDto
     {
-        public string Text { get; set; }
-        public bool IsSubmit { get; set; }
+        public string Discard { get; set; }
+        public string Save { get; set; }
     }
 }

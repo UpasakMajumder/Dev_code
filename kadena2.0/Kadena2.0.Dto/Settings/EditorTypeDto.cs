@@ -2,7 +2,7 @@
 {
     public class EditorTypeDto
     {
-        public string Type { get; set; }
-        public string Title { get; set; }
+        public string Add { get; set; }
+        public string Edit { get; set; }
     }
 }
