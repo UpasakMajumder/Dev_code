@@ -109,7 +109,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();

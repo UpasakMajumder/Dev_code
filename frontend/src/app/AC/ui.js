@@ -14,10 +14,12 @@ export default {
           "delivery": "",
           "pricePrefix": "$",
           "price": "112.2",
-          "isEditable": false,
+          "isEditable": true,
+          "editorURL": "#",
           "quantityPrefix": "Quantity:",
           "quantity": 11,
-          "stockQuantity": 15
+          "stockQuantity": 15,
+          "isQuantityEditable": true
         }
       ]
     },
