@@ -16,6 +16,7 @@ using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.WebAPI.Infrastructure.Responses;
 using Kadena.Dto.SubmitOrder;
+using Kadena.Dto.Settings;
 
 namespace Kadena.WebAPI
 {
@@ -106,7 +107,7 @@ namespace Kadena.WebAPI
 
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -120,13 +121,22 @@ namespace Kadena.WebAPI
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
+                config.CreateMap<DeliveryAddress, AddressDto>().ProjectUsing(a => new AddressDto
+                {
+                    Id = a.Id,
+                    Street1 = a.Street.Count > 0 ? a.Street[0] : null,
+                    Street2 = a.Street.Count > 1 ? a.Street[1] : null,
+                    City = a.City,
+                    State = a.State,
+                    Zip = a.Zip
+                });
             });
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
-            container.Register<IShoppingCartService,ShoppingCartService>();
+            container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
