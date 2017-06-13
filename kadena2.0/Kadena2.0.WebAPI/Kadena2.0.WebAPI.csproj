@@ -132,6 +132,7 @@
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
     <Compile Include="Infrastructure\Requests\ChangeItemQuantityRequestDto.cs" />
