@@ -59,9 +59,6 @@ class TablePaginator {
       toNumber = currPage * rowsOnPage;
     }
 
-    console.log(rowsOnPage);
-
-
     unstyleActiveRows(prevRows);
     styleActiveRows(nextRows);
 
