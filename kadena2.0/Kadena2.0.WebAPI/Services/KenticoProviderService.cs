@@ -101,7 +101,7 @@ namespace Kadena.WebAPI.Services
 
         public DeliveryOption[] GetShippingOptions()
         {
-            var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
+            var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = mapper.Map<DeliveryOption[]>(services);
             GetShippingPrice(result);
             return result;
