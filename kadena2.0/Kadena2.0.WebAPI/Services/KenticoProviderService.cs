@@ -304,7 +304,14 @@ namespace Kadena.WebAPI.Services
 
             if (item == null || quantity < 1 || quantity > item.SKU.SKUAvailableItems)
             {
-                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}");
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}", "Failed to set cart item quantity");
+            }
+
+            var productType = item.GetStringValue("ProductType", string.Empty);
+
+            if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
+            {
+                throw new Exception($"Unable to set quantity for this product type");
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
