@@ -1,4 +1,5 @@
-﻿using CMS.DataEngine;
+﻿using CMS.Base.Web.UI;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
@@ -24,7 +25,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
-            SetNumberOfAddresses();
+
+            if (IsProductMailingType())
+            {
+                SetMailingListData();
+                SetNumberOfAddresses();
+            }
+                    
             SetupControl();
 
         }
@@ -40,19 +47,42 @@ namespace Kadena.CMSWebParts.Kadena.Chili
           
         }
 
+        private MailingListData MailingListData
+        {
+            get; set;
+        }
+
+        private bool IsProductMailingType()
+        {
+            return GetProductType().Contains("KDA.MailingProduct");
+        }
+
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (IsAddedAmmountValid(NumberOfItemsInInput) && NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
+            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
             {
-                AddItemsToShoppingCart(NumberOfItemsInInput);
+                if (IsProductMailingType())
+                {
+                    if (NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
+                    {
+                        AddItemsToShoppingCart(NumberOfItemsInInput);
+                    }
+                    else
+                    {
+                        DisplayErrorMessage();
+                    }
+                }
+                else
+                {
+                    AddItemsToShoppingCart(NumberOfItemsInInput);
+                }
+
             }
             else
             {
-                lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
-                SetErrorLblVisible();
+                DisplayErrorMessage();
 
             }
-           
         }
 
         protected void SetupControl()
@@ -61,36 +91,64 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
                 inpNumberOfItems.Attributes.Add("class", "input__text");
-                lblNumberOfItemsError.Visible = false;
+                lblNumberOfItemsError.Visible = false;            
 
                 lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
-                inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
+
+                if (IsProductMailingType())
+                {
+                    inpNumberOfItems.Attributes.Add("disabled", "true");
+                    inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
+                } 
+
             }
 
         }
 
+        private void DisplayErrorMessage()
+        {
+            lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
+            SetErrorLblVisible();
+        }
         private void SetNumberOfAddresses()
         {
-            Guid containerId;
-
-            if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
+            if (MailingListData != null)
             {
-                MailingListData listData = ServiceHelper.GetMailingList(containerId);
-
-                if (listData != null)
-                {
-                    NumberOfAddressesReturnedByService = listData.addressCount;
-                }
+                NumberOfAddressesReturnedByService = MailingListData.addressCount;
             }
         }
 
-     
+        private void SetMailingListData()
+        {
+            Guid containerId;
+          
+            if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
+            {
+                MailingListData = ServiceHelper.GetMailingList(containerId);    
+            }
+       
+        }
+
         private void SetErrorLblVisible()
         {
             lblNumberOfItemsError.Visible = true;
             inpNumberOfItems.Attributes.Add("class", "input__text input--error");
         }
 
+        private string GetProductType()
+        {
+            int documentId;
+            string productType = string.Empty;
+
+            if (int.TryParse(Request.QueryString["id"], out documentId))
+            {
+               productType = DocumentHelper.GetDocument(
+                   documentId, 
+                   new TreeProvider(MembershipContext.AuthenticatedUser)).GetStringValue("ProductType", string.Empty);
+            }
+
+            return productType;
+        }
       
         private void AddItemsToShoppingCart(int ammount)
         {
@@ -124,6 +182,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ProductPageID", documentId);
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
 
+                    if (MailingListData != null)
+                    {
+                        cartItem.SetValue("MailingListName", MailingListData.name);
+                        cartItem.SetValue("MailingListGuid", MailingListData.id);
+                    }
+                    
+
                     var dynamicUnitPrice = GetUnitPriceForAmmount(ammount);
                     if (dynamicUnitPrice > 0)
                     {
@@ -131,9 +196,12 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-
-                    lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
-                    SetErrorLblVisible();
+                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) +"');"));
+                   
+                    //ScriptManager.RegisterClientScriptBlock();
+                    //Page.ClientScript.RegisterClientScriptBlock();
+                    //lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
+                    //SetErrorLblVisible();
                 }
             }
                    
