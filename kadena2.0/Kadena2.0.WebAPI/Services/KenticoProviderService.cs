@@ -29,6 +29,14 @@ namespace Kadena.WebAPI.Services
             return mapper.Map<DeliveryAddress[]>(addresses);
         }
 
+        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
+        {
+            var allAddresses = AddressInfoProvider.GetAddresses(customerId).ToArray();
+            var shippingAddresses = allAddresses.Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
+                .ToArray();
+            return mapper.Map<DeliveryAddress[]>(shippingAddresses);
+        }
+
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
@@ -204,6 +212,26 @@ namespace Kadena.WebAPI.Services
         public Customer GetCurrentCustomer()
         {
             var customer = ECommerceContext.CurrentCustomer;
+
+            if (customer == null)
+                return null;
+
+            return new Customer()
+            {
+                Id = customer.CustomerID,
+                FirstName = customer.CustomerFirstName,
+                LastName = customer.CustomerLastName,
+                Email = customer.CustomerEmail,
+                CustomerNumber = customer.CustomerGUID.ToString(),
+                Phone = customer.CustomerPhone,
+                UserID = customer.CustomerUserID,
+                Company = customer.CustomerCompany
+            };
+        }
+
+        public Customer GetCustomer(int customerId)
+        {
+            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
 
             if (customer == null)
                 return null;
