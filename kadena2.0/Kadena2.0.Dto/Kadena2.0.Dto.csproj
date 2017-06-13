@@ -55,6 +55,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Checkout\TotalsDTO.cs" />
     <Compile Include="Checkout\TotalDTO.cs" />
+    <Compile Include="Settings\AddressBlockDto.cs" />
+    <Compile Include="Settings\AddressDto.cs" />
+    <Compile Include="Settings\ButtonDto.cs" />
+    <Compile Include="Settings\EditorButtonDto.cs" />
+    <Compile Include="Settings\EditorDto.cs" />
+    <Compile Include="Settings\EditorFieldDto.cs" />
+    <Compile Include="Settings\EditorTypeDto.cs" />
+    <Compile Include="Settings\SettingsAddressesDto.cs" />
     <Compile Include="SubmitOrder\AddressDTO.cs" />
     <Compile Include="SubmitOrder\CurrencyDTO.cs" />
     <Compile Include="SubmitOrder\CustomerDTO.cs" />
