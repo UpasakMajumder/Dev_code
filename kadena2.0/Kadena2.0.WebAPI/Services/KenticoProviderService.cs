@@ -22,10 +22,15 @@ namespace Kadena.WebAPI.Services
             this.resources = resources;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses()
+        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
+            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
+            if (!string.IsNullOrWhiteSpace(addressType))
+            {
+                query = query.Where($"AddressType ='{addressType}'");
+            }
+            var addresses = query.ToArray();
             return mapper.Map<DeliveryAddress[]>(addresses);
         }
 

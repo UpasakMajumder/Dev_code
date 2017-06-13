@@ -4,7 +4,7 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IKenticoProviderService
     {
-        DeliveryAddress[] GetCustomerAddresses();
+        DeliveryAddress[] GetCustomerAddresses(string addressType = null);
         DeliveryAddress GetCurrentCartShippingAddress();
         BillingAddress GetDefaultBillingAddress();
         DeliveryCarrier[] GetShippingCarriers();
