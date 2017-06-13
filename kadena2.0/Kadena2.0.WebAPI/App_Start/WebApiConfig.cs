@@ -83,17 +83,26 @@ namespace Kadena.WebAPI
                     ClassName = p.PaymentOptionClassName
                 });
 
-                config.CreateMap<OrderItem, OrderItemDTO>()
-                    .AfterMap((src, dest) => dest.MailingList = new MailingListDTO
+                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
+                {
+                    DesignFilePath = p.DesignFilePath,
+                    LineNumber = p.LineNumber,
+                    MailingList = new MailingListDTO()
                     {
-                        MailingListID = src.MailingListId
-                    })
-                    .AfterMap((src, dest) => dest.SKU = new SKUDTO()
+                        MailingListID = p.MailingListId
+                    },
+                    SKU = new SKUDTO()
                     {
-                        KenticoSKUID = src.KenticoSKUId,
-                        Name = src.SKUName,
-                        SKUNumber = src.SKUNumber
-                    });
+                        KenticoSKUID = p.KenticoSKUId,
+                        Name = p.SKUName,
+                        SKUNumber = p.SKUNumber
+                    },
+                    TotalPrice = p.TotalPrice,
+                    TotalTax = p.TotalTax,
+                    UnitCount = p.UnitCount,
+                    UnitOfMeasure = p.UnitOfMeasure,
+                    UnitPrice = p.UnitPrice
+                });
 
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()

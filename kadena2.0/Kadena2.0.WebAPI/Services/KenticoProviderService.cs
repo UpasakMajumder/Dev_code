@@ -258,7 +258,7 @@ namespace Kadena.WebAPI.Services
                 Delivery = "", //TODO not known yet
                 MailingListName = i.GetValue("MailingListName", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", string.Empty),
-                Template = i.GetValue("ChilliTemplateID", string.Empty),
+                Template = i.SKU.SKUName,
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,

@@ -18,6 +18,38 @@
                 return ProductType.Contains("KDA.MailingProduct");
             }
         }
+        public bool IsTemplated
+        {
+            get
+            {
+                return ProductType.Contains("KDA.TemplatedProduct");
+            }
+        }
+
+        public bool IsInventory
+        {
+            get
+            {
+                return ProductType.Contains("KDA.InventoryProduct");
+            }
+        }
+
+        public bool IsPOD
+        {
+            get
+            {
+                return ProductType.Contains("KDA.POD");
+            }
+        }
+
+        public bool IsStatic
+        {
+            get
+            {
+                return ProductType.Contains("KDA.StaticProduct");
+            }
+        }
+
         public string MailingListName { get; set; }
         public string MailingListGuid { get; set; }
         public string Delivery { get; set; }
@@ -27,9 +59,18 @@
         {
             get
             {
-                return ProductType.Contains("KDA.TemplatedProduct");
+                return !IsMailingList && IsTemplated;
             }
         }
+
+        public bool IsQuantityEditable
+        {
+            get
+            {
+                return IsInventory || IsPOD || IsStatic;
+            }
+        }
+
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
