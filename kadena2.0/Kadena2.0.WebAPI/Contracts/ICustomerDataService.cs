@@ -1,5 +1,4 @@
-﻿using Kadena.WebAPI.Models;
-using Kadena.WebAPI.Models.CustomerData;
+﻿using Kadena.WebAPI.Models.CustomerData;
 
 namespace Kadena.WebAPI.Contracts
 {

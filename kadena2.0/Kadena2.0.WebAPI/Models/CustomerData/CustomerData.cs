@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Kadena.WebAPI.Models.CustomerData
+﻿namespace Kadena.WebAPI.Models.CustomerData
 {
     public class CustomerData
     {

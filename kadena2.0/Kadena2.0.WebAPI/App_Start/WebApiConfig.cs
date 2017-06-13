@@ -39,7 +39,6 @@ namespace Kadena.WebAPI
         private static void ConfigureFilters(HttpConfiguration config)
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
-            //GlobalConfiguration.Configuration.Filters.Add(new AuthorizationFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
