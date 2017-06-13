@@ -14,6 +14,8 @@ using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.WebAPI.Infrastructure.Responses;
 using Kadena.Dto.SubmitOrder;
+using Kadena.WebAPI.Models.CustomerData;
+using Kadena.Dto.CustomerData;
 
 namespace Kadena.WebAPI
 {
@@ -34,7 +36,6 @@ namespace Kadena.WebAPI
         private static void ConfigureFilters(HttpConfiguration config)
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
-            GlobalConfiguration.Configuration.Filters.Add(new AuthorizationFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
@@ -101,6 +102,8 @@ namespace Kadena.WebAPI
                     UnitPrice = p.UnitPrice
                 });
 
+                config.CreateMap<CustomerData, CustomerDataDTO>();
+                config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
                     .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
@@ -129,6 +132,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
             container.Register<IKenticoLogger, KenticoLogger>();
+            container.Register<ICustomerDataService, CustomerDataService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
