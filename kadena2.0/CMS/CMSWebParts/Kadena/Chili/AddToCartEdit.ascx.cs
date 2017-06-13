@@ -197,11 +197,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
                     ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) +"');"));
-                   
-                    //ScriptManager.RegisterClientScriptBlock();
-                    //Page.ClientScript.RegisterClientScriptBlock();
-                    //lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
-                    //SetErrorLblVisible();
+                                      
                 }
             }
                    
