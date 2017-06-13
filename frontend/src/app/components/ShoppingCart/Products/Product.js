@@ -47,7 +47,9 @@ class Products extends Component {
   }
 
   defineEditButton() {
-    const { isEditable, editorURL } = this.props;
+    const { isEditable, editorURL, isMailingList } = this.props;
+
+    if (isMailingList) return null;
 
     if (isEditable) {
       if (editorURL) {
@@ -70,9 +72,18 @@ class Products extends Component {
     return null;
   }
 
+  //isQuantityEditable
+
   render() {
-    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct } = this.props;
+    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct, isQuantityEditable } = this.props;
     const { quantity } = this.state;
+
+    const quantityElement = isQuantityEditable
+    ? <input onChange={(e) => { this.handleChange(e.target); }}
+             type="number"
+             min="1"
+             value={quantity}/>
+    : <span>{quantity}</span>;
 
     const productDifference = isMailingList
     ? <div className="cart-product__mlist">
@@ -83,10 +94,7 @@ class Products extends Component {
       </div>
     : <div className="cart-product__quantity">
         <span>{quantityPrefix}</span>
-        <input onChange={(e) => { this.handleChange(e.target); }}
-               type="number"
-               min="1"
-               value={quantity}/>
+        {quantityElement}
       </div>;
 
 
