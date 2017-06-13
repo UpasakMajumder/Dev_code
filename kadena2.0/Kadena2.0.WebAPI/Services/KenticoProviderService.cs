@@ -31,10 +31,10 @@ namespace Kadena.WebAPI.Services
 
         public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
         {
-            var allAddresses = AddressInfoProvider.GetAddresses(customerId).ToArray();
-            var shippingAddresses = allAddresses.Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
+            var addresses = AddressInfoProvider.GetAddresses(customerId)
+                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
                 .ToArray();
-            return mapper.Map<DeliveryAddress[]>(shippingAddresses);
+            return mapper.Map<DeliveryAddress[]>(addresses);
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
