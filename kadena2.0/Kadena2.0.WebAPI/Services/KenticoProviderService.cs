@@ -8,6 +8,7 @@ using CMS.Helpers;
 using System;
 using CMS.DataEngine;
 using CMS.Globalization;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -321,7 +322,7 @@ namespace Kadena.WebAPI.Services
 
         public void SetProductStockQuantity(int productId, int quantity)
         {
-            
+
         }
 
         public void RemoveCurrentItemsFromStock()
@@ -342,6 +343,17 @@ namespace Kadena.WebAPI.Services
         public void RemoveCurrentItemsFromCart()
         {
             ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
+        }
+
+        public IEnumerable<State> GetStates()
+        {
+            return StateInfoProvider
+                .GetStates()
+                .Column("StateCode")
+                .Select(s => new State
+                {
+                    StateCode = s["StateCode"].ToString()
+                });
         }
     }
 }
