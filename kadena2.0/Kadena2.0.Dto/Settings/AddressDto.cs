@@ -8,7 +8,7 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
-        public bool IsEditButton { get; set; }
-        public bool IsRemoveButton { get; set; }
+        public bool IsEditButton { get; set; } = true;
+        public bool IsRemoveButton { get; set; } = true;
     }
 }
