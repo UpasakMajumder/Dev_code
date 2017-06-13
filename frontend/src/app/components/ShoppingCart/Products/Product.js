@@ -72,8 +72,6 @@ class Products extends Component {
     return null;
   }
 
-  //isQuantityEditable
-
   render() {
     const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct, isQuantityEditable } = this.props;
     const { quantity } = this.state;
