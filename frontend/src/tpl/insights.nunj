@@ -1,3 +1,4 @@
+{% from "macro/svg.nunj" import svg %}
 {% extends "layouts/default.nunj" %}
 
 {% set title = "K-Insight" %}
@@ -6,5 +7,17 @@
 {% set headerTitle = title %}
 
 {% block content %}
+  <div class="js-spotfire spotfire">
+    <div class="spotfire__controllers">
+      <button type="button" class="btn-action js-spotfire-btn">30 days</button>
+      <button type="button" class="btn-action js-spotfire-btn">60 days</button>
+      <button type="button" class="btn-action js-spotfire-btn">90 days</button>
+      <button type="button" class="btn-action js-spotfire-btn">All period</button>
+    </div>
 
+    <div style="height: 800px;" class="js-spotfire-container spotfire__container" id="spotfire">
+      {% include "components/spinner.nunj" %}
+    </div>
+  </div>
+  <script src="https://spotfire.cloud.tibco.com/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
 {% endblock %}

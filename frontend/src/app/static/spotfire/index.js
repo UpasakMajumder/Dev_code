@@ -1,15 +1,24 @@
 export default class Spotfire {
-  constructor(container) { // container is a card block
+  constructor(wrapper) { // container is a card block
+
+    /* Init Tibco */
+    // const serverUrl = 'http://spotfire.kadenadev.com/spotfire/wp/';
+    // const analysisPath = '/Kadena/DIRECTMAILCDH-ReceivedMailPerformance';
     const serverUrl = 'https://spotfire.cloud.tibco.com/spotfire/wp/';
     const analysisPath = '/Gallery/Mashup';
+
     const parameters = '';
     const reloadAnalysisInstance = false;
-    const dataset = container.dataset;
-    const containerId = container.id;
 
-    /* spotfire API from global */
     this.customization = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
     this.initCustomization();
+
+    /* Init DOM */
+
+    const container = wrapper.querySelector('.js-spotfire-container');
+    const btns = wrapper.querySelectorAll('.js-spotfire-btn');
+
+    console.log(container.id);
 
     window.addEventListener('load', () => {
       const app = new spotfire.webPlayer.Application(  // eslint-disable-line no-undef
@@ -19,11 +28,7 @@ export default class Spotfire {
         parameters,
         reloadAnalysisInstance);
 
-      const { spotfireDoc, spotfireFull } = dataset;
-
-      spotfireFull && this.initFullScreenCustomization();
-
-      app.openDocument(containerId, spotfireDoc, this.customization);
+      app.openDocument(container.id, 2, this.customization);
     });
   }
 
