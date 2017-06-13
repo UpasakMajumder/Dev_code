@@ -52,5 +52,7 @@ namespace Kadena.WebAPI.Contracts
         void RemoveCurrentItemsFromCart();
 
         IEnumerable<State> GetStates();
+
+        void SaveShippingAddress(DeliveryAddress address);
     }
 }

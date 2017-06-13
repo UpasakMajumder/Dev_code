@@ -355,5 +355,23 @@ namespace Kadena.WebAPI.Services
                     StateCode = s["StateCode"].ToString()
                 });
         }
+
+        public void SaveShippingAddress(DeliveryAddress address)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+            var stateId = StateInfoProvider.GetStateInfoByCode(address.State)?.StateID ?? 0;
+            var info = new AddressInfo
+            {
+                AddressID = address.Id,
+                AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                AddressCity = address.City,
+                AddressStateID = stateId,
+                AddressZip = address.Zip,
+                AddressCustomerID = customer.CustomerID
+            };
+            info.SetValue("AddressType", "Shipping");
+            AddressInfoProvider.SetAddressInfo(info);
+        }
     }
 }
