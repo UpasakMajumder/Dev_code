@@ -136,6 +136,7 @@
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
+    <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Infrastructure\Requests\CustomerDataRequestDto.cs" />
     <Compile Include="Infrastructure\Requests\RemoveItemRequestDto.cs" />

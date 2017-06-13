@@ -34,11 +34,11 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult CustomerData([FromBody]CustomerDataRequestDto request)
         {
             var result = service.GetCustomerData(request.CustomerId);
-            var resultDto = mapper.Map<CustomerDataDTO>(result);
 
-            if (resultDto == null)
+            if (result == null)
                 return ErrorJson($"Failed to retrieve customer data for customerId: {request.CustomerId}");
 
+            var resultDto = mapper.Map<CustomerDataDTO>(result);
             return ResponseJson(resultDto);
         }
     }
