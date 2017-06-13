@@ -130,6 +130,14 @@ namespace Kadena.WebAPI
                     State = a.State,
                     Zip = a.Zip
                 });
+                config.CreateMap<AddressDto, DeliveryAddress>().ProjectUsing(a => new DeliveryAddress
+                {
+                    Id = a.Id,
+                    Street = new System.Collections.Generic.List<string> { a.Street1, a.Street2 },
+                    City = a.City,
+                    State = a.State,
+                    Zip = a.Zip
+                });
             });
         }
 
