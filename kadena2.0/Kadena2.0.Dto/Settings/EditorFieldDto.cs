@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Settings
 {
-    class EditorFieldDto
+    public class EditorFieldDto
     {
         public string Label { get; set; }
         public List<object> Values { get; set; }

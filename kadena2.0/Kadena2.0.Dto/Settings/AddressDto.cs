@@ -1,6 +1,6 @@
 ﻿namespace Kadena.Dto.Settings
 {
-    class AddressDto
+    public class AddressDto
     {
         public int Id { get; set; }
         public string Street1 { get; set; }

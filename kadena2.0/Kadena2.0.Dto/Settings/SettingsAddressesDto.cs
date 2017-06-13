@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Settings
 {
-    class SettingsAddressesDto
+    public class SettingsAddressesDto
     {
         public AddressBlockDto Billing { get; set; }
         public AddressBlockDto Shipping { get; set; }

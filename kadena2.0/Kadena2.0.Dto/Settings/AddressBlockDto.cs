@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Settings
 {
-    class AddressBlockDto
+    public class AddressBlockDto
     {
         public string Title { get; set; }
         public ButtonDto AddButton { get; set; }

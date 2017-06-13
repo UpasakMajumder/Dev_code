@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Settings
 {
-    class EditorDto
+    public class EditorDto
     {
         public List<EditorTypeDto> Types { get; set; }
         public List<EditorButtonDto> Buttons { get; set; }
