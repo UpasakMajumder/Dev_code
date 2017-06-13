@@ -2,8 +2,6 @@
 using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
@@ -30,7 +28,6 @@ namespace Kadena.WebAPI
         {
             RegisterApiRoutes(apiConfig);
             ConfigureFilters(apiConfig);
-            ConfigureJsonSerialization(apiConfig);
             ConfigureMapper();
             ConfigureContainer(apiConfig);
             apiConfig.EnsureInitialized();
@@ -138,21 +135,6 @@ namespace Kadena.WebAPI
             container.Register<ICustomerDataService, CustomerDataService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
-        }
-
-        /// <summary>
-        /// Configure json serialization.
-        /// </summary>
-        /// <param name="config">The configuration holder object.</param>
-        private static void ConfigureJsonSerialization(HttpConfiguration config)
-        {
-            var jsonFormatter = config.Formatters.JsonFormatter;
-            jsonFormatter.UseDataContractJsonSerializer = false;
-
-            var settings = jsonFormatter.SerializerSettings;
-            settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
         }
 
         /// <summary>

@@ -15,6 +15,8 @@ namespace Kadena.WebAPI.Models
 
         public List<DeliveryAddress> items { get; set; }
 
+        public string EmptyMessage { get; set; }
+
         public void CheckAddress(int id)
         {
             items.ForEach(i => i.Checked = false);
