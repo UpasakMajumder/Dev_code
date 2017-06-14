@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Kadena.WebAPI.Infrastructure.Requests
+namespace Kadena.Dto.Checkout.Requests
 {
     public class CustomerDataRequestDto
     {

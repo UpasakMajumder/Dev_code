@@ -4,11 +4,12 @@ using System;
 using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
-using Kadena.WebAPI.Infrastructure.Responses;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena.Dto.Checkout.Requests;
+using Kadena.Dto.SubmitOrder.Requests;
+using Kadena.Dto.SubmitOrder.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {

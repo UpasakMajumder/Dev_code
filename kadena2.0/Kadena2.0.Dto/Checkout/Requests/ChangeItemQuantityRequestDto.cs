@@ -1,4 +1,4 @@
-﻿namespace Kadena.WebAPI.Infrastructure.Requests
+﻿namespace Kadena.Dto.Checkout.Requests
 {
     public class ChangeItemQuantityRequestDto
     {

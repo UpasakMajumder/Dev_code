@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kadena.Dto.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using System;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
@@ -16,15 +17,22 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoResourceService resources;
-        private readonly IOrderServiceCaller orderCaller;
+        private readonly IOrderServiceClient orderClient;
         private readonly IKenticoLogger kenticoLog;
+        private readonly ITaxEstimationService taxCalculator;
 
-        public ShoppingCartService(IMapper mapper, IKenticoProviderService kenticoProvider, IKenticoResourceService resources, IOrderServiceCaller orderCaller, IKenticoLogger kenticoLog)
+        public ShoppingCartService(IMapper mapper, 
+                                   IKenticoProviderService kenticoProvider,
+                                   IKenticoResourceService resources, 
+                                   IOrderServiceClient orderClient, 
+                                   ITaxEstimationService taxCalculator, 
+                                   IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
-            this.orderCaller = orderCaller;
+            this.orderClient = orderClient;
+            this.taxCalculator = taxCalculator;
             this.kenticoLog = kenticoLog;
         }
 
@@ -36,7 +44,7 @@ namespace Kadena.WebAPI.Services
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
-
+            
             var checkoutPage = new CheckoutPage()
             {
                 Products = new CartItems()
@@ -216,7 +224,8 @@ namespace Kadena.WebAPI.Services
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
-            var serviceResult = await orderCaller.SubmitOrder(serviceEndpoint, orderData);
+            var serviceResultDto = await orderClient.SubmitOrder(serviceEndpoint, orderData);
+            var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
             var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
             serviceResult.RedirectURL = redirectUrl;
 

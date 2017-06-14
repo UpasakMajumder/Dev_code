@@ -1,4 +1,4 @@
-﻿namespace Kadena.WebAPI.Infrastructure.Responses
+﻿namespace Kadena.Dto.SubmitOrder.Responses
 {
     public class SubmitOrderResponseDto
     {
