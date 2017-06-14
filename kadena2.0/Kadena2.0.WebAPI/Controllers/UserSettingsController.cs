@@ -51,6 +51,8 @@ namespace Kadena.WebAPI.Controllers
                         Exists = false,
                         Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
+                    EditButtonText = "Edit",
+                    RemoveButtonText = "Remove",
                     Addresses = _mapper.Map<List<AddressDto>>(shippingAddresses)
                 },
                 Dialog = new
@@ -66,20 +68,20 @@ namespace Kadena.WebAPI.Controllers
                         Save = _service.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
                     },
                     Fields = new List<EditorFieldDto> {
-                        new EditorFieldDto { Id="Street1",
+                        new EditorFieldDto { Id="street1",
                             Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                             Type = "text"},
-                        new EditorFieldDto { Id="Street2",
+                        new EditorFieldDto { Id="street2",
                             Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                             Type = "text"},
-                        new EditorFieldDto { Id="City",
+                        new EditorFieldDto { Id="city",
                             Label = _service.GetResourceString("Kadena.Settings.Addresses.City"),
                             Type = "text"},
-                        new EditorFieldDto { Id="State",
+                        new EditorFieldDto { Id="state",
                             Label = _service.GetResourceString("Kadena.Settings.Addresses.State"),
                             Type = "select",
                             Values = states.Select(s=>(object)s.StateCode).ToList() },
-                        new EditorFieldDto { Id="Zip",
+                        new EditorFieldDto { Id="zip",
                             Label = _service.GetResourceString("Kadena.Settings.Addresses.Zip"),
                             Type = "text"}
                     }

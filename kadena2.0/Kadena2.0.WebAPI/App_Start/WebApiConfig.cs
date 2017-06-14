@@ -129,7 +129,8 @@ namespace Kadena.WebAPI
                     Street2 = a.Street.Count > 1 ? a.Street[1] : null,
                     City = a.City,
                     State = a.State,
-                    Zip = a.Zip
+                    Zip = a.Zip,
+                    IsRemoveButton = false
                 });
                 config.CreateMap<AddressDto, DeliveryAddress>().ProjectUsing(a => new DeliveryAddress
                 {
