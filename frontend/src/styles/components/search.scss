@@ -11,9 +11,9 @@
   }
 
   &__dropdown {
-    position: absolute;
-    top: 100%;
-    width: 100%;
+    position: fixed;
+    width: calc(100% - #{$main-container-padding * 2});
+    left: $main-container-padding;
     z-index: 2;
     border-radius: $border-radius;
     background: white;

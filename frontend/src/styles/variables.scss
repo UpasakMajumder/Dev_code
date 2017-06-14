@@ -30,6 +30,7 @@ $show-table-row-gardient:  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #ff
 $show-table-row-gardient--gray:  linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $brand-lightgrey 100%);
 $form-bg: rgba(238, 238, 238, .5);
 $steps-icon-default-bg: linear-gradient(180deg, #e4e7ea 0%, #d9dbdc 100%);
+$backdrop-shadow-color: rgba(28, 97, 125, .5);
 $error-mark: #ff6d2e;
 $success-mark: #00bd8c;
 $font-success: #028b66;
@@ -64,6 +65,7 @@ $font-size-default: 16px;
 $border-radius: 2px;
 $border-radius-xl: 8px;
 $main-layout-gutter: 10px;
+$main-container-padding: 20px;
 $svg-path: '/gfx/svg/';
 $img-path: '/gfx/images/';
 $header-size: 60px;

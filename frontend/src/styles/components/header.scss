@@ -1,5 +1,7 @@
 .css-header {
   @extend .bg-white;
+  position: relative;
+  z-index: $zindex-modal;
   height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
