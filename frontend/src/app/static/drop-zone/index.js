@@ -79,7 +79,7 @@ class Dropzone {
     const item = this.idealItem.cloneNode(true);
     this.createRemover(item);
 
-    this.fileContainer.prepend(this.data[id].item);
+    this.fileContainer.insertBefore(this.data[id].item, this.fileContainer.firstChild);
 
     if (this.count === this.maxItems) return;
 
@@ -131,7 +131,6 @@ class Dropzone {
     }
 
     delete this.data[id];
-
   }
 
   createRemover(item) {

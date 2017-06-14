@@ -50,6 +50,8 @@
     <Compile Include="Checkout\DeliveryServiceDTO.cs" />
     <Compile Include="Checkout\PaymentMethodsDTO.cs" />
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
+    <Compile Include="CustomerData\CustomerAddressDTO.cs" />
+    <Compile Include="CustomerData\CustomerDataDTO.cs" />
     <Compile Include="General\GeneralResultDTO.cs" />
     <Compile Include="Logon\LogonUserResultDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

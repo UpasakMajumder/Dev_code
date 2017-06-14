@@ -31,5 +31,25 @@ namespace AutomatedTests.Tests
             //verifies if values were saved successfully
             Assert.IsTrue(settings.AreValuesInFormFilledOut(), "One of the fields is empty");
         }
+
+        [Test]
+        public void When_ChangingPassword_Expect_PasswordIsValidated()
+        {
+            //login
+            var login = new Login();
+            login.Open();
+            login.FillLogin(TestUser.Name, TestUser.Password);
+            var dashboard = login.Submit();
+            dashboard.WaitForKadenaPageLoad();
+          
+            //Switch to password tab and try to submit password which is
+            //not strong enough
+            var settings = new Settings();
+            settings.Open();
+            settings.SelectTab(Settings.Tabs.Password);
+            settings.SubmitNotStrongPassword(TestUser.Password);
+            Assert.IsTrue(settings.IsPasswordErrorDisplayed());
+            }
+        }
     }
 }

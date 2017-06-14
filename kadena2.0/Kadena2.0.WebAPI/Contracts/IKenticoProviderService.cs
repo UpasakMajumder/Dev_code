@@ -7,6 +7,7 @@ namespace Kadena.WebAPI.Contracts
     {
         DeliveryAddress[] GetCustomerAddresses(string addressType = null);
 
+        DeliveryAddress[] GetCustomerShippingAddresses(int customerId);
         DeliveryAddress GetCurrentCartShippingAddress();
 
         BillingAddress GetDefaultBillingAddress();
@@ -32,6 +33,8 @@ namespace Kadena.WebAPI.Contracts
         int GetCurrentCartShippingOptionId();
 
         Customer GetCurrentCustomer();
+
+        Customer GetCustomer(int customerId);
 
         DeliveryOption GetShippingOption(int id);
 
