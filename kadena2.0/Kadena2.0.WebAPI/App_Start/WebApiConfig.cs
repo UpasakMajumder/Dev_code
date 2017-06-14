@@ -2,8 +2,6 @@
 using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
@@ -16,6 +14,8 @@ using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.WebAPI.Infrastructure.Responses;
 using Kadena.Dto.SubmitOrder;
+using Kadena.WebAPI.Models.CustomerData;
+using Kadena.Dto.CustomerData;
 
 namespace Kadena.WebAPI
 {
@@ -28,7 +28,6 @@ namespace Kadena.WebAPI
         {
             RegisterApiRoutes(apiConfig);
             ConfigureFilters(apiConfig);
-            ConfigureJsonSerialization(apiConfig);
             ConfigureMapper();
             ConfigureContainer(apiConfig);
             apiConfig.EnsureInitialized();
@@ -37,7 +36,6 @@ namespace Kadena.WebAPI
         private static void ConfigureFilters(HttpConfiguration config)
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
-            GlobalConfiguration.Configuration.Filters.Add(new AuthorizationFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
@@ -104,9 +102,12 @@ namespace Kadena.WebAPI
                     UnitPrice = p.UnitPrice
                 });
 
+                config.CreateMap<CustomerData, CustomerDataDTO>();
+                config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -131,23 +132,9 @@ namespace Kadena.WebAPI
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IOrderServiceCaller, OrderServiceCaller>();
             container.Register<IKenticoLogger, KenticoLogger>();
+            container.Register<ICustomerDataService, CustomerDataService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
-        }
-
-        /// <summary>
-        /// Configure json serialization.
-        /// </summary>
-        /// <param name="config">The configuration holder object.</param>
-        private static void ConfigureJsonSerialization(HttpConfiguration config)
-        {
-            var jsonFormatter = config.Formatters.JsonFormatter;
-            jsonFormatter.UseDataContractJsonSerializer = false;
-
-            var settings = jsonFormatter.SerializerSettings;
-            settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
         }
 
         /// <summary>

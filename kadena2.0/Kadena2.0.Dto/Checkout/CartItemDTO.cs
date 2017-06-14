@@ -11,8 +11,10 @@
         public string PricePrefix { get; set; }
         public string Price { get; set; }
         public bool IsEditable { get; set; }
+        public bool IsQuantityEditable { get; set; }
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
+        public string EditorURL { get; set; }
     }
 }

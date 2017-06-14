@@ -31,6 +31,9 @@ namespace AutomatedTests
             if (!string.IsNullOrEmpty(element.GetAttribute("value")))
                 return element.GetAttribute("value");
 
+            if (!string.IsNullOrEmpty(element.GetAttribute("placeholder")))
+                return element.GetAttribute("placeholder");
+
             return string.Empty;
         }
 

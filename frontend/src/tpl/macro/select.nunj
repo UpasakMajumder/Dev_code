@@ -1,4 +1,5 @@
-{% macro select(label, optHolder, options, label2, className, error, name, data) %}
+{#data={ "replace-id": "state" }#}
+{% macro select(label, optHolder, options, label2, className, selectClassName, error, name, data) %}
   <div class=" input__wrapper {% if className %}{{ className }}{% endif %}">
 
     {% if label %}
@@ -6,22 +7,22 @@
     {% endif %}
 
     {% if label2 %}
-      <span class="input__right-label">{{label2}}</span>
+      <span class="input__right-label">{{ label2 }}</span>
     {% endif %}
 
     <div class="input__select {% if error %}input--error{% endif %}">
-      <select name="{{name}}"
+      <select name="{{ name }}" class="{{ selectClassName }}"
       {% if data %}
         {% for name, val in data %}
-          data-{{name}}="{{val}}" 
+          data-{{ name }}="{{ val }}"
         {% endfor %}
       {% endif %}>
-        {% if optHolder %}
-          <option disabled selected>{{ optHolder }}</option>
-        {% endif %}
-        {% for item in options %}
-          <option>{{ item }}</option>
-        {% endfor %}
+      {% if optHolder %}
+        <option disabled selected>{{ optHolder }}</option>
+      {% endif %}
+      {% for item in options %}
+        <option>{{ item }}</option>
+      {% endfor %}
       </select>
       {% if error %}
         <span class="input__error input__error--noborder">{{ error }}</span>

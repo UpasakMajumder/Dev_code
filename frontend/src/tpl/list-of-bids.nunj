@@ -1,3 +1,4 @@
+
 {% extends "layouts/default.nunj" %}
 {% from "macro/svg.nunj" import svg %}
 
@@ -18,7 +19,10 @@
   <div class="bids-list__block">
 
     <h2 class="bids-list__block-header">You have 2 open projects</h2>
-    <table class="show-table">
+
+    <div class="js-table-paginator">
+
+    <table class="show-table show-table--hide-rows">
       <tbody>
         <tr>
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th>
@@ -32,42 +36,135 @@
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
         </tr>
-        {% for i in range(0, 2) -%}
 
-          <tr>
-            <td>Mar 3 2017</td>
+          <tr class="active" data-page="1">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017Mar 3 2017 Mar 3 2017</td>
             <td>Brochure</td>
             <td>123545</td>
             <td>Waiting for bids</td>
             <td>May 24 2017 16:45</td>
           </tr>
 
-        {%- endfor %}
+          <tr class="active" data-page="1">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017Mar 3 2017 Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr class="active" data-page="1">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr  data-page="2">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr data-page="2">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr data-page="2">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="4">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="4">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
       </tbody>
     </table>
+
+
+
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of <span>103</span> entries</span>
+      </div>
+      <div class="col-6 text--right">
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="4" data-rows-on-page="3"></div>
+      </div>
+    </div>
+  </div>
+  </div>
 
   </div>
 
   <div class="bids-list__block">
 
-    <h2 class="bids-list__block-header">You have 3 completed projects</h2>
-    <table class="show-table">
+    <h2 class="bids-list__block-header">You have 2 open projects</h2>
+
+    <div class="js-table-paginator">
+
+    <table class="show-table show-table--hide-rows">
       <tbody>
         <tr>
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID/</th>
+          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
           <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th>
           <!-- TODO: Remove ".hidden" after sorting is avalible-->
         </tr>
-        {% for i in range(0, 3) -%}
 
-          <tr>
+          <tr class="active" data-page="1">
             <td>Mar 3 2017</td>
             <td>Brochure</td>
             <td>123545</td>
@@ -75,10 +172,30 @@
             <td>May 24 2017 16:45</td>
           </tr>
 
-        {%- endfor %}
+          <tr data-page="2">
+            <td>Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
 
       </tbody>
     </table>
+
+
+
+  <div class="block">
+    <div class="row flex-align--center">
+      <div class="col-6">
+        <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of 103 entries</span>
+      </div>
+      <div class="col-6 text--right">
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2" data-rows-on-page="2"></div>
+      </div>
+    </div>
+  </div>
+  </div>
 
   </div>
 

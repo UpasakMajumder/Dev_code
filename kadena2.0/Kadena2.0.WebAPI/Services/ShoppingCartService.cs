@@ -52,6 +52,7 @@ namespace Kadena.WebAPI.Services
                     AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
+                    EmptyMessage = resources.GetResourceString("Kadena.Checkout.NoAddressesMessage"),
                     items = addresses.ToList()
                 },
 

@@ -39,3 +39,37 @@
     @extend .link;
   }
 }
+
+.generated-paginator {
+  p {
+    @include rem(padding, 0 8px);
+    margin: 0;
+    display: inline-block;
+    color: $brand-primary;
+    cursor: pointer;
+  }
+
+  &__prev:hover,
+  &__next:hover {
+    text-decoration: underline;
+  }
+
+  p.generated-paginator__current {
+    @extend .line-height--one;
+    @extend .link--no-decoration;
+    $padding-x: 2px;
+    $padding-y: 6px;
+
+    @include rem(padding-top, $padding-x);
+    @include rem(padding-bottom, $padding-x);
+    @include rem(padding-left, $padding-y);
+    @include rem(padding-right, $padding-y);
+    background-color: $brand-grey;
+    color: $brand-dark;
+    border-radius: 100%;
+  }
+
+  & * {
+    color: $brand-primary;
+  }
+}

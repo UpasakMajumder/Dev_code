@@ -1,0 +1,10 @@
+.contact {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+
+  &__form {
+    @extend .form-block;
+    @extend .form-block--fixed;
+  }
+}

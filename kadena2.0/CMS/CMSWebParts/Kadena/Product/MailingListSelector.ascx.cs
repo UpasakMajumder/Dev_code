@@ -74,6 +74,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId))
                 {
                     new TemplateServiceHelper().SetMailingList(containerId, templateId);
+                    url += "&containerId=" + containerId;
                     Response.Redirect(url);
                 }
             }

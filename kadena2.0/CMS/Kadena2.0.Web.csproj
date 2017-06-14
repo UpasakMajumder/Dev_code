@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -712,6 +712,9 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\RequestNewProduct.ashx.cs">
+      <DependentUpon>RequestNewProduct.ashx</DependentUpon>
+    </Compile>
     <Compile Include="CMSPages\Kadena\SubmitBid.ashx.cs">
       <DependentUpon>SubmitBid.ashx</DependentUpon>
     </Compile>
@@ -721,7 +724,7 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.designer.cs">
       <DependentUpon>BidsList.ascx</DependentUpon>
-    </Compile>  
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\General\Button.ascx.cs">
       <DependentUpon>Button.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -856,16 +859,19 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Helpers\ErrorMessage.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceListResponseData.cs" />
-    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceResponseData.cs" />
+    <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceDocumentResponse.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
+    <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
@@ -922,6 +928,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\SubmitBid.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CMSPages\Kadena\RequestNewProduct.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
