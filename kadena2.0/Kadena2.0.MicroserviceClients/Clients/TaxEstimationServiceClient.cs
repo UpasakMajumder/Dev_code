@@ -1,6 +1,6 @@
 ﻿using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.Requests;
-using Kadena2.MicroserviceClients.Responses;
+using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;

@@ -1,5 +1,5 @@
-﻿using Kadena2.MicroserviceClients.Requests;
-using Kadena2.MicroserviceClients.Responses;
+﻿using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts

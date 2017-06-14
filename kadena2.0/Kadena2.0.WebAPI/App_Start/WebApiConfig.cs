@@ -11,14 +11,14 @@ using System.Linq;
 using Kadena.Dto.Checkout;
 using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
-using Kadena.Dto.SubmitOrder;
 using Kadena.WebAPI.Models.CustomerData;
 using Kadena.Dto.CustomerData;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Responses;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 
 namespace Kadena.WebAPI
 {

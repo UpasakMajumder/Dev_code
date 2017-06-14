@@ -1,4 +1,4 @@
-﻿namespace Kadena2.MicroserviceClients.Requests
+﻿namespace Kadena2.MicroserviceClients.MicroserviceRequests
 {
     public class TaxCalculatorRequestDto
     {

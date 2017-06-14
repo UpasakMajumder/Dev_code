@@ -1,7 +1,7 @@
-﻿using Kadena.Dto.SubmitOrder;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.Responses;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Net.Http;
 using System.Threading.Tasks;
 

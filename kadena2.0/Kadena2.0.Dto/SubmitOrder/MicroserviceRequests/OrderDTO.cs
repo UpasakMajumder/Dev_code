@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Kadena.Dto.SubmitOrder
+namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 {
     public class OrderDTO
     {

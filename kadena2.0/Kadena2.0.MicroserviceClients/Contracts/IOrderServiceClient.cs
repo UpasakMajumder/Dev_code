@@ -1,5 +1,5 @@
-﻿using Kadena.Dto.SubmitOrder;
-using Kadena2.MicroserviceClients.Responses;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts

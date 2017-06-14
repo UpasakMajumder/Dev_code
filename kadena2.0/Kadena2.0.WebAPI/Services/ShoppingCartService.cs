@@ -9,6 +9,7 @@ using Kadena.Dto.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using System;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 
 namespace Kadena.WebAPI.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace Kadena2.MicroserviceClients.Responses
+﻿namespace Kadena2.MicroserviceClients.MicroserviceResponses
 {
     public class SubmitOrderServiceResponseDto
     {

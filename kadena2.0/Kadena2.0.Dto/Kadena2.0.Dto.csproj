@@ -53,6 +53,8 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
@@ -64,22 +66,27 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Checkout\TotalsDTO.cs" />
     <Compile Include="Checkout\TotalDTO.cs" />
-    <Compile Include="SubmitOrder\AddressDTO.cs" />
-    <Compile Include="SubmitOrder\CurrencyDTO.cs" />
-    <Compile Include="SubmitOrder\CustomerDTO.cs" />
-    <Compile Include="SubmitOrder\MailingListDTO.cs" />
-    <Compile Include="SubmitOrder\OrderDTO.cs" />
-    <Compile Include="SubmitOrder\OrderItemDTO.cs" />
-    <Compile Include="SubmitOrder\OrderItemTypeDTO.cs" />
-    <Compile Include="SubmitOrder\OrderStatusDTO.cs" />
-    <Compile Include="SubmitOrder\OrderTrackingDTO.cs" />
-    <Compile Include="SubmitOrder\PaymentOptionDTO.cs" />
-    <Compile Include="SubmitOrder\PaymentResultDTO.cs" />
-    <Compile Include="SubmitOrder\ShippingOptionDTO.cs" />
-    <Compile Include="SubmitOrder\SiteDTO.cs" />
-    <Compile Include="SubmitOrder\SKUDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\AddressDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\CurrencyDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\CustomerDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\MailingListDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemTypeDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderStatusDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderTrackingDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentOptionDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentResultDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\ShippingOptionDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />
+    <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
+    <Compile Include="Tax\MicroserviceResponses\TaxCalculatorServiceResponseDto.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Tax\Requests\" />
+    <Folder Include="Tax\Responses\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
