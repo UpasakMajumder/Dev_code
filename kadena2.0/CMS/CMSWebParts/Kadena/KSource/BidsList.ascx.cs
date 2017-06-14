@@ -38,8 +38,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             int openCount = 0, completedCount = 0;
             if (projects != null)
             {
-                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate).ToArray();
-                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate).ToArray();
+                var openProjects = projects.Where(p => p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
+                var completedProjects = projects.Where(p => !p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
