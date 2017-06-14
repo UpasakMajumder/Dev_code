@@ -1,57 +1,72 @@
+import { SPOTFIRE } from '../../globals';
+
 export default class Spotfire {
   constructor(wrapper) { // container is a card block
-
-    /* Init Tibco */
-    // const serverUrl = 'http://spotfire.kadenadev.com/spotfire/wp/';
-    // const analysisPath = '/Kadena/DIRECTMAILCDH-ReceivedMailPerformance';
-    const serverUrl = 'https://spotfire.cloud.tibco.com/spotfire/wp/';
-    const analysisPath = '/Gallery/Mashup';
+    this.spotfireItemClassName = 'js-spotfire-item';
+    this.container = wrapper.querySelector('.js-spotfire-container');
+    const button = document.querySelector('.js-spotfire-report');
 
     const parameters = '';
     const reloadAnalysisInstance = false;
 
-    this.customization = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
+    this.customisation = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
     this.initCustomization();
 
-    /* Init DOM */
+    this.component = this.createComponent();
+    const { reportUrl, serverUrl, analysisPaths } = SPOTFIRE;
 
-    const container = wrapper.querySelector('.js-spotfire-container');
-    const btns = wrapper.querySelectorAll('.js-spotfire-btn');
+    button.setAttribute('href', reportUrl);
 
-    console.log(container.id);
+    analysisPaths.forEach((analysisPath, index) => {
+      const component = this.component.cloneNode(true);
+      const item = component.querySelector(`.${this.spotfireItemClassName}`);
+      const id = `spotfire-${index}`;
 
-    window.addEventListener('load', () => {
+      item.setAttribute('id', id);
+      item.setAttribute('href', reportUrl);
+
+      this.container.appendChild(component);
+
       const app = new spotfire.webPlayer.Application(  // eslint-disable-line no-undef
         serverUrl,
-        this.customization,
+        this.customisation,
         analysisPath,
         parameters,
         reloadAnalysisInstance);
 
-      app.openDocument(container.id, 2, this.customization);
+      app.openDocument(id, 2, this.customisation);
     });
+
+  }
+
+  createComponent() {
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('class', 'col-lg-6');
+
+    const item = document.createElement('a');
+    item.setAttribute('class', `${this.spotfireItemClassName} spotfire__item`);
+
+    const spinner = document.createElement('div');
+    spinner.setAttribute('class', 'spinner');
+
+    const svg = '<svg class="icon "><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/gfx/svg/sprites/icons.svg#spinner"></use></svg>';
+
+    spinner.innerHTML = svg;
+    item.appendChild(spinner);
+    wrapper.appendChild(item);
+
+    return wrapper;
   }
 
   initCustomization() {
-    this.customization.showClose = false;
-    this.customization.showUndoRedo = true;
-    this.customization.showToolBar = false;
-    this.customization.showDodPanel = false;
-    this.customization.showStatusBar = false;
-    this.customization.showExportFile = false;
-    this.customization.showFilterPanel = false;
-    this.customization.showAnalysisInfo = true;
-    this.customization.showPageNavigation = false;
-    this.customization.showExportVisualization = false;
-  }
-
-  initFullScreenCustomization() {
-    this.customization.showClose = true;
-    this.customization.showToolBar = true;
-    this.customization.showDodPanel = true;
-    this.customization.showStatusBar = true;
-    this.customization.showExportFile = true;
-    this.customization.showFilterPanel = true;
-    this.customization.showExportVisualization = true;
+    this.customisation.showTopHeader = true;
+    this.customisation.showToolBar = true;
+    this.customisation.showExportFile = true;
+    this.customisation.showExportVisualization = true;
+    this.customisation.showCustomizableHeader = true;
+    this.customisation.showPageNavigation = true;
+    this.customisation.showStatusBar = true;
+    this.customisation.showDodPanel = true;
+    this.customisation.showFilterPanel = true;
   }
 }

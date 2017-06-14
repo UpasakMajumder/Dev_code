@@ -120,12 +120,24 @@
         login: 'Log in'
       },
       checkout: {
-          initUIURL: '',
-          changeAddressURL: '',
-          changeDeliveryMethodURL: '',
-          changeQuantityURL: '',
-          removeProductURL: '',
-          submitURL: ''
+        initUIURL: '',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: ''
+      },
+      spotfire: {
+        reportUrl: 'http://spotfire.kadenadev.com/spotfire/wp/render/GkeTDq95c3VQZnVdbt/analysis?file=/Kadena/Reports&waid=rUfEycjPcUiRrfIihrLUC-140631f9caINnN&wavid=0',
+        serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/',
+        analysisPaths: [
+          '/Kadena/Single Graphs/Acme Spend Overview by Quarter - Business Unit',
+          '/Kadena/Single Graphs/YTD Acme Spend Overview by Business Unit',
+          '/Kadena/Single Graphs/Inventory_Report_Product Inventory By Client',
+          '/Kadena/Single Graphs/OrderTrends – Order_by_Source',
+          '/Kadena/Single Graphs/OrderTrend-OrderTrendByType',
+          '/Kadena/Single Graphs/DIRECTMAILCDH-ReceivedMailPerformance'
+        ]
       }
     }
   };

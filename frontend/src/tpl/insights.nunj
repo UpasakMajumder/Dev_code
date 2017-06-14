@@ -6,7 +6,16 @@
 {% set breadcrumbs = [title] %}
 {% set headerTitle = title %}
 
+{% set btns = [
+  {
+    name: 'See Detailed Data',
+    class: 'btn-action js-spotfire-report'
+  }
+] %}
+
 {% block content %}
+  <script type="text/javascript" src="https://spotfire.cloud.tibco.com/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
+
   <div class="js-spotfire spotfire">
 
     <div class="css-tabs__container js-tabs spotfire__controllers" data-tab=".js-tab-spotfire" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
@@ -18,9 +27,6 @@
       </ul>
     </div>
 
-    <div style="height: 800px;" class="js-spotfire-container spotfire__container" id="spotfire">
-      {% include "components/spinner.nunj" %}
-    </div>
+    <div class="row js-spotfire-container"></div>
   </div>
-  <script src="https://spotfire.cloud.tibco.com/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
 {% endblock %}
