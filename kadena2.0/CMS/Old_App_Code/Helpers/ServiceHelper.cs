@@ -81,7 +81,7 @@ namespace Kadena.Old_App_Code.Helpers
                     Validity = validityDays,
                     mailType = mailType,
                     productType = product,
-                    customerId = ECommerceContext.CurrentCustomer?.CustomerID
+                    customerId = ECommerceContext.CurrentCustomer?.CustomerID.ToString()
                 }), System.Text.Encoding.UTF8, "application/json"))
                 {
                     using (var message = client.PostAsync(createContainerUrl, content))
