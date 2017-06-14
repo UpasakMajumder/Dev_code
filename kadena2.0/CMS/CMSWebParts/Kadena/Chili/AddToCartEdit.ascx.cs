@@ -205,11 +205,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
-            var currentCustomer = ECommerceContext.CurrentCustomer;
+            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
 
-            if (currentCustomer != null)
+            if (customerAddress != null)
             {
-                cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
+                cart.ShoppingCartShippingAddress = customerAddress;
+            }
+            else
+            {
+                cart.ShoppingCartShippingAddress = null;
             }
         }
 

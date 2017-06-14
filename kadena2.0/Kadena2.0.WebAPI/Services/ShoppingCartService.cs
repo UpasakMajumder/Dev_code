@@ -152,11 +152,12 @@ namespace Kadena.WebAPI.Services
             else
             {
                 int defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
-                kenticoProvider.SetShoppingCartAddres(defaultAddressId);
-                page.DeliveryAddresses.CheckAddress(defaultAddressId);
+                if (defaultAddressId != 0)
+                {
+                    kenticoProvider.SetShoppingCartAddres(defaultAddressId);
+                    page.DeliveryAddresses.CheckAddress(defaultAddressId);
+                }
             }
-
-            
         }
 
         private void CheckCurrentOrDefaultShipping(CheckoutPage page)
@@ -388,13 +389,13 @@ namespace Kadena.WebAPI.Services
                 TotalBasePrice = totalItemsPrice,
                 ShipCost = shippingCosts,
 
-                ShipFromCity = addressFrom.City,
-                ShipFromState = addressFrom.State,
-                ShipFromZip = addressFrom.Zip,
+                ShipFromCity = addressFrom?.City ?? string.Empty,
+                ShipFromState = addressFrom?.State ?? string.Empty,
+                ShipFromZip = addressFrom?.Zip ?? string.Empty,
 
-                ShipToCity = addressTo.City,
-                ShipToState = addressTo.State,
-                ShipToZip = addressTo.Zip,
+                ShipToCity = addressTo?.City ?? string.Empty,
+                ShipToState = addressTo?.State ?? string.Empty,
+                ShipToZip = addressTo?.Zip ?? string.Empty
             };
 
             var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
