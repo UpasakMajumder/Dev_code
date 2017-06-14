@@ -3,6 +3,7 @@ using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Localization;
+using CMS.Membership;
 using CMS.OnlineForms;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
@@ -10,15 +11,16 @@ using Kadena.Old_App_Code.Kadena.Forms;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace Kadena.CMSPages.Kadena
 {
-    public class SubmitBid : IHttpHandler
+    public class RequestNewProduct : IHttpHandler
     {
         #region static members
 
-        public const string _BidFormCodeName = "KDA_BidForm";
+        public const string _RequestNewProductFormCodeName = "KDA_NewProductRequestForm";
 
         #endregion
 
@@ -29,17 +31,7 @@ namespace Kadena.CMSPages.Kadena
             var result = new GeneralResultDTO();
             context.Response.ContentType = "application/json";
 
-            string name = context.Request.Form["name"];
             string description = context.Request.Form["description"];
-            string requestType = context.Request.Form["requestType"];
-            string biddingWay = context.Request.Form["biddingWay"];
-            int biddingWayNumber = ValidationHelper.GetInteger(context.Request.Form["biddingWayNumber"], 0);
-            DateTime productionDate = ValidationHelper.GetDate(context.Request.Form["productionDate"], DateTime.MinValue);
-            DateTime? selectionDate = null;
-            if (context.Request.Form["selectionDate"] != null)
-            {
-                selectionDate = new DateTime?(ValidationHelper.GetDate(context.Request.Form["selectionDate"], DateTime.MinValue));
-            }            
             var files = new List<HttpPostedFile>();
             if (context.Request.Files.Count > 0)
             {
@@ -51,15 +43,9 @@ namespace Kadena.CMSPages.Kadena
 
             #region Validation
 
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.NameIsMandatory", LocalizationContext.CurrentCulture.CultureCode) };
-                context.Response.Write(JsonConvert.SerializeObject(result));
-                return;
-            }
             if (string.IsNullOrWhiteSpace(description))
             {
-                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.DescriptionIsMandatory", LocalizationContext.CurrentCulture.CultureCode) };
+                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.DescriptionIsMandatory", LocalizationContext.CurrentCulture.CultureCode) };
                 context.Response.Write(JsonConvert.SerializeObject(result));
                 return;
             }
@@ -67,7 +53,7 @@ namespace Kadena.CMSPages.Kadena
             {
                 if (files.Count > 4)
                 {
-                    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.NumberOfAttachmentsIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
+                    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.NumberOfAttachmentsIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
                     context.Response.Write(JsonConvert.SerializeObject(result));
                     return;
                 }
@@ -77,7 +63,7 @@ namespace Kadena.CMSPages.Kadena
                 {
                     if (requestFile.ContentType != "image/png" && requestFile.ContentType != "image/jpeg" && requestFile.ContentType != "application/pdf")
                     {
-                        result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.FileExtensionIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+                        result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.FileExtensionIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
                         context.Response.Write(JsonConvert.SerializeObject(result));
                         return;
                     }
@@ -85,21 +71,15 @@ namespace Kadena.CMSPages.Kadena
                 }
                 if (filesTotalSize > 10000000)
                 {
-                    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.TotalAttachmentsSizeIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
+                    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.TotalAttachmentsSizeIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
                     context.Response.Write(JsonConvert.SerializeObject(result));
                     return;
                 }
             }
-            if (productionDate == DateTime.MinValue)
-            {
-                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
-                context.Response.Write(JsonConvert.SerializeObject(result));
-                return;
-            }
 
             #endregion
 
-            result = SubmitBidInternal(name, description, requestType, biddingWay, biddingWayNumber, files, productionDate, selectionDate);
+            result = RequestNewProductInternal(description, files);
             context.Response.Write(JsonConvert.SerializeObject(result));
         }
 
@@ -115,32 +95,24 @@ namespace Kadena.CMSPages.Kadena
 
         #region Private methods
 
-        private GeneralResultDTO SubmitBidInternal(string name, string description, string requestType, string biddingWay, int numberOfBidings, List<HttpPostedFile> files, DateTime productionDate, DateTime? selectionDate)
+        private GeneralResultDTO RequestNewProductInternal(string description, List<HttpPostedFile> files)
         {
-            var bidForm = BizFormInfoProvider.GetBizFormInfo(_BidFormCodeName, SiteContext.CurrentSiteID);
-            if (bidForm != null)
+            var newProductForm = BizFormInfoProvider.GetBizFormInfo(_RequestNewProductFormCodeName, SiteContext.CurrentSiteID);
+
+            if (newProductForm != null)
             {
-                var bidFormClass = DataClassInfoProvider.GetDataClassInfo(bidForm.FormClassID);
-                string bidFormClassName = bidFormClass.ClassName;
+                var newProductFormClass = DataClassInfoProvider.GetDataClassInfo(newProductForm.FormClassID);
+                string newProductFormClassName = newProductFormClass.ClassName;
 
-                BizFormItem newFormItem = BizFormItem.New(bidFormClassName);
+                BizFormItem newFormItem = BizFormItem.New(newProductFormClassName);
 
-                newFormItem.SetValue("Name", name);
                 newFormItem.SetValue("Description", description);
-                newFormItem.SetValue("RequestType", requestType);
-                newFormItem.SetValue("BiddingWayText", biddingWay);
-                newFormItem.SetValue("BiddingWayNumber", numberOfBidings);
-
-                newFormItem.SetValue("ProductionDate", productionDate);
-                if (selectionDate.HasValue)
-                {
-                    newFormItem.SetValue("SelectionDate", selectionDate);
-                }
 
                 newFormItem.SetValue("FormInserted", DateTime.Now);
                 newFormItem.SetValue("FormUpdated", DateTime.Now);
 
                 newFormItem.SetValue("Site", SiteContext.CurrentSite.DisplayName);
+                newFormItem.SetValue("UserName", MembershipContext.AuthenticatedUser.UserName);
 
                 if (files.Count > 0)
                 {
@@ -162,7 +134,7 @@ namespace Kadena.CMSPages.Kadena
             }
             else
             {
-                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.RepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.RepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
         }
 
