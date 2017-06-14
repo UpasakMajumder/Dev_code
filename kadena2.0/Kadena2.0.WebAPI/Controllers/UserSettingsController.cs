@@ -29,18 +29,20 @@ namespace Kadena.WebAPI.Controllers
             var shippingAddresses = _service.GetCustomerAddresses("Shipping");
             var states = _service.GetStates();
 
-            var result = new 
+            var result = new
             {
-                Billing = new 
-                {
-                    Title = _service.GetResourceString("Kadena.Settings.Addresses.BillingAddress"),
-                    AddButton = new 
-                    {
-                        Exists = false,
-                        Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddBilling")
-                    },
-                    Addresses = _mapper.Map<List<AddressDto>>(billingAddresses)
-                },
+                Billing = new object(),
+                //////Uncomment billing addresses will developed
+                ////new 
+                ////{
+                ////    Title = _service.GetResourceString("Kadena.Settings.Addresses.BillingAddress"),
+                ////    AddButton = new 
+                ////    {
+                ////        Exists = false,
+                ////        Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddBilling")
+                ////    },
+                ////    Addresses = _mapper.Map<List<AddressDto>>(billingAddresses)
+                ////},
                 Shipping = new 
                 {
                     Title = _service.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
