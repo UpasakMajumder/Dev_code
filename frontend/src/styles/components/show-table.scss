@@ -30,6 +30,21 @@
     &:first-child {
       border-left: 1px solid $brand-grey;
     }
+
+    &.fixed-main-td {
+      max-width: 350px;
+      width: 350px;
+
+      @media (min-width: 1400px) {
+        max-width: 550px;
+        width: 550px;
+      }
+
+      @media (min-width: 1600px) {
+        max-width: 650px;
+        width: 650px;
+      }
+    }
   }
 
   & tr th {
@@ -47,7 +62,8 @@
       background-color: rgba($brand-lightgrey, 1);
     }
 
-    .show-table__text-appear {
+    .show-table__text-appear,
+    .show-table__text-cutted {
       &:after {
         content: '';
         position: absolute;
@@ -96,6 +112,22 @@
       &:after {
         visibility: hidden;
       }
+    }
+  }
+
+  &__text-cutted {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 42px;
+      height: 100%;
+      background: $show-table-row-gardient;
     }
   }
 
