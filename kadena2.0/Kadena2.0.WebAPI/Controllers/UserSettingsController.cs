@@ -43,39 +43,44 @@ namespace Kadena.WebAPI.Controllers
                 ////    },
                 ////    Addresses = _mapper.Map<List<AddressDto>>(billingAddresses)
                 ////},
-                Shipping = new 
+                Shipping = new
                 {
                     Title = _service.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
-                    AddButton = new 
+                    AddButton = new
                     {
                         Exists = false,
                         Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
                     Addresses = _mapper.Map<List<AddressDto>>(shippingAddresses)
                 },
-                Dialog = new 
+                Dialog = new
                 {
-                    Types = new 
+                    Types = new
                     {
                         Add = _service.GetResourceString("Kadena.Settings.Addresses.AddAddress"),
                         Edit = _service.GetResourceString("Kadena.Settings.Addresses.EditAddress")
                     },
-                    Buttons = new 
+                    Buttons = new
                     {
                         Discard = _service.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
                         Save = _service.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
                     },
                     Fields = new List<EditorFieldDto> {
-                        new EditorFieldDto { Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
+                        new EditorFieldDto { Id="Street1",
+                            Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                             Type = "text"},
-                        new EditorFieldDto { Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
+                        new EditorFieldDto { Id="Street2",
+                            Label = _service.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                             Type = "text"},
-                        new EditorFieldDto { Label = _service.GetResourceString("Kadena.Settings.Addresses.City"),
+                        new EditorFieldDto { Id="City",
+                            Label = _service.GetResourceString("Kadena.Settings.Addresses.City"),
                             Type = "text"},
-                        new EditorFieldDto { Label = _service.GetResourceString("Kadena.Settings.Addresses.State"),
+                        new EditorFieldDto { Id="State",
+                            Label = _service.GetResourceString("Kadena.Settings.Addresses.State"),
                             Type = "select",
                             Values = states.Select(s=>(object)s.StateCode).ToList() },
-                        new EditorFieldDto { Label = _service.GetResourceString("Kadena.Settings.Addresses.Zip"),
+                        new EditorFieldDto { Id="Zip",
+                            Label = _service.GetResourceString("Kadena.Settings.Addresses.Zip"),
                             Type = "text"}
                     }
                 }
