@@ -29,36 +29,36 @@ namespace Kadena.WebAPI.Controllers
             var shippingAddresses = _service.GetCustomerAddresses("Shipping");
             var states = _service.GetStates();
 
-            var result = new SettingsAddressesDto
+            var result = new 
             {
-                Billing = new AddressBlockDto
+                Billing = new 
                 {
                     Title = _service.GetResourceString("Kadena.Settings.Addresses.BillingAddress"),
-                    AddButton = new ButtonDto
+                    AddButton = new 
                     {
                         Exists = false,
                         Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddBilling")
                     },
                     Addresses = _mapper.Map<List<AddressDto>>(billingAddresses)
                 },
-                Shipping = new AddressBlockDto
+                Shipping = new 
                 {
                     Title = _service.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
-                    AddButton = new ButtonDto
+                    AddButton = new 
                     {
                         Exists = false,
                         Tooltip = _service.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
                     Addresses = _mapper.Map<List<AddressDto>>(shippingAddresses)
                 },
-                Dialog = new EditorDto
+                Dialog = new 
                 {
-                    Types = new EditorTypeDto
+                    Types = new 
                     {
                         Add = _service.GetResourceString("Kadena.Settings.Addresses.AddAddress"),
                         Edit = _service.GetResourceString("Kadena.Settings.Addresses.EditAddress")
                     },
-                    Buttons = new EditorButtonDto
+                    Buttons = new 
                     {
                         Discard = _service.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
                         Save = _service.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
