@@ -1,0 +1,10 @@
+.spotfire {
+  &__container {
+    border-radius: $border-radius-xl;
+    overflow: hidden;
+  }
+
+  &__controllers {
+    @include rem(margin-bottom, 24px);
+  }
+}
