@@ -22,7 +22,7 @@
   <div class="block">
 
     <p>This is a dummy text. TBD brief intro about the module. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dolor nisi, finibus non mi in, maximus sodales erat.</p>
-    <div class="iframe iframe--fixed">
+    <div class="iframe-video iframe-video--fixed">
       <video controls>
         <source src="" type="video/mp4">
       </video>
