@@ -5,7 +5,62 @@
     @include rem(margin, 25px 0 0);
   }
 
+  &--tile,
+  &--tile:last-child {
+    @include rem(padding, 15px 25px);
+    margin: 0;
+    background-color: $form-bg;
+    border-radius: $border-radius-xl;
+    height: 100%;
+
+    .check-table {
+      margin: 0;
+
+      &__info,
+      &__amount {
+        background-color: $form-bg;
+      }
+    }
+  }
+
   &__header {
     @include rem(margin-bottom, 20px);
+  }
+
+  &__detail {
+    @extend %flex--start--default;
+    flex-direction: column;
+    width: 100%;
+
+    svg {
+      @include rem(margin-bottom, 24px);
+      @include rem(width, 70px);
+      @include rem(height, 50px);
+    }
+
+    &.delivery,
+    &.payment {
+      svg {
+        display: none;
+      }
+      $delivery-methods: (fedex, ups, usps);
+      $payment-methods: (mastercard, visa, amex);
+
+      @each $method in $delivery-methods {
+        &.delivery--#{$method} {
+          .delivery--#{$method} {
+            display: block;
+          }
+        }
+      }
+
+      @each $method in $payment-methods {
+        &.payment--#{$method} {
+          .payment--#{$method} {
+            display: block;
+          }
+        }
+      }
+    }
   }
 }
