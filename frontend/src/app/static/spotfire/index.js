@@ -59,14 +59,15 @@ export default class Spotfire {
   }
 
   initCustomization() {
-    this.customisation.showTopHeader = true;
-    this.customisation.showToolBar = true;
-    this.customisation.showExportFile = true;
-    this.customisation.showExportVisualization = true;
-    this.customisation.showCustomizableHeader = true;
-    this.customisation.showPageNavigation = true;
-    this.customisation.showStatusBar = true;
-    this.customisation.showDodPanel = true;
-    this.customisation.showFilterPanel = true;
+    this.customisation.showClose = false;
+    this.customisation.showUndoRedo = true;
+    this.customisation.showToolBar = false;
+    this.customisation.showDodPanel = false;
+    this.customisation.showStatusBar = false;
+    this.customisation.showExportFile = false;
+    this.customisation.showFilterPanel = false;
+    this.customisation.showAnalysisInfo = true;
+    this.customisation.showPageNavigation = false;
+    this.customisation.showExportVisualization = false;
   }
 }
