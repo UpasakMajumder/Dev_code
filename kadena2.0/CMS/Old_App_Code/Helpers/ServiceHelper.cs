@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
+using CMS.Ecommerce;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -79,7 +80,8 @@ namespace Kadena.Old_App_Code.Helpers
                     customerName = customerName,
                     Validity = validityDays,
                     mailType = mailType,
-                    productType = product
+                    productType = product,
+                    customerId = ECommerceContext.CurrentCustomer?.CustomerID
                 }), System.Text.Encoding.UTF8, "application/json"))
                 {
                     using (var message = client.PostAsync(createContainerUrl, content))
