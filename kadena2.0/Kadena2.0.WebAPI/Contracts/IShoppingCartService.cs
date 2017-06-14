@@ -21,6 +21,6 @@ namespace Kadena.WebAPI.Contracts
 
         Task<CheckoutPage> OrderCurrentCart();
 
-        Task<double> UpdateTotalTax();
+        Task<double> EstimateTotalTax();
     }
 }
