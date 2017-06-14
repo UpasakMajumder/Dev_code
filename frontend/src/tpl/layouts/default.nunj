@@ -50,6 +50,7 @@
   {# Main content of the page #}
   <div class="main-container">
     <div class="r-spinner"></div>
+    <div class="r-dialog"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
 
@@ -120,12 +121,18 @@
         login: 'Log in'
       },
       checkout: {
-          initUIURL: '',
-          changeAddressURL: '',
-          changeDeliveryMethodURL: '',
-          changeQuantityURL: '',
-          removeProductURL: '',
-          submitURL: ''
+        initUIURL: '',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: ''
+      },
+      userSettings: {
+        addresses: {
+          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
+          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+        }
       }
     }
   };
