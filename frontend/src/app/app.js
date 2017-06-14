@@ -41,6 +41,8 @@ const app = {
     render('Login', document.querySelectorAll('.js-login'));
     render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
+    render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
+    render('Dialog', document.querySelectorAll('.r-dialog'));
   }
 };
 
