@@ -9,40 +9,44 @@ namespace Kadena.Tests
 {
     class ValidateAddressesTest : UnitTests
     {
-        private string _urlSetting = "KDA_ValidateAddressUrl";
-        
-        [TestCase("e08081ab-03b8-4389-9b68-85602c812206",
-            "https://05p387rwel.execute-api.us-east-1.amazonaws.com/Prod/Api/AddressValidator",
+        private const string _urlSetting = "KDA_ValidateAddressUrl";
+        private const string _customerNameSettingKey = "KDA_CustomerName";
+
+        [TestCase("611d1292-dc07-4464-a729-c1d4cd542b15",
+            "actum",
+            "https://o31vibmca2.execute-api.us-east-1.amazonaws.com/Qa/Api/AddressValidator",
             TestName = "ValidateAddressesSuccess",
             Description = "Test for validation address on correct container."
             )]
-        public void ValidateSuccess(string containerId, string url)
+        public void ValidateSuccess(string containerId, string customerName, string url)
         {
-            var fileId = ValidateAddress(new Guid(containerId), url);
+            var fileId = ValidateAddress(new Guid(containerId), url, customerName);
             Assert.IsNotEmpty(fileId);
             TestContext.WriteLine($"Validated file is {fileId}");
         }
 
         [TestCase("8F266B1E-0677-4085-BAAB-20F0905F4C8F",
-            "https://05p387rwel.execute-api.us-east-1.amazonaws.com/Prod/Api/AddressValidator",
+            "actum",
+            "https://o31vibmca2.execute-api.us-east-1.amazonaws.com/Qa/Api/AddressValidator",
             TestName = "ValidateAddressesHttpException",
             Description = "Test for validation address on container that doesn't exists."
             )]
-        public void ValidateFail(string containerId, string url)
+        public void ValidateFail(string containerId, string customerName, string url)
         {
-            Assert.Catch(typeof(HttpRequestException), ()=> ValidateAddress(new Guid(containerId), url));
+            Assert.Catch(typeof(HttpRequestException), ()=> ValidateAddress(new Guid(containerId), url, customerName));
         }
 
-        private string ValidateAddress(Guid containerId, string url)
+        private string ValidateAddress(Guid containerId, string url, string customerName)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
-                .WithData(
+            .WithData(
+                new SettingsKeyInfo { KeyName = $"{_customerNameSettingKey}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",
                     KeyValue = url
                 }
-                );
+            );
 
             return ServiceHelper.ValidateAddresses(containerId);
         }

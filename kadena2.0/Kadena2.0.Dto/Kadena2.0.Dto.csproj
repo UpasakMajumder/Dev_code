@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\CartItemsDTO.cs" />
+    <Compile Include="Checkout\CartItemDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressesDTO.cs" />
@@ -47,9 +50,27 @@
     <Compile Include="Checkout\DeliveryServiceDTO.cs" />
     <Compile Include="Checkout\PaymentMethodsDTO.cs" />
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
+    <Compile Include="CustomerData\CustomerAddressDTO.cs" />
+    <Compile Include="CustomerData\CustomerDataDTO.cs" />
+    <Compile Include="General\GeneralResultDTO.cs" />
+    <Compile Include="Logon\LogonUserResultDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Checkout\TotalsDTO.cs" />
     <Compile Include="Checkout\TotalDTO.cs" />
+    <Compile Include="SubmitOrder\AddressDTO.cs" />
+    <Compile Include="SubmitOrder\CurrencyDTO.cs" />
+    <Compile Include="SubmitOrder\CustomerDTO.cs" />
+    <Compile Include="SubmitOrder\MailingListDTO.cs" />
+    <Compile Include="SubmitOrder\OrderDTO.cs" />
+    <Compile Include="SubmitOrder\OrderItemDTO.cs" />
+    <Compile Include="SubmitOrder\OrderItemTypeDTO.cs" />
+    <Compile Include="SubmitOrder\OrderStatusDTO.cs" />
+    <Compile Include="SubmitOrder\OrderTrackingDTO.cs" />
+    <Compile Include="SubmitOrder\PaymentOptionDTO.cs" />
+    <Compile Include="SubmitOrder\PaymentResultDTO.cs" />
+    <Compile Include="SubmitOrder\ShippingOptionDTO.cs" />
+    <Compile Include="SubmitOrder\SiteDTO.cs" />
+    <Compile Include="SubmitOrder\SKUDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

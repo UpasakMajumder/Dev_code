@@ -1,10 +1,12 @@
 .drop-zone {
+  @extend %flex--center--center;
   background: radial-gradient(circle, $brand-white 0%, rgba(229, 232, 235, 0.3) 100%);
   border-radius: 2px;
   text-align: center;
   border: dashed 2px $brand-darkgrey;
   border-image: url('#{$img-path}dropzone-border.png') 2 round;
   position: relative;
+  min-height: 230px;
 
   &.isDropped {
     .drop-zone__dropping {
@@ -80,6 +82,28 @@
     cursor: pointer;
   }
 
+  &__ext {
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+
+  &__item {
+    max-width: 125px;
+
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:not(:last-child) {
+      @extend .mr-3;
+    }
+  }
+
   &__dropping {
     margin: 51px;
 
@@ -91,9 +115,10 @@
 
   &__dropped {
     display: none;
-    margin: 39px;
+    margin: 51px;
 
     div {
+      @include rem(margin-bottom, 5px);
       display: inline-block;
       position: relative;
     }
@@ -102,6 +127,10 @@
       @extend .font-dark;
       margin: 0;
       font-size: $font-xxs;
+    }
+
+    &--not {
+      margin: 42px;
     }
   }
 

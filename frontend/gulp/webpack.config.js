@@ -6,11 +6,7 @@ const DEVELOPMENT = process.env.isDevelopment !== 'false';
 const path = require('path');
 const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const eslintConfig = require('eslint-config-actum').getConfig({
-    environment: {
-        isDevelopment: DEVELOPMENT
-    }
-});
+const eslintConfig = require('eslint-config-actum').getConfig({ environment: false });
 
 /* Plugins for Webpack */
 const pluginsCollection = {
@@ -118,7 +114,28 @@ module.exports = {
                 { loader: "style-loader" },
                 { loader: "css-loader" },
               ],
-            }
+            },
+          {
+            test: /\.(jpe?g|png|gif)$/i,
+            loaders: ['file-loader?context=src/images&name=images/[path][name].[ext]', {
+              loader: 'image-webpack-loader',
+              query: {
+                mozjpeg: {
+                  progressive: true,
+                },
+                gifsicle: {
+                  interlaced: false,
+                },
+                optipng: {
+                  optimizationLevel: 4,
+                },
+                pngquant: {
+                  quality: '75-90',
+                  speed: 3,
+                },
+              },
+            }]
+          }
         ]
     },
     resolve: {

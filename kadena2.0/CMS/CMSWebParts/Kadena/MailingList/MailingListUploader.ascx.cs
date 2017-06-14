@@ -1,4 +1,5 @@
 ﻿using CMS.CustomTables;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
@@ -7,6 +8,7 @@ using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -166,31 +168,39 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel" 
+            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel"
                 || inpFile.PostedFile.ContentType == "text/csv")
             {
-                var fileStream = inpFile.PostedFile.InputStream;
-                var fileName = inpFileName.Value;
-
-                var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                var containerId = Guid.Empty;
-                if (_container == null)
+                try
                 {
-                    var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                    var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                    var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                    containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
-                }
-                else
-                {
-                    containerId = new Guid(_container.id);
-                    ServiceHelper.RemoveAddresses(containerId);
-                }
+                    var fileStream = inpFile.PostedFile.InputStream;
+                    var fileName = inpFileName.Value;
 
-                var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-                Response.Redirect(nextStepUrl);
+                    var fileId = ServiceHelper.UploadFile(fileStream, fileName);
+                    var containerId = Guid.Empty;
+                    if (_container == null)
+                    {
+                        var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+                        var product = Request.Form[GetString("Kadena.MailingList.Product")];
+                        var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
+                        containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                    }
+                    else
+                    {
+                        containerId = new Guid(_container.id);
+                        ServiceHelper.RemoveAddresses(containerId);
+                    }
+
+                    var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
+                    Response.Redirect(nextStepUrl);
+                }
+                catch (Exception exc)
+                {
+                    txtError.InnerText = exc.Message;
+                    EventLogProvider.LogException("Mailing List Create", "EXCEPTION", exc, CurrentSite.SiteID);
+                }
             }
         }
     }

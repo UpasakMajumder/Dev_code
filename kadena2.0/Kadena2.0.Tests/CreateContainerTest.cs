@@ -91,7 +91,7 @@ namespace Kadena.Tests
         }
 
         [TestCase("actum",
-            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/Mailing",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/Api/Mailing",
             TestName = "CreateContainerSuccess",
             Description = "Test for successful creation of mailing container."
             )]

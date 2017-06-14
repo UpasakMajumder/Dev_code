@@ -49,6 +49,7 @@
 <form>
   {# Main content of the page #}
   <div class="main-container">
+    <div class="r-spinner"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
 
@@ -107,6 +108,7 @@
 
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
   var config = {
@@ -127,6 +129,8 @@
           initUIURL: '',
           changeAddressURL: '',
           changeDeliveryMethodURL: '',
+          changeQuantityURL: '',
+          removeProductURL: '',
           submitURL: ''
       }
     }

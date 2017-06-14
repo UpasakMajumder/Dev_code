@@ -19,30 +19,37 @@ class MethodsGroup extends Component {
 
     if (disabled) className += ' input__wrapper--disabled';
 
-    const priceElement = (pricePrefix && price)
-      ? <span>{pricePrefix} {price}</span>
-      : (pricePrefix)
-      ? <span>{pricePrefix}</span>
-      : (price)
-      ? <span>{price}</span>
-      : null;
+    let dateElement = null;
+    if (datePrefix && date) {
+      dateElement = <span>{datePrefix} {date}</span>;
+    } else if (datePrefix) {
+      dateElement = <span>{datePrefix}</span>;
+    } else if (date) {
+      dateElement = <span>{date}</span>;
+    }
 
-    const dateElement = (datePrefix && date)
-      ? <span> | <span>{datePrefix} {date}</span></span>
-      : (datePrefix)
-      ? <span> | <span>{datePrefix}</span></span>
-      : (date)
-      ? <span> | <span>{date}</span></span>
+    let priceElement = null;
+    if (pricePrefix && price) {
+      priceElement = <span>{pricePrefix} {price}</span>;
+    } else if (pricePrefix) {
+      priceElement = <span>{pricePrefix}</span>;
+    } else if (price) {
+      priceElement = <span>{price}</span>;
+    }
+
+    const stick = dateElement
+      ? <span> | </span>
       : null;
 
     const extraInfo = (priceElement || dateElement)
-      ? <span>({priceElement}{dateElement})</span>
+      ? <span>({dateElement}{stick}{priceElement})</span>
       : null;
 
     return (
       <div>
         <div className={className}>
-          <input disabled={disabled}
+          <input checked={openId === id}
+                 disabled={disabled}
                  onChange={() => changeOpenId(id)}
                  type="radio"
                  name="methodGroup"
