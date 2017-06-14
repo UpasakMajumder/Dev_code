@@ -3,16 +3,14 @@ import Product from './Product';
 
 class Products extends Component {
   render() {
-    const { ui, removeProduct, loadingProducts, changeProductQuantity, loadingQuantities } = this.props;
+    const { ui, removeProduct, changeProductQuantity } = this.props;
 
     const { number, items } = ui;
 
     const products = items.map((item) => {
       return <Product key={item.id} {...item}
                       removeProduct={removeProduct}
-                      loadingProducts={loadingProducts}
-                      changeProductQuantity={changeProductQuantity}
-                      loadingQuantities={loadingQuantities}/>;
+                      changeProductQuantity={changeProductQuantity} />;
     });
 
     return (

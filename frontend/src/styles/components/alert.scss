@@ -4,6 +4,10 @@
   display: none;
   position: relative;
 
+  & > *:last-child {
+    margin: 0;
+  }
+
   &.isOpen {
     display: inline-block;
   }

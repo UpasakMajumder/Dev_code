@@ -21,9 +21,7 @@ const defaultState = {
   isSending: false,
   validation: {
     fields: []
-  },
-  loadingProducts: false,
-  loadingQuantities: false
+  }
 };
 
 export default (state = defaultState, action) => {
@@ -39,52 +37,16 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case CHANGE_PRODUCT_QUANTITY_FETCH:
-    return {
-      ...state,
-      loadingQuantities: true
-    };
-
-  case CHANGE_PRODUCT_QUANTITY_FAILURE:
-    return {
-      ...state,
-      loadingQuantities: false
-    };
-
   case CHANGE_PRODUCT_QUANTITY_SUCCESS:
     return {
       ...state,
-      loadingQuantities: false,
       ui: payload.ui
-    };
-
-  case REMOVE_PRODUCT_FETCH:
-    return {
-      ...state,
-      loadingProducts: true
-    };
-
-  case REMOVE_PRODUCT_FAILURE:
-    return {
-      ...state,
-      loadingProducts: false
     };
 
   case REMOVE_PRODUCT_SUCCESS:
     return {
       ...state,
-      loadingProducts: false,
       ui: payload.ui
-    };
-
-  case RECALCULATE_SHOPPING_PRICE_FETCH:
-  case SEND_SHOPPING_DATA_FETCH:
-    return {
-      ...state,
-      validation: {
-        fields: []
-      },
-      isSending: true
     };
 
   case SHOPPING_CART_UI_SUCCESS:
@@ -116,6 +78,16 @@ export default (state = defaultState, action) => {
                           }
                           : payload.id
       }
+    };
+
+  case RECALCULATE_SHOPPING_PRICE_FETCH:
+  case SEND_SHOPPING_DATA_FETCH:
+    return {
+      ...state,
+      validation: {
+        fields: []
+      },
+      isSending: true
     };
 
   case SEND_SHOPPING_DATA_SUCCESS:

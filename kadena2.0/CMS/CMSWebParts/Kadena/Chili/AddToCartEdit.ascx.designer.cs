@@ -31,15 +31,6 @@ namespace Kadena.CMSWebParts.Kadena.Chili {
         protected global::System.Web.UI.WebControls.Label lblQuantity;
         
         /// <summary>
-        /// lblNumberOfItemsError control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNumberOfItemsError;
-        
-        /// <summary>
         /// inpNumberOfItems control.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inpNumberOfItems;
+        
+        /// <summary>
+        /// lblNumberOfItemsError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNumberOfItemsError;
         
         /// <summary>
         /// btnAddToCart control.

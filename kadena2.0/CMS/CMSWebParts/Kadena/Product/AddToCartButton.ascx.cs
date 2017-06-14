@@ -46,9 +46,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             var previouslyAddedAmmount = GetPreviouslyAddedAmmout();
 
-            if (IsAddedAmmountValid(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) + previouslyAddedAmmount))
+            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput + previouslyAddedAmmount))
             {
-                if (ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0))
+                if (IsProductInventoryType() && (ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0)))
                 {
                     lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode);
                     SetErrorLblVisible();
@@ -72,6 +72,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
         #endregion
 
         #region Private methods
+
+        private int NumberOfItemsInInput
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
+            }
+
+        }
 
         private void SetErrorLblVisible()
         {

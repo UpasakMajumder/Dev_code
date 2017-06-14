@@ -68,12 +68,10 @@ class Dropzone {
     Dropzone.setNameToItem(name, ext, this.data[id].item);
     this.changeNameInput(name);
 
-    if (this.count === this.maxItems) return;
+    this.container.classList.remove(this.reverseSelector);
+    this.container.classList.add(this.selector);
 
-    if (this.count === 0) {
-      this.container.classList.remove(this.reverseSelector);
-      this.container.classList.add(this.selector);
-    }
+    if (this.count === this.maxItems) return;
 
     this.count += 1;
     this.number += 1;
@@ -81,7 +79,7 @@ class Dropzone {
     const item = this.idealItem.cloneNode(true);
     this.createRemover(item);
 
-    this.fileContainer.prepend(this.data[id].item);
+    this.fileContainer.insertBefore(this.data[id].item, this.fileContainer.firstChild);
 
     if (this.count === this.maxItems) return;
 
@@ -121,8 +119,10 @@ class Dropzone {
 
     this.count -= 1;
     const { item, input } = this.data[id];
-    item.remove();
-    input.remove();
+
+    item.parentNode.removeChild(item);
+    input.parentNode.removeChild(input);
+
     this.container.querySelector('.js-drop-zone-file').style.display = 'block';
 
     if (this.count === 0) {
@@ -131,7 +131,6 @@ class Dropzone {
     }
 
     delete this.data[id];
-
   }
 
   createRemover(item) {
