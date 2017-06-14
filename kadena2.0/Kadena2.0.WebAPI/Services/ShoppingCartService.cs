@@ -373,7 +373,7 @@ namespace Kadena.WebAPI.Services
         {
             var addressFrom = kenticoProvider.GetDefaultBillingAddress();
             var addressTo = kenticoProvider.GetCurrentCartShippingAddress();
-            var serviceEndpoint = "https://rcbf2uqkja.execute-api.us-east-1.amazonaws.com/Dev/api/taxcalculator"; // resources.GetSettingsKey("TODO"); // TODO
+            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
             double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
             double shippingCosts  = kenticoProvider.GetCurrentCartShippingCost();
 
