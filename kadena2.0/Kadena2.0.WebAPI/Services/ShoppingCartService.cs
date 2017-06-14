@@ -5,11 +5,11 @@ using System.Linq;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
-using Kadena.Dto.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using System;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceRequests;
 
 namespace Kadena.WebAPI.Services
 {
@@ -37,15 +37,15 @@ namespace Kadena.WebAPI.Services
             this.kenticoLog = kenticoLog;
         }
 
-        public CheckoutPage GetCheckoutPage()
+        public async Task<CheckoutPage> GetCheckoutPage()
         {
             var addresses = kenticoProvider.GetCustomerAddresses();
-            var carriers = kenticoProvider.GetShippingCarriers();
-            var totals = kenticoProvider.GetShoppingCartTotals();
+            var carriers = kenticoProvider.GetShippingCarriers();            
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
             
+
             var checkoutPage = new CheckoutPage()
             {
                 Products = new CartItems()
@@ -76,7 +76,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
-                    Items = MapTotals(totals)
+                    // will be assigned after computing TotalTax, which may be changed aftes selecting default shipping or address
                 },
 
                 PaymentMethods = new PaymentMethods()
@@ -102,6 +102,11 @@ namespace Kadena.WebAPI.Services
                     resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
             checkoutPage.SetDisplayType();
+
+            var totals = kenticoProvider.GetShoppingCartTotals();
+            totals.TotalTax = await UpdateTotalTax();
+            checkoutPage.Totals.Items = MapTotals(totals);
+
             return checkoutPage;
         }
 
@@ -127,7 +132,7 @@ namespace Kadena.WebAPI.Services
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
-                    Value = String.Format("$ {0:#,0.00}", 0)
+                    Value = String.Format("$ {0:#,0.00}", totals.TotalTax)
                 },
                 new Total()
                 {
@@ -150,6 +155,8 @@ namespace Kadena.WebAPI.Services
                 kenticoProvider.SetShoppingCartAddres(defaultAddressId);
                 page.DeliveryAddresses.CheckAddress(defaultAddressId);
             }
+
+            
         }
 
         private void CheckCurrentOrDefaultShipping(CheckoutPage page)
@@ -206,17 +213,16 @@ namespace Kadena.WebAPI.Services
             return orderedMethods;
         }
 
-        public CheckoutPage SelectShipipng(int id)
+        public async Task<CheckoutPage> SelectShipipng(int id)
         {
             kenticoProvider.SelectShipping(id);
-            return GetCheckoutPage();
+            return await GetCheckoutPage();
         }
 
-        public CheckoutPage SelectAddress(int id)
+        public async Task<CheckoutPage> SelectAddress(int id)
         {
             kenticoProvider.SetShoppingCartAddres(id);
-
-            var checkoutPage = GetCheckoutPage();
+            var checkoutPage = await GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
         }
@@ -233,7 +239,7 @@ namespace Kadena.WebAPI.Services
             if (serviceResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
-                OrderCurrentCart();
+                await OrderCurrentCart();
             }
             else
             {
@@ -342,23 +348,57 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public CheckoutPage ChangeItemQuantity(int id, int quantity)
+        public async Task<CheckoutPage> ChangeItemQuantity(int id, int quantity)
         {
             kenticoProvider.SetCartItemQuantity(id, quantity);
-            return GetCheckoutPage();
+            return await GetCheckoutPage();
         }
 
-        public CheckoutPage RemoveItem(int id)
+        public async Task<CheckoutPage> RemoveItem(int id)
         {
             kenticoProvider.RemoveCartItem(id);
-            return GetCheckoutPage();
+            return await GetCheckoutPage();
         }
 
-        public CheckoutPage OrderCurrentCart()
+        public async Task<CheckoutPage> OrderCurrentCart()
         {
             kenticoProvider.RemoveCurrentItemsFromStock();
             kenticoProvider.RemoveCurrentItemsFromCart();
-            return GetCheckoutPage();
+            return await GetCheckoutPage();
+        }
+
+        public async Task<double> UpdateTotalTax()
+        {
+            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
+            var addressTo = kenticoProvider.GetCurrentCartShippingAddress();
+            var serviceEndpoint = "https://rcbf2uqkja.execute-api.us-east-1.amazonaws.com/Dev/api/taxcalculator"; // resources.GetSettingsKey("TODO"); // TODO
+            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
+            double shippingCosts  = kenticoProvider.GetCurrentCartShippingCost();
+
+            var taxRequest = new TaxCalculatorRequestDto()
+            {
+                TotalBasePrice = totalItemsPrice,
+                ShipCost = shippingCosts,
+
+                ShipFromCity = addressFrom.City,
+                ShipFromState = addressFrom.State,
+                ShipFromZip = addressFrom.Zip,
+
+                ShipToCity = addressTo.City,
+                ShipToState = addressTo.State,
+                ShipToZip = addressTo.Zip,
+            };
+
+            var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
+
+            if (!taxResponse.Success)
+            {
+                kenticoLog.LogError("Tax estimation", $"Failed to estimate tax: {taxResponse.ErrorMessages}");
+                return 0.0d;
+            }
+
+            // kenticoProvider.SetCartTotalTax(taxResponse.Payload);  // doesnt seem to work and persist
+            return taxResponse.Payload;
         }
     }
 }

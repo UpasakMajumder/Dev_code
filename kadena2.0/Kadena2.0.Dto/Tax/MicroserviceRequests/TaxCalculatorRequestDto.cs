@@ -8,7 +8,7 @@
         public string ShipToState { get; set; }
         public string ShipToCity { get; set; }
         public string ShipToZip { get; set; }
-        public string TotalBasePrice { get; set; }
-        public string ShipCost { get; set; }
+        public double TotalBasePrice { get; set; }
+        public double ShipCost { get; set; }
     }
 }
