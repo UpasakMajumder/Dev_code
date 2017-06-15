@@ -12,17 +12,22 @@ const getUITest = (dispatch) => {
     method: 'get',
     url: USER_SETTINGS.addresses.initUIURL
   }).then((response) => {
-    dispatch({
-      type: SETTINGS_ADDRESSES_UI_SUCCESS,
-      payload: {
-        ui: response.data.payload
-      }
-    });
+    const { payload, success, errorMessage } = response.data;
+
+    if (!success) {
+      dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
+      alert(errorMessage); // eslint-disable-line no-alert
+    } else {
+      dispatch({
+        type: SETTINGS_ADDRESSES_UI_SUCCESS,
+        payload: {
+          ui: payload
+        }
+      });
+    }
   })
   .catch(() => {
-    dispatch({
-      type: SETTINGS_ADDRESSES_UI_FAILURE
-    });
+    dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
   });
 
   // setTimeout(() => {
@@ -46,7 +51,15 @@ export const modifyAddress = (data) => {
       method: 'post',
       url: USER_SETTINGS.addresses.initUIURL,
       data
-    }).then(() => {
+    }).then((response) => {
+      const { success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+        return;
+      }
+
       dispatch({
         type: MODIFY_SHIPPING_ADDRESS_SUCCESS,
         payload: { data }
@@ -64,28 +77,30 @@ export const modifyAddress = (data) => {
       axios({
         method: 'get',
         url: USER_SETTINGS.addresses.initUIURL
-      }).then((response) => {
+      }).then((answer) => {
+        if (!answer.success) {
+          dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
+          dispatch({ type: APP_LOADING_FINISH });
+          alert(answer.errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: SETTINGS_ADDRESSES_UI_SUCCESS,
           payload: {
-            ui: response.data.payload
+            ui: answer.payload
           }
         });
 
         dispatch({ type: APP_LOADING_FINISH });
       })
       .catch(() => {
-        dispatch({
-          type: SETTINGS_ADDRESSES_UI_FAILURE
-        });
-
+        dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
     })
     .catch(() => {
-      dispatch({
-        type: MODIFY_SHIPPING_ADDRESS_FAILURE
-      });
+      dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
     });
 
     // setTimeout(() => {
