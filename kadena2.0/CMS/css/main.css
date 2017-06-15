@@ -3181,7 +3181,7 @@ button {
 .upload-mail__offer p {
   color: #777; }
 
-.login__form, .drop-zone, .footer, .spinner__wrapper {
+.login__form, .drop-zone, .footer, .spinner__wrapper, .spotfire__item {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;
@@ -3647,6 +3647,8 @@ h4 {
     width: 100%; }
     .input__error--noborder {
       border-top: none; }
+    .input__wrapper--with-icon .input__error {
+      position: absolute; }
 
 a:hover,
 a:focus {
@@ -5724,8 +5726,7 @@ body {
   .css-header .navbar-nav {
     margin-left: auto; }
     .css-header .navbar-nav .nav-item {
-      cursor: pointer;
-      padding: 0.625rem; }
+      cursor: pointer; }
       .css-header .navbar-nav .nav-item.active, .css-header .navbar-nav .nav-item:hover {
         background-color: #edf1f5; }
         .css-header .navbar-nav .nav-item.active .nav-link, .css-header .navbar-nav .nav-item:hover .nav-link {
@@ -5734,6 +5735,7 @@ body {
         width: 18px;
         height: 18px; }
       .css-header .navbar-nav .nav-item .nav-link {
+        padding: 1.125rem;
         color: #009bd8;
         font-weight: 400; }
     .css-header .navbar-nav .badge-custom-color {
@@ -6371,6 +6373,15 @@ body {
     padding: 0;
     background: rgba(28, 97, 125, 0.5);
     z-index: 100000; }
+
+.spotfire__controllers {
+  margin-bottom: 1.5rem; }
+
+.spotfire__item {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 30vw; }
 
 .steps {
   border-radius: 8px;
