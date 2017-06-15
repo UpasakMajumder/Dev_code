@@ -1,0 +1,18 @@
+.tile-link {
+  &__img {
+    width: 100%;
+    padding-top: 97%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__description {
+    @include rem(padding, 10px 10px 18px 10px);
+
+    p {
+      height: calc(3 * 16px * 1.5);
+      margin-bottom: 0;
+      overflow: hidden;
+    }
+  }
+}

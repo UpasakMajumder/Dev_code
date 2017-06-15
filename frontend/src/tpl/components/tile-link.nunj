@@ -1,0 +1,7 @@
+<div class="tile-link">
+  <div class="tile-link__img" style="background-image: url('http://satyr.io/400-500x400-500');"></div>
+  <div class="tile-link__description">
+    <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit.
+    </p>
+  </div>
+</div>
