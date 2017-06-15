@@ -41,8 +41,6 @@ const getUITest = (dispatch) => {
 export const getUI = () => dispatch => getUITest(dispatch);
 
 export const modifyAddress = (data) => {
-  const { id } = data;
-
   return (dispatch) => {
     dispatch({ type: MODIFY_SHIPPING_ADDRESS_FETCH });
     dispatch({ type: APP_LOADING_START });
@@ -52,14 +50,17 @@ export const modifyAddress = (data) => {
       url: USER_SETTINGS.addresses.editAddressURL,
       data
     }).then((response) => {
-      const { success, errorMessage } = response.data;
+      const { success, errorMessage, payload } = response.data;
 
       if (!success) {
         dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
-		dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING_FINISH });
         alert(errorMessage); // eslint-disable-line no-alert
         return;
       }
+
+      const { id } = payload;
+      data.id = id;
 
       dispatch({
         type: MODIFY_SHIPPING_ADDRESS_SUCCESS,
@@ -67,38 +68,7 @@ export const modifyAddress = (data) => {
       });
 
       dispatch({ type: DIALOG_CLOSE });
-
-      if (id !== -1) {
-        dispatch({ type: APP_LOADING_FINISH });
-        return;
-      }
-
-      dispatch({ type: SETTINGS_ADDRESSES_UI_FETCH });
-
-      axios({
-        method: 'get',
-        url: USER_SETTINGS.addresses.initUIURL
-      }).then((answer) => {
-        if (!answer.data.success) {
-          dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
-          dispatch({ type: APP_LOADING_FINISH });
-          alert(answer.data.errorMessage); // eslint-disable-line no-alert
-          return;
-        }
-
-        dispatch({
-          type: SETTINGS_ADDRESSES_UI_SUCCESS,
-          payload: {
-            ui: answer.data.payload
-          }
-        });
-
-        dispatch({ type: APP_LOADING_FINISH });
-      })
-      .catch(() => {
-        dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
-        dispatch({ type: APP_LOADING_FINISH });
-      });
+      dispatch({ type: APP_LOADING_FINISH });
     })
     .catch(() => {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
