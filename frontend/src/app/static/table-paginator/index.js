@@ -33,11 +33,10 @@ class TablePaginator {
 
   static callback(prevPage, currPage, wrapper, to, from, rowsOnPage) {
     const rowActiveClass = 'active';
-    const fromNumber = (((currPage - 1) * rowsOnPage) + 1);
-    const toNumber = currPage * rowsOnPage;
+    let toNumber = 0;
 
     const findRows = (num) => {
-      const rows = wrapper.querySelectorAll(`tr[data-page="${num}"`);
+      const rows = wrapper.querySelectorAll(`tr[data-page="${num}"]`);
       return Array.from(rows);
     };
 
@@ -51,6 +50,14 @@ class TablePaginator {
 
     const prevRows = findRows(prevPage);
     const nextRows = findRows(currPage);
+
+    const fromNumber = (((currPage - 1) * rowsOnPage) + 1);
+
+    if (nextRows.length < rowsOnPage) {
+      toNumber = ((currPage - 1) * rowsOnPage) + nextRows.length;
+    } else {
+      toNumber = currPage * rowsOnPage;
+    }
 
     unstyleActiveRows(prevRows);
     styleActiveRows(nextRows);
