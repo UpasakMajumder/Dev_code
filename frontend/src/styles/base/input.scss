@@ -240,5 +240,9 @@
     &--noborder {
       border-top: none;
     }
+
+    .input__wrapper--with-icon & {
+      position: absolute;
+    }
   }
 }
