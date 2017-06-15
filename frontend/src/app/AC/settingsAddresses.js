@@ -56,6 +56,7 @@ export const modifyAddress = (data) => {
 
       if (!success) {
         dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
+		dispatch({ type: APP_LOADING_FINISH });
         alert(errorMessage); // eslint-disable-line no-alert
         return;
       }
@@ -78,17 +79,17 @@ export const modifyAddress = (data) => {
         method: 'get',
         url: USER_SETTINGS.addresses.initUIURL
       }).then((answer) => {
-        if (!answer.success) {
+        if (!answer.data.success) {
           dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
           dispatch({ type: APP_LOADING_FINISH });
-          alert(answer.errorMessage); // eslint-disable-line no-alert
+          alert(answer.data.errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
           type: SETTINGS_ADDRESSES_UI_SUCCESS,
           payload: {
-            ui: answer.payload
+            ui: answer.data.payload
           }
         });
 
