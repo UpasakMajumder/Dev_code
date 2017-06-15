@@ -35,23 +35,28 @@ export default class Tabs {
     this.activeTab.classList.add(this.activeClass);
     const content = this.findContent(this.activeTab);
 
-    setTimeout(() => {
-      content.classList.add(this.activeClass);
-    }, 301);
+    if (content) {
+      setTimeout(() => {
+        content.classList.add(this.activeClass);
+      }, 301);
 
-    setTimeout(() => {
-      content.classList.add(this.showClass);
-    }, 310);
+      setTimeout(() => {
+        content.classList.add(this.showClass);
+      }, 310);
+    }
   }
 
   unstyleActiveTab() {
     this.activeTab.classList.remove(this.activeClass);
     const content = this.findContent(this.activeTab);
-    content.classList.remove(this.showClass);
 
-    setTimeout(() => {
-      content.classList.remove(this.activeClass);
-    }, 300);
+    if (content) {
+      content.classList.remove(this.showClass);
+
+      setTimeout(() => {
+        content.classList.remove(this.activeClass);
+      }, 300);
+    }
   }
 
   findContent(tab) {
