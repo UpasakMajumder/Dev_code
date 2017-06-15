@@ -54,7 +54,7 @@ export const modifyAddress = (data) => {
 
       if (!success) {
         dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
-		    dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING_FINISH });
         alert(errorMessage); // eslint-disable-line no-alert
         return;
       }
