@@ -3,8 +3,8 @@ using System.Web.Http;
 using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.Dto.CustomerData;
+using Kadena.Dto.Checkout.Requests;
 
 namespace Kadena.WebAPI.Controllers
 {
