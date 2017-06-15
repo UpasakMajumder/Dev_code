@@ -51,8 +51,8 @@ namespace Kadena.WebAPI.Controllers
                         Exists = false,
                         Tooltip = ResHelper.GetString("Kadena.Settings.Addresses.AddShipping")
                     },
-                    EditButtonText = "Edit",
-                    RemoveButtonText = "Remove",
+                    EditButtonText = ResHelper.GetString("Kadena.Settings.Addresses.Edit"),
+                    RemoveButtonText = ResHelper.GetString("Kadena.Settings.Addresses.Remove"),
                     Addresses = _mapper.Map<List<AddressDto>>(shippingAddresses)
                 },
                 Dialog = new
