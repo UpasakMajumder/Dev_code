@@ -131,6 +131,7 @@
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
@@ -160,6 +161,13 @@
     <Compile Include="Models\KenticoSite.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\Settings\AddressDialog.cs" />
+    <Compile Include="Models\Settings\AddressList.cs" />
+    <Compile Include="Models\Settings\DialogButton.cs" />
+    <Compile Include="Models\Settings\DialogField.cs" />
+    <Compile Include="Models\Settings\DialogType.cs" />
+    <Compile Include="Models\Settings\PageButton.cs" />
+    <Compile Include="Models\Settings\SettingsAddresses.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\State.cs" />
@@ -174,6 +182,7 @@
     <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>
   <ItemGroup>
