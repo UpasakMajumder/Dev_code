@@ -7,8 +7,8 @@
 
   &__item {
     @extend %flex--center--center;
-    @include rem(margin-bottom, 24px);
 
+    @include rem(margin-bottom, 24px);
     border-radius: $border-radius-xl;
     overflow: hidden;
     height: $height;
