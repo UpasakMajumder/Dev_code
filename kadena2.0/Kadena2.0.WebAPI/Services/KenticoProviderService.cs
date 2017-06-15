@@ -397,14 +397,18 @@ namespace Kadena.WebAPI.Services
         public void SaveShippingAddress(DeliveryAddress address)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var stateId = StateInfoProvider.GetStateInfoByCode(address.State)?.StateID ?? 0;
+            var state = StateInfoProvider.GetStateInfoByCode(address.State);
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state), "Incorrect state was selected.");
+            }
             var info = new AddressInfo
             {
                 AddressID = address.Id,
                 AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
                 AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
                 AddressCity = address.City,
-                AddressStateID = stateId,
+                AddressStateID = state.StateID,
                 AddressZip = address.Zip,
                 AddressCustomerID = customer.CustomerID
             };
