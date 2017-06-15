@@ -409,9 +409,12 @@ namespace Kadena.WebAPI.Services
                 AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
                 AddressCity = address.City,
                 AddressStateID = state.StateID,
+                AddressCountryID = state.CountryID,
                 AddressZip = address.Zip,
-                AddressCustomerID = customer.CustomerID
+                AddressCustomerID = customer.CustomerID,
+                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"
             };
+            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
             info.SetValue("AddressType", "Shipping");
             AddressInfoProvider.SetAddressInfo(info);
         }
