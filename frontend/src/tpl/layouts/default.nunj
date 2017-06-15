@@ -134,6 +134,9 @@
         removeProductURL: '',
         submitURL: ''
       },
+      spotfire: {
+        serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
+      },
       userSettings: {
         addresses: {
           initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',

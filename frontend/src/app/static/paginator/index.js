@@ -55,14 +55,14 @@ class Pagination {
   // previous page
   prev() {
     this.prevPage = this.page;
-    this.page = (this.page < 1) ? 1 : this.page - 1;
+    this.page = (this.page <= 1) ? 1 : this.page - 1;
     this.start();
   }
 
   // next page
   next() {
     this.prevPage = this.page;
-    this.page = (this.page > this.size) ? this.size : this.page + 1;
+    this.page = (this.page >= this.size) ? this.size : this.page + 1;
     this.start();
   }
 
