@@ -32,7 +32,7 @@ namespace Kadena.WebAPI.Controllers
             var result = new
             {
                 Billing = new object(),
-                //////Uncomment billing addresses will developed
+                //////Uncomment when billing addresses will be developed
                 ////new 
                 ////{
                 ////    Title = _service.GetResourceString("Kadena.Settings.Addresses.BillingAddress"),
