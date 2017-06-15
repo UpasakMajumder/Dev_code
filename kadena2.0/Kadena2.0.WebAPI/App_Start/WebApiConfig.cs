@@ -21,6 +21,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
+using Kadena.WebAPI.Models.Settings;
 
 namespace Kadena.WebAPI
 {
@@ -137,6 +138,14 @@ namespace Kadena.WebAPI
                     });
                 config.CreateMap<AddressDto, DeliveryAddress>()
                     .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
+                config.CreateMap<DeliveryAddress, IdDto>();
+                config.CreateMap<PageButton, PageButtonDto>();
+                config.CreateMap<AddressList, AddressListDto>();
+                config.CreateMap<DialogButton, DialogButtonDto>();
+                config.CreateMap<DialogType, DialogTypeDto>();
+                config.CreateMap<DialogField, DialogTypeDto>();
+                config.CreateMap<AddressDialog, AddressDialogDto>();
+                config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
             });
         }
 
