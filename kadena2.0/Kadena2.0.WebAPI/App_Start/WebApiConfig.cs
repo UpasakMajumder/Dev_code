@@ -20,6 +20,7 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI
 {
@@ -127,24 +128,15 @@ namespace Kadena.WebAPI
                 config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
                 config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-                config.CreateMap<DeliveryAddress, AddressDto>().ProjectUsing(a => new AddressDto
-                {
-                    Id = a.Id,
-                    Street1 = a.Street.Count > 0 ? a.Street[0] : null,
-                    Street2 = a.Street.Count > 1 ? a.Street[1] : null,
-                    City = a.City,
-                    State = a.State,
-                    Zip = a.Zip,
-                    IsRemoveButton = false
-                });
-                config.CreateMap<AddressDto, DeliveryAddress>().ProjectUsing(a => new DeliveryAddress
-                {
-                    Id = a.Id,
-                    Street = new System.Collections.Generic.List<string> { a.Street1, a.Street2 },
-                    City = a.City,
-                    State = a.State,
-                    Zip = a.Zip
-                });
+                config.CreateMap<DeliveryAddress, AddressDto>()
+                    .AfterMap((d, a) =>
+                    {
+                        a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
+                        a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
+                        a.IsRemoveButton = false;
+                    });
+                config.CreateMap<AddressDto, DeliveryAddress>()
+                    .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
             });
         }
 
