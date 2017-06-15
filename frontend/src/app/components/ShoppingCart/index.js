@@ -10,12 +10,46 @@ import Spinner from '../Spinner';
 import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
+  static fireNotification(fields) {
+    if (fields.length === 1 && fields.includes('invoice')) return;
+
+    let message = 'Please, select one of ';
+
+    fields.forEach((field, index) => {
+      if (field !== 'invoice') {
+        if (index === fields.length - 1) {
+          message += ' and ';
+        } else if (index) {
+          message += ', ';
+        }
+
+        switch (field) {
+        case 'deliveryMethod':
+          message += 'the delivery methods';
+          break;
+        case 'paymentMethod':
+          message += 'the payment methods';
+          break;
+        case 'deliveryAddress':
+          message += 'the delivery addresses';
+          break;
+        default:
+          break;
+        }
+      }
+    });
+
+    alert(message); // eslint-disable-line no-alert
+  }
+
   componentDidMount() {
     this.props.getUI();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { ui } = nextProps.shoppingCart;
+    const { ui, validation } = nextProps.shoppingCart;
+
+    if (validation.fields.length) ShoppingCart.fireNotification(validation.fields);
 
     if (ui === this.props.shoppingCart.ui) return;
 
@@ -58,7 +92,6 @@ class ShoppingCart extends Component {
         ? <div>
           <div className="shopping-cart__block">
             <DeliveryAddress
-              validationFields={validation.fields}
               validationMessage={ui.validationMessage}
               changeShoppingData={this.props.changeShoppingData}
               checkedId={checkedData.deliveryAddress}
@@ -67,7 +100,6 @@ class ShoppingCart extends Component {
 
           <div className="shopping-cart__block">
             <DeliveryMethod
-              validationFields={validation.fields}
               validationMessage={ui.validationMessage}
               changeShoppingData={this.props.changeShoppingData}
               checkedId={checkedData.deliveryMethod}

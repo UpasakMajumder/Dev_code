@@ -7,6 +7,14 @@
 {% set breadcrumbs = [title, 'New request'] %}
 {% set headerTitle = 'New request' %}
 
+{% set btns = [
+  {
+    type: 'button',
+    name: 'Submit a request',
+    class: 'btn-action'
+  }
+] %}
+
 {% block content %}
 
   <div class="block">

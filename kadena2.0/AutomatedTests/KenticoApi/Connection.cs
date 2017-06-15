@@ -30,18 +30,18 @@ namespace AutomatedTests.KenticoApi
 
             var response = client.Execute<T>(request);
 
-            if (response.ErrorException != null)
-            {
-                const string message = "Error retrieving response from Kentico API.";
-                throw new ApplicationException(message, response.ErrorException);
-            }
-
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 const string invalidCredentials = "The credentials you entered are invalid";
                 throw new UnauthorizedAccessException(invalidCredentials);
-            }
+            } 
 
+            if (response.ErrorException != null || response.StatusCode != HttpStatusCode.OK)
+            {
+                const string message = "Error retrieving response from Kentico API.";
+                throw new ApplicationException(message, response.ErrorException);
+            }
+          
             return response.Data;
         }
     }
