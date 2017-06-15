@@ -56,28 +56,39 @@
     </div>
 
   </div>
-
   <div class="order-block">
-    <h2 class="order-block__header">Shipping</h2>
-    <p class="p-icon delivery delivery--usps">
-      {{ svg('fedex-delivery', 'icon-p delivery--fedex') }}
-      {{ svg('ups-delivery', 'icon-p delivery--ups') }}
-      {{ svg('usps-delivery', 'icon-p delivery--usps') }}
-      4001 Valley Industrial Blvd, Shakopee, MN 55379</p>
-  </div>
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <div class="order-block order-block--tile ">
+          <h2 class="order-block__header">Shipping</h2>
+          <p class="order-block__detail delivery delivery--usps">
+            {{ svg('fedex-delivery', 'delivery--fedex') }}
+            {{ svg('ups-delivery', 'delivery--ups') }}
+            {{ svg('usps-delivery', 'delivery--usps') }}
+            4001 Valley Industrial Blvd, Shakopee, MN 55379</p>
+            <a href="#">Track your packages</a>
+        </div>
+      </div>
 
-  <div class="order-block">
-    <h2 class="order-block__header">Payment</h2>
-    <p class="p-icon payment payment--amex">
-      {{ svg('mastercard-payment', 'icon-p payment--mastercard') }}
-      {{ svg('visa-payment', 'icon-p payment--visa') }}
-      {{ svg('amex-payment', 'icon-p payment--amex') }}
-      Paid by credit card, Mastercard •••• 4062</p>
-  </div>
+      <div class="col-lg-4 mb-4">
+        <div class="order-block order-block--tile ">
+          <h2 class="order-block__header">Payment</h2>
+          <p class="order-block__detail payment payment--amex">
+            {{ svg('mastercard-payment', 'payment--mastercard') }}
+            {{ svg('visa-payment', 'payment--visa') }}
+            {{ svg('amex-payment', 'payment--amex') }}
+            Paid by credit card, Mastercard •••• 4062</p>
+            <p>Payment date: <span class="weight--bold">0/27/2017</span></p>
+        </div>
+      </div>
 
-  <div class="order-block">
-    <h2 class="order-block__header">Pricing</h2>
-    {% include "components/shopping-cart/check-table.nunj" %}
+      <div class="col-lg-4 mb-4">
+        <div class="order-block order-block--tile ">
+          <h2 class="order-block__header">Pricing</h2>
+          {% include "components/shopping-cart/check-table.nunj" %}
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="order-block">
