@@ -7,6 +7,7 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 
 namespace Kadena.CMSWebParts.Kadena.Product
@@ -189,12 +190,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
-            var currentCustomer = ECommerceContext.CurrentCustomer;
-
-            if (currentCustomer != null)
-            {
-                cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
-            }
+            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
+            cart.ShoppingCartShippingAddress = customerAddress;
         }
 
         private double GetUnitPriceForAmmount(int ammount)
