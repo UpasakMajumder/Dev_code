@@ -8,6 +8,7 @@ using CMS.Helpers;
 using System;
 using CMS.DataEngine;
 using CMS.Globalization;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -22,10 +23,23 @@ namespace Kadena.WebAPI.Services
             this.resources = resources;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses()
+        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
+            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
+            if (!string.IsNullOrWhiteSpace(addressType))
+            {
+                query = query.Where($"AddressType ='{addressType}'");
+            }
+            var addresses = query.ToArray();
+            return mapper.Map<DeliveryAddress[]>(addresses);
+        }
+
+        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
+        {
+            var addresses = AddressInfoProvider.GetAddresses(customerId)
+                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
+                .ToArray();
             return mapper.Map<DeliveryAddress[]>(addresses);
         }
 
@@ -101,7 +115,7 @@ namespace Kadena.WebAPI.Services
 
         public DeliveryOption[] GetShippingOptions()
         {
-            var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).ToArray();
+            var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = mapper.Map<DeliveryOption[]>(services);
             GetShippingPrice(result);
             return result;
@@ -221,13 +235,33 @@ namespace Kadena.WebAPI.Services
             };
         }
 
+        public Customer GetCustomer(int customerId)
+        {
+            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
+
+            if (customer == null)
+                return null;
+
+            return new Customer()
+            {
+                Id = customer.CustomerID,
+                FirstName = customer.CustomerFirstName,
+                LastName = customer.CustomerLastName,
+                Email = customer.CustomerEmail,
+                CustomerNumber = customer.CustomerGUID.ToString(),
+                Phone = customer.CustomerPhone,
+                UserID = customer.CustomerUserID,
+                Company = customer.CustomerCompany
+            };
+        }
+
         public OrderItem[] GetShoppingCartOrderItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
                 DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
-                MailingListId = Guid.Empty, // seem to be redundant parameter, microservise doesn't use it
+                MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
@@ -252,24 +286,27 @@ namespace Kadena.WebAPI.Services
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                Price = i.CartItemPrice * i.CartItemUnits,
+                Price = i.UnitPrice * i.CartItemUnits,
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
-                MailingList = i.GetValue("MailingList", "defaultMailingList"), //TODO get from AddCart data
-                Template = i.GetValue("ChilliTemplateID", string.Empty),
+                MailingListName = i.GetValue("MailingListName", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", string.Empty),
+                Template = i.SKU.SKUName,
+                EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
+                ProductPageId = i.GetIntegerValue("ProductPageID", 0),
+                SKUID = i.SKUID,
                 StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
 
             return result;
         }
-
-        /// <summary>
-        /// Inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
-        /// </summary>
+        
         public void RemoveCartItem(int id)
         {
+            // Method approach inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
+
             var cart = ECommerceContext.CurrentShoppingCart;
             var item = cart.CartItems.FirstOrDefault(i => i.CartItemID == id);
 
@@ -301,7 +338,14 @@ namespace Kadena.WebAPI.Services
 
             if (item == null || quantity < 1 || quantity > item.SKU.SKUAvailableItems)
             {
-                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}");
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}", "Failed to set cart item quantity");
+            }
+
+            var productType = item.GetStringValue("ProductType", string.Empty);
+
+            if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
+            {
+                throw new Exception($"Unable to set quantity for this product type");
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
@@ -316,7 +360,7 @@ namespace Kadena.WebAPI.Services
 
         public void SetProductStockQuantity(int productId, int quantity)
         {
-            
+
         }
 
         public void RemoveCurrentItemsFromStock()
@@ -337,6 +381,35 @@ namespace Kadena.WebAPI.Services
         public void RemoveCurrentItemsFromCart()
         {
             ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
+        }
+
+        public IEnumerable<State> GetStates()
+        {
+            return StateInfoProvider
+                .GetStates()
+                .Column("StateCode")
+                .Select(s => new State
+                {
+                    StateCode = s["StateCode"].ToString()
+                });
+        }
+
+        public void SaveShippingAddress(DeliveryAddress address)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+            var stateId = StateInfoProvider.GetStateInfoByCode(address.State)?.StateID ?? 0;
+            var info = new AddressInfo
+            {
+                AddressID = address.Id,
+                AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                AddressCity = address.City,
+                AddressStateID = stateId,
+                AddressZip = address.Zip,
+                AddressCustomerID = customer.CustomerID
+            };
+            info.SetValue("AddressType", "Shipping");
+            AddressInfoProvider.SetAddressInfo(info);
         }
     }
 }

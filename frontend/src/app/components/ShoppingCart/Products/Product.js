@@ -11,6 +11,7 @@ class Products extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.defineEditButton = this.defineEditButton.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,9 +46,42 @@ class Products extends Component {
     });
   }
 
+  defineEditButton() {
+    const { isEditable, editorURL, isMailingList } = this.props;
+
+    if (isMailingList) return null;
+
+    if (isEditable) {
+      if (editorURL) {
+        return (
+          <a href={editorURL} className="cart-product__btn">
+            <SVG name="edit"/>
+            Edit
+          </a>
+        );
+      }
+
+      return (
+        <button type="button" className="cart-product__btn">
+          <SVG name="edit"/>
+          Edit
+        </button>
+      );
+    }
+
+    return null;
+  }
+
   render() {
-    const { delivery, id, image, isEditable, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct } = this.props;
+    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct, isQuantityEditable } = this.props;
     const { quantity } = this.state;
+
+    const quantityElement = isQuantityEditable
+    ? <input onChange={(e) => { this.handleChange(e.target); }}
+             type="number"
+             min="1"
+             value={quantity}/>
+    : <span>{quantity}</span>;
 
     const productDifference = isMailingList
     ? <div className="cart-product__mlist">
@@ -58,18 +92,9 @@ class Products extends Component {
       </div>
     : <div className="cart-product__quantity">
         <span>{quantityPrefix}</span>
-        <input onChange={(e) => { this.handleChange(e.target); }}
-               type="number"
-               min="1"
-               value={quantity}/>
+        {quantityElement}
       </div>;
 
-    const editButton = isEditable
-    ? <button type="button" className="cart-product__btn">
-        <SVG name="edit"/>
-        Edit
-      </button>
-    : null;
 
     const productClassName = isMailingList ? 'cart-product' : 'cart-product--non-deliverable cart-product';
 
@@ -108,7 +133,7 @@ class Products extends Component {
           </div>
 
           <div className="cart-product__action">
-            {editButton}
+            {this.defineEditButton()}
 
             <button onClick={() => { removeProduct(id); }} type="button" className="cart-product__btn">
               <SVG name="cross--dark"/>
