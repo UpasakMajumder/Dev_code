@@ -1,23 +1,16 @@
 ﻿using Kadena.WebAPI.Infrastructure.Communication;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using System.Web.Http.Results;
+
+using static Kadena.WebAPI.SerializerConfig;
 
 namespace Kadena.WebAPI.Infrastructure
 {
     public class ApiControllerBase : ApiController
     {
-        protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "yyyy-MM-dd HH:mm:ss"
-        };
-
         protected JsonResult<ErrorResponse> ErrorJson(string errorMessage)
         {
-            return Json(new ErrorResponse(errorMessage), camelCaseSerializer);
+            return Json(new ErrorResponse(errorMessage), CamelCaseSerializer);
         }
 
         protected JsonResult<BaseResponse<T>> ResponseJson<T>(T payload)
@@ -29,7 +22,7 @@ namespace Kadena.WebAPI.Infrastructure
                 ErrorMessage = null
             };
 
-            return Json(response, camelCaseSerializer);
+            return Json(response, CamelCaseSerializer);
         }
     }
 }
