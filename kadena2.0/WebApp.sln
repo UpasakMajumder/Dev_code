@@ -326,6 +326,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI", "Kadena2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Dto", "Kadena2.0.Dto\Kadena2.0.Dto.csproj", "{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.MicroserviceClients", "Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj", "{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -363,6 +365,10 @@ Global
 		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
