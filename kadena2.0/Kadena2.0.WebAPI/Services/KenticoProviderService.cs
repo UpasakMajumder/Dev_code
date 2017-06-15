@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
-            return mapper.Map<DeliveryAddress>(address);
+            return mapper.Map<DeliveryAddress>(address);            
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -164,8 +164,7 @@ namespace Kadena.WebAPI.Services
             {
                 TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
                 TotalShipping = ECommerceContext.CurrentShoppingCart.TotalShipping,
-                TotalPrice = ECommerceContext.CurrentShoppingCart.TotalPrice,
-                TotalTax = 0.0d //TODO call tax service
+                TotalTax = ECommerceContext.CurrentShoppingCart.TotalTax
             };
         }
 
@@ -202,12 +201,6 @@ namespace Kadena.WebAPI.Services
         {
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
-
-        public string GetResourceString(string name)
-        {
-            return ResHelper.GetString(name, useDefaultCulture: true);
-        }
-
 
         public Customer GetCurrentCustomer()
         {
@@ -261,7 +254,7 @@ namespace Kadena.WebAPI.Services
                 SKUNumber = i.SKU?.SKUNumber,
                 KenticoSKUId = i.SKUID,
                 TotalPrice = i.TotalPrice,
-                TotalTax = i.TotalTax, //TODO tax
+                TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitCount = i.CartItemUnits,
                 UnitOfMeasure = "EA"
@@ -347,16 +340,6 @@ namespace Kadena.WebAPI.Services
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
-        public int GetProductStockQuantity(int productId)
-        {
-            return 0;
-        }
-
-        public void SetProductStockQuantity(int productId, int quantity)
-        {
-            
-        }
-
         public void RemoveCurrentItemsFromStock()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
@@ -375,6 +358,16 @@ namespace Kadena.WebAPI.Services
         public void RemoveCurrentItemsFromCart()
         {
             ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
+        }
+
+        public double GetCurrentCartTotalItemsPrice()
+        {
+            return ECommerceContext.CurrentShoppingCart.TotalItemsPrice;
+        }
+
+        public double GetCurrentCartShippingCost()
+        {
+            return ECommerceContext.CurrentShoppingCart.Shipping;
         }
     }
 }

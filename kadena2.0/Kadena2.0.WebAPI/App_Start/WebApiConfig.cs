@@ -9,13 +9,16 @@ using CMS.Ecommerce;
 using Kadena.WebAPI.Models;
 using System.Linq;
 using Kadena.Dto.Checkout;
-using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
-using Kadena.WebAPI.Infrastructure.Responses;
-using Kadena.Dto.SubmitOrder;
 using Kadena.WebAPI.Models.CustomerData;
 using Kadena.Dto.CustomerData;
+using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Clients;
+using Kadena.Dto.SubmitOrder.Requests;
+using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 
 namespace Kadena.WebAPI
 {
@@ -120,6 +123,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
+                config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
+                config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             });
         }
@@ -130,9 +135,10 @@ namespace Kadena.WebAPI
             container.Register<IShoppingCartService,ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IOrderServiceCaller, OrderServiceCaller>();
+            container.Register<IOrderServiceClient, OrderServiceClient>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<ICustomerDataService, CustomerDataService>();
+            container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
