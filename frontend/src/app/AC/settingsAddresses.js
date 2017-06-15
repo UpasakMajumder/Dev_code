@@ -49,7 +49,7 @@ export const modifyAddress = (data) => {
 
     axios({
       method: 'post',
-      url: USER_SETTINGS.addresses.initUIURL,
+      url: USER_SETTINGS.addresses.editAddressURL,
       data
     }).then((response) => {
       const { success, errorMessage } = response.data;
