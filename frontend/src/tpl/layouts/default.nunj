@@ -134,7 +134,6 @@
         submitURL: ''
       },
       spotfire: {
-        reportUrl: 'http://spotfire.kadenadev.com/spotfire/wp/render/GkeTDq95c3VQZnVdbt/analysis?file=/Kadena/Reports&waid=rUfEycjPcUiRrfIihrLUC-140631f9caINnN&wavid=0',
         serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
       }
     }

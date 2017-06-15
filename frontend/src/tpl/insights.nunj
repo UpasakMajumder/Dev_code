@@ -8,6 +8,7 @@
 
 {% set btns = [
   {
+    type: 'a',
     name: 'See Detailed Data',
     class: 'btn-action'
   }
