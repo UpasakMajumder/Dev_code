@@ -43,5 +43,22 @@ namespace Kadena.WebAPI.Models
 
             return false;
         }
+
+        public bool IsPresent(int shippingMethod)
+        {
+            foreach (var i in items)
+            {
+                if (i.IsPresent(shippingMethod))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void RemoveCarriersWithoutOptions()
+        {
+            var toRemove = items.Where(i => i.items.Count == 0).ToList();
+            toRemove.ForEach(i => items.Remove(i));
+        }
     }
 }

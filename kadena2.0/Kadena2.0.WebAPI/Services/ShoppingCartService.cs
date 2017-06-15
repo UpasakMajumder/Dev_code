@@ -44,7 +44,6 @@ namespace Kadena.WebAPI.Services
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
-            
 
             var checkoutPage = new CheckoutPage()
             {
@@ -92,6 +91,7 @@ namespace Kadena.WebAPI.Services
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
 
+            checkoutPage.DeliveryMethods.RemoveCarriersWithoutOptions();
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
@@ -164,7 +164,7 @@ namespace Kadena.WebAPI.Services
         {
             int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
 
-            if (!page.DeliveryMethods.IsDisabled(currentShipping))
+            if (page.DeliveryMethods.IsPresent(currentShipping) && !page.DeliveryMethods.IsDisabled(currentShipping))
             {
                 page.DeliveryMethods.CheckMethod(currentShipping);
             }
