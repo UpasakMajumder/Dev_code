@@ -323,9 +323,14 @@ namespace Kadena.WebAPI.Services
             var cart = ECommerceContext.CurrentShoppingCart;
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
 
-            if (item == null || quantity < 1 || quantity > item.SKU.SKUAvailableItems)
+            if (item == null)
             {
-                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}", "Failed to set cart item quantity");
+                throw new ArgumentOutOfRangeException($"item: {id}", "Item not found");
+            }
+
+            if (quantity < 1)
+            {
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}", "Failed to set negative quantity");
             }
 
             var productType = item.GetStringValue("ProductType", string.Empty);
@@ -333,6 +338,11 @@ namespace Kadena.WebAPI.Services
             if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
             {
                 throw new Exception($"Unable to set quantity for this product type");
+            }
+
+            if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
+            {
+                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}", "Failed to set cart item quantity for InventoryProduct");
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
