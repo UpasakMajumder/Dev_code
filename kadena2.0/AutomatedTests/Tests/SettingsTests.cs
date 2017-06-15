@@ -49,7 +49,7 @@ namespace AutomatedTests.Tests
             settings.SelectTab(Settings.Tabs.Password);
             settings.SubmitNotStrongPassword(TestUser.Password);
             Assert.IsTrue(settings.IsPasswordErrorDisplayed());
-            }
+            
         }
     }
 }
