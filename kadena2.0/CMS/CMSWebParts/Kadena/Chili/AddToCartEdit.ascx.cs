@@ -206,15 +206,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
-
-            if (customerAddress != null)
-            {
-                cart.ShoppingCartShippingAddress = customerAddress;
-            }
-            else
-            {
-                cart.ShoppingCartShippingAddress = null;
-            }
+            cart.ShoppingCartShippingAddress = customerAddress;
         }
 
         private bool IsAddedAmmountValid(int ammount)

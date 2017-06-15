@@ -384,20 +384,7 @@ namespace Kadena.WebAPI.Services
                 return 0.0d;
             }
 
-            var taxRequest = new TaxCalculatorRequestDto()
-            {
-                TotalBasePrice = totalItemsPrice,
-                ShipCost = shippingCosts,
-
-                ShipFromCity = addressFrom?.City ?? string.Empty,
-                ShipFromState = addressFrom?.State ?? string.Empty,
-                ShipFromZip = addressFrom?.Zip ?? string.Empty,
-
-                ShipToCity = addressTo?.City ?? string.Empty,
-                ShipToState = addressTo?.State ?? string.Empty,
-                ShipToZip = addressTo?.Zip ?? string.Empty
-            };
-
+            var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
             var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
 
             if (!taxResponse.Success)
@@ -407,6 +394,31 @@ namespace Kadena.WebAPI.Services
             }
 
             return taxResponse.Payload;
+        }
+
+        private TaxCalculatorRequestDto CreateTaxCalculatorRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
+        {
+            var taxRequest = new TaxCalculatorRequestDto()
+            {
+                TotalBasePrice = totalItemsPrice,
+                ShipCost = shippingCosts
+            };
+
+            if (addressFrom != null)
+            {
+                taxRequest.ShipFromCity = addressFrom.City ?? string.Empty;
+                taxRequest.ShipFromState = addressFrom.State ?? string.Empty;
+                taxRequest.ShipFromZip = addressFrom.Zip ?? string.Empty;
+            }
+
+            if (addressTo != null)
+            {
+                taxRequest.ShipToCity = addressTo.City ?? string.Empty;
+                taxRequest.ShipToState = addressTo.State ?? string.Empty;
+                taxRequest.ShipToZip = addressTo.Zip ?? string.Empty;
+            }
+
+            return taxRequest;
         }
     }
 }
