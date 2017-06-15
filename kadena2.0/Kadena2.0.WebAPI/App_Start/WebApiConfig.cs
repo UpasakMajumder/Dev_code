@@ -143,7 +143,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<AddressList, AddressListDto>();
                 config.CreateMap<DialogButton, DialogButtonDto>();
                 config.CreateMap<DialogType, DialogTypeDto>();
-                config.CreateMap<DialogField, DialogTypeDto>();
+                config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
             });
