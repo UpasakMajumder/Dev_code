@@ -97,7 +97,8 @@ namespace Kadena.WebAPI.Controllers
         {
             var addressModel = _mapper.Map<DeliveryAddress>(address);
             _service.SaveShippingAddress(addressModel);
-            return ResponseJson("Address saved.");
+            var result = new { Id = addressModel.Id };
+            return ResponseJson(result);
         }
     }
 }

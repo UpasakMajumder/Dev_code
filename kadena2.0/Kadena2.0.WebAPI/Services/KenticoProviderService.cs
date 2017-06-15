@@ -302,7 +302,7 @@ namespace Kadena.WebAPI.Services
 
             return result;
         }
-        
+
         public void RemoveCartItem(int id)
         {
             // Method approach inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
@@ -416,7 +416,9 @@ namespace Kadena.WebAPI.Services
             };
             info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
             info.SetValue("AddressType", "Shipping");
+
             AddressInfoProvider.SetAddressInfo(info);
+            address.Id = info.AddressID;
         }
     }
 }
