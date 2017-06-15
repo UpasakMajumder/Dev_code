@@ -36,7 +36,7 @@ class TablePaginator {
     let toNumber = 0;
 
     const findRows = (num) => {
-      const rows = wrapper.querySelectorAll(`tr[data-page="${num}"`);
+      const rows = wrapper.querySelectorAll(`tr[data-page="${num}"]`);
       return Array.from(rows);
     };
 
