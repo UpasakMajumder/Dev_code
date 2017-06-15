@@ -20,10 +20,10 @@
   <div class="spotfire">
     <div class="css-tabs__container js-tabs spotfire__controllers" data-tab=".js-filter-spotfire" data-tab-active="active" data-tab-active-default=".js-filter-content-1">
       <ul class="css-tabs__list">
-        <li class="css-tabs__tab js-filter-spotfire" data-tab-content=".js-filter-content-1">All period</li>
-        <li class="css-tabs__tab js-filter-spotfire" data-tab-content=".js-filter-content-2">30 days</li>
-        <li class="css-tabs__tab js-filter-spotfire" data-tab-content=".js-filter-content-3">60 days</li>
-        <li class="css-tabs__tab js-filter-spotfire" data-tab-content=".js-filter-content-4">90 days</li>
+        <li class="css-tabs__tab js-filter-spotfire" data-filter-time="all" data-tab-content=".js-filter-content-1">All period</li>
+        <li class="css-tabs__tab js-filter-spotfire" data-filter-time="30" data-tab-content=".js-filter-content-2">30 days</li>
+        <li class="css-tabs__tab js-filter-spotfire" data-filter-time="60" data-tab-content=".js-filter-content-3">60 days</li>
+        <li class="css-tabs__tab js-filter-spotfire" data-filter-time="90" data-tab-content=".js-filter-content-4">90 days</li>
       </ul>
     </div>
 
