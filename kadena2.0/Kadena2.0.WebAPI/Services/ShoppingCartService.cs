@@ -21,12 +21,14 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderServiceClient orderClient;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
+        private readonly ITemplatedProductService templateService;
 
         public ShoppingCartService(IMapper mapper, 
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources, 
                                    IOrderServiceClient orderClient, 
-                                   ITaxEstimationService taxCalculator, 
+                                   ITaxEstimationService taxCalculator,
+                                   ITemplatedProductService templateService,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
@@ -34,6 +36,7 @@ namespace Kadena.WebAPI.Services
             this.resources = resources;
             this.orderClient = orderClient;
             this.taxCalculator = taxCalculator;
+            this.templateService = templateService;
             this.kenticoLog = kenticoLog;
         }
 
@@ -399,6 +402,24 @@ namespace Kadena.WebAPI.Services
             }
 
             return taxRequest;
+        }
+
+        public async Task<bool> IsSubmittable()
+        {
+            string endpoint = "https://0v7afs259k.execute-api.us-east-1.amazonaws.com/Qa/"; //TODO configurable
+            var items = kenticoProvider.GetShoppingCartOrderItems().Where(i => i.DesignFilePathRequired).ToList();
+
+            foreach(var item in items)// todo consider parallel for-each
+            {
+                var state = await templateService.GetGeneratePdfTaskStatus(endpoint, item.TemplateId.ToString(), item.DesignFilePathTaskId);
+                if (state.Finished && state.Succeeded)
+                {
+                    item.DesignFilePath = state.FileName.ToString();
+                    item.DesignFilePathObtained = true;
+                }
+            }
+
+            return items.TrueForAll(i => i.DesignFilePathObtained);
         }
     }
 }

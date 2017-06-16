@@ -22,5 +22,7 @@ namespace Kadena.WebAPI.Contracts
         Task<CheckoutPage> OrderCurrentCart();
 
         Task<double> EstimateTotalTax();
+
+        Task<bool> IsSubmittable();
     }
 }

@@ -168,7 +168,7 @@
     <Compile Include="Models\Settings\DialogType.cs" />
     <Compile Include="Models\Settings\PageButton.cs" />
     <Compile Include="Models\Settings\SettingsAddresses.cs" />
-    <Compile Include="Models\ShoppingCartItem.cs" />
+    <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubmitOrder\PaymentMethod.cs" />

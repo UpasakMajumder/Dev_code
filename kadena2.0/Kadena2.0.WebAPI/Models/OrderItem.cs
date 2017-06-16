@@ -25,12 +25,33 @@ namespace Kadena.WebAPI.Models
         public double TotalPrice { get; set; }
 
         public double TotalTax { get; set; }
-
-        /// <summary>
-        /// GUID
-        /// </summary>
+        
         public Guid MailingListId { get; set; }
 
+        public Guid TemplateId { get; set; }
+
         public string DesignFilePath { get; set; }
+
+        /// <summary>
+        /// Indicates if it is necessary to obtain design file path
+        /// via calling Template product service
+        /// </summary>
+        public bool DesignFilePathRequired
+        {
+            get
+            {
+                return OrderItemType.Contains("KDA.TemplatedProduct");
+            }
+        }
+
+        /// <summary>
+        /// Template product service's task Id
+        /// </summary>
+        public string DesignFilePathTaskId { get; set; }
+
+        /// <summary>
+        /// indicates if DesignFilePath was already obtained
+        /// </summary>
+        public bool DesignFilePathObtained { get; set; } = false;
     }
 }

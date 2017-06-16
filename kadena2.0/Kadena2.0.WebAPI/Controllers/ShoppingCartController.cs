@@ -95,5 +95,15 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
             return ResponseJson(resultDto);
         }
+
+        [HttpGet]
+        [Route("api/shoppingcart/submittable")]
+        [AuthorizationFilter]
+        public async Task<IHttpActionResult> Submittable()
+        {
+            var serviceResponse = await service.IsSubmittable();
+            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            return ResponseJson(resultDto);
+        }
     }
 }

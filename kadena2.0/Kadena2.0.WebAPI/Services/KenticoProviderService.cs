@@ -255,6 +255,7 @@ namespace Kadena.WebAPI.Services
             {
                 DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
                 MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                TemplateId = i.GetValue("TemplateId", Guid.Empty), //TODO check if really set during add to cart
                 OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
