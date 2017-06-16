@@ -46,8 +46,10 @@
   <ItemGroup>
     <Compile Include="Clients\Base\ClientBase.cs" />
     <Compile Include="Clients\OrderServiceClient.cs" />
+    <Compile Include="Clients\TemplateProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\IOrderServiceClient.cs" />
+    <Compile Include="Contracts\ITemplatedProductService.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

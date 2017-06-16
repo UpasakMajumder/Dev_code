@@ -91,6 +91,8 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />
     <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
     <Compile Include="Tax\MicroserviceResponses\TaxCalculatorServiceResponseDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskStatusResponseDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskResponseDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tax\Requests\" />
