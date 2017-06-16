@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.Infrastructure
         /// If payload is null, returns ErrorResponse with given errorMessage
         /// </summary>
         /// <param name="errorMessage"></param>
-        protected JsonResult<BaseResponse<T>> ResponseJsonCheckingNull<T>(T payload, string errorMessage) //where T:class
+        protected JsonResult<BaseResponse<T>> ResponseJsonCheckingNull<T>(T payload, string errorMessage) 
         {
             var response = new BaseResponse<T>()
             {
