@@ -194,9 +194,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
             if (kitDocuments != null)
             {
-                for (int i = 1; i <= kitDocuments.Count; i++)
+                var kitList = kitDocuments.ToList();
+                for (int i = 1; i <= kitList.Count; i++)
                 {
-                    var node = (TreeNode)kitDocuments.ToList()[i - 1];
+                    var node = kitList[i - 1];
                     if (node.NodeID != originalNodeID && !node.IsLink)
                     {
                         result += string.Format(itemTemplate, i, node.DocumentName, node.NodeID);
