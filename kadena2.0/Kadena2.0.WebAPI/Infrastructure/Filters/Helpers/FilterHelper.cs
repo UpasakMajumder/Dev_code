@@ -3,7 +3,8 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Web.Http;
+
+using static Kadena.WebAPI.SerializerConfig;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {
@@ -12,8 +13,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters
         public static HttpResponseMessage ErrorResponse(string errorMessage)
         {
             var responseObject = new ErrorResponse(errorMessage);
-            var serializationSettings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
-            var responsejson = JsonConvert.SerializeObject(responseObject, serializationSettings);
+            var responsejson = JsonConvert.SerializeObject(responseObject, CamelCaseSerializer);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {

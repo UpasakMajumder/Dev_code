@@ -84,7 +84,7 @@ namespace Kadena.WebAPI.Services
                     UnPayableText = resources.GetResourceString("Kadena.Checkout.UnpayableText"),
                     Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
-                    Items = OrderPaymentMethods(paymentMethods)
+                    Items = ArrangePaymentMethods(paymentMethods)
                 },
 
                 SubmitLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
@@ -95,6 +95,7 @@ namespace Kadena.WebAPI.Services
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
+            checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
@@ -181,37 +182,16 @@ namespace Kadena.WebAPI.Services
             page.DeliveryMethods.CheckMethod(defaultMethodId);
         }
 
-        public List<PaymentMethod> OrderPaymentMethods(PaymentMethod[] allMethods)
+        public List<PaymentMethod> ArrangePaymentMethods(PaymentMethod[] allMethods)
         {
-            var orderedMethods = new List<PaymentMethod>();
-
-            var creditCardMethod = allMethods.Where(m => m.ClassName.Contains("CreditCard")).FirstOrDefault();
-            if (creditCardMethod != null)
-            {
-                creditCardMethod.Icon = "credit-card";
-                creditCardMethod.Disabled = true;
-                orderedMethods.Add(creditCardMethod);
-            }
-
-            var payPalMethod = allMethods.Where(m => m.ClassName.Contains("PayPal")).FirstOrDefault();
-            if (payPalMethod != null)
-            {
-                payPalMethod.Icon = "paypal-payment";
-                payPalMethod.Disabled = true;
-                orderedMethods.Add(payPalMethod);
-            }
-
             var purchaseOrderMethod = allMethods.Where(m => m.ClassName.Contains("PurchaseOrder")).FirstOrDefault();
             if (purchaseOrderMethod != null)
             {
-                purchaseOrderMethod.Icon = "order-payment";
-                purchaseOrderMethod.Disabled = false;
                 purchaseOrderMethod.HasInput = true;
                 purchaseOrderMethod.InputPlaceholder = resources.GetResourceString("Kadena.Checkout.InsertPONumber");
-                orderedMethods.Add(purchaseOrderMethod);
             }
 
-            return orderedMethods;
+            return allMethods.ToList();
         }
 
         public async Task<CheckoutPage> SelectShipipng(int id)

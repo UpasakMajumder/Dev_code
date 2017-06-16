@@ -8,11 +8,13 @@
 
   span {
     display: block;
+
+    &:last-child {
+      @include rem(padding-bottom, 12px);
+    }
   }
 
   &__btn-block {
-    @include rem(padding-top, 12px);
-
     a:not(:first-child) {
       @include rem(margin-left, 5px);
     }
