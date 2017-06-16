@@ -10,12 +10,12 @@ class ReplaceValue {
   }
 
   replace() {
-    this.fieldsFrom.forEach((fieldFrom) => {
+    Array.from(this.fieldsFrom).forEach((fieldFrom) => {
       const value = fieldFrom.innerHTML;
       const { replaceId } = fieldFrom.dataset;
       const fieldsTo = document.querySelectorAll(`.${this.fieldToClass}[data-replace-id="${replaceId}"]`);
 
-      fieldsTo.forEach((fieldTo) => {
+      Array.from(fieldsTo).forEach((fieldTo) => {
         fieldTo.value = value;
       });
     });

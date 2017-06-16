@@ -1,5 +1,7 @@
 .css-header {
   @extend .bg-white;
+  position: relative;
+  z-index: $zindex-modal;
   height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
@@ -23,36 +25,77 @@
 
     .nav-item {
       @extend %flex--center--default;
+
+      @include rem(padding, 18px 20px);
       cursor: pointer;
+
+      @include media-breakpoint-down(lg) {
+        @include rem(padding, 9px 20px);
+      }
 
       &.active,
       &:hover {
         background-color: $main-gutter-color;
 
-        .nav-link {
-          color: $font-grey;
+        .nav-badge {
+          border-color: $main-gutter-color;
         }
       }
 
       svg {
-        @extend .mr-2;
-        width: 18px;
-        height: 18px;
+        margin: 0 .25rem 0 0;
+        $size: 21px;
+        width: $size;
+        height: $size;
+
+        @include media-breakpoint-down(lg) {
+          margin: 0 0 .25rem;
+        }
       }
 
       .nav-link {
         @include rem(padding, 18px);
 
         @extend %flex--center--default;
-        color: $brand-primary;
+        color: $brand-dark;
         font-weight: 400;
+        padding: 0;
+        position: relative;
+        white-space: nowrap;
+
+        @include media-breakpoint-down(lg) {
+          font-size: $font-xxs;
+          flex-direction: column;
+        }
       }
     }
 
-    .badge-custom-color {
-      margin-left: 5px;
+    .nav-badge {
       background-color: #d0021b;
+      border-radius: 100%;
+      color: white;
+      margin-left: .25rem;
+      font-size: $font-xxs;
       padding: 2px 5px;
+      text-align: center;
+
+      @include media-breakpoint-down(lg) {
+        $size: 10px;
+        border: 1px solid white;
+        width: $size;
+        height: $size;
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(50%);
+        margin-left: 0;
+        padding: 0;
+        font-size: $font-size-default;
+
+        &__text {
+          display: none;
+        }
+      }
     }
   }
 }

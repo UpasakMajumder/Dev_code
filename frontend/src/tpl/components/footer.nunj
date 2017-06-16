@@ -1,6 +1,9 @@
 <div class="footer">
   <p>
     <span>© Nortek Global HVAC LLC, 2016 All Rights Reserved 8000 Phoenix Parkway, O’Fallon, MO 63368. </span>
+    <span class="footer__devider">|</span>
     <a href="#">Terms and Conditions</a>
+    <span class="footer__devider">|</span>
+    <a href="#">Contact Us</a>
   </p>
 </div>

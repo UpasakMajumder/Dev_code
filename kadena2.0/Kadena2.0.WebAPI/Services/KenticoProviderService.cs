@@ -8,6 +8,7 @@ using CMS.Helpers;
 using System;
 using CMS.DataEngine;
 using CMS.Globalization;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -22,10 +23,15 @@ namespace Kadena.WebAPI.Services
             this.resources = resources;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses()
+        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var addresses = AddressInfoProvider.GetAddresses(customer.CustomerID).ToArray();
+            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
+            if (!string.IsNullOrWhiteSpace(addressType))
+            {
+                query = query.Where($"AddressType ='{addressType}'");
+            }
+            var addresses = query.ToArray();
             return mapper.Map<DeliveryAddress[]>(addresses);
         }
 
@@ -148,7 +154,7 @@ namespace Kadena.WebAPI.Services
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).ToArray();
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();            
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
@@ -289,7 +295,7 @@ namespace Kadena.WebAPI.Services
 
             return result;
         }
-        
+
         public void RemoveCartItem(int id)
         {
             // Method approach inspired by \CMS\CMSModules\Ecommerce\Controls\Checkout\CartItemRemove.ascx.cs
@@ -368,6 +374,44 @@ namespace Kadena.WebAPI.Services
         public void RemoveCurrentItemsFromCart()
         {
             ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
+        }
+
+        public IEnumerable<State> GetStates()
+        {
+            return StateInfoProvider
+                .GetStates()
+                .Column("StateCode")
+                .Select(s => new State
+                {
+                    StateCode = s["StateCode"].ToString()
+                });
+        }
+
+        public void SaveShippingAddress(DeliveryAddress address)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+            var state = StateInfoProvider.GetStateInfoByCode(address.State);
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state), "Incorrect state was selected.");
+            }
+            var info = new AddressInfo
+            {
+                AddressID = address.Id,
+                AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                AddressCity = address.City,
+                AddressStateID = state.StateID,
+                AddressCountryID = state.CountryID,
+                AddressZip = address.Zip,
+                AddressCustomerID = customer.CustomerID,
+                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"
+            };
+            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
+            info.SetValue("AddressType", "Shipping");
+
+            AddressInfoProvider.SetAddressInfo(info);
+            address.Id = info.AddressID;
         }
 
         public double GetCurrentCartTotalItemsPrice()
