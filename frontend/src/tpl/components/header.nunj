@@ -3,7 +3,7 @@
 {% set headers = [ { 'title': 'Activity', 'icon': 'activity', 'badge': 'true' }, { 'title': 'Drafts', 'icon': 'newspaper', 'badge': 'true' }, { 'title': 'Shopping cart', 'icon': 'cart', 'badge': 'true' }, { 'title': 'Log Out', 'icon': 'sign-out' } ]
 %}
 
-<nav class="css-header navbar navbar-toggleable-md js-search navbar-inverse bg-inverse search--active">
+<nav class="css-header navbar navbar-toggleable-md js-search navbar-inverse bg-inverse">
   <a class="navbar-brand" href="index.html">
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
