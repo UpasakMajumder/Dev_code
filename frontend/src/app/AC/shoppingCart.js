@@ -11,9 +11,7 @@ import { CHECKOUT } from '../globals';
 
 export const getUI = () => {
   return (dispatch) => {
-    dispatch({
-      type: SHOPPING_CART_UI_FETCH
-    });
+    dispatch({ type: SHOPPING_CART_UI_FETCH });
 
     // setTimeout(() => {
     //   dispatch({
@@ -26,17 +24,24 @@ export const getUI = () => {
 
     axios.get(CHECKOUT.initUIURL)
       .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: SHOPPING_CART_UI_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: SHOPPING_CART_UI_SUCCESS,
           payload: {
-            ui: response.data.payload
+            ui: payload
           }
         });
       })
-      .catch(() => {
-        dispatch({
-          type: SHOPPING_CART_UI_FAILURE
-        });
+      .catch((error) => {
+        alert(error.message); // eslint-disable-line no-alert
+        dispatch({ type: SHOPPING_CART_UI_FAILURE });
       });
   };
 };
@@ -62,15 +67,26 @@ export const removeProduct = (id) => {
 
     axios.post(url, { id })
       .then((response) => {
+        dispatch({ type: APP_LOADING_FINISH });
+
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: REMOVE_PRODUCT_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: REMOVE_PRODUCT_SUCCESS,
           payload: {
-            ui: response.data.payload
+            ui: payload
           }
         });
-        dispatch({ type: APP_LOADING_FINISH });
       })
-      .catch(() => {
+      .catch((error) => {
+        alert(error.message); // eslint-disable-line no-alert
+        dispatch({ type: REMOVE_PRODUCT_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
 
@@ -91,16 +107,26 @@ export const changeProductQuantity = (id, quantity) => {
 
     axios.post(url, { id, quantity })
       .then((response) => {
+        dispatch({ type: APP_LOADING_FINISH });
+
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: CHANGE_PRODUCT_QUANTITY_SUCCESS,
           payload: {
-            ui: response.data.payload
+            ui: payload
           }
         });
-
-        dispatch({ type: APP_LOADING_FINISH });
       })
-      .catch(() => {
+      .catch((error) => {
+        alert(error.message); // eslint-disable-line no-alert
+        dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
 
@@ -145,16 +171,25 @@ export const changeShoppingData = (field, id, invoice) => {
 
     axios.post(url, { id })
       .then((response) => {
+        dispatch({ type: APP_LOADING_FINISH });
+
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
           payload: {
-            ui: response.data.payload
+            ui: payload
           }
         });
-
-        dispatch({ type: APP_LOADING_FINISH });
       })
-      .catch(() => {
+      .catch((error) => {
+        alert(error.message); // eslint-disable-line no-alert
         dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -189,17 +224,26 @@ export const sendData = (data) => {
 
     axios.post(CHECKOUT.submitURL, { ...data })
       .then((response) => {
+        dispatch({ type: APP_LOADING_FINISH });
+
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
         dispatch({
           type: SEND_SHOPPING_DATA_SUCCESS,
           payload: {
-            status: response.data.success,
-            redirectURL: response.data.payload.redirectURL
+            status: success,
+            redirectURL: payload.redirectURL
           }
         });
-
-        dispatch({ type: APP_LOADING_FINISH });
       })
-      .catch(() => {
+      .catch((error) => {
+        alert(error.message); // eslint-disable-line no-alert
         dispatch({ type: APP_LOADING_FINISH });
         dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
       });
