@@ -17,6 +17,7 @@
     using System.Web.Script.Services;
     using System.Web.Security;
     using System.Web.Services;
+    using System.Linq;
 
     [WebService]
     [ScriptService]
@@ -27,6 +28,7 @@
         public const string _ForgottenPasswordFormCodeName = "KDA_ForgottenPasswordForm";
         public const string _RequestAccessFormCodeName = "KDA_RequestAccessForm";
         public const string _ContactUsFormCodeName = "KDA_ContactUsForm";
+        public const string _NewKitRequestFormCodeName = "KDA_NewKitRequest";
 
         #endregion
 
@@ -194,6 +196,41 @@
             return SubmitRequestAccessFormInternal(email);
         }
 
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod]
+        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames) {
+            #region Validation
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.NameIsMandatory", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.DescriptionIsMandatory", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (productIDs == null || productIDs.Length < 2)
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.NoProductSelected", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (productIDs.Length > 6)
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.ToManyProductsSelected", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (productNames == null || productNames.Length < 2)
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.NoProductSelected", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (productNames.Length > 6)
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.ToManyProductsSelected", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+
+            #endregion
+
+            return SubmitNewKitRequestInternal(name, description, productIDs, productNames);
+        }
+
         #endregion
 
         #region Private methods
@@ -331,7 +368,7 @@
             }
         }
 
-        public GeneralResultDTO SubmitContactUsFormInternal(string fullName, string companyName, string email, string phone, string message)
+        private GeneralResultDTO SubmitContactUsFormInternal(string fullName, string companyName, string email, string phone, string message)
         {
             var contactUsForm = BizFormInfoProvider.GetBizFormInfo(_ContactUsFormCodeName, SiteContext.CurrentSiteID);
             if (contactUsForm != null)
@@ -359,6 +396,39 @@
             else
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ContactForm.ContactFormRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+        }
+
+        private GeneralResultDTO SubmitNewKitRequestInternal(string name, string description, int[] productIDs, string[] productNames)
+        {
+            var newKitRequestForm = BizFormInfoProvider.GetBizFormInfo(_NewKitRequestFormCodeName, SiteContext.CurrentSiteID);
+            if (newKitRequestForm != null)
+            {
+                var newKitRequestFormClass = DataClassInfoProvider.GetDataClassInfo(newKitRequestForm.FormClassID);
+                string newKitRequestFormClassName = newKitRequestFormClass.ClassName;
+
+                BizFormItem newFormItem = BizFormItem.New(newKitRequestFormClassName);
+
+                newFormItem.SetValue("Name", name);
+                newFormItem.SetValue("Description", description);
+                newFormItem.SetValue("ProductNames", string.Join("|", productNames));
+                newFormItem.SetValue("ProductNodeIDs", string.Join("|", productIDs));
+
+                newFormItem.SetValue("Site", SiteContext.CurrentSite.DisplayName);
+                newFormItem.SetValue("User", MembershipContext.AuthenticatedUser.UserName);
+
+                newFormItem.SetValue("FormInserted", DateTime.Now);
+                newFormItem.SetValue("FormUpdated", DateTime.Now);
+
+                newFormItem.Insert();
+
+                SendFormEmail(newFormItem);
+
+                return new GeneralResultDTO { success = true };
+            }
+            else
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewKitRequest.ContactFormRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
         }
 
