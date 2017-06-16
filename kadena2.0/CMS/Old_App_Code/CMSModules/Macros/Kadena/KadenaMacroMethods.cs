@@ -3,6 +3,10 @@ using CMS.Helpers;
 using CMS.MacroEngine;
 using System;
 using System.Linq;
+using CMS.DocumentEngine;
+using CMS.Membership;
+using CMS.Localization;
+using CMS.SiteProvider;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -155,6 +159,51 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
 
             return string.Empty;
+        }
+
+        [MacroMethod(typeof(string), "Returns html (set) of products, that could be in a kit with particular product (for particular user).", 1)]
+        [MacroMethodParam(0, "nodeID", typeof(int), "ID of Node, that represents the base product")]
+        [MacroMethodParam(1, "productsAliasPath", typeof(string), "Alias path for products")]
+        public static object GetKitProductsHtml(EvaluationContext context, params object[] parameters)
+        {
+            var result = string.Empty;
+            var selectedItemTemplate = "<div class=\"input__wrapper input__wrapper--disabled\"><input id=\"dom-0\" type=\"checkbox\" class=\"input__checkbox\" data-id=\"{1}\" checked disabled><label for=\"dom-0\" class=\"input__label input__label--checkbox\">{0}</label></div>";
+            var itemTemplate = "<div class=\"input__wrapper\"><input id=\"dom-{0}\" type=\"checkbox\" class=\"input__checkbox\" data-id=\"{2}\"><label for=\"dom-{0}\" class=\"input__label input__label--checkbox\">{1}</label></div>";
+
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+            var originalNodeID = ValidationHelper.GetInteger(parameters[0], 0);
+            var productsPath = ValidationHelper.GetString(parameters[1], string.Empty);
+
+            var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+
+            if (originalNodeID > 0)
+            {
+                var originalDocument = tree.SelectSingleNode(originalNodeID, LocalizationContext.CurrentCulture.CultureCode);
+                result += string.Format(selectedItemTemplate, originalDocument.DocumentName, originalDocument.NodeID);
+            }
+            var kitDocuments = tree.SelectNodes()
+                .OnCurrentSite()
+                .Path(productsPath, PathTypeEnum.Children)
+                .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                .Types("KDA.Product")
+                .CheckPermissions()
+                .WhereLike("ProductType", "%KDA.InventoryProduct%").Or().WhereLike("ProductType", "%KDA.POD%").Or().WhereLike("ProductType", "%KDA.StaticProduct%");
+
+            if (kitDocuments != null)
+            {
+                for (int i = 1; i <= kitDocuments.Count; i++)
+                {
+                    var node = (TreeNode)kitDocuments.ToList()[i - 1];
+                    if (node.NodeID != originalNodeID && !node.IsLink)
+                    {
+                        result += string.Format(itemTemplate, i, node.DocumentName, node.NodeID);
+                    }
+                }
+            }
+            return result;
         }
     }
 }
