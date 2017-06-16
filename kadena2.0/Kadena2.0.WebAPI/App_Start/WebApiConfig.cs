@@ -78,10 +78,11 @@ namespace Kadena.WebAPI
                 {
                     Id = p.PaymentOptionID,
                     Checked = false,
-                    Disabled = false,
+                    Disabled = !p.PaymentOptionEnabled,
                     Icon = "",
                     Title = p.PaymentOptionDisplayName,
-                    ClassName = p.PaymentOptionClassName
+                    ClassName = p.PaymentOptionClassName,
+                    IsPayable = (p.PaymentOptionClassName != "KDA.PaymentMethods.MonthlyPayment")
                 });
 
                 config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
