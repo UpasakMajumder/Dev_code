@@ -126,12 +126,15 @@
         login: 'Log in'
       },
       checkout: {
-          initUIURL: '',
-          changeAddressURL: '',
-          changeDeliveryMethodURL: '',
-          changeQuantityURL: '',
-          removeProductURL: '',
-          submitURL: ''
+        initUIURL: '',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: ''
+      },
+      spotfire: {
+        serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
       }
     }
   };
