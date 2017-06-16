@@ -14,7 +14,7 @@ namespace Kadena.WebAPI.Models
 
         public void CheckPayability()
         {
-            IsPayable = !Items.Any(i => !i.IsPayable);
+            IsPayable = !Items.Any(i => i.IsUnpayable);
         }
 
         public void CheckDefault()
