@@ -3,7 +3,7 @@
 {% set headers = [ { 'title': 'Activity', 'icon': 'activity', 'badge': 'true' }, { 'title': 'Drafts', 'icon': 'newspaper', 'badge': 'true' }, { 'title': 'Shopping cart', 'icon': 'cart', 'badge': 'true' }, { 'title': 'Log Out', 'icon': 'sign-out' } ]
 %}
 
-<nav class="css-header navbar navbar-toggleable-md js-search navbar-inverse bg-inverse">
+<nav class="css-header navbar navbar-toggleable-md js-collapse navbar-inverse bg-inverse isOpen">
   <a class="navbar-brand" href="index.html">
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
@@ -12,7 +12,7 @@
     <div class="search__input">
       <div class="input__wrapper">
         <input type="text" class="input__text" placeholder="Search">
-        <button type="button" class="js-search-closer search__closer" data-active-class="search--active" data-target-class="js-search">
+        <button type="button" class="js-toggle search__closer">
           {{ svg('cross-xl', 'icon-close-search') }}
         </button>
       </div>

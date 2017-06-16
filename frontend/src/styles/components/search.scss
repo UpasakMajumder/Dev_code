@@ -10,7 +10,7 @@
     margin: 0 auto;
 
     .input__text {
-      .search--active & {
+      .isOpen & {
         @include rem(padding-right, $search-close-btn-size);
       }
     }
@@ -30,7 +30,7 @@
     background: white;
     transition: all 0.5s ease-in-out;
 
-    .search--active & {
+    .isOpen & {
       max-height: 900px;
       opacity: 1;
     }
@@ -47,7 +47,7 @@
     height: 100%;
     width: $search-close-btn-size;
 
-    .search--active & {
+    .isOpen & {
       display: block;
     }
   }

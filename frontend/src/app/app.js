@@ -17,7 +17,6 @@ const app = {
     init('confirmation', document.getElementsByClassName('js-confirmation'));
     init('storage', document.getElementsByClassName('js-storage'));
     init('spotfire', document.getElementsByClassName('js-spotfire'));
-    init('search-closer', document.getElementsByClassName('js-search-closer'));
     // init('money-format', document.getElementsByClassName('js-money-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
     init('collapse', document.getElementsByClassName('js-collapse'));
