@@ -71,7 +71,6 @@ class Dropzone {
     this.container.classList.remove(this.reverseSelector);
     this.container.classList.add(this.selector);
 
-    if (this.count === this.maxItems) return;
 
     this.count += 1;
     this.number += 1;
@@ -81,7 +80,10 @@ class Dropzone {
 
     this.fileContainer.insertBefore(this.data[id].item, this.fileContainer.firstChild);
 
-    if (this.count === this.maxItems) return;
+    if (this.count === this.maxItems) {
+      this.data[id].input.style.display = 'none';
+      return;
+    }
 
     const input = this.idealInput.cloneNode(true);
     input.setAttribute('data-id', this.number);
