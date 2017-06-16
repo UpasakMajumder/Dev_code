@@ -97,8 +97,6 @@
 
   {% include 'components/snack-notification.nunj' %}
 
-  <div class="backdrop-shadow"></div>
-
 </form>
 
 {# Scripts #}
