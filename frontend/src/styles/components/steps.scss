@@ -5,13 +5,15 @@
   @extend %flex--center--default;
   @extend .pt-2;
   @extend .px-3;
-
-  @include rem(margin-bottom, 40px);
   border-radius: $border-radius * 4;
   position: relative;
 
   &__item {
     z-index: 2;
+  }
+
+  .content-block & {
+    @include rem(margin-bottom, 50px);
   }
 
   &__circle {
@@ -85,15 +87,5 @@
     &:after {
       right: -$line-circle-size / 2;
     }
-  }
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
   }
 }

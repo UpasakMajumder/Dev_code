@@ -8,8 +8,31 @@ class Method extends Component {
     let className = 'input__wrapper select-accordion__item  select-accordion__item--inner';
     if (disabled) className += ' input__wrapper--disabled';
 
-    const dating = (datePrefix && date)
-      ? <span> | <span>{datePrefix} {date}</span></span>
+
+    let dateElement = null;
+    if (datePrefix && date) {
+      dateElement = <span>{datePrefix} {date}</span>;
+    } else if (datePrefix) {
+      dateElement = <span>{datePrefix}</span>;
+    } else if (date) {
+      dateElement = <span>{date}</span>;
+    }
+
+    let priceElement = null;
+    if (pricePrefix && price) {
+      priceElement = <span>{pricePrefix} {price}</span>;
+    } else if (pricePrefix) {
+      priceElement = <span>{pricePrefix}</span>;
+    } else if (price) {
+      priceElement = <span>{price}</span>;
+    }
+
+    const stick = dateElement
+      ? <span> | </span>
+      : null;
+
+    const extraInfo = (priceElement || dateElement)
+      ? <span>({dateElement}{stick}{priceElement})</span>
       : null;
 
     return (
@@ -24,7 +47,7 @@ class Method extends Component {
         <label htmlFor={`dm-${id}`} className="input__label input__label--radio">
           {title}
           <span className="select-accordion__inner-label">
-            (<span>{pricePrefix} {price}</span>{dating} )
+            {extraInfo}
           </span>
         </label>
       </div>

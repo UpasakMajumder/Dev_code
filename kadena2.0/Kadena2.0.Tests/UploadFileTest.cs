@@ -92,7 +92,7 @@ namespace Kadena.Tests
         }
 
         [TestCase("actum",
-            "https://eauydb7sta.execute-api.us-east-1.amazonaws.com/Prod/Api/File",
+            "https://eauydb7sta.execute-api.us-east-1.amazonaws.com/Qa/Api/File",
             TestName = "UploadFileSuccess")]
         public void MicroserviceCallTest(string customerName, string url)
         {

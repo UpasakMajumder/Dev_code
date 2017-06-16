@@ -1,20 +1,57 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DeliveryAddress from './DeliveryAddress';
+import Alert from '../Alert';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
+import Products from './Products';
 import Total from './Total';
-import { getUI, changeShoppingData, sendData, initCheckedShoppingData } from '../../AC/shoppingCart';
+import Spinner from '../Spinner';
+import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
+  static fireNotification(fields) {
+    if (fields.length === 1 && fields.includes('invoice')) return;
+
+    let message = 'Please, select one of ';
+
+    fields.forEach((field, index) => {
+      if (field !== 'invoice') {
+        if (index === fields.length - 1) {
+          message += ' and ';
+        } else if (index) {
+          message += ', ';
+        }
+
+        switch (field) {
+        case 'deliveryMethod':
+          message += 'the delivery methods';
+          break;
+        case 'paymentMethod':
+          message += 'the payment methods';
+          break;
+        case 'deliveryAddress':
+          message += 'the delivery addresses';
+          break;
+        default:
+          break;
+        }
+      }
+    });
+
+    alert(message); // eslint-disable-line no-alert
+  }
+
   componentDidMount() {
     this.props.getUI();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { ui } = nextProps.shoppingCart;
+    const { ui, validation } = nextProps.shoppingCart;
 
-    if (!Object.keys(ui).length || Object.keys(this.props.shoppingCart.ui).length) return;
+    if (validation.fields.length) ShoppingCart.fireNotification(validation.fields);
+
+    if (ui === this.props.shoppingCart.ui) return;
 
     let deliveryAddress = 0;
     let deliveryMethod = 0;
@@ -46,49 +83,70 @@ class ShoppingCart extends Component {
     const { shoppingCart } = this.props;
     const { ui, checkedData, isSending, validation } = shoppingCart;
 
-    const content = <div>
-      <div className="shopping-cart__block">
-        <DeliveryAddress
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedId={checkedData.deliveryAddress}
-          ui={ui.deliveryAddresses} />
-      </div>
+    let content = <Spinner />;
 
-      <div className="shopping-cart__block">
-        <DeliveryMethod
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedId={checkedData.deliveryMethod}
-          ui={ui.deliveryMethods} />
-      </div>
+    if (Object.keys(ui).length) {
+      const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
 
-      <div className="shopping-cart__block">
-        <PaymentMethod
-          validationFields={validation.fields}
-          validationMessage={ui.validationMessage}
-          changeShoppingData={this.props.changeShoppingData}
-          checkedObj={checkedData.paymentMethod}
-          ui={ui.paymentMethods} />
-      </div>
+      const deliveryContent = isDeliverable
+        ? <div>
+          <div className="shopping-cart__block">
+            <DeliveryAddress
+              validationMessage={ui.validationMessage}
+              changeShoppingData={this.props.changeShoppingData}
+              checkedId={checkedData.deliveryAddress}
+              ui={ui.deliveryAddresses}/>
+          </div>
 
-      <div className="shopping-cart__block">
-        <Total ui={ui.totals} />
-      </div>
+          <div className="shopping-cart__block">
+            <DeliveryMethod
+              validationMessage={ui.validationMessage}
+              changeShoppingData={this.props.changeShoppingData}
+              checkedId={checkedData.deliveryMethod}
+              isSending={isSending}
+              ui={ui.deliveryMethods}/>
+          </div>
+        </div>
+        : <div className="shopping-cart__block">
+          <h2>{title}</h2>
+          <Alert type="grey" text={unDeliverableText}/>
+        </div>;
 
-      <div className="shopping-cart__block text--right">
-        <button onClick={() => { this.props.sendData(checkedData); }}
-                type="button"
-                className="btn-action"
-                disabled={isSending}>
-          {ui.submitLabel}
-        </button>
-      </div>
-    </div>;
+      content = <div>
+        <div className="shopping-cart__block">
+          <Products
+            removeProduct={this.props.removeProduct}
+            changeProductQuantity={this.props.changeProductQuantity}
+            ui={ui.products}
+          />
+        </div>
 
-    return Object.keys(ui).length ? content : null;
+        {deliveryContent}
+
+        <div className="shopping-cart__block">
+          <PaymentMethod
+            validationFields={validation.fields}
+            validationMessage={ui.validationMessage}
+            changeShoppingData={this.props.changeShoppingData}
+            checkedObj={checkedData.paymentMethod}
+            ui={ui.paymentMethods}/>
+        </div>
+
+        <div className="shopping-cart__block">
+          <Total ui={ui.totals}/>
+        </div>
+
+        <div className="shopping-cart__block text--right">
+          <button onClick={() => { this.props.sendData(checkedData); }}
+                  type="button"
+                  className="btn-action">
+            {ui.submitLabel}
+          </button>
+        </div>
+      </div>;
+    }
+
+    return content;
   }
 }
 
@@ -103,5 +161,7 @@ export default connect((state) => {
   getUI,
   initCheckedShoppingData,
   changeShoppingData,
-  sendData
+  sendData,
+  removeProduct,
+  changeProductQuantity
 })(ShoppingCart);

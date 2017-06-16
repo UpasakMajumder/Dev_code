@@ -25,9 +25,9 @@
 
     .nav-item {
       @extend %flex--center--default;
-      cursor: pointer;
 
       @include rem(padding, 18px 20px);
+      cursor: pointer;
 
       @include media-breakpoint-down(lg) {
         @include rem(padding, 9px 20px);
@@ -54,6 +54,8 @@
       }
 
       .nav-link {
+        @include rem(padding, 18px);
+
         @extend %flex--center--default;
         color: $brand-dark;
         font-weight: 400;
