@@ -7,9 +7,9 @@
   display: block;
   color: $brand-dark;
 
-  &:hover,
   &:active,
-  &:focus {
+  &:focus,
+  &:hover {
     color: $brand-dark;
   }
 
@@ -54,5 +54,16 @@
 
   p {
     margin: 0;
+  }
+
+  &__page {
+    h3 {
+      @include rem(margin-bottom, 4px);
+
+      a {
+        font-size: $font-s;
+        text-transform: inherit;
+      }
+    }
   }
 }

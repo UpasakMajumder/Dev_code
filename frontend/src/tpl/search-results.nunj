@@ -7,11 +7,36 @@
 {% set headerTitle = title %}
 
 {% block content %}
-  <div class="row">
-    {% for x in range(0, 10) %}
-      <div class="col-lg-4 col-xl-3">
-        {% include 'components/product/template.nunj' %}
+  <div class="css-tabs__container js-tabs" data-tab=".js-tab-serp" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
+    <ul class="css-tabs__list mb-4">
+      <li class="css-tabs__tab js-tab-serp" data-tab-content=".js-tab-content-1">Products</li>
+      <li class="css-tabs__tab js-tab-serp" data-tab-content=".js-tab-content-2">Pages</li>
+    </ul>
+    <div>
+      <div class="css-tabs__content js-tab-content-1">
+
+        <div class="row">
+          {% for x in range(0, 6) %}
+            <div class="col-lg-4 col-xl-3">
+              {% include 'components/product/template.nunj' %}
+            </div>
+          {% endfor %}
+        </div>
+
       </div>
-    {% endfor %}
+
+      <div class="css-tabs__content js-tab-content-2">
+
+        {% for x in range(0, 6) %}
+          <div class="search-result__page">
+            <h3>
+              <a href="#">The Science Of Superstitions</a>
+            </h3>
+            <p>The French Revolution constituted for the conscience of the dominant aristocratic class a fall from innocence, and upturning of the natural chain of events that resounded all over Europe…</p>
+          </div>
+        {% endfor %}
+
+      </div>
+    </div>
   </div>
 {% endblock %}
