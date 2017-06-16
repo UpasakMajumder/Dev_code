@@ -158,29 +158,7 @@
         </div>
 
         <div class="css-tabs__content js-tab-settings-addresses">
-          <div class="settings__block">
-            <div class="settings__item">
-              <h2>Billing address</h2>
-              <div>
-                {% set x = "billing" %}
-                {% include 'components/settings/address-card.nunj' %}
-              </div>
-            </div>
-
-            <div class="settings__item">
-              <div class="action-heading">
-                <h2>Shipping Address</h2>
-                <a href="#" style="display: none;" class="plus-btn js-tooltip js-dialog" data-tooltip-placement="right" data-dialog="#new-address" title="Add new shipping address">
-                  {{ svg('plus', 'icon-modal') }}
-                </a>
-              </div>
-              <div>
-                {% for x in range(0, 3) %}
-                  {% include 'components/settings/address-card.nunj' %}
-                {% endfor %}
-              </div>
-            </div>
-          </div>
+          <div class="r-settings-addresses"></div>
         </div>
       </div>
     </div>

@@ -50,6 +50,7 @@
   {# Main content of the page #}
   <div class="main-container">
     <div class="r-spinner"></div>
+    <div class="r-dialog"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
       <div class="shadow"></div>
@@ -135,6 +136,12 @@
       },
       spotfire: {
         serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
+      },
+      userSettings: {
+        addresses: {
+          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
+          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+        }
       }
     }
   };
