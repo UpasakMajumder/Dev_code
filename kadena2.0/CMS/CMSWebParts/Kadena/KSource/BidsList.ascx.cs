@@ -38,8 +38,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             int openCount = 0, completedCount = 0;
             if (projects != null)
             {
-                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate).ToArray();
-                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate).ToArray();
+                var openProjects = projects.Where(p => p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
+                var completedProjects = projects.Where(p => !p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
@@ -58,15 +58,19 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 var pr = data[i];
                 var page = i / recordsPerPage + 1;
+                var firstCol = new HtmlTableCell { InnerText = pr.Name };
+                firstCol.Attributes["class"] = "show-table__text-cutted fixed-main-td";
+
                 var row = new HtmlTableRow
                 {
                     Cells = {
-                        new HtmlTableCell { InnerText = pr.Name},
+                        firstCol,
                         new HtmlTableCell { InnerText = pr.RequestId.ToString()},
                         new HtmlTableCell { InnerText = pr.Status},
                         new HtmlTableCell { InnerText = pr.UpdateDate.ToString("MMM dd yyyy")}
                         }
                 };
+
                 if (page == 1)
                 {
                     row.Attributes["class"] = "active";

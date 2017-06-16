@@ -45,6 +45,11 @@ namespace Kadena.WebAPI.Models
             return items.Where(i => i.Id == shippingMethod && i.Disabled).Any();
         }
 
+        internal bool IsPresent(int shippingMethod)
+        {
+            return items.Where(i => i.Id == shippingMethod).Any();
+        }
+
         public int GetDefaultMethodId()
         {
             var firstAvailable = items.Where(i => !i.Disabled).OrderBy(i => i.PriceAmount).FirstOrDefault();

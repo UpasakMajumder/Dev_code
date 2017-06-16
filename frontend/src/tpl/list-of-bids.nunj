@@ -1,3 +1,4 @@
+
 {% extends "layouts/default.nunj" %}
 {% from "macro/svg.nunj" import svg %}
 
@@ -37,7 +38,31 @@
         </tr>
 
           <tr class="active" data-page="1">
-            <td>Mar 3 2017</td>
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017Mar 3 2017 Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr class="active" data-page="1">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017 Mar 3 2017Mar 3 2017 Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr class="active" data-page="1">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr  data-page="2">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
             <td>Brochure</td>
             <td>123545</td>
             <td>Waiting for bids</td>
@@ -45,13 +70,60 @@
           </tr>
 
           <tr data-page="2">
-            <td>Mar 3 2017</td>
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
             <td>Brochure</td>
             <td>123545</td>
             <td>Waiting for bids</td>
             <td>May 24 2017 16:46</td>
           </tr>
 
+          <tr data-page="2">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:46</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="3">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="4">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
+
+          <tr  data-page="4">
+            <td class="show-table__text-cutted fixed-main-td">Mar 3 2017</td>
+            <td>Brochure</td>
+            <td>123545</td>
+            <td>Waiting for bids</td>
+            <td>May 24 2017 16:45</td>
+          </tr>
       </tbody>
     </table>
 
@@ -63,7 +135,7 @@
         <span>Showing <span class="js-table-paginator-from">1</span> to <span class="js-table-paginator-to">10</span> of <span>103</span> entries</span>
       </div>
       <div class="col-6 text--right">
-        <div class="js-table-paginator-wrapper generated-paginator" data-pages="2" data-rows-on-page="2"></div>
+        <div class="js-table-paginator-wrapper generated-paginator" data-pages="4" data-rows-on-page="3"></div>
       </div>
     </div>
   </div>

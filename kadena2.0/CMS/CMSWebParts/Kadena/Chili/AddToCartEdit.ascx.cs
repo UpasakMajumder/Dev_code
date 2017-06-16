@@ -1,4 +1,5 @@
-﻿using CMS.DataEngine;
+﻿using CMS.Base.Web.UI;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
@@ -6,7 +7,9 @@ using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,25 +25,64 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
+
+            if (IsProductMailingType())
+            {
+                SetMailingListData();
+                SetNumberOfAddresses();
+            }
+                    
             SetupControl();
 
         }
 
+        private int NumberOfAddressesReturnedByService { get; set; }
+
+        private int NumberOfItemsInInput
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
+            }
+          
+        }
+
+        private MailingListData MailingListData
+        {
+            get; set;
+        }
+
+        private bool IsProductMailingType()
+        {
+            return GetProductType().Contains("KDA.MailingProduct");
+        }
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (IsAddedAmmountValid(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0)))
+            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
             {
-                AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0));
+                if (IsProductMailingType())
+                {
+                    if (NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
+                    {
+                        AddItemsToShoppingCart(NumberOfItemsInInput);
+                    }
+                    else
+                    {
+                        DisplayErrorMessage();
+                    }
+                }
+                else
+                {
+                    AddItemsToShoppingCart(NumberOfItemsInInput);
+                }
 
             }
             else
             {
-                lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
-                SetErrorLblVisible();
+                DisplayErrorMessage();
 
             }
-           
         }
 
         protected void SetupControl()
@@ -49,10 +91,42 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
                 inpNumberOfItems.Attributes.Add("class", "input__text");
-                lblNumberOfItemsError.Visible = false;
+                lblNumberOfItemsError.Visible = false;            
 
                 lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
+
+                if (IsProductMailingType())
+                {
+                    inpNumberOfItems.Attributes.Add("disabled", "true");
+                    inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
+                } 
+
             }
+
+        }
+
+        private void DisplayErrorMessage()
+        {
+            lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
+            SetErrorLblVisible();
+        }
+        private void SetNumberOfAddresses()
+        {
+            if (MailingListData != null)
+            {
+                NumberOfAddressesReturnedByService = MailingListData.addressCount;
+            }
+        }
+
+        private void SetMailingListData()
+        {
+            Guid containerId;
+          
+            if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
+            {
+                MailingListData = ServiceHelper.GetMailingList(containerId);    
+            }
+       
         }
 
         private void SetErrorLblVisible()
@@ -61,12 +135,29 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             inpNumberOfItems.Attributes.Add("class", "input__text input--error");
         }
 
+        private string GetProductType()
+        {
+            int documentId;
+            string productType = string.Empty;
+
+            if (int.TryParse(Request.QueryString["id"], out documentId))
+            {
+               productType = DocumentHelper.GetDocument(
+                   documentId, 
+                   new TreeProvider(MembershipContext.AuthenticatedUser)).GetStringValue("ProductType", string.Empty);
+            }
+
+            return productType;
+        }
+      
         private void AddItemsToShoppingCart(int ammount)
         {
             int skuID;
             int documentId;
-
-            if (int.TryParse(Request.QueryString["skuId"], out skuID) && int.TryParse(Request.QueryString["id"], out documentId))
+            Guid templateId;
+            if (int.TryParse(Request.QueryString["skuId"], out skuID) &&
+                int.TryParse(Request.QueryString["id"], out documentId) &&
+                Guid.TryParse(Request.QueryString["templateId"], out templateId))
             {
                 var product = SKUInfoProvider.GetSKUInfo(skuID);
                 var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
@@ -76,6 +167,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
                     var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
+
 
                     var cart = ECommerceContext.CurrentShoppingCart;
                     AssignCartShippingAddress(cart);
@@ -87,6 +179,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                     cartItem.SetValue("ArtworkLocation", artworkLocation);
                     cartItem.SetValue("ProductType", productType);
+                    cartItem.SetValue("ProductPageID", documentId);
+                    cartItem.SetValue("ChilliEditorTemplateID", templateId);
+
+                    if (MailingListData != null)
+                    {
+                        cartItem.SetValue("MailingListName", MailingListData.name);
+                        cartItem.SetValue("MailingListGuid", MailingListData.id);
+                    }
+                    
 
                     var dynamicUnitPrice = GetUnitPriceForAmmount(ammount);
                     if (dynamicUnitPrice > 0)
@@ -95,9 +196,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-
-                    lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode);
-                    SetErrorLblVisible();
+                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) +"');"));
+                                      
                 }
             }
                    
@@ -105,12 +205,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
-            var currentCustomer = ECommerceContext.CurrentCustomer;
-
-            if (currentCustomer != null)
-            {
-                cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
-            }
+            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
+            cart.ShoppingCartShippingAddress = customerAddress;
         }
 
         private bool IsAddedAmmountValid(int ammount)
