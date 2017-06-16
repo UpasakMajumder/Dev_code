@@ -19,6 +19,9 @@ using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
+using Kadena.Dto.Settings;
+using System.Collections.Generic;
+using Kadena.WebAPI.Models.Settings;
 
 namespace Kadena.WebAPI
 {
@@ -126,19 +129,37 @@ namespace Kadena.WebAPI
                 config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
                 config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
+                config.CreateMap<DeliveryAddress, AddressDto>()
+                    .AfterMap((d, a) =>
+                    {
+                        a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
+                        a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
+                        a.IsRemoveButton = false;
+                    });
+                config.CreateMap<AddressDto, DeliveryAddress>()
+                    .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
+                config.CreateMap<DeliveryAddress, IdDto>();
+                config.CreateMap<PageButton, PageButtonDto>();
+                config.CreateMap<AddressList, AddressListDto>();
+                config.CreateMap<DialogButton, DialogButtonDto>();
+                config.CreateMap<DialogType, DialogTypeDto>();
+                config.CreateMap<DialogField, DialogFieldDto>();
+                config.CreateMap<AddressDialog, AddressDialogDto>();
+                config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
             });
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
-            container.Register<IShoppingCartService,ShoppingCartService>();
+            container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IOrderServiceClient, OrderServiceClient>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
+            container.Register<ISettingsService, SettingsService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }
