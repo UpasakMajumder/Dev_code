@@ -1,9 +1,6 @@
 ﻿using CMS.EventLog;
 using Kadena.WebAPI.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Kadena.WebAPI.Services
 {
