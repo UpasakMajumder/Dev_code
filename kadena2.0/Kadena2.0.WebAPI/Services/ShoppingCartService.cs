@@ -406,7 +406,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> IsSubmittable()
         {
-            string endpoint = "https://0v7afs259k.execute-api.us-east-1.amazonaws.com/Qa/"; //TODO configurable
+            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
             var items = kenticoProvider.GetShoppingCartOrderItems().Where(i => i.DesignFilePathRequired).ToList();
 
             foreach(var item in items)// todo consider parallel for-each

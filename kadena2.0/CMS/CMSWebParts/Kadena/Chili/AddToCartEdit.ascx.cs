@@ -15,7 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
 using System.Threading.Tasks;
-
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -209,7 +210,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private async Task CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId)
         {
-            string endpoint = "https://0v7afs259k.execute-api.us-east-1.amazonaws.com/Qa/"; //TODO configurable
+            string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
             var templatedService = new TemplateProductService();
             var response = await templatedService.RunGeneratePdfTask(endpoint, templateId.ToString());
             if (response.Succeeded)
@@ -227,7 +228,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
             else
             {
-                // todo log into kentico
+                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response.ErrorMessage);
             }
         }
 
