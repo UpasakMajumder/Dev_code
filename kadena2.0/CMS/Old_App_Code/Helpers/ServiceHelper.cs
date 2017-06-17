@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
+using CMS.EventLog;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -566,7 +567,8 @@ namespace Kadena.Old_App_Code.Helpers
                 , UriKind.Absolute
                 , out orderStatisticsUrl))
             {
-                throw new InvalidOperationException(_getOrderStatisticsIncorrectMessage);
+                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_getOrderStatisticsIncorrectMessage));
+                return null;
             }
 
             using (var client = new HttpClient())
@@ -580,7 +582,8 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     catch (JsonReaderException e)
                     {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_responseIncorrectMessage, e));
+                        return null;
                     }
                     if (response.Success)
                     {
@@ -588,7 +591,8 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     else
                     {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
+                        return null;
                     }
                 }
             }

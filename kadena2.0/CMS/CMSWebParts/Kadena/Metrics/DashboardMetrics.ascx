@@ -4,7 +4,7 @@
     <div class="sent-statistics">
         <div class="sent-statistics__item">
             <p class="sent-statistics__title">
-                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.OrdersToDatePerYear" />
+                <cms:LocalizedLiteral ID="ltlOrdersToDatePerYearTitles" runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.OrdersToDatePerYear" />
             </p>
             <p class="sent-statistics__value">
                 <asp:Literal ID="ltlOrdersToDatePerYear" runat="server" />
@@ -28,11 +28,11 @@
         </div>
         <div class="sent-statistics__item">
             <p class="sent-statistics__title">
-                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.AverageProductionTime" />
+                <cms:LocalizedLiteral ID="ltlAverageProductionTimeTitle" runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.AverageProductionTime" />
             </p>
             <p class="sent-statistics__value">
                 <asp:Literal ID="ltlAverageProductionTime" runat="server" />
-                <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.Days" />
+                <cms:LocalizedLiteral ID="ltlAverageProductionTimeDaysTitle" runat="server" EnableViewState="false" ResourceString="Kadena.DashboardMetrics.Days" />
             </p>
         </div>
     </div>
