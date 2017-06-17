@@ -45,7 +45,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         private void SetupTemplatesList()
         {
             var templatesData = new TemplateServiceHelper().GetMasterTemplateCopies(MembershipContext.AuthenticatedUser.UserID, DocumentContext.CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty));
-            if (templatesData != null && templatesData.Count > 0)
+
+            if ((templatesData?.Count ?? 0) > 0)
             {
                 repTemplates.DataSource = templatesData.Select(d => new { EditorUrl = string.Format("{0}?id={1}&skuid={2}&templateid={3}", ProductEditorUrl, DocumentContext.CurrentDocument.DocumentID, ECommerceContext.CurrentProduct.SKUID, d.templateId), TemplateID = d.templateId, Date = DateTime.Parse(d.created).ToString() });
                 repTemplates.DataBind();
