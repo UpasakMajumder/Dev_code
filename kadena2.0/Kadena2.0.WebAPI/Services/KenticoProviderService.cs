@@ -253,7 +253,7 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
-                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
+                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),// TODO via calling service for templated
                 MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 TemplateId = i.GetValue("TemplateId", Guid.Empty), //TODO check if really set during add to cart
                 OrderItemType = i.GetValue("ProductType", string.Empty),
@@ -264,7 +264,9 @@ namespace Kadena.WebAPI.Services
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitCount = i.CartItemUnits,
-                UnitOfMeasure = "EA"
+                UnitOfMeasure = "EA",
+                DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
+                DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty)
             }
             ).ToArray();
 

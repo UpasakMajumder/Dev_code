@@ -1,5 +1,4 @@
 ﻿using CMS.Base.Web.UI;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
@@ -10,13 +9,13 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using Kadena.Old_App_Code.Kadena.MailingList;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Script.Serialization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Threading.Tasks;
+
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -57,7 +56,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             return GetProductType().Contains("KDA.MailingProduct");
         }
 
-        protected void btnAddToCart_Click(object sender, EventArgs e)
+        protected async void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
             {
@@ -65,7 +64,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     if (NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
                     {
-                        AddItemsToShoppingCart(NumberOfItemsInInput);
+                        await AddItemsToShoppingCart(NumberOfItemsInInput);
                     }
                     else
                     {
@@ -74,7 +73,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 }
                 else
                 {
-                    AddItemsToShoppingCart(NumberOfItemsInInput);
+                    await AddItemsToShoppingCart(NumberOfItemsInInput);
                 }
 
             }
@@ -150,7 +149,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             return productType;
         }
       
-        private void AddItemsToShoppingCart(int ammount)
+        private async Task AddItemsToShoppingCart(int ammount)
         {
             int skuID;
             int documentId;
@@ -195,12 +194,41 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         cartItem.CartItemPrice = dynamicUnitPrice;
                     }
 
+                    if (productType.Contains("KDA.TemplatedProduct"))
+                    {
+                        await CallRunGeneratePdfTask(cartItem, templateId);
+                    }
+
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
                     ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) +"');"));
                                       
                 }
             }
                    
+        }
+
+        private async Task CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId)
+        {
+            string endpoint = "https://0v7afs259k.execute-api.us-east-1.amazonaws.com/Qa/"; //TODO configurable
+            var templatedService = new TemplateProductService();
+            var response = await templatedService.RunGeneratePdfTask(endpoint, templateId.ToString());
+            if (response.Succeeded)
+            {
+                cartItem.SetValue("DesignFilePathTaskId", response.TaskId);
+                if (response.Finished)
+                {
+                    cartItem.SetValue("DesignFilePathObtained", true);
+                    cartItem.SetValue("DesignFilePath", response.FileName);
+                }
+                else
+                {
+                    cartItem.SetValue("DesignFilePathObtained", false);
+                }
+            }
+            else
+            {
+                // todo log into kentico
+            }
         }
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)

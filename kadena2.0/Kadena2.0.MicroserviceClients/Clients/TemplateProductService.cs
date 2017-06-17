@@ -27,11 +27,13 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
                 else
                 {
-                    //return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return new GeneratePdfTaskResponseDto()
+                    {
+                        ErrorMessage = $"Microservice client received status {response.StatusCode}",
+                        Succeeded = false
+                    };
                 }
             }
-
-            return null;
         }
         
         public async Task<GeneratePdfTaskStatusResponseDto> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId)
@@ -50,23 +52,13 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
                 else
                 {
-                    //return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return new GeneratePdfTaskStatusResponseDto()
+                    {
+                        ErrorMessage = $"Microservice client received status {response.StatusCode}",
+                        Succeeded = false
+                    };
                 }
             }
-
-            return null;
-        }
-
-        private GeneratePdfTaskResponseDto CreateErrorResponse(string errorMessage)
-        {
-            /*    return new GeneratePdfTaskResponseDto()
-                {
-                    Success = false,
-                    Payload = 0.0d,
-                    ErrorMessages = $"HTTP error - {errorMessage}"
-                };*/
-
-            return null;
         }
     }
 }
