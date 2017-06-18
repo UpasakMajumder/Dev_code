@@ -709,6 +709,104 @@ if (!String.prototype.format) {
 
 }(jQuery));
 
+// REQUEST NEW KIT
+
+(function ($) {
+    $.fn.requestNewKitForm = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            nameInput: ".j-name-input",
+            nameErrorMessage: ".j-name-error-message",
+            descriptionInput: ".j-description-input",
+            descriptionErrorMessage: ".j-description-error-message",
+            productsCheckboxList: ".j-products",
+            noProductsSelectedErrorMessage: ".j-no-product-selected-error-message",
+            tooManyProductsSelectedErrorMessage: ".j-too-many-products-selected-error-message",
+            generalErrorMessage: ".j-general-error-message",
+            submitButton: ".j-submit-button"
+        }, options);
+
+        base.find(settings.nameInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.submitButton).click(function (e) {
+            e.preventDefault();
+
+            base.find(settings.nameErrorMessage).hide();
+            base.find(settings.nameInput).removeClass("input--error");
+            base.find(settings.descriptionErrorMessage).hide();
+            base.find(settings.descriptionInput).removeClass("input--error");
+            base.find(settings.noProductsSelectedErrorMessage).hide();
+            base.find(settings.tooManyProductsSelectedErrorMessage).hide();
+            base.find(settings.generalErrorMessage).hide();
+
+            if (base.find(settings.nameInput).val() == '') {
+                base.find(settings.nameInput).addClass("input--error");
+                base.find(settings.nameErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.descriptionInput).val() == '') {
+                base.find(settings.descriptionInput).addClass("input--error");
+                base.find(settings.descriptionErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.productsCheckboxList).find("input:checked").length < 2) {
+                base.find(settings.noProductsSelectedErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.productsCheckboxList).find("input:checked").length > 6) {
+                base.find(settings.tooManyProductsSelectedErrorMessage).show();
+                return;
+            }
+
+            var productIDs = [];
+            var productNames = [];
+
+            base.find(settings.productsCheckboxList).find("input:checked").each(function() {
+                productIDs.push($(this).attr("data-id"));
+                productNames.push($(this).next().html());
+            });
+
+            var passedData = {
+                name: base.find(settings.nameInput).val(),
+                description: base.find(settings.descriptionInput).val(),
+                productIDs: productIDs,
+                productNames: productNames
+            };
+
+            base.find(settings.submitButton).attr("disabled", "disabled");
+
+            $.ajax({
+                type: "POST",
+                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
+                data: JSON.stringify(passedData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.d.success) {
+                        window.location.href = base.attr("data-thank-you-page");
+                    } else {
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
+                    }
+                    base.find(settings.submitButton).removeAttr("disabled");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
+                    base.find(settings.generalErrorLabel).show();
+
+                    base.find(settings.submitButton).removeAttr("disabled");
+                }
+            });
+        });
+    }
+}(jQuery));
+
 // custom script initialization
 
 var customScripts = {
@@ -733,6 +831,9 @@ var customScripts = {
     requestNewProductInit: function() {
         $(".j-new-product-form").requestNewProduct();
     },
+    requestNewKitInit: function() {
+        $(".j-new-kit-request-form").requestNewKitForm();
+    },
     init: function () {
         var base = this;
 
@@ -743,6 +844,7 @@ var customScripts = {
         base.submitBidInit();
         base.contactUsFormInit();
         base.requestNewProductInit();
+        base.requestNewKitInit();
     }
 }
 
