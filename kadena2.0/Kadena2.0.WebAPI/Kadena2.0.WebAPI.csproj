@@ -171,6 +171,7 @@
     <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\SubmitButton.cs" />
     <Compile Include="Models\SubmitOrder\PaymentMethod.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderError.cs" />

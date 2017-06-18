@@ -10,7 +10,7 @@ namespace Kadena.WebAPI.Models
         public DeliveryCarriers DeliveryMethods { get; set; }
         public PaymentMethods PaymentMethods { get; set; }
         public Totals Totals { get; set; }
-        public string SubmitLabel { get; set; }
+        public SubmitButton Submit { get; set; }
         public string ValidationMessage { get; set; }
 
         public void SetDisplayType()

@@ -90,7 +90,13 @@ namespace Kadena.WebAPI.Services
                     Items = ArrangePaymentMethods(paymentMethods)
                 },
 
-                SubmitLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
+                Submit = new SubmitButton()
+                {
+                    BtnLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
+                    DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
+                    IsDisabled = false // TODO
+                },
+                
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
 

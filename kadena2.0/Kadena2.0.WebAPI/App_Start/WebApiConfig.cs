@@ -125,6 +125,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
+                config.CreateMap<SubmitButton, SubmitButtonDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
                 config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
