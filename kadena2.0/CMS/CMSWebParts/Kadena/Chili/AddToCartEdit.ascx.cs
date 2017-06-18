@@ -57,7 +57,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             return GetProductType().Contains("KDA.MailingProduct");
         }
 
-        protected async void btnAddToCart_Click(object sender, EventArgs e)
+        protected void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
             {
@@ -65,7 +65,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     if (NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
                     {
-                        await AddItemsToShoppingCart(NumberOfItemsInInput);
+                        AddItemsToShoppingCart(NumberOfItemsInInput);
                     }
                     else
                     {
@@ -74,14 +74,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 }
                 else
                 {
-                    await AddItemsToShoppingCart(NumberOfItemsInInput);
+                    AddItemsToShoppingCart(NumberOfItemsInInput);
                 }
 
             }
             else
             {
                 DisplayErrorMessage();
-
             }
         }
 
@@ -150,7 +149,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             return productType;
         }
       
-        private async Task AddItemsToShoppingCart(int ammount)
+        private void AddItemsToShoppingCart(int ammount)
         {
             int skuID;
             int documentId;
@@ -197,7 +196,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     if (productType.Contains("KDA.TemplatedProduct"))
                     {
-                        await CallRunGeneratePdfTask(cartItem, templateId);
+                        CallRunGeneratePdfTask(cartItem, templateId);
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -208,18 +207,21 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                    
         }
 
-        private async Task CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId)
+        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId)
         {
             string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
-            var templatedService = new TemplateProductService();
-            var response = await templatedService.RunGeneratePdfTask(endpoint, templateId.ToString());
-            if (response.Succeeded)
+            var templatedService = new TemplatedProductService();
+            // async approchach caused error in webpart:
+            // An asynchronous operation cannot be started at this time. Asynchronous operations may only be started
+            // within an asynchronous handler or module or during certain events in the Page lifecycle.
+            var response = templatedService.RunGeneratePdfTask(endpoint, templateId.ToString()).Result;
+            if (response.Success && response.Payload!=null)
             {
-                cartItem.SetValue("DesignFilePathTaskId", response.TaskId);
-                if (response.Finished)
+                cartItem.SetValue("DesignFilePathTaskId", response.Payload.TaskId);
+                if (response.Payload.Finished)
                 {
                     cartItem.SetValue("DesignFilePathObtained", true);
-                    cartItem.SetValue("DesignFilePath", response.FileName);
+                    cartItem.SetValue("DesignFilePath", response.Payload.FileName);
                 }
                 else
                 {

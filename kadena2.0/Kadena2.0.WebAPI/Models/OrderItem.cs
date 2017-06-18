@@ -7,7 +7,7 @@ namespace Kadena.WebAPI.Models
 {
     public class OrderItem
     {
-
+        public int Id { get; set; }
         public int KenticoSKUId { get; set; }
         public string SKUNumber { get; set; }
         public string SKUName { get; set; }
@@ -28,7 +28,15 @@ namespace Kadena.WebAPI.Models
         
         public Guid MailingListId { get; set; }
 
-        public Guid TemplateId { get; set; }
+        /// <summary>
+        /// Main Chilli template ID
+        /// </summary>
+        public Guid ChilliTemplateId { get; set; }
+
+        /// <summary>
+        /// Selected template instance ID
+        /// </summary>
+        public Guid ChilliEditorTemplateId { get; set; }
 
         public string DesignFilePath { get; set; }
 

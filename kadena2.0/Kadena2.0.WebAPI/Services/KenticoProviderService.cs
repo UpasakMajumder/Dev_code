@@ -253,9 +253,11 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new OrderItem()
             {
-                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),// TODO via calling service for templated
+                Id = i.CartItemID,
+                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                TemplateId = i.GetValue("TemplateId", Guid.Empty), //TODO check if really set during add to cart
+                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ChilliTemplateId = i.GetValue("ChilliTemplateID", Guid.Empty),
                 OrderItemType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
@@ -325,6 +327,19 @@ namespace Kadena.WebAPI.Services
 
             // Recalculate shopping cart
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        public void SetCartItemDesignFilePath(int id, string path)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
+
+            if (item != null)
+            {
+                item.SetValue("DesignFilePathObtained", true);
+                item.SetValue("DesignFilePath", path);
+                item.SubmitChanges(false);
+            }
         }
 
         public void SetCartItemQuantity(int id, int quantity)

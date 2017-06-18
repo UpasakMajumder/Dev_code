@@ -45,5 +45,7 @@ namespace Kadena.WebAPI.Contracts
         IEnumerable<State> GetStates();
 
         void SaveShippingAddress(DeliveryAddress address);
+
+        void SetCartItemDesignFilePath(int id, string path);
     }
 }

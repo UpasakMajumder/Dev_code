@@ -161,6 +161,7 @@ namespace Kadena.WebAPI
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
+            container.Register<ITemplatedProductService, TemplatedProductService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }

@@ -102,7 +102,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Submittable()
         {
             var serviceResponse = await service.IsSubmittable();
-            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            var resultDto = Mapper.Map<bool>(serviceResponse);
             return ResponseJson(resultDto);
         }
     }

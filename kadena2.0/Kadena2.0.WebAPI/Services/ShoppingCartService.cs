@@ -411,11 +411,16 @@ namespace Kadena.WebAPI.Services
 
             foreach(var item in items)// todo consider parallel for-each
             {
-                var state = await templateService.GetGeneratePdfTaskStatus(endpoint, item.TemplateId.ToString(), item.DesignFilePathTaskId);
-                if (state.Finished && state.Succeeded)
+                var state = await templateService.GetGeneratePdfTaskStatus(endpoint, item.ChilliEditorTemplateId.ToString(), item.DesignFilePathTaskId);
+                if (state.Success && state.Payload!=null) 
                 {
-                    item.DesignFilePath = state.FileName.ToString();
-                    item.DesignFilePathObtained = true;
+                    var payload = state.Payload;
+                    if (payload.Finished && payload.Succeeded)
+                    {
+                        item.DesignFilePath = payload.FileName.ToString();
+                        item.DesignFilePathObtained = true;
+                        kenticoProvider.SetCartItemDesignFilePath(item.Id, item.DesignFilePath);
+                    }
                 }
             }
 
