@@ -248,24 +248,24 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public OrderItem[] GetShoppingCartOrderItems()
+        public CartItem[] GetShoppingCartOrderItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
-            var result = items.Select(i => new OrderItem()
+            var result = items.Select(i => new CartItem()
             {
                 Id = i.CartItemID,
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
-                MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                OrderItemType = i.GetValue("ProductType", string.Empty),
+                ProductType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
-                KenticoSKUId = i.SKUID,
+                SKUID = i.SKUID,
                 TotalPrice = i.TotalPrice,
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
-                UnitCount = i.CartItemUnits,
+                Quantity = i.CartItemUnits,
                 UnitOfMeasure = "EA",
                 DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty)
@@ -284,12 +284,12 @@ namespace Kadena.WebAPI.Services
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                Price = i.UnitPrice * i.CartItemUnits,
+                TotalPrice = i.UnitPrice * i.CartItemUnits,
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
                 MailingListName = i.GetValue("MailingListName", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty),
                 Template = i.SKU.SKUName,
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),

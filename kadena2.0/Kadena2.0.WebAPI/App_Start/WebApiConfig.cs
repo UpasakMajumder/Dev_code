@@ -88,23 +88,23 @@ namespace Kadena.WebAPI
                     IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
-                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
+                config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.ProductType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
                     MailingList = new MailingListDTO()
                     {
-                        MailingListID = p.MailingListId
+                        MailingListID = p.MailingListGuid
                     },
                     SKU = new SKUDTO()
                     {
-                        KenticoSKUID = p.KenticoSKUId,
+                        KenticoSKUID = p.SKUID,
                         Name = p.SKUName,
                         SKUNumber = p.SKUNumber
                     },
                     TotalPrice = p.TotalPrice,
                     TotalTax = p.TotalTax,
-                    UnitCount = p.UnitCount,
+                    UnitCount = p.Quantity,
                     UnitOfMeasure = p.UnitOfMeasure,
                     UnitPrice = p.UnitPrice
                 });
@@ -113,7 +113,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.TotalPrice))
                     .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();

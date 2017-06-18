@@ -94,7 +94,7 @@ namespace Kadena.WebAPI.Services
                 {
                     BtnLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
-                    IsDisabled = false // TODO
+                    IsDisabled = cartItems.Any(i => i.DesignFilePathRequired && !i.DesignFilePathObtained)
                 },
                 
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
