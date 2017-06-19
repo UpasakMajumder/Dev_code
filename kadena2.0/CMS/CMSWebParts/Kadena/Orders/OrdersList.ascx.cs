@@ -46,7 +46,7 @@ namespace Kadena.CMSWebParts.Kadena.Orders
                     {
                         var orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
 
-                        if (orderData != null && orderData.ToList().Count > 0)
+                        if ((orderData?.ToList().Count ?? 0) > 0)
                         {
                             repOrderList.DataSource = orderData;
                             repOrderList.DataBind();

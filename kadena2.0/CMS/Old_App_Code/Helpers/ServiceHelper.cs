@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
+using CMS.EventLog;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -602,7 +603,8 @@ namespace Kadena.Old_App_Code.Helpers
                 , UriKind.Absolute
                 , out url))
             {
-                throw new InvalidOperationException(_getAddressesIncorrectMessage);
+                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_getAddressesIncorrectMessage));
+                return null;    
             }
 
             var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
@@ -618,7 +620,8 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     catch (JsonReaderException e)
                     {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
+                        return null;
                     }
                     if (response.Success)
                     {
@@ -626,7 +629,8 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     else
                     {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
+                        return null;
                     }
                 }
             }

@@ -916,6 +916,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
+    <Content Include="CMSWebParts\Kadena\Orders\OrdersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
