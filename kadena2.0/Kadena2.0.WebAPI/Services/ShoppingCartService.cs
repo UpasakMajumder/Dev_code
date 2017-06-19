@@ -39,7 +39,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<CheckoutPage> GetCheckoutPage()
         {
-            var addresses = kenticoProvider.GetCustomerAddresses();
+            var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
             var carriers = kenticoProvider.GetShippingCarriers();            
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
