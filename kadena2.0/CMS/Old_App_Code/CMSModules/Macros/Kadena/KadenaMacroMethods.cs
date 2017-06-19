@@ -121,7 +121,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 string formattedValue = string.Empty;
 
-                if (ValidationHelper.GetString(parameters[1], null) == null || (int)parameters[1] == 0)
+                if (parameters[1] == null)
+                {
+                    formattedValue = ResHelper.GetString("Kadena.Product.Unavailable", ValidationHelper.GetString(parameters[2], ""));
+                }
+                else if ((int)parameters[1] == 0)
                 {
                     formattedValue = ResHelper.GetString("Kadena.Product.OutOfStock", ValidationHelper.GetString(parameters[2], ""));
                 }
@@ -148,14 +152,18 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
             if (ValidationHelper.GetString(parameters[1], "").Contains("KDA.InventoryProduct"))
             {
-                if (parameters[0] == null || (int)parameters[0] == 0)
+                if (parameters[0] == null)
+                {
+                    return "stock stock--unavailable";
+                }
+
+                if ((int)parameters[0] == 0)
                 {
                     return "stock stock--out";
-                }
-                else
-                {
-                    return "stock stock--available";
-                }
+                }              
+                
+                return "stock stock--available";
+                
             }
 
             return string.Empty;
