@@ -712,6 +712,9 @@
     <Compile Include="CMSPages\Kadena\OrderServiceTestPage.aspx.designer.cs">
       <DependentUpon>OrderServiceTestPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\RequestNewProduct.ashx.cs">
+      <DependentUpon>RequestNewProduct.ashx</DependentUpon>
+    </Compile>
     <Compile Include="CMSPages\Kadena\SubmitBid.ashx.cs">
       <DependentUpon>SubmitBid.ashx</DependentUpon>
     </Compile>
@@ -873,6 +876,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryData.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderItemHistoryData.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
@@ -912,7 +916,6 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
-    <Content Include="CMSWebParts\Kadena\Orders\OrdersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
@@ -934,6 +937,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\SubmitBid.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CMSPages\Kadena\RequestNewProduct.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -29,6 +29,7 @@ const app = {
     init('password', document.getElementsByClassName('js-password'));
     init('closer', document.getElementsByClassName('js-close-this'));
     init('datepicker', document.getElementsByClassName('js-datepicker'));
+    init('replace-value', document.getElementsByClassName('js-replace-value'));
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
   },
 
@@ -40,6 +41,8 @@ const app = {
     render('Login', document.querySelectorAll('.js-login'));
     render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
+    render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
+    render('Dialog', document.querySelectorAll('.r-dialog'));
   }
 };
 

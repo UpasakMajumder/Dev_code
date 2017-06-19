@@ -12,6 +12,10 @@
     @extend .link;
   }
 
+  &__devider {
+    @include rem(margin, 0 6px);
+  }
+
   p {
     margin: 0;
   }

@@ -2,8 +2,6 @@
 using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
@@ -11,11 +9,19 @@ using CMS.Ecommerce;
 using Kadena.WebAPI.Models;
 using System.Linq;
 using Kadena.Dto.Checkout;
-using Kadena.WebAPI.Infrastructure.Requests;
 using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
-using Kadena.WebAPI.Infrastructure.Responses;
-using Kadena.Dto.SubmitOrder;
+using Kadena.WebAPI.Models.CustomerData;
+using Kadena.Dto.CustomerData;
+using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Clients;
+using Kadena.Dto.SubmitOrder.Requests;
+using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
+using Kadena.Dto.Settings;
+using System.Collections.Generic;
+using Kadena.WebAPI.Models.Settings;
 
 namespace Kadena.WebAPI
 {
@@ -28,7 +34,6 @@ namespace Kadena.WebAPI
         {
             RegisterApiRoutes(apiConfig);
             ConfigureFilters(apiConfig);
-            ConfigureJsonSerialization(apiConfig);
             ConfigureMapper();
             ConfigureContainer(apiConfig);
             apiConfig.EnsureInitialized();
@@ -37,7 +42,6 @@ namespace Kadena.WebAPI
         private static void ConfigureFilters(HttpConfiguration config)
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
-            GlobalConfiguration.Configuration.Filters.Add(new AuthorizationFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
 
@@ -77,10 +81,11 @@ namespace Kadena.WebAPI
                 {
                     Id = p.PaymentOptionID,
                     Checked = false,
-                    Disabled = false,
-                    Icon = "",
+                    Disabled = !p.PaymentOptionEnabled,
+                    Icon = p.GetStringValue("IconResource", string.Empty),
                     Title = p.PaymentOptionDisplayName,
-                    ClassName = p.PaymentOptionClassName
+                    ClassName = p.PaymentOptionClassName,
+                    IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
                 config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
@@ -104,9 +109,12 @@ namespace Kadena.WebAPI
                     UnitPrice = p.UnitPrice
                 });
 
+                config.CreateMap<CustomerData, CustomerDataDTO>();
+                config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap( (src,dest) => dest.Price = string.Format("{0:#,0.00}", src.Price));
+                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.Price))
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -119,35 +127,42 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
+                config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
+                config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
+                config.CreateMap<DeliveryAddress, AddressDto>()
+                    .AfterMap((d, a) =>
+                    {
+                        a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
+                        a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
+                        a.IsRemoveButton = false;
+                    });
+                config.CreateMap<AddressDto, DeliveryAddress>()
+                    .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
+                config.CreateMap<DeliveryAddress, IdDto>();
+                config.CreateMap<PageButton, PageButtonDto>();
+                config.CreateMap<AddressList, AddressListDto>();
+                config.CreateMap<DialogButton, DialogButtonDto>();
+                config.CreateMap<DialogType, DialogTypeDto>();
+                config.CreateMap<DialogField, DialogFieldDto>();
+                config.CreateMap<AddressDialog, AddressDialogDto>();
+                config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
             });
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
-            container.Register<IShoppingCartService,ShoppingCartService>();
+            container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IOrderServiceCaller, OrderServiceCaller>();
+            container.Register<IOrderServiceClient, OrderServiceClient>();
             container.Register<IKenticoLogger, KenticoLogger>();
+            container.Register<ICustomerDataService, CustomerDataService>();
+            container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
+            container.Register<ISettingsService, SettingsService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
-        }
-
-        /// <summary>
-        /// Configure json serialization.
-        /// </summary>
-        /// <param name="config">The configuration holder object.</param>
-        private static void ConfigureJsonSerialization(HttpConfiguration config)
-        {
-            var jsonFormatter = config.Formatters.JsonFormatter;
-            jsonFormatter.UseDataContractJsonSerializer = false;
-
-            var settings = jsonFormatter.SerializerSettings;
-            settings.Formatting = Formatting.Indented;
-            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
         }
 
         /// <summary>

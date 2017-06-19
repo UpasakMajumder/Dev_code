@@ -1,20 +1,15 @@
-﻿using CMS.Base;
-using CMS.Core;
-using CMS.DataEngine;
-using CMS.EmailEngine;
+﻿using CMS.DataEngine;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Localization;
-using CMS.MacroEngine;
 using CMS.OnlineForms;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
+using Kadena.Old_App_Code.Kadena.Forms;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
 using System.Web;
 
 namespace Kadena.CMSPages.Kadena
@@ -73,6 +68,7 @@ namespace Kadena.CMSPages.Kadena
                 if (files.Count > 4)
                 {
                     result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.NumberOfAttachmentsIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
+                    context.Response.Write(JsonConvert.SerializeObject(result));
                     return;
                 }
                 int filesTotalSize = 0;
@@ -82,6 +78,7 @@ namespace Kadena.CMSPages.Kadena
                     if (requestFile.ContentType != "image/png" && requestFile.ContentType != "image/jpeg" && requestFile.ContentType != "application/pdf")
                     {
                         result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.FileExtensionIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
+                        context.Response.Write(JsonConvert.SerializeObject(result));
                         return;
                     }
                     filesTotalSize += requestFile.ContentLength;
@@ -89,12 +86,14 @@ namespace Kadena.CMSPages.Kadena
                 if (filesTotalSize > 10000000)
                 {
                     result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.TotalAttachmentsSizeIsTooBig", LocalizationContext.CurrentCulture.CultureCode) };
+                    context.Response.Write(JsonConvert.SerializeObject(result));
                     return;
                 }
             }
             if (productionDate == DateTime.MinValue)
             {
                 result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
+                context.Response.Write(JsonConvert.SerializeObject(result));
                 return;
             }
 
@@ -148,16 +147,16 @@ namespace Kadena.CMSPages.Kadena
                     for (int i = 0; files.Count > i; i++)
                     {
                         string extension = System.IO.Path.GetExtension(files[i].FileName);
-                        string fileName = GetNewGuidName(extension);
+                        string fileName = new FormsHelper().GetNewGuidName(extension);
                         string formFilesFolderPath = FormHelper.GetBizFormFilesFolderPath(SiteContext.CurrentSiteName);
                         string fileNameString = fileName + "/" + Path.GetFileName(files[i].FileName);
-                        this.SaveFileToDisk(files[i], fileName, formFilesFolderPath);
+                        new FormsHelper().SaveFileToDisk(files[i], fileName, formFilesFolderPath);
                         newFormItem.SetValue(string.Format("File{0}", i + 1), (object)fileNameString);
                     }
                 }
                 newFormItem.Insert();
 
-                SendFormEmail(newFormItem, files.Count);
+                new FormsHelper().SendFormEmail(newFormItem, files.Count);
 
                 return new GeneralResultDTO { success = true };
             }
@@ -165,80 +164,6 @@ namespace Kadena.CMSPages.Kadena
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.RepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
-        }
-
-        private string GetNewGuidName(string extension)
-        {
-            string fileName = Guid.NewGuid().ToString();
-
-            if (!string.IsNullOrEmpty(extension))
-            {
-                fileName = string.Format("{0}.{1}", fileName, extension.TrimStart('.'));
-            }
-            return fileName;
-        }
-
-        private void SaveFileToDisk(HttpPostedFile postedFile, string fileName, string filesFolderPath)
-        {
-            string path = filesFolderPath + fileName;
-            DirectoryHelper.EnsureDiskPath(path, SystemContext.WebApplicationPhysicalPath);
-            StorageHelper.SaveFileToDisk(path, (BinaryData)postedFile.InputStream, false);
-
-            if (!WebFarmHelper.WebFarmEnabled)
-            {
-                WebFarmHelper.CreateIOTask("UPDATEBIZFORMFILE", path, (BinaryData)postedFile.InputStream, "updatebizformfile", SiteContext.CurrentSiteName, fileName);
-            }
-        }
-
-        private void SendFormEmail(BizFormItem item, int attachmentsCount)
-        {
-            if (item.BizFormInfo != null)
-            {
-                MacroResolver resolver = MacroContext.CurrentResolver.CreateChild();
-                resolver.SetAnonymousSourceData(item);
-                resolver.Settings.EncodeResolvedValues = true;
-                resolver.Culture = CultureHelper.GetPreferredCulture();
-
-                string body = DataHelper.GetNotEmpty(item.BizFormInfo.FormEmailTemplate, string.Empty);
-                body = resolver.ResolveMacros(body);
-
-                EmailMessage message = new CMS.EmailEngine.EmailMessage();
-                message.From = item.BizFormInfo.FormSendFromEmail;
-                message.Recipients = resolver.ResolveMacros(item.BizFormInfo.FormSendToEmail);
-                message.Subject = resolver.ResolveMacros(item.BizFormInfo.FormEmailSubject);
-                message.Body = URLHelper.MakeLinksAbsolute(body);
-                message.EmailFormat = CMS.EmailEngine.EmailFormatEnum.Html;
-
-                for (int i = 1; i <= attachmentsCount; i++)
-                {
-                    Attachment attachment = GetAttachment(item.GetStringValue("File" + i, string.Empty));
-                    if (attachment != null)
-                    {
-                        message.Attachments.Add(attachment);
-                    }
-                }                
-                EmailSender.SendEmail(message);
-            }
-        }
-
-        private Attachment GetAttachment(string attachmentGuid)
-        {
-            if (string.IsNullOrEmpty(attachmentGuid))
-            {
-                return null;
-            }
-
-            string formFilesFolderPath = FormHelper.GetBizFormFilesFolderPath(SiteContext.CurrentSiteName, (string)null);
-            string path = formFilesFolderPath + FormHelper.GetGuidFileName(attachmentGuid);
-            if (CMS.IO.File.Exists(path))
-            {
-                Attachment attachment = new Attachment(
-                    (System.IO.Stream)CMS.IO.FileStream.New(path, CMS.IO.FileMode.Open, CMS.IO.FileAccess.Read),
-                    FormHelper.GetGuidFileName(attachmentGuid));
-                return attachment;
-            }
-
-            return null;
         }
 
         #endregion

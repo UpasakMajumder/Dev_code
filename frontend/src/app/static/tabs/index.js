@@ -1,12 +1,15 @@
 export default class Tabs {
   constructor(container) {
     this.container = container;
+    const { hash } = location;
     const { tabActiveDefault, tab: tabSelector } = this.container.dataset;
 
     this.activeClass = 'active';
     this.showClass = 'show';
 
-    this.activeTab = this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
+    const activeTab = this.container.querySelector(`[data-id="${hash}"]`);
+
+    this.activeTab = activeTab || this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
 
     this.styleActiveTab();
 
@@ -21,6 +24,9 @@ export default class Tabs {
         this.unstyleActiveTab();
         this.activeTab = target;
         this.styleActiveTab();
+
+        const { id } = target.dataset;
+        location.hash = id;
       });
     });
   }
@@ -29,23 +35,28 @@ export default class Tabs {
     this.activeTab.classList.add(this.activeClass);
     const content = this.findContent(this.activeTab);
 
-    setTimeout(() => {
-      content.classList.add(this.activeClass);
-    }, 301);
+    if (content) {
+      setTimeout(() => {
+        content.classList.add(this.activeClass);
+      }, 301);
 
-    setTimeout(() => {
-      content.classList.add(this.showClass);
-    }, 310);
+      setTimeout(() => {
+        content.classList.add(this.showClass);
+      }, 310);
+    }
   }
 
   unstyleActiveTab() {
     this.activeTab.classList.remove(this.activeClass);
     const content = this.findContent(this.activeTab);
-    content.classList.remove(this.showClass);
 
-    setTimeout(() => {
-      content.classList.remove(this.activeClass);
-    }, 300);
+    if (content) {
+      content.classList.remove(this.showClass);
+
+      setTimeout(() => {
+        content.classList.remove(this.activeClass);
+      }, 300);
+    }
   }
 
   findContent(tab) {

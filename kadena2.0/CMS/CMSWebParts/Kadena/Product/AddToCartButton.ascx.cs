@@ -7,6 +7,7 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 
 namespace Kadena.CMSWebParts.Kadena.Product
@@ -46,7 +47,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             var previouslyAddedAmmount = GetPreviouslyAddedAmmout();
 
-            if (IsAddedAmmountValid(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) + previouslyAddedAmmount))
+            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput + previouslyAddedAmmount))
             {
                 if (IsProductInventoryType() && (ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0)))
                 {
@@ -72,6 +73,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
         #endregion
 
         #region Private methods
+
+        private int NumberOfItemsInInput
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
+            }
+
+        }
 
         private void SetErrorLblVisible()
         {
@@ -180,12 +190,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
-            var currentCustomer = ECommerceContext.CurrentCustomer;
-
-            if (currentCustomer != null)
-            {
-                cart.ShoppingCartShippingAddress = AddressInfoProvider.GetAddressInfo(currentCustomer.CustomerID);
-            }
+            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
+            cart.ShoppingCartShippingAddress = customerAddress;
         }
 
         private double GetUnitPriceForAmmount(int ammount)

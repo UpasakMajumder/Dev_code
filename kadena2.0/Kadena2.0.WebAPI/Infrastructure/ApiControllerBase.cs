@@ -2,13 +2,15 @@
 using System.Web.Http;
 using System.Web.Http.Results;
 
+using static Kadena.WebAPI.SerializerConfig;
+
 namespace Kadena.WebAPI.Infrastructure
 {
     public class ApiControllerBase : ApiController
     {
         protected JsonResult<ErrorResponse> ErrorJson(string errorMessage)
         {
-            return Json(new ErrorResponse(errorMessage), GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+            return Json(new ErrorResponse(errorMessage), CamelCaseSerializer);
         }
 
         protected JsonResult<BaseResponse<T>> ResponseJson<T>(T payload)
@@ -20,7 +22,7 @@ namespace Kadena.WebAPI.Infrastructure
                 ErrorMessage = null
             };
 
-            return Json(response, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+            return Json(response, CamelCaseSerializer);
         }
     }
 }

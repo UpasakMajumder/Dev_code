@@ -125,32 +125,33 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\IKenticoLogger.cs" />
-    <Compile Include="Contracts\IOrderServiceCaller.cs" />
+    <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
+    <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
-    <Compile Include="Infrastructure\Requests\ChangeItemQuantityRequestDto.cs" />
-    <Compile Include="Infrastructure\Requests\RemoveItemRequestDto.cs" />
-    <Compile Include="Infrastructure\Requests\ChangeSelectionRequestDto.cs" />
+    <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizationFilter.cs" />
     <Compile Include="Infrastructure\Filters\ExceptionFilter.cs" />
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
     <Compile Include="App_Start\WebApiInitModule.cs" />
-    <Compile Include="Infrastructure\Requests\PaymentMethodDto.cs" />
-    <Compile Include="Infrastructure\Requests\SubmitRequestDto.cs" />
-    <Compile Include="Infrastructure\Responses\SubmitOrderResponseDto.cs" />
     <Compile Include="Models\BillingAddress.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CartItems.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerData\CustomerAddress.cs" />
+    <Compile Include="Models\CustomerData\CustomerData.cs" />
     <Compile Include="Models\DeliveryAddresses.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
     <Compile Include="Models\CheckoutPage.cs" />
@@ -160,8 +161,16 @@
     <Compile Include="Models\KenticoSite.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\Settings\AddressDialog.cs" />
+    <Compile Include="Models\Settings\AddressList.cs" />
+    <Compile Include="Models\Settings\DialogButton.cs" />
+    <Compile Include="Models\Settings\DialogField.cs" />
+    <Compile Include="Models\Settings\DialogType.cs" />
+    <Compile Include="Models\Settings\PageButton.cs" />
+    <Compile Include="Models\Settings\SettingsAddresses.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubmitOrder\PaymentMethod.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="Models\SubmitOrder\SubmitOrderError.cs" />
@@ -169,10 +178,11 @@
     <Compile Include="Models\Totals.cs" />
     <Compile Include="Models\Total.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
-    <Compile Include="Services\OrderServiceCaller.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +201,10 @@
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>
       <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
+      <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
+      <Name>Kadena2.0.MicroserviceClients</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -38,8 +38,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             int openCount = 0, completedCount = 0;
             if (projects != null)
             {
-                var openProjects = projects.Where(p => p.Active).OrderBy(p => p.UpdateDate).ToArray();
-                var completedProjects = projects.Where(p => !p.Active).OrderBy(p => p.UpdateDate).ToArray();
+                var openProjects = projects.Where(p => p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
+                var completedProjects = projects.Where(p => !p.Active).OrderByDescending(p => p.UpdateDate).ToArray();
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
@@ -48,8 +48,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                 FillTable(tblCompletedProjects, phCompletedPagination, completedProjects, RecordsPerPage);
             }
 
-            lblOpenProject.InnerText = string.Format(GetString("Kadena.KSource.OpenProjectsCaption"), openCount);
-            lblCompletedProjects.InnerText = string.Format(GetString("Kadena.KSource.CompletedProjectsCaption"), completedCount);
+            lblOpenProject.InnerText = ResHelper.GetStringFormat("Kadena.KSource.OpenProjectsCaption", openCount);
+            lblCompletedProjects.InnerText = ResHelper.GetStringFormat("Kadena.KSource.CompletedProjectsCaption", completedCount);
         }
 
         private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data, int recordsPerPage)
@@ -58,15 +58,19 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 var pr = data[i];
                 var page = i / recordsPerPage + 1;
+                var firstCol = new HtmlTableCell { InnerText = pr.Name };
+                firstCol.Attributes["class"] = "show-table__text-cutted fixed-main-td";
+
                 var row = new HtmlTableRow
                 {
                     Cells = {
-                        new HtmlTableCell { InnerText = pr.Name},
+                        firstCol,
                         new HtmlTableCell { InnerText = pr.RequestId.ToString()},
                         new HtmlTableCell { InnerText = pr.Status},
                         new HtmlTableCell { InnerText = pr.UpdateDate.ToString("MMM dd yyyy")}
                         }
                 };
+
                 if (page == 1)
                 {
                     row.Attributes["class"] = "active";
@@ -93,6 +97,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                 var divPagesInner = new HtmlGenericControl("div");
                 divPagesInner.Attributes["class"] = "js-table-paginator-wrapper generated-paginator";
                 divPagesInner.Attributes["data-pages"] = (data.Count() / recordsPerPage + 1).ToString();
+                divPagesInner.Attributes["data-rows-on-page"] = recordsPerPage.ToString();
 
                 var span = new HtmlGenericControl("span");
 

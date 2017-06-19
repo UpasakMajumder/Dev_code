@@ -508,14 +508,19 @@ if (!String.prototype.format) {
             }
             // files extensions check - there is extra empty file input!
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
-                base.find(settings.attachments).find(".js-drop-zone-file").each(function(index) {
+                var isOk = true;
+
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
                     if (index != 0) {
                         if ($(this)[0].files[0].type != "image/png" && $(this)[0].files[0].type != "image/jpeg" && $(this)[0].files[0].type != "application/pdf") {
-                            base.find(settings.attachmentsFileExtensionErrorMessage).show();
-                            return;
+                            isOk = false;                            
                         }
                     }
                 });
+                if (!isOk) {
+                    base.find(settings.attachmentsFileExtensionErrorMessage).show();
+                    return;
+                }
             }           
             // files count check - there is extra empty file input!
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 5) {
@@ -580,14 +585,13 @@ if (!String.prototype.format) {
             xhr.addEventListener("load", function (evt) {
                 var target = evt.target || evt.srcElement;
                 var data = JSON.parse(target.response);
-                if (data.success) {
-                    base.find(settings.submitButton).removeAttr("disabled");
-
+                if (data.success) {                    
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorMessage).html(data.errorMassage);
+                    base.find(settings.generalErrorMessage).html(data.errorMessage);
                     base.find(settings.generalErrorMessage).show();
                 }
+                base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
@@ -597,6 +601,210 @@ if (!String.prototype.format) {
         });
     }
 
+}(jQuery));
+
+// REQUEST NEW PRODUCT
+
+(function ($) {
+
+    $.fn.requestNewProduct = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            descriptionInput: ".j-description-input",
+            descriptionErrorMessage: ".j-description-error-message",
+            attachments: ".js-drop-zone",
+            attachmentsFileExtensionErrorMessage: ".j-invalid-file-extension-error-message",
+            attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
+            attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
+            generalErrorMessage: ".j-general-error-message",
+            submitButton: ".j-submit-button"
+        }, options);
+
+        base.find(settings.submitButton).click(function (e) {
+            e.preventDefault();
+
+            base.find(settings.descriptionErrorMessage).hide();
+            base.find(settings.descriptionInput).removeClass("input--error");
+
+            base.find(settings.attachmentsFileExtensionErrorMessage).hide();
+            base.find(settings.attachmentsNumberErrorMessage).hide();
+            base.find(settings.attachmentsSizeErrorMessage).hide();
+
+            base.find(settings.generalErrorMessage).hide();
+                                  
+            if (base.find(settings.descriptionInput).val() == '') {
+                base.find(settings.descriptionInput).addClass("input--error");
+                base.find(settings.descriptionErrorMessage).show();
+                return;
+            }
+            // files extensions check - there is extra empty file input!
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
+                var isOk = true;
+
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
+                    if (index != 0) {
+                        if ($(this)[0].files[0].type != "image/png" && $(this)[0].files[0].type != "image/jpeg" && $(this)[0].files[0].type != "application/pdf") {
+                            isOk = false;                            
+                        }
+                    }
+                });
+                if (!isOk) {
+                    base.find(settings.attachmentsFileExtensionErrorMessage).show();
+                    return;
+                }
+            }
+            // files count check - there is extra empty file input!
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 5) {
+                base.find(settings.attachmentsNumberErrorMessage).show();
+                return;
+            }
+            // file sizes check - there is extra empty file input!
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
+                var totalSize = 0;
+
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
+                    if (index != 0) {
+                        totalSize = totalSize + $(this)[0].files[0].size;
+                    }
+                });
+                if (totalSize > 10000000) {
+                    base.find(settings.attachmentsSizeErrorMessage).show();
+                    return;
+                }
+            }
+
+            base.find(settings.submitButton).attr("disabled", "disabled");
+
+            var formData = new FormData()
+            formData.append('description', base.find(settings.descriptionInput).val());
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
+                    if (index != 0) {
+                        formData.append('file' + index, $(this)[0].files[0]);
+                    }
+                });
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", base.attr("data-handler"), true);
+
+            xhr.addEventListener("load", function (evt) {
+                var target = evt.target || evt.srcElement;
+                var data = JSON.parse(target.response);
+                if (data.success) {
+                    window.location.href = base.attr("data-thank-you-page");
+                } else {
+                    base.find(settings.generalErrorMessage).html(data.errorMessage);
+                    base.find(settings.generalErrorMessage).show();
+                }
+                base.find(settings.submitButton).removeAttr("disabled");
+            }, false);
+            xhr.addEventListener("error", function (evt) {
+                base.find(settings.submitButton).removeAttr("disabled");
+            }, false);
+
+            xhr.send(formData);
+        });
+    }
+
+}(jQuery));
+
+// REQUEST NEW KIT
+
+(function ($) {
+    $.fn.requestNewKitForm = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            nameInput: ".j-name-input",
+            nameErrorMessage: ".j-name-error-message",
+            descriptionInput: ".j-description-input",
+            descriptionErrorMessage: ".j-description-error-message",
+            productsCheckboxList: ".j-products",
+            noProductsSelectedErrorMessage: ".j-no-product-selected-error-message",
+            tooManyProductsSelectedErrorMessage: ".j-too-many-products-selected-error-message",
+            generalErrorMessage: ".j-general-error-message",
+            submitButton: ".j-submit-button"
+        }, options);
+
+        base.find(settings.nameInput).keyup(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                base.find(settings.submitButton).trigger("click");
+            }
+        });
+
+        base.find(settings.submitButton).click(function (e) {
+            e.preventDefault();
+
+            base.find(settings.nameErrorMessage).hide();
+            base.find(settings.nameInput).removeClass("input--error");
+            base.find(settings.descriptionErrorMessage).hide();
+            base.find(settings.descriptionInput).removeClass("input--error");
+            base.find(settings.noProductsSelectedErrorMessage).hide();
+            base.find(settings.tooManyProductsSelectedErrorMessage).hide();
+            base.find(settings.generalErrorMessage).hide();
+
+            if (base.find(settings.nameInput).val() == '') {
+                base.find(settings.nameInput).addClass("input--error");
+                base.find(settings.nameErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.descriptionInput).val() == '') {
+                base.find(settings.descriptionInput).addClass("input--error");
+                base.find(settings.descriptionErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.productsCheckboxList).find("input:checked").length < 2) {
+                base.find(settings.noProductsSelectedErrorMessage).show();
+                return;
+            }
+            if (base.find(settings.productsCheckboxList).find("input:checked").length > 6) {
+                base.find(settings.tooManyProductsSelectedErrorMessage).show();
+                return;
+            }
+
+            var productIDs = [];
+            var productNames = [];
+
+            base.find(settings.productsCheckboxList).find("input:checked").each(function() {
+                productIDs.push($(this).attr("data-id"));
+                productNames.push($(this).next().html());
+            });
+
+            var passedData = {
+                name: base.find(settings.nameInput).val(),
+                description: base.find(settings.descriptionInput).val(),
+                productIDs: productIDs,
+                productNames: productNames
+            };
+
+            base.find(settings.submitButton).attr("disabled", "disabled");
+
+            $.ajax({
+                type: "POST",
+                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
+                data: JSON.stringify(passedData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.d.success) {
+                        window.location.href = base.attr("data-thank-you-page");
+                    } else {
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
+                    }
+                    base.find(settings.submitButton).removeAttr("disabled");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
+                    base.find(settings.generalErrorLabel).show();
+
+                    base.find(settings.submitButton).removeAttr("disabled");
+                }
+            });
+        });
+    }
 }(jQuery));
 
 // custom script initialization
@@ -620,6 +828,12 @@ var customScripts = {
     submitBidInit: function() {
         $(".j-bid-form").submitBid();
     },
+    requestNewProductInit: function() {
+        $(".j-new-product-form").requestNewProduct();
+    },
+    requestNewKitInit: function() {
+        $(".j-new-kit-request-form").requestNewKitForm();
+    },
     init: function () {
         var base = this;
 
@@ -629,6 +843,8 @@ var customScripts = {
         base.changePasswordInit();
         base.submitBidInit();
         base.contactUsFormInit();
+        base.requestNewProductInit();
+        base.requestNewKitInit();
     }
 }
 
