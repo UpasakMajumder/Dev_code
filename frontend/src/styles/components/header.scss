@@ -25,13 +25,7 @@
 
     .nav-item {
       @extend %flex--center--default;
-
-      @include rem(padding, 18px 20px);
       cursor: pointer;
-
-      @include media-breakpoint-down(lg) {
-        @include rem(padding, 9px 20px);
-      }
 
       &.active,
       &:hover {
@@ -54,18 +48,21 @@
       }
 
       .nav-link {
-        @include rem(padding, 18px);
+        @include rem(padding, 18px 20px);
 
         @extend %flex--center--default;
         color: $brand-dark;
         font-weight: 400;
-        padding: 0;
         position: relative;
         white-space: nowrap;
 
         @include media-breakpoint-down(lg) {
           font-size: $font-xxs;
           flex-direction: column;
+        }
+
+        @include media-breakpoint-down(lg) {
+          @include rem(padding, 9px 20px);
         }
       }
     }
