@@ -210,7 +210,7 @@ if (!String.prototype.format) {
                         base.find(settings.errorMassage).html(data.d.errorMessage);
                         base.find(settings.errorMassage).show();
                     }
-                    base.find(settings.submitButton).removeAttr("disabled");                    
+                    base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
@@ -349,7 +349,10 @@ if (!String.prototype.format) {
             messageInput: ".j-message",
             messageErrorLabel: ".j-message-error-message",
             submitButton: ".j-submit-button",
-            generalErrorLabel: ".j-general-error-message"
+            generalErrorLabel: ".j-general-error-message",
+            attachments: ".js-drop-zone",
+            attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
+            attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
         }, options);
 
         base.find(settings.fullNameInput).keyup(function (e) {
@@ -390,6 +393,9 @@ if (!String.prototype.format) {
             base.find(settings.messageErrorLabel).hide();
             base.find(settings.messageInput).removeClass("input--error");
             base.find(settings.generalErrorLabel).hide();
+            base.find(settings.attachmentsNumberErrorMessage).hide();
+            base.find(settings.attachmentsSizeErrorMessage).hide();
+
 
             if (base.find(settings.fullNameInput).val() == '') {
                 base.find(settings.fullNameInput).addClass("input--error");
@@ -406,39 +412,65 @@ if (!String.prototype.format) {
                 base.find(settings.messageErrorLabel).show();
                 return;
             }
+            // files count check - there is extra empty file input!
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 5) {
+                base.find(settings.attachmentsNumberErrorMessage).show();
+                return;
+            }
+            // file sizes check - there is extra empty file input!
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
+                var totalSize = 0;
 
-            var passedData = {
-                fullName: base.find(settings.fullNameInput).val(),
-                companyName: base.find(settings.companyNameInput).val(),
-                email: base.find(settings.emailInput).val(),
-                phone: base.find(settings.phoneInput).val(),
-                message: base.find(settings.messageInput).val()
-            };
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
+                    if (index != 0) {
+                        totalSize = totalSize + $(this)[0].files[0].size;
+                    }
+                });
+                if (totalSize > 10000000) {
+                    base.find(settings.attachmentsSizeErrorMessage).show();
+                    return;
+                }
+            }
+
+            var formData = new FormData()
+            formData.append('fullName', base.find(settings.fullNameInput).val());
+            formData.append('companyName', base.find(settings.companyNameInput).val());
+            formData.append('email', base.find(settings.emailInput).val());
+            formData.append('phone', base.find(settings.phoneInput).val());
+            formData.append('message', base.find(settings.messageInput).val());
+
+            if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
+                    if (index != 0) {
+                        formData.append('file' + index, $(this)[0].files[0]);
+                    }
+                });
+            }
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 
-            $.ajax({
-                type: "POST",
-                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
-                data: JSON.stringify(passedData),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    if (data.d.success) {
-                        window.location.href = base.attr("data-thank-you-page");
-                    } else {
-                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
-                        base.find(settings.generalErrorLabel).show();
-                    }
-                    base.find(settings.submitButton).removeAttr("disabled");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
-                    base.find(settings.generalErrorLabel).show();
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", base.attr("data-handler"), true);
 
-                    base.find(settings.submitButton).removeAttr("disabled");
+            xhr.addEventListener("load", function (evt) {
+                var target = evt.target || evt.srcElement;
+                var data = JSON.parse(target.response);
+                if (data.success) {
+                    window.location.href = base.attr("data-thank-you-page");
+                } else {
+                    base.find(settings.generalErrorLabel).html(data.errorMessage);
+                    base.find(settings.generalErrorLabel).show();
                 }
-            });
+                base.find(settings.submitButton).removeAttr("disabled");
+            }, false);
+            xhr.addEventListener("error", function (evt) {
+                base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
+                base.find(settings.generalErrorLabel).show();
+
+                base.find(settings.submitButton).removeAttr("disabled");
+            }, false);
+
+            xhr.send(formData);
         });
     }
 }(jQuery));
@@ -513,7 +545,7 @@ if (!String.prototype.format) {
                 base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
                     if (index != 0) {
                         if ($(this)[0].files[0].type != "image/png" && $(this)[0].files[0].type != "image/jpeg" && $(this)[0].files[0].type != "application/pdf") {
-                            isOk = false;                            
+                            isOk = false;
                         }
                     }
                 });
@@ -521,17 +553,17 @@ if (!String.prototype.format) {
                     base.find(settings.attachmentsFileExtensionErrorMessage).show();
                     return;
                 }
-            }           
+            }
             // files count check - there is extra empty file input!
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 5) {
                 base.find(settings.attachmentsNumberErrorMessage).show();
                 return;
-            }  
+            }
             // file sizes check - there is extra empty file input!
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
                 var totalSize = 0;
 
-                base.find(settings.attachments).find(".js-drop-zone-file").each(function(index) {
+                base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
                     if (index != 0) {
                         totalSize = totalSize + $(this)[0].files[0].size;
                     }
@@ -553,7 +585,7 @@ if (!String.prototype.format) {
                 return;
             }
             // selection date format validation
-            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {                
+            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
                 base.find(settings.selectionDateInput).addClass("input--error");
                 base.find(settings.selectionDateInvalidMessage).show();
                 return;
@@ -570,7 +602,7 @@ if (!String.prototype.format) {
             formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
             if (base.find(settings.selectionDateInput).val() != '') {
                 formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
-            }            
+            }
 
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
                 base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
@@ -578,14 +610,14 @@ if (!String.prototype.format) {
                         formData.append('file' + index, $(this)[0].files[0]);
                     }
                 });
-            }            
+            }
             var xhr = new XMLHttpRequest();
             xhr.open("POST", base.attr("data-handler"), true);
-            
+
             xhr.addEventListener("load", function (evt) {
                 var target = evt.target || evt.srcElement;
                 var data = JSON.parse(target.response);
-                if (data.success) {                    
+                if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
                     base.find(settings.generalErrorMessage).html(data.errorMessage);
@@ -596,7 +628,7 @@ if (!String.prototype.format) {
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
-       
+
             xhr.send(formData);
         });
     }
@@ -632,7 +664,7 @@ if (!String.prototype.format) {
             base.find(settings.attachmentsSizeErrorMessage).hide();
 
             base.find(settings.generalErrorMessage).hide();
-                                  
+
             if (base.find(settings.descriptionInput).val() == '') {
                 base.find(settings.descriptionInput).addClass("input--error");
                 base.find(settings.descriptionErrorMessage).show();
@@ -645,7 +677,7 @@ if (!String.prototype.format) {
                 base.find(settings.attachments).find(".js-drop-zone-file").each(function (index) {
                     if (index != 0) {
                         if ($(this)[0].files[0].type != "image/png" && $(this)[0].files[0].type != "image/jpeg" && $(this)[0].files[0].type != "application/pdf") {
-                            isOk = false;                            
+                            isOk = false;
                         }
                     }
                 });
@@ -767,7 +799,7 @@ if (!String.prototype.format) {
             var productIDs = [];
             var productNames = [];
 
-            base.find(settings.productsCheckboxList).find("input:checked").each(function() {
+            base.find(settings.productsCheckboxList).find("input:checked").each(function () {
                 productIDs.push($(this).attr("data-id"));
                 productNames.push($(this).next().html());
             });
@@ -825,13 +857,13 @@ var customScripts = {
     contactUsFormInit: function () {
         $(".j-contact-us-form").contactUsForm();
     },
-    submitBidInit: function() {
+    submitBidInit: function () {
         $(".j-bid-form").submitBid();
     },
-    requestNewProductInit: function() {
+    requestNewProductInit: function () {
         $(".j-new-product-form").requestNewProduct();
     },
-    requestNewKitInit: function() {
+    requestNewKitInit: function () {
         $(".j-new-kit-request-form").requestNewKitForm();
     },
     init: function () {

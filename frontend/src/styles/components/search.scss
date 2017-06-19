@@ -1,0 +1,89 @@
+.search {
+  $max-width: 600px;
+  $search-close-btn-size: 40px;
+  width: 100%;
+  margin-right: 1rem;
+
+  &__input {
+    width: 100%;
+    max-width: $max-width;
+    margin: 0 auto;
+
+    .input__text {
+      .isOpen & {
+        @include rem(padding-right, $search-close-btn-size);
+      }
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    border-top: 1px solid $dropdown-border;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    left: 0;
+    top: $header-size;
+    z-index: 2;
+    border-radius: $border-radius;
+    background: white;
+    transition: all 0.5s ease-in-out;
+
+    .isOpen & {
+      max-height: 900px;
+      opacity: 1;
+    }
+  }
+
+  &__closer {
+    @include rem(padding, 6px);
+    position: absolute;
+    display: none;
+    right: 0;
+    top: 0;
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    width: $search-close-btn-size;
+
+    .isOpen & {
+      display: block;
+    }
+  }
+
+  &__header {
+    @include rem(padding, 10px);
+
+    @extend %flex--center--between;
+    background-color: rgba($main-gutter-color, 0.5);
+    border-bottom: 1px solid $main-gutter-color;
+
+    h2 {
+      @extend .weight--bold;
+      font-size: $font-xs;
+      margin: 0;
+    }
+  }
+
+  &__result-pages {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      display: block;
+
+      &:not(:last-child) {
+        border-bottom: 2px solid $main-gutter-color;
+      }
+    }
+
+    a {
+      @include rem(padding, 16px 24px);
+
+      @extend .p-primary;
+      display: block;
+    }
+  }
+}

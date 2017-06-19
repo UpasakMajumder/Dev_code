@@ -1,0 +1,12 @@
+<a href="#" class="search-result">
+  <div class="search-result__img" style="background-image: url(http://satyr.io/250-500x150-300?{{ x }});"></div>
+
+  <div class="search-result__content">
+    <p class="search-result__category">Category name</p>
+    <p class="search-result__title">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae ipsum maxime quo.</p>
+    <div class="search-result__stock stock--available">
+      {% include "components/stock.nunj" %}
+      <span>150 pcs in stock</span>
+    </div>
+  </div>
+</a>
