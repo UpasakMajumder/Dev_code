@@ -9,6 +9,9 @@ using System;
 using CMS.DataEngine;
 using CMS.Globalization;
 using System.Collections.Generic;
+using CMS.DocumentEngine;
+using CMS.Membership;
+using Newtonsoft.Json;
 
 namespace Kadena.WebAPI.Services
 {
@@ -352,8 +355,30 @@ namespace Kadena.WebAPI.Services
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+
+
+            var price = GetDynamicPrice( item.GetIntegerValue("ProductPageID", 0), quantity );
+            if (price != 0.0m)
+            {
+                item.CartItemPrice = (double)price;
+            }
+
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        private decimal GetDynamicPrice(int documentId, int quantity)
+        {
+            var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
+            var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
+
+            if (ranges != null)
+            {
+                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
+                if (matchingRange != null)
+                    return matchingRange.Price;
+            }
+            return 0.0m;
         }
 
         public void RemoveCurrentItemsFromStock()
