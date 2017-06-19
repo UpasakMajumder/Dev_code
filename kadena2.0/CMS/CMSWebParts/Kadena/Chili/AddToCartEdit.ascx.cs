@@ -165,6 +165,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
                     var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
+                    var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
 
 
@@ -180,6 +181,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ProductType", productType);
                     cartItem.SetValue("ProductPageID", documentId);
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
+                    cartItem.SetValue("ProductChilliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
 
                     if (MailingListData != null)
                     {
@@ -196,7 +198,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     if (productType.Contains("KDA.TemplatedProduct"))
                     {
-                        CallRunGeneratePdfTask(cartItem, templateId);
+                        CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId);
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -207,14 +209,14 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                    
         }
 
-        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId)
+        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
         {
             string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
             var templatedService = new TemplatedProductService();
             // async approchach caused error in webpart:
             // An asynchronous operation cannot be started at this time. Asynchronous operations may only be started
             // within an asynchronous handler or module or during certain events in the Page lifecycle.
-            var response = templatedService.RunGeneratePdfTask(endpoint, templateId.ToString()).Result;
+            var response = templatedService.RunGeneratePdfTask(endpoint, templateId.ToString(), settingsId.ToString()).Result;
             if (response.Success && response.Payload!=null)
             {
                 cartItem.SetValue("DesignFilePathTaskId", response.Payload.TaskId);

@@ -9,11 +9,11 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TemplatedProductService : ITemplatedProductService
     {
-        public async Task<BaseResponse<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId)
+        public async Task<BaseResponse<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
         {
             using (var httpClient = new HttpClient())
             {
-                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf";
+                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
 
                 var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
 

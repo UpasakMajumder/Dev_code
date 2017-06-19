@@ -257,6 +257,7 @@ namespace Kadena.WebAPI.Services
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 SKUName = i.SKU?.SKUName,

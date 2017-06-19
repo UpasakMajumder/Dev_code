@@ -91,6 +91,8 @@ namespace Kadena.WebAPI.Models
         /// </summary>
         public Guid ChilliEditorTemplateId { get; set; }
 
+        public Guid ProductChilliPdfGeneratorSettingsId { get; set; }
+
         public string DesignFilePath { get; set; }
 
         /// <summary>

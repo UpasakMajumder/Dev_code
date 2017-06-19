@@ -6,7 +6,7 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface ITemplatedProductService
     {
-        Task<BaseResponse<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId);
+        Task<BaseResponse<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId);
         Task<BaseResponse<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId);
     }
 }
