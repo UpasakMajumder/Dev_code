@@ -16,7 +16,7 @@ namespace AutomatedTests.KenticoApi.Objects
 
         public ProductCategory Init()
         {
-            ProductCategoryTitle = Lorem.Word();
+            ProductCategoryTitle = StringHelper.RandomString(7);
             ProductCategoryDescription = Lorem.Paragraph(4);
             NodeClassID = 5357;
             //DocumentPageTemplateID = 25752;
