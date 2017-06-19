@@ -9,6 +9,7 @@ using CMS.OnlineForms;
 using CMS.SiteProvider;
 using System;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Kadena.Old_App_Code.Kadena.Forms
@@ -85,6 +86,17 @@ namespace Kadena.Old_App_Code.Kadena.Forms
                 return attachment;
             }
             return null;
+        }
+
+        public bool IsEmailValid(string email)
+        {
+            var regexText = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
+                            + "@"
+                            + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$";
+
+            Regex regex = new Regex(regexText);
+            Match match = regex.Match(email);
+            return match.Success;
         }
     }
 }
