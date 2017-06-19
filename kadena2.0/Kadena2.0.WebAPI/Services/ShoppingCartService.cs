@@ -219,7 +219,7 @@ namespace Kadena.WebAPI.Services
 
             if (serviceResult.Success)
             {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 await OrderCurrentCart();
             }
             else
