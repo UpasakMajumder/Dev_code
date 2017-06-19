@@ -10,5 +10,6 @@
         public bool HasInput { get; set; }
         public string InputPlaceholder { get; set; }
         public string ClassName { get; set; }
+        public bool IsUnpayable { get; set; }
     }
 }
