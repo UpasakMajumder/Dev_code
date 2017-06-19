@@ -40,6 +40,17 @@
       </div>
     </div>
 
+    <div class="block">
+      <div class="block__heading">
+        <h2>Attachment</h2>
+        <span class="block__right-label">Optional (maximum 4 files)</span>
+      </div>
+      {% set description = 'Drag & drop your file here or click anywhere to upload' %}
+      {% set descriptionIE = 'Click anywhere to upload your file' %}
+      {% set maxItems = 4 %}
+      {% include "components/drop-zone.nunj" %}
+    </div>
+
     <div class="contact__submit">
       <button type="button" class="btn-action">Send message</button>
     </div>
