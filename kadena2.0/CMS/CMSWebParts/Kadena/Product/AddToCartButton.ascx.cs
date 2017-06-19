@@ -56,7 +56,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
                 else
                 {
-                    AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0), previouslyAddedAmmount);
+                    AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0), previouslyAddedAmmount, DocumentContext.CurrentDocument.DocumentID);
                 }
 
 
@@ -158,7 +158,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             return false;
         }
 
-        private void AddItemsToShoppingCart(int ammount, int previouslyAddedAmmount)
+        private void AddItemsToShoppingCart(int ammount, int previouslyAddedAmmount, int documentId)
         {
             var product = SKUInfoProvider.GetSKUInfo(DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0));
 
@@ -178,6 +178,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                 cartItem.SetValue("ArtworkLocation", artworkLocation);
                 cartItem.SetValue("ProductType", productType);
+                cartItem.SetValue("ProductPageID", documentId);
 
                 var dynamicUnitPrice = GetUnitPriceForAmmount(ammount + previouslyAddedAmmount);
                 if (dynamicUnitPrice > 0)

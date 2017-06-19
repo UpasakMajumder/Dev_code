@@ -32,7 +32,7 @@ namespace AutomatedTests.KenticoApi.Objects
 
         public Product Init()
         {
-            var name = Lorem.Word();
+            var name = StringHelper.RandomString(7);
             DocumentPageTemplateID = 25820;
             DocumentName = name;
             NodeName = name;

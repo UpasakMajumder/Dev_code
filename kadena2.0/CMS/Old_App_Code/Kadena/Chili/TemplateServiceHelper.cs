@@ -37,24 +37,30 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var data = new NewTemplateRequestData { user = userID.ToString(), templateId = masterTemplateID };
                 streamWriter.Write(new JavaScriptSerializer().Serialize(data));
             }
-
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                var result = (AwsResponseMessage<string>)response;
-
-                if (result.Success)
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return result.Response;
+                    var result = (AwsResponseMessage<string>)response;
+
+                    if (result.Success)
+                    {
+                        return result.Response;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", result.Error.Message);
+                    }
                 }
                 else
                 {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", result.Error.Message);
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", response.StatusCode.ToString());
                 }
             }
-            else
+            catch (WebException ex)
             {
-                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - CREATE NEW TEMPLATE", "ERROR", response.StatusCode.ToString());
+                EventLogProvider.LogException("TEMPLATE SERVICE HELPER", "CREATE NEW TEMPLATE", ex);
             }
             return string.Empty;
         }
