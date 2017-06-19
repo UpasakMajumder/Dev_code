@@ -14,8 +14,10 @@
 {% block content %}
 
   <div class="block">
-
-    <h2 class="block__heading">Product Description</h2>
+    <div class="block__heading">
+      <h2>Product Description</h2>
+      <span class="block__right-label">Optional (maximum 4 files)</span>
+    </div>
     <div class="form-block">
       <div class="input__wrapper">
         <span class="input__label">Description</span>
