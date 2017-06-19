@@ -30,10 +30,11 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 projects = BidServiceHelper.GetProjects();
             }
-            catch (HttpRequestException exc)
+            catch (Exception exc)
             {
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
             }
+
 
             int openCount = 0, completedCount = 0;
             if (projects != null)
