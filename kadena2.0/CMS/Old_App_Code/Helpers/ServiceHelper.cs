@@ -29,6 +29,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
         private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
         private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
+        private const string _getOrderHistorySettingsKey = "KDA_OrderHistoryServiceEndpoint";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -592,6 +593,46 @@ namespace Kadena.Old_App_Code.Helpers
                     else
                     {
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<OrderHistoryData> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
+        {
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_getAddressesIncorrectMessage));
+                return null;    
+            }
+
+            var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parameterizedUrl))
+                {
+                    AwsResponseMessage<IEnumerable<OrderHistoryData>> response;
+                    try
+                    {
+                        response = (AwsResponseMessage<IEnumerable<OrderHistoryData>>)message.Result;
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
+                        return null;
+                    }
+                    if (response.Success)
+                    {
+                        return response?.Response;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
                         return null;
                     }
                 }
