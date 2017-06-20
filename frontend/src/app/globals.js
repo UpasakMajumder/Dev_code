@@ -5,7 +5,7 @@ const {
   checkout,
   spotfire,
   userSettings,
-  orderDetail
+  orderDetail,
   searchPage
 } = localization;
 

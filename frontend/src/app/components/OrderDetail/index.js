@@ -7,10 +7,17 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import getUI from '../../AC/orderDetail';
 import Spinner from '../Spinner';
+import { getSearch } from '../../helpers/location';
 
 class OrderDetail extends Component {
   componentDidMount() {
-    this.props.getUI();
+    const { orderID } = getSearch();
+
+    if (orderID) {
+      this.props.getUI(orderID);
+    } else {
+      this.props.getUI('');
+    }
   }
 
   render() {
