@@ -42,7 +42,8 @@ export default {
         "id": "street2",
         "label": "Address line 2",
         "values": [],
-        "type": "text"
+        "type": "text",
+        "isOptional": true
       },
       {
         "id": "city",

@@ -39,7 +39,7 @@ class AddressBlock extends Component {
 
 
     const bodyContent = dialog.fields.map((field, index) => {
-      const { label, values, type, id } = field;
+      const { label, values, type, id, isOptional } = field;
 
       const input = type === 'text'
       ? <input type="text"
@@ -55,10 +55,13 @@ class AddressBlock extends Component {
           </select>
         </div>;
 
+      const optionalLabel = isOptional ? <span className="input__right-label">optional</span> : null;
+
       return (
         <td key={index}>
           <div className="input__wrapper">
             <span className="input__label">{label}</span>
+            {optionalLabel}
             {input}
           </div>
         </td>
