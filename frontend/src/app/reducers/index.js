@@ -5,13 +5,15 @@ import shoppingCart from './shoppingCart';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
 import dialog from './dialog';
+import searchPage from './searchPage';
 
 const rootReducer = combineReducers({
   login,
   shoppingCart,
   isLoading,
   settingsAddresses,
-  dialog
+  dialog,
+  searchPage
 });
 
 export default rootReducer;
