@@ -30,10 +30,11 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 projects = BidServiceHelper.GetProjects();
             }
-            catch (HttpRequestException exc)
+            catch (Exception exc)
             {
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
             }
+
 
             int openCount = 0, completedCount = 0;
             if (projects != null)
@@ -43,7 +44,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
                 openCount = openProjects.Count();
                 completedCount = completedProjects.Count();
-                
+
                 FillTable(tblOpenProjects, phOpenPagination, openProjects, RecordsPerPage);
                 FillTable(tblCompletedProjects, phCompletedPagination, completedProjects, RecordsPerPage);
             }
@@ -96,7 +97,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
                 var divPagesInner = new HtmlGenericControl("div");
                 divPagesInner.Attributes["class"] = "js-table-paginator-wrapper generated-paginator";
-                divPagesInner.Attributes["data-pages"] = (data.Count() / recordsPerPage + 1).ToString();
+                divPagesInner.Attributes["data-pages"] = (data.Count() / recordsPerPage).ToString();
                 divPagesInner.Attributes["data-rows-on-page"] = recordsPerPage.ToString();
 
                 var span = new HtmlGenericControl("span");

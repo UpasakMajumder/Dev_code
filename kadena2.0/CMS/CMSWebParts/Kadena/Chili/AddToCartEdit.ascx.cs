@@ -52,11 +52,16 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             get; set;
         }
 
+        private ShoppingCartItemInfo CurrentShoppingCartItem
+        {
+            get; set;
+        }
+
         private bool IsProductMailingType()
         {
             return GetProductType().Contains("KDA.MailingProduct");
         }
-
+       
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
@@ -91,7 +96,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
                 inpNumberOfItems.Attributes.Add("class", "input__text");
-                lblNumberOfItemsError.Visible = false;            
+                lblNumberOfItemsError.Visible = false;
 
                 lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
 
@@ -99,12 +104,31 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     inpNumberOfItems.Attributes.Add("disabled", "true");
                     inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
-                } 
+                }
 
+                InitializeCurrentShoppingCartItem();
+
+                if (CurrentShoppingCartItem != null)
+                {
+                    inpNumberOfItems.Value = CurrentShoppingCartItem.CartItemUnits.ToString();
+
+                }
             }
-
         }
 
+
+        private void InitializeCurrentShoppingCartItem()
+        {
+            int skuID;          
+
+            if (int.TryParse(Request.QueryString["skuId"], out skuID))
+            {
+                CurrentShoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItems().
+                    WhereEquals("SKUID", skuID).
+                    WhereEquals("ShoppingCartID", ECommerceContext.CurrentShoppingCart.ShoppingCartID).FirstObject;
+                         
+            }          
+        }
         private void DisplayErrorMessage()
         {
             lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
@@ -149,12 +173,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
             return productType;
         }
-      
+
         private void AddItemsToShoppingCart(int ammount)
         {
             int skuID;
             int documentId;
             Guid templateId;
+
             if (int.TryParse(Request.QueryString["skuId"], out skuID) &&
                 int.TryParse(Request.QueryString["id"], out documentId) &&
                 Guid.TryParse(Request.QueryString["templateId"], out templateId))
@@ -173,8 +198,18 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     AssignCartShippingAddress(cart);
                     ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
-                    var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
-                    var cartItem = cart.SetShoppingCartItem(parameters);
+                    ShoppingCartItemInfo cartItem = null;
+
+                    if (CurrentShoppingCartItem != null)
+                    {
+                        cartItem = CurrentShoppingCartItem;
+                        ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(CurrentShoppingCartItem, int.Parse(inpNumberOfItems.Value));
+                    }
+                    else
+                    {
+                        var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
+                        cartItem = cart.SetShoppingCartItem(parameters);
+                    }
 
                     cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                     cartItem.SetValue("ArtworkLocation", artworkLocation);
@@ -187,7 +222,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         cartItem.SetValue("MailingListName", MailingListData.name);
                         cartItem.SetValue("MailingListGuid", MailingListData.id);
                     }
-                    
+
 
                     var dynamicUnitPrice = GetUnitPriceForAmmount(ammount);
                     if (dynamicUnitPrice > 0)
@@ -196,11 +231,11 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) +"');"));
-                                      
+                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
+
                 }
             }
-                   
+
         }
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)

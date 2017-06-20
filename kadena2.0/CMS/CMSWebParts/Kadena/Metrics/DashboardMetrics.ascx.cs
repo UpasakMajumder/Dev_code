@@ -26,8 +26,15 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
             {
                 var orderStatisticsData = GetOrderStatistics();
 
-                ltlOrdersToDatePerYear.Text = orderStatisticsData.numberOfOrders.ToString();
-                ltlAverageProductionTime.Text = orderStatisticsData.productionAvgTime.ToString("N2");
+                if (orderStatisticsData != null)
+                {
+                    ltlOrdersToDatePerYear.Text = orderStatisticsData.numberOfOrders.ToString();
+                    ltlAverageProductionTime.Text = orderStatisticsData.productionAvgTime.ToString("N2");
+                }
+                else
+                {
+                    ltlOrdersToDatePerYearTitles.Visible = ltlAverageProductionTimeTitle.Visible = ltlAverageProductionTimeDaysTitle.Visible = false;
+                }
                 ltlTotalProductsAvailable.Text = GetNumberOfTotalProductsAvailable().ToString();
                 ltlNumberOfusers.Text = GetNumberOfUsers().ToString();
             }

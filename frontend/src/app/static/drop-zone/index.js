@@ -82,6 +82,12 @@ class Dropzone {
 
     if (this.count === this.maxItems) {
       this.data[id].input.style.display = 'none';
+
+      const input = this.idealInput.cloneNode(true);
+      input.setAttribute('id', 'last');
+      input.style.display = 'none';
+      this.container.insertBefore(input, event.target);
+
       return;
     }
 
@@ -101,6 +107,9 @@ class Dropzone {
     const id = event.target.dataset.id;
 
     if (this.count === this.maxItems) {
+      const lastInput = this.container.querySelector('#last');
+      lastInput.parentNode.removeChild(lastInput);
+
       const prevInput = this.container.querySelector('.js-drop-zone-file');
       prevInput.style.display = 'none';
 
