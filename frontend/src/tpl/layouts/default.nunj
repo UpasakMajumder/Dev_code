@@ -142,6 +142,9 @@
           initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
           editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
         }
+      },
+      searchPage: {
+        searchPageUrl: ''
       }
     }
   };
