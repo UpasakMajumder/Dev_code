@@ -11,6 +11,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
 using Kadena.WebAPI.Models.OrderDetail;
+using System.Security;
 
 namespace Kadena.WebAPI.Services
 {
@@ -24,12 +25,12 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
 
-        public ShoppingCartService(IMapper mapper, 
+        public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
-                                   IKenticoResourceService resources, 
+                                   IKenticoResourceService resources,
                                    IOrderSubmitClient orderSubmitClient,
                                    IOrderViewClient orderViewClient,
-                                   ITaxEstimationService taxCalculator, 
+                                   ITaxEstimationService taxCalculator,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
@@ -44,7 +45,7 @@ namespace Kadena.WebAPI.Services
         public async Task<CheckoutPage> GetCheckoutPage()
         {
             var addresses = kenticoProvider.GetCustomerAddresses();
-            var carriers = kenticoProvider.GetShippingCarriers();            
+            var carriers = kenticoProvider.GetShippingCarriers();
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
@@ -180,7 +181,7 @@ namespace Kadena.WebAPI.Services
         }
 
         private void SetDefaultShipping(CheckoutPage page)
-        { 
+        {
             int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
             kenticoProvider.SelectShipping(defaultMethodId);
             page.DeliveryMethods.CheckMethod(defaultMethodId);
@@ -242,13 +243,13 @@ namespace Kadena.WebAPI.Services
             var customer = kenticoProvider.GetCurrentCustomer();
             var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
             var site = resources.GetKenticoSite();
-            
+
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartOrderItems();
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await EstimateTotalTax();
-            
+
             if (string.IsNullOrWhiteSpace(customer.Company))
                 customer.Company = resources.GetDefaultCustomerCompanyName();
 
@@ -259,7 +260,7 @@ namespace Kadena.WebAPI.Services
                     AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
-                    State = !string.IsNullOrEmpty(billingAddress.State)? billingAddress.State: billingAddress.Country, // fill in mandatory for countries that have no states
+                    State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
                     AddressCompanyName = resources.GetDefaultSiteCompanyName(),
@@ -268,70 +269,70 @@ namespace Kadena.WebAPI.Services
                     Zip = billingAddress.Zip,
                     Country = billingAddress.Country,
                     KenticoAddressID = 0
-               },
-               ShippingAddress = new AddressDTO()
-               {
-                   AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
-                   AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
-                   City = shippingAddress.City,
-                   State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
-                   KenticoStateID = shippingAddress.StateId,
-                   KenticoCountryID = shippingAddress.CountryId,
-                   AddressCompanyName = customer.Company,
-                   isoCountryCode = shippingAddress.Country,
-                   AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
-                   Zip = shippingAddress.Zip,
-                   Country = shippingAddress.Country,
-                   KenticoAddressID = shippingAddress.Id
-               },
-               Customer = new CustomerDTO()
-               {
-                   CustomerNumber = customer.CustomerNumber,
-                   Email = customer.Email,
-                   FirstName = customer.FirstName,
-                   LastName = customer.LastName,
-                   KenticoCustomerID = customer.Id,
-                   KenticoUserID = customer.UserID,
-                   Phone = customer.Phone
-               },
-               KenticoOrderCreatedByUserID = customer.UserID,
-               OrderDate = DateTime.Now,
-               PaymentOption = new PaymentOptionDTO()
-               {
-                   KenticoPaymentOptionID = paymentMethod.Id,
-                   PaymentOptionName = paymentMethod.Title,
-                   PONumber = invoice
-               },
-               ShippingOption = new ShippingOptionDTO()
-               {
-                  KenticoShippingOptionID = deliveryMethod.Id,
-                  CarrierCode = deliveryMethod.Title,
-                  ShippingCompany = deliveryMethod.CarrierCode,
-                  ShippingService = deliveryMethod.Service.Replace("#","")
-               },
-               Site = new SiteDTO()
-               {
-                   KenticoSiteID = site.Id,
-                   KenticoSiteName = site.Name
-               },
-               OrderCurrency = new CurrencyDTO()
-               {
-                   CurrencyCode = currency.Code,
-                   KenticoCurrencyID = currency.Id
-               },
-               OrderStatus = new OrderStatusDTO()
-               {
-                   KenticoOrderStatusID = resources.GetOrderStatusId("Pending"),
-                   OrderStatusName = "PENDING" 
-               },
-               OrderTracking = new OrderTrackingDTO()
-               {
-                   OrderTrackingNumber = ""
-               },
-               TotalPrice = totals.TotalItemsPrice,
-               TotalShipping = totals.TotalShipping,
-               TotalTax = totals.TotalTax,
-               Items = mapper.Map<OrderItemDTO[]>(cartItems)
+                },
+                ShippingAddress = new AddressDTO()
+                {
+                    AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
+                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
+                    City = shippingAddress.City,
+                    State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
+                    KenticoStateID = shippingAddress.StateId,
+                    KenticoCountryID = shippingAddress.CountryId,
+                    AddressCompanyName = customer.Company,
+                    isoCountryCode = shippingAddress.Country,
+                    AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
+                    Zip = shippingAddress.Zip,
+                    Country = shippingAddress.Country,
+                    KenticoAddressID = shippingAddress.Id
+                },
+                Customer = new CustomerDTO()
+                {
+                    CustomerNumber = customer.CustomerNumber,
+                    Email = customer.Email,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    KenticoCustomerID = customer.Id,
+                    KenticoUserID = customer.UserID,
+                    Phone = customer.Phone
+                },
+                KenticoOrderCreatedByUserID = customer.UserID,
+                OrderDate = DateTime.Now,
+                PaymentOption = new PaymentOptionDTO()
+                {
+                    KenticoPaymentOptionID = paymentMethod.Id,
+                    PaymentOptionName = paymentMethod.Title,
+                    PONumber = invoice
+                },
+                ShippingOption = new ShippingOptionDTO()
+                {
+                    KenticoShippingOptionID = deliveryMethod.Id,
+                    CarrierCode = deliveryMethod.Title,
+                    ShippingCompany = deliveryMethod.CarrierCode,
+                    ShippingService = deliveryMethod.Service.Replace("#", "")
+                },
+                Site = new SiteDTO()
+                {
+                    KenticoSiteID = site.Id,
+                    KenticoSiteName = site.Name
+                },
+                OrderCurrency = new CurrencyDTO()
+                {
+                    CurrencyCode = currency.Code,
+                    KenticoCurrencyID = currency.Id
+                },
+                OrderStatus = new OrderStatusDTO()
+                {
+                    KenticoOrderStatusID = resources.GetOrderStatusId("Pending"),
+                    OrderStatusName = "PENDING"
+                },
+                OrderTracking = new OrderTrackingDTO()
+                {
+                    OrderTrackingNumber = ""
+                },
+                TotalPrice = totals.TotalItemsPrice,
+                TotalShipping = totals.TotalShipping,
+                TotalTax = totals.TotalTax,
+                Items = mapper.Map<OrderItemDTO[]>(cartItems)
             };
         }
 
@@ -360,7 +361,7 @@ namespace Kadena.WebAPI.Services
             var addressTo = kenticoProvider.GetCurrentCartShippingAddress();
             var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
             double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
-            double shippingCosts  = kenticoProvider.GetCurrentCartShippingCost();
+            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
 
             if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
             {
@@ -407,12 +408,9 @@ namespace Kadena.WebAPI.Services
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
-            if (string.IsNullOrWhiteSpace(orderId))
-            {
-                throw new ArgumentNullException(nameof(orderId));
-            }
+            CheckOrderDetailPermisson(orderId, kenticoProvider.GetCurrentCustomer());
 
-            var endpoint = resources.GetSettingsKey("xxx xxx xxx "); //TODO 
+            var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
             var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
 
             if (!microserviceResponse.Success)
@@ -420,11 +418,118 @@ namespace Kadena.WebAPI.Services
                 kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessage);
             }
 
-            var orderDetail = mapper.Map<OrderDetail>(microserviceResponse.Payload);
+            var data = microserviceResponse.Payload;
 
-            // todo check user right for this order
+            var orderDetail = new OrderDetail()
+            {
+                CommonInfo = new CommonInfo()
+                {
+                    OrderDate = data.OrderDate,
+                    ShippingDate = string.Empty, //TODO
+                    Status = data.Status,
+                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
+                },
+                PaymentInfo = new PaymentInfo()
+                {
+                    Date = string.Empty, // TODO
+                    PaidBy  = data.PaymentInfo.PaymentMethod,
+                    PaymentDetail = string.Empty,
+                    PaymentIcon = "", //TODO
+                    Title = "Payment"
+                },
+                PricingInfo = new PricingInfo()
+                {
+                    Title = "Pricing",
+                    Items = new PricingInfoItem[]
+                    {
+                        new PricingInfoItem()
+                        {
+                            Title = "Summary",
+                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary)
+                        },
+                        new PricingInfoItem()
+                        {
+                            Title = "Shipping",
+                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Shipping)
+                        },
+                        new PricingInfoItem()
+                        {
+                            Title = "Subtotal",
+                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping)
+                        },
+                        new PricingInfoItem()
+                        {
+                            Title = "Tax",
+                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Tax)
+                        },
+                        new PricingInfoItem()
+                        {
+                            Title = "Totals",
+                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
+                        }
+                    }
+
+                },
+                ShippingInfo = new ShippingInfo()
+                {
+                    Title = "Shipping",
+                    DeliveryMethod = data.ShippingInfo.Provider,
+                    Address = data.ShippingInfo.AddressTo,
+                    Tracking = new Tracking()
+                    {
+                        Text = "Track your packages",
+                        Url = string.Empty // TODO
+                    }
+                },
+                OrderedItems = new OrderedItems()
+                {
+                    Title = "Ordered items",
+                    Items = MapOrderedItems(data.Items)
+                }
+            };
 
             return orderDetail;
+        }
+
+        private List<OrderedItem> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
+        {
+            return items.Select(i => new OrderedItem()
+            {
+                Id = 0, // TODO
+                DownloadPdfURL = i.FileUrl,
+                Image = "", // TODO
+                MailingList = i.MailingList,
+                Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
+                Quantity = i.Qty,
+                QuantityPrefix = "Quantity: ", //todo switch by prod type
+                ShippingDate = string.Empty, // TODO
+                Template = string.Empty,
+                TrackingId = i.TrackingId
+            }).ToList();
+        }
+
+        private void CheckOrderDetailPermisson(string orderId, Customer customer)
+        {
+            if(string.IsNullOrWhiteSpace(orderId))
+            {
+                throw new ArgumentNullException(nameof(orderId));
+            }
+
+            int orderUserId;
+            int orderCustomerId;
+            var orderIdparts = orderId.Split(new char[] { '-' }, 3);
+
+            if ( orderIdparts.Length!=3  || !int.TryParse(orderIdparts[0], out orderCustomerId) || !int.TryParse(orderIdparts[1], out orderUserId))
+            {
+                throw new ArgumentOutOfRangeException(nameof(orderId), "Bad format of customer ID");
+            }
+
+            if (orderUserId == customer.UserID && orderCustomerId == customer.Id)
+            {
+                return;
+            }
+
+            throw new SecurityException("Permission denied");
         }
     }
 }

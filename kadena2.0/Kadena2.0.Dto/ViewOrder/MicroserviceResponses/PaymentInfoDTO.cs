@@ -3,8 +3,8 @@
     public class PaymentInfoDTO
     {
         public string PaymentMethod { get; set; }
-        public int Summary { get; set; }
-        public int Shipping { get; set; }
-        public int Tax { get; set; }
+        public double Summary { get; set; }
+        public double Shipping { get; set; }
+        public double Tax { get; set; }
     }
 }

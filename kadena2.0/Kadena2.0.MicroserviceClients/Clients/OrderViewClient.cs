@@ -14,8 +14,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{serviceEndpoint.TrimEnd('/')}/api/order/{orderId}";
-                var content = CreateRequestContent(orderId);
-                var response = await httpClient.GetAsync(serviceEndpoint);
+                var response = await httpClient.GetAsync(url);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

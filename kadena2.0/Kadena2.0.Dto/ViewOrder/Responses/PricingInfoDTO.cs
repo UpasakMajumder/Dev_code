@@ -4,7 +4,7 @@ namespace Kadena.Dto.ViewOrder.Responses
 {
     public class PricingInfoDTO
     {
-        public string title { get; set; }
-        public IList<PricingInfoItemDTO> items { get; set; }
+        public string Title { get; set; }
+        public IList<PricingInfoItemDTO> Items { get; set; }
     }
 }

@@ -22,8 +22,8 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.WebAPI.Models.OrderDetail;
+using Kadena.Dto.ViewOrder.Responses;
 
 namespace Kadena.WebAPI
 {
@@ -149,7 +149,15 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
-                config.CreateMap<GetOrderByOrderIdResponseDTO, OrderDetail>();
+                config.CreateMap<OrderedItem, OrderedItemDTO>();
+                config.CreateMap<OrderedItems, OrderedItemsDTO>();
+                config.CreateMap<OrderDetail, OrderDetailDTO>();
+                config.CreateMap<CommonInfo, CommonInfoDTO>();
+                config.CreateMap<ShippingInfo, ShippingInfoDTO>();
+                config.CreateMap<PaymentInfo,PaymentInfoDTO>();
+                config.CreateMap<PricingInfo,PricingInfoDTO>();                
+                config.CreateMap<Tracking,TrackingDTO>();
+                config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
             });
         }
 
@@ -164,6 +172,7 @@ namespace Kadena.WebAPI
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
+            container.Register<IOrderViewClient, OrderViewClient>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }

@@ -2,15 +2,15 @@
 {
     public class OrderedItem
     {
-        public int id { get; set; }
-        public string image { get; set; }
-        public string template { get; set; }
-        public string mailingList { get; set; }
-        public string shippingDate { get; set; }
-        public string trackingId { get; set; }
-        public string price { get; set; }
-        public string quantityPrefix { get; set; }
-        public int quantity { get; set; }
-        public string downloadPdfURL { get; set; }
+        public int Id { get; set; }
+        public string Image { get; set; }
+        public string Template { get; set; }
+        public string MailingList { get; set; }
+        public string ShippingDate { get; set; }
+        public string TrackingId { get; set; }
+        public string Price { get; set; }
+        public string QuantityPrefix { get; set; }
+        public int Quantity { get; set; }
+        public string DownloadPdfURL { get; set; }
     }
 }
