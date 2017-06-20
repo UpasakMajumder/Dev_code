@@ -10,6 +10,7 @@ using System;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena.WebAPI.Models.OrderDetail;
 
 namespace Kadena.WebAPI.Services
 {
@@ -399,6 +400,11 @@ namespace Kadena.WebAPI.Services
             }
 
             return taxRequest;
+        }
+
+        public Task<OrderDetail> GetOrderDetail(string orderId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
