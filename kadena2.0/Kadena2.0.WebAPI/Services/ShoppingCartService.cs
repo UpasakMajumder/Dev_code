@@ -18,14 +18,14 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoResourceService resources;
-        private readonly IOrderServiceClient orderClient;
+        private readonly IOrderSubmitClient orderClient;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
 
         public ShoppingCartService(IMapper mapper, 
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources, 
-                                   IOrderServiceClient orderClient, 
+                                   IOrderSubmitClient orderClient, 
                                    ITaxEstimationService taxCalculator, 
                                    IKenticoLogger kenticoLog)
         {
@@ -255,7 +255,7 @@ namespace Kadena.WebAPI.Services
                     AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
-                    State = billingAddress.State,
+                    State = !string.IsNullOrEmpty(billingAddress.State)? billingAddress.State: billingAddress.Country, // fill in mandatory for countries that have no states
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
                     AddressCompanyName = resources.GetDefaultSiteCompanyName(),
@@ -270,7 +270,7 @@ namespace Kadena.WebAPI.Services
                    AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
                    City = shippingAddress.City,
-                   State = shippingAddress.State,
+                   State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
                    KenticoStateID = shippingAddress.StateId,
                    KenticoCountryID = shippingAddress.CountryId,
                    AddressCompanyName = customer.Company,

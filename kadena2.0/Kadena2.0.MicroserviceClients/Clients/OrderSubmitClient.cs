@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class OrderSubmitClient : ClientBase, IOrderServiceClient
+    public class OrderSubmitClient : ClientBase, IOrderSubmitClient
     {
         public async Task<SubmitOrderServiceResponseDto> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
@@ -22,22 +22,17 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
                 else
                 {
-                    return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return new SubmitOrderServiceResponseDto()
+                    {
+                        Success = false,
+                        Error = new SubmitOrderErrorDto()
+                        {
+                            Message = $"HTTP error - {response.StatusCode}",
+                        },
+                        Payload = null
+                    };
                 }
             }
-        }
-
-        private SubmitOrderServiceResponseDto CreateErrorResponse(string errorMessage)
-        {
-            return new SubmitOrderServiceResponseDto()
-            {
-                Success = false,
-                Payload = null,
-                Error = new SubmitOrderErrorDto()
-                {
-                    Message = errorMessage
-                }
-            };
         }
     }
 }

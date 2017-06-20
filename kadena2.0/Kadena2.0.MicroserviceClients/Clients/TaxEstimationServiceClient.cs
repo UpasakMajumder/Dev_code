@@ -1,6 +1,6 @@
-﻿using Kadena2.MicroserviceClients.Contracts;
+﻿using Kadena.Dto.General;
+using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
@@ -10,7 +10,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TaxEstimationServiceClient : ITaxEstimationService
     {
-        public async Task<TaxCalculatorServiceResponseDto> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
+        public async Task<BaseResponseDTO<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
         {
             using (var httpClient = new HttpClient())
             {
@@ -21,24 +21,19 @@ namespace Kadena2.MicroserviceClients.Clients
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    var submitResponse = JsonConvert.DeserializeObject<TaxCalculatorServiceResponseDto>(responseContent);
+                    var submitResponse = JsonConvert.DeserializeObject<BaseResponseDTO<double>>(responseContent);
                     return submitResponse;
                 }
                 else
                 {
-                    return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return new BaseResponseDTO<double>()
+                    {
+                        Success = false,
+                        ErrorMessage = $"HTTP error - {response.StatusCode}",
+                        Payload = 0.0d
+                    };
                 }
             }
-        }
-
-        private TaxCalculatorServiceResponseDto CreateErrorResponse(string errorMessage)
-        {
-            return new TaxCalculatorServiceResponseDto()
-            {
-                Success = false,
-                Payload = 0.0d,
-                ErrorMessages = $"HTTP error - {errorMessage}"
-            };
         }
     }
 }

@@ -1,43 +1,36 @@
-﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena2.MicroserviceClients.Clients.Base;
+﻿using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Kadena.Dto.ViewOrder.MicroserviceRequests;
+using Kadena.Dto.General;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class OrderViewClient : ClientBase, IOrderServiceClient
+    public class OrderViewClient : ClientBase, IOrderViewClient
     {
-        public async Task<SubmitOrderServiceResponseDto> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<BaseResponseDTO<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId)
         {
             using (var httpClient = new HttpClient())
             {
-                var content = CreateRequestContent(orderData);
-                var response = await httpClient.PostAsync(serviceEndpoint, content);
+                var url = $"{serviceEndpoint.TrimEnd('/')}/api/order/{orderId}";
+                var content = CreateRequestContent(orderId);
+                var response = await httpClient.GetAsync(serviceEndpoint);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return await ReadResponseJson<SubmitOrderServiceResponseDto>(response);
+                    return await ReadResponseJson<BaseResponseDTO<GetOrderByOrderIdResponseDTO>>(response);
                 }
                 else
                 {
-                    return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return new BaseResponseDTO<GetOrderByOrderIdResponseDTO>()
+                    {
+                        Success = false,
+                        Payload = null,
+                        ErrorMessage = $"HTTP error - {response.StatusCode}"
+                    };
                 }
             }
-        }
-
-        private SubmitOrderServiceResponseDto CreateErrorResponse(string errorMessage)
-        {
-            return new SubmitOrderServiceResponseDto()
-            {
-                Success = false,
-                Payload = null,
-                Error = new SubmitOrderErrorDto()
-                {
-                    Message = errorMessage
-                }
-            };
         }
     }
 }
