@@ -47,7 +47,7 @@
                 <%# Eval("status") %>
             </td>
             <td class="show-table__will-appear">
-                <a href="/recent-orders/order-detail?orderID=<%# Eval("id") %>" target="_blank" class="btn-action">
+                <a href="<%= OrderDetailUrl %>?orderID=<%# Eval("id") %>" target="_blank" class="btn-action">
                     <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.OrdersList.View" />
                 </a>
             </td>
