@@ -4,7 +4,8 @@ const {
   login,
   checkout,
   spotfire,
-  userSettings
+  userSettings,
+  orderDetail
 } = localization;
 
 
@@ -12,3 +13,4 @@ export const LOGIN = login;
 export const CHECKOUT = checkout;
 export const SPOTFIRE = spotfire;
 export const USER_SETTINGS = userSettings;
+export const ORDER_DETAIL = orderDetail;

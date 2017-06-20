@@ -2,9 +2,16 @@ import React, { PropTypes } from 'react';
 
 const SVG = (props) => {
   const { name, className } = props;
-  const Icon = require(`../../../gfx/svg/${name}.svg`); // eslint-disable-line global-require
 
-  return <Icon.default className={`icon ${className || ''}`} />;
+  let Icon = null;
+
+  try {
+    Icon = require(`../../../gfx/svg/${name}.svg`); // eslint-disable-line global-require
+  } catch (e) {
+    console.warn(e); // eslint-disable-line
+  }
+
+  return Icon ? <Icon.default className={`icon ${className || ''}`} /> : null;
 };
 
 SVG.propTypes = {

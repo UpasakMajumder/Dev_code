@@ -7,9 +7,9 @@
 
   &--tile,
   &--tile:last-child {
-    @include rem(padding, 15px 25px);
+    @include rem(padding, 20px 10px);
     margin: 0;
-    background-color: $form-bg;
+    background-color: #f6f6f6;
     border-radius: $border-radius-xl;
     height: 100%;
 
@@ -37,30 +37,14 @@
       @include rem(width, 70px);
       @include rem(height, 50px);
     }
-
-    &.delivery,
-    &.payment {
-      svg {
-        display: none;
-      }
-      $delivery-methods: (fedex, ups, usps);
-      $payment-methods: (mastercard, visa, amex);
-
-      @each $method in $delivery-methods {
-        &.delivery--#{$method} {
-          .delivery--#{$method} {
-            display: block;
-          }
-        }
-      }
-
-      @each $method in $payment-methods {
-        &.payment--#{$method} {
-          .payment--#{$method} {
-            display: block;
-          }
-        }
-      }
-    }
   }
+}
+
+.order-block--animation-enter {
+  opacity: 0.01;
+}
+
+.order-block--animation-enter.order-block--animation-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
 }
