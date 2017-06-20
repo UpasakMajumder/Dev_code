@@ -44,7 +44,7 @@ namespace Kadena.CMSWebParts.Kadena.Orders
                 {
                     if (ECommerceContext.CurrentCustomer != null)
                     {
-                        var orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
+                        var orderData = ServiceHelper.GetOrderHistoryData(/*ECommerceContext.CurrentCustomer.CustomerID*/ 9, 1, NumberOfItemsOnPage);
 
                         if ((orderData?.ToList().Count ?? 0) > 0)
                         {

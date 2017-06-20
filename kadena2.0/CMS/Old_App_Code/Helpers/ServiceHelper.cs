@@ -616,10 +616,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    AwsResponseMessage<IEnumerable<OrderHistoryData>> response;
+                    AwsResponseMessage<OrderHistoryDataContainer> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<OrderHistoryData>>)message.Result;
+                        response = (AwsResponseMessage<OrderHistoryDataContainer>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -628,7 +628,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response?.Response;
+                        return response.Response.orders;
                     }
                     else
                     {
