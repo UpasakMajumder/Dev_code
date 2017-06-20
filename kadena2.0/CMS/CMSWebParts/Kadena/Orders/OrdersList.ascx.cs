@@ -7,39 +7,47 @@ using System.Linq;
 namespace Kadena.CMSWebParts.Kadena.Orders
 {
     public partial class OrdersList : CMSAbstractWebPart
-  {
-    #region Public properties
-
-    public int NumberOfItemsOnPage
     {
-      get
-      {
-        return ValidationHelper.GetInteger(GetValue("NumberOfItemsOnPage"), 5);
-      }
-    }
+        #region Public properties
 
-    public bool IsForCurrentUser
-    {
-      get
-      {
-        return ValidationHelper.GetBoolean(GetValue("IsForCurrentUser"), false);
-      }
-    }
+        public int NumberOfItemsOnPage
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("NumberOfItemsOnPage"), 5);
+            }
+        }
 
-    #endregion
+        public bool IsForCurrentUser
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("IsForCurrentUser"), false);
+            }
+        }
 
-    #region Public methods
+        public string OrderDetailUrl
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("OrderDetailUrl"), string.Empty);
+            }
+        }
 
-    public override void OnContentLoaded()
-    {
-      base.OnContentLoaded();
-      SetupControl();
-    }
+        #endregion
 
-    protected void SetupControl()
-    {
-      if (!StopProcessing)
-      {
+        #region Public methods
+
+        public override void OnContentLoaded()
+        {
+            base.OnContentLoaded();
+            SetupControl();
+        }
+
+        protected void SetupControl()
+        {
+            if (!StopProcessing)
+            {
                 if (IsForCurrentUser)
                 {
                     if (ECommerceContext.CurrentCustomer != null)
@@ -62,14 +70,14 @@ namespace Kadena.CMSWebParts.Kadena.Orders
                 {
 
                 }
-      }
+            }
+        }
+
+        #endregion
+
+        #region Private methods
+
+
+        #endregion
     }
-
-    #endregion
-
-    #region Private methods
-
-
-    #endregion
-  }
 }
