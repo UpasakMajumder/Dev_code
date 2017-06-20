@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AutomatedTests.PageObjects
 {
-    class ContactFormSuccess : BasePage
+    class FormSuccess : BasePage
     {
         [FindsBy(How = How.CssSelector, Using = ".submitted")]
         private IWebElement SubmitConfirmation { get; set; }
 
-        public ContactFormSuccess()
+        public FormSuccess()
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
