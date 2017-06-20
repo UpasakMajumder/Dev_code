@@ -8,5 +8,6 @@ namespace Kadena.Dto.Settings
         public string Label { get; set; }
         public List<object> Values { get; set; }
         public string Type { get; set; }
+        public bool IsOptional { get; set; }
     }
 }
