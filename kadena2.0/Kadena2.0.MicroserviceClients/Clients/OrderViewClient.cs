@@ -2,7 +2,7 @@
 using Kadena2.MicroserviceClients.Contracts;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Kadena.Dto.ViewOrder.MicroserviceRequests;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Dto.General;
 
 namespace Kadena2.MicroserviceClients.Clients

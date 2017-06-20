@@ -97,6 +97,15 @@
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tax\Requests\" />

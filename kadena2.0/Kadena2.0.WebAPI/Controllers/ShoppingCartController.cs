@@ -10,6 +10,7 @@ using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.ViewOrder.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -42,6 +43,16 @@ namespace Kadena.WebAPI.Controllers
             var checkoutPage = await service.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
+        }
+
+        [HttpGet]
+        [Route("api/orderdetail/{orderId}")]
+        [AuthorizationFilter]
+        public async Task<IHttpActionResult> Get([FromUri]string orderId)
+        {
+            var detailPage = await service.GetOrderDetail(orderId);
+            var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
+            return ResponseJson(detailPageDto);
         }
 
         [HttpPost]

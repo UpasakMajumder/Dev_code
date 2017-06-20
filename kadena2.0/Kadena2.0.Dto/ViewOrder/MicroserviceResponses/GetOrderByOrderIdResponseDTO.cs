@@ -1,7 +1,6 @@
-﻿using Kadena.Dto.ViewOrder.MicroserviceResponses;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Kadena.Dto.ViewOrder.MicroserviceRequests
+namespace Kadena.Dto.ViewOrder.MicroserviceResponses
 {
     public class GetOrderByOrderIdResponseDTO
     {

@@ -19,21 +19,24 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoResourceService resources;
-        private readonly IOrderSubmitClient orderClient;
+        private readonly IOrderSubmitClient orderSubmitClient;
+        private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
 
         public ShoppingCartService(IMapper mapper, 
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources, 
-                                   IOrderSubmitClient orderClient, 
+                                   IOrderSubmitClient orderSubmitClient,
+                                   IOrderViewClient orderViewClient,
                                    ITaxEstimationService taxCalculator, 
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
-            this.orderClient = orderClient;
+            this.orderSubmitClient = orderSubmitClient;
+            this.orderViewClient = orderViewClient;
             this.taxCalculator = taxCalculator;
             this.kenticoLog = kenticoLog;
         }
@@ -213,7 +216,7 @@ namespace Kadena.WebAPI.Services
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = await GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
-            var serviceResultDto = await orderClient.SubmitOrder(serviceEndpoint, orderData);
+            var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
             var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
             serviceResult.RedirectURL = redirectUrl;
@@ -402,9 +405,26 @@ namespace Kadena.WebAPI.Services
             return taxRequest;
         }
 
-        public Task<OrderDetail> GetOrderDetail(string orderId)
+        public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(orderId))
+            {
+                throw new ArgumentNullException(nameof(orderId));
+            }
+
+            var endpoint = resources.GetSettingsKey("xxx xxx xxx "); //TODO 
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
+
+            if (!microserviceResponse.Success)
+            {
+                kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessage);
+            }
+
+            var orderDetail = mapper.Map<OrderDetail>(microserviceResponse.Payload);
+
+            // todo check user right for this order
+
+            return orderDetail;
         }
     }
 }

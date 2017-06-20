@@ -22,6 +22,8 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.WebAPI.Models.OrderDetail;
 
 namespace Kadena.WebAPI
 {
@@ -88,7 +90,7 @@ namespace Kadena.WebAPI
                     IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
-                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
+                config.CreateMap<OrderItem, Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO>().ProjectUsing(p => new Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
@@ -147,6 +149,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
+                config.CreateMap<GetOrderByOrderIdResponseDTO, OrderDetail>();
             });
         }
 
