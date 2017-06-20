@@ -13,10 +13,14 @@ namespace Kadena.Old_App_Code.Helpers
     {
         private const string _workgroupNameSettingKey = "KDA_WorkgroupName";
         private const string _getProjectsSettingKey = "KDA_GetProjectsUrl";
+        private const string _nooshApiSettingKey = "KDA_NooshApi";
+        private const string _nooshTokenSettingKey = "KDA_NooshToken";
 
         private const string _customerNotSpecifiedMessage = "Workgroup's name not specified. Check settings for your site.";
+        private const string _nooshTokenNotSpecifiedMessage = "Noosh access token not specified. Check settings for your site.";
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
         private const string _getProjectsIncorrectMessage = "Url for getting projects is not in correct format. Check settings for your site.";
+        private const string _nooshApiIncorrectMessage = "Url for Noosh API is not in correct format. Check settings for your site.";
 
         /// <summary>
         /// Gets name of workgroup from K-Source settings for current site.
@@ -34,12 +38,46 @@ namespace Kadena.Old_App_Code.Helpers
         }
 
         /// <summary>
+        /// Gets access token for Noosh API from K-Source settings for current site.
+        /// </summary>
+        /// <returns>Noosh access token.</returns>
+        private static string GetNooshToken()
+        {
+            string token = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_nooshTokenSettingKey}");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new InvalidOperationException(_nooshTokenNotSpecifiedMessage);
+            }
+
+            return token;
+        }
+
+        /// <summary>
+        /// Gets URL for Noosh API from K-Source settings for current site.
+        /// </summary>
+        /// <returns>Noosh API URL.</returns>
+        private static string GetNooshUrl()
+        {
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_nooshApiSettingKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                throw new InvalidOperationException(_nooshApiIncorrectMessage);
+            }
+
+            return url.AbsoluteUri;
+        }
+
+        /// <summary>
         /// Get list of projects for workgroup.
         /// </summary>
         /// <returns>List of projects.</returns>
         public static IEnumerable<ProjectData> GetProjects()
         {
             var workgroupName = GetWorkgroupName();
+            var nooshApi = GetNooshUrl();
+            var nooshToken = GetNooshToken();
 
             Uri url;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getProjectsSettingKey}")
@@ -51,6 +89,8 @@ namespace Kadena.Old_App_Code.Helpers
 
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Noosh.Url", nooshApi);
+                client.DefaultRequestHeaders.Add("Noosh.Token", nooshToken);
                 using (var message = client.GetAsync($"{url.AbsoluteUri}/{workgroupName}"))
                 {
                     AwsResponseMessage<IEnumerable<ProjectData>> response;

@@ -721,6 +721,13 @@
     <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
       <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.cs">
+      <DependentUpon>SpotfireControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.designer.cs">
+      <DependentUpon>SpotfireControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.cs">
       <DependentUpon>BidsList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -881,6 +888,7 @@
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryData.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryDataContainer.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderItemHistoryData.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
@@ -910,6 +918,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
