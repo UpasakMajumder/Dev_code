@@ -1,8 +1,11 @@
-import { SEARCH_PAGE_UI_SUCCESS } from '../constants';
+import { SEARCH_PAGE_UI_SUCCESS, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from '../constants';
 
 const defaultState = {
   products: [],
-  pages: []
+  pages: [],
+  pagesPage: 0,
+  productsPage: 0,
+  productsPaginationLimit: 8
 };
 
 export default (state = defaultState, action) => {
@@ -13,6 +16,18 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       ...payload
+    };
+
+  case CHANGE_PAGE_PAGINATOR:
+    return {
+      ...state,
+      [payload.type]: payload.page
+    };
+
+  case CHANGE_PAGE_PAGINATION_LIMIT:
+    return {
+      ...state,
+      [payload.type]: payload.value
     };
 
   default:
