@@ -1,7 +1,10 @@
 ﻿using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Helpers;
+using Kadena.Old_App_Code.Kadena.Orders;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.CMSWebParts.Kadena.Orders
@@ -48,27 +51,30 @@ namespace Kadena.CMSWebParts.Kadena.Orders
         {
             if (!StopProcessing)
             {
+                IEnumerable<OrderHistoryData> orderData = null;
                 if (IsForCurrentUser)
                 {
                     if (ECommerceContext.CurrentCustomer != null)
                     {
-                        var orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
-
-                        if ((orderData?.ToList().Count ?? 0) > 0)
-                        {
-                            repOrderList.DataSource = orderData;
-                            repOrderList.DataBind();
-                        }
-                        else
-                        {
-                            repOrderList.Visible = false;
-                            lblNoOrderItems.Visible = true;
-                        }
+                        orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
                     }
                 }
                 else
                 {
+                    if (SiteContext.CurrentSite != null)
+                    {
+                    }
+                }
 
+                if ((orderData?.ToList().Count ?? 0) > 0)
+                {
+                    repOrderList.DataSource = orderData;
+                    repOrderList.DataBind();
+                }
+                else
+                {
+                    repOrderList.Visible = false;
+                    lblNoOrderItems.Visible = true;
                 }
             }
         }
