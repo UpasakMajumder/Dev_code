@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\Base\ClientBase.cs" />
-    <Compile Include="Clients\OrderServiceClient.cs" />
+    <Compile Include="Clients\OrderViewClient.cs" />
+    <Compile Include="Clients\OrderSubmitClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\IOrderServiceClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />

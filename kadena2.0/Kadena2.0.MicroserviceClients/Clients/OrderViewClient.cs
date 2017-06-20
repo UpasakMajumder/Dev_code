@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class OrderServiceClient : ClientBase, IOrderServiceClient
+    public class OrderViewClient : ClientBase, IOrderServiceClient
     {
         public async Task<SubmitOrderServiceResponseDto> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {

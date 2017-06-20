@@ -156,7 +156,7 @@ namespace Kadena.WebAPI
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IOrderServiceClient, OrderServiceClient>();
+            container.Register<IOrderServiceClient, OrderSubmitClient>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
