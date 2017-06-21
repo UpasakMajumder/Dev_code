@@ -100,7 +100,6 @@ namespace Kadena.WebAPI.Services
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
-            checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
@@ -427,7 +426,7 @@ namespace Kadena.WebAPI.Services
                 {
                     OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
                     ShippingDate = string.Empty, //TODO
-                    Status = data.Status ?? "null",
+                    Status = data.Status,
                     TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
                 },
                 PaymentInfo = new PaymentInfo()
@@ -474,7 +473,7 @@ namespace Kadena.WebAPI.Services
                 ShippingInfo = new ShippingInfo()
                 {
                     Title = "Shipping",
-                    DeliveryMethod = data.ShippingInfo.Provider,
+                    DeliveryMethod =  kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = data.ShippingInfo.AddressTo,
                     Tracking = new Tracking()
                     {
@@ -509,7 +508,7 @@ namespace Kadena.WebAPI.Services
                 MailingList = i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Qty,
-                QuantityPrefix = i.Type.Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
+                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
                 ShippingDate = string.Empty, // TODO
                 Template = i.Name,
                 TrackingId = i.TrackingId

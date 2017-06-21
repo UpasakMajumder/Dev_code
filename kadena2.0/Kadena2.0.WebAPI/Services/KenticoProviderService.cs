@@ -91,7 +91,7 @@ namespace Kadena.WebAPI.Services
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-                SetShippingProviderIcon(dm);
+                dm.Icon = GetShippingProviderIcon(dm.Title);
             }
 
             return deliveryMethods;
@@ -100,20 +100,25 @@ namespace Kadena.WebAPI.Services
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        private void SetShippingProviderIcon(DeliveryCarrier dm)
+        public string GetShippingProviderIcon(string title)
         {
-            if (dm.Title.ToLower().Contains("fedex"))
+            if (title == null)
+                return string.Empty;
+
+            if (title.ToLower().Contains("fedex"))
             {
-                dm.Icon = "fedex-delivery";
+                return "fedex-delivery";
             }
-            else if (dm.Title.ToLower().Contains("usps"))
+            else if (title.ToLower().Contains("usps"))
             {
-                dm.Icon = "usps-delivery";
+                return "usps-delivery";
             }
-            else if (dm.Title.ToLower().Contains("ups"))
+            else if (title.ToLower().Contains("ups"))
             {
-                dm.Icon = "ups-delivery";
+                return "ups-delivery";
             }
+
+            return string.Empty;
         }
 
         public DeliveryOption[] GetShippingOptions()
