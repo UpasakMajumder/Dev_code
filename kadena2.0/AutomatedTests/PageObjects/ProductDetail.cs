@@ -11,8 +11,9 @@ namespace AutomatedTests.PageObjects
 {
     class ProductDetail : BasePage
     {
-        [FindsBy(How = How.ClassName, Using = "btn-action")]
+        [FindsBy(How = How.CssSelector, Using = ".add-to-cart .btn-action")]
         private IWebElement AddToCart { get; set; }
+
         public ProductDetail()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -34,6 +35,11 @@ namespace AutomatedTests.PageObjects
         public void Open(string categoryName, string productName)
         {
             Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/products/{categoryName}/{productName}");
+        }
+
+        public void AcceptItemIsAddedAlert()
+        {
+            Browser.AcceptAlert();
         }
     }
 }
