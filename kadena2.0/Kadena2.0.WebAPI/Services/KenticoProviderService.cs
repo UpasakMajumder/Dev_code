@@ -103,7 +103,8 @@ namespace Kadena.WebAPI.Services
                 return string.Empty;
 
             var sku = SKUInfoProvider.GetSKUInfo(skuid);
-            return sku?.SKUImagePath ?? string.Empty;
+            var skuurl = sku?.SKUImagePath ?? string.Empty;
+            return URLHelper.GetAbsoluteUrl(skuurl);
         }
 
         /// <summary>

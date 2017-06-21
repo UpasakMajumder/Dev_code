@@ -150,7 +150,7 @@ namespace Kadena.WebAPI.Services
         private void CheckCurrentOrDefaultAddress(CheckoutPage page)
         {
             int currentAddress = kenticoProvider.GetCurrentCartAddresId();
-            if (currentAddress != 0)
+            if (currentAddress != 0 && page.DeliveryAddresses.items.Any(a => a.Id == currentAddress))
             {
                 page.DeliveryAddresses.CheckAddress(currentAddress);
             }
@@ -503,7 +503,7 @@ namespace Kadena.WebAPI.Services
             return items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                DownloadPdfURL = i.FileUrl,
+                DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
