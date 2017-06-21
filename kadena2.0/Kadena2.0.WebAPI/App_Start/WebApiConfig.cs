@@ -22,6 +22,7 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.Dto.General;
 
 namespace Kadena.WebAPI
 {
@@ -127,8 +128,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-                config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
-                config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
+                config.CreateMap<AwsResponseMessage<string>, SubmitOrderResult>();
+                config.CreateMap<ErrorMessage, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
                     .AfterMap((d, a) =>

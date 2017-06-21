@@ -74,8 +74,6 @@
     <Compile Include="Settings\IdDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
