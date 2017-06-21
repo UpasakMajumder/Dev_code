@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
-    public interface IOrderServiceClient
+    public interface IOrderSubmitClient
     {
-        Task<SubmitOrderServiceResponseDto> SubmitOrder(string serviceEndpoint, OrderDTO orderData);
+        Task<SubmitOrderServiceResponseDto> SubmitOrder(string serviceEndpoint, OrderDTO orderData); // TODO refactor to common microservice response
     }
 }

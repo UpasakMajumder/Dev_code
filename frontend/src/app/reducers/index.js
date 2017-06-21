@@ -5,6 +5,7 @@ import shoppingCart from './shoppingCart';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
 import dialog from './dialog';
+import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   isLoading,
   settingsAddresses,
   dialog,
+  orderDetail,
   searchPage
 });
 

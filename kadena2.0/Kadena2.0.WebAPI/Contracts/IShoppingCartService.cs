@@ -1,4 +1,5 @@
 ﻿using Kadena.WebAPI.Models;
+using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,5 +23,7 @@ namespace Kadena.WebAPI.Contracts
         Task<CheckoutPage> OrderCurrentCart();
 
         Task<double> EstimateTotalTax();
+
+        Task<OrderDetail> GetOrderDetail(string orderId);
     }
 }

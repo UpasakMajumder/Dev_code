@@ -45,5 +45,9 @@ namespace Kadena.WebAPI.Contracts
         IEnumerable<State> GetStates();
 
         void SaveShippingAddress(DeliveryAddress address);
+
+        string GetShippingProviderIcon(string title);
+
+        string GetSkuImageUrl(int skuid);
     }
 }
