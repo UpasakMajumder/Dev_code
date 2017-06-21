@@ -99,7 +99,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            containerId = response?.Response ?? Guid.Empty;
+                            containerId = response?.Payload ?? Guid.Empty;
                         }
                         else
                         {
@@ -162,7 +162,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            fileId = response?.Response;
+                            fileId = response?.Payload;
                         }
                         else
                         {
@@ -215,7 +215,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        result = response?.Response;
+                        result = response?.Payload;
                     }
                     else
                     {
@@ -347,7 +347,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            return response?.Response;
+                            return response?.Payload;
                         }
                         else
                         {
@@ -395,7 +395,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {
@@ -440,7 +440,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {
@@ -542,7 +542,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {
@@ -588,7 +588,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {
@@ -628,7 +628,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response.Response.orders;
+                        return response.Payload.orders;
                     }
                     else
                     {

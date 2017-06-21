@@ -64,7 +64,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {

@@ -14,7 +14,7 @@ namespace Kadena.Dto.General
         public bool Success { get; set; }
 
         [DataMember(Name = "payload")]
-        public TResponse Response { get; set; }
+        public TResponse Payload { get; set; }
 
         [DataMember(Name = "errorMessages")]
         [Obsolete("Will be removed after all microservices will use Error property.")]
