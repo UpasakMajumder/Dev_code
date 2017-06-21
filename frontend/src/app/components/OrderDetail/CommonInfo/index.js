@@ -31,7 +31,7 @@ export default ({ ui }) => {
         <div className="tile-bar__item">
           <SVG name="dollar" className="icon-tile"/>
           <div>
-            <p className="tile-bar__title">Status</p>
+            <p className="tile-bar__title">Total cost</p>
             <p className="tile-bar__description">{totalCost}</p>
           </div>
         </div>
