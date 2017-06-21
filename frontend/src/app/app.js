@@ -43,6 +43,7 @@ const app = {
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
     render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
     render('Dialog', document.querySelectorAll('.r-dialog'));
+    render('OrderDetail', document.querySelectorAll('.r-order-detail'));
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
   }

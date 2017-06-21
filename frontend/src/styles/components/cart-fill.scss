@@ -42,6 +42,10 @@
     @include rem(padding, 5px 0 0 20px);
   }
 
+  &__summary-table {
+    max-width: 270px;
+  }
+
   &__block--flex {
     display: flex;
     flex-wrap: wrap;

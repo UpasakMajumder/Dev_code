@@ -143,6 +143,9 @@
           editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
         }
       },
+      orderDetail: {
+        orderDetailUrl: ""
+      },
       searchPage: {
         searchPageUrl: ''
       }

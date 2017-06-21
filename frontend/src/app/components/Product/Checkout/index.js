@@ -79,20 +79,20 @@ class Products extends Component {
     const { quantity } = this.state;
 
     const quantityElement = isQuantityEditable
-    ? <input onChange={(e) => { this.handleChange(e.target); }}
-             type="number"
-             min="1"
-             value={quantity}/>
-    : <span>{quantity}</span>;
+      ? <input onChange={(e) => { this.handleChange(e.target); }}
+               type="number"
+               min="1"
+               value={quantity}/>
+      : <span>{quantity}</span>;
 
     const productDifference = isMailingList
-    ? <div className="cart-product__mlist">
+      ? <div className="cart-product__mlist">
         <p>
           <SVG name="mailing-list"/>
           <span>Mailing list: <strong>{mailingList}</strong></span>
         </p>
       </div>
-    : <div className="cart-product__quantity">
+      : <div className="cart-product__quantity">
         <span>{quantityPrefix}</span>
         {quantityElement}
       </div>;
@@ -101,16 +101,16 @@ class Products extends Component {
     const productClassName = isMailingList ? 'cart-product' : 'cart-product--non-deliverable cart-product';
 
     const deliveryElement = delivery
-    ? <div className="cart-product__delivery">
+      ? <div className="cart-product__delivery">
         <p>{delivery}</p>
       </div>
-    : null;
+      : null;
 
     const imgElement = image
-    ? <div className="cart-product__img">
+      ? <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
-    : null;
+      : null;
 
     return (
       <div className={productClassName}>

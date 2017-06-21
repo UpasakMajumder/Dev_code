@@ -18,7 +18,6 @@ namespace Kadena.WebAPI.Models
             if (Products.Items.TrueForAll(p => p.IsMailingList))
             {
                 DeliveryAddresses.IsDeliverable = false;
-                PaymentMethods.IsPayable = false;
             }
         }
     }

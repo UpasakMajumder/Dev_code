@@ -91,29 +91,41 @@ namespace Kadena.WebAPI.Services
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-                SetShippingProviderIcon(dm);
+                dm.Icon = GetShippingProviderIcon(dm.Title);
             }
 
             return deliveryMethods;
         }
 
+        public string GetSkuImageUrl(int skuid)
+        {
+            if (skuid <= 0)
+                return string.Empty;
+
+            var sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var skuurl = sku?.SKUImagePath ?? string.Empty;
+            return URLHelper.GetAbsoluteUrl(skuurl);
+        }
+
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        private void SetShippingProviderIcon(DeliveryCarrier dm)
+        public string GetShippingProviderIcon(string title)
         {
-            if (dm.Title.ToLower().Contains("fedex"))
+            var dictionary = new Dictionary<string, string>()
             {
-                dm.Icon = "fedex-delivery";
-            }
-            else if (dm.Title.ToLower().Contains("usps"))
+                {"fedex","fedex-delivery"},
+                {"usps","usps-delivery" },
+                {"ups","ups-delivery" }
+            };
+
+            foreach (var kvp in dictionary)
             {
-                dm.Icon = "usps-delivery";
+                if (title.ToLower().Contains(kvp.Key))
+                    return kvp.Value;
             }
-            else if (dm.Title.ToLower().Contains("ups"))
-            {
-                dm.Icon = "ups-delivery";
-            }
+            
+            return string.Empty;
         }
 
         public DeliveryOption[] GetShippingOptions()

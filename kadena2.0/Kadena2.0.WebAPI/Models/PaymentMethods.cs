@@ -12,11 +12,6 @@ namespace Kadena.WebAPI.Models
 
         public List<PaymentMethod> Items { get; set; }
 
-        public void CheckPayability()
-        {
-            IsPayable = !Items.Any(i => i.IsUnpayable);
-        }
-
         public void CheckDefault()
         {
             Items.ForEach(i => i.Checked = false);
