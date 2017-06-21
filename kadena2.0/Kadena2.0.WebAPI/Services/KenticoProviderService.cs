@@ -112,22 +112,19 @@ namespace Kadena.WebAPI.Services
         /// </summary>
         public string GetShippingProviderIcon(string title)
         {
-            if (title == null)
-                return string.Empty;
+            var dictionary = new Dictionary<string, string>()
+            {
+                {"fedex","fedex-delivery"},
+                {"usps","usps-delivery" },
+                {"ups","ups-delivery" }
+            };
 
-            if (title.ToLower().Contains("fedex"))
+            foreach (var key in dictionary.Keys)
             {
-                return "fedex-delivery";
+                if (title.ToLower().Contains(key))
+                    return dictionary[key];
             }
-            else if (title.ToLower().Contains("usps"))
-            {
-                return "usps-delivery";
-            }
-            else if (title.ToLower().Contains("ups"))
-            {
-                return "ups-delivery";
-            }
-
+            
             return string.Empty;
         }
 
