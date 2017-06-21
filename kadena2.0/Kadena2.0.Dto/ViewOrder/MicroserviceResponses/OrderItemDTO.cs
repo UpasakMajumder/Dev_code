@@ -2,6 +2,7 @@
 {
     public class OrderItemDTO
     {
+        public int SkuId { get; set; }
         public string Type { get; set; }
         public int Qty { get; set; }
         public string TrackingId { get; set; }

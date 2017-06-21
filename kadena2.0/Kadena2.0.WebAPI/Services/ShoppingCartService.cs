@@ -413,9 +413,10 @@ namespace Kadena.WebAPI.Services
             var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
             var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
 
-            if (!microserviceResponse.Success)
+            if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
                 kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessage);
+                throw new Exception("Failed to obtain order detail from microservice"); // TODO refactor using checking null
             }
 
             var data = microserviceResponse.Payload;
@@ -424,9 +425,9 @@ namespace Kadena.WebAPI.Services
             {
                 CommonInfo = new CommonInfo()
                 {
-                    OrderDate = data.OrderDate,
+                    OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
                     ShippingDate = string.Empty, //TODO
-                    Status = data.Status,
+                    Status = data.Status ?? "null",
                     TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
                 },
                 PaymentInfo = new PaymentInfo()
@@ -434,7 +435,7 @@ namespace Kadena.WebAPI.Services
                     Date = string.Empty, // TODO
                     PaidBy  = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
-                    PaymentIcon = "", //TODO
+                    PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
                     Title = "Payment"
                 },
                 PricingInfo = new PricingInfo()
@@ -491,19 +492,26 @@ namespace Kadena.WebAPI.Services
             return orderDetail;
         }
 
+        private string GetPaymentMethodIcon(string paymentMethod)
+        {
+            var methods = kenticoProvider.GetPaymentMethods();
+            var method = methods.FirstOrDefault(m => m.Title == paymentMethod);
+            return method?.Icon ?? string.Empty;
+        }
+
         private List<OrderedItem> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
         {
             return items.Select(i => new OrderedItem()
             {
-                Id = 0, // TODO
+                Id = i.SkuId,
                 DownloadPdfURL = i.FileUrl,
                 Image = "", // TODO
                 MailingList = i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Qty,
-                QuantityPrefix = "Quantity: ", //todo switch by prod type
+                QuantityPrefix = i.Type.Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
                 ShippingDate = string.Empty, // TODO
-                Template = string.Empty,
+                Template = i.Name,
                 TrackingId = i.TrackingId
             }).ToList();
         }

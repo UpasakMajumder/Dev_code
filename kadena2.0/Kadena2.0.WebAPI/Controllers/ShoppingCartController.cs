@@ -52,7 +52,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var detailPage = await service.GetOrderDetail(orderId);
             var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto);
+            return ResponseJson(detailPageDto); // TODO refactor using checking null
         }
 
         [HttpPost]
