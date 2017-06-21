@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<CheckoutPage> GetCheckoutPage()
         {
-            var addresses = kenticoProvider.GetCustomerAddresses();
+            var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
             var carriers = kenticoProvider.GetShippingCarriers();
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
@@ -224,7 +224,7 @@ namespace Kadena.WebAPI.Services
 
             if (serviceResult.Success)
             {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} sucesfully created");
+                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 await OrderCurrentCart();
             }
             else

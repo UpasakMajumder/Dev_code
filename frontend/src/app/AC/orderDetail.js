@@ -3,13 +3,13 @@ import { ORDER_DETAIL_GET_UI_FETCH, ORDER_DETAIL_GET_UI_FAILURE, ORDER_DETAIL_GE
 import { ORDER_DETAIL } from '../globals';
 // import ui from '../testServices/orderDetail';
 
-export default () => {
+export default (orderID) => {
   return (dispatch) => {
     dispatch({ type: ORDER_DETAIL_GET_UI_FETCH });
 
     axios({
       method: 'get',
-      url: ORDER_DETAIL.orderDetailUrl
+      url: `${ORDER_DETAIL.orderDetailUrl}/${orderID}`
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
 

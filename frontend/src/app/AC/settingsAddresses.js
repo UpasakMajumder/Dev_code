@@ -34,7 +34,7 @@ const getUITest = (dispatch) => {
   //   dispatch({
   //     type: SETTINGS_ADDRESSES_UI_SUCCESS,
   //     payload: { ui }
-  //   })
+  //   });
   // }, 2000);
 };
 

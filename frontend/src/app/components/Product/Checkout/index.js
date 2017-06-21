@@ -63,7 +63,9 @@ class Products extends Component {
 
       return (
         <button type="button" className="cart-product__btn">
-          <SVG name="edit"/>
+          <div>
+            <SVG name="edit"/>
+          </div>
           Edit
         </button>
       );
@@ -136,7 +138,9 @@ class Products extends Component {
             {this.defineEditButton()}
 
             <button onClick={() => { removeProduct(id); }} type="button" className="cart-product__btn">
-              <SVG name="cross--dark"/>
+              <div>
+                <SVG name="cross--dark"/>
+              </div>
               Remove
             </button>
           </div>
