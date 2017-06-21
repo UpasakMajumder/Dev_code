@@ -5,10 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Helpers
+namespace Kadena.Dto.General
 {
     [DataContract]
-    class AwsResponseMessage<TResponse>
+    public class AwsResponseMessage<TResponse>
     {
         [DataMember(Name = "success")]
         public bool Success { get; set; }

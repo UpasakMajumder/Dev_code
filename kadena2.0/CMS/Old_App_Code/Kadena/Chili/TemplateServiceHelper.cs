@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using Kadena.Dto.General;
 using Kadena.Old_App_Code.Helpers;
 using System.Collections.Generic;
 using System.IO;

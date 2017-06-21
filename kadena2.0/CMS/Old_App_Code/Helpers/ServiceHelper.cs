@@ -4,13 +4,13 @@ using System.IO;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
 using CMS.EventLog;
+using Kadena.Dto.General;
 
 namespace Kadena.Old_App_Code.Helpers
 {

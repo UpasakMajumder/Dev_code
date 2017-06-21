@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Helpers
+namespace Kadena.Dto.General
 {
     [DataContract]
     public class ErrorMessage
