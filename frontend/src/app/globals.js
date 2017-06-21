@@ -5,7 +5,8 @@ const {
   checkout,
   spotfire,
   userSettings,
-  searchPage
+  searchPage,
+  search
 } = localization;
 
 
@@ -14,3 +15,4 @@ export const CHECKOUT = checkout;
 export const SPOTFIRE = spotfire;
 export const USER_SETTINGS = userSettings;
 export const SEARCH_PAGE = searchPage;
+export const SEARCH = search;

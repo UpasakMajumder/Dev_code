@@ -45,6 +45,9 @@ const app = {
     render('Dialog', document.querySelectorAll('.r-dialog'));
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
+    render('Search', document.querySelectorAll('.r-search'));
+    render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
+
   }
 };
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import Spinner from '../../Spinner';
-import Page from './Page';
+import Page from '../../Pages/SearchPage/index';
 import { changePage } from '../../../AC/searchPage';
 import { paginationFilter } from '../../../helpers/array';
 
