@@ -34,7 +34,8 @@ namespace AutomatedTests.Tests
             ProductDetail productDetail = new ProductDetail();
             productDetail.Open(category.ProductCategoryTitle, product.DocumentName);
             productDetail.ClickAddToCart();
-            
+            productDetail.AcceptItemIsAddedAlert();
+
             //Go to checkout and verify if shipping cost is estimated
             Checkout checkout = new Checkout();
             checkout.Open();

@@ -1,14 +1,15 @@
 ﻿using CMS.CustomTables;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -168,12 +169,23 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel"
-                || inpFile.PostedFile.ContentType == "text/csv")
+            Stream fileStream = null;
+            for(int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+                if (file.ContentLength > 0 
+                    && (file.ContentType == "application/vnd.ms-excel" 
+                    || file.ContentType == "text/csv"))
+                {
+                    fileStream = file.InputStream;
+                    break;
+                }
+            }
+
+            if (fileStream != null)
             {
                 try
                 {
-                    var fileStream = inpFile.PostedFile.InputStream;
                     var fileName = inpFileName.Value;
 
                     var fileId = ServiceHelper.UploadFile(fileStream, fileName);
