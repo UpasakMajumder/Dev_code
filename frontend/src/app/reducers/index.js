@@ -5,6 +5,7 @@ import shoppingCart from './shoppingCart';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
 import dialog from './dialog';
+import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   dialog,
   searchPage,
   search,
-  isShownHeaderShadow
+  isShownHeaderShadow,
+  orderDetail
 });
 
 export default rootReducer;

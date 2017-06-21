@@ -106,5 +106,14 @@ namespace AutomatedTests.Utilities
             return Random.Next(min, max);
         }
 
+        /// <summary>
+        /// Returns message saying it is test
+        /// </summary>
+        /// <returns></returns>
+        public static string ThisIsTestMessage()
+        {
+            return "This is test. Do not reply";
+        }
+
     }
 }
