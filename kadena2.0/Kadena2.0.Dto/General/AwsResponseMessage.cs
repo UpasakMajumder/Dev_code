@@ -22,7 +22,7 @@ namespace Kadena.Dto.General
         {
             get
             {
-                return Error.Message;
+                return Error?.Message;
             }
             set
             {
