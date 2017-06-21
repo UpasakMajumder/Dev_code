@@ -97,6 +97,15 @@ namespace Kadena.WebAPI.Services
             return deliveryMethods;
         }
 
+        public string GetSkuImageUrl(int skuid)
+        {
+            if (skuid <= 0)
+                return string.Empty;
+
+            var sku = SKUInfoProvider.GetSKUInfo(skuid);
+            return sku?.SKUImagePath ?? string.Empty;
+        }
+
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>

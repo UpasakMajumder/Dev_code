@@ -425,13 +425,13 @@ namespace Kadena.WebAPI.Services
                 CommonInfo = new CommonInfo()
                 {
                     OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
-                    ShippingDate = string.Empty, //TODO
+                    ShippingDate = string.Empty, //TODO shipping date unknown
                     Status = data.Status,
                     TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = string.Empty, // TODO
+                    Date = string.Empty, // TODO payment date unknown
                     PaidBy  = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
@@ -478,7 +478,7 @@ namespace Kadena.WebAPI.Services
                     Tracking = new Tracking()
                     {
                         Text = "Track your packages",
-                        Url = string.Empty // TODO
+                        Url = string.Empty // TODO Track your package url unkinown
                     }
                 },
                 OrderedItems = new OrderedItems()
@@ -504,12 +504,12 @@ namespace Kadena.WebAPI.Services
             {
                 Id = i.SkuId,
                 DownloadPdfURL = i.FileUrl,
-                Image = "", // TODO
+                Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
-                Quantity = i.Qty,
+                Quantity = i.Quantity,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
-                ShippingDate = string.Empty, // TODO
+                ShippingDate = string.Empty, // TODO Shipping date unknown
                 Template = i.Name,
                 TrackingId = i.TrackingId
             }).ToList();
