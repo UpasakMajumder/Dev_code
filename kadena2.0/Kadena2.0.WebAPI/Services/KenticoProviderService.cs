@@ -119,10 +119,10 @@ namespace Kadena.WebAPI.Services
                 {"ups","ups-delivery" }
             };
 
-            foreach (var key in dictionary.Keys)
+            foreach (var kvp in dictionary)
             {
-                if (title.ToLower().Contains(key))
-                    return dictionary[key];
+                if (title.ToLower().Contains(kvp.Key))
+                    return kvp.Value;
             }
             
             return string.Empty;
