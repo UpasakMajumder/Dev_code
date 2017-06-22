@@ -142,10 +142,12 @@
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
+    <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizationFilter.cs" />
