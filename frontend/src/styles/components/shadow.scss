@@ -1,13 +1,8 @@
-.shadow {
+.header-shadow {
   width: 100%;
-  height: calc(100% - 70px);
+  height: calc(100% - #{$header-size} + #{$main-layout-gutter});
   position: absolute;
   left: 0;
   background: rgba($brand-lightblue, .5);
   z-index: 1;
-  display: none;
-
-  .isOpen ~ & {
-    display: block;
-  }
 }

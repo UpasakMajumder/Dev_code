@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48"><g  transform="translate(0, 0)">
+<polyline fill="none" stroke="#444444" stroke-width="4" stroke-miterlimit="10" points="30,19 42,19 46,31 46,40 &#10;&#9;40.9,40 " stroke-linejoin="miter" stroke-linecap="butt"/>
+<line fill="none" stroke="#444444" stroke-width="4" stroke-miterlimit="10" x1="31.1" y1="40" x2="17.977" y2="40" stroke-linejoin="miter" stroke-linecap="butt"/>
+<polyline fill="none" stroke="#444444" stroke-width="4" stroke-miterlimit="10" points="22,12 30,12 30,32 " stroke-linejoin="miter" stroke-linecap="butt"/>
+<polyline fill="none" stroke="#444444" stroke-width="4" stroke-miterlimit="10" points="7,40 2,40 2,24 " stroke-linejoin="miter" stroke-linecap="butt"/>
+<circle fill="none" stroke="#444444" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" cx="12.5" cy="40.5" r="5.5" stroke-linejoin="miter"/>
+<circle fill="none" stroke="#444444" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" cx="36" cy="41" r="5" stroke-linejoin="miter"/>
+<circle fill="none" stroke="#444444" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" cx="12" cy="12" r="10" stroke-linejoin="miter"/>
+<polyline fill="none" stroke="#444444" stroke-width="4" stroke-linecap="square" stroke-miterlimit="10" points="&#10;&#9;12,8 12,12 16,12 " stroke-linejoin="miter"/>
+</g></svg>
