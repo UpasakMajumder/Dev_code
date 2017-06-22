@@ -4,7 +4,8 @@ import 'jquery-ui/themes/base/datepicker.css';
 
 class Datepicker {
   constructor(input) {
-    $(input).datepicker(); // $ and $ui from global
+    // $ and $ui from global
+    $(input).datepicker(); // eslint-disable-line no-undef
   }
 }
 

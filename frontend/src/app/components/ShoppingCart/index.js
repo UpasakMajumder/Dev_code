@@ -7,6 +7,7 @@ import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
 import Spinner from '../Spinner';
+import Button from '../Button';
 import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
@@ -47,9 +48,15 @@ class ShoppingCart extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { ui, validation } = nextProps.shoppingCart;
+    const { ui, validation, isWaitingPDF } = nextProps.shoppingCart;
 
     if (validation.fields.length) ShoppingCart.fireNotification(validation.fields);
+
+    if (!isWaitingPDF && !ui.submit.isDisabled) {
+      setTimeout(() => {
+        this.props.askReadyPdf();
+      }, 1000)
+    }
 
     if (ui === this.props.shoppingCart.ui) return;
 
@@ -81,11 +88,15 @@ class ShoppingCart extends Component {
 
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, validation } = shoppingCart;
+    const { ui, checkedData, isSending, validation, isWaitingPDF } = shoppingCart;
+    const { submit } = ui;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
+      const submitIsUnavailable = submit.isDisabled;
+      const submitDisabledText = submitIsUnavailable ? <Alert type="info" text={submit.disabledText}/> : null;
+
       const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
 
       const deliveryContent = isDeliverable
@@ -136,12 +147,13 @@ class ShoppingCart extends Component {
           <Total ui={ui.totals}/>
         </div>
 
+        {submitDisabledText}
+
         <div className="shopping-cart__block text--right">
-          <button onClick={() => { this.props.sendData(checkedData); }}
-                  type="button"
-                  className="btn-action">
-            {ui.submitLabel}
-          </button>
+          <Button text={submit.btnLabel}
+                  isLoading={submitIsUnavailable || isWaitingPDF}
+                  type="action"
+                  onClick={() => { this.props.sendData(checkedData); }} />
         </div>
       </div>;
     }
