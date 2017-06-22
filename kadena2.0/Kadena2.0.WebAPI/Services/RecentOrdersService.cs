@@ -5,6 +5,9 @@ using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.WebAPI.Models;
+using System;
+using System.Linq;
+using Kadena.Dto.Order;
 
 namespace Kadena.WebAPI.Services
 {
@@ -13,24 +16,19 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
         private readonly IKenticoResourceService _kentico;
+        private readonly int _pageCapacity;
 
         public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kentico)
         {
             _mapper = mapper;
             _orderClient = orderClient;
             _kentico = kentico;
+            _pageCapacity = int.Parse(_kentico.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
         }
 
         public async Task<OrderHead> GetHeaders()
         {
-            var url = _kentico.GetSettingsKey("KDA_OrdersBySiteUrl");
-            var siteName = _kentico.GetKenticoSite().Name;
-            var quantity = int.Parse(_kentico.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
-
-            var response = await _orderClient.GetOrders(url, siteName, 1, quantity);
-
-            var orderList = _mapper.Map<OrderList>(response.Payload);
-
+            var orderList = _mapper.Map<OrderList>(await GetOrders(1));
             return new OrderHead
             {
                 Headings = new List<string> {
@@ -44,10 +42,18 @@ namespace Kadena.WebAPI.Services
                 Pagination = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
-                    RowsOnPage = quantity,
-                    PagesCount = orderList.TotalCount / quantity + 1
+                    RowsOnPage = _pageCapacity,
+                    PagesCount = (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) + 1
                 }
             };
+        }
+
+        private async Task<OrderListDto> GetOrders(int pageNumber)
+        {
+            var url = _kentico.GetSettingsKey("KDA_OrdersBySiteUrl");
+            var siteName = _kentico.GetKenticoSite().Name;
+            var result = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
+            return result.Payload;
         }
     }
 }
