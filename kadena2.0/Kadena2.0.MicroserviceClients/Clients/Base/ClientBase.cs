@@ -37,7 +37,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     Payload = default(TResult),
                     Error = new ErrorMessage
                     {
-                        Message = response.ReasonPhrase
+                        Message = $"HTTP error - {response.ReasonPhrase}"
                     }
                 };
             }
