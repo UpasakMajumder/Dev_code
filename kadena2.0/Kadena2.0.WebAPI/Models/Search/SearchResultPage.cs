@@ -4,7 +4,7 @@ namespace Kadena.WebAPI.Models.Search
 {
     public class SearchResultPage
     {
-        public IList<ResultItemProduct> products { get; set; }
-        public IList<ResultItemPage> pages { get; set; }
+        public IList<ResultItemProduct> Products { get; set; }
+        public IList<ResultItemPage> Pages { get; set; }
     }
 }

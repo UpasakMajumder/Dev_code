@@ -150,21 +150,32 @@ namespace Kadena.WebAPI
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
                 config.CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
+                config.CreateMap<ResultItemPage, PageDTO>();
+                config.CreateMap<ResultItemProduct, ProductDTO>();
+                config.CreateMap<UseTemplateBtn, UseTemplateBtnDTO>();
+                config.CreateMap<Stock, StockDTO>();
             });
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            
+            // BLL
             container.Register<IShoppingCartService, ShoppingCartService>();
-            container.Register<IKenticoProviderService, KenticoProviderService>();
-            container.Register<IKenticoResourceService, KenticoResourceService>();
+            container.Register<ISearchService, SearchService>();
             container.Register<IOrderServiceClient, OrderServiceClient>();
-            container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+
+            // Kentico
+            container.Register<IKenticoProviderService, KenticoProviderService>();
+            container.Register<IKenticoResourceService, KenticoResourceService>();
+            container.Register<IKenticoSearchService, KenticoSearchService>();
+            container.Register<IKenticoLogger, KenticoLogger>();
+            
             container.WithWebApi(apiConfig);
         }
 

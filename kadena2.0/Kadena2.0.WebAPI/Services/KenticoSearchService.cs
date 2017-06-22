@@ -39,7 +39,7 @@ namespace Kadena.WebAPI.Services
 
         public DataSet Search(string phrase)
         {
-            var index = SearchIndexInfoProvider.GetSearchIndexInfo("ProductsSearch");
+            var index = SearchIndexInfoProvider.GetSearchIndexInfo("KDA_ProductsIndex");
 
             if (index == null)
                 return null;

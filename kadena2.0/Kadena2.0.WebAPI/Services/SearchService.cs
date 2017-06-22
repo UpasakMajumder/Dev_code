@@ -2,6 +2,7 @@
 using AutoMapper;
 using System.Data;
 using Kadena.WebAPI.Models.Search;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -24,11 +25,12 @@ namespace Kadena.WebAPI.Services
 
             if (datasetResults == null || datasetResults.Tables.Count == 0) // todo refine checking for empty
             {
-                // todo return error response
+                return null;
             }
 
-            //var searchResults = new MemberList
-            
+            var searchResultPages = new List<ResultItemPage>();
+            var searchResultProducts = new List<ResultItemProduct>();
+
             foreach (DataTable table in datasetResults.Tables)
             {
                 foreach (DataRow dr in table.Rows)
@@ -41,6 +43,8 @@ namespace Kadena.WebAPI.Services
                         Url = "sdfsdf"
                     };
 
+                    searchResultPages.Add(resultItem);
+
                     //ImageUrl = dr[7].ToString().Replace("~", "")
                     // var nodeID = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
                     // var node = tree.SelectSingleNode(nodeID, LocalizationContext.CurrentCulture.CultureCode);
@@ -49,7 +53,11 @@ namespace Kadena.WebAPI.Services
                 }
             }
 
-            return null;
+            return new SearchResultPage()
+            {
+                Pages = searchResultPages,
+                Products = searchResultProducts
+            };
         }
     }
 }
