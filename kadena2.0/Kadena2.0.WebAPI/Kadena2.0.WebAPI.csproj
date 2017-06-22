@@ -139,6 +139,7 @@
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\IRecentOrderService.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
+    <Compile Include="Services\RecentOrdersService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>
