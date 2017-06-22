@@ -3,6 +3,7 @@ using AutoMapper;
 using System.Data;
 using Kadena.WebAPI.Models.Search;
 using System.Collections.Generic;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
@@ -21,43 +22,85 @@ namespace Kadena.WebAPI.Services
 
         public SearchResultPage Search(string phrase)
         {
-            var datasetResults = kenticoSearch.Search(phrase);
-
-            if (datasetResults == null || datasetResults.Tables.Count == 0) // todo refine checking for empty
-            {
-                return null;
-            }
-
-            var searchResultPages = new List<ResultItemPage>();
-            var searchResultProducts = new List<ResultItemProduct>();
-
-            foreach (DataTable table in datasetResults.Tables)
-            {
-                foreach (DataRow dr in table.Rows)
-                {
-                    var resultItem = new ResultItemPage()
-                    {
-                        Id  = 0,
-                        Text = "adasdasd",
-                        Title = dr[4].ToString(),
-                        Url = "sdfsdf"
-                    };
-
-                    searchResultPages.Add(resultItem);
-
-                    //ImageUrl = dr[7].ToString().Replace("~", "")
-                    // var nodeID = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
-                    // var node = tree.SelectSingleNode(nodeID, LocalizationContext.CurrentCulture.CultureCode);
-                    // resultItem.Url = node.AbsoluteURL;
-                    // result.SearchResult.Add(resultItem);
-                }
-            }
+            var searchResultPages = SearchPages(phrase);
+            var searchResultProducts = SearchProducts(phrase);
 
             return new SearchResultPage()
             {
                 Pages = searchResultPages,
                 Products = searchResultProducts
             };
+        }
+
+        public List<ResultItemPage> SearchPages(string phrase)
+        {
+            var searchResultPages = new List<ResultItemPage>();
+            var datasetResults = kenticoSearch.Search(phrase, "KDA_PagesIndex", "/%", true);
+
+            if (datasetResults != null)
+            {
+                foreach (DataTable table in datasetResults.Tables)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        var resultItem = new ResultItemPage()
+                        {
+                            Id = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]),
+                            Text = "adasdasd",
+                            Title = dr[4].ToString(),
+                            Url = "sdfsdf"
+                        };
+
+                        searchResultPages.Add(resultItem);
+
+                        // var nodeID = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
+                        // var node = tree.SelectSingleNode(nodeID, LocalizationContext.CurrentCulture.CultureCode);
+                        // resultItem.Url = node.AbsoluteURL;
+                    }
+                }
+            }
+
+            return searchResultPages;
+        }
+
+        public List<ResultItemProduct> SearchProducts(string phrase)
+        {
+            var searchResultProducts = new List<ResultItemProduct>();
+            var datasetResults = kenticoSearch.Search(phrase, "KDA_ProductsIndex", "/Products/%", true);
+
+            if (datasetResults != null)
+            {
+                foreach (DataTable table in datasetResults.Tables)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        var resultItem = new ResultItemProduct()
+                        {
+                            Breadcrumbs = new List<string>() { "fakeBreadcrumbs" },
+                            ImgUrl = dr[7].ToString().Replace("~", ""),
+                            IsFavourite = false,
+                            Stock = new Stock()
+                            {
+                                Text = dr[4].ToString(),
+                                Type = ""
+                            },
+                            UseTemplateBtn = new UseTemplateBtn()
+                            {
+                                Text = "",
+                                Url = ""
+                            }
+                        };
+
+                        searchResultProducts.Add(resultItem);
+                        
+                        // var nodeID = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
+                        // var node = tree.SelectSingleNode(nodeID, LocalizationContext.CurrentCulture.CultureCode);
+                        // resultItem.Url = node.AbsoluteURL;
+                    }
+                }
+            }
+
+            return searchResultProducts;
         }
     }
 }

@@ -37,9 +37,9 @@ namespace Kadena.WebAPI.Services
         }
 
 
-        public DataSet Search(string phrase)
+        public DataSet Search(string phrase, string indexName, string path, bool checkPermissions)
         {
-            var index = SearchIndexInfoProvider.GetSearchIndexInfo("KDA_ProductsIndex");
+            var index = SearchIndexInfoProvider.GetSearchIndexInfo(indexName); 
 
             if (index == null)
                 return null;
@@ -48,11 +48,11 @@ namespace Kadena.WebAPI.Services
             {
                 SearchFor = String.Format("+({0})", phrase),
                 SearchSort = "##SCORE##",
-                Path = "/Products/%",
+                Path = path,
                 CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
                 DefaultCulture = null,
                 CombineWithDefaultCulture = false,
-                CheckPermissions = true,
+                CheckPermissions = checkPermissions,
                 SearchInAttachments = false,
                 User = (UserInfo)MembershipContext.AuthenticatedUser,
                 SearchIndexes = index.IndexName,
