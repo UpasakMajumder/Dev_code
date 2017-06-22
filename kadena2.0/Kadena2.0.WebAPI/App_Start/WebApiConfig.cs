@@ -93,7 +93,7 @@ namespace Kadena.WebAPI
                     IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
-                config.CreateMap<OrderItem, Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO>().ProjectUsing(p => new Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO(p.OrderItemType)
+                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
@@ -157,16 +157,27 @@ namespace Kadena.WebAPI
                 config.CreateMap<OrderDetail, OrderDetailDTO>();
                 config.CreateMap<CommonInfo, CommonInfoDTO>();
                 config.CreateMap<ShippingInfo, ShippingInfoDTO>();
-                config.CreateMap<PaymentInfo,PaymentInfoDTO>();
-                config.CreateMap<PricingInfo,PricingInfoDTO>();                
-                config.CreateMap<Tracking,TrackingDTO>();
-                config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
+                config.CreateMap<PaymentInfo, PaymentInfoDTO>();
+                config.CreateMap<PricingInfo, PricingInfoDTO>();
+                config.CreateMap<Tracking, TrackingDTO>();
+                config.CreateMap<PricingInfoItem, PricingInfoItemDTO>();
                 config.CreateMap<Pagination, PaginationDto>();
                 config.CreateMap<OrderHead, OrderHeadDto>();
                 config.CreateMap<OrderItemDto, OrderItem>()
                     .ProjectUsing(s => new OrderItem { SKUName = s.Name, UnitCount = s.Quantity });
                 config.CreateMap<OrderDto, Order>();
                 config.CreateMap<OrderListDto, OrderList>();
+                config.CreateMap<OrderItem, OrderItemDto>()
+                    .ProjectUsing(s => new OrderItemDto { Name = s.SKUName, Quantity = s.UnitCount });
+                config.CreateMap<Button, ButtonDto>();
+                config.CreateMap<Order, OrderRowDto>()
+                    .AfterMap((s, d) =>
+                    {
+                        d.OrderNumber = s.Id;
+                        d.OrderDate = s.CreateDate;
+                        d.OrderStatus = s.Status;
+                    });
+                config.CreateMap<OrderBody, OrderBodyDto>();
             });
         }
 
