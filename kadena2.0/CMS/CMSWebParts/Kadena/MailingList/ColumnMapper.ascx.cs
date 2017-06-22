@@ -19,7 +19,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("name", "FirstName", false ),
             Tuple.Create("last name", "LastName", true ),
             Tuple.Create("first address line", "Address1", false ),
-            Tuple.Create("second address line", "Address2", false ),
+            Tuple.Create("second address line", "Address2", true ),
             Tuple.Create("city", "City", false ),
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )

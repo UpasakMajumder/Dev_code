@@ -47,11 +47,11 @@
         <!--Address2-->
         <div runat="server" id="wrapAddress2" class=" input__wrapper ">
             <span class="input__label">second address line</span>
-            <div runat="server" id="divAddress2" class="input__select ">
+            <span class="input__right-label"><%=GetString("Kadena.MailingList.Optional")%></span>
+            <div class="input__select ">
                 <select runat="server" id="selAddress2" name="Address2">
                 </select>
             </div>
-            <span runat="server" id="spanAddress2" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
 
         <!--City-->
