@@ -427,7 +427,7 @@ namespace Kadena.WebAPI.Services
                     OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
                     ShippingDate = string.Empty, //TODO shipping date unknown
                     Status = data.Status,
-                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
+                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
                 },
                 PaymentInfo = new PaymentInfo()
                 {
@@ -505,7 +505,7 @@ namespace Kadena.WebAPI.Services
                 Id = i.SkuId,
                 DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
-                MailingList = i.MailingList,
+                MailingList = (i.Type ?? string.Empty).ToLower().Contains("mailing") ?  i.MailingList : string.Empty,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
