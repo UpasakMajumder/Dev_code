@@ -86,7 +86,7 @@ namespace Kadena.CMSWebParts.Kadena.Orders
 
         private IEnumerable<OrderHistoryData> Convert(IEnumerable<OrderDto> source)
         {
-            return source.Select(o => new OrderHistoryData
+            return source?.Select(o => new OrderHistoryData
             {
                 Id = o.Id,
                 CreateDate = o.CreateDate,
