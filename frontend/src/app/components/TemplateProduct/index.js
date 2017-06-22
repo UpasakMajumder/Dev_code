@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../SVG';
+import Stock from '../Stock';
 
 class TemplateProduct extends Component {
   constructor() {
@@ -17,30 +17,6 @@ class TemplateProduct extends Component {
     this.setState({
       templateQuantity: value
     });
-  }
-
-  static getStockBlock(stockType, stockText) {
-    let stockClass;
-
-    switch (stockType) {
-    case 'available':
-      stockClass = 'stock--available';
-      break;
-    case 'unavailable':
-      stockClass = 'stock--unavailable';
-      break;
-    case 'out':
-    default:
-      stockClass = 'stock--out';
-      break;
-    }
-
-    return (
-      <div className={`stock ${stockClass}`}>
-        <SVG name={stockClass} className={`icon-stock icon-${stockClass}`}/>
-        {stockText}
-      </div>
-    );
   }
 
   render() {
@@ -71,7 +47,7 @@ class TemplateProduct extends Component {
           <h3 title={title}>{title}</h3>
         </div>
 
-        {TemplateProduct.getStockBlock(stockType, stockText)}
+        <Stock type={stockType} text={stockText} />
 
         <div className="template__use">
           <input type="number"
@@ -91,7 +67,10 @@ TemplateProduct.propTypes = {
   imgUrl: PropTypes.string,
   breadcrumbs: PropTypes.array,
   title: PropTypes.string.isRequired,
-  stock: PropTypes.shape({ type: PropTypes.string.isRequired, text: PropTypes.string.isRequired }),
+  stock: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
+  }),
   useTemplateBtn: PropTypes.shape({ url: PropTypes.string.isRequired, text: PropTypes.string.isRequired })
 };
 

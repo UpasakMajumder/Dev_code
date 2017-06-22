@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cutWords } from '../../../../helpers/string';
+import { cutWords } from '../../../helpers/string';
 
-export default class Template extends Component {
+export default class Page extends Component {
   render() {
     const { url, title, text } = this.props;
 
@@ -19,7 +19,7 @@ export default class Template extends Component {
   }
 }
 
-Template.propTypes = {
+Page.propTypes = {
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   text: PropTypes.string
