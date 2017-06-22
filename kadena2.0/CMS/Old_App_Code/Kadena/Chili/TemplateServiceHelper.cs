@@ -77,23 +77,30 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             request.ContentType = "application/json";
             request.Method = "GET";
 
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                var result = (AwsResponseMessage<string>)response;
-
-                if (result.Success)
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return result.Response;
+                    var result = (AwsResponseMessage<string>)response;
+
+                    if (result.Success)
+                    {
+                        return result.Response;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", result.Error.Message);
+                    }
                 }
                 else
                 {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", result.Error.Message);
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", response.StatusCode.ToString());
                 }
             }
-            else
+            catch (WebException ex)
             {
-                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET EDITOR URL", "ERROR", response.StatusCode.ToString());
+                EventLogProvider.LogException("TEMPLATE SERVICE HELPER", "GET EDITOR URL", ex);
             }
             return string.Empty;
         }
@@ -111,23 +118,30 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             request.ContentType = "application/json";
             request.Method = "GET";
 
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                var result = (AwsResponseMessage<List<TemplateServiceDocumentResponse>>)response;
-
-                if (result.Success)
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return result.Response;
+                    var result = (AwsResponseMessage<List<TemplateServiceDocumentResponse>>)response;
+
+                    if (result.Success)
+                    {
+                        return result.Response;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result.Error.Message);
+                    }
                 }
                 else
                 {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result.Error.Message);
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
                 }
             }
-            else
+            catch (WebException ex)
             {
-                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
+                EventLogProvider.LogException("TEMPLATE SERVICE HELPER", "GET MASTER TEMPLATE COPIES", ex);
             }
             return new List<TemplateServiceDocumentResponse>();
         }
@@ -151,23 +165,30 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 streamWriter.Write(new JavaScriptSerializer().Serialize(data));
             }
 
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                var result = (AwsResponseMessage<string>)response;
-
-                if (result.Success)
+                var response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    return result.Response;
+                    var result = (AwsResponseMessage<string>)response;
+
+                    if (result.Success)
+                    {
+                        return result.Response;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", result.Error.Message);
+                    }
                 }
                 else
                 {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", result.Error.Message);
+                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", response.StatusCode.ToString());
                 }
             }
-            else
+            catch (WebException ex)
             {
-                EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - SET MAILING LIST", "ERROR", response.StatusCode.ToString());
+                EventLogProvider.LogException("TEMPLATE SERVICE HELPER", "SET MAILING LIST", ex);
             }
             return string.Empty;
         }

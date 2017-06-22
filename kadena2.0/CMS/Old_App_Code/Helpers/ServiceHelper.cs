@@ -393,7 +393,7 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -438,7 +438,7 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -540,7 +540,7 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -586,7 +586,7 @@ namespace Kadena.Old_App_Code.Helpers
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_responseIncorrectMessage, e));
                         return null;
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -626,7 +626,7 @@ namespace Kadena.Old_App_Code.Helpers
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
                         return null;
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response.Response.orders;
                     }
