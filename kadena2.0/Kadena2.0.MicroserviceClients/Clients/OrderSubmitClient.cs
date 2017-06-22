@@ -15,30 +15,11 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var content = CreateRequestContent(orderData);
-                var response = await httpClient.PostAsync(serviceEndpoint, content);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                using (var response = await httpClient.PostAsync(serviceEndpoint, content))
                 {
-                    return await ReadResponseJson<AwsResponseMessage<string>>(response);
-                }
-                else
-                {
-                    return CreateErrorResponse<string>($"HTTP error - {response.StatusCode}");
+                    return await ReadResponseJson<string>(response);
                 }
             }
-        }
-
-        private AwsResponseMessage<T> CreateErrorResponse<T>(string errorMessage)
-        {
-            return new AwsResponseMessage<T>()
-            {
-                Success = false,
-                Payload = default(T),
-                Error = new ErrorMessage
-                {
-                    Message = errorMessage
-                }
-            };
         }
     }
 }

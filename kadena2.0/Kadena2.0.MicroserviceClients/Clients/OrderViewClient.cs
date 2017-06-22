@@ -15,20 +15,9 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{serviceEndpoint.TrimEnd('/')}/api/order/{orderId}";
-                var response = await httpClient.GetAsync(url);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                using (var response = await httpClient.GetAsync(url))
                 {
-                    return await ReadResponseJson<AwsResponseMessage<GetOrderByOrderIdResponseDTO>>(response);
-                }
-                else
-                {
-                    return new AwsResponseMessage<GetOrderByOrderIdResponseDTO>()
-                    {
-                        Success = false,
-                        Payload = null,
-                        ErrorMessages = $"HTTP error - {response.StatusCode}"
-                    };
+                    return await ReadResponseJson<GetOrderByOrderIdResponseDTO>(response);
                 }
             }
         }
@@ -40,22 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients
             {
                 using (var response = await httpClient.GetAsync(url))
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        return await ReadResponseJson<AwsResponseMessage<OrderListDto>>(response);
-                    }
-                    else
-                    {
-                        return new AwsResponseMessage<OrderListDto>()
-                        {
-                            Success = false,
-                            Payload = default(OrderListDto),
-                            Error = new ErrorMessage
-                            {
-                                Message = $"HTTP error - {response.StatusCode}"
-                            }
-                        };
-                    }
+                    return await ReadResponseJson<OrderListDto>(response);
                 }
             }
         }

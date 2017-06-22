@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kadena.Dto.General;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public class ClientBase
     {
+        private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
+
         protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
@@ -22,11 +25,47 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return content;
         }
 
-        protected async Task<TResult> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected async Task<AwsResponseMessage<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
-            string responseContent = await response.Content.ReadAsStringAsync();
-            var submitResponse = JsonConvert.DeserializeObject<TResult>(responseContent);
-            return submitResponse;
+            AwsResponseMessage<TResult> result = null;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                result = new AwsResponseMessage<TResult>
+                {
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new ErrorMessage
+                    {
+                        Message = response.ReasonPhrase
+                    }
+                };
+            }
+            else
+            {
+                try
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<AwsResponseMessage<TResult>>(responseContent);
+                }
+                catch (JsonReaderException e)
+                {
+                    result = new AwsResponseMessage<TResult>
+                    {
+                        Success = false,
+                        Payload = default(TResult),
+                        Error = new ErrorMessage
+                        {
+                            Message = _responseIncorrectMessage,
+                            InnerError = new ErrorMessage
+                            {
+                                Message = e.Message
+                            }
+                        }
+                    };
+                }
+            }
+            return result;
         }
     }
 }
