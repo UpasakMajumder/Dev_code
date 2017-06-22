@@ -5,12 +5,12 @@ import Spinner from '../../Spinner';
 import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 import TemplateProduct from '../../TemplateProduct';
 import { paginationFilter } from '../../../helpers/array';
-import { getSearch } from '../../../helpers/location';
+import { getSearchObj } from '../../../helpers/location';
 
 class SearchPageProducts extends Component {
 
   componentDidMount() {
-    const { phrase } = getSearch();
+    const { phrase } = getSearchObj();
 
     if (phrase) {
       this.props.getUI(phrase);
