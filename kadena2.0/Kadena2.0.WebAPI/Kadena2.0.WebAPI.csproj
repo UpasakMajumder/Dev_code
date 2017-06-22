@@ -183,6 +183,8 @@
     <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\RecentOrders\Button.cs" />
+    <Compile Include="Models\RecentOrders\OrderBody.cs" />
     <Compile Include="Models\RecentOrders\OrderHead.cs" />
     <Compile Include="Models\RecentOrders\Pagination.cs" />
     <Compile Include="Models\Settings\AddressDialog.cs" />
