@@ -54,8 +54,8 @@ class ShoppingCart extends Component {
 
     if (!isWaitingPDF && !ui.submit.isDisabled) {
       setTimeout(() => {
-        this.props.askReadyPdf();
-      }, 1000)
+        // this.props.askReadyPdf();
+      }, 1000);
     }
 
     if (ui === this.props.shoppingCart.ui) return;

@@ -1,0 +1,5 @@
+.recent-orders {
+  & > *:not(:last-child) {
+    @extend .mb-4;
+  }
+}
