@@ -7,6 +7,8 @@ import settingsAddresses from './settingsAddresses';
 import dialog from './dialog';
 import orderDetail from './orderDetail';
 import searchPage from './searchPage';
+import search from './search';
+import isShownHeaderShadow from './headerShadow';
 
 const rootReducer = combineReducers({
   login,
@@ -14,8 +16,10 @@ const rootReducer = combineReducers({
   isLoading,
   settingsAddresses,
   dialog,
-  orderDetail,
-  searchPage
+  searchPage,
+  search,
+  isShownHeaderShadow,
+  orderDetail
 });
 
 export default rootReducer;

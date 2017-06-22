@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace AutomatedTests.PageObjects
 {
-    class Checkout
+    class Checkout : BasePage
     {
         [FindsBy(How = How.CssSelector, Using = "#r-shopping-cart .shopping-cart__block:first-child label")]
         private IList<IWebElement> DeliveryAddresses { get; set; }
@@ -56,7 +56,7 @@ namespace AutomatedTests.PageObjects
         {
             Browser.BaseWait.Until(r => DeliveryAddresses.Count > 0);
             DeliveryAddresses[index].ClickElement();
-            WaitUntilPageIsRecalculated();
+            WaitForLoading();
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace AutomatedTests.PageObjects
                     break;
                 }
             }
-            WaitUntilPageIsRecalculated();
+            WaitForLoading();
         }
 
         /// <summary>
@@ -154,13 +154,6 @@ namespace AutomatedTests.PageObjects
             return tax > 0;
         }
 
-        /// <summary>
-        /// Waits until spinner appears and disappears
-        /// </summary>
-        private void WaitUntilPageIsRecalculated()
-        {
-            Spinner.WaitTillVisible();
-            Spinner.WaitTillNotVisible();
-        }
+        
     }
 }

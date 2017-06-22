@@ -95,6 +95,7 @@
     <Compile Include="Tests\SettingsTests.cs" />
     <Compile Include="Tests\UserLogin.cs" />
     <Compile Include="IntegrationTests\_BaseIntegrationTest.cs" />
+    <Compile Include="Utilities\Address.cs" />
     <Compile Include="Utilities\TestCustomer.cs" />
     <Compile Include="Utilities\TestEnvironment.cs" />
     <Compile Include="Utilities\HelperClasses\EnumHelper.cs" />
