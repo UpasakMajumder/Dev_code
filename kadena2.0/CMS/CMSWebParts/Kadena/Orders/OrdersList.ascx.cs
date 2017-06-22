@@ -2,6 +2,7 @@
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Dto.Order;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.Orders;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace Kadena.CMSWebParts.Kadena.Orders
                 {
                     if (ECommerceContext.CurrentCustomer != null)
                     {
-                        orderData = ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage);
+                        orderData = Convert(ServiceHelper.GetOrderHistoryData(ECommerceContext.CurrentCustomer.CustomerID, 1, NumberOfItemsOnPage));
                     }
                 }
                 else
@@ -83,6 +84,17 @@ namespace Kadena.CMSWebParts.Kadena.Orders
 
         #region Private methods
 
+        private IEnumerable<OrderHistoryData> Convert(IEnumerable<OrderDto> source)
+        {
+            return source.Select(o => new OrderHistoryData
+            {
+                Id = o.Id,
+                CreateDate = o.CreateDate,
+                DeliveryDate = o.DeliveryDate,
+                Status = o.Status,
+                Items = o.Items
+            });
+        }
 
         #endregion
     }

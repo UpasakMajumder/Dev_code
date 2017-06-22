@@ -1,38 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Linq;
 using CMS.Helpers;
+using Kadena.Dto.Order;
 
 namespace Kadena.Old_App_Code.Kadena.Orders
 {
-    [DataContract]
-    public class OrderHistoryData
+    public class OrderHistoryData : OrderDto
     {
-        [DataMember]
-        public string id { get; set; }
-        [DataMember]
-        public DateTime createDate { get; set; }
-        [DataMember]
-        public string status { get; set; }
-        [DataMember]
-        public DateTime deliveryDate { get; set; }
-        [DataMember]
-        public IEnumerable<OrderItemHistoryData> items { get; set; }
-
-        [IgnoreDataMember]
         public string ItemsString
         {
             get
             {
-                if (items != null && items.ToList().Count > 0)
+                if (Items != null && Items.ToList().Count > 0)
                 {
                     var result = "";
 
-                    result += $"<span class=\"badge badge--s badge--empty badge--bold\">{items.ToList().Count}</span>";
-                    foreach (var item in items)
+                    result += $"<span class=\"badge badge--s badge--empty badge--bold\">{Items.ToList().Count}</span>";
+                    foreach (var item in Items)
                     {
-                        result += " " + string.Format(ResHelper.GetString("Kadena.OrdersList.ItemsFormatString"), item.quantity, item.name);
+                        result += " " + string.Format(ResHelper.GetString("Kadena.OrdersList.ItemsFormatString"), item.Quantity, item.Name);
                     }
                     return result.Substring(0, result.Length - 1);
                 }

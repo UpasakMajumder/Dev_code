@@ -11,6 +11,7 @@ using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using Kadena.Dto.General;
+using Kadena.Dto.Order;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -599,7 +600,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
         }
 
-        public static IEnumerable<OrderHistoryData> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
+        public static IEnumerable<OrderDto> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
         {
             Uri url;
             if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
@@ -616,10 +617,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    AwsResponseMessage<OrderHistoryDataContainer> response;
+                    AwsResponseMessage<OrderListDto> response;
                     try
                     {
-                        response = (AwsResponseMessage<OrderHistoryDataContainer>)message.Result;
+                        response = (AwsResponseMessage<OrderListDto>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -628,7 +629,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response.Success)
                     {
-                        return response.Payload.orders;
+                        return response.Payload.Orders;
                     }
                     else
                     {
