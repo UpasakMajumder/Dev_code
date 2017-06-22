@@ -21,13 +21,13 @@ namespace Kadena.WebAPI.Services
             _kentico = kentico;
         }
 
-        public async Task<OrderHead> GetHeaders(int pageNumber)
+        public async Task<OrderHead> GetHeaders()
         {
             var url = _kentico.GetSettingsKey("KDA_OrdersBySiteUrl");
             var siteName = _kentico.GetKenticoSite().Name;
             var quantity = int.Parse(_kentico.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
 
-            var response = await _orderClient.GetOrders(url, siteName, pageNumber, quantity);
+            var response = await _orderClient.GetOrders(url, siteName, 1, quantity);
 
             var orderList = _mapper.Map<OrderList>(response.Payload);
 

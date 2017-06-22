@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetHeaders()
         {
-            var orderHead = await _orderService.GetHeaders(1);
+            var orderHead = await _orderService.GetHeaders();
             var result = _mapper.Map<OrderHeadDto>(orderHead);
             return ResponseJson(result);
         }
