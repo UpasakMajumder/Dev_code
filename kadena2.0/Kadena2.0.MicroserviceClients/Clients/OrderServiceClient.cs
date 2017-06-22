@@ -22,17 +22,17 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
                 else
                 {
-                    return CreateErrorResponse($"HTTP error - {response.StatusCode}");
+                    return CreateErrorResponse<string>($"HTTP error - {response.StatusCode}");
                 }
             }
         }
 
-        private AwsResponseMessage<string> CreateErrorResponse(string errorMessage)
+        private AwsResponseMessage<T> CreateErrorResponse<T>(string errorMessage)
         {
-            return new AwsResponseMessage<string>()
+            return new AwsResponseMessage<T>()
             {
                 Success = false,
-                Payload = null,
+                Payload = default(T),
                 Error = new ErrorMessage
                 {
                     Message = errorMessage
