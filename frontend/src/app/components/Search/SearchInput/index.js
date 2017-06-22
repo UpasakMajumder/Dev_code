@@ -22,7 +22,7 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl }) => {
         <input type="text"
                className="input__text"
                placeholder="Search"
-               onChange={(e) => { changeValue(e.target.value); }}
+               onChange={(e) => { changeValue(e); }}
                onKeyDown={(e) => { redirectUser(e); }}
                value={value}/>
         {closer}

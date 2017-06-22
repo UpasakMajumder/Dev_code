@@ -5,11 +5,18 @@ import Spinner from '../../Spinner';
 import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 import TemplateProduct from '../../TemplateProduct';
 import { paginationFilter } from '../../../helpers/array';
+import { getSearch } from '../../../helpers/location';
 
 class SearchPageProducts extends Component {
 
   componentDidMount() {
-    this.props.getUI();
+    const { phrase } = getSearch();
+
+    if (phrase) {
+      this.props.getUI(phrase);
+    } else {
+      this.props.getUI('');
+    }
 
     function changePaginationLimit(callback) {
       const width = window.innerWidth;
