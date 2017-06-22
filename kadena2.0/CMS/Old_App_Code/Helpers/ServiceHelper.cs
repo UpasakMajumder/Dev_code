@@ -100,7 +100,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            containerId = response?.Payload ?? Guid.Empty;
+                            containerId = response.Payload;
                         }
                         else
                         {
@@ -163,7 +163,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            fileId = response?.Payload;
+                            fileId = response.Payload;
                         }
                         else
                         {
@@ -216,7 +216,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        result = response?.Payload;
+                        result = response.Payload;
                     }
                     else
                     {
@@ -348,7 +348,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            return response?.Payload;
+                            return response.Payload;
                         }
                         else
                         {
@@ -394,9 +394,9 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
-                        return response?.Payload;
+                        return response.Payload;
                     }
                     else
                     {
@@ -439,9 +439,9 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
-                        return response?.Payload;
+                        return response.Payload;
                     }
                     else
                     {
@@ -541,9 +541,9 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
-                        return response?.Payload;
+                        return response.Payload;
                     }
                     else
                     {
@@ -587,9 +587,9 @@ namespace Kadena.Old_App_Code.Helpers
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_responseIncorrectMessage, e));
                         return null;
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
-                        return response?.Payload;
+                        return response.Payload;
                     }
                     else
                     {
@@ -611,7 +611,7 @@ namespace Kadena.Old_App_Code.Helpers
                 return null;    
             }
 
-            var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
+            var parameterizedUrl = $"{url.AbsoluteUri}?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
 
             using (var client = new HttpClient())
             {
@@ -627,7 +627,7 @@ namespace Kadena.Old_App_Code.Helpers
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
                         return null;
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response.Payload.Orders;
                     }
