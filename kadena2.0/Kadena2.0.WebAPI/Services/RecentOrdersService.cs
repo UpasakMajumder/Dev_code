@@ -48,6 +48,20 @@ namespace Kadena.WebAPI.Services
             };
         }
 
+        public async Task<OrderBody> GetBody(int pageNumber)
+        {
+            var orderDetailUrl = _kentico.GetSettingsKey("KDA_OrderDetailUrl");
+            var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
+            return new OrderBody
+            {
+                Rows = orderList.Orders.Select(o =>
+                {
+                    o.ViewBtn = new Button { Text = "View", Url = $"{orderDetailUrl}?orderID={o.Id}" };
+                    return o;
+                })
+            };
+        }
+
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
             var url = _kentico.GetSettingsKey("KDA_OrdersBySiteUrl");

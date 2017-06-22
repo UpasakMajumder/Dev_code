@@ -6,5 +6,7 @@ namespace Kadena.WebAPI.Contracts
     public interface IRecentOrderService
     {
         Task<OrderHead> GetHeaders();
+
+        Task<OrderBody> GetBody(int pageNumber);
     }
 }
