@@ -15,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{serviceEndpoint}?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(serviceEndpoint))
+                using (var response = await httpClient.GetAsync(url))
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
