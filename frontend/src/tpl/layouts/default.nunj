@@ -53,7 +53,7 @@
     <div class="r-dialog"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
-      <div class="shadow"></div>
+      <div class="r-header-shadow"></div>
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
@@ -142,6 +142,15 @@
           initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
           editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
         }
+      },
+      orderDetail: {
+        orderDetailUrl: ""
+      },
+      searchPage: {
+        searchPageUrl: ''
+      },
+      search: {
+        queryUrl: ""
       }
     }
   };

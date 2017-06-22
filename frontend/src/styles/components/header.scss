@@ -5,6 +5,7 @@
   height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
+  padding-right: 0;
   border-bottom: $main-layout-gutter solid $main-gutter-color;
 
   .navbar-brand {
@@ -22,6 +23,7 @@
 
   .navbar-nav {
     margin-left: auto;
+    flex-shrink: 0;
 
     .nav-item {
       @extend %flex--center--default;
@@ -36,9 +38,13 @@
         }
       }
 
+      &:last-child {
+        border-top-right-radius: $border-radius-xl;
+      }
+
       svg {
-        margin: 0 .25rem 0 0;
-        $size: 21px;
+        margin: 0 .8rem 0 0;
+        $size: 18px;
         width: $size;
         height: $size;
 
@@ -48,7 +54,7 @@
       }
 
       .nav-link {
-        @include rem(padding, 18px 20px);
+        @include rem(padding, 18px 12px);
 
         @extend %flex--center--default;
         color: $brand-dark;
@@ -62,18 +68,18 @@
         }
 
         @include media-breakpoint-down(lg) {
-          @include rem(padding, 9px 20px);
+          @include rem(padding, 10px 20px);
         }
       }
     }
 
     .nav-badge {
-      background-color: #d0021b;
+      background-color: $brand-warning;
       border-radius: 100%;
       color: white;
       margin-left: .25rem;
-      font-size: $font-xxs;
-      padding: 2px 5px;
+      font-size: 10px;
+      padding: 0 3px;
       text-align: center;
 
       @include media-breakpoint-down(lg) {

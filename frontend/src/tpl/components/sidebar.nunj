@@ -26,7 +26,8 @@
     {% for page in pages %}
       <li class="css-sidebar__nav-item {% if(sidebarActive === page.title) %} active {% endif %}">
         <div class="orange-bar"></div>
-        <a href="{{ page.name }}.html" class="css-sidebar__nav-link">
+        <a href="{{ page.name }}.html" class="css-sidebar__nav-link" {% if(page.name === "help")  %} disabled      
+        {% endif %}>
           {{ svg(page.name) }}
           <span>{{ page.title }}</span>
         </a>

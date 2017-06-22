@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.Base.Web.UI;
+using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
@@ -57,16 +58,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 else
                 {
                     AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0), previouslyAddedAmmount, DocumentContext.CurrentDocument.DocumentID);
+                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
                 }
-
-
                 // redirect
             }
             else
             {
                 lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
                 SetErrorLblVisible();
-
             }
         }
 

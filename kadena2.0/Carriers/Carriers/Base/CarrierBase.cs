@@ -66,7 +66,7 @@ namespace Kadena2.Carriers
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = JsonConvert.SerializeObject(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, cacheKey));
+            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(60, cacheKey));
             return result.success;
         }
 
@@ -75,7 +75,7 @@ namespace Kadena2.Carriers
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = JsonConvert.SerializeObject(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(10, cacheKey));
+            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(60, cacheKey));
             return result.success ? (decimal)result.payload?.cost : 0.0m;
         }
 

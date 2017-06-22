@@ -32,7 +32,7 @@ namespace AutomatedTests.Tests
             //Fill out the form and submit
             contactUs.FillOutTheContactForm();
             contactUs.ClickSubmitButton();
-            var contactFormSuccess = new ContactFormSuccess();
+            var contactFormSuccess = new FormSuccess();
             Assert.IsTrue(contactFormSuccess.IsSubmitConfirmationDisplayed());
         }
     }

@@ -33,6 +33,18 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".j-general-error-label")]
         private IWebElement PasswordError { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".adress-card")]
+        private IList<IWebElement> Addresses { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".adress-card button")]
+        private IList<IWebElement> AddressesEditButtons { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".active .cart__dialog-table .input__wrapper input,select")]
+        private IList<IWebElement> AddressFields { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".active .dialog__footer button:last-child")]
+        private IWebElement SaveAddressButton { get; set; }
+        
         public enum Tabs
         {
             MyAccount = 0,
@@ -147,6 +159,71 @@ namespace AutomatedTests.PageObjects
         {
             PasswordError.WaitTillVisible();
             return PasswordError.IsDisplayed();
+        }
+
+        /// <summary>
+        /// Clicks The First Address, changes it and saves it
+        /// </summary>
+        /// <returns>New address which was entered</returns>
+        public Address ChangeFirstAddress()
+        {
+            WaitUntilAddressesAreDisplayed();
+            AddressesEditButtons[0].ClickElement();
+            IList<IWebElement> DisplayedAddressFields = AddressFields.Where(r => r.IsDisplayed()).ToList();
+
+            //save random address
+            var address = Lorem.RandomUSAddress();
+
+            //if the address is same as one which is currently on the website, get new one
+            bool isAddressSameAsBefore = true;
+            while (isAddressSameAsBefore == true)
+            {
+                if (DisplayedAddressFields[2].GetText() == address.City)
+                {
+                    address = Lorem.RandomUSAddress();
+                }
+                else
+                {
+                    isAddressSameAsBefore = false;
+                }
+            }
+
+            //fill out the fields and save
+            DisplayedAddressFields[0].EnterText(address.AddressLine1);
+            DisplayedAddressFields[2].EnterText(address.City);
+            SelectElement stateDropdown = new SelectElement(DisplayedAddressFields[3]);
+            stateDropdown.SelectByText(address.State);
+            DisplayedAddressFields[4].EnterText(address.Zip);
+            ClickSaveAddress();
+            WaitForLoading();
+
+            return address;           
+        }
+
+        /// <summary>
+        /// Clicks Save Address button
+        /// </summary>
+        private void ClickSaveAddress()
+        {
+            SaveAddressButton.ClickElement();
+        }
+
+        /// <summary>
+        /// Verifies if address contains address line 1 from address you provide
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public bool WasFirstAddressChangedCorrectly(Address address)
+        {
+            return Addresses[0].GetText().Contains(address.AddressLine1);
+        }
+
+        /// <summary>
+        /// Waits until there are more than 0 addresses
+        /// </summary>
+        public void WaitUntilAddressesAreDisplayed()
+        {
+            Browser.BaseWait.Until(r => Addresses.Count > 0);
         }
     }
 }

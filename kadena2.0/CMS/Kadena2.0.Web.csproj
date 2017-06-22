@@ -721,6 +721,13 @@
     <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
       <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
+      <DependentUpon>RichMessage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.designer.cs">
+      <DependentUpon>RichMessage.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.cs">
       <DependentUpon>SpotfireControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -914,6 +921,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />

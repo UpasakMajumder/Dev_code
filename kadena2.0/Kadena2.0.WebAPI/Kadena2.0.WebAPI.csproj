@@ -170,6 +170,15 @@
     <Compile Include="Models\DeliveryCarriers.cs" />
     <Compile Include="Models\DynamicPricingRange.cs" />
     <Compile Include="Models\KenticoSite.cs" />
+    <Compile Include="Models\OrderDetail\CommonInfo.cs" />
+    <Compile Include="Models\OrderDetail\OrderDetail.cs" />
+    <Compile Include="Models\OrderDetail\OrderedItem.cs" />
+    <Compile Include="Models\OrderDetail\OrderedItems.cs" />
+    <Compile Include="Models\OrderDetail\PaymentInfo.cs" />
+    <Compile Include="Models\OrderDetail\PricingInfo.cs" />
+    <Compile Include="Models\OrderDetail\PricingInfoItem.cs" />
+    <Compile Include="Models\OrderDetail\ShippingInfo.cs" />
+    <Compile Include="Models\OrderDetail\Tracking.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\PaymentMethod.cs" />

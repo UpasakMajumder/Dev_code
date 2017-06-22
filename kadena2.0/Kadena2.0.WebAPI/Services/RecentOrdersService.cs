@@ -11,10 +11,10 @@ namespace Kadena.WebAPI.Services
     public class RecentOrdersService : IRecentOrderService
     {
         private readonly IMapper _mapper;
-        private readonly IOrderServiceClient _orderClient;
+        private readonly IOrderViewClient _orderClient;
         private readonly IKenticoResourceService _kentico;
 
-        public RecentOrdersService(IMapper mapper, IOrderServiceClient orderClient, IKenticoResourceService kentico)
+        public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kentico)
         {
             _mapper = mapper;
             _orderClient = orderClient;
