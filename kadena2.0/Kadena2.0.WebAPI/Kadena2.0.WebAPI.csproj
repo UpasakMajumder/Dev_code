@@ -168,8 +168,12 @@
     <Compile Include="Models\DeliveryCarriers.cs" />
     <Compile Include="Models\DynamicPricingRange.cs" />
     <Compile Include="Models\KenticoSite.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\RecentOrders\OrderHead.cs" />
+    <Compile Include="Models\RecentOrders\Pagination.cs" />
     <Compile Include="Models\Settings\AddressDialog.cs" />
     <Compile Include="Models\Settings\AddressList.cs" />
     <Compile Include="Models\Settings\DialogButton.cs" />

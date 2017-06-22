@@ -23,6 +23,9 @@ using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
 using Kadena.Dto.General;
+using Kadena.Dto.Order;
+using Kadena.WebAPI.Models.RecentOrders;
+using Kadena.Dto.RecentOrders;
 
 namespace Kadena.WebAPI
 {
@@ -148,6 +151,12 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
+                config.CreateMap<Pagination, PaginationDto>();
+                config.CreateMap<OrderHead, OrderHeadDto>();
+                config.CreateMap<OrderItemDto, OrderItem>()
+                    .ProjectUsing(s => new OrderItem { SKUName = s.Name, UnitCount = s.Quantity });
+                config.CreateMap<OrderDto, Order>();
+                config.CreateMap<OrderListDto, OrderList>();
             });
         }
 
