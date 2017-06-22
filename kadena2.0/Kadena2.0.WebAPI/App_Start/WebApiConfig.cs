@@ -22,6 +22,8 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.Dto.Search.Responses;
+using Kadena.WebAPI.Models.Search;
 
 namespace Kadena.WebAPI
 {
@@ -147,6 +149,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
+                config.CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
             });
         }
 

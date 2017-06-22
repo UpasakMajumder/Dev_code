@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Net.Http;
 using System.Linq;
+using Kadena.Dto.Search.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class SearchController : ApiControllerBase
     {
-        private readonly IShoppingCartService service;
+        private readonly ISearchService service;
         private readonly IMapper mapper;
 
-        public SearchController(IShoppingCartService service, IMapper mapper)
+        public SearchController(ISearchService service, IMapper mapper)
         {
             if (service == null)
             {
@@ -36,14 +37,12 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/search")]
         [AuthorizationFilter]
         [QuerystringParameterRequired("phrase")]
-        public async Task<IHttpActionResult> Search()
+        public IHttpActionResult Search()
         {
             var phrase = this.Request.GetQueryNameValuePairs().First(p => p.Key == "phrase").Value;
-            /*var detailPage = await service.GetOrderDetail(orderId);
-            var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto); */
-            return null;
+            var serpPage = service.Search(phrase);
+            var serpPageDto = mapper.Map<SearchResultPageResponseDTO>(serpPage);
+            return ResponseJson(serpPageDto); 
         }
-
     }
 }

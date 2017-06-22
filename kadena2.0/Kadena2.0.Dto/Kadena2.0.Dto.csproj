@@ -53,6 +53,11 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
+    <Compile Include="Search\Responses\PageDTO.cs" />
+    <Compile Include="Search\Responses\ProductDTO.cs" />
+    <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
+    <Compile Include="Search\Responses\StockDTO.cs" />
+    <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />
     <Compile Include="Settings\DialogButtonDto.cs" />
