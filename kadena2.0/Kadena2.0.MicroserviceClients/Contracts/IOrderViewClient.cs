@@ -9,5 +9,6 @@ namespace Kadena2.MicroserviceClients.Contracts
     {
         Task<BaseResponse<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId);
         Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity);
+        Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity);
     }
 }

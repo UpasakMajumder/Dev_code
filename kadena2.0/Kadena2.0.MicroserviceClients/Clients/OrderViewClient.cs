@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -18,6 +19,19 @@ namespace Kadena2.MicroserviceClients.Clients
                 using (var response = await httpClient.GetAsync(url))
                 {
                     return await ReadResponseJson<GetOrderByOrderIdResponseDTO>(response);
+                }
+            }
+        }
+
+        public async Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity)
+        {
+            var parameterizedUrl = $"{serviceEndpoint}?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = await client.GetAsync(parameterizedUrl))
+                {
+                    return await ReadResponseJson<OrderListDto>(message);
                 }
             }
         }
