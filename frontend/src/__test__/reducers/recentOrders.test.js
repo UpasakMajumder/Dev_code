@@ -1,21 +1,21 @@
 import reducer from '../../app/reducers/recentOrders';
 import configureStore from '../../app/store';
 import { GET_RECENT_ORDERS_HEADINGS_SUCCESS, GET_RECENT_ORDERS_ROWS_SUCCESS } from '../../app/constants';
-import { headings, pagination, rows } from '../../app/testServices/recentOrders';
+import { headings, pageInfo, rows1 } from '../../app/testServices/recentOrders';
 
 describe('recentOrders reducer', () => {
   const defaultState = {
     headings: [],
-    pagination: {},
+    pageInfo: {},
     rows: {}
   };
 
-  test('Init heading and pagination', () => {
+  test('Init heading and pageInfo', () => {
     const action = {
       type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
       payload: {
         headings: headings.headings,
-        pagination: pagination.pagination
+        pageInfo: pageInfo.pageInfo
       }
     };
 
@@ -30,10 +30,10 @@ describe('recentOrders reducer', () => {
         "delivery date",
         ""
       ],
-      pagination: {
+      pageInfo: {
         "pagesCount": 10,
-        "rowsCount": 190,
-        "rowsOnPages": 20
+        "rowsCount": 28,
+        "rowsOnPages": 3
       },
       rows: {}
     };
@@ -46,7 +46,7 @@ describe('recentOrders reducer', () => {
       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
       payload: {
         rows: {
-          0: rows.rows
+          0: rows1.rows
         }
       }
     };
@@ -55,21 +55,51 @@ describe('recentOrders reducer', () => {
 
     const expected = {
       headings: [],
-      pagination: {},
+      pageInfo: {},
       rows: {
         0: [{
-          "orderNumber": 1,
-          "orderDate": "10/01/2017",
-          "items": [
-            "1", "2", "3"
-          ],
-          "orderStatus": "In rogressing",
-          "deliveryDate": "10/05/2017",
-          "viewBtn": {
-            "text": "View",
-            "url": "#"
-          }
-        }]
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          }]
       }
     };
 
@@ -82,7 +112,7 @@ describe('recentOrders reducer', () => {
         type: GET_RECENT_ORDERS_ROWS_SUCCESS,
         payload: {
           rows: {
-            0: rows.rows
+            0: rows1.rows
           }
         }
       },
@@ -90,7 +120,7 @@ describe('recentOrders reducer', () => {
         type: GET_RECENT_ORDERS_ROWS_SUCCESS,
         payload: {
           rows: {
-            3: rows.rows
+            3: rows1.rows
           }
         }
       }
@@ -104,34 +134,94 @@ describe('recentOrders reducer', () => {
 
     const expected = {
       headings: [],
-      pagination: {},
+      pageInfo: {},
       rows: {
         0: [{
-          "orderNumber": 1,
-          "orderDate": "10/01/2017",
-          "items": [
-            "1", "2", "3"
-          ],
-          "orderStatus": "In rogressing",
-          "deliveryDate": "10/05/2017",
-          "viewBtn": {
-            "text": "View",
-            "url": "#"
-          }
-        }],
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          }],
         3: [{
-          "orderNumber": 1,
-          "orderDate": "10/01/2017",
-          "items": [
-            "1", "2", "3"
-          ],
-          "orderStatus": "In rogressing",
-          "deliveryDate": "10/05/2017",
-          "viewBtn": {
-            "text": "View",
-            "url": "#"
-          }
-        }]
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
+            }
+          }]
       }
     };
 

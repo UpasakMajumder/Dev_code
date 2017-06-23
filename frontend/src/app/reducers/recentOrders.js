@@ -2,7 +2,7 @@ import { GET_RECENT_ORDERS_HEADINGS_SUCCESS, GET_RECENT_ORDERS_ROWS_SUCCESS } fr
 
 const defaultState = {
   headings: [],
-  pagination: {},
+  pageInfo: {},
   rows: {}
 };
 
@@ -14,7 +14,7 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       headings: payload.headings,
-      pagination: payload.pagination
+      pageInfo: payload.pageInfo
     };
 
   case GET_RECENT_ORDERS_ROWS_SUCCESS:
