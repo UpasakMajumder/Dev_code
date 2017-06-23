@@ -7,6 +7,8 @@ namespace Kadena.WebAPI.Contracts
     {
         string PageCapacityKey { get; set; }
 
+        bool EnablePaging { get; set; }
+
         Task<OrderHead> GetHeaders();
 
         Task<OrderBody> GetBody(int pageNumber);

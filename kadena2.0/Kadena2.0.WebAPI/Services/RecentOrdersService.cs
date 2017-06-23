@@ -31,9 +31,12 @@ namespace Kadena.WebAPI.Services
             set
             {
                 _pageCapacityKey = value;
-                _pageCapacity = int.Parse(_kenticoResources?.GetSettingsKey(_pageCapacityKey) ?? "5");
+                string settingValue = _kenticoResources?.GetSettingsKey(_pageCapacityKey);
+                _pageCapacity = int.Parse(string.IsNullOrWhiteSpace(settingValue) ? "5" : settingValue);
             }
         }
+
+        public bool EnablePaging { get; set; }
 
         public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico)
         {
@@ -60,7 +63,7 @@ namespace Kadena.WebAPI.Services
                 {
                     RowsCount = orderList.TotalCount,
                     RowsOnPage = _pageCapacity,
-                    PagesCount = (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) + 1
+                    PagesCount = EnablePaging ? (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) : 0 + 1
                 }
             };
         }
