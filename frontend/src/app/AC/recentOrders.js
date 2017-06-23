@@ -29,7 +29,7 @@ export const getHeadings = () => {
       }
     }).catch((error) => {
       dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
-      alert(error.message); // eslint-disable-line no-alert
+      alert(error); // eslint-disable-line no-alert
     });
 
 
@@ -71,7 +71,7 @@ export const getRows = (page) => {
       }
     }).catch((error) => {
       dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
-      alert(error.message); // eslint-disable-line no-alert
+      alert(error); // eslint-disable-line no-alert
       dispatch({ type: APP_LOADING_FINISH });
     });
 

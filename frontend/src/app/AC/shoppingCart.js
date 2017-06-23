@@ -39,7 +39,7 @@ export const getUI = () => {
     //     });
     //   })
     //   .catch((error) => {
-    //     alert(error.message); // eslint-disable-line no-alert
+    //     alert(error); // eslint-disable-line no-alert
     //     dispatch({ type: SHOPPING_CART_UI_FAILURE });
     //   });
   };
@@ -84,7 +84,7 @@ export const removeProduct = (id) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: REMOVE_PRODUCT_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -124,7 +124,7 @@ export const changeProductQuantity = (id, quantity) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -188,7 +188,7 @@ export const changeShoppingData = (field, id, invoice) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -242,7 +242,7 @@ export const sendData = (data) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: APP_LOADING_FINISH });
         dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
       });
