@@ -19,6 +19,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.Id, Using = "p_lt_WebPartZone3_zoneContent_pageplaceholder_p_lt_WebPartZone2_zoneContent_MailingListUploader_btnSubmit")]
         private IWebElement CreateMailingListBtn { get; set; }
 
+        [FindsBy(How = How.ClassName, Using = "js-drop-zone-name-input")]
+        private IWebElement NameField { get; set; }
+
         public NewKList()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -37,6 +40,15 @@ namespace AutomatedTests.PageObjects
         {
             CreateMailingListBtn.ClickElement();
             return new MapColumns();
+        }
+
+        /// <summary>
+        /// Enters name from argument
+        /// </summary>
+        /// <param name="name"></param>
+        public void FillOutMailingListName(string name)
+        {
+            NameField.EnterText(name);
         }
     }
 }
