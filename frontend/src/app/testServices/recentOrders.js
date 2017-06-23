@@ -20,7 +20,8 @@ export const pageInfo = {
 };
 
 export const rows1 = {
-  rows: [{
+  rows: [
+    {
       "orderNumber": 1,
       "orderDate": "10/01/2017",
       "items": [
@@ -58,23 +59,25 @@ export const rows1 = {
         "text": "View",
         "url": "#"
       }
-    }]
+    }
+  ]
 };
 
 export const rows2 = {
-  rows: [{
-    "orderNumber": 4,
-    "orderDate": "10/01/2017",
-    "items": [
-      "1", "2", "3"
-    ],
-    "orderStatus": "In rogressing",
-    "deliveryDate": "10/05/2017",
-    "viewBtn": {
-      "text": "View",
-      "url": "#"
-    }
-  },
+  rows: [
+    {
+      "orderNumber": 4,
+      "orderDate": "10/01/2017",
+      "items": [
+        "1", "2", "3"
+      ],
+      "orderStatus": "In rogressing",
+      "deliveryDate": "10/05/2017",
+      "viewBtn": {
+        "text": "View",
+        "url": "#"
+      }
+    },
     {
       "orderNumber": 5,
       "orderDate": "10/01/2017",
@@ -100,5 +103,8 @@ export const rows2 = {
         "text": "View",
         "url": "#"
       }
-    }]
+    }
+  ]
 };
+
+export const noOrdersMessage = "You have no orders";
