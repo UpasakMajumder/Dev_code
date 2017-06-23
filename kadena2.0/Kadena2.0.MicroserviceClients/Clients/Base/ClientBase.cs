@@ -29,7 +29,12 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             BaseResponse<TResult> result = null;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            try
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<BaseResponse<TResult>>(responseContent);
+            }
+            catch (JsonReaderException e)
             {
                 result = new BaseResponse<TResult>
                 {
@@ -37,33 +42,13 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     Payload = default(TResult),
                     Error = new BaseError
                     {
-                        Message = $"HTTP error - {response.ReasonPhrase}"
+                        Message = _responseIncorrectMessage,
+                        InnerError = new BaseError
+                        {
+                            Message = e.Message
+                        }
                     }
                 };
-            }
-            else
-            {
-                try
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<BaseResponse<TResult>>(responseContent);
-                }
-                catch (JsonReaderException e)
-                {
-                    result = new BaseResponse<TResult>
-                    {
-                        Success = false,
-                        Payload = default(TResult),
-                        Error = new BaseError
-                        {
-                            Message = _responseIncorrectMessage,
-                            InnerError = new BaseError
-                            {
-                                Message = e.Message
-                            }
-                        }
-                    };
-                }
             }
             return result;
         }
