@@ -17,7 +17,23 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderViewClient _orderClient;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
-        private readonly int _pageCapacity;
+
+        private int _pageCapacity;
+        private string _pageCapacityKey;
+
+        public string PageCapacityKey
+        {
+            get
+            {
+                return _pageCapacityKey;
+            }
+
+            set
+            {
+                _pageCapacityKey = value;
+                _pageCapacity = int.Parse(_kenticoResources?.GetSettingsKey(_pageCapacityKey) ?? "5");
+            }
+        }
 
         public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico)
         {
@@ -25,7 +41,6 @@ namespace Kadena.WebAPI.Services
             _orderClient = orderClient;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
-            _pageCapacity = int.Parse(_kenticoResources.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
         }
 
         public async Task<OrderHead> GetHeaders()
