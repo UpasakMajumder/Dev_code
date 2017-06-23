@@ -428,7 +428,7 @@ namespace Kadena.WebAPI.Services
                 CommonInfo = new CommonInfo()
                 {
                     OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
-                    ShippingDate = string.Empty, //TODO shipping date unknown
+                    ShippingDate = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue),
                     Status = data.Status,
                     TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
                 },
@@ -494,6 +494,11 @@ namespace Kadena.WebAPI.Services
             return orderDetail;
         }
 
+        private string CheckedDateTimeString(DateTime dt)
+        {
+            return dt == DateTime.MinValue ? resources.GetResourceString("Kadena.Order.ItemShippingDateNA") : dt.ToString("MM/dd/yyyy");
+        }
+
         private string GetPaymentMethodIcon(string paymentMethod)
         {
             var methods = kenticoProvider.GetPaymentMethods();
@@ -512,7 +517,7 @@ namespace Kadena.WebAPI.Services
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
-                ShippingDate = string.Empty, // TODO Shipping date unknown
+                ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
                 TrackingId = i.TrackingId
             }).ToList();
