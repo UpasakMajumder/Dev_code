@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\Base\ClientBase.cs" />
+    <Compile Include="Clients\MailingListClient.cs" />
     <Compile Include="Clients\OrderViewClient.cs" />
     <Compile Include="Clients\OrderSubmitClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Contracts\IMailingListClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
