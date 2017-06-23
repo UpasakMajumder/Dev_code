@@ -143,6 +143,7 @@
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\RecentOrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
