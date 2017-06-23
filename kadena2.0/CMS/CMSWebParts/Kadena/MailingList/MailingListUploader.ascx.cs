@@ -2,6 +2,7 @@
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
@@ -19,7 +20,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
-        private MailingListData _container;
+        private MailingListDataDTO _container;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,7 +43,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     GetDictionaryHTML(GetString("Kadena.MailingList.MailType")
                                     , GetString("Kadena.MailingList.MailTypeDescription")
                                     , mailTypes
-                                    , _container?.mailType)));
+                                    , _container?.MailType)));
 
             var products = CustomTableItemProvider.GetItems(_productTableName)
                     .OrderBy("ItemOrder")
@@ -51,7 +52,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
                                     , GetString("Kadena.MailingList.ProductDescription")
                                     , products
-                                    , _container?.productType)));
+                                    , _container?.ProductType)));
 
             var validity = CustomTableItemProvider.GetItems(_validityTableName)
                     .OrderBy("ItemOrder")
@@ -60,13 +61,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
                                     , GetString("Kadena.MailingList.ValidityDescription")
                                     , validity
-                                    , _container != null ? (_container.validTo - _container.createDate).TotalDays.ToString() : null
+                                    , _container != null ? (_container.ValidTo - _container.CreateDate).TotalDays.ToString() : null
                                     )));
 
             if (_container != null)
             {
                 divFileName.CssClass = "input__wrapper input__wrapper--disabled";
-                inpFileName.Value = _container.name;
+                inpFileName.Value = _container.Name;
                 inpFileName.Disabled = true;
             }
         }
@@ -199,7 +200,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     }
                     else
                     {
-                        containerId = new Guid(_container.id);
+                        containerId = new Guid(_container.Id);
                         ServiceHelper.RemoveAddresses(containerId);
                     }
 

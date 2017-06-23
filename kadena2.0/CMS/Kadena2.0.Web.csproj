@@ -903,7 +903,6 @@
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingAddressData.cs" />
-    <Compile Include="Old_App_Code\Kadena\MailingList\MailingListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

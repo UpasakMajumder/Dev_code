@@ -7,6 +7,7 @@ using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using Kadena.Old_App_Code.Kadena.MailingList;
@@ -47,7 +48,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
           
         }
 
-        private MailingListData MailingListData
+        private MailingListDataDTO MailingListData
         {
             get; set;
         }
@@ -138,7 +139,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (MailingListData != null)
             {
-                NumberOfAddressesReturnedByService = MailingListData.addressCount;
+                NumberOfAddressesReturnedByService = MailingListData.AddressCount;
             }
         }
 
@@ -219,8 +220,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     if (MailingListData != null)
                     {
-                        cartItem.SetValue("MailingListName", MailingListData.name);
-                        cartItem.SetValue("MailingListGuid", MailingListData.id);
+                        cartItem.SetValue("MailingListName", MailingListData.Name);
+                        cartItem.SetValue("MailingListGuid", MailingListData.Id);
                     }
 
 
