@@ -151,6 +151,10 @@
       },
       search: {
         queryUrl: ""
+      },
+      recentOrders: {
+        getHeaders: '',
+        getPageItems: ''
       }
     }
   };

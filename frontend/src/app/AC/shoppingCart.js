@@ -6,42 +6,42 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
   CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
 import { CHECKOUT } from '../globals';
-// import ui from '../testServices/checkoutUI';
+import ui from '../testServices/checkoutUI';
 
 export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: SHOPPING_CART_UI_FETCH });
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SHOPPING_CART_UI_SUCCESS,
-    //     payload: {
-    //       ui: ui.payload
-    //     }
-    //   });
-    // }, 3000);
-
-    axios.get(CHECKOUT.initUIURL)
-      .then((response) => {
-        const { payload, success, errorMessage } = response.data;
-
-        if (!success) {
-          dispatch({ type: SHOPPING_CART_UI_FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
+    setTimeout(() => {
+      dispatch({
+        type: SHOPPING_CART_UI_SUCCESS,
+        payload: {
+          ui: ui.payload
         }
-
-        dispatch({
-          type: SHOPPING_CART_UI_SUCCESS,
-          payload: {
-            ui: payload
-          }
-        });
-      })
-      .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
-        dispatch({ type: SHOPPING_CART_UI_FAILURE });
       });
+    }, 3000);
+
+    // axios.get(CHECKOUT.initUIURL)
+    //   .then((response) => {
+    //     const { payload, success, errorMessage } = response.data;
+    //
+    //     if (!success) {
+    //       dispatch({ type: SHOPPING_CART_UI_FAILURE });
+    //       alert(errorMessage); // eslint-disable-line no-alert
+    //       return;
+    //     }
+    //
+    //     dispatch({
+    //       type: SHOPPING_CART_UI_SUCCESS,
+    //       payload: {
+    //         ui: payload
+    //       }
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     alert(error); // eslint-disable-line no-alert
+    //     dispatch({ type: SHOPPING_CART_UI_FAILURE });
+    //   });
   };
 };
 
@@ -84,7 +84,7 @@ export const removeProduct = (id) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: REMOVE_PRODUCT_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -124,7 +124,7 @@ export const changeProductQuantity = (id, quantity) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -188,7 +188,7 @@ export const changeShoppingData = (field, id, invoice) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
         dispatch({ type: APP_LOADING_FINISH });
       });
@@ -242,7 +242,7 @@ export const sendData = (data) => {
         });
       })
       .catch((error) => {
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
         dispatch({ type: APP_LOADING_FINISH });
         dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
       });

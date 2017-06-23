@@ -48,7 +48,7 @@ const app = {
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
     render('Search', document.querySelectorAll('.r-search'));
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
-
+    render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
   }
 };
 

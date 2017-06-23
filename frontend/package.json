@@ -107,7 +107,7 @@
     "popper": "^0.2.7",
     "popper.js": "^1.8.6",
     "query-string": "^4.3.3",
-    "react": "^15.4.1",
+    "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.5.2",
     "react-dom": "^15.4.1",
     "react-dropzone": "^3.12.3",
