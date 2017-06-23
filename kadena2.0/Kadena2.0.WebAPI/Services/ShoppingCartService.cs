@@ -531,12 +531,14 @@ namespace Kadena.WebAPI.Services
 
             if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
             {
+                kenticoLog.LogError("MailingList client", $"Call to microservice failed. {mailingResponse?.ErrorMessage}");
                 return;
             }
 
             var mailingLists = mailingResponse.Payload;
+            var itemsWithMailing = orderedItems.Where(i => !string.IsNullOrWhiteSpace(i.MailingList) && i.MailingList != Guid.Empty.ToString());
 
-            foreach (var item in orderedItems.Where( i=> !string.IsNullOrWhiteSpace(i.MailingList) && i.MailingList != Guid.Empty.ToString()))
+            foreach (var item in itemsWithMailing)
             {
                 var matchingList = mailingLists.FirstOrDefault(m => m.Id == item.MailingList);
 
