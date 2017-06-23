@@ -102,10 +102,10 @@
   <div class="settings">
     <div class="css-tabs__container js-tabs" data-tab=".js-tab-settings" data-tab-active="active" data-tab-active-default=".js-tab-settings-my-account">
       <ul class="css-tabs__list">
-        <li class="css-tabs__tab js-tab-settings" data-id="#t1" data-tab-content=".js-tab-settings-my-account">My account</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="#t2" data-tab-content=".js-tab-settings-password">Password</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="#t3" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="#t4" data-tab-content=".js-tab-settings-addresses">Addresses</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t1" data-tab-content=".js-tab-settings-my-account">My account</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t2" data-tab-content=".js-tab-settings-password">Password</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t3" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t4" data-tab-content=".js-tab-settings-addresses">Addresses</li>
       </ul>
 
       <div>

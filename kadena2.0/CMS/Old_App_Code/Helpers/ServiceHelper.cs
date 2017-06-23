@@ -12,6 +12,7 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -377,7 +378,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <summary>
         /// Get all mailing lists for particular customer (whole site)
         /// </summary>
-        public static IEnumerable<MailingListData> GetMailingLists()
+        public static IEnumerable<MailingListDataDTO> GetMailingLists()
         {
             var customerName = GetCustomerName();
 
@@ -385,10 +386,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
                 {
-                    BaseResponse<IEnumerable<MailingListData>> response;
+                    BaseResponse<IEnumerable<MailingListDataDTO>> response;
                     try
                     {
-                        response = (BaseResponse<IEnumerable<MailingListData>>)message.Result;
+                        response = (BaseResponse<IEnumerable<MailingListDataDTO>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -410,7 +411,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Get all mailing list for particular customer (whole site) by specified Id.
         /// </summary>
         /// <param name="containerId">Id of container to get.</param>
-        public static MailingListData GetMailingList(Guid containerId)
+        public static MailingListDataDTO GetMailingList(Guid containerId)
         {
             var customerName = GetCustomerName();
 
@@ -430,10 +431,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(getMailingListUrl))
                 {
-                    BaseResponse<MailingListData> response;
+                    BaseResponse<MailingListDataDTO> response;
                     try
                     {
-                        response = (BaseResponse<MailingListData>)message.Result;
+                        response = (BaseResponse<MailingListDataDTO>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {

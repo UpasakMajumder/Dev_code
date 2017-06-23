@@ -54,17 +54,19 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         protected void btnOpenTemplatedProduct_Click(object sender, EventArgs e)
         {
-            var masterTemplateID = DocumentContext.CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
-            var newTemplateUrl = new TemplateServiceHelper().CreateNewTemplate(MembershipContext.AuthenticatedUser.UserID, masterTemplateID);
+            var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
+            var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
+            var newTemplateUrl = new TemplateServiceHelper().CreateNewTemplate(MembershipContext.AuthenticatedUser.UserID, masterTemplateID, workspaceID);
             if (!string.IsNullOrEmpty(newTemplateUrl))
             {
                 var uri = new Uri(newTemplateUrl);
                 var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-                var destinationUrl = String.Format("{0}?id={1}&skuid={2}&templateid={3}",
+                var destinationUrl = String.Format("{0}?id={1}&skuid={2}&templateid={3}&workspaceid={4}",
                   ProductEditorUrl,
                   DocumentContext.CurrentDocument.DocumentID,
                   ECommerceContext.CurrentProduct.SKUID,
-                  newTemplateID);
+                  newTemplateID,
+                  workspaceID);
 
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
                 if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))

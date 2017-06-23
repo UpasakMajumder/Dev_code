@@ -3,29 +3,39 @@ using Kadena.Old_App_Code.Kadena.Chili;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
-  public partial class ChiliIframe : CMSAbstractWebPart
-  {
-    private const string _TemplateIDKey = "templateid";
-    private string TemplateID
+    public partial class ChiliIframe : CMSAbstractWebPart
     {
-      get
-      {
-        return Request.QueryString[_TemplateIDKey];
-      }
-    }
+        private const string _TemplateIDKey = "templateid";
+        private const string _TemplateWorkspaceID = "workspaceid";
 
-    public override void OnContentLoaded()
-    {
-      base.OnContentLoaded();
-      SetupControl();
-    }
+        private string TemplateID
+        {
+            get
+            {
+                return Request.QueryString[_TemplateIDKey];
+            }
+        }
 
-    protected void SetupControl()
-    {
-      if (!StopProcessing && TemplateID != null)
-      {
-        chilliIframe.Src = new TemplateServiceHelper().GetEditorUrl(TemplateID);
-      }
+        private string WorkspaceID
+        {
+            get
+            {
+                return Request.QueryString[_TemplateWorkspaceID];
+            }
+        }
+
+        public override void OnContentLoaded()
+        {
+            base.OnContentLoaded();
+            SetupControl();
+        }
+
+        protected void SetupControl()
+        {
+            if (!StopProcessing && TemplateID != null)
+            {
+                chilliIframe.Src = new TemplateServiceHelper().GetEditorUrl(TemplateID, WorkspaceID);
+            }
+        }
     }
-  }
 }

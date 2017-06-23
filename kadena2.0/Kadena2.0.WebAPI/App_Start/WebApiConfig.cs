@@ -184,6 +184,7 @@ namespace Kadena.WebAPI
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
+            container.Register<IMailingListClient, MailingListClient>();
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();

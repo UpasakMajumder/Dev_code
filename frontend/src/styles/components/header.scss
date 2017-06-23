@@ -40,11 +40,15 @@
 
       &:last-child {
         border-top-right-radius: $border-radius-xl;
+
+        .nav-link {
+          @include rem(padding-right, $main-layout-gutter + 12px);
+        }
       }
 
       svg {
-        margin: 0 .8rem 0 0;
-        $size: 18px;
+        margin: 0 .5rem 0 0;
+        $size: 16px;
         width: $size;
         height: $size;
 
@@ -54,7 +58,7 @@
       }
 
       .nav-link {
-        @include rem(padding, 18px 12px);
+        @include rem(padding, 18px 12px 18px 14px);
 
         @extend %flex--center--default;
         color: $brand-dark;

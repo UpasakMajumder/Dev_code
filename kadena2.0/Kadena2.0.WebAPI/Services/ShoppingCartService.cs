@@ -24,6 +24,7 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
+        private readonly IMailingListClient mailingClient;
 
         public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
@@ -31,6 +32,7 @@ namespace Kadena.WebAPI.Services
                                    IOrderSubmitClient orderSubmitClient,
                                    IOrderViewClient orderViewClient,
                                    ITaxEstimationService taxCalculator,
+                                   IMailingListClient mailingClient,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
@@ -39,6 +41,7 @@ namespace Kadena.WebAPI.Services
             this.orderSubmitClient = orderSubmitClient;
             this.orderViewClient = orderViewClient;
             this.taxCalculator = taxCalculator;
+            this.mailingClient = mailingClient;
             this.kenticoLog = kenticoLog;
         }
 
@@ -425,9 +428,9 @@ namespace Kadena.WebAPI.Services
                 CommonInfo = new CommonInfo()
                 {
                     OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
-                    ShippingDate = string.Empty, //TODO shipping date unknown
+                    ShippingDate = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue),
                     Status = data.Status,
-                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
+                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
                 },
                 PaymentInfo = new PaymentInfo()
                 {
@@ -484,11 +487,16 @@ namespace Kadena.WebAPI.Services
                 OrderedItems = new OrderedItems()
                 {
                     Title = "Ordered items",
-                    Items = MapOrderedItems(data.Items)
+                    Items = await MapOrderedItems(data.Items)
                 }
             };
 
             return orderDetail;
+        }
+
+        private string CheckedDateTimeString(DateTime dt)
+        {
+            return dt == DateTime.MinValue ? resources.GetResourceString("Kadena.Order.ItemShippingDateNA") : dt.ToString("MM/dd/yyyy");
         }
 
         private string GetPaymentMethodIcon(string paymentMethod)
@@ -498,22 +506,54 @@ namespace Kadena.WebAPI.Services
             return method?.Icon ?? string.Empty;
         }
 
-        private List<OrderedItem> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
+        private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
         {
-            return items.Select(i => new OrderedItem()
+            var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
                 DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
-                MailingList = i.MailingList,
+                MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
-                ShippingDate = string.Empty, // TODO Shipping date unknown
+                ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
                 TrackingId = i.TrackingId
             }).ToList();
+
+
+            await SetMailingListNames(orderedItems);
+
+            return orderedItems;
         }
+
+        private async Task SetMailingListNames(List<OrderedItem> orderedItems)
+        {
+            var endpoint = resources.GetSettingsKey("KDA_GetMailingListsUrl");
+            var customerName = resources.GetSettingsKey("KDA_CustomerName");
+            var mailingResponse = await mailingClient.GetMailingListsForCustomer(endpoint, customerName);
+
+            if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
+            {
+                kenticoLog.LogError("MailingList client", $"Call to microservice failed. {mailingResponse?.ErrorMessages}");
+                return;
+            }
+
+            var mailingLists = mailingResponse.Payload;
+            var itemsWithMailing = orderedItems.Where(i => !string.IsNullOrWhiteSpace(i.MailingList) && i.MailingList != Guid.Empty.ToString());
+
+            foreach (var item in itemsWithMailing)
+            {
+                var matchingList = mailingLists.FirstOrDefault(m => m.Id == item.MailingList);
+
+                if(matchingList != null)
+                {
+                    item.MailingList = matchingList.Name;
+                }
+            }
+        }
+
 
         private void CheckOrderDetailPermisson(string orderId, Customer customer)
         {
