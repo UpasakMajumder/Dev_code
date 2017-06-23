@@ -41,7 +41,7 @@ namespace Kadena.WebAPI.Services
                     "delivery date",
                     ""
                 },
-                Pagination = new Pagination
+                PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
                     RowsOnPage = _pageCapacity,
@@ -84,7 +84,7 @@ namespace Kadena.WebAPI.Services
             {
                 var customer = _kentico.GetCurrentCustomer();
                 var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
-                var result = await _orderClient.GetOrders(url, customer?.Id ?? 9, pageNumber, _pageCapacity);
+                var result = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
                 if (result.Success)
                 {
                     return result.Payload;
