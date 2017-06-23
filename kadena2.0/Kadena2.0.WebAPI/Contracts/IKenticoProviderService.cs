@@ -49,5 +49,7 @@ namespace Kadena.WebAPI.Contracts
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
+
+        bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
     }
 }

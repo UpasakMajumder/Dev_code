@@ -460,5 +460,10 @@ namespace Kadena.WebAPI.Services
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
+
+        public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+        {
+            return MembershipContext.CurrentUserProfile.IsAuthorizedPerResource(resourceName, permissionName, siteName);
+        }
     }
 }
