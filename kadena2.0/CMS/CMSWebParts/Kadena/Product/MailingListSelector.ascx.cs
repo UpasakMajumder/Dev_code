@@ -21,25 +21,25 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists().Where(l => l.addressCount > 0);
+            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists().Where(l => l.AddressCount > 0);
             if (mailingListData.Count() > 0)
             {
                 foreach (var d in mailingListData)
                 {
                     // Generate table
                     var tr = new TableRow();
-                    tr.Cells.Add(new TableCell { Text = d.name });
-                    tr.Cells.Add(new TableCell { Text = d.createDate.ToString("MMM dd yyyy") });
-                    tr.Cells.Add(new TableCell { Text = d.addressCount.ToString() });
-                    tr.Cells.Add(new TableCell { Text = d.errorCount.ToString() });
-                    tr.Cells.Add(new TableCell { Text = d.validTo.ToString("MMM dd yyyy") });
-                    tr.Cells.Add(new TableCell { Text = d.state?.ToString() ?? string.Empty });
+                    tr.Cells.Add(new TableCell { Text = d.Name });
+                    tr.Cells.Add(new TableCell { Text = d.CreateDate.ToString("MMM dd yyyy") });
+                    tr.Cells.Add(new TableCell { Text = d.AddressCount.ToString() });
+                    tr.Cells.Add(new TableCell { Text = d.ErrorCount.ToString() });
+                    tr.Cells.Add(new TableCell { Text = d.ValidTo.ToString("MMM dd yyyy") });
+                    tr.Cells.Add(new TableCell { Text = d.State?.ToString() ?? string.Empty });
 
-                    if (d.validTo > DateTime.Now.Date)
+                    if (d.ValidTo > DateTime.Now.Date)
                     {
                         var btnCell = new TableCell();
                         var btn = new HtmlButton();
-                        btn.ID = d.id;
+                        btn.ID = d.Id;
                         btn.ClientIDMode = ClientIDMode.Static;
                         btn.InnerText = GetString("Kadena.MailingList.Use");
                         btn.Attributes["class"] = "btn-action";
