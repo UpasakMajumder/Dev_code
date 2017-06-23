@@ -599,45 +599,5 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
         }
-
-        public static IEnumerable<OrderDto> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
-        {
-            Uri url;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
-                , UriKind.Absolute
-                , out url))
-            {
-                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_getAddressesIncorrectMessage));
-                return null;    
-            }
-
-            var parameterizedUrl = $"{url.AbsoluteUri}?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(parameterizedUrl))
-                {
-                    BaseResponse<OrderListDto> response;
-                    try
-                    {
-                        response = (BaseResponse<OrderListDto>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
-                        return null;
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload.Orders;
-                    }
-                    else
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
-                        return null;
-                    }
-                }
-            }
-        }
     }
 }
