@@ -28,9 +28,10 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> GetOrderBody()
+        [Route("api/recentorders/getbody/{pageNumber}")]
+        public async Task<IHttpActionResult> GetOrderBody(int pageNumber)
         {
-            var orderBody = await _orderService.GetBody(1);
+            var orderBody = await _orderService.GetBody(pageNumber);
             var result = _mapper.Map<OrderBodyDto>(orderBody);
             return ResponseJson(result);
         }
