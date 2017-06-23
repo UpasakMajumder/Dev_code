@@ -71,9 +71,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var url = URLHelper.URLDecode(Request.QueryString["url"]);
                 var containerId = btn.ID;
                 var templateId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "templateid");
-                if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId))
+                var workspaceId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "workspaceid");
+                if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    new TemplateServiceHelper().SetMailingList(containerId, templateId);
+                    new TemplateServiceHelper().SetMailingList(containerId, templateId, workspaceId);
                     url += "&containerId=" + containerId;
                     Response.Redirect(url);
                 }
