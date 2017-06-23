@@ -10,9 +10,9 @@ namespace Kadena.WebAPI.Controllers
     public class DashboardController : ApiControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IRecentOrderService _orderService;
+        private readonly IOrderListService _orderService;
 
-        public DashboardController(IRecentOrderService orderService, IMapper mapper)
+        public DashboardController(IOrderListService orderService, IMapper mapper)
         {
             _mapper = mapper;
             _orderService = orderService;

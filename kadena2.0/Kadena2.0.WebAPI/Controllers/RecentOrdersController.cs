@@ -13,9 +13,9 @@ namespace Kadena.WebAPI.Controllers
     public class RecentOrdersController : ApiControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IRecentOrderService _orderService;
+        private readonly IOrderListService _orderService;
 
-        public RecentOrdersController(IRecentOrderService orderService, IMapper mapper)
+        public RecentOrdersController(IOrderListService orderService, IMapper mapper)
         {
             _mapper = mapper;
             _orderService = orderService;

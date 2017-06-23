@@ -12,7 +12,7 @@ using Kadena.Dto.General;
 
 namespace Kadena.WebAPI.Services
 {
-    public class RecentOrdersService : IRecentOrderService
+    public class OrderListService : IOrderListService
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
@@ -40,7 +40,7 @@ namespace Kadena.WebAPI.Services
 
         public bool EnablePaging { get; set; }
 
-        public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoLogger logger)
+        public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoLogger logger)
         {
             _mapper = mapper;
             _orderClient = orderClient;

@@ -193,7 +193,7 @@ namespace Kadena.WebAPI
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
             container.Register<IOrderViewClient, OrderViewClient>();
-            container.Register<IRecentOrderService, RecentOrdersService>();
+            container.Register<IOrderListService, OrderListService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }

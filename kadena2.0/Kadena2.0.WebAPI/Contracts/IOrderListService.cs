@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts
 {
-    public interface IRecentOrderService
+    public interface IOrderListService
     {
         string PageCapacityKey { get; set; }
 
