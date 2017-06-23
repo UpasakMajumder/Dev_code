@@ -36,7 +36,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     private void GetMailingLists()
     {
       var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists();
-      repMailingLists.DataSource = mailingListData.OrderByDescending(x => x.createDate);
+      repMailingLists.DataSource = mailingListData.OrderByDescending(x => x.CreateDate);
       repMailingLists.DataBind();
     }
 
