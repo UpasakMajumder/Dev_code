@@ -10,7 +10,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderViewClient : ClientBase, IOrderViewClient
     {
-        public async Task<AwsResponseMessage<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId)
+        public async Task<BaseResponse<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId)
         {
             using (var httpClient = new HttpClient())
             {
@@ -22,7 +22,7 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
-        public async Task<AwsResponseMessage<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity)
+        public async Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity)
         {
             var url = $"{serviceEndpoint}?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
             using (var httpClient = new HttpClient())

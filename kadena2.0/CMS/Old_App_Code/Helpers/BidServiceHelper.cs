@@ -93,10 +93,10 @@ namespace Kadena.Old_App_Code.Helpers
                 client.DefaultRequestHeaders.Add("Noosh.Token", nooshToken);
                 using (var message = client.GetAsync($"{url.AbsoluteUri}/{workgroupName}"))
                 {
-                    AwsResponseMessage<IEnumerable<ProjectData>> response;
+                    BaseResponse<IEnumerable<ProjectData>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<ProjectData>>)message.Result;
+                        response = (BaseResponse<IEnumerable<ProjectData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {

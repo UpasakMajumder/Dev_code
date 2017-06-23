@@ -25,17 +25,17 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return content;
         }
 
-        protected async Task<AwsResponseMessage<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected async Task<BaseResponse<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
-            AwsResponseMessage<TResult> result = null;
+            BaseResponse<TResult> result = null;
 
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
-                result = new AwsResponseMessage<TResult>
+                result = new BaseResponse<TResult>
                 {
                     Success = false,
                     Payload = default(TResult),
-                    Error = new ErrorMessage
+                    Error = new BaseError
                     {
                         Message = $"HTTP error - {response.ReasonPhrase}"
                     }
@@ -46,18 +46,18 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                 try
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<AwsResponseMessage<TResult>>(responseContent);
+                    result = JsonConvert.DeserializeObject<BaseResponse<TResult>>(responseContent);
                 }
                 catch (JsonReaderException e)
                 {
-                    result = new AwsResponseMessage<TResult>
+                    result = new BaseResponse<TResult>
                     {
                         Success = false,
                         Payload = default(TResult),
-                        Error = new ErrorMessage
+                        Error = new BaseError
                         {
                             Message = _responseIncorrectMessage,
-                            InnerError = new ErrorMessage
+                            InnerError = new BaseError
                             {
                                 Message = e.Message
                             }

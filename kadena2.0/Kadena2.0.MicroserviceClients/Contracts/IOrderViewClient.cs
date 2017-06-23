@@ -7,7 +7,7 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IOrderViewClient
     {
-        Task<AwsResponseMessage<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId);
-        Task<AwsResponseMessage<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity);
+        Task<BaseResponse<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId);
+        Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity);
     }
 }

@@ -59,8 +59,8 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
-    <Compile Include="General\AwsResponseMessage.cs" />
-    <Compile Include="General\ErrorMessage.cs" />
+    <Compile Include="General\BaseResponse.cs" />
+    <Compile Include="General\BaseError.cs" />
     <Compile Include="Order\OrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />

@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Kadena.Dto.General
 {
     [DataContract]
-    public class AwsResponseMessage<TResponse>
+    public class BaseResponse<TResponse>
     {
         [DataMember(Name = "success")]
         public bool Success { get; set; }
@@ -26,19 +26,19 @@ namespace Kadena.Dto.General
             }
             set
             {
-                Error = new ErrorMessage { Message = value };
+                Error = new BaseError { Message = value };
             }
         }
 
         [DataMember(Name = "error")]
-        public ErrorMessage Error { get; set; }
+        public BaseError Error { get; set; }
 
-        public static explicit operator AwsResponseMessage<TResponse>(HttpResponseMessage message)
+        public static explicit operator BaseResponse<TResponse>(HttpResponseMessage message)
         {
-            return JsonConvert.DeserializeObject<AwsResponseMessage<TResponse>>(message.Content.ReadAsStringAsync().Result);
+            return JsonConvert.DeserializeObject<BaseResponse<TResponse>>(message.Content.ReadAsStringAsync().Result);
         }
 
-        public static explicit operator AwsResponseMessage<TResponse>(HttpWebResponse message)
+        public static explicit operator BaseResponse<TResponse>(HttpWebResponse message)
         {
             string resultString = string.Empty;
 
@@ -46,7 +46,7 @@ namespace Kadena.Dto.General
             {
                 resultString = streamReader.ReadToEnd();
             }
-            return JsonConvert.DeserializeObject<AwsResponseMessage<TResponse>>(resultString);
+            return JsonConvert.DeserializeObject<BaseResponse<TResponse>>(resultString);
         }
     }
 }

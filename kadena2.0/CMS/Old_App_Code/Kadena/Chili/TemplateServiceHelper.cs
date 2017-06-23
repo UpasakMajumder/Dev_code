@@ -43,7 +43,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponse<string>)response;
 
                     if (result.Success)
                     {
@@ -83,7 +83,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponse<string>)response;
 
                     if (result.Success)
                     {
@@ -124,7 +124,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<List<TemplateServiceDocumentResponse>>)response;
+                    var result = (BaseResponse<List<TemplateServiceDocumentResponse>>)response;
 
                     if (result.Success)
                     {
@@ -171,7 +171,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponse<string>)response;
 
                     if (result.Success)
                     {

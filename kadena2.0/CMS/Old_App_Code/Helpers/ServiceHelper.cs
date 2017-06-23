@@ -89,10 +89,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(createContainerUrl, content))
                     {
-                        AwsResponseMessage<Guid> response;
+                        BaseResponse<Guid> response;
                         try
                         {
-                            response = (AwsResponseMessage<Guid>)message.Result;
+                            response = (BaseResponse<Guid>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -152,10 +152,10 @@ namespace Kadena.Old_App_Code.Helpers
                     content.Add(new StringContent(_moduleName), "ConsumerDetails.Module");
                     using (var message = client.PostAsync(postFileUrl, content))
                     {
-                        AwsResponseMessage<string> response;
+                        BaseResponse<string> response;
                         try
                         {
-                            response = (AwsResponseMessage<string>)message.Result;
+                            response = (BaseResponse<string>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -205,10 +205,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parametrizeUrl))
                 {
-                    AwsResponseMessage<IEnumerable<string>> response;
+                    BaseResponse<IEnumerable<string>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<string>>)message.Result;
+                        response = (BaseResponse<IEnumerable<string>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -287,10 +287,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(uploadMappingUrl, content))
                     {
-                        AwsResponseMessage<object> response;
+                        BaseResponse<object> response;
                         try
                         {
-                            response = (AwsResponseMessage<object>)message.Result;
+                            response = (BaseResponse<object>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -337,10 +337,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(validateAddressUrl, content))
                     {
-                        AwsResponseMessage<string> response;
+                        BaseResponse<string> response;
                         try
                         {
-                            response = (AwsResponseMessage<string>)message.Result;
+                            response = (BaseResponse<string>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -385,10 +385,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
                 {
-                    AwsResponseMessage<IEnumerable<MailingListData>> response;
+                    BaseResponse<IEnumerable<MailingListData>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<MailingListData>>)message.Result;
+                        response = (BaseResponse<IEnumerable<MailingListData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -430,10 +430,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(getMailingListUrl))
                 {
-                    AwsResponseMessage<MailingListData> response;
+                    BaseResponse<MailingListData> response;
                     try
                     {
-                        response = (AwsResponseMessage<MailingListData>)message.Result;
+                        response = (BaseResponse<MailingListData>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -488,10 +488,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.SendAsync(request))
                     {
-                        AwsResponseMessage<object> response;
+                        BaseResponse<object> response;
                         try
                         {
-                            response = (AwsResponseMessage<object>)message.Result;
+                            response = (BaseResponse<object>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -532,10 +532,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    AwsResponseMessage<IEnumerable<MailingAddressData>> response;
+                    BaseResponse<IEnumerable<MailingAddressData>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<MailingAddressData>>)message.Result;
+                        response = (BaseResponse<IEnumerable<MailingAddressData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -577,10 +577,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(orderStatisticsUrl))
                 {
-                    AwsResponseMessage<OrderStatisticsData> response;
+                    BaseResponse<OrderStatisticsData> response;
                     try
                     {
-                        response = (AwsResponseMessage<OrderStatisticsData>)message.Result;
+                        response = (BaseResponse<OrderStatisticsData>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -617,10 +617,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    AwsResponseMessage<OrderListDto> response;
+                    BaseResponse<OrderListDto> response;
                     try
                     {
-                        response = (AwsResponseMessage<OrderListDto>)message.Result;
+                        response = (BaseResponse<OrderListDto>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {

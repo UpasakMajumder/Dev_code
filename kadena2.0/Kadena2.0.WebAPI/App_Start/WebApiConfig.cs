@@ -132,8 +132,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-                config.CreateMap<AwsResponseMessage<string>, SubmitOrderResult>();
-                config.CreateMap<ErrorMessage, SubmitOrderError>();
+                config.CreateMap<BaseResponse<string>, SubmitOrderResult>();
+                config.CreateMap<BaseError, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
                     .AfterMap((d, a) =>

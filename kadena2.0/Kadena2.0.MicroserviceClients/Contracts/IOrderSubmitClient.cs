@@ -6,6 +6,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IOrderSubmitClient
     {
-        Task<AwsResponseMessage<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData);
+        Task<BaseResponse<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData);
     }
 }

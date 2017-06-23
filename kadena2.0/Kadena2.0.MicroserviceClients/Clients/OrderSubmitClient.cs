@@ -10,7 +10,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderSubmitClient : ClientBase, IOrderSubmitClient
     {
-        public async Task<AwsResponseMessage<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<BaseResponse<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
             using (var httpClient = new HttpClient())
             {

@@ -6,6 +6,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface ITaxEstimationService
     {
-        Task<AwsResponseMessage<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request);
+        Task<BaseResponse<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request);
     }
 }
