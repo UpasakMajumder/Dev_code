@@ -15,15 +15,17 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
-        private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoResourceService _kenticoResources;
+        private readonly IKenticoProviderService _kentico;
         private readonly int _pageCapacity;
 
-        public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kentico)
+        public RecentOrdersService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico)
         {
             _mapper = mapper;
             _orderClient = orderClient;
+            _kenticoResources = kenticoResources;
             _kentico = kentico;
-            _pageCapacity = int.Parse(_kentico.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
+            _pageCapacity = int.Parse(_kenticoResources.GetSettingsKey("KDA_RecentOrdersPageCapacity"));
         }
 
         public async Task<OrderHead> GetHeaders()
@@ -50,7 +52,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<OrderBody> GetBody(int pageNumber)
         {
-            var orderDetailUrl = _kentico.GetSettingsKey("KDA_OrderDetailUrl");
+            var orderDetailUrl = _kenticoResources.GetSettingsKey("KDA_OrderDetailUrl");
             var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
             return new OrderBody
             {
@@ -64,10 +66,34 @@ namespace Kadena.WebAPI.Services
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
-            var url = _kentico.GetSettingsKey("KDA_OrdersBySiteUrl");
-            var siteName = _kentico.GetKenticoSite().Name;
-            var result = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
-            return result.Payload;
+            var siteName = _kenticoResources.GetKenticoSite().Name;
+            if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            {
+                var url = _kenticoResources.GetSettingsKey("KDA_OrdersBySiteUrl");
+                var result = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
+                if (result.Success)
+                {
+                    return result.Payload;
+                }
+                else
+                {
+                    throw new InvalidOperationException(result.Error?.Message);
+                }
+            }
+            else
+            {
+                var customer = _kentico.GetCurrentCustomer();
+                var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
+                var result = await _orderClient.GetOrders(url, customer?.Id ?? 9, pageNumber, _pageCapacity);
+                if (result.Success)
+                {
+                    return result.Payload;
+                }
+                else
+                {
+                    throw new InvalidOperationException(result.Error?.Message);
+                }
+            }
         }
     }
 }
