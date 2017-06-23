@@ -19,6 +19,7 @@ namespace Kadena.WebAPI.Controllers
         {
             _mapper = mapper;
             _orderService = orderService;
+            _orderService.PageCapacityKey = "KDA_RecentOrdersPageCapacity";
         }
 
         [HttpGet]
