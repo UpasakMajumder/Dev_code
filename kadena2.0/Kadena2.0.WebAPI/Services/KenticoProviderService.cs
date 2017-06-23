@@ -463,7 +463,7 @@ namespace Kadena.WebAPI.Services
 
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
-            return MembershipContext.CurrentUserProfile.IsAuthorizedPerResource(resourceName, permissionName, siteName);
+            return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
         }
     }
 }
