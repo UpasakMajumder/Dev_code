@@ -32,6 +32,31 @@ namespace Kadena.WebAPI.Services
             };
         }
 
+        public AutocompleteResponse Autocomplete(string phrase)
+        {
+            var searchResultPages = SearchPages(phrase);
+            var searchResultProducts = SearchProducts(phrase);
+
+            return new AutocompleteResponse()
+            {
+                Pages = new AutocomletePages()
+                {
+                    Url = "/",
+                    //Items = 
+                    // searchResultPages,
+
+                },
+                Products = new AutocompleteProducts()
+                {
+                    Url = "/",
+                    //Items = 
+                    //searchResultProducts
+                },
+                Message = resources.GetResourceString("TODO") //TODO res string
+
+            };
+        }
+
         public List<ResultItemPage> SearchPages(string phrase)
         {
             var searchResultPages = new List<ResultItemPage>();

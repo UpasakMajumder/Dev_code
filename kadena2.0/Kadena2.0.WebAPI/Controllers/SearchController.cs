@@ -33,7 +33,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/search")]
         [AuthorizationFilter]
         [QuerystringParameterRequired("phrase")]
@@ -43,6 +43,18 @@ namespace Kadena.WebAPI.Controllers
             var serpPage = service.Search(phrase);
             var serpPageDto = mapper.Map<SearchResultPageResponseDTO>(serpPage);
             return ResponseJson(serpPageDto); 
+        }
+
+        [HttpPost]
+        [Route("api/autocomplete")]
+        [AuthorizationFilter]
+        [QuerystringParameterRequired("phrase")]
+        public IHttpActionResult Autocomplete()
+        {
+            var phrase = this.Request.GetQueryNameValuePairs().First(p => p.Key == "phrase").Value;
+            var result = service.Autocomplete(phrase);
+            var resultDto = mapper.Map<AutocompleteResponseDTO>(result);
+            return ResponseJson(resultDto);
         }
     }
 }

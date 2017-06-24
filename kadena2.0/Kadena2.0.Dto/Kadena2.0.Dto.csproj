@@ -56,8 +56,13 @@
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
     <Compile Include="General\BaseResponseDTO.cs" />
     <Compile Include="General\ErrorMessageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
+    <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />
     <Compile Include="Search\Responses\PageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductDTO.cs" />
     <Compile Include="Search\Responses\ProductDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteResponseDTO.cs" />
     <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
     <Compile Include="Search\Responses\StockDTO.cs" />
     <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />

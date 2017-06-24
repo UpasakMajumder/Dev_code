@@ -64,8 +64,9 @@ namespace Kadena.WebAPI.Services
                 AttachmentOrderBy = String.Empty,
             };
 
-            DataSet searchResults = SearchHelper.Search(parameters);
-            return searchResults;
+
+            var result = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, phrase));
+            return result;
         }
     }
 }

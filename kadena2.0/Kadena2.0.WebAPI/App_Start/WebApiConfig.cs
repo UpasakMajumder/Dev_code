@@ -165,7 +165,11 @@ namespace Kadena.WebAPI
                 config.CreateMap<ResultItemProduct, ProductDTO>();
                 config.CreateMap<UseTemplateBtn, UseTemplateBtnDTO>();
                 config.CreateMap<Stock, StockDTO>();
-				
+                config.CreateMap<AutocompleteResponse, AutocompleteResponseDTO>();
+                config.CreateMap<AutocompleteProducts, AutocompleteProductsDTO>();
+                config.CreateMap<AutocomletePages, AutocomletePagesDTO>();
+                config.CreateMap<AutocompleteProduct, AutocompleteProductDTO>();
+                config.CreateMap<AutocompletePage, AutocomletePagesDTO>();
             });
         }
 

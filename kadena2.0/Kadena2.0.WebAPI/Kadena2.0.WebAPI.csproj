@@ -191,6 +191,11 @@
     <Compile Include="Models\OrderDetail\Tracking.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\Search\AutocompletePage.cs" />
+    <Compile Include="Models\Search\AutocompletePages.cs" />
+    <Compile Include="Models\Search\AutocompleteProduct.cs" />
+    <Compile Include="Models\Search\AutocompleteProducts.cs" />
+    <Compile Include="Models\Search\AutocompleteResponse.cs" />
     <Compile Include="Models\Search\ResultItemProduct.cs" />
     <Compile Include="Models\Search\ResultItemPage.cs" />
     <Compile Include="Models\Search\SearchResultPage.cs" />
