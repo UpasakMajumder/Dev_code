@@ -4,6 +4,7 @@ using System.Data;
 using Kadena.WebAPI.Models.Search;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Kadena.WebAPI.Services
 {
@@ -37,24 +38,32 @@ namespace Kadena.WebAPI.Services
             var searchResultPages = SearchPages(phrase);
             var searchResultProducts = SearchProducts(phrase);
 
-            return new AutocompleteResponse()
+            var result = new AutocompleteResponse()
             {
-                Pages = new AutocomletePages()
+                Pages = new AutocompletePages()
                 {
                     Url = "/",
-                    //Items = 
-                    // searchResultPages,
-
+                    Items = mapper.Map<List<AutocompletePage>>(searchResultPages)
                 },
                 Products = new AutocompleteProducts()
                 {
                     Url = "/",
-                    //Items = 
-                    //searchResultProducts
+                    Items = searchResultProducts.Select(p => new AutocompleteProduct()
+                        {
+                            Id = p.Id,
+                            Category = "Cat", // TODO
+                            Image = "", // TODO
+                            Stock = p.Stock,
+                            Title = p.Title,
+                            Url = "" //TODO
+                        }
+                    ).ToList()
                 },
-                Message = resources.GetResourceString("TODO") //TODO res string
-
+                Message = string.Empty
             };
+
+            result.UpdateNotFoundMessage(resources.GetResourceString("TODO")); //TODO res string
+            return result;
         }
 
         public List<ResultItemPage> SearchPages(string phrase)

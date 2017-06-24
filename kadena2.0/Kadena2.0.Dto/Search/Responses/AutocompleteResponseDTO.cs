@@ -5,6 +5,6 @@
         public AutocompleteProductsDTO Products { get; set; }
         public AutocomletePagesDTO Pages { get; set; }
 
-        public string Message { get; set; } = "Sorry, no results found";
+        public string Message { get; set; }
     }
 }

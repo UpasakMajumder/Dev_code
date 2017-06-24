@@ -2,7 +2,7 @@
 
 namespace Kadena.WebAPI.Models.Search
 {
-    public class AutocomletePages
+    public class AutocompletePages
     {
         public string Url { get; set; }
         public IList<AutocompletePage> Items { get; set; }
