@@ -260,3 +260,4 @@ kadena2.0/log.txt
 
 # search cache files
 kadena2.0\CMS\App_Data\CMSModules\SmartSearch\KDA_ProductsIndex
+kadena2.0\CMS\App_Data\CMSModules\SmartSearch\KDA_PagesIndex
