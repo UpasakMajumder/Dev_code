@@ -177,7 +177,6 @@ namespace Kadena.WebAPI
             // BLL
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<ISearchService, SearchService>();
-            container.Register<IOrderServiceClient, OrderServiceClient>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();

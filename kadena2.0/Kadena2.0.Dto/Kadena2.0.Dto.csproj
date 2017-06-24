@@ -113,12 +113,8 @@
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
-    <Compile Include="Tax\MicroserviceResponses\TaxCalculatorServiceResponseDto.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tax\Requests\" />
-    <Folder Include="Tax\Responses\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
