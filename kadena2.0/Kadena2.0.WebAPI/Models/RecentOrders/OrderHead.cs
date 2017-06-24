@@ -6,5 +6,6 @@ namespace Kadena.WebAPI.Models.RecentOrders
     {
         public List<string> Headings { get; set; }
         public Pagination PageInfo { get; set; }
+        public string NoOrdersMessage { get; set; }
     }
 }

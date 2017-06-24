@@ -6,5 +6,6 @@ namespace Kadena.Dto.RecentOrders
     {
         public List<string> Headings { get; set; }
         public PaginationDto PageInfo { get; set; }
+        public string NoOrdersMessage { get; set; }
     }
 }
