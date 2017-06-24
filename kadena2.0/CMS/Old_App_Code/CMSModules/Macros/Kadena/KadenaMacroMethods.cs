@@ -7,12 +7,17 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.Localization;
 using CMS.SiteProvider;
+using CMS.DataEngine;
+using CMS.CustomTables;
+using System.Collections.Generic;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
+        #region Public methods
+
         [MacroMethod(typeof(bool), "Validates combination of product types - static type variant.", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsStaticProductTypeCombinationValid(EvaluationContext context, params object[] parameters)
@@ -216,5 +221,61 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
+
+        [MacroMethod(typeof(string), "Returns where codition for one of main navigation repeaters based on enabled modules for customer.", 1)]
+        [MacroMethodParam(0, "forEnabledItems", typeof(bool), "For enabled items")]
+        public static object GetMainNavigationWhereCondition(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
+
+            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
+        {
+            var result = string.Empty;
+            var pageTypes = new List<string>();
+        
+            var moduleSettingsMappingsDataClassInfo = DataClassInfoProvider.GetDataClassInfo("KDA.KadenaModuleAndPageTypeConnection");
+            if (moduleSettingsMappingsDataClassInfo != null)
+            {
+                var mappingItems = CustomTableItemProvider.GetItems("KDA.KadenaModuleAndPageTypeConnection");
+
+                if (mappingItems != null)
+                {
+                    foreach (var mappingItem in mappingItems)
+                    {
+                        var isModuleEnabled = SettingsKeyInfoProvider.GetBoolValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
+                        if (isModuleEnabled == isForEnabledItems)
+                        {
+                            pageTypes.Add(mappingItem.GetStringValue("PageTypeCodeName", string.Empty));
+                        }
+                    }
+                }
+            }
+            foreach (var pageType in pageTypes)
+            {
+                result += $"ClassName = N'{pageType}' OR ";
+            }
+            if (result.Length > 0)
+            {
+                result = result.Substring(0, result.Length - 3);
+            }
+            else
+            {
+                result = "1 = 0";
+            }
+            return result;
+        }
+
+        #endregion
     }
 }
