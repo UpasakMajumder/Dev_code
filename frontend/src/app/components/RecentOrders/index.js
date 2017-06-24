@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Order from './Order';
 import Pagination from '../Pagination';
+import Alert from '../Alert';
 import { getHeadings, getRows } from '../../AC/recentOrders';
 
 class RecentOrders extends Component {
@@ -40,7 +41,7 @@ class RecentOrders extends Component {
   }
 
   render() {
-    const { headings, pageInfo, rows } = this.props;
+    const { headings, pageInfo, rows, noOrdersMessage } = this.props;
     const { pagesCount, rowsCount, rowsOnPages } = pageInfo;
     const { currPage, prevPage } = this.state;
 
@@ -57,25 +58,31 @@ class RecentOrders extends Component {
       }
     }
 
-    const content = headings.length
-    ? (
-      <div>
-        <table className="show-table">
-          <tbody>
-          {tableHeader}
-          {tableRows}
-          </tbody>
-        </table>
+    let content = null;
 
-        <Pagination pagesNumber={pagesCount}
-                    initialPage={0}
-                    currPage={currPage}
-                    itemsOnPage={rowsOnPages}
-                    itemsNumber={rowsCount}
-                    onPageChange={this.changePage} />
-      </div>
-      )
-    : null;
+    if (Object.keys(rows).length) {
+      if (!rows[0].length) {
+        content = <Alert type="info" text={noOrdersMessage} />;
+      } else {
+        content = (
+          <div>
+            <table className="show-table">
+              <tbody>
+              {tableHeader}
+              {tableRows}
+              </tbody>
+            </table>
+
+            <Pagination pagesNumber={pagesCount}
+                        initialPage={0}
+                        currPage={currPage}
+                        itemsOnPage={rowsOnPages}
+                        itemsNumber={rowsCount}
+                        onPageChange={this.changePage} />
+          </div>
+        );
+      }
+    }
 
     return content;
   }

@@ -3,7 +3,7 @@ import { GET_RECENT_ORDERS_HEADINGS_FETCH, GET_RECENT_ORDERS_ROWS_FETCH, GET_REC
          GET_RECENT_ORDERS_ROWS_SUCCESS, GET_RECENT_ORDERS_HEADINGS_FAILURE, GET_RECENT_ORDERS_ROWS_FAILURE,
          APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
 import { RECENT_ORDERS } from '../globals';
-// import { headings, pageInfo, rows1, rows2 } from '../testServices/recentOrders';
+// import { headings, pageInfo, rows1, rows2, noOrdersMessage } from '../testServices/recentOrders';
 
 export const getHeadings = () => {
   return (dispatch) => {
@@ -23,7 +23,8 @@ export const getHeadings = () => {
           type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
           payload: {
             headings: payload.headings,
-            pageInfo: payload.pageInfo
+            pageInfo: payload.pageInfo,
+            noOrdersMessage: payload.noOrdersMessage
           }
         });
       }
@@ -38,7 +39,8 @@ export const getHeadings = () => {
     //     type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
     //     payload: {
     //       headings: headings.headings,
-    //       pageInfo: pageInfo.pageInfo
+    //       pageInfo: pageInfo.pageInfo,
+    //       noOrdersMessage
     //     }
     //   });
     // }, 2000);
