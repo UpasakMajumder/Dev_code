@@ -1,13 +1,17 @@
+import { getSearchObj, createNewUrl } from '../../helpers/location';
+
 export default class Tabs {
   constructor(container) {
     this.container = container;
-    const { hash } = location;
+
+    const { tab: tabQuery } = getSearchObj();
+
     const { tabActiveDefault, tab: tabSelector } = this.container.dataset;
 
     this.activeClass = 'active';
     this.showClass = 'show';
 
-    const activeTab = this.container.querySelector(`[data-id="${hash}"]`);
+    const activeTab = this.container.querySelector(`[data-id="${tabQuery}"]`);
 
     this.activeTab = activeTab || this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
 
@@ -26,7 +30,13 @@ export default class Tabs {
         this.styleActiveTab();
 
         const { id } = target.dataset;
-        location.hash = id;
+        const newUrl = createNewUrl({ search: {
+          method: 'set',
+          props: {
+            tab: id
+          }
+        } }, location);
+        history.pushState({}, '', newUrl);
       });
     });
   }

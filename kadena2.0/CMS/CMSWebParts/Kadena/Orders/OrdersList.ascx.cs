@@ -56,7 +56,7 @@ namespace Kadena.CMSWebParts.Kadena.Orders
 
                         if ((orderData?.ToList().Count ?? 0) > 0)
                         {
-                            repOrderList.DataSource = orderData;
+                            repOrderList.DataSource = orderData.OrderByDescending(o => o.createDate);
                             repOrderList.DataBind();
                         }
                         else

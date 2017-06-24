@@ -38,18 +38,35 @@ namespace AutomatedTests.Tests
             //login
             var login = new Login();
             login.Open();
-            login.FillLogin(TestUser.Name, TestUser.Password);
+            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
             var dashboard = login.Submit();
             dashboard.WaitForKadenaPageLoad();
-          
+
             //Switch to password tab and try to submit password which is
             //not strong enough
             var settings = new Settings();
             settings.Open();
             settings.SelectTab(Settings.Tabs.Password);
-            settings.SubmitNotStrongPassword(TestUser.Password);
+            settings.SubmitNotStrongPassword(TestCustomer.Password);
             Assert.IsTrue(settings.IsPasswordErrorDisplayed());
-            
+        }
+
+        [Test]
+        public void When_ChangingAddress_Expect_AddressIsChanged()
+        {
+            //login
+            var login = new Login();
+            login.Open();
+            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
+            var dashboard = login.Submit();
+            dashboard.WaitForKadenaPageLoad();
+
+            //Go to addresses, change the first address and verify if it was successfully changed
+            var settings = new Settings();
+            settings.Open();
+            settings.SelectTab(Settings.Tabs.Addresses);
+            var address = settings.ChangeFirstAddress();
+            Assert.IsTrue(settings.WasFirstAddressChangedCorrectly(address));
         }
     }
 }

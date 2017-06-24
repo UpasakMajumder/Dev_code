@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
 using Kadena.Dto.Search.Responses;
 using Kadena.WebAPI.Models.Search;
+using Kadena.WebAPI.Models.OrderDetail;
+using Kadena.Dto.ViewOrder.Responses;
 
 namespace Kadena.WebAPI
 {
@@ -149,11 +151,21 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
-                config.CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
+                config.CreateMap<OrderedItem, OrderedItemDTO>();
+                config.CreateMap<OrderedItems, OrderedItemsDTO>();
+                config.CreateMap<OrderDetail, OrderDetailDTO>();
+                config.CreateMap<CommonInfo, CommonInfoDTO>();
+                config.CreateMap<ShippingInfo, ShippingInfoDTO>();
+                config.CreateMap<PaymentInfo,PaymentInfoDTO>();
+                config.CreateMap<PricingInfo,PricingInfoDTO>();                
+                config.CreateMap<Tracking,TrackingDTO>();
+                config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
+				config.CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
                 config.CreateMap<ResultItemPage, PageDTO>();
                 config.CreateMap<ResultItemProduct, ProductDTO>();
                 config.CreateMap<UseTemplateBtn, UseTemplateBtnDTO>();
                 config.CreateMap<Stock, StockDTO>();
+				
             });
         }
 
@@ -169,6 +181,11 @@ namespace Kadena.WebAPI
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
+			
+			// microservice clients
+			container.Register<IMailingListClient, MailingListClient>();
+			container.Register<IOrderSubmitClient, OrderSubmitClient>();
+			container.Register<IOrderViewClient, OrderViewClient>();
 
             // Kentico
             container.Register<IKenticoProviderService, KenticoProviderService>();

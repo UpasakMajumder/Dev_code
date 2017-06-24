@@ -6,8 +6,7 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
   CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
 import { CHECKOUT } from '../globals';
-// import ui from './ui';
-// import ui2 from './ui2';
+// import ui from '../testServices/checkoutUI';
 
 export const getUI = () => {
   return (dispatch) => {

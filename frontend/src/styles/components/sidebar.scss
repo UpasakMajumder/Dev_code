@@ -84,6 +84,18 @@ $sidebar-item-padding-y--shrinked: 5px;
     white-space: nowrap;
     cursor: pointer;
 
+    &[disabled] {
+      cursor: default;
+      opacity: .5;
+      pointer-events: none;
+      user-select: none;
+
+      & * {
+        pointer-events: none;
+        user-select: none;
+      }
+    }
+
     svg {
       @extend .icon-star;
       margin-bottom: 2px;

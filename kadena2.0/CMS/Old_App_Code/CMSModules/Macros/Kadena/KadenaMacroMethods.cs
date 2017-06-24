@@ -106,9 +106,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
         [MacroMethodParam(1, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
+        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
         public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 3)
+            if (parameters.Length != 4)
             {
                 throw new NotSupportedException();
             }
@@ -125,14 +126,14 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 {
                     formattedValue = ResHelper.GetString("Kadena.Product.Unavailable", ValidationHelper.GetString(parameters[2], ""));
                 }
-                else if ((int)parameters[1] == 0)
+                else if ((int)parameters[3] == 0)
                 {
                     formattedValue = ResHelper.GetString("Kadena.Product.OutOfStock", ValidationHelper.GetString(parameters[2], ""));
                 }
                 else
                 {
                     formattedValue = string.Format(
-                    ResHelper.GetString("Kadena.Product.NumberOfAvailableProducts", ValidationHelper.GetString(parameters[2], "")),
+                    ResHelper.GetString("Kadena.Product.NumberOfAvailableProducts", ValidationHelper.GetString(parameters[3], "")),
                     ValidationHelper.GetString(parameters[1], ""));
                 }
 
@@ -143,9 +144,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]
         [MacroMethodParam(0, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
         [MacroMethodParam(1, "productType", typeof(string), "Current product type")]
+        [MacroMethodParam(2, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
         public static object GetAppropriateCssClassOfAvailability(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 2)
+            if (parameters.Length != 3)
             {
                 throw new NotSupportedException();
             }
@@ -157,7 +159,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     return "stock stock--unavailable";
                 }
 
-                if ((int)parameters[0] == 0)
+                if ((int)parameters[2] == 0)
                 {
                     return "stock stock--out";
                 }              

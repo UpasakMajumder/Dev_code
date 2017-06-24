@@ -3,13 +3,13 @@ import { SEARCH_PAGE_UI_FETCHING, SEARCH_PAGE_UI_SUCCESS, SEARCH_PAGE_UI_FAILURE
 import { SEARCH_PAGE } from '../globals';
 // import ui from '../testServices/searchPageUI';
 
-export const getUI = () => {
+export const getUI = (query) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_PAGE_UI_FETCHING });
 
     axios({
       method: 'get',
-      url: SEARCH_PAGE.searchPageUrl
+      url: `${SEARCH_PAGE.searchPageUrl}?phrase=${query}`
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
 

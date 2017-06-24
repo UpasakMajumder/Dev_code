@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,11 +54,14 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
+    <Compile Include="General\BaseResponseDTO.cs" />
+    <Compile Include="General\ErrorMessageDTO.cs" />
     <Compile Include="Search\Responses\PageDTO.cs" />
     <Compile Include="Search\Responses\ProductDTO.cs" />
     <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
     <Compile Include="Search\Responses\StockDTO.cs" />
     <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
+    <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />
     <Compile Include="Settings\DialogButtonDto.cs" />
@@ -65,6 +69,8 @@
     <Compile Include="Settings\IdDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
@@ -95,6 +101,18 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />
     <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="Tax\MicroserviceResponses\TaxCalculatorServiceResponseDto.cs" />
   </ItemGroup>
   <ItemGroup>

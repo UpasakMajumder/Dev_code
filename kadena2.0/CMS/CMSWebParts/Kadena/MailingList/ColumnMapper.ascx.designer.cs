@@ -121,15 +121,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl wrapAddress2;
         
         /// <summary>
-        /// divAddress2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAddress2;
-        
-        /// <summary>
         /// selAddress2 control.
         /// </summary>
         /// <remarks>
@@ -137,15 +128,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlSelect selAddress2;
-        
-        /// <summary>
-        /// spanAddress2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanAddress2;
         
         /// <summary>
         /// wrapCity control.
