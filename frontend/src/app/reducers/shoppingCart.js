@@ -27,13 +27,8 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case CHECKOUT_ASK_PDF_FAILURE:
-    return {
-      ...state,
-      isAskingPDF: false
-    };
-
   case CHECKOUT_ASK_PDF_FETCH:
+  case CHECKOUT_ASK_PDF_FAILURE:
     return {
       ...state,
       isAskingPDF: true

@@ -7,44 +7,44 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH, CHECKOUT_ASK_PDF_FETCH,
   CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FAILURE } from '../constants';
 import { CHECKOUT } from '../globals';
-import ui from '../testServices/checkoutUI';
+// import ui from '../testServices/checkoutUI';
 
 export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: SHOPPING_CART_UI_FETCH });
 
-    setTimeout(() => {
-      dispatch({
-        type: SHOPPING_CART_UI_SUCCESS,
-        payload: {
-          ui: ui.payload,
-          isWaitingPDF: ui.payload.submit.isDisabled
-        }
-      });
-    }, 3000);
-
-    // axios.get(CHECKOUT.initUIURL)
-    //   .then((response) => {
-    //     const { payload, success, errorMessage } = response.data;
-    //
-    //     if (!success) {
-    //       dispatch({ type: SHOPPING_CART_UI_FAILURE });
-    //       alert(errorMessage); // eslint-disable-line no-alert
-    //       return;
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: SHOPPING_CART_UI_SUCCESS,
+    //     payload: {
+    //       ui: ui.payload,
+    //       isWaitingPDF: ui.payload.submit.isDisabled
     //     }
-    //
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_SUCCESS,
-    //       payload: {
-    //         ui: payload,
-    //         isWaitingPDF: payload.submit.isDisabled
-    //       }
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     alert(error); // eslint-disable-line no-alert
-    //     dispatch({ type: SHOPPING_CART_UI_FAILURE });
     //   });
+    // }, 3000);
+
+    axios.get(CHECKOUT.initUIURL)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: SHOPPING_CART_UI_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
+        dispatch({
+          type: SHOPPING_CART_UI_SUCCESS,
+          payload: {
+            ui: payload,
+            isWaitingPDF: payload.submit.isDisabled
+          }
+        });
+      })
+      .catch((error) => {
+        alert(error); // eslint-disable-line no-alert
+        dispatch({ type: SHOPPING_CART_UI_FAILURE });
+      });
   };
 };
 
@@ -242,26 +242,39 @@ export const checkPDFAvailability = () => {
   return (dispatch) => {
     dispatch({ type: CHECKOUT_ASK_PDF_FETCH });
 
-    axios.get(CHECKOUT.submittableURL)
-      .then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    setTimeout(() => {
+      axios.get(CHECKOUT.submittableURL)
+        .then((response) => {
+          const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
-
-        dispatch({
-          type: CHECKOUT_ASK_PDF_SUCCESS,
-          payload: {
-            isWaitingPDF: payload
+          if (!success) {
+            dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
+            if (success !== undefined) {
+              alert(errorMessage); // eslint-disable-line no-alert
+            } else {
+              alert('ERROR: Missing PDF'); // eslint-disable-line no-console
+            }
+            return;
           }
+
+          dispatch({
+            type: CHECKOUT_ASK_PDF_SUCCESS,
+            payload: {
+              isWaitingPDF: payload
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
         });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
-      });
+
+      // dispatch({
+      //   type: CHECKOUT_ASK_PDF_SUCCESS,
+      //   payload: {
+      //     isWaitingPDF: false
+      //   }
+      // });
+    }, 1500);
   };
 };
