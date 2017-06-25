@@ -5,8 +5,18 @@ import Link from '../../Link';
 function Order(props) {
   const { orderNumber, orderDate, items, orderStatus, deliveryDate, viewBtn } = props;
 
-  const itemsTd = () => {
-    const listOfItems = items.map((item, index) => <span key={index} className="show-table__list-text">{item}</span>);
+  const getItemsTd = () => {
+    const listOfItems = items.map((item, index) => {
+      const { name, quantity } = item;
+      let itemName = '';
+      if (quantity > 1) {
+        itemName = `${quantity} x ${name}`;
+      } else {
+        itemName = name;
+      }
+
+      return <span key={index} className="show-table__list-text">{itemName}</span>;
+    });
 
     return (
       <td className="show-table__text-appear">
@@ -20,7 +30,7 @@ function Order(props) {
     <tr>
       <td>{orderNumber}</td>
       <td>{orderDate}</td>
-      {itemsTd()}
+      {getItemsTd()}
       <td className="show-table__will-hide">{orderStatus}</td>
       <td className="show-table__will-hide">{deliveryDate}</td>
       <td className="show-table__will-appear">
