@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../SVG';
 
-const Button = ({ text, type, disabled, isLoading, onClick }) => {
+const Button = ({ text, type, disabled, isLoading, onClick, btnClass }) => {
   const isDisabled = isLoading || disabled;
 
   const spinner = isLoading
@@ -13,11 +13,13 @@ const Button = ({ text, type, disabled, isLoading, onClick }) => {
     )
     : null;
 
+  const className = `btn-${type} ${btnClass || ''}`;
+
   return (
     <button onClick={onClick}
             type="button"
             disabled={isDisabled}
-            className={`btn-${type}`}>
+            className={className}>
       {spinner}
       {text}
     </button>
@@ -27,6 +29,7 @@ const Button = ({ text, type, disabled, isLoading, onClick }) => {
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  btnClass: PropTypes.string,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
   isLoading: PropTypes.bool

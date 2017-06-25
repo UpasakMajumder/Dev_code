@@ -15,6 +15,8 @@ export const getHeadings = () => {
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
 
+      console.log(response);
+
       if (!success) {
         dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
         alert(errorMessage); // eslint-disable-line no-alert
@@ -58,6 +60,8 @@ export const getRows = (page) => {
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
 
+      console.log(response);
+
       if (!success) {
         dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
         alert(errorMessage); // eslint-disable-line no-alert
@@ -83,7 +87,7 @@ export const getRows = (page) => {
     //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
     //       payload: {
     //         rows: {
-    //           [page - 1]: rows1.rows
+    //           [page - 1]: rows1.payload.rows
     //         }
     //       }
     //     });
@@ -92,7 +96,7 @@ export const getRows = (page) => {
     //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
     //       payload: {
     //         rows: {
-    //           [page - 1]: rows2.rows
+    //           [page - 1]: rows2.payload.rows
     //         }
     //       }
     //     });

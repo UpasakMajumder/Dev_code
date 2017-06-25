@@ -232,8 +232,8 @@
 
   &__error {
     @extend .font-dangerous;
+    @extend .hidden;
     border-top: 1px solid $brand-dangerous;
-    display: none;
     font-size: $font-xxs;
     width: 100%;
 

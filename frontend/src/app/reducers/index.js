@@ -4,7 +4,6 @@ import login from './login';
 import shoppingCart from './shoppingCart';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
-import dialog from './dialog';
 import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 import search from './search';
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
   shoppingCart,
   isLoading,
   settingsAddresses,
-  dialog,
   searchPage,
   search,
   isShownHeaderShadow,
