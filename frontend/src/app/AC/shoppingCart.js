@@ -2,9 +2,10 @@ import axios from 'axios';
 import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_FETCH, RECALCULATE_SHOPPING_PRICE_SUCCESS,
   RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
-  SEND_SHOPPING_DATA_SUCCESS, ERROR_SHOPPING_VALIDATION, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
+  SEND_SHOPPING_DATA_SUCCESS, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
   REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
-  CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
+  CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH, CHECKOUT_ASK_PDF_FETCH,
+  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FAILURE } from '../constants';
 import { CHECKOUT } from '../globals';
 import ui from '../testServices/checkoutUI';
 
@@ -16,7 +17,8 @@ export const getUI = () => {
       dispatch({
         type: SHOPPING_CART_UI_SUCCESS,
         payload: {
-          ui: ui.payload
+          ui: ui.payload,
+          isWaitingPDF: ui.payload.submit.isDisabled
         }
       });
     }, 3000);
@@ -34,7 +36,8 @@ export const getUI = () => {
     //     dispatch({
     //       type: SHOPPING_CART_UI_SUCCESS,
     //       payload: {
-    //         ui: payload
+    //         ui: payload,
+    //         isWaitingPDF: payload.submit.isDisabled
     //       }
     //     });
     //   })
@@ -79,7 +82,8 @@ export const removeProduct = (id) => {
         dispatch({
           type: REMOVE_PRODUCT_SUCCESS,
           payload: {
-            ui: payload
+            ui: payload,
+            isWaitingPDF: payload.submit.isDisabled
           }
         });
       })
@@ -119,7 +123,8 @@ export const changeProductQuantity = (id, quantity) => {
         dispatch({
           type: CHANGE_PRODUCT_QUANTITY_SUCCESS,
           payload: {
-            ui: payload
+            ui: payload,
+            isWaitingPDF: payload.submit.isDisabled
           }
         });
       })
@@ -183,7 +188,8 @@ export const changeShoppingData = (field, id, invoice) => {
         dispatch({
           type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
           payload: {
-            ui: payload
+            ui: payload,
+            isWaitingPDF: payload.submit.isDisabled
           }
         });
       })
@@ -198,27 +204,6 @@ export const changeShoppingData = (field, id, invoice) => {
 export const sendData = (data) => {
   return (dispatch) => {
     dispatch({ type: SEND_SHOPPING_DATA_FETCH });
-
-    const invalidFields = Object.keys(data).filter(key => !data[key]);
-
-    if (!data.paymentMethod.id) invalidFields.push('paymentMethod');
-
-    if (data.paymentMethod.id === 3) {
-      if (!data.paymentMethod.invoice) {
-        invalidFields.push('invoice');
-      }
-    }
-
-    if (invalidFields.length) {
-      dispatch({
-        type: ERROR_SHOPPING_VALIDATION,
-        payload: {
-          fields: invalidFields
-        }
-      });
-      return;
-    }
-
     dispatch({ type: APP_LOADING_START });
 
     axios.post(CHECKOUT.submitURL, { ...data })
@@ -250,5 +235,33 @@ export const sendData = (data) => {
     // setTimeout(() => {
     //   dispatch({ type: APP_LOADING_FINISH });
     // }, 2000);
+  };
+};
+
+export const checkPDFAvailability = () => {
+  return (dispatch) => {
+    dispatch({ type: CHECKOUT_ASK_PDF_FETCH });
+
+    axios.get(CHECKOUT.submittableURL)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
+        dispatch({
+          type: CHECKOUT_ASK_PDF_SUCCESS,
+          payload: {
+            isWaitingPDF: payload
+          }
+        });
+      })
+      .catch((error) => {
+        alert(error); // eslint-disable-line no-alert
+        dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
+      });
   };
 };

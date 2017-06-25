@@ -131,7 +131,8 @@
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',
         removeProductURL: '',
-        submitURL: ''
+        submitURL: '',
+        submittableURL: ''
       },
       spotfire: {
         serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
