@@ -27,6 +27,7 @@ using Kadena.WebAPI.Models.RecentOrders;
 using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
+using System.Globalization;
 
 namespace Kadena.WebAPI
 {
@@ -163,12 +164,12 @@ namespace Kadena.WebAPI
                 config.CreateMap<PricingInfoItem, PricingInfoItemDTO>();
                 config.CreateMap<Pagination, PaginationDto>();
                 config.CreateMap<OrderHead, OrderHeadDto>();
-                config.CreateMap<OrderItemDto, OrderItem>()
+                config.CreateMap<Dto.Order.OrderItemDto, OrderItem>()
                     .ProjectUsing(s => new OrderItem { SKUName = s.Name, UnitCount = s.Quantity });
                 config.CreateMap<OrderDto, Order>();
                 config.CreateMap<OrderListDto, OrderList>();
-                config.CreateMap<OrderItem, OrderItemDto>()
-                    .ProjectUsing(s => new OrderItemDto { Name = s.SKUName, Quantity = s.UnitCount });
+                config.CreateMap<OrderItem, Dto.RecentOrders.OrderItemDto>()
+                    .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = (1300).ToString("N0", CultureInfo.InvariantCulture) });
                 config.CreateMap<Button, ButtonDto>();
                 config.CreateMap<Order, OrderRowDto>()
                     .AfterMap((s, d) =>
