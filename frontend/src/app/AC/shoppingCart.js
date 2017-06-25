@@ -252,7 +252,7 @@ export const checkPDFAvailability = () => {
             if (success !== undefined) {
               alert(errorMessage); // eslint-disable-line no-alert
             } else {
-              alert('ERROR: Missing PDF'); // eslint-disable-line no-console
+              alert('ERROR: Missing PDF'); // eslint-disable-line no-alert
             }
             return;
           }
