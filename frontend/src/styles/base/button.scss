@@ -29,8 +29,7 @@ $colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, suc
     border: 1px solid $color;
     box-shadow: 0 1px 0 0 darken($color, 10%);
     position: relative;
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
 
     &.disabled,
     &[disabled] {
@@ -135,8 +134,10 @@ $colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, suc
 
   &__spinner {
     @extend .mr-2;
-    width: 22px;
-    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 21px;
+    height: 21px;
     animation: rotation 1s linear infinite;
   }
 }
