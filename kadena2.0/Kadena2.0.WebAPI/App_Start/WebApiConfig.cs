@@ -169,7 +169,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<OrderDto, Order>();
                 config.CreateMap<OrderListDto, OrderList>();
                 config.CreateMap<OrderItem, Dto.RecentOrders.OrderItemDto>()
-                    .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = (1300).ToString("N0", CultureInfo.InvariantCulture) });
+                    .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.UnitCount.ToString() });
                 config.CreateMap<Button, ButtonDto>();
                 config.CreateMap<Order, OrderRowDto>()
                     .AfterMap((s, d) =>
