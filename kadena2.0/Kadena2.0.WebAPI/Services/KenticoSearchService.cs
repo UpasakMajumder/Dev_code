@@ -1,15 +1,12 @@
 ﻿using Kadena.WebAPI.Contracts;
-using CMS.Ecommerce;
-using Kadena.WebAPI.Models;
 using AutoMapper;
-using System.Linq;
 using CMS.Helpers;
 using System;
-using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.Search;
 using CMS.Localization;
 using System.Data;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -24,25 +21,12 @@ namespace Kadena.WebAPI.Services
             this.resources = resources;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
+        public IEnumerable<DataRow> Search(string phrase, string indexName, string path, bool checkPermissions)
         {
-            var customer = ECommerceContext.CurrentCustomer;
-            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
-            if (!string.IsNullOrWhiteSpace(addressType))
-            {
-                query = query.Where($"AddressType ='{addressType}'");
-            }
-            var addresses = query.ToArray();
-            return mapper.Map<DeliveryAddress[]>(addresses);
-        }
-
-
-        public DataSet Search(string phrase, string indexName, string path, bool checkPermissions)
-        {
-            var index = SearchIndexInfoProvider.GetSearchIndexInfo(indexName); 
+            var index = SearchIndexInfoProvider.GetSearchIndexInfo(indexName);
 
             if (index == null)
-                return null;
+                yield break;
             
             SearchParameters parameters = new SearchParameters()
             {
@@ -64,8 +48,18 @@ namespace Kadena.WebAPI.Services
                 AttachmentOrderBy = String.Empty,
             };
 
-            var result = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}"));
-            return result;
+            var dataset = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}"));
+
+            if (dataset != null)
+            {
+                foreach (DataTable table in dataset.Tables)
+                {
+                    foreach (DataRow dr in table.Rows)
+                    {
+                        yield return dr;
+                    }
+                }
+            }
         }
     }
 }

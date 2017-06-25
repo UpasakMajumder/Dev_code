@@ -379,6 +379,12 @@ namespace Kadena.WebAPI.Services
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
+        public string GetDocumentUrl(int documentId)
+        {
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return doc?.AbsoluteURL ?? "#";
+        }
+
         private decimal GetDynamicPrice(int documentId, int quantity)
         {
             var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
