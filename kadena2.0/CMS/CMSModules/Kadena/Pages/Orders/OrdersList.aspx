@@ -8,16 +8,16 @@
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:UniGrid runat="server" ID="grdOrders">
         <GridColumns>
-            <ug:Column Name="IDAndInvoice" Source="OrderNumber" 
+            <ug:Column Name="IDAndInvoice" Source="Id" 
                 Caption="$Kadena.OrdersList.OrderNumber$" Wrap="false" />
             <ug:Column Name="CustomerName"
-                Caption="$Kadena.OrdersList.CustomerName$" Wrap="false" />
+                Caption="$Kadena.OrdersList.CustomerName$" Source="CustomerName" Wrap="false" />
             <ug:Column Name="Created"
-                Caption="$Kadena.OrdersList.CreatedDate$" Wrap="false" />
+                Caption="$Kadena.OrdersList.CreatedDate$" Source="CreateDate" Wrap="false" />
             <ug:Column Name="TotalPrice"
-                Caption="$Kadena.OrdersList.TotalPrice$" Wrap="false" />
+                Caption="$Kadena.OrdersList.TotalPrice$" Source="TotalPrice" Wrap="false" />
             <ug:Column Name="Status"
-                Caption="$Kadena.OrdersList.OrderStatus$" Wrap="false" />
+                Caption="$Kadena.OrdersList.OrderStatus$" Source="Status" Wrap="false" />
         </GridColumns>
     </cms:UniGrid>
 </asp:Content>
