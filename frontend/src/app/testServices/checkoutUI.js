@@ -308,7 +308,11 @@ export default {
         }
       ]
     },
-    "submitLabel": "Place order",
+    "submit": {
+      "isDisabled": true,
+      "btnLabel": "Place order",
+      "disabledText": "Order cannot be submited until all templated products receive design file from Chilli"
+    },
     "validationMessage": "Error"
   },
   "errorMessage": null

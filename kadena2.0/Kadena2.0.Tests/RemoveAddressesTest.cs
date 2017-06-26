@@ -9,7 +9,6 @@ namespace Kadena.Tests
     class RemoveAddressesTest : UnitTests
     {
         private string _urlSetting = "KDA_DeleteAddressesUrl";
-        private const string _customerNameSettingKey = "KDA_CustomerName";
 
         [TestCase("b4a8cf7b-7579-4271-a13a-f3a763ad491e",
             "08944471-c881-4cf1-8ed6-505faa81e572",
@@ -39,7 +38,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSettingKey}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",

@@ -53,5 +53,6 @@ namespace Kadena.WebAPI.Contracts
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);
+        bool UserCanSeePrices();
     }
 }

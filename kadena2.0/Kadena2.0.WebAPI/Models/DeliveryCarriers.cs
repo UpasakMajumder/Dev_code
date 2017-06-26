@@ -60,5 +60,22 @@ namespace Kadena.WebAPI.Models
             var toRemove = items.Where(i => i.items.Count == 0).ToList();
             toRemove.ForEach(i => items.Remove(i));
         }
+
+        public void HidePrices()
+        {
+            foreach (DeliveryCarrier carrier in items)
+            {
+                carrier.PricePrefix = string.Empty;
+                carrier.Price = string.Empty;
+
+                carrier.items.ForEach(option =>
+                {
+                    option.Price = string.Empty;
+                    option.PricePrefix = string.Empty;
+                });
+            }
+
+           
+        }
     }
 }

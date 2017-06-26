@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/Spinner/Button/Primary</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.49682971">
+        <g id="Button/Main/Primary/DisabledLoading" transform="translate(-29.000000, -9.000000)" stroke="#FFFFFF">
+            <g id="Button">
+                <g id="Icon/Spinner/Button/Primary" transform="translate(30.000000, 6.000000)">
+                    <g id="loader-48px-outline_x-circle-08">
+                        <circle id="Oval" stroke-width="2" opacity="0.4" stroke-linecap="square" cx="11" cy="15" r="11"></circle>
+                        <path d="M8.01939449,2.14115149 C14.1193945,2.14115149 19.0193945,7.04115149 19.0193945,13.1411515" id="Shape" stroke-width="2" transform="translate(13.519394, 7.641151) rotate(-26.100714) translate(-13.519394, -7.641151) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

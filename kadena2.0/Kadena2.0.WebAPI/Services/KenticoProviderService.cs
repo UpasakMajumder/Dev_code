@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
-            return mapper.Map<DeliveryAddress>(address);
+            return mapper.Map<DeliveryAddress>(address);            
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -124,7 +124,7 @@ namespace Kadena.WebAPI.Services
                 if (title.ToLower().Contains(kvp.Key))
                     return kvp.Value;
             }
-
+            
             return string.Empty;
         }
 
@@ -132,7 +132,7 @@ namespace Kadena.WebAPI.Services
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = mapper.Map<DeliveryOption[]>(services);
-            GetShippingPrice(result);
+            GetShippingPrice(result);          
             return result;
         }
 
@@ -169,7 +169,7 @@ namespace Kadena.WebAPI.Services
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();            
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
@@ -295,6 +295,7 @@ namespace Kadena.WebAPI.Services
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 Price = i.UnitPrice * i.CartItemUnits,
+                PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
@@ -369,7 +370,7 @@ namespace Kadena.WebAPI.Services
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
 
-            var price = GetDynamicPrice(item.GetIntegerValue("ProductPageID", 0), quantity);
+            var price = GetDynamicPrice( item.GetIntegerValue("ProductPageID", 0), quantity );
             if (price != 0.0m)
             {
                 item.CartItemPrice = (double)price;
@@ -491,6 +492,11 @@ namespace Kadena.WebAPI.Services
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
 
+		public bool UserCanSeePrices()
+        {
+		    return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+		}
+
         public List<string> GetBreadcrumbs(int documentId)
         {
             var breadcrubs = new List<string>();
@@ -505,5 +511,7 @@ namespace Kadena.WebAPI.Services
             breadcrubs.Reverse();
             return breadcrubs;
         }
+		
+
     }
 }
