@@ -10,7 +10,6 @@ namespace Kadena.Tests
 {
     class UploadMappingTest : UnitTests
     {
-        private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _urlSetting = "KDA_UploadMappingUrl";
 
         [TestCase("5b602141-33fa-4754-9eb4-af275b80087a",
@@ -63,7 +62,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSettingKey}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",
