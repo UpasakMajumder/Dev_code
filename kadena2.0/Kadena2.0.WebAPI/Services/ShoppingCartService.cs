@@ -435,7 +435,7 @@ namespace Kadena.WebAPI.Services
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
-                kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessage);
+                kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessages);
                 throw new Exception("Failed to obtain order detail from microservice"); // TODO refactor using checking null
             }
 
@@ -554,7 +554,7 @@ namespace Kadena.WebAPI.Services
 
             if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
             {
-                kenticoLog.LogError("MailingList client", $"Call to microservice failed. {mailingResponse?.ErrorMessage}");
+                kenticoLog.LogError("MailingList client", $"Call to microservice failed. {mailingResponse?.ErrorMessages}");
                 return;
             }
 

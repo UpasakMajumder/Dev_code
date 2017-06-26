@@ -42,7 +42,7 @@ class RecentOrders extends Component {
 
   render() {
     const { headings, pageInfo, rows, noOrdersMessage } = this.props;
-    const { pagesCount, rowsCount, rowsOnPages } = pageInfo;
+    const { pagesCount, rowsCount, rowsOnPage } = pageInfo;
     const { currPage, prevPage } = this.state;
 
     const headersList = headings.map((heading, index) => <th key={index}>{heading}</th>);
@@ -76,7 +76,7 @@ class RecentOrders extends Component {
             <Pagination pagesNumber={pagesCount}
                         initialPage={0}
                         currPage={currPage}
-                        itemsOnPage={rowsOnPages}
+                        itemsOnPage={rowsOnPage}
                         itemsNumber={rowsCount}
                         onPageChange={this.changePage} />
           </div>

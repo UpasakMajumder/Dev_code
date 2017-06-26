@@ -4,30 +4,46 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Dto.General;
+using Kadena.Dto.Order;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderViewClient : ClientBase, IOrderViewClient
     {
-        public async Task<BaseResponseDTO<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId)
+        public async Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId)
         {
             using (var httpClient = new HttpClient())
             {
                 var url = $"{serviceEndpoint.TrimEnd('/')}/api/order/{orderId}";
-                var response = await httpClient.GetAsync(url);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                using (var response = await httpClient.GetAsync(url))
                 {
-                    return await ReadResponseJson<BaseResponseDTO<GetOrderByOrderIdResponseDTO>>(response);
+                    return await ReadResponseJson<GetOrderByOrderIdResponseDTO>(response);
                 }
-                else
+            }
+        }
+
+        public async Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity)
+        {
+            var parameterizedUrl = $"{serviceEndpoint}?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = await client.GetAsync(parameterizedUrl))
                 {
-                    return new BaseResponseDTO<GetOrderByOrderIdResponseDTO>()
-                    {
-                        Success = false,
-                        Payload = null,
-                        ErrorMessage = $"HTTP error - {response.StatusCode}"
-                    };
+                    return await ReadResponseJson<OrderListDto>(message);
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity)
+        {
+            var url = $"{serviceEndpoint}?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(url))
+                {
+                    return await ReadResponseJson<OrderListDto>(response);
                 }
             }
         }
