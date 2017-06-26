@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CMS.Helpers;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace Kadena.WebAPI.Services
 {
@@ -81,7 +82,7 @@ namespace Kadena.WebAPI.Services
                 var resultItem = new ResultItemPage()
                 {
                     Id = documentId,
-                    Text = dr[5].ToString(),
+                    Text = Regex.Replace(dr[5].ToString(), @"<[^>]+>|&nbsp;", "").Trim(),
                     Title = dr[4].ToString(),
                     Url = kenticoProvider.GetDocumentUrl(documentId)
                 };
