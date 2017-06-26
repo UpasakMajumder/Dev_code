@@ -11,7 +11,6 @@ namespace Kadena.Tests
         private string _mailType = "type";
         private string _product = "product";
         private int _validity = 90;
-        private string _customerNameSetting = "KDA_CustomerName";
         private string _urlSetting = "KDA_CreateContainerUrl";
 
         [Test]
@@ -105,7 +104,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",

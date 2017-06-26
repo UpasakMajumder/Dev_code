@@ -10,7 +10,6 @@ namespace Kadena.Tests
     class ValidateAddressesTest : UnitTests
     {
         private const string _urlSetting = "KDA_ValidateAddressUrl";
-        private const string _customerNameSettingKey = "KDA_CustomerName";
 
         [TestCase("611d1292-dc07-4464-a729-c1d4cd542b15",
             "actum",
@@ -40,7 +39,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSettingKey}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",

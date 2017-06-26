@@ -9,7 +9,6 @@ namespace Kadena.Tests
 {
     class GetHeaderTest : UnitTests
     {
-        private string _customerNameSetting = "KDA_CustomerName";
         private string _urlSetting = "KDA_GetHeadersUrl";
 
         [TestCase("actum/original-mailing/cc122b9c-f0cc-43f8-a9a8-b5a429976844"
@@ -38,7 +37,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",

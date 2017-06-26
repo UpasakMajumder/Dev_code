@@ -12,6 +12,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
 using Kadena.WebAPI.Models.OrderDetail;
 using System.Security;
+using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.Services
 {
@@ -531,7 +532,7 @@ namespace Kadena.WebAPI.Services
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {
             var endpoint = resources.GetSettingsKey("KDA_GetMailingListsUrl");
-            var customerName = resources.GetSettingsKey("KDA_CustomerName");
+            var customerName = SiteContext.CurrentSiteName;
             var mailingResponse = await mailingClient.GetMailingListsForCustomer(endpoint, customerName);
 
             if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
