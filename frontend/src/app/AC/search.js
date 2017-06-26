@@ -26,40 +26,40 @@ export const sendQuery = (query) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_RESULT_GET_FETCH });
 
-    axios({
-      method: 'post',
-      url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
-      data: {
-        query
-      }
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    // axios({
+    //   method: 'post',
+    //   url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
+    //   data: {
+    //     query
+    //   }
+    // }).then((response) => {
+    //   const { payload, success, errorMessage } = response.data;
+    //
+    //   if (!success) {
+    //     dispatch({ type: SEARCH_RESULT_GET_FAILURE });
+    //     alert(errorMessage); // eslint-disable-line no-alert
+    //   } else {
+    //     dispatch({
+    //       type: SEARCH_RESULT_GET_SUCCESS,
+    //       payload
+    //     });
+    //     dispatch({ type: HEADER_SHADOW_SHOW });
+    //     dispatch({ type: SEARCH_RESULTS_SHOW });
+    //   }
+    // })
+    //   .catch((error) => {
+    //     dispatch({ type: SEARCH_RESULT_GET_FAILURE });
+    //     alert(error); // eslint-disable-line no-alert
+    //   });
 
-      if (!success) {
-        dispatch({ type: SEARCH_RESULT_GET_FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
-        dispatch({
-          type: SEARCH_RESULT_GET_SUCCESS,
-          payload
-        });
-        dispatch({ type: HEADER_SHADOW_SHOW });
-        dispatch({ type: SEARCH_RESULTS_SHOW });
-      }
-    })
-      .catch((error) => {
-        dispatch({ type: SEARCH_RESULT_GET_FAILURE });
-        alert(error); // eslint-disable-line no-alert
+    setTimeout(() => {
+      dispatch({
+        type: SEARCH_RESULT_GET_SUCCESS,
+        payload: ui
       });
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SEARCH_RESULT_GET_SUCCESS,
-    //     payload: ui
-    //   });
-    //
-    //   dispatch({ type: HEADER_SHADOW_SHOW });
-    //   dispatch({ type: SEARCH_RESULTS_SHOW });
-    // }, 200);
+      dispatch({ type: HEADER_SHADOW_SHOW });
+      dispatch({ type: SEARCH_RESULTS_SHOW });
+    }, 200);
   };
 };
