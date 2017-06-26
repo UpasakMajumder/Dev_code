@@ -1,6 +1,6 @@
 import axios from 'axios';
 import validator from 'validator';
-import * as constants from '../constants';
+import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE, LOGIN_CLIENT_VALIDATION_ERROR } from '../constants';
 import { LOGIN } from '../globals';
 
 export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
@@ -8,7 +8,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
 
     if (!validator.isEmail(loginEmail)) {
       dispatch({
-        type: constants.LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOGIN_CLIENT_VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -24,7 +24,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
 
     if (password.length === 0) {
       dispatch({
-        type: constants.LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOGIN_CLIENT_VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -39,27 +39,26 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
     }
 
     dispatch({
-      type: constants.FETCH_SERVERS,
+      type: LOGIN_CLIENT_FETCH,
       isLoading: true
     });
 
     // ToDo: Change to POST and URL
     axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
       .then((response) => {
-        dispatch({
-          type: constants.FETCH_SERVERS_SUCCESS
-        });
-
         const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
         dispatch({
-          type: constants.LOGIN_RESPONSE_SUCCESS,
-          data
+          type: LOGIN_CLIENT_SUCCESS,
+          data,
+          isLoading: false
         });
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
-          type: constants.FETCH_SERVERS_FAILURE
+          type: LOGIN_CLIENT_FAILURE,
+          isLoading: false
         });
+        alert(error); // eslint-disable-line no-alert
       });
   };
 }

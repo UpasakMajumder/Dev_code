@@ -2,6 +2,7 @@ const config = require('../config');
 const gulp = require('gulp');
 const plumber = require('gulp-plumber');
 const webpack = require('webpack');
+const notify = require("gulp-notify");
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('../webpack.config.js');
 
@@ -10,6 +11,7 @@ gulp.task('js', () => {
         .pipe(plumber(function() { this.emit('end'); }))
         .pipe(webpackStream(webpackConfig, webpack))
         .pipe(gulp.dest(config.JS_BUILD))
+        .pipe(notify({ message:"JS's been built", onLast: true }))
         .pipe(plumber.stop());
 });
 

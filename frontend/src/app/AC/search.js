@@ -49,7 +49,7 @@ export const sendQuery = (query) => {
     })
       .catch((error) => {
         dispatch({ type: SEARCH_RESULT_GET_FAILURE });
-        alert(error.message); // eslint-disable-line no-alert
+        alert(error); // eslint-disable-line no-alert
       });
 
     // setTimeout(() => {

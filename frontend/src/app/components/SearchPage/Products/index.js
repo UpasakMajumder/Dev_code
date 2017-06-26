@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
 import Spinner from '../../Spinner';
 import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 import TemplateProduct from '../../TemplateProduct';
+import Pagination from '../../Pagination';
 import { paginationFilter } from '../../../helpers/array';
 import { getSearchObj } from '../../../helpers/location';
 
@@ -45,26 +45,17 @@ class SearchPageProducts extends Component {
 
     const pageCount = productsLength / productsPaginationLimit;
 
-    const paginator = productsLength > productsPaginationLimit
-      ? <ReactPaginate pageCount={pageCount}
-                       pageRangeDisplayed={3}
-                       marginPagesDisplayed={1}
-                       onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}
-                       initialPage={productsPage}
-                       previousClassName="pagination__item"
-                       nextClassName="pagination__item"
-                       containerClassName="pagination text--right list--unstyled"
-                       pageClassName="pagination__item"
-                       pageLinkClassName="pagination__page"
-                       activeClassName="pagination__page--active" />
-      : null;
-
     const content = (
       <div>
         <div className="row">
           {productList}
         </div>
-        {paginator}
+        <Pagination pagesNumber={pageCount}
+                    initialPage={0}
+                    itemsOnPage={productsPaginationLimit}
+                    itemsNumber={productsLength}
+                    currPage={productsPage}
+                    onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}/>
       </div>
     );
 

@@ -58,7 +58,12 @@
 }
 
 .cart__dialog-table {
-  tr td:not(:first-child) {
-    @include rem(padding-left, 10px);
+  td {
+    width: calc(100% / 5);
+    vertical-align: top;
+
+    &:not(:first-child) {
+      @include rem(padding-left, 10px);
+    }
   }
 }

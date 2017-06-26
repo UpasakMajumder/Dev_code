@@ -27,7 +27,7 @@ export default (orderID) => {
     })
     .catch((error) => {
       dispatch({ type: ORDER_DETAIL_GET_UI_FAILURE });
-      alert(error.message); // eslint-disable-line no-alert
+      alert(error); // eslint-disable-line no-alert
     });
 
     // setTimeout(() => {

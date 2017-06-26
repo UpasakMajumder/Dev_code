@@ -72,7 +72,7 @@
         }
 
         @include media-breakpoint-down(lg) {
-          @include rem(padding, 10px 20px);
+          @include rem(padding, 11px 20px);
         }
       }
     }

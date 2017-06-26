@@ -34,7 +34,7 @@ export default class PasswordInput extends Component {
     const type = isShown ? 'text' : 'password';
     const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
     const onClick = disabled ? undefined : this.handleToggle;
-    const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
+    const errorElement = error ? <span className="input__error visible input__error--noborder">{error}</span> : null;
     const errorClass = error ? 'input--error' : '';
 
     return (
