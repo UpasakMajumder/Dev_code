@@ -32,6 +32,7 @@ namespace Kadena.WebAPI.Services
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources, 
                                    IOrderSubmitClient orderSubmitClient,
+                                   IOrderViewClient orderViewClient,
                                    ITaxEstimationService taxCalculator,
                                    IMailingListClient mailingClient,
                                    ITemplatedProductService templateService,
@@ -112,7 +113,6 @@ namespace Kadena.WebAPI.Services
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
-            checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
@@ -272,7 +272,7 @@ namespace Kadena.WebAPI.Services
             var site = resources.GetKenticoSite();
 
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
-            var cartItems = kenticoProvider.GetShoppingCartOrderItems();
+            var cartItems = kenticoProvider.GetShoppingCartItems();
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await EstimateTotalTax();
@@ -608,7 +608,7 @@ namespace Kadena.WebAPI.Services
         public async Task<bool> IsSubmittable()
         {
             string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var items = kenticoProvider.GetShoppingCartOrderItems().Where(i => i.DesignFilePathRequired && !i.DesignFilePathObtained).ToList();
+            var items = kenticoProvider.GetShoppingCartItems().Where(i => i.DesignFilePathRequired && !i.DesignFilePathObtained).ToList();
 
             foreach(var item in items)// todo consider parallel for-each
             {

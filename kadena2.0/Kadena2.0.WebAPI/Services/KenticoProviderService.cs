@@ -263,39 +263,23 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public CartItem[] GetShoppingCartOrderItems()
-        {
-            var items = ECommerceContext.CurrentShoppingCart.CartItems;
-            var result = items.Select(i => new CartItem()
-            {
-                Id = i.CartItemID,
-                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
-                ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                ProductType = i.GetValue("ProductType", string.Empty),
-                SKUName = i.SKU?.SKUName,
-                SKUNumber = i.SKU?.SKUNumber,
-                SKUID = i.SKUID,
-                TotalPrice = i.TotalPrice,
-                TotalTax = 0.0d,
-                UnitPrice = i.UnitPrice,
-                Quantity = i.CartItemUnits,
-                UnitOfMeasure = "EA",
-                DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
-                DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty)
-            }
-            ).ToArray();
-
-            return result;
-        }
-
         public CartItem[] GetShoppingCartItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new CartItem()
             {
+                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
+                ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
+                DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
+                DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
+                SKUName = i.SKU?.SKUName,
+                SKUNumber = i.SKU?.SKUNumber,
+                TotalTax = 0.0d,
+                UnitPrice = i.UnitPrice,
+                UnitOfMeasure = "EA",
                 Id = i.CartItemID,
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                 ProductType = i.GetValue("ProductType", string.Empty),
@@ -306,7 +290,6 @@ namespace Kadena.WebAPI.Services
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
                 MailingListName = i.GetValue("MailingListName", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty),
                 Template = i.SKU.SKUName,
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),

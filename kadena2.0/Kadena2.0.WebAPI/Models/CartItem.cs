@@ -74,29 +74,7 @@ namespace Kadena.WebAPI.Models
                 return !IsMailingList && IsTemplated;
             }
         }
-		
-		
-		public bool IsQuantityEditable
-        {
-            get
-            {
-                return IsInventory || IsPOD || IsStatic;
-            }
-        }
 
-        public string QuantityPrefix { get; set; }
-        public int Quantity { get; set; }
-        public int StockQuantity { get; set; }
-
-        public string EditorURL
-        {
-            get
-            {
-                return $"/products/product-tools/product-editor?id={ProductPageId}&skuid={SKUID}&templateid={EditorTemplateId}";
-            }
-        }
-		
-		
         public string EditorURL
         {
             get

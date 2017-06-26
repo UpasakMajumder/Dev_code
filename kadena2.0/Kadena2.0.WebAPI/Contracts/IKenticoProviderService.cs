@@ -31,7 +31,6 @@ namespace Kadena.WebAPI.Contracts
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);
         DeliveryOption GetShippingOption(int id);
-        OrderItem[] GetShoppingCartOrderItems();
         CartItem[] GetShoppingCartItems();
         void RemoveCartItem(int id);
 

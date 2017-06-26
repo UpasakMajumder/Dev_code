@@ -79,6 +79,8 @@
     <Compile Include="Settings\IdDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />
     <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
-    <Compile Include="Tax\MicroserviceResponses\TaxCalculatorServiceResponseDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskStatusResponseDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskResponseDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Tax\MicroserviceResponses\" />
     <Folder Include="Tax\Requests\" />
     <Folder Include="Tax\Responses\" />
   </ItemGroup>
