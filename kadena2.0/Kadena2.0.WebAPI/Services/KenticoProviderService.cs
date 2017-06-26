@@ -132,7 +132,7 @@ namespace Kadena.WebAPI.Services
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = mapper.Map<DeliveryOption[]>(services);
-            GetShippingPrice(result);
+            GetShippingPrice(result);          
             return result;
         }
 
@@ -295,6 +295,7 @@ namespace Kadena.WebAPI.Services
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 Price = i.UnitPrice * i.CartItemUnits,
+                PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
@@ -459,6 +460,11 @@ namespace Kadena.WebAPI.Services
         public double GetCurrentCartShippingCost()
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
+        }
+
+        public bool UserCanSeePrices()
+        {
+            return IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName);
         }
 
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)

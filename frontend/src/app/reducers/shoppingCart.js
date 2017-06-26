@@ -1,7 +1,8 @@
 import { SHOPPING_CART_UI_SUCCESS, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_SUCCESS, SEND_SHOPPING_DATA_SUCCESS,
-  RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, ERROR_SHOPPING_VALIDATION, RECALCULATE_SHOPPING_PRICE_FAILURE,
-  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_SUCCESS, CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
+  RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, RECALCULATE_SHOPPING_PRICE_FAILURE,
+  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_SUCCESS, CHANGE_PRODUCT_QUANTITY_SUCCESS,
+  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FETCH, CHECKOUT_ASK_PDF_FAILURE } from '../constants';
 
 const defaultState = {
   ui: {},
@@ -18,35 +19,43 @@ const defaultState = {
     redirectUrl: ''
   },
   isWaitingPDF: false,
-  isSending: false,
-  validation: {
-    fields: []
-  }
+  isAskingPDF: false,
+  isSending: false
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case ERROR_SHOPPING_VALIDATION:
+  case CHECKOUT_ASK_PDF_FETCH:
+  case CHECKOUT_ASK_PDF_FAILURE:
     return {
       ...state,
-      isSending: false,
-      validation: {
-        fields: payload.fields
-      }
+      isAskingPDF: true
+    };
+
+
+  case CHECKOUT_ASK_PDF_SUCCESS:
+    return {
+      ...state,
+      isWaitingPDF: payload.isWaitingPDF,
+      isAskingPDF: false
     };
 
   case CHANGE_PRODUCT_QUANTITY_SUCCESS:
     return {
       ...state,
-      ui: payload.ui
+      ui: payload.ui,
+      isWaitingPDF: payload.isWaitingPDF,
+      isAskingPDF: false
     };
 
   case REMOVE_PRODUCT_SUCCESS:
     return {
       ...state,
-      ui: payload.ui
+      ui: payload.ui,
+      isWaitingPDF: payload.isWaitingPDF,
+      isAskingPDF: false
     };
 
   case SHOPPING_CART_UI_SUCCESS:
@@ -54,7 +63,9 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       ui: payload.ui,
-      isSending: false
+      isSending: false,
+      isWaitingPDF: payload.isWaitingPDF,
+      isAskingPDF: false
     };
 
   case INIT_CHECKED_SHOPPING_DATA:
@@ -84,9 +95,6 @@ export default (state = defaultState, action) => {
   case SEND_SHOPPING_DATA_FETCH:
     return {
       ...state,
-      validation: {
-        fields: []
-      },
       isSending: true
     };
 
