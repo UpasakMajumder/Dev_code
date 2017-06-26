@@ -7,8 +7,8 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IOrderViewClient
     {
-        Task<BaseResponse<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId);
-        Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity);
-        Task<BaseResponse<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity);
+        Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string serviceEndpoint, string orderId);
+        Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity);
+        Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity);
     }
 }

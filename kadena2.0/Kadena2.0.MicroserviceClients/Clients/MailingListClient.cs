@@ -10,7 +10,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class MailingListClient : ClientBase, IMailingListClient
     {
-        public async Task<BaseResponse<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
+        public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
         {
             using (var httpClient = new HttpClient())
             {

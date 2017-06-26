@@ -44,7 +44,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (BaseResponse<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {
@@ -84,7 +84,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (BaseResponse<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {
@@ -125,7 +125,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (BaseResponse<List<TemplateServiceDocumentResponse>>)response;
+                    var result = (BaseResponseDto<List<TemplateServiceDocumentResponse>>)response;
 
                     if (result?.Success ?? false)
                     {
@@ -173,7 +173,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (BaseResponse<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {

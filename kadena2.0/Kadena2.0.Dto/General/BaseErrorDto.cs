@@ -3,12 +3,12 @@
 namespace Kadena.Dto.General
 {
     [DataContract]
-    public class BaseError
+    public class BaseErrorDto
     {
         [DataMember(Name = "message")]
         public string Message { get; set; }
 
         [DataMember(Name = "innerError")]
-        public BaseError InnerError { get; set; }
+        public BaseErrorDto InnerError { get; set; }
     }
 }

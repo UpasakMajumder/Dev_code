@@ -6,6 +6,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IMailingListClient
     {
-        Task<BaseResponse<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName);
+        Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName);
     }
 }

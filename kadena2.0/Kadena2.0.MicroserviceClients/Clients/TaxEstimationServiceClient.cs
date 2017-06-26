@@ -11,7 +11,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TaxEstimationServiceClient : ClientBase, ITaxEstimationService
     {
-        public async Task<BaseResponse<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
+        public async Task<BaseResponseDto<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
         {
             using (var httpClient = new HttpClient())
             {

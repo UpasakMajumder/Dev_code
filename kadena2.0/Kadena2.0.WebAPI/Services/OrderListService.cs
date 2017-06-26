@@ -89,7 +89,7 @@ namespace Kadena.WebAPI.Services
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
             var siteName = _kenticoResources.GetKenticoSite().Name;
-            BaseResponse<OrderListDto> result = null;
+            BaseResponseDto<OrderListDto> result = null;
             if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
                 var url = _kenticoResources.GetSettingsKey("KDA_OrdersBySiteUrl");

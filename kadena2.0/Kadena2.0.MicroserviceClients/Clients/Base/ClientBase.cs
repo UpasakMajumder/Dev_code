@@ -25,25 +25,25 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return content;
         }
 
-        protected async Task<BaseResponse<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
-            BaseResponse<TResult> result = null;
+            BaseResponseDto<TResult> result = null;
 
             try
             {
                 string responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<BaseResponse<TResult>>(responseContent);
+                result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
             }
             catch (JsonReaderException e)
             {
-                result = new BaseResponse<TResult>
+                result = new BaseResponseDto<TResult>
                 {
                     Success = false,
                     Payload = default(TResult),
-                    Error = new BaseError
+                    Error = new BaseErrorDto
                     {
                         Message = _responseIncorrectMessage,
-                        InnerError = new BaseError
+                        InnerError = new BaseErrorDto
                         {
                             Message = e.Message
                         }
