@@ -22,8 +22,13 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.Dto.General;
+using Kadena.Dto.Order;
+using Kadena.WebAPI.Models.RecentOrders;
+using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.WebAPI.Factories;
 
 namespace Kadena.WebAPI
 {
@@ -90,7 +95,7 @@ namespace Kadena.WebAPI
                     IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
-                config.CreateMap<OrderItem, Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO>().ProjectUsing(p => new Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO(p.OrderItemType)
+                config.CreateMap<OrderItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
@@ -132,6 +137,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
                 config.CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
                 config.CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
+                config.CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
+                config.CreateMap<BaseErrorDto, SubmitOrderError>();				
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
                     .AfterMap((d, a) =>
@@ -159,6 +166,23 @@ namespace Kadena.WebAPI
                 config.CreateMap<PricingInfo,PricingInfoDTO>();                
                 config.CreateMap<Tracking,TrackingDTO>();
                 config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
+                config.CreateMap<Pagination, PaginationDto>();
+                config.CreateMap<OrderHead, OrderHeadDto>();
+                config.CreateMap<Dto.Order.OrderItemDto, OrderItem>()
+                    .ProjectUsing(s => new OrderItem { SKUName = s.Name, UnitCount = s.Quantity });
+                config.CreateMap<OrderDto, Order>();
+                config.CreateMap<OrderListDto, OrderList>();
+                config.CreateMap<OrderItem, Dto.RecentOrders.OrderItemDto>()
+                    .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.UnitCount.ToString() });
+                config.CreateMap<Button, ButtonDto>();
+                config.CreateMap<Order, OrderRowDto>()
+                    .AfterMap((s, d) =>
+                    {
+                        d.OrderNumber = s.Id;
+                        d.OrderDate = s.CreateDate;
+                        d.OrderStatus = s.Status;
+                    });
+                config.CreateMap<OrderBody, OrderBodyDto>();
             });
         }
 
@@ -175,6 +199,7 @@ namespace Kadena.WebAPI
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
             container.Register<IOrderViewClient, OrderViewClient>();
+            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
             container.Register<ITemplatedProductService, TemplatedProductService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);

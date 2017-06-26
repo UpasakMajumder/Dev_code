@@ -1,14 +1,14 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Helpers
+namespace Kadena.Dto.General
 {
     [DataContract]
-    public class ErrorMessage
+    public class BaseErrorDto
     {
         [DataMember(Name = "message")]
         public string Message { get; set; }
 
         [DataMember(Name = "innerError")]
-        public ErrorMessage InnerError { get; set; }
+        public BaseErrorDto InnerError { get; set; }
     }
 }

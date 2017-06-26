@@ -4,13 +4,14 @@ using System.IO;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
 using CMS.EventLog;
+using Kadena.Dto.General;
+using Kadena.Dto.Order;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Old_App_Code.Helpers
@@ -88,10 +89,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(createContainerUrl, content))
                     {
-                        AwsResponseMessage<Guid> response;
+                        BaseResponseDto<Guid> response;
                         try
                         {
-                            response = (AwsResponseMessage<Guid>)message.Result;
+                            response = (BaseResponseDto<Guid>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -99,7 +100,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            containerId = response?.Response ?? Guid.Empty;
+                            containerId = response.Payload;
                         }
                         else
                         {
@@ -151,10 +152,10 @@ namespace Kadena.Old_App_Code.Helpers
                     content.Add(new StringContent(_moduleName), "ConsumerDetails.Module");
                     using (var message = client.PostAsync(postFileUrl, content))
                     {
-                        AwsResponseMessage<string> response;
+                        BaseResponseDto<string> response;
                         try
                         {
-                            response = (AwsResponseMessage<string>)message.Result;
+                            response = (BaseResponseDto<string>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -162,7 +163,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            fileId = response?.Response;
+                            fileId = response.Payload;
                         }
                         else
                         {
@@ -204,10 +205,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parametrizeUrl))
                 {
-                    AwsResponseMessage<IEnumerable<string>> response;
+                    BaseResponseDto<IEnumerable<string>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<string>>)message.Result;
+                        response = (BaseResponseDto<IEnumerable<string>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -215,7 +216,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        result = response?.Response;
+                        result = response.Payload;
                     }
                     else
                     {
@@ -286,10 +287,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(uploadMappingUrl, content))
                     {
-                        AwsResponseMessage<object> response;
+                        BaseResponseDto<object> response;
                         try
                         {
-                            response = (AwsResponseMessage<object>)message.Result;
+                            response = (BaseResponseDto<object>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -336,10 +337,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.PostAsync(validateAddressUrl, content))
                     {
-                        AwsResponseMessage<string> response;
+                        BaseResponseDto<string> response;
                         try
                         {
-                            response = (AwsResponseMessage<string>)message.Result;
+                            response = (BaseResponseDto<string>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -347,7 +348,7 @@ namespace Kadena.Old_App_Code.Helpers
                         }
                         if (response?.Success ?? false)
                         {
-                            return response?.Response;
+                            return response.Payload;
                         }
                         else
                         {
@@ -378,10 +379,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
                 {
-                    AwsResponseMessage<IEnumerable<MailingListDataDTO>> response;
+                    BaseResponseDto<IEnumerable<MailingListDataDTO>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<MailingListDataDTO>>)message.Result;
+                        response = (BaseResponseDto<IEnumerable<MailingListDataDTO>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -389,7 +390,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response.Payload;
                     }
                     else
                     {
@@ -423,10 +424,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(getMailingListUrl))
                 {
-                    AwsResponseMessage<MailingListDataDTO> response;
+                    BaseResponseDto<MailingListDataDTO> response;
                     try
                     {
-                        response = (AwsResponseMessage<MailingListDataDTO>)message.Result;
+                        response = (BaseResponseDto<MailingListDataDTO>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -434,7 +435,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response.Payload;
                     }
                     else
                     {
@@ -481,10 +482,10 @@ namespace Kadena.Old_App_Code.Helpers
                 {
                     using (var message = client.SendAsync(request))
                     {
-                        AwsResponseMessage<object> response;
+                        BaseResponseDto<object> response;
                         try
                         {
-                            response = (AwsResponseMessage<object>)message.Result;
+                            response = (BaseResponseDto<object>)message.Result;
                         }
                         catch (JsonReaderException e)
                         {
@@ -525,10 +526,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    AwsResponseMessage<IEnumerable<MailingAddressData>> response;
+                    BaseResponseDto<IEnumerable<MailingAddressData>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<MailingAddressData>>)message.Result;
+                        response = (BaseResponseDto<IEnumerable<MailingAddressData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -536,7 +537,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response.Payload;
                     }
                     else
                     {
@@ -570,10 +571,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(orderStatisticsUrl))
                 {
-                    AwsResponseMessage<OrderStatisticsData> response;
+                    BaseResponseDto<OrderStatisticsData> response;
                     try
                     {
-                        response = (AwsResponseMessage<OrderStatisticsData>)message.Result;
+                        response = (BaseResponseDto<OrderStatisticsData>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -582,51 +583,11 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response.Payload;
                     }
                     else
                     {
                         EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
-                        return null;
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<OrderHistoryData> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
-        {
-            Uri url;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
-                , UriKind.Absolute
-                , out url))
-            {
-                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_getAddressesIncorrectMessage));
-                return null;    
-            }
-
-            var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(parameterizedUrl))
-                {
-                    AwsResponseMessage<OrderHistoryDataContainer> response;
-                    try
-                    {
-                        response = (AwsResponseMessage<OrderHistoryDataContainer>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
-                        return null;
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Response.orders;
-                    }
-                    else
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
                         return null;
                     }
                 }

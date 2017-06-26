@@ -139,11 +139,16 @@
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\IOrderListService.cs" />
+    <Compile Include="Contracts\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\RecentOrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
+    <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
@@ -177,8 +182,14 @@
     <Compile Include="Models\OrderDetail\PricingInfoItem.cs" />
     <Compile Include="Models\OrderDetail\ShippingInfo.cs" />
     <Compile Include="Models\OrderDetail\Tracking.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\RecentOrders\Button.cs" />
+    <Compile Include="Models\RecentOrders\OrderBody.cs" />
+    <Compile Include="Models\RecentOrders\OrderHead.cs" />
+    <Compile Include="Models\RecentOrders\Pagination.cs" />
     <Compile Include="Models\Settings\AddressDialog.cs" />
     <Compile Include="Models\Settings\AddressList.cs" />
     <Compile Include="Models\Settings\DialogButton.cs" />
@@ -186,6 +197,7 @@
     <Compile Include="Models\Settings\DialogType.cs" />
     <Compile Include="Models\Settings\PageButton.cs" />
     <Compile Include="Models\Settings\SettingsAddresses.cs" />
+    <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubmitButton.cs" />
@@ -200,6 +212,7 @@
     <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
+    <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>
