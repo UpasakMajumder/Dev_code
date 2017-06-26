@@ -21,7 +21,6 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _moduleName = "Klist";
         private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
-        private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
@@ -360,18 +359,12 @@ namespace Kadena.Old_App_Code.Helpers
         }
 
         /// <summary>
-        /// Gets name of customer from settings for current site.
+        /// Gets name of customer from site settings (Site application).
         /// </summary>
         /// <returns>Customer's name</returns>
         private static string GetCustomerName()
         {
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
-
-            return customerName;
+            return SiteContext.CurrentSiteName;
         }
 
         /// <summary>

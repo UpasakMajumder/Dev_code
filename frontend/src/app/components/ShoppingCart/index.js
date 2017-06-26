@@ -7,35 +7,43 @@ import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
 import Spinner from '../Spinner';
-import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
+import Button from '../Button';
+import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
-  static fireNotification(fields) {
-    if (fields.length === 1 && fields.includes('invoice')) return;
+  constructor() {
+    super();
 
+    this.sendData = this.sendData.bind(this);
+    this.initCheckedShoppingData = this.initCheckedShoppingData.bind(this);
+    this.checkPDFAvailability = this.checkPDFAvailability.bind(this);
+  }
+
+  static fireNotification(fields) {
     let message = 'Please, select one of ';
 
     fields.forEach((field, index) => {
-      if (field !== 'invoice') {
-        if (index === fields.length - 1) {
-          message += ' and ';
-        } else if (index) {
-          message += ', ';
-        }
+      if (index === fields.length - 1 && index !== 0) {
+        message += ' and ';
+      } else if (index) {
+        message += ', ';
+      }
 
-        switch (field) {
-        case 'deliveryMethod':
-          message += 'the delivery methods';
-          break;
-        case 'paymentMethod':
-          message += 'the payment methods';
-          break;
-        case 'deliveryAddress':
-          message += 'the delivery addresses';
-          break;
-        default:
-          break;
-        }
+      switch (field) {
+      case 'deliveryMethod':
+        message += 'the delivery methods';
+        break;
+      case 'paymentMethod':
+        message += 'the payment methods';
+        break;
+      case 'deliveryAddress':
+        message += 'the delivery addresses';
+        break;
+      case 'invoice':
+        message += 'the PO number';
+        break;
+      default:
+        break;
       }
     });
 
@@ -46,13 +54,25 @@ class ShoppingCart extends Component {
     this.props.getUI();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { ui, validation } = nextProps.shoppingCart;
+  sendData(checkedData) {
+    const invalidFields = Object.keys(checkedData).filter(key => !checkedData[key]);
 
-    if (validation.fields.length) ShoppingCart.fireNotification(validation.fields);
+    if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
 
-    if (ui === this.props.shoppingCart.ui) return;
+    if (checkedData.paymentMethod.id === 3) {
+      if (!checkedData.paymentMethod.invoice) {
+        invalidFields.push('invoice');
+      }
+    }
 
+    if (invalidFields.length) {
+      ShoppingCart.fireNotification(invalidFields);
+    } else {
+      this.props.sendData(checkedData);
+    }
+  }
+
+  initCheckedShoppingData(ui) {
     let deliveryAddress = 0;
     let deliveryMethod = 0;
     let paymentMethod = {
@@ -79,13 +99,28 @@ class ShoppingCart extends Component {
     });
   }
 
+  checkPDFAvailability(nextProps) {
+    const { isWaitingPDF, isAskingPDF } = nextProps.shoppingCart;
+    if (isWaitingPDF && !isAskingPDF) this.props.checkPDFAvailability();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { ui: uiNext } = nextProps.shoppingCart;
+    const { ui: uiCurr } = this.props.shoppingCart;
+    if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
+    this.checkPDFAvailability(nextProps);
+  }
+
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, validation } = shoppingCart;
+    const { ui, checkedData, isSending, isWaitingPDF } = shoppingCart;
+    const { submit } = ui;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
+      const submitDisabledText = isWaitingPDF ? <Alert type="info" text={submit.disabledText}/> : null;
+
       const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
 
       const deliveryContent = isDeliverable
@@ -125,7 +160,6 @@ class ShoppingCart extends Component {
 
         <div className="shopping-cart__block">
           <PaymentMethod
-            validationFields={validation.fields}
             validationMessage={ui.validationMessage}
             changeShoppingData={this.props.changeShoppingData}
             checkedObj={checkedData.paymentMethod}
@@ -136,12 +170,13 @@ class ShoppingCart extends Component {
           <Total ui={ui.totals}/>
         </div>
 
+        {submitDisabledText}
+
         <div className="shopping-cart__block text--right">
-          <button onClick={() => { this.props.sendData(checkedData); }}
-                  type="button"
-                  className="btn-action">
-            {ui.submitLabel}
-          </button>
+          <Button text={submit.btnLabel}
+                  isLoading={isWaitingPDF}
+                  type="action"
+                  onClick={() => this.sendData(checkedData)} />
         </div>
       </div>;
     }
@@ -163,5 +198,6 @@ export default connect((state) => {
   changeShoppingData,
   sendData,
   removeProduct,
-  changeProductQuantity
+  changeProductQuantity,
+  checkPDFAvailability
 })(ShoppingCart);
