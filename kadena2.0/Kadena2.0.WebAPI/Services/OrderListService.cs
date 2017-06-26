@@ -55,12 +55,12 @@ namespace Kadena.WebAPI.Services
             return new OrderHead
             {
                 Headings = new List<string> {
-                    "order number",
-                    "order date",
-                    "ordered",
-                    "order status",
-                    "delivery date",
-                    ""
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.DeliveryDate"),
+                    string.Empty
                 },
                 PageInfo = new Pagination
                 {
@@ -80,7 +80,7 @@ namespace Kadena.WebAPI.Services
             {
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = "View", Url = $"{orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{orderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };
