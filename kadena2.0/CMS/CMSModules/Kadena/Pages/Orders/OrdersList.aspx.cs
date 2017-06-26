@@ -1,4 +1,8 @@
-﻿using CMS.Ecommerce.Web.UI;
+﻿using CMS.DataEngine;
+using CMS.Ecommerce;
+using CMS.Ecommerce.Web.UI;
+using CMS.SiteProvider;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,37 +14,20 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var source = (new SomeDto[] {
-                new SomeDto{ OrderNumber = "412412421" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421124124" },
-                new SomeDto{ OrderNumber = "412412421qwfq" }
-                }).ToList();
-            grdOrders.DataSource = ToDataSet(source);
+            var url = SettingsKeyInfoProvider.GetValue("KDA_OrdersBySiteUrl");
+            var client = new OrderViewClient();
+            var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
+            data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
+            var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE, data.Payload.Orders.Select(o => o.CustomerId));
+            grdOrders.DataSource = ToDataSet(data.Payload.Orders.Select(o=> new {
+                o.Id,
+                o.Status,
+                o.TotalPrice, o.CreateDate,
+                CustomerName = $"{customers[o.CustomerId]?.GetStringValue("CustomerFirstName", string.Empty)} {customers[o.CustomerId]?.GetStringValue("CustomerLastName", string.Empty)}" })
+                .ToList());
         }
 
-        public static DataSet ToDataSet<T>(IList<T> list)
+        private static DataSet ToDataSet<T>(IList<T> list)
         {
             Type elementType = typeof(T);
             DataSet ds = new DataSet();
@@ -64,10 +51,5 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
             }
             return ds;
         }
-    }
-
-    public class SomeDto
-    {
-        public string OrderNumber { get; set; }
     }
 }
