@@ -10,16 +10,26 @@ export default {
     "editButtonText": "Edit",
     "removeButtonText": "Remove",
     "addresses": [
-      // {
-      //   "id": 1,
-      //   "street1": "4001 Valley Industrial Blvd",
-      //   "street2": "",
-      //   "city": "Shakopee",
-      //   "state": "MN",
-      //   "zip": "55379",
-      //   "isEditButton": true,
-      //   "isRemoveButton": false
-      // }
+      {
+        "id": 1,
+        "street1": "4001 Valley Industrial Blvd",
+        "street2": "",
+        "city": "Shakopee",
+        "state": "MN",
+        "zip": "55379",
+        "isEditButton": true,
+        "isRemoveButton": false
+      },
+      {
+        "id": 2,
+        "street1": "4001 Valley Industrial Blvd",
+        "street2": "",
+        "city": "Shakopee",
+        "state": "MN",
+        "zip": "55379",
+        "isEditButton": true,
+        "isRemoveButton": false
+      }
     ]
   },
   "dialog": {

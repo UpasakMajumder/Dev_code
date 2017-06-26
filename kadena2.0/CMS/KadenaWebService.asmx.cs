@@ -58,6 +58,15 @@
             {
                 return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.InvalidEmail", LocalizationContext.CurrentCulture.CultureCode) };
             }
+            UserInfo user = UserInfoProvider.GetUserInfo(loginEmail);
+            if (user == null)
+            {
+                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (!user.IsInSite(SiteContext.CurrentSiteName))
+            {
+                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
+            }
 
             #endregion
 

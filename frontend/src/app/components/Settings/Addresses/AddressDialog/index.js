@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Dialog from '../../Dialog';
-import TextInput from '../../form/TextInput';
-import Select from '../../form/Select';
+import Dialog from '../../../Dialog/index';
+import TextInput from '../../../form/TextInput';
+import Select from '../../../form/Select';
 
 class AddressDialog extends Component {
   constructor() {
