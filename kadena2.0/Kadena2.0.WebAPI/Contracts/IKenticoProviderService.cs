@@ -51,5 +51,7 @@ namespace Kadena.WebAPI.Contracts
         string GetSkuImageUrl(int skuid);
         Product GetProductByDocumentId(int documentId);
         string GetDocumentUrl(int documentId);
+
+        List<string> GetBreadcrumbs(int documentId);
     }
 }

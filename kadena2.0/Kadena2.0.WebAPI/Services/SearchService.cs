@@ -103,7 +103,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Id = documentId,
                     Title = dr[4].ToString(),
-                    Breadcrumbs = new List<string>() { "fakeBreadcrumbs" }, // TODO
+                    Breadcrumbs = kenticoProvider.GetBreadcrumbs(documentId),
                     ImgUrl = URLHelper.GetAbsoluteUrl(dr[7].ToString()),
                     IsFavourite = false,
                 };

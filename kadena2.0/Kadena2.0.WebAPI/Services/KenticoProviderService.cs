@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
-            return mapper.Map<DeliveryAddress>(address);            
+            return mapper.Map<DeliveryAddress>(address);
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -124,7 +124,7 @@ namespace Kadena.WebAPI.Services
                 if (title.ToLower().Contains(kvp.Key))
                     return kvp.Value;
             }
-            
+
             return string.Empty;
         }
 
@@ -169,7 +169,7 @@ namespace Kadena.WebAPI.Services
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();            
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
             return mapper.Map<PaymentMethod[]>(methods);
         }
 
@@ -369,7 +369,7 @@ namespace Kadena.WebAPI.Services
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
 
-            var price = GetDynamicPrice( item.GetIntegerValue("ProductPageID", 0), quantity );
+            var price = GetDynamicPrice(item.GetIntegerValue("ProductPageID", 0), quantity);
             if (price != 0.0m)
             {
                 item.CartItemPrice = (double)price;
@@ -484,6 +484,19 @@ namespace Kadena.WebAPI.Services
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
 
+        public List<string> GetBreadcrumbs(int documentId)
+        {
+            var breadcrubs = new List<string>();
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
 
+            while (doc != null && doc.Parent != null)
+            {
+                breadcrubs.Add(doc.DocumentName);
+                doc = doc.Parent;
+            };
+
+            breadcrubs.Reverse();
+            return breadcrubs;
+        }
     }
 }
