@@ -9,7 +9,6 @@ namespace Kadena.Tests
 {
     class UploadFileTest : UnitTests
     {
-        private string _customerNameSetting = "KDA_CustomerName";
         private string _urlSetting = "KDA_LoadFileUrl";
 
         [Test]
@@ -105,7 +104,6 @@ namespace Kadena.Tests
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                         .WithData(
-                            new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = customerName },
                             new SettingsKeyInfo
                             {
                                 KeyName = $"{_urlSetting}",

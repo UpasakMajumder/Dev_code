@@ -55,6 +55,7 @@
         public string Delivery { get; set; }
         public string PricePrefix { get; set; }
         public double Price { get; set; }
+        public string PriceText { get; set; }
         public bool IsEditable
         {
             get

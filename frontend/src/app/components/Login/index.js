@@ -7,6 +7,7 @@ import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 import requestLogin from '../../AC/login';
 import { LOGIN } from '../../globals';
+import Button from '../Button';
 
 class Login extends Component {
   constructor(props) {
@@ -34,28 +35,21 @@ class Login extends Component {
   }
 
   handleLoginEmailChange(e) {
-    this.setState({
-      loginEmail: e.target.value
-    });
+    this.setState({ loginEmail: e.target.value });
   }
 
   handlePasswordChange(e) {
-    this.setState({
-      password: e.target.value
-    });
+    this.setState({ password: e.target.value });
   }
 
   handleIsKeepMeLoggedIn(e) {
-    this.setState({
-      isKeepMeLoggedIn: e.target.checked
-    });
+    this.setState({ isKeepMeLoggedIn: e.target.checked });
   }
 
-  // eslint-disable-next-line
-  getErrorMessage(propertyName, failureResponse) {
+  static getErrorMessage(propertyName, failureResponse) {
     let errorMessage = null;
 
-    if (failureResponse != null && (failureResponse.errorPropertyName === propertyName)) {
+    if (failureResponse !== null && (failureResponse.errorPropertyName === propertyName)) {
       errorMessage = failureResponse.errorMessage;
     }
 
@@ -69,12 +63,18 @@ class Login extends Component {
     return (
       <div className="css-login">
         <div className="mb-2">
-          <TextInput label={this.emailText} placeholder={this.emailPlaceholder} value={loginEmail} onChange={e => this.handleLoginEmailChange(e)}
-                     error={this.getErrorMessage('loginEmail', response)} />
+          <TextInput label={this.emailText}
+                     placeholder={this.emailPlaceholder}
+                     value={loginEmail}
+                     onChange={e => this.handleLoginEmailChange(e)}
+                     error={Login.getErrorMessage('loginEmail', response)} />
         </div>
         <div className="mb-2">
-          <PasswordInput label={this.passwordText} placeholder={this.passwordPlaceholder} value={password} onChange={e => this.handlePasswordChange(e)}
-                         error={this.getErrorMessage('password', response)} />
+          <PasswordInput label={this.passwordText}
+                         placeholder={this.passwordPlaceholder}
+                         value={password}
+                         onChange={e => this.handlePasswordChange(e)}
+                         error={Login.getErrorMessage('password', response)} />
         </div>
         <div className="mb-3">
           <div className="input__wrapper">
@@ -89,8 +89,11 @@ class Login extends Component {
         </div>
         <div className="mb-3">
           <div className="text-center">
-            <button type="button" className="btn-action login__login-button btn--no-shadow" disabled={isLoading}
-                    onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}>{this.loginText}</button>
+            <Button text={this.loginText}
+                    type="action"
+                    btnClass="login__login-button btn--no-shadow"
+                    isLoading={isLoading}
+                    onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}/>
           </div>
         </div>
       </div>

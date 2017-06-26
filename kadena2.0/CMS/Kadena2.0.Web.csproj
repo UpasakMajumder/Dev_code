@@ -826,6 +826,13 @@
     <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.designer.cs">
       <DependentUpon>DashboardMetrics.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.cs">
+      <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.designer.cs">
+      <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Orders\OrdersList.ascx.cs">
       <DependentUpon>OrdersList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -943,6 +950,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
+    <Content Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx" />
     <Content Include="CMSWebParts\Kadena\Orders\OrdersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />

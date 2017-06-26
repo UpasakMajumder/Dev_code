@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import AddressCard from './AddressCard';
-import SVG from '../../SVG';
+import AddressCard from '../AddressCard';
+import SVG from '../../../SVG/index';
 
 class AddressBlock extends Component {
   render() {
-    const { ui, openDialog, dialog, closeDialog, modifyAddress } = this.props;
+    const { ui, openDialog } = this.props;
     if (!Object.keys(ui).length) return null;
 
     const { title, addButton, editButtonText, removeButtonText, addresses } = ui;
@@ -17,10 +17,7 @@ class AddressBlock extends Component {
 
     const commonProps = {
       editButtonText,
-      openDialog,
-      dialog,
-      closeDialog,
-      modifyAddress
+      openDialog
     };
 
     const addressCards = addresses.length
