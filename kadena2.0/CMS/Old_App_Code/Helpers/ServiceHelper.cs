@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
+using CMS.EventLog;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Old_App_Code.Helpers
 {
@@ -19,7 +21,6 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _moduleName = "Klist";
         private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
-        private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
@@ -28,6 +29,7 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
         private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
         private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
+        private const string _getOrderHistorySettingsKey = "KDA_OrderHistoryServiceEndpoint";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -357,24 +359,18 @@ namespace Kadena.Old_App_Code.Helpers
         }
 
         /// <summary>
-        /// Gets name of customer from settings for current site.
+        /// Gets name of customer from site settings (Site application).
         /// </summary>
         /// <returns>Customer's name</returns>
         private static string GetCustomerName()
         {
-            string customerName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_customerNameSettingKey}");
-            if (string.IsNullOrWhiteSpace(customerName))
-            {
-                throw new InvalidOperationException(_customerNotSpecifiedMessage);
-            }
-
-            return customerName;
+            return SiteContext.CurrentSiteName;
         }
 
         /// <summary>
         /// Get all mailing lists for particular customer (whole site)
         /// </summary>
-        public static IEnumerable<MailingListData> GetMailingLists()
+        public static IEnumerable<MailingListDataDTO> GetMailingLists()
         {
             var customerName = GetCustomerName();
 
@@ -382,16 +378,16 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
                 {
-                    AwsResponseMessage<IEnumerable<MailingListData>> response;
+                    AwsResponseMessage<IEnumerable<MailingListDataDTO>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<MailingListData>>)message.Result;
+                        response = (AwsResponseMessage<IEnumerable<MailingListDataDTO>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -407,7 +403,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Get all mailing list for particular customer (whole site) by specified Id.
         /// </summary>
         /// <param name="containerId">Id of container to get.</param>
-        public static MailingListData GetMailingList(Guid containerId)
+        public static MailingListDataDTO GetMailingList(Guid containerId)
         {
             var customerName = GetCustomerName();
 
@@ -427,16 +423,16 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(getMailingListUrl))
                 {
-                    AwsResponseMessage<MailingListData> response;
+                    AwsResponseMessage<MailingListDataDTO> response;
                     try
                     {
-                        response = (AwsResponseMessage<MailingListData>)message.Result;
+                        response = (AwsResponseMessage<MailingListDataDTO>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -538,7 +534,7 @@ namespace Kadena.Old_App_Code.Helpers
                     {
                         throw new InvalidOperationException(_responseIncorrectMessage, e);
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
@@ -566,7 +562,8 @@ namespace Kadena.Old_App_Code.Helpers
                 , UriKind.Absolute
                 , out orderStatisticsUrl))
             {
-                throw new InvalidOperationException(_getOrderStatisticsIncorrectMessage);
+                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_getOrderStatisticsIncorrectMessage));
+                return null;
             }
 
             using (var client = new HttpClient())
@@ -580,15 +577,57 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     catch (JsonReaderException e)
                     {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_responseIncorrectMessage, e));
+                        return null;
                     }
-                    if (response.Success)
+                    if (response?.Success ?? false)
                     {
                         return response?.Response;
                     }
                     else
                     {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<OrderHistoryData> GetOrderHistoryData(int customerID, int pageNumber, int quantity)
+        {
+            Uri url;
+            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getOrderHistorySettingsKey}")
+                , UriKind.Absolute
+                , out url))
+            {
+                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_getAddressesIncorrectMessage));
+                return null;    
+            }
+
+            var parameterizedUrl = $"{url.AbsoluteUri}/Api/Order?ClientId={customerID}&pageNumber={pageNumber}&quantity={quantity}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = client.GetAsync(parameterizedUrl))
+                {
+                    AwsResponseMessage<OrderHistoryDataContainer> response;
+                    try
+                    {
+                        response = (AwsResponseMessage<OrderHistoryDataContainer>)message.Result;
+                    }
+                    catch (JsonReaderException e)
+                    {
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new InvalidOperationException(_responseIncorrectMessage, e));
+                        return null;
+                    }
+                    if (response?.Success ?? false)
+                    {
+                        return response.Response.orders;
+                    }
+                    else
+                    {
+                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER HISTORY DATA", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
+                        return null;
                     }
                 }
             }

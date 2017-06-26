@@ -8,9 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Threading;
+
 namespace AutomatedTests.PageObjects
 {
-    class Checkout
+    class Checkout : BasePage
     {
         [FindsBy(How = How.CssSelector, Using = "#r-shopping-cart .shopping-cart__block:first-child label")]
         private IList<IWebElement> DeliveryAddresses { get; set; }
@@ -32,10 +34,12 @@ namespace AutomatedTests.PageObjects
         private decimal tax;
         private decimal subtotal;
         private decimal total;
+
         public Checkout()
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
+
         /// <summary>
         /// Navigates to checkout page
         /// </summary>
@@ -43,6 +47,7 @@ namespace AutomatedTests.PageObjects
         {
             Browser.Driver.Navigate().GoToUrl(TestEnvironment.Url + "/checkout");
         }
+
         /// <summary>
         /// Select one of the available delivery addresses by index.
         /// </summary>
@@ -51,8 +56,9 @@ namespace AutomatedTests.PageObjects
         {
             Browser.BaseWait.Until(r => DeliveryAddresses.Count > 0);
             DeliveryAddresses[index].ClickElement();
-            WaitUntilPageIsRecalculated();
+            WaitForLoading();
         }
+
         /// <summary>
         /// Iterates through Shipping options and returns true when it finds an option with estimated shipping price
         /// </summary>
@@ -72,6 +78,7 @@ namespace AutomatedTests.PageObjects
             }
             return false;
         }
+
         /// <summary>
         /// Iterates through shipping methods, finds one with estimated price and then clicks on the valid nested option
         /// </summary>
@@ -82,13 +89,24 @@ namespace AutomatedTests.PageObjects
                 if (DeliveryMethods[i].Text.Contains("$"))
                 {
                     DeliveryMethods[i].ClickElement();
-                    WaitUntilPageIsRecalculated();
-                    DeliverableMethodForSelectedCarrier.ClickElement();
+
+                    //clicks the method. In case it is not yet clickable, waits two seconds and does it again.
+                    //TODO make it better, without the try catch
+                    try
+                    {
+                        DeliverableMethodForSelectedCarrier.ClickElement();
+                    }
+                    catch (System.Reflection.TargetInvocationException)
+                    {
+                        Thread.Sleep(2000);
+                        DeliverableMethodForSelectedCarrier.ClickElement();
+                    }
                     break;
                 }
             }
-            WaitUntilPageIsRecalculated();
+            WaitForLoading();
         }
+
         /// <summary>
         /// Parses strings from table to decimal variables
         /// </summary>
@@ -100,6 +118,7 @@ namespace AutomatedTests.PageObjects
             tax = decimal.Parse(SummaryTableTotals[3].GetText().Substring(2));
             total = decimal.Parse(SummaryTableTotals[4].GetText().Substring(2));
         }
+
         /// <summary>
         /// Returns true if subtotal equals sum of summary and shipping
         /// </summary>
@@ -114,6 +133,7 @@ namespace AutomatedTests.PageObjects
 
             return subtotal == summary + shipping;
         }
+
         /// <summary>
         /// Returns true if subtotal equals sum of summary, shipping and tax
         /// </summary>
@@ -123,6 +143,7 @@ namespace AutomatedTests.PageObjects
             ParseSummaryTableValues();
             return total == summary + shipping + tax;
         }
+
         /// <summary>
         /// Returns true if tax value is higher than 0
         /// </summary>
@@ -132,13 +153,7 @@ namespace AutomatedTests.PageObjects
             ParseSummaryTableValues();
             return tax > 0;
         }
-        /// <summary>
-        /// Waits until spinner appears and disappears
-        /// </summary>
-        private void WaitUntilPageIsRecalculated()
-        {
-            Spinner.WaitTillVisible();
-            Spinner.WaitTillNotVisible();
-        }
+
+        
     }
 }

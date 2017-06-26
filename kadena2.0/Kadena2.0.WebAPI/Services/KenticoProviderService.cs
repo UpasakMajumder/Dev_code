@@ -9,6 +9,9 @@ using System;
 using CMS.DataEngine;
 using CMS.Globalization;
 using System.Collections.Generic;
+using CMS.DocumentEngine;
+using CMS.Membership;
+using Newtonsoft.Json;
 
 namespace Kadena.WebAPI.Services
 {
@@ -88,36 +91,48 @@ namespace Kadena.WebAPI.Services
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-                SetShippingProviderIcon(dm);
+                dm.Icon = GetShippingProviderIcon(dm.Title);
             }
 
             return deliveryMethods;
         }
 
+        public string GetSkuImageUrl(int skuid)
+        {
+            if (skuid <= 0)
+                return string.Empty;
+
+            var sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var skuurl = sku?.SKUImagePath ?? string.Empty;
+            return URLHelper.GetAbsoluteUrl(skuurl);
+        }
+
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        private void SetShippingProviderIcon(DeliveryCarrier dm)
+        public string GetShippingProviderIcon(string title)
         {
-            if (dm.Title.ToLower().Contains("fedex"))
+            var dictionary = new Dictionary<string, string>()
             {
-                dm.Icon = "fedex-delivery";
-            }
-            else if (dm.Title.ToLower().Contains("usps"))
+                {"fedex","fedex-delivery"},
+                {"usps","usps-delivery" },
+                {"ups","ups-delivery" }
+            };
+
+            foreach (var kvp in dictionary)
             {
-                dm.Icon = "usps-delivery";
+                if (title.ToLower().Contains(kvp.Key))
+                    return kvp.Value;
             }
-            else if (dm.Title.ToLower().Contains("ups"))
-            {
-                dm.Icon = "ups-delivery";
-            }
+            
+            return string.Empty;
         }
 
         public DeliveryOption[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = mapper.Map<DeliveryOption[]>(services);
-            GetShippingPrice(result);
+            GetShippingPrice(result);          
             return result;
         }
 
@@ -286,6 +301,7 @@ namespace Kadena.WebAPI.Services
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = i.UnitPrice * i.CartItemUnits,
+				PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 Delivery = "", //TODO not known yet
@@ -371,8 +387,30 @@ namespace Kadena.WebAPI.Services
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+
+
+            var price = GetDynamicPrice( item.GetIntegerValue("ProductPageID", 0), quantity );
+            if (price != 0.0m)
+            {
+                item.CartItemPrice = (double)price;
+            }
+
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        private decimal GetDynamicPrice(int documentId, int quantity)
+        {
+            var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
+            var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
+
+            if (ranges != null)
+            {
+                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
+                if (matchingRange != null)
+                    return matchingRange.Price;
+            }
+            return 0.0m;
         }
 
         public void RemoveCurrentItemsFromStock()
@@ -441,6 +479,11 @@ namespace Kadena.WebAPI.Services
         public double GetCurrentCartShippingCost()
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
+        }
+
+        public bool UserCanSeePrices()
+        {
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
     }
 }

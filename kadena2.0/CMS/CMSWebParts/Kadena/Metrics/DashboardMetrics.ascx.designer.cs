@@ -13,6 +13,15 @@ namespace Kadena.CMSWebParts.Kadena.Metrics {
     public partial class DashboardMetrics {
         
         /// <summary>
+        /// ltlOrdersToDatePerYearTitles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLiteral ltlOrdersToDatePerYearTitles;
+        
+        /// <summary>
         /// ltlOrdersToDatePerYear control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace Kadena.CMSWebParts.Kadena.Metrics {
         protected global::System.Web.UI.WebControls.Literal ltlNumberOfusers;
         
         /// <summary>
+        /// ltlAverageProductionTimeTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLiteral ltlAverageProductionTimeTitle;
+        
+        /// <summary>
         /// ltlAverageProductionTime control.
         /// </summary>
         /// <remarks>
@@ -47,5 +65,14 @@ namespace Kadena.CMSWebParts.Kadena.Metrics {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltlAverageProductionTime;
+        
+        /// <summary>
+        /// ltlAverageProductionTimeDaysTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLiteral ltlAverageProductionTimeDaysTitle;
     }
 }

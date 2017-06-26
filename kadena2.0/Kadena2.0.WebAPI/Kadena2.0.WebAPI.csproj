@@ -56,6 +56,10 @@
     <Reference Include="CMS.DataEngine">
       <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.DocumentEngine, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.DocumentEngine.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Ecommerce">
       <HintPath>..\Lib\CMS.Ecommerce.dll</HintPath>
     </Reference>
@@ -70,6 +74,10 @@
     <Reference Include="CMS.Helpers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Membership, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Membership.dll</HintPath>
     </Reference>
     <Reference Include="CMS.SiteProvider, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -158,7 +166,17 @@
     <Compile Include="Models\DeliveryOption.cs" />
     <Compile Include="Models\DeliveryCarrier.cs" />
     <Compile Include="Models\DeliveryCarriers.cs" />
+    <Compile Include="Models\DynamicPricingRange.cs" />
     <Compile Include="Models\KenticoSite.cs" />
+    <Compile Include="Models\OrderDetail\CommonInfo.cs" />
+    <Compile Include="Models\OrderDetail\OrderDetail.cs" />
+    <Compile Include="Models\OrderDetail\OrderedItem.cs" />
+    <Compile Include="Models\OrderDetail\OrderedItems.cs" />
+    <Compile Include="Models\OrderDetail\PaymentInfo.cs" />
+    <Compile Include="Models\OrderDetail\PricingInfo.cs" />
+    <Compile Include="Models\OrderDetail\PricingInfoItem.cs" />
+    <Compile Include="Models\OrderDetail\ShippingInfo.cs" />
+    <Compile Include="Models\OrderDetail\Tracking.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
     <Compile Include="Models\Settings\AddressDialog.cs" />

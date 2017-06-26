@@ -1,4 +1,5 @@
 ﻿using Kadena.WebAPI.Models;
+using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,5 +25,7 @@ namespace Kadena.WebAPI.Contracts
         Task<double> EstimateTotalTax();
 
         Task<bool> IsSubmittable();
+			
+        Task<OrderDetail> GetOrderDetail(string orderId);
     }
 }

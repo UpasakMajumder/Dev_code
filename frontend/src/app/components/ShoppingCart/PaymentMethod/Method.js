@@ -10,8 +10,8 @@ class Method extends Component {
   }
 
   isInvalidField(field) {
-    const { validationFields, validationMessage } = this.props;
-    return validationFields.includes(field) ? validationMessage : '';
+    const { validationMessage } = this.props;
+    return '';
   }
 
   render() {

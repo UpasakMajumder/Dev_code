@@ -1,0 +1,9 @@
+.header-overlay {
+  width: 100%;
+  height: calc(100% - #{$header-size} - #{$main-layout-gutter});
+  border-radius: $border-radius-xl;
+  position: absolute;
+  left: 0;
+  background: rgba($brand-lightblue, .5);
+  z-index: 1;
+}

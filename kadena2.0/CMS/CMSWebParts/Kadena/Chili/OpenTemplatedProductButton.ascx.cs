@@ -11,19 +11,19 @@ using System.Web;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
-  public partial class OpenTemplatedProductButton : CMSAbstractWebPart
-  {
-    #region Public properties
-
-    public string ProductEditorUrl
+    public partial class OpenTemplatedProductButton : CMSAbstractWebPart
     {
-      get
-      {
-        return GetStringValue("ProductEditorUrl", string.Empty);
-      }
-    }
+        #region Public properties
 
-    #endregion
+        public string ProductEditorUrl
+        {
+            get
+            {
+                return GetStringValue("ProductEditorUrl", string.Empty);
+            }
+        }
+
+        #endregion
         public string SelectMailingListUrl
         {
             get
@@ -32,39 +32,41 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
-    #region Public methods
+        #region Public methods
 
-    public override void OnContentLoaded()
-    {
-      base.OnContentLoaded();
-      SetupControl();
-    }
+        public override void OnContentLoaded()
+        {
+            base.OnContentLoaded();
+            SetupControl();
+        }
 
-    protected void SetupControl()
-    {
-      if (!StopProcessing)
-      {
-        btnOpenTemplatedProduct.Text = ResHelper.GetString("Kadena.Product.OpenTemplateInDesign", LocalizationContext.CurrentCulture.CultureCode);
-      }
-    }
+        protected void SetupControl()
+        {
+            if (!StopProcessing)
+            {
+                btnOpenTemplatedProduct.Text = ResHelper.GetString("Kadena.Product.OpenTemplateInDesign", LocalizationContext.CurrentCulture.CultureCode);
+            }
+        }
 
-    #endregion
+        #endregion
 
-    #region Event handlers
+        #region Event handlers
 
-    protected void btnOpenTemplatedProduct_Click(object sender, EventArgs e)
-    {
-      var masterTemplateID = DocumentContext.CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
-      var newTemplateUrl = new TemplateServiceHelper().CreateNewTemplate(MembershipContext.AuthenticatedUser.UserID, masterTemplateID);
-      if (!string.IsNullOrEmpty(newTemplateUrl))
-      {
-        var uri = new Uri(newTemplateUrl);
-        var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-        var destinationUrl = String.Format("{0}?id={1}&skuid={2}&templateid={3}", 
-          ProductEditorUrl, 
-          DocumentContext.CurrentDocument.DocumentID,
-          ECommerceContext.CurrentProduct.SKUID,
-          newTemplateID);
+        protected void btnOpenTemplatedProduct_Click(object sender, EventArgs e)
+        {
+            var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
+            var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
+            var newTemplateUrl = new TemplateServiceHelper().CreateNewTemplate(MembershipContext.AuthenticatedUser.UserID, masterTemplateID, workspaceID);
+            if (!string.IsNullOrEmpty(newTemplateUrl))
+            {
+                var uri = new Uri(newTemplateUrl);
+                var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
+                var destinationUrl = String.Format("{0}?id={1}&skuid={2}&templateid={3}&workspaceid={4}",
+                  ProductEditorUrl,
+                  DocumentContext.CurrentDocument.DocumentID,
+                  ECommerceContext.CurrentProduct.SKUID,
+                  newTemplateID,
+                  workspaceID);
 
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
                 if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))
@@ -76,10 +78,16 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     Response.Redirect(destinationUrl);
                 }
-      }
+            }
+            else
+            {
+                btnOpenTemplatedProduct.Attributes.Clear();
+                btnOpenTemplatedProduct.Attributes.Add("class", "btn-action btn-action input--error");
+                spanErrorMessage.Visible = true;
+            }
+        }
+
+        #endregion
+
     }
-
-    #endregion
-
-  }
 }

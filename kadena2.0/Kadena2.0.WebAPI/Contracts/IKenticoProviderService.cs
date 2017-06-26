@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.Contracts
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);
         DeliveryOption GetShippingOption(int id);
-        CartItem[] GetShoppingCartOrderItems();
+        OrderItem[] GetShoppingCartOrderItems();
         CartItem[] GetShoppingCartItems();
         void RemoveCartItem(int id);
 
@@ -47,5 +47,11 @@ namespace Kadena.WebAPI.Contracts
         void SaveShippingAddress(DeliveryAddress address);
 
         void SetCartItemDesignFilePath(int id, string path);
+
+        string GetShippingProviderIcon(string title);
+
+        string GetSkuImageUrl(int skuid);
+
+        bool UserCanSeePrices();
     }
 }

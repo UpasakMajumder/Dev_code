@@ -1,6 +1,7 @@
 .template {
   @extend .mb-5;
   position: relative;
+  display: block;
 
   & > *:not(:last-child, :first-child) {
     @include rem(margin-bottom, 10px);
@@ -85,6 +86,15 @@
       min-width: 0;
       padding-left: 4px;
       padding-right: 4px;
+    }
+
+    &--only-btn {
+      a,
+      button {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 }

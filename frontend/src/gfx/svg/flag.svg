@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="28px" viewBox="0 0 25 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>location-24px-outline_flag-complex</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Ready" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Order-detail" transform="translate(-287.000000, -245.000000)" stroke-width="2" stroke="#444444">
+            <g id="Page" transform="translate(20.000000, 20.000000)">
+                <g id="Container" transform="translate(233.166667, 70.000000)">
+                    <g id="Status-Panel" transform="translate(20.000000, 136.000000)">
+                        <g id="Components/Metrics/Full-Copy-7">
+                            <g id="Content" transform="translate(15.000000, 15.000000)">
+                                <g id="location-24px-outline_flag-complex" transform="translate(0.000000, 5.000000)">
+                                    <polyline id="Shape" stroke-linecap="square" points="13.7894737 5.74561404 21.8333333 5.74561404 19.5350877 12.6403509 21.8333333 19.5350877 6.89473684 19.5350877"></polyline>
+                                    <path d="M13.7894737,14.9385965 L0,14.9385965" id="Shape"></path>
+                                    <polyline id="Shape" points="0 1.14912281 13.7894737 1.14912281 13.7894737 14.9385965 6.89473684 19.5350877"></polyline>
+                                    <path d="M0,0 L0,25.2807018" id="Shape" stroke-linecap="square"></path>
+                                    <path d="M6.89473684,19.5350877 L6.89473684,14.9385965" id="Shape" stroke-linecap="square"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

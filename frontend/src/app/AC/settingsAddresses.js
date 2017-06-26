@@ -26,15 +26,16 @@ const getUITest = (dispatch) => {
       });
     }
   })
-  .catch(() => {
+  .catch((error) => {
     dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
+    alert(error); // eslint-disable-line no-alert
   });
 
   // setTimeout(() => {
   //   dispatch({
   //     type: SETTINGS_ADDRESSES_UI_SUCCESS,
   //     payload: { ui }
-  //   })
+  //   });
   // }, 2000);
 };
 
@@ -54,8 +55,8 @@ export const modifyAddress = (data) => {
 
       if (!success) {
         dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
-        dispatch({ type: APP_LOADING_FINISH });
         alert(errorMessage); // eslint-disable-line no-alert
+        dispatch({ type: APP_LOADING_FINISH });
         return;
       }
 
@@ -70,8 +71,10 @@ export const modifyAddress = (data) => {
       dispatch({ type: DIALOG_CLOSE });
       dispatch({ type: APP_LOADING_FINISH });
     })
-    .catch(() => {
+    .catch((error) => {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS_FAILURE });
+      alert(error); // eslint-disable-line no-alert
+      dispatch({ type: APP_LOADING_FINISH });
     });
 
     // setTimeout(() => {

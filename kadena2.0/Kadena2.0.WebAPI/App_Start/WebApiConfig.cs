@@ -22,6 +22,8 @@ using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.WebAPI.Models.OrderDetail;
+using Kadena.Dto.ViewOrder.Responses;
 
 namespace Kadena.WebAPI
 {
@@ -88,23 +90,23 @@ namespace Kadena.WebAPI
                     IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
                 });
 
-                config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.ProductType)
+                config.CreateMap<OrderItem, Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO>().ProjectUsing(p => new Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO(p.OrderItemType)
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,
                     MailingList = new MailingListDTO()
                     {
-                        MailingListID = p.MailingListGuid
+                        MailingListID = p.MailingListId
                     },
                     SKU = new SKUDTO()
                     {
-                        KenticoSKUID = p.SKUID,
+                        KenticoSKUID = p.KenticoSKUId,
                         Name = p.SKUName,
                         SKUNumber = p.SKUNumber
                     },
                     TotalPrice = p.TotalPrice,
                     TotalTax = p.TotalTax,
-                    UnitCount = p.Quantity,
+                    UnitCount = p.UnitCount,
                     UnitOfMeasure = p.UnitOfMeasure,
                     UnitPrice = p.UnitPrice
                 });
@@ -113,7 +115,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
-                    .AfterMap((src, dest) => dest.Price = string.Format("{0:#,0.00}", src.TotalPrice))
+                    .AfterMap((src, dest) => dest.Price = src.PriceText)
                     .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
@@ -148,20 +150,31 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<AddressDialog, AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
+                config.CreateMap<OrderedItem, OrderedItemDTO>();
+                config.CreateMap<OrderedItems, OrderedItemsDTO>();
+                config.CreateMap<OrderDetail, OrderDetailDTO>();
+                config.CreateMap<CommonInfo, CommonInfoDTO>();
+                config.CreateMap<ShippingInfo, ShippingInfoDTO>();
+                config.CreateMap<PaymentInfo,PaymentInfoDTO>();
+                config.CreateMap<PricingInfo,PricingInfoDTO>();                
+                config.CreateMap<Tracking,TrackingDTO>();
+                config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
             });
         }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
+            container.Register<IMailingListClient, MailingListClient>();
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IOrderServiceClient, OrderServiceClient>();
+            container.Register<IOrderSubmitClient, OrderSubmitClient>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
+            container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITemplatedProductService, TemplatedProductService>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);

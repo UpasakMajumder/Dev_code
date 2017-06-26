@@ -1,14 +1,16 @@
 ﻿using CMS.CustomTables;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -18,7 +20,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
-        private MailingListData _container;
+        private MailingListDataDTO _container;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,7 +43,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     GetDictionaryHTML(GetString("Kadena.MailingList.MailType")
                                     , GetString("Kadena.MailingList.MailTypeDescription")
                                     , mailTypes
-                                    , _container?.mailType)));
+                                    , _container?.MailType)));
 
             var products = CustomTableItemProvider.GetItems(_productTableName)
                     .OrderBy("ItemOrder")
@@ -50,7 +52,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
                                     , GetString("Kadena.MailingList.ProductDescription")
                                     , products
-                                    , _container?.productType)));
+                                    , _container?.ProductType)));
 
             var validity = CustomTableItemProvider.GetItems(_validityTableName)
                     .OrderBy("ItemOrder")
@@ -59,13 +61,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
                                     , GetString("Kadena.MailingList.ValidityDescription")
                                     , validity
-                                    , _container != null ? (_container.validTo - _container.createDate).TotalDays.ToString() : null
+                                    , _container != null ? (_container.ValidTo - _container.CreateDate).TotalDays.ToString() : null
                                     )));
 
             if (_container != null)
             {
                 divFileName.CssClass = "input__wrapper input__wrapper--disabled";
-                inpFileName.Value = _container.name;
+                inpFileName.Value = _container.Name;
                 inpFileName.Disabled = true;
             }
         }
@@ -168,12 +170,23 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (inpFile.PostedFile.ContentType == "application/vnd.ms-excel"
-                || inpFile.PostedFile.ContentType == "text/csv")
+            Stream fileStream = null;
+            for(int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+                if (file.ContentLength > 0 
+                    && (file.ContentType == "application/vnd.ms-excel" 
+                    || file.ContentType == "text/csv"))
+                {
+                    fileStream = file.InputStream;
+                    break;
+                }
+            }
+
+            if (fileStream != null)
             {
                 try
                 {
-                    var fileStream = inpFile.PostedFile.InputStream;
                     var fileName = inpFileName.Value;
 
                     var fileId = ServiceHelper.UploadFile(fileStream, fileName);
@@ -187,7 +200,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     }
                     else
                     {
-                        containerId = new Guid(_container.id);
+                        containerId = new Guid(_container.Id);
                         ServiceHelper.RemoveAddresses(containerId);
                     }
 

@@ -718,6 +718,23 @@
     <Compile Include="CMSPages\Kadena\SubmitBid.ashx.cs">
       <DependentUpon>SubmitBid.ashx</DependentUpon>
     </Compile>
+    <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
+      <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
+      <DependentUpon>RichMessage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.designer.cs">
+      <DependentUpon>RichMessage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.cs">
+      <DependentUpon>SpotfireControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.designer.cs">
+      <DependentUpon>SpotfireControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\KSource\BidsList.ascx.cs">
       <DependentUpon>BidsList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -802,6 +819,20 @@
     <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.designer.cs">
       <DependentUpon>DashboardMetrics.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.cs">
+      <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.designer.cs">
+      <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Orders\OrdersList.ascx.cs">
+      <DependentUpon>OrdersList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Orders\OrdersList.ascx.designer.cs">
+      <DependentUpon>OrdersList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -870,13 +901,15 @@
     <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryData.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryDataContainer.cs" />
+    <Compile Include="Old_App_Code\Kadena\Orders\OrderItemHistoryData.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingAddressData.cs" />
-    <Compile Include="Old_App_Code\Kadena\MailingList\MailingListData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -902,6 +935,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
+    <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
@@ -911,6 +946,8 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
+    <Content Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx" />
+    <Content Include="CMSWebParts\Kadena\Orders\OrdersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
@@ -935,6 +972,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\RequestNewProduct.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CMSPages\Kadena\SubmitContactUsForm.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
