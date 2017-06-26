@@ -66,7 +66,7 @@ namespace Kadena.WebAPI.Services
                 Message = string.Empty
             };
 
-            result.UpdateNotFoundMessage(resources.GetResourceString("No results found")); //TODO res string
+            result.UpdateNotFoundMessage(resources.GetResourceString("Kadena.Search.NoResults"));
             return result;
         }
 
@@ -121,7 +121,7 @@ namespace Kadena.WebAPI.Services
                     };
                     resultItem.UseTemplateBtn = new UseTemplateBtn()
                     {
-                        Text = "Go to detail", // TODO configurable
+                        Text = resources.GetResourceString("Kadena.Search.GoToDetailButton"),
                         Url = product.DocumentUrl
                     };
                 }
