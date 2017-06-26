@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kadena.Dto.General;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public class ClientBase
     {
+        private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
+
         protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
@@ -22,11 +25,32 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return content;
         }
 
-        protected async Task<TResult> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
-            string responseContent = await response.Content.ReadAsStringAsync();
-            var submitResponse = JsonConvert.DeserializeObject<TResult>(responseContent);
-            return submitResponse;
+            BaseResponseDto<TResult> result = null;
+
+            try
+            {
+                string responseContent = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
+            }
+            catch (JsonReaderException e)
+            {
+                result = new BaseResponseDto<TResult>
+                {
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new BaseErrorDto
+                    {
+                        Message = _responseIncorrectMessage,
+                        InnerError = new BaseErrorDto
+                        {
+                            Message = e.Message
+                        }
+                    }
+                };
+            }
+            return result;
         }
     }
 }

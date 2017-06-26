@@ -5,16 +5,16 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Helpers
+namespace Kadena.Dto.General
 {
     [DataContract]
-    class AwsResponseMessage<TResponse>
+    public class BaseResponseDto<TResponse>
     {
         [DataMember(Name = "success")]
         public bool Success { get; set; }
 
         [DataMember(Name = "payload")]
-        public TResponse Response { get; set; }
+        public TResponse Payload { get; set; }
 
         [DataMember(Name = "errorMessages")]
         [Obsolete("Will be removed after all microservices will use Error property.")]
@@ -26,19 +26,19 @@ namespace Kadena.Old_App_Code.Helpers
             }
             set
             {
-                Error = new ErrorMessage { Message = value };
+                Error = new BaseErrorDto { Message = value };
             }
         }
 
         [DataMember(Name = "error")]
-        public ErrorMessage Error { get; set; }
+        public BaseErrorDto Error { get; set; }
 
-        public static explicit operator AwsResponseMessage<TResponse>(HttpResponseMessage message)
+        public static explicit operator BaseResponseDto<TResponse>(HttpResponseMessage message)
         {
-            return JsonConvert.DeserializeObject<AwsResponseMessage<TResponse>>(message.Content.ReadAsStringAsync().Result);
+            return JsonConvert.DeserializeObject<BaseResponseDto<TResponse>>(message.Content.ReadAsStringAsync().Result);
         }
 
-        public static explicit operator AwsResponseMessage<TResponse>(HttpWebResponse message)
+        public static explicit operator BaseResponseDto<TResponse>(HttpWebResponse message)
         {
             string resultString = string.Empty;
 
@@ -46,7 +46,7 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 resultString = streamReader.ReadToEnd();
             }
-            return JsonConvert.DeserializeObject<AwsResponseMessage<TResponse>>(resultString);
+            return JsonConvert.DeserializeObject<BaseResponseDto<TResponse>>(resultString);
         }
     }
 }
