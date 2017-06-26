@@ -90,6 +90,22 @@
     }
   }
 
+  &__list-text {
+    &:not(:last-child) {
+      @include rem(margin-right, 3px);
+
+      &:after {
+        content: '/';
+
+        @include rem(margin-left, 5px);
+      }
+    }
+  }
+
+  &__badge {
+    @include rem(margin-right, 3px);
+  }
+
   &__text-appear {
     max-width: 250px;
     position: relative;

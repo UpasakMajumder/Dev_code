@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Product from '../../Products/Search';
+import Product from '../../Product/Search';
 
 class SearchProducts extends Component {
   render() {

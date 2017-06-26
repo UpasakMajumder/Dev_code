@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
+import Pagination from '../../Pagination';
 import Spinner from '../../Spinner';
 import Page from '../../Pages/SearchPage/index';
 import { changePage } from '../../../AC/searchPage';
@@ -14,24 +14,15 @@ class SearchPagePages extends Component {
 
     const pageCount = pagesLength / 6;
 
-    const paginator = pagesLength > 6
-      ? <ReactPaginate pageCount={pageCount}
-                       pageRangeDisplayed={3}
-                       marginPagesDisplayed={1}
-                       onPageChange={(e) => { this.props.changePage(e.selected, 'pagesPage'); }}
-                       initialPage={pagesPage}
-                       previousClassName="pagination__item"
-                       nextClassName="pagination__item"
-                       containerClassName="pagination text--right list--unstyled"
-                       pageClassName="pagination__item"
-                       pageLinkClassName="pagination__page"
-                       activeClassName="pagination__page--active" />
-      : null;
-
     const content = (
       <div>
         {pageList}
-        {paginator}
+        <Pagination pagesNumber={pageCount}
+                    initialPage={0}
+                    itemsOnPage={6}
+                    itemsNumber={pagesLength}
+                    currPage={pagesPage}
+                    onPageChange={(e) => { this.props.changePage(e.selected, 'pagesPage'); }}/>
       </div>
     );
 
