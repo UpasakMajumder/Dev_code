@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SVG from '../../SVG';
+import SVG from '../../../SVG/index';
 
 class AddressCard extends Component {
   static createAddressElement(content) {
@@ -32,17 +32,15 @@ class AddressCard extends Component {
       : null;
 
     return (
-      <div>
-        <div className="adress-card">
-          {street1}
-          {street2}
-          {city}
-          <span>{state} {zip}</span>
+      <div className="adress-card">
+        {street1}
+        {street2}
+        {city}
+        <span>{state} {zip}</span>
 
-          <div className="adress-card__btn-block">
-            {editButton}
-            {removeButton}
-          </div>
+        <div className="adress-card__btn-block">
+          {editButton}
+          {removeButton}
         </div>
       </div>
     );

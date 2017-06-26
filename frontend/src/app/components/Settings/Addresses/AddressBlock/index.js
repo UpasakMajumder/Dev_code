@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AddressCard from './AddressCard';
-import SVG from '../../SVG';
+import AddressCard from '../AddressCard';
+import SVG from '../../../SVG/index';
 
 class AddressBlock extends Component {
   render() {
