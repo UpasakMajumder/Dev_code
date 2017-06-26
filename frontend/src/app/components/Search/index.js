@@ -8,12 +8,27 @@ class Search extends Component {
   constructor() {
     super();
 
+    this.state = {
+      workingProcess: 0
+    };
+
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(query) {
+  handleChange(event) {
+    const { target } = event;
+    const { value: query } = target;
+
     this.props.changeSearchQuery(query);
-    if (query.length > 3) this.props.sendQuery(query);
+
+    if (query.length > 3) {
+      clearTimeout(this.state.workingProcess);
+      const workingProcess = setTimeout(() => {
+        this.props.sendQuery(query);
+      }, 1000);
+      this.setState({ workingProcess });
+    }
+
     if (!query.length) this.props.closeDropdown();
   }
 

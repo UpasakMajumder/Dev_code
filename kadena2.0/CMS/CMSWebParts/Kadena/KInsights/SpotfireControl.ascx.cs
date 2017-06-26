@@ -10,9 +10,15 @@ namespace Kadena.CMSWebParts.Kadena.KInsights
             get { return GetStringValue("FileUrl", string.Empty); }
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        public override void OnContentLoaded()
         {
-            if (!IsPostBack)
+            base.OnContentLoaded();
+            SetupControl();
+        }
+
+        protected void SetupControl()
+        {
+            if (!StopProcessing)
             {
                 ltSpotfire.Text = $@"<div class='col-lg-6'>
                                         <div id='spotfire-{Guid.NewGuid()}' data-url='{FileUrl}' class='spotfire__item js-spotfire'>

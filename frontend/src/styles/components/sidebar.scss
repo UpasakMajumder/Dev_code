@@ -76,12 +76,6 @@ $sidebar-item-padding-y--shrinked: 5px;
     text-decoration: none;
     color: $font-grey;
     flex-direction: column;
-
-    &[disabled] {
-      opacity: .5;
-      pointer-events: none;
-      cursor: crosshair;
-    }
   }
 
   &__nav-item {
@@ -89,6 +83,18 @@ $sidebar-item-padding-y--shrinked: 5px;
     margin-bottom: 2px;
     white-space: nowrap;
     cursor: pointer;
+
+    &[disabled] {
+      cursor: default;
+      opacity: .5;
+      pointer-events: none;
+      user-select: none;
+
+      & * {
+        pointer-events: none;
+        user-select: none;
+      }
+    }
 
     svg {
       @extend .icon-star;

@@ -19,7 +19,7 @@ namespace AutomatedTests.Tests
             //login
             var login = new Login();
             login.Open();
-            login.FillLogin(TestUser.Name, TestUser.Password);
+            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
             var dashboard = login.Submit();
             dashboard.WaitForKadenaPageLoad();
 
@@ -30,6 +30,8 @@ namespace AutomatedTests.Tests
 
             //select mailing list and submit it
             newKList.SelectMailingList();
+            string mailingListName = StringHelper.RandomString(7);
+            newKList.FillOutMailingListName(mailingListName);
             var mapColumns = newKList.SubmitMailingList();
 
             //confirm mapping
@@ -37,6 +39,11 @@ namespace AutomatedTests.Tests
 
             //verify if the list is being processed
             Assert.True(listProcessing.WasMailingListSubmitted());
+
+            //go back to K-List and check if the list is there
+            kList.Open();
+            Assert.IsTrue(kList.IsMailingListOnThePage(mailingListName));
+            Assert.IsTrue(kList.WereAddressesValidated());
         }
     }
 }

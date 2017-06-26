@@ -28,7 +28,7 @@ export const sendQuery = (query) => {
 
     axios({
       method: 'post',
-      url: SEARCH.queryUrl,
+      url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
       data: {
         query
       }
