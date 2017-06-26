@@ -1,5 +1,4 @@
 ﻿using Kadena.WebAPI.Contracts;
-using AutoMapper;
 using CMS.Helpers;
 using System;
 using CMS.Membership;
@@ -12,16 +11,7 @@ namespace Kadena.WebAPI.Services
 {
     public class KenticoSearchService : IKenticoSearchService
     {
-        private readonly IMapper mapper;
-        private readonly IKenticoResourceService resources;
-
-        public KenticoSearchService(IMapper mapper, IKenticoResourceService resources)
-        {
-            this.mapper = mapper;
-            this.resources = resources;
-        }
-
-        public IEnumerable<DataRow> Search(string phrase, string indexName, string path, bool checkPermissions)
+        public IEnumerable<DataRow> Search(string phrase, string indexName, string path, int results, bool checkPermissions)
         {
             var index = SearchIndexInfoProvider.GetSearchIndexInfo(indexName);
 
@@ -41,9 +31,9 @@ namespace Kadena.WebAPI.Services
                 User = (UserInfo)MembershipContext.AuthenticatedUser,
                 SearchIndexes = index.IndexName,
                 StartingPosition = 0,
-                DisplayResults = 3,
+                DisplayResults = results,
                 NumberOfProcessedResults = 5000,
-                NumberOfResults = 3,
+                NumberOfResults = results,
                 AttachmentWhere = String.Empty,
                 AttachmentOrderBy = String.Empty,
             };

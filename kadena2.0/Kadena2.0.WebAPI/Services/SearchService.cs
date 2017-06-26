@@ -3,8 +3,8 @@ using AutoMapper;
 using System.Data;
 using Kadena.WebAPI.Models.Search;
 using System.Collections.Generic;
-using System;
 using System.Linq;
+using CMS.Helpers;
 
 namespace Kadena.WebAPI.Services
 {
@@ -23,10 +23,10 @@ namespace Kadena.WebAPI.Services
             this.kenticoProvider = kenticoProvider;
         }
 
-        public SearchResultPage Search(string phrase)
+        public SearchResultPage Search(string phrase, int results = 100)
         {
-            var searchResultPages = SearchPages(phrase);
-            var searchResultProducts = SearchProducts(phrase);
+            var searchResultPages = SearchPages(phrase, results);
+            var searchResultProducts = SearchProducts(phrase, results);
 
             return new SearchResultPage()
             {
@@ -35,10 +35,10 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public AutocompleteResponse Autocomplete(string phrase)
+        public AutocompleteResponse Autocomplete(string phrase, int results = 3)
         {
-            var searchResultPages = SearchPages(phrase);
-            var searchResultProducts = SearchProducts(phrase);
+            var searchResultPages = SearchPages(phrase, results);
+            var searchResultProducts = SearchProducts(phrase, results);
 
             var result = new AutocompleteResponse()
             {
@@ -53,29 +53,29 @@ namespace Kadena.WebAPI.Services
                     Items = searchResultProducts.Select(p => new AutocompleteProduct()
                         {
                             Id = p.Id,
-                            Category = "Cat", // TODO
-                            Image = "", // TODO
+                            Category = p.Category,
+                            Image = p.ImgUrl,
                             Stock = p.Stock,
                             Title = p.Title,
-                            Url = "" //TODO
+                            Url = kenticoProvider.GetDocumentUrl(p.Id)
                         }
                     ).ToList()
                 },
                 Message = string.Empty
             };
 
-            result.UpdateNotFoundMessage(resources.GetResourceString("TODO")); //TODO res string
+            result.UpdateNotFoundMessage(resources.GetResourceString("No results found")); //TODO res string
             return result;
         }
 
-        public List<ResultItemPage> SearchPages(string phrase)
+        public List<ResultItemPage> SearchPages(string phrase, int results)
         {
             var searchResultPages = new List<ResultItemPage>();
-            var datarowsResults = kenticoSearch.Search(phrase, "KDA_PagesIndex", "/%", true);
+            var datarowsResults = kenticoSearch.Search(phrase, "KDA_PagesIndex", "/%", results, true);
             
             foreach (DataRow dr in datarowsResults)
             {
-                int documentId = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
+                int documentId = GetDocumentId(dr[0]);                
 
                 var resultItem = new ResultItemPage()
                 {
@@ -91,40 +91,52 @@ namespace Kadena.WebAPI.Services
             return searchResultPages;
         }
 
-        public List<ResultItemProduct> SearchProducts(string phrase)
+        public List<ResultItemProduct> SearchProducts(string phrase, int results)
         {
             var searchResultProducts = new List<ResultItemProduct>();
-            var datarowsResults = kenticoSearch.Search(phrase, "KDA_ProductsIndex", "/Products/%", true);
+            var datarowsResults = kenticoSearch.Search(phrase, "KDA_ProductsIndex", "/Products/%", results,  true);
 
             foreach (DataRow dr in datarowsResults)
             {
+                int documentId = GetDocumentId(dr[0]);
                 var resultItem = new ResultItemProduct()
                 {
-                    Breadcrumbs = new List<string>() { "fakeBreadcrumbs" },
-                    ImgUrl = dr[7].ToString().Replace("~", ""),
+                    Id = documentId,
+                    Title = dr[4].ToString(),
+                    Breadcrumbs = new List<string>() { "fakeBreadcrumbs" }, // TODO
+                    ImgUrl = URLHelper.GetAbsoluteUrl(dr[7].ToString()),
                     IsFavourite = false,
-                    Stock = new Stock()
-                    {
-                        Text = dr[4].ToString(),
-                        Type = ""
-                    },
-                    UseTemplateBtn = new UseTemplateBtn()
-                    {
-                        Text = "",
-                        Url = ""
-                    }
                 };
 
+                var product = kenticoProvider.GetProductByDocumentId(documentId);
+                if (product != null)
+                {
+                    resultItem.Category = product.Category;
+                    resultItem.Stock = new Stock()
+                    {
+                        Text = $"{product.StockItems} pcs in stock",
+                        Type = product.Availability
+                    };
+                    /* resultItem.UseTemplateBtn = new UseTemplateBtn()
+                    {
+                        Text = "Use template", // TODO configurable
+                        Url = product.Template // TODO
+                    }*/
+                }
+
+
                 searchResultProducts.Add(resultItem);
-                        
-                // var nodeID = Convert.ToInt32(((dr[0].ToString()).Split(";".ToCharArray())[1]).Split("_".ToCharArray())[0]);
-                // var node = tree.SelectSingleNode(nodeID, LocalizationContext.CurrentCulture.CultureCode);
-                // resultItem.Url = node.AbsoluteURL;
             }
 
             return searchResultProducts;
         }
 
-
+        private int GetDocumentId(object o)
+        {
+            int documentId = 0;
+            var parsedId = o.ToString().Split(new char[]{';'})?[0].Split(new char[] {'_'})[0];
+            int.TryParse(parsedId, out documentId);
+            return documentId;
+        }
     }
 }

@@ -5,6 +5,6 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IKenticoSearchService
     {
-        IEnumerable<DataRow> Search(string phrase, string indexName, string path, bool checkPermissions);
+        IEnumerable<DataRow> Search(string phrase, string indexName, string path, int results, bool checkPermissions);
     }
 }

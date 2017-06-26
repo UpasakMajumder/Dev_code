@@ -385,6 +385,23 @@ namespace Kadena.WebAPI.Services
             return doc?.AbsoluteURL ?? "#";
         }
 
+        public Product GetProductByDocumentId(int documentId)
+        {
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
+            int availableItems = sku?.SKUAvailableItems ?? 0;
+
+            return new Product()
+            {
+                Id = documentId,
+                Name = doc.DocumentName,
+                DocumentUrl = doc.AbsoluteURL,
+                Availability = availableItems > 0 ? "available" : "out",
+                StockItems = availableItems,
+                Category = doc.Parent?.DocumentName ?? string.Empty
+            };
+        }
+
         private decimal GetDynamicPrice(int documentId, int quantity)
         {
             var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
@@ -466,5 +483,7 @@ namespace Kadena.WebAPI.Services
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
+
+
     }
 }
