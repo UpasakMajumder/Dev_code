@@ -78,7 +78,7 @@ namespace Kadena.WebAPI.Services
 
                 Totals = new Totals()
                 {
-                    Title = resources.GetResourceString("Kadena.Checkout.Totals.Title"),
+                    Title = kenticoProvider.UserCanSeePrices() ? resources.GetResourceString("Kadena.Checkout.Totals.Title") : string.Empty,
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
                     // will be assigned after computing TotalTax, which may be changed aftes selecting default shipping or address
                 },
@@ -100,17 +100,24 @@ namespace Kadena.WebAPI.Services
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
+            
             checkoutPage.DeliveryMethods.UpdateSummaryText(
-                    resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
-                    resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
-                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
-                    resources.GetResourceString("Kadena.Checkout.CustomerPrice")
-                );
+                resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
+                resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
+                resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
+                resources.GetResourceString("Kadena.Checkout.CustomerPrice")
+            );
+                       
             checkoutPage.SetDisplayType();
+            SetPricesVisibility(checkoutPage);
 
-            var totals = kenticoProvider.GetShoppingCartTotals();
-            totals.TotalTax = await EstimateTotalTax();
-            checkoutPage.Totals.Items = MapTotals(totals);
+            if (kenticoProvider.UserCanSeePrices())
+            {
+                var totals = kenticoProvider.GetShoppingCartTotals();
+                totals.TotalTax = await EstimateTotalTax();
+                checkoutPage.Totals.Items = MapTotals(totals);
+            }
+            
 
             return checkoutPage;
         }
@@ -184,6 +191,28 @@ namespace Kadena.WebAPI.Services
             int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
             kenticoProvider.SelectShipping(defaultMethodId);
             page.DeliveryMethods.CheckMethod(defaultMethodId);
+        }
+
+        private void SetPricesVisibility(CheckoutPage page)
+        {
+            if (!kenticoProvider.UserCanSeePrices())
+            {
+                foreach (DeliveryCarrier carrier in page.DeliveryMethods.items)
+                {
+                    carrier.PricePrefix = string.Empty;
+                    carrier.Price = string.Empty;
+
+                    carrier.items.ForEach(option => {
+                        option.Price = string.Empty;
+                        option.PricePrefix = string.Empty; });
+                }
+
+                page.Products.Items.ForEach(item =>
+                {
+                    item.PriceText = string.Empty;
+                    item.PricePrefix = string.Empty;
+                });
+            }
         }
 
         public List<PaymentMethod> ArrangePaymentMethods(PaymentMethod[] allMethods)
