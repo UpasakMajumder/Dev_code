@@ -14,7 +14,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -31,7 +31,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -48,7 +48,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -65,7 +65,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -82,7 +82,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -99,7 +99,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -116,7 +116,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -133,7 +133,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -150,7 +150,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -167,7 +167,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -184,7 +184,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -201,7 +201,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -218,7 +218,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -235,7 +235,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -252,7 +252,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -269,7 +269,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -286,7 +286,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -303,7 +303,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -320,7 +320,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -337,7 +337,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -354,7 +354,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -371,7 +371,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -388,7 +388,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -405,7 +405,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -422,7 +422,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -439,7 +439,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -456,7 +456,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -473,7 +473,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -490,7 +490,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     },
@@ -507,7 +507,7 @@ export default {
         "text": "150 pcs in stock"
       },
       "useTemplateBtn": {
-        "text": "Use template",
+        "text": "Go to detail",
         "url": "#"
       }
     }
