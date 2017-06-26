@@ -8,6 +8,9 @@
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:UniGrid runat="server" ID="grdOrders">
         <GridColumns>
+            <ug:Column Name="IDAndInvoice" Source="OrderNumber" ExternalSourceName="IDAndInvoice"
+                Caption="Order Number" Wrap="false" />
+            
         </GridColumns>
     </cms:UniGrid>
 </asp:Content>
