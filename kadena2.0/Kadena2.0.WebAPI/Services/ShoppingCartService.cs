@@ -200,21 +200,9 @@ namespace Kadena.WebAPI.Services
         {
             if (!kenticoProvider.UserCanSeePrices())
             {
-                foreach (DeliveryCarrier carrier in page.DeliveryMethods.items)
-                {
-                    carrier.PricePrefix = string.Empty;
-                    carrier.Price = string.Empty;
+                page.DeliveryMethods.HidePrices();
 
-                    carrier.items.ForEach(option => {
-                        option.Price = string.Empty;
-                        option.PricePrefix = string.Empty; });
-                }
-
-                page.Products.Items.ForEach(item =>
-                {
-                    item.PriceText = string.Empty;
-                    item.PricePrefix = string.Empty;
-                });
+                page.Products.HidePrices();
             }
         }
 
