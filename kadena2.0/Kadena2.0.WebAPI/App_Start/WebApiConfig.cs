@@ -27,7 +27,7 @@ using Kadena.WebAPI.Models.RecentOrders;
 using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
-using System.Globalization;
+using Kadena.WebAPI.Factories;
 
 namespace Kadena.WebAPI
 {
@@ -195,7 +195,7 @@ namespace Kadena.WebAPI
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
             container.Register<IOrderViewClient, OrderViewClient>();
-            container.Register<IOrderListService, OrderListService>();
+            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.WithWebApi(apiConfig);
         }

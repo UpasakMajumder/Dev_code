@@ -12,11 +12,10 @@ namespace Kadena.WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
 
-        public DashboardController(IOrderListService orderService, IMapper mapper)
+        public DashboardController(IOrderListServiceFactory orderListServiceFactory, IMapper mapper)
         {
             _mapper = mapper;
-            _orderService = orderService;
-            _orderService.PageCapacityKey = "KDA_DashboardOrdersPageCapacity";
+            _orderService = orderListServiceFactory.GetDashboard();
         }
 
         [HttpGet]

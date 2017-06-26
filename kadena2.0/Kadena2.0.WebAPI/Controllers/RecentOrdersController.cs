@@ -15,12 +15,10 @@ namespace Kadena.WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
 
-        public RecentOrdersController(IOrderListService orderService, IMapper mapper)
+        public RecentOrdersController(IOrderListServiceFactory orderListServiceFactory, IMapper mapper)
         {
             _mapper = mapper;
-            _orderService = orderService;
-            _orderService.PageCapacityKey = "KDA_RecentOrdersPageCapacity";
-            _orderService.EnablePaging = true;
+            _orderService = orderListServiceFactory.GetRecentOrders();
         }
 
         [HttpGet]

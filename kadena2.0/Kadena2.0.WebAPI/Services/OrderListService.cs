@@ -40,7 +40,9 @@ namespace Kadena.WebAPI.Services
 
         public bool EnablePaging { get; set; }
 
-        public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoLogger logger)
+        public OrderListService(IMapper mapper, IOrderViewClient orderClient,
+            IKenticoResourceService kenticoResources, IKenticoProviderService kentico,
+            IKenticoLogger logger)
         {
             _mapper = mapper;
             _orderClient = orderClient;
