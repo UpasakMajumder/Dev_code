@@ -22,7 +22,7 @@ namespace Kadena.Old_App_Code.Helpers
         {
             get
             {
-                return Error.Message;
+                return Error?.Message ?? string.Empty;
             }
             set
             {
