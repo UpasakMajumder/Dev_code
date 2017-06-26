@@ -389,17 +389,24 @@ namespace Kadena.WebAPI.Services
         {
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
-            int availableItems = sku?.SKUAvailableItems ?? 0;
 
-            return new Product()
+            var product = new Product()
             {
                 Id = documentId,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
-                Availability = availableItems > 0 ? "available" : "out",
-                StockItems = availableItems,
-                Category = doc.Parent?.DocumentName ?? string.Empty
+                Category = doc.Parent?.DocumentName ?? string.Empty,
+                
             };
+
+            if (sku != null)
+            {
+                product.SkuImageUrl = URLHelper.GetAbsoluteUrl(sku.SKUImagePath);
+                product.StockItems = sku.SKUAvailableItems;
+                product.Availability = sku.SKUAvailableItems > 0 ? "available" : "out";
+            }
+
+            return product;
         }
 
         private decimal GetDynamicPrice(int documentId, int quantity)

@@ -33,7 +33,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/search")]
         [AuthorizationFilter]
         [QuerystringParameterRequired("phrase")]

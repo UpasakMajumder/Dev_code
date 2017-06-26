@@ -8,5 +8,6 @@
         public string Availability { get; set; }
         public int  StockItems { get; set; }
         public string DocumentUrl { get; set; }
+        public string SkuImageUrl { get; set; }
     }
 }

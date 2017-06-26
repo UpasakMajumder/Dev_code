@@ -5,6 +5,7 @@ using Kadena.WebAPI.Models.Search;
 using System.Collections.Generic;
 using System.Linq;
 using CMS.Helpers;
+using System.Web;
 
 namespace Kadena.WebAPI.Services
 {
@@ -44,12 +45,12 @@ namespace Kadena.WebAPI.Services
             {
                 Pages = new AutocompletePages()
                 {
-                    Url = "/",
+                    Url = $"/serp?phrase={HttpUtility.UrlEncode(phrase)}&tab=pages",
                     Items = mapper.Map<List<AutocompletePage>>(searchResultPages)
                 },
                 Products = new AutocompleteProducts()
                 {
-                    Url = "/",
+                    Url = $"/serp?phrase={HttpUtility.UrlEncode(phrase)}&tab=products",
                     Items = searchResultProducts.Select(p => new AutocompleteProduct()
                         {
                             Id = p.Id,
@@ -104,24 +105,24 @@ namespace Kadena.WebAPI.Services
                     Id = documentId,
                     Title = dr[4].ToString(),
                     Breadcrumbs = kenticoProvider.GetBreadcrumbs(documentId),
-                    ImgUrl = URLHelper.GetAbsoluteUrl(dr[7].ToString()),
                     IsFavourite = false,
                 };
 
                 var product = kenticoProvider.GetProductByDocumentId(documentId);
                 if (product != null)
                 {
+                    resultItem.ImgUrl = product.SkuImageUrl;
                     resultItem.Category = product.Category;
                     resultItem.Stock = new Stock()
                     {
                         Text = $"{product.StockItems} pcs in stock",
                         Type = product.Availability
                     };
-                    /* resultItem.UseTemplateBtn = new UseTemplateBtn()
+                    resultItem.UseTemplateBtn = new UseTemplateBtn()
                     {
-                        Text = "Use template", // TODO configurable
-                        Url = product.Template // TODO
-                    }*/
+                        Text = "Go to detail", // TODO configurable
+                        Url = product.DocumentUrl
+                    };
                 }
 
 
