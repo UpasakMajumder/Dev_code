@@ -25,8 +25,8 @@ const Select = (props) => {
           <option disabled={true}>{label}</option>
           {optionList}
         </select>
-        {errorElement}
       </div>
+      {errorElement}
     </div>
   );
 };
