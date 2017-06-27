@@ -1,11 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const HeaderShadow = (props) => {
-  return props.isShownHeaderShadow ? <div className="header-overlay"> </div> : null;
+const HeaderShadow = ({ isShownHeaderShadow }) => {
+  return isShownHeaderShadow ? <div className="header-overlay"> </div> : null;
 };
 
-export default connect((state) => {
-  const { isShownHeaderShadow } = state;
-  return { isShownHeaderShadow };
-}, {})(HeaderShadow);
+export default connect(({ isShownHeaderShadow }) => ({ isShownHeaderShadow }), {})(HeaderShadow);
