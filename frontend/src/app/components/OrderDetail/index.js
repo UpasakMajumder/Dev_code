@@ -11,12 +11,13 @@ import { getSearchObj } from '../../helpers/location';
 
 class OrderDetail extends Component {
   componentDidMount() {
+    const { getUI } = this.props;
     const { orderID } = getSearchObj();
 
     if (orderID) {
-      this.props.getUI(orderID);
+      getUI(orderID);
     } else {
-      this.props.getUI('');
+      getUI('');
     }
   }
 
@@ -53,9 +54,6 @@ class OrderDetail extends Component {
   }
 }
 
-export default connect((state) => {
-  const { orderDetail } = state;
-  return { orderDetail };
-}, {
+export default connect(({ orderDetail }) => ({ orderDetail }), {
   getUI
 })(OrderDetail);

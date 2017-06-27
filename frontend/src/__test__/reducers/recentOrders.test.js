@@ -1,7 +1,7 @@
 import reducer from '../../app/reducers/recentOrders';
 import configureStore from '../../app/store';
 import { GET_RECENT_ORDERS_HEADINGS_SUCCESS, GET_RECENT_ORDERS_ROWS_SUCCESS } from '../../app/constants';
-import { headings, pageInfo, rows1 } from '../../app/testServices/recentOrders';
+import { headings, pageInfo, rows1 } from '../../app/AC/_testServices/recentOrders';
 
 describe('recentOrders reducer', () => {
   const defaultState = {

@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SVG from '../../SVG';
 
-export default ({ ui }) => {
+const PaymentInfo = ({ ui }) => {
   const { title, paymentIcon, paidBy, paymentDetail, date } = ui;
 
   return (
@@ -15,3 +16,15 @@ export default ({ ui }) => {
     </div>
   );
 };
+
+PaymentInfo.propTypes = {
+  ui: PropTypes.shape({
+    title: PropTypes,
+    paymentIcon: PropTypes,
+    paidBy: PropTypes,
+    paymentDetail: PropTypes,
+    date: PropTypes
+  })
+};
+
+export default PaymentInfo;
