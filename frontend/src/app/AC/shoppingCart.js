@@ -260,7 +260,7 @@ export const checkPDFAvailability = () => {
           dispatch({
             type: CHECKOUT_ASK_PDF_SUCCESS,
             payload: {
-              isWaitingPDF: payload
+              isWaitingPDF: !payload // true -> is bad for service and good for me
             }
           });
         })
