@@ -1,20 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Breadcrumbs(props) {
-  const { crumbs } = props;
-
-  const items = crumbs.map((crumb) => {
-    const { title, link } = crumb;
-    return <a key={title} href={link}>{title}</a>;
-  });
+const Breadcrumbs = ({ crumbs }) => {
+  const items = crumbs.map(crumb => <a key={crumb.title} href={crumb.link}>{crumb.title}</a>);
 
   return (
     <div className="breadcrumbs">
-      { items }
+      {items}
     </div>
   );
-}
+};
 
 Breadcrumbs.propTypes = {
   crumbs: PropTypes.array.isRequired

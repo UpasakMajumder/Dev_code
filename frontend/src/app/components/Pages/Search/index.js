@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Page(props) {
-  const { url, title } = props;
-  return <a href ={url}>{title}</a>;
-}
+const Page = ({ url, title }) => <a href={url}>{title}</a>;
 
 Page.propTypes = {
   url: PropTypes.string.isRequired,

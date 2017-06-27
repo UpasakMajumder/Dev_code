@@ -5,17 +5,11 @@ import SearchDropdown from './SearchDropdown';
 import { changeSearchQuery, closeDropdown, sendQuery } from '../../AC/search';
 
 class Search extends Component {
-  constructor() {
-    super();
+  state = {
+    workingProcess: 0
+  };
 
-    this.state = {
-      workingProcess: 0
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = (event) => {
     const { target } = event;
     const { value: query } = target;
 
@@ -35,20 +29,18 @@ class Search extends Component {
   render() {
     const { query, products, pages, message, areResultsShown } = this.props;
 
-    const content = (
+    return (
       <div>
         <SearchInput changeValue={this.handleChange}
                      closeDropdown={this.props.closeDropdown}
                      searchPageUrl={products ? products.url : undefined}
                      value={query} />
-          <SearchDropdown areResultsShown={areResultsShown}
-                          products={products}
-                          pages={pages}
-                          message={message} />
+        <SearchDropdown areResultsShown={areResultsShown}
+                        products={products}
+                        pages={pages}
+                        message={message} />
       </div>
     );
-
-    return content;
   }
 }
 

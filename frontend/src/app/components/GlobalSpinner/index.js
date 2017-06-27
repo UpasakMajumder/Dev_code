@@ -5,9 +5,7 @@ import Spinner from '../Spinner';
 class GlobalSpinner extends Component {
   render() {
     const { isLoading } = this.props;
-
     const spinner = <div className="spinner__wrapper"><Spinner /></div>;
-
     return isLoading ? spinner : null;
   }
 }

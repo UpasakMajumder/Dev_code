@@ -13,12 +13,6 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      loginEmail: '',
-      password: '',
-      isKeepMeLoggedIn: false
-    };
-
     // from config
     this.emailText = LOGIN.email;
     this.emailPlaceholder = LOGIN.emailPlaceholder;
@@ -33,6 +27,12 @@ class Login extends Component {
       }
     });
   }
+
+  state = {
+    loginEmail: '',
+    password: '',
+    isKeepMeLoggedIn: false
+  };
 
   handleLoginEmailChange(e) {
     this.setState({ loginEmail: e.target.value });
