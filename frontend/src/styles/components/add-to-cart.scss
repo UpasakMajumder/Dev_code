@@ -37,7 +37,8 @@
     }
 
     input:not(:first-child),
-    button:not(:first-child) {
+    button:not(:first-child),
+    a:not(:first-child) {
       @include rem(margin-left, 22px);
     }
 
