@@ -8,16 +8,21 @@
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:UniGrid runat="server" ID="grdOrders">
         <GridColumns>
-            <ug:Column Name="IDAndInvoice" Source="Id" 
-                Caption="$Kadena.OrdersList.OrderNumber$" Wrap="false" />
-            <ug:Column Name="CustomerName"
-                Caption="$Kadena.OrdersList.CustomerName$" Source="CustomerName" Wrap="false" />
-            <ug:Column Name="Created"
-                Caption="$Kadena.OrdersList.CreatedDate$" Source="CreateDate" Wrap="false" />
-            <ug:Column Name="TotalPrice"
-                Caption="$Kadena.OrdersList.TotalPrice$" Source="TotalPrice" Wrap="false" />
-            <ug:Column Name="Status"
-                Caption="$Kadena.OrdersList.OrderStatus$" Source="Status" Wrap="false" />
+            <ug:Column runat="server" Name="Id" Wrap="false"
+                Source="Id" 
+                Caption="$Kadena.OrdersList.OrderNumber$" />
+            <ug:Column runat="server" Name="CustomerName" Wrap="false"
+                Source="CustomerName"
+                Caption="$Kadena.OrdersList.CustomerName$" />
+            <ug:Column runat="server" Name="Created" Wrap="false"
+                Source="CreateDate"
+                Caption="$Kadena.OrdersList.CreatedDate$" />
+            <ug:Column runat="server" Name="TotalPrice" Wrap="false"
+                Source="TotalPrice"
+                Caption="$Kadena.OrdersList.TotalPrice$" />
+            <ug:Column runat="server" Name="Status" Wrap="false"
+                Source="Status"
+                Caption="$Kadena.OrdersList.OrderStatus$" />
         </GridColumns>
     </cms:UniGrid>
 </asp:Content>
