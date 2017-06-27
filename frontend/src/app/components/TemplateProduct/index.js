@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Stock from '../Stock';
-import Link from '../Link';
 
 class TemplateProduct extends Component {
   state = {
@@ -44,7 +43,7 @@ class TemplateProduct extends Component {
 
         <div className="template__use template__use--only-btn">
           {/* <input type="number" className="input__text template__input" value={templateQuantity} onChange={(e) => { this.handleChange(e.target.value); }} min="1" /> */}
-          <Link text={btnText} href={btnUrl} type="action"/>
+          <a href={btnUrl} className="btn-action">{btnText}</a>
         </div>
       </a>
     );
@@ -56,14 +55,14 @@ TemplateProduct.propTypes = {
   stock: PropTypes.shape({
     type: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
-  }),
+  }).isRequired,
   useTemplateBtn: PropTypes.shape({
     url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
-  }),
+  }).isRequired,
   isFavourite: PropTypes.bool,
   imgUrl: PropTypes.string,
-  breadcrumbs: PropTypes.arrayOf(PropTypes.string)
+  breadcrumbs: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default TemplateProduct;

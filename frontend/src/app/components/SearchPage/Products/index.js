@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Spinner from '../../Spinner';
-import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
-import TemplateProduct from '../../TemplateProduct';
 import Pagination from '../../Pagination';
-import { paginationFilter } from '../../../helpers/array';
+import TemplateProduct from '../../TemplateProduct';
 import { getSearchObj } from '../../../helpers/location';
+import { paginationFilter } from '../../../helpers/array';
+import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 
 class SearchPageProducts extends Component {
+  static propTypes = {
+    changePage: PropTypes.func.isRequired,
+    filteredProducts: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      stock: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired
+      }).isRequired,
+      useTemplateBtn: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired
+      }).isRequired,
+      isFavourite: PropTypes.bool,
+      imgUrl: PropTypes.string,
+      breadcrumbs: PropTypes.arrayOf(PropTypes.string).isRequired
+    })),
+    productsPage: PropTypes.PropTypes.number.isRequired,
+    productsLength: PropTypes.PropTypes.number.isRequired,
+    productsPaginationLimit: PropTypes.number.isRequired
+  };
 
   componentDidMount() {
     const { phrase } = getSearchObj();
+    const { getUI, setPaginationLimit } = this.props;
 
     if (phrase) {
-      this.props.getUI(phrase);
+      getUI(phrase);
     } else {
-      this.props.getUI('');
+      getUI('');
     }
 
     function changePaginationLimit(callback) {
@@ -28,19 +50,15 @@ class SearchPageProducts extends Component {
       callback('productsPaginationLimit', 8);
     }
 
-    changePaginationLimit(this.props.setPaginationLimit);
-    window.addEventListener('resize', () => changePaginationLimit(this.props.setPaginationLimit));
+    changePaginationLimit(setPaginationLimit);
+    window.addEventListener('resize', () => changePaginationLimit(setPaginationLimit));
   }
 
   render() {
-    const { filteredProducts, productsPage, productsLength, productsPaginationLimit } = this.props;
+    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, changePage } = this.props;
 
     const productList = filteredProducts.map((product) => {
-      return (
-        <div key={product.id} className="col-lg-4 col-xl-3">
-          <TemplateProduct {...product} />
-        </div>
-      );
+      return <div key={product.id} className="col-lg-4 col-xl-3"><TemplateProduct {...product} /></div>;
     });
 
     const pageCount = productsLength / productsPaginationLimit;
@@ -55,7 +73,8 @@ class SearchPageProducts extends Component {
                     itemsOnPage={productsPaginationLimit}
                     itemsNumber={productsLength}
                     currPage={productsPage}
-                    onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}/>
+                    onPageChange={(e) => { changePage(e.selected, 'productsPage'); }}
+        />
       </div>
     );
 
