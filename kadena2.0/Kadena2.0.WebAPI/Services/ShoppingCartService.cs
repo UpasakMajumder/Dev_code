@@ -507,7 +507,7 @@ namespace Kadena.WebAPI.Services
                     Tracking = new Tracking()
                     {
                         Text = "Track your packages",
-                        Url = string.Empty // TODO Track your package url unkinown
+                        Url = string.Empty // TODO Track your package url unknown
                     }
                 },
                 OrderedItems = new OrderedItems()
@@ -542,7 +542,7 @@ namespace Kadena.WebAPI.Services
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
-                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", //todo switch by prod type
+                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", 
                 ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
                 TrackingId = i.TrackingId

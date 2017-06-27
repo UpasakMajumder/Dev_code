@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -62,6 +62,16 @@
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
+    <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
+    <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />
+    <Compile Include="Search\Responses\PageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductDTO.cs" />
+    <Compile Include="Search\Responses\ProductDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteResponseDTO.cs" />
+    <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
+    <Compile Include="Search\Responses\StockDTO.cs" />
+    <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
     <Compile Include="Order\OrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
@@ -79,10 +89,10 @@
     <Compile Include="Settings\IdDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />

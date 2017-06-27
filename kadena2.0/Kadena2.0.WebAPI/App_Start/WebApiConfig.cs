@@ -18,17 +18,19 @@ using Kadena2.MicroserviceClients.Clients;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
 using Kadena.WebAPI.Models.Settings;
+using Kadena.Dto.Search.Responses;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.WebAPI.Models.RecentOrders;
 using Kadena.Dto.RecentOrders;
+using Kadena.WebAPI.Models.Search;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.WebAPI.Factories;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 
 namespace Kadena.WebAPI
 {
@@ -166,6 +168,17 @@ namespace Kadena.WebAPI
                 config.CreateMap<PricingInfo,PricingInfoDTO>();                
                 config.CreateMap<Tracking,TrackingDTO>();
                 config.CreateMap<PricingInfoItem,PricingInfoItemDTO>();
+				config.CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
+                config.CreateMap<ResultItemPage, PageDTO>();
+                config.CreateMap<ResultItemProduct, ProductDTO>();
+                config.CreateMap<UseTemplateBtn, UseTemplateBtnDTO>();
+                config.CreateMap<Stock, StockDTO>();
+                config.CreateMap<AutocompleteResponse, AutocompleteResponseDTO>();
+                config.CreateMap<AutocompleteProducts, AutocompleteProductsDTO>();
+                config.CreateMap<AutocompletePages, AutocomletePagesDTO>();
+                config.CreateMap<AutocompleteProduct, AutocompleteProductDTO>();
+                config.CreateMap<AutocompletePage, AutocompletePageDTO>();
+                config.CreateMap<ResultItemPage, AutocompletePage>();
                 config.CreateMap<Pagination, PaginationDto>();
                 config.CreateMap<OrderHead, OrderHeadDto>();
                 config.CreateMap<Dto.Order.OrderItemDto, CartItem>()
@@ -189,19 +202,29 @@ namespace Kadena.WebAPI
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
-            container.Register<IMailingListClient, MailingListClient>();
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();			
+            
+            // BLL
             container.Register<IShoppingCartService, ShoppingCartService>();
-            container.Register<IKenticoProviderService, KenticoProviderService>();
-            container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IOrderSubmitClient, OrderSubmitClient>();
-            container.Register<IKenticoLogger, KenticoLogger>();
+            container.Register<ISearchService, SearchService>();
             container.Register<ICustomerDataService, CustomerDataService>();
             container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ISettingsService, SettingsService>();
-            container.Register<IOrderViewClient, OrderViewClient>();
-            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
-            container.Register<ITemplatedProductService, TemplatedProductService>();
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+			
+			// microservice clients
+			container.Register<IMailingListClient, MailingListClient>();
+			container.Register<IOrderSubmitClient, OrderSubmitClient>();
+			container.Register<IOrderViewClient, OrderViewClient>();
+            container.Register<IMailingListClient, MailingListClient>();
+            container.Register<ITemplatedProductService, TemplatedProductService>();			
+
+            // Kentico
+            container.Register<IKenticoProviderService, KenticoProviderService>();
+            container.Register<IKenticoResourceService, KenticoResourceService>();
+            container.Register<IKenticoSearchService, KenticoSearchService>();
+            container.Register<IKenticoLogger, KenticoLogger>();
+            
             container.WithWebApi(apiConfig);
         }
 

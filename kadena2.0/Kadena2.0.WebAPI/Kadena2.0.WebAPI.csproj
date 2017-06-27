@@ -75,9 +75,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Localization, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Localization.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Membership, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Membership.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Search, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Search.dll</HintPath>
     </Reference>
     <Reference Include="CMS.SiteProvider, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -139,11 +147,14 @@
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
+    <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
+    <Compile Include="Contracts\IKenticoSearchService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\RecentOrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
@@ -151,6 +162,7 @@
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
+    <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\AuthorizationFilter.cs" />
@@ -186,10 +198,21 @@
     <Compile Include="Models\OrderList.cs" />
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\RecentOrders\Button.cs" />
+    <Compile Include="Models\Search\AutocompletePage.cs" />
+    <Compile Include="Models\Search\AutocompletePages.cs" />
+    <Compile Include="Models\Search\AutocompleteProduct.cs" />
+    <Compile Include="Models\Search\AutocompleteProducts.cs" />
     <Compile Include="Models\RecentOrders\OrderBody.cs" />
     <Compile Include="Models\RecentOrders\OrderHead.cs" />
     <Compile Include="Models\RecentOrders\Pagination.cs" />
+    <Compile Include="Models\Search\AutocompleteResponse.cs" />
+    <Compile Include="Models\Search\ResultItemProduct.cs" />
+    <Compile Include="Models\Search\ResultItemPage.cs" />
+    <Compile Include="Models\Search\SearchResultPage.cs" />
+    <Compile Include="Models\Search\Stock.cs" />
+    <Compile Include="Models\Search\UseTemplateBtn.cs" />
     <Compile Include="Models\Settings\AddressDialog.cs" />
     <Compile Include="Models\Settings\AddressList.cs" />
     <Compile Include="Models\Settings\DialogButton.cs" />
@@ -211,6 +234,8 @@
     <Compile Include="Services\KenticoLogger.cs" />
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
+    <Compile Include="Services\KenticoSearchService.cs" />
+    <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />

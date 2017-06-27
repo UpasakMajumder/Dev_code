@@ -50,9 +50,13 @@ namespace Kadena.WebAPI.Contracts
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
+        Product GetProductByDocumentId(int documentId);
+        string GetDocumentUrl(int documentId);
 
+        List<string> GetBreadcrumbs(int documentId);
+		
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
-
+		
         bool UserCanSeePrices();
     }
 }

@@ -268,6 +268,7 @@ namespace Kadena.WebAPI.Services
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
             var result = items.Select(i => new CartItem()
             {
+                Id = i.CartItemID,
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
@@ -280,7 +281,6 @@ namespace Kadena.WebAPI.Services
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitOfMeasure = "EA",
-                Id = i.CartItemID,
                 Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -294,7 +294,7 @@ namespace Kadena.WebAPI.Services
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems
+                StockQuantity = i.SKU.SKUAvailableItems				
             }
             ).ToArray();
 
@@ -382,6 +382,36 @@ namespace Kadena.WebAPI.Services
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
+        public string GetDocumentUrl(int documentId)
+        {
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return doc?.AbsoluteURL ?? "#";
+        }
+
+        public Product GetProductByDocumentId(int documentId)
+        {
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
+
+            var product = new Product()
+            {
+                Id = documentId,
+                Name = doc.DocumentName,
+                DocumentUrl = doc.AbsoluteURL,
+                Category = doc.Parent?.DocumentName ?? string.Empty,
+                
+            };
+
+            if (sku != null)
+            {
+                product.SkuImageUrl = URLHelper.GetAbsoluteUrl(sku.SKUImagePath);
+                product.StockItems = sku.SKUAvailableItems;
+                product.Availability = sku.SKUAvailableItems > 0 ? "available" : "out";
+            }
+
+            return product;
+        }
+
         private decimal GetDynamicPrice(int documentId, int quantity)
         {
             var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
@@ -464,14 +494,32 @@ namespace Kadena.WebAPI.Services
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
 
-        public bool UserCanSeePrices()
+		public bool UserCanSeePrices()
         {
-            return IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName);
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
-
-        public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+		
+		public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
         }
+		
+
+        public List<string> GetBreadcrumbs(int documentId)
+        {
+            var breadcrubs = new List<string>();
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+
+            while (doc != null && doc.Parent != null)
+            {
+                breadcrubs.Add(doc.DocumentName);
+                doc = doc.Parent;
+            };
+
+            breadcrubs.Reverse();
+            return breadcrubs;
+        }
+		
+
     }
 }
