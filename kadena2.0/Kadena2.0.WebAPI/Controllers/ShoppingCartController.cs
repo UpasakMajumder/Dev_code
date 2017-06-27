@@ -11,7 +11,6 @@ using Kadena.Dto.Checkout.Requests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.ViewOrder.Responses;
-using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.Controllers
 {
