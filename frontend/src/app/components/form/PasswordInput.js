@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import removeProps from '../../helpers/object';
 import { LOGIN } from '../../globals';
 

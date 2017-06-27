@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SVG from '../../SVG';
 
-export default (props) => {
+const Order = (props) => {
   const { image, template, mailingList, shippingDate, trackingId,
     price, quantityPrefix, quantity, downloadPdfURL } = props;
 
@@ -73,3 +74,17 @@ export default (props) => {
     </div>
   );
 };
+
+Order.propTypes = {
+  quantityPrefix: PropTypes.string.isRequired,
+  template: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  downloadPdfURL: PropTypes.string,
+  shippingDate: PropTypes.string,
+  mailingList: PropTypes.string,
+  trackingId: PropTypes.string
+};
+
+export default Order;

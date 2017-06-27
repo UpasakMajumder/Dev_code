@@ -2,17 +2,10 @@ import React, { Component } from 'react';
 import SVG from '../../SVG';
 
 class Products extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      quantity: 1,
-      workingProcess: 0
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.defineEditButton = this.defineEditButton.bind(this);
-  }
+  state = {
+    quantity: 1,
+    workingProcess: 0
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.quantity === this.state.quantity) return;
@@ -22,31 +15,31 @@ class Products extends Component {
     });
   }
 
-  handleChange(target) {
+  handleChange = (target) => {
     const quantity = target.value;
-
     if (!quantity) return;
 
-    const { id, stockQuantity } = this.props;
+    const { id, stockQuantity, changeProductQuantity } = this.props;
+    const { workingProcess } = this.state;
 
     if (stockQuantity) {
       if (quantity < 1 || quantity > stockQuantity || isNaN(quantity)) return;
     }
 
-    clearTimeout(this.state.workingProcess);
+    clearTimeout(workingProcess);
 
-    const workingProcess = setTimeout(() => {
-      this.props.changeProductQuantity(id, quantity);
+    const workingProcessId = setTimeout(() => {
+      changeProductQuantity(id, quantity);
       target.blur();
     }, 1000);
 
     this.setState({
-      workingProcess,
+      workingProcess: workingProcessId,
       quantity
     });
-  }
+  };
 
-  defineEditButton() {
+  defineEditButton = () => {
     const { isEditable, editorURL, isMailingList } = this.props;
 
     if (isMailingList) return null;
@@ -72,10 +65,11 @@ class Products extends Component {
     }
 
     return null;
-  }
+  };
 
   render() {
-    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix, template, removeProduct, isQuantityEditable } = this.props;
+    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix,
+      template, removeProduct, isQuantityEditable } = this.props;
     const { quantity } = this.state;
 
     const quantityElement = isQuantityEditable

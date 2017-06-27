@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import removeProps from '../../helpers/object';
 
-export default function TextInput(props) {
+const TextInput = (props) => {
   const { label, error, disabled, isOptional } = props;
 
   const inputProps = removeProps(props, ['label', 'error', 'isOptional']);
@@ -23,7 +24,7 @@ export default function TextInput(props) {
       {errorElement}
     </div>
   );
-}
+};
 
 TextInput.propTypes = {
   label: PropTypes.string,
@@ -32,3 +33,5 @@ TextInput.propTypes = {
   disabled: PropTypes.bool,
   isOptional: PropTypes.bool
 };
+
+export default TextInput;

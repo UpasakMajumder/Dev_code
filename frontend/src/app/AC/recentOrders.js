@@ -3,7 +3,7 @@ import { GET_RECENT_ORDERS_HEADINGS_FETCH, GET_RECENT_ORDERS_ROWS_FETCH, GET_REC
          GET_RECENT_ORDERS_ROWS_SUCCESS, GET_RECENT_ORDERS_HEADINGS_FAILURE, GET_RECENT_ORDERS_ROWS_FAILURE,
          APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
 import { RECENT_ORDERS } from '../globals';
-// import { headings, pageInfo, rows1, rows2, noOrdersMessage } from '../_testServices/recentOrders';
+// import { headings, pageInfo, rows1, rows2, noOrdersMessage } from './_testServices/recentOrders';
 
 export const getHeadings = () => {
   return (dispatch) => {
