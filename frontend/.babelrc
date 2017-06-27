@@ -13,7 +13,6 @@
         "react", "es2015", "stage-0"
       ],
       "plugins": [
-        "transform-react-remove-prop-types",
         "transform-object-rest-spread"
       ]
     },
