@@ -202,21 +202,19 @@ namespace Kadena.WebAPI
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
             var container = new Container();
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
-            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();			
             
             // BLL
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<ISearchService, SearchService>();
-            container.Register<ICustomerDataService, CustomerDataService>();
-            container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
+            container.Register<ICustomerDataService, CustomerDataService>();            
             container.Register<ISettingsService, SettingsService>();
-			
-			// microservice clients
-			container.Register<IMailingListClient, MailingListClient>();
-			container.Register<IOrderSubmitClient, OrderSubmitClient>();
-			container.Register<IOrderViewClient, OrderViewClient>();
+            
+
+            // microservice clients
             container.Register<IMailingListClient, MailingListClient>();
+            container.Register<IOrderSubmitClient, OrderSubmitClient>();
+			container.Register<IOrderViewClient, OrderViewClient>();
+            container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
             container.Register<ITemplatedProductService, TemplatedProductService>();			
 
             // Kentico
@@ -224,7 +222,9 @@ namespace Kadena.WebAPI
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoSearchService, KenticoSearchService>();
             container.Register<IKenticoLogger, KenticoLogger>();
-            
+
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
             container.WithWebApi(apiConfig);
         }
 
