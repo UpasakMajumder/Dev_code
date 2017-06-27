@@ -1,61 +1,31 @@
 ﻿using Kadena2.MicroserviceClients.Contracts;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
-using Kadena2.MicroserviceClients.Communication;
+using Kadena2.MicroserviceClients.Clients.Base;
+using Kadena.Dto.General;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class TemplatedProductService : ITemplatedProductService
+    public class TemplatedProductService : ClientBase, ITemplatedProductService
     {
-        public async Task<BaseResponse<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
+        public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
         {
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
-
                 var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var responseJson = JsonConvert.DeserializeObject<BaseResponse<GeneratePdfTaskResponseDto>>(responseContent);
-                    return responseJson;
-                }
-                else
-                {
-                    return new BaseResponse<GeneratePdfTaskResponseDto>()
-                    {
-                        ErrorMessage = $"Microservice client received status {response.StatusCode}",
-                        Success = false
-                    };
-                }
+                return await ReadResponseJson<GeneratePdfTaskResponseDto>(response);
             }
         }
         
-        public async Task<BaseResponse<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId)
+        public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId)
         {
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdftask/{taskId}";
-
                 var response = await httpClient.GetAsync(url).ConfigureAwait(false);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var responseJson = JsonConvert.DeserializeObject<BaseResponse<GeneratePdfTaskStatusResponseDto>>(responseContent);
-                    return responseJson;
-                }
-                else
-                {
-                    return new BaseResponse<GeneratePdfTaskStatusResponseDto>()
-                    {
-                        ErrorMessage = $"Microservice client received status {response.StatusCode}",
-                        Success = false
-                    };
-                }
+                return await ReadResponseJson<GeneratePdfTaskStatusResponseDto>(response);
             }
         }
     }

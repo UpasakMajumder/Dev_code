@@ -271,7 +271,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
             else
             {
-                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response.ErrorMessage);
+                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response?.Error?.Message ?? string.Empty);
             }
         }
 
