@@ -14,7 +14,7 @@ namespace Kadena.WebAPI.Models
 
         public DateTime DeliveryDate { get; set; }
 
-        public IEnumerable<OrderItem> Items { get; set; }
+        public IEnumerable<CartItem> Items { get; set; }
 
         public Button ViewBtn { get; set; }
     }

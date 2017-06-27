@@ -27,7 +27,7 @@ namespace Kadena.WebAPI
         {
             base.OnInit();
 
-            // Workaround ok Kentico Ci - to supress exception during 'ContinuousIntegration.exe -r'
+            // Workaround of Kentico Ci - to supress exception during 'ContinuousIntegration.exe -r'
             try
             {
                 WebApiConfig.Configure(GlobalConfiguration.Configuration);

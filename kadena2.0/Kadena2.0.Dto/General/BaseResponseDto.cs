@@ -48,5 +48,7 @@ namespace Kadena.Dto.General
             }
             return JsonConvert.DeserializeObject<BaseResponseDto<TResponse>>(resultString);
         }
+
+        // TODO create some ToString method for nested errors
     }
 }

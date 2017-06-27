@@ -1,5 +1,4 @@
 ﻿using CMS.Base.Web.UI;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
@@ -11,13 +10,14 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using Kadena.Old_App_Code.Kadena.MailingList;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Script.Serialization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Threading.Tasks;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -87,7 +87,6 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             else
             {
                 DisplayErrorMessage();
-
             }
         }
 
@@ -192,6 +191,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
                     var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
+                    var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
 
 
@@ -217,6 +217,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ProductType", productType);
                     cartItem.SetValue("ProductPageID", documentId);
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
+                    cartItem.SetValue("ProductChilliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
 
                     if (MailingListData != null)
                     {
@@ -231,12 +232,47 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         cartItem.CartItemPrice = dynamicUnitPrice;
                     }
 
+                    if (productType.Contains("KDA.TemplatedProduct"))
+                    {
+                        CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId);
+                    }
+
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
                     ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
 
                 }
             }
 
+        }
+
+        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
+        {
+            string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
+            var templatedService = new TemplatedProductService();
+            // async approchach caused error in webpart:
+            // An asynchronous operation cannot be started at this time. Asynchronous operations may only be started
+            // within an asynchronous handler or module or during certain events in the Page lifecycle.
+            var response = templatedService.RunGeneratePdfTask(endpoint, templateId.ToString(), settingsId.ToString()).Result;
+            if (response.Success && response.Payload!=null)
+            {
+                cartItem.SetValue("DesignFilePathTaskId", response.Payload.TaskId);
+                if (response.Payload.Finished)
+                {
+                    cartItem.SetValue("DesignFilePathObtained", true);
+                    cartItem.SetValue("DesignFilePath", response.Payload.FileName);
+                }
+                else
+                {
+                    cartItem.SetValue("DesignFilePathObtained", false);
+                }
+
+                cartItem.SubmitChanges(false);
+                cartItem.Update();
+            }
+            else
+            {
+                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response?.Error?.Message ?? string.Empty);
+            }
         }
 
         private void AssignCartShippingAddress(ShoppingCartInfo cart)
