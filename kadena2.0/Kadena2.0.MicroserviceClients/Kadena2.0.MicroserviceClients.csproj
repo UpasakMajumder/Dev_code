@@ -49,10 +49,12 @@
     <Compile Include="Clients\MailingListClient.cs" />
     <Compile Include="Clients\OrderViewClient.cs" />
     <Compile Include="Clients\OrderSubmitClient.cs" />
+    <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
+    <Compile Include="Contracts\ITemplatedProductService.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -65,9 +67,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

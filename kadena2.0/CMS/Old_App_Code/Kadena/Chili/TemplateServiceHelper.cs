@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using Kadena.Dto.General;
 using Kadena.Old_App_Code.Helpers;
 using System.Collections.Generic;
 using System.IO;
@@ -43,11 +44,11 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {
-                        return result.Response;
+                        return result.Payload;
                     }
                     else
                     {
@@ -83,11 +84,11 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {
-                        return result.Response;
+                        return result.Payload;
                     }
                     else
                     {
@@ -124,11 +125,11 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<List<TemplateServiceDocumentResponse>>)response;
+                    var result = (BaseResponseDto<List<TemplateServiceDocumentResponse>>)response;
 
                     if (result?.Success ?? false)
                     {
-                        return result.Response;
+                        return result.Payload;
                     }
                     else
                     {
@@ -172,11 +173,11 @@ namespace Kadena.Old_App_Code.Kadena.Chili
                 var response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    var result = (AwsResponseMessage<string>)response;
+                    var result = (BaseResponseDto<string>)response;
 
                     if (result?.Success ?? false)
                     {
-                        return result.Response;
+                        return result.Payload;
                     }
                     else
                     {

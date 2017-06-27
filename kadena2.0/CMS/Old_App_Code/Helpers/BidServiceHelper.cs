@@ -1,7 +1,7 @@
 ﻿using CMS.DataEngine;
-using CMS.Helpers;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.KSource;
+using Kadena.Dto.General;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -93,10 +93,10 @@ namespace Kadena.Old_App_Code.Helpers
                 client.DefaultRequestHeaders.Add("Noosh.Token", nooshToken);
                 using (var message = client.GetAsync($"{url.AbsoluteUri}/{workgroupName}"))
                 {
-                    AwsResponseMessage<IEnumerable<ProjectData>> response;
+                    BaseResponseDto<IEnumerable<ProjectData>> response;
                     try
                     {
-                        response = (AwsResponseMessage<IEnumerable<ProjectData>>)message.Result;
+                        response = (BaseResponseDto<IEnumerable<ProjectData>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {
@@ -104,7 +104,7 @@ namespace Kadena.Old_App_Code.Helpers
                     }
                     if (response?.Success ?? false)
                     {
-                        return response?.Response;
+                        return response?.Payload;
                     }
                     else
                     {

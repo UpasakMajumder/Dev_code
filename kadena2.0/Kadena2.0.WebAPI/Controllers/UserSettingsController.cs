@@ -2,11 +2,8 @@
 using Kadena.Dto.Settings;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
-using System.Linq;
-using System.Collections.Generic;
 using System.Web.Http;
 using Kadena.WebAPI.Models;
-using CMS.Helpers;
 
 namespace Kadena.WebAPI.Controllers
 {

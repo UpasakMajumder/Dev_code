@@ -46,6 +46,8 @@ namespace Kadena.WebAPI.Contracts
 
         void SaveShippingAddress(DeliveryAddress address);
 
+        void SetCartItemDesignFilePath(int id, string path);
+
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
@@ -53,6 +55,9 @@ namespace Kadena.WebAPI.Contracts
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);
+		
+        bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
+		
         bool UserCanSeePrices();
     }
 }

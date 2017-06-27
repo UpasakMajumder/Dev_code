@@ -263,14 +263,18 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public OrderItem[] GetShoppingCartOrderItems()
+        public CartItem[] GetShoppingCartItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
-            var result = items.Select(i => new OrderItem()
+            var result = items.Select(i => new CartItem()
             {
-                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),// TODO via calling service for templated
-                MailingListId = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                OrderItemType = i.GetValue("ProductType", string.Empty),
+                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
+                ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
+                DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
+                DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 KenticoSKUId = i.SKUID,
@@ -278,7 +282,22 @@ namespace Kadena.WebAPI.Services
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitCount = i.CartItemUnits,
-                UnitOfMeasure = "EA"
+                UnitOfMeasure = "EA",
+                Id = i.CartItemID,
+                Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
+                ProductType = i.GetValue("ProductType", string.Empty),
+                Quantity = i.CartItemUnits,
+                TotalPrice = i.UnitPrice * i.CartItemUnits,
+				PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
+                PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
+                Delivery = "", //TODO not known yet
+                MailingListName = i.GetValue("MailingListName", string.Empty),
+                Template = i.SKU.SKUName,
+                EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
+                ProductPageId = i.GetIntegerValue("ProductPageID", 0),
+                SKUID = i.SKUID,
+                StockQuantity = i.SKU.SKUAvailableItems				
             }
             ).ToArray();
 
@@ -338,6 +357,19 @@ namespace Kadena.WebAPI.Services
 
             // Recalculate shopping cart
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
+        }
+
+        public void SetCartItemDesignFilePath(int id, string path)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
+
+            if (item != null)
+            {
+                item.SetValue("DesignFilePathObtained", true);
+                item.SetValue("DesignFilePath", path);
+                item.Update();
+            }
         }
 
         public void SetCartItemQuantity(int id, int quantity)
@@ -494,8 +526,14 @@ namespace Kadena.WebAPI.Services
 
 		public bool UserCanSeePrices()
         {
-		    return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+            return IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName);
 		}
+		
+		public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+        {
+            return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
+        }
+		
 
         public List<string> GetBreadcrumbs(int documentId)
         {
