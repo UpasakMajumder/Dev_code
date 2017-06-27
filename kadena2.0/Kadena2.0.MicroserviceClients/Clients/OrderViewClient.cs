@@ -41,9 +41,9 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{serviceEndpoint}?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(url))
+                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
-                    return await ReadResponseJson<OrderListDto>(response);
+                    return await ReadResponseJson<OrderListDto>(response).ConfigureAwait(false);
                 }
             }
         }
