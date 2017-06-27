@@ -58,3 +58,5 @@ CommonInfo.propTypes = {
     totalCost: PropTypes.string.isRequired
   })
 };
+
+export default CommonInfo;

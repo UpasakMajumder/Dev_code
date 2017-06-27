@@ -19,11 +19,11 @@ const PaymentInfo = ({ ui }) => {
 
 PaymentInfo.propTypes = {
   ui: PropTypes.shape({
-    title: PropTypes,
-    paymentIcon: PropTypes,
-    paidBy: PropTypes,
-    paymentDetail: PropTypes,
-    date: PropTypes
+    title: PropTypes.string.isRequired,
+    paymentIcon: PropTypes.string.isRequired,
+    paidBy: PropTypes.string.isRequired,
+    paymentDetail: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired
   })
 };
 

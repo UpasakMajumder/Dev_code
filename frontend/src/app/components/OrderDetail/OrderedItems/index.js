@@ -17,7 +17,7 @@ const OrderedItems = ({ ui }) => {
 
 OrderedItems.propTypes = {
   ui: PropTypes.shape({
-    title: PropTypes.title.isRequired,
+    title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired
   })
 };

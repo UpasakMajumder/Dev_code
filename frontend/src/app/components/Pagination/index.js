@@ -10,9 +10,8 @@ const Pagination = (props) => {
   const pagesToByDefault = (currPage + 1) * itemsOnPage;
   const pagesTo = pagesToByDefault > itemsNumber ? itemsNumber : pagesToByDefault;
 
-  const content = pagesNumber < 2
-    ? null
-    : (
+  return pagesNumber > 1
+    ? (
       <div className="row flex-align--center mt-4">
         <div className="col-6">
           <span>Showing {pagesFrom} to {pagesTo} of {itemsNumber} entries</span>
@@ -31,20 +30,18 @@ const Pagination = (props) => {
                          activeClassName="pagination__page--active" />
         </div>
       </div>
-    );
-
-
-  return content;
+    )
+    : null;
 
 };
 
 Pagination.propTypes = {
   pagesNumber: PropTypes.number.isRequired,
   initialPage: PropTypes.number.isRequired,
-  itemsOnPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
   itemsNumber: PropTypes.number.isRequired,
-  currPage: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired
+  itemsOnPage: PropTypes.number.isRequired,
+  currPage: PropTypes.number.isRequired
 };
 
 export default Pagination;
