@@ -1,9 +1,27 @@
 {
-  "presets": [
-    "react",
-    "latest"
-  ],
-  "plugins": [
-    "transform-object-rest-spread"
-  ]
+  "env": {
+    "development": {
+      "presets": [
+        "react", "es2015", "stage-0"
+      ],
+      "plugins": [
+        "transform-object-rest-spread"
+      ]
+    },
+    "production": {
+      "presets": [
+        "react", "es2015", "stage-0"
+      ],
+      "plugins": [
+        "transform-react-remove-prop-types",
+        "transform-object-rest-spread"
+      ]
+    },
+    "test": {
+      "presets": ["es2015", "react", "stage-0"]
+    }
+  }
+
 }
+
+

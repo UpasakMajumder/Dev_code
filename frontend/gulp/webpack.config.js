@@ -44,7 +44,6 @@ const pluginsCollection = {
                 warnings: false
             },
             sourceMap: false,
-            mangle: false,
             comments: false
         }),
         new webpack.NoEmitOnErrorsPlugin()
