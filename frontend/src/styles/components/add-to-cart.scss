@@ -36,9 +36,12 @@
       display: inline-block;
     }
 
-    .input__wrapper {
-      @include rem(margin-right, 5px);
+    input:not(:first-child),
+    button:not(:first-child) {
+      @include rem(margin-left, 22px);
+    }
 
+    .input__wrapper {
       input[type="number"] {
         width: 145px;
       }
@@ -46,6 +49,6 @@
   }
 
   &__right-label {
-    @include rem(margin-right, 30px);
+    @include rem(margin, 0 8px 0 8px);
   }
 }
