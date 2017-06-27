@@ -460,7 +460,7 @@ namespace Kadena.WebAPI.Services
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = string.Empty, // TODO payment date unknown
+                    Date = CheckedDateTimeString(DateTime.MinValue), // TODO payment date unknown
                     PaidBy  = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
