@@ -12,33 +12,38 @@ class Search extends Component {
   handleChange = (event) => {
     const { target } = event;
     const { value: query } = target;
+    const { changeSearchQuery, sendQuery, closeDropdown } = this.props;
+    const { workingProcess } = this.state;
 
-    this.props.changeSearchQuery(query);
+    changeSearchQuery(query);
 
     if (query.length > 3) {
-      clearTimeout(this.state.workingProcess);
-      const workingProcess = setTimeout(() => {
-        this.props.sendQuery(query);
+      clearTimeout(workingProcess);
+      const workingProcessId = setTimeout(() => {
+        sendQuery(query);
       }, 1000);
-      this.setState({ workingProcess });
+      this.setState({ workingProcess: workingProcessId });
     }
 
-    if (!query.length) this.props.closeDropdown();
-  }
+    if (!query.length) closeDropdown();
+  };
 
   render() {
-    const { query, products, pages, message, areResultsShown } = this.props;
+    const { query, products, pages, message, areResultsShown, closeDropdown } = this.props;
 
     return (
       <div>
         <SearchInput changeValue={this.handleChange}
-                     closeDropdown={this.props.closeDropdown}
+                     closeDropdown={closeDropdown}
                      searchPageUrl={products ? products.url : undefined}
-                     value={query} />
+                     value={query}
+        />
+
         <SearchDropdown areResultsShown={areResultsShown}
                         products={products}
                         pages={pages}
-                        message={message} />
+                        message={message}
+        />
       </div>
     );
   }
@@ -47,7 +52,7 @@ class Search extends Component {
 export default connect((state) => {
   const { search } = state;
   const { products, pages, message, query, areResultsShown } = search;
-  return { query, products, pages, message, areResultsShown };
+  return { products, pages, message, query, areResultsShown };
 }, {
   changeSearchQuery,
   closeDropdown,

@@ -4,21 +4,13 @@ import Stock from '../Stock';
 import Link from '../Link';
 
 class TemplateProduct extends Component {
-  constructor() {
-    super();
+  state = {
+    templateQuantity: 1
+  };
 
-    this.state = {
-      templateQuantity: 1
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(value) {
-    this.setState({
-      templateQuantity: value
-    });
-  }
+  handleChange = (value) => {
+    this.setState({ templateQuantity: value });
+  };
 
   render() {
     const { templateQuantity } = this.state;
@@ -71,7 +63,7 @@ TemplateProduct.propTypes = {
   }),
   isFavourite: PropTypes.bool,
   imgUrl: PropTypes.string,
-  breadcrumbs: PropTypes.array
+  breadcrumbs: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default TemplateProduct;

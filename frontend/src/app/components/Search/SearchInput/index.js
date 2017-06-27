@@ -32,9 +32,10 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl }) => {
 };
 
 SearchInput.propTypes = {
-  value: PropTypes.string.isRequired,
   closeDropdown: PropTypes.func.isRequired,
-  changeValue: PropTypes.func.isRequired
+  changeValue: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  searchPageUrl: PropTypes.string
 };
 
 export default SearchInput;
