@@ -31,7 +31,6 @@ using Kadena.WebAPI.Models.Search;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.WebAPI.Factories;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 
 namespace Kadena.WebAPI
 {

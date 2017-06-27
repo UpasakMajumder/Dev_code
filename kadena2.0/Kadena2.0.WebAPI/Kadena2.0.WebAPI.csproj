@@ -199,7 +199,7 @@
     <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PaymentMethods.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\RecentOrders\Button.cs" />    
+    <Compile Include="Models\RecentOrders\Button.cs" />
     <Compile Include="Models\Search\AutocompletePage.cs" />
     <Compile Include="Models\Search\AutocompletePages.cs" />
     <Compile Include="Models\Search\AutocompleteProduct.cs" />
@@ -220,7 +220,6 @@
     <Compile Include="Models\Settings\DialogType.cs" />
     <Compile Include="Models\Settings\PageButton.cs" />
     <Compile Include="Models\Settings\SettingsAddresses.cs" />
-    <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartTotals.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\SubmitButton.cs" />
@@ -237,7 +236,7 @@
     <Compile Include="Services\KenticoProviderService.cs" />
     <Compile Include="Services\KenticoSearchService.cs" />
     <Compile Include="Services\SearchService.cs" />
-    <Compile Include="Services\OrderListService.cs" />    
+    <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
   </ItemGroup>
