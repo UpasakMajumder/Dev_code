@@ -234,7 +234,11 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     if (productType.Contains("KDA.TemplatedProduct"))
                     {
-                        CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId);
+                        if (!CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId))
+                        {
+                            ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Error", ScriptHelper.GetScript("alert('Unable to add item into cart because start generating hires PDF failed');"));
+                            return;
+                        }
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -245,7 +249,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         }
 
-        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
+        private bool CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
         {
             string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
             var templatedService = new TemplatedProductService();
@@ -268,10 +272,12 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                 cartItem.SubmitChanges(false);
                 cartItem.Update();
+                return true;
             }
             else
             {
-                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response?.Error?.Message ?? string.Empty);
+                EventLogProvider.LogEvent("Error", $"Template service client with templateId={templateId} and settingsId={settingsId}", "ERROR", response?.Error?.Message ?? string.Empty);
+                return false;
             }
         }
 
