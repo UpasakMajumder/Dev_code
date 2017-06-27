@@ -16,40 +16,55 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             var url = SettingsKeyInfoProvider.GetValue("KDA_OrdersBySiteUrl");
             var client = new OrderViewClient();
+            
+            // First request to get total count of records.
             var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
+
+            // Second request to get all records.
             data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
-            var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE, data.Payload.Orders.Select(o => o.CustomerId));
-            grdOrders.DataSource = ToDataSet(data.Payload.Orders.Select(o=> new {
-                o.Id,
-                o.Status,
-                o.TotalPrice, o.CreateDate,
-                CustomerName = $"{customers[o.CustomerId]?.GetStringValue("CustomerFirstName", string.Empty)} {customers[o.CustomerId]?.GetStringValue("CustomerLastName", string.Empty)}" })
-                .ToList());
+            var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE, 
+                data.Payload.Orders.Select(o => o.CustomerId));
+
+            // Unigrid accept only DataSet as source type.
+            grdOrders.DataSource = ToDataSet(
+                data.Payload.Orders.Select(o =>
+                {
+                    var customer = customers[o.CustomerId] as CustomerInfo;
+                    return new
+                    {
+                        o.Id,
+                        o.Status,
+                        o.TotalPrice,
+                        o.CreateDate,
+                        CustomerName = customer != null ?
+                                            $"{customer.CustomerFirstName} {customer.CustomerLastName}"
+                                            : string.Empty
+                    };
+                }));
         }
 
-        private static DataSet ToDataSet<T>(IList<T> list)
+        private static DataSet ToDataSet<T>(IEnumerable<T> list)
         {
-            Type elementType = typeof(T);
-            DataSet ds = new DataSet();
-            DataTable t = new DataTable();
-            ds.Tables.Add(t);
+            var properties = typeof(T).GetProperties();
+            var table = new DataTable();
 
-            //add a column to table for each public property on T   
-            foreach (var propInfo in elementType.GetProperties())
+            // Add a column to table for each public property on T   
+            foreach (var propInfo in properties)
             {
-                t.Columns.Add(propInfo.Name, propInfo.PropertyType);
+                table.Columns.Add(propInfo.Name, propInfo.PropertyType);
             }
 
             //go through each property on T and add each value to the table   
             foreach (T item in list)
             {
-                DataRow row = t.NewRow(); foreach (var propInfo in elementType.GetProperties())
+                DataRow row = table.NewRow();
+                foreach (var propInfo in properties)
                 {
                     row[propInfo.Name] = propInfo.GetValue(item, null);
                 }
-                t.Rows.Add(row);
+                table.Rows.Add(row);
             }
-            return ds;
+            return new DataSet { Tables = { table } };
         }
     }
 }
