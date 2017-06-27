@@ -6,38 +6,35 @@ import Alert from '../Alert';
 import { getHeadings, getRows } from '../../AC/recentOrders';
 
 class RecentOrders extends Component {
-  constructor() {
-    super();
+  state = {
+    currPage: 0,
+    prevPage: 0
+  };
 
-    this.state = {
-      currPage: 0,
-      prevPage: 0
-    };
-
-    this.changePage = this.changePage.bind(this);
-  }
-
-  changePage({ selected }) {
-    this.setState((prevState) => {
+  changePage = ({ selected }) => {
+    this.setState(({ currPage }) => {
       return {
         currPage: selected,
-        prevPage: prevState.currPage
+        prevPage: currPage
       };
     });
-
-  }
+  };
 
   componentWillUpdate(nextProps, nextState) {
+    const { getRows } = this.props;
+
     if (nextState.currPage === this.state.currPage) return;
     if (!Object.keys(nextProps.rows).length) return;
     if (nextProps.rows[nextState.currPage]) return;
-    this.props.getRows(nextState.currPage + 1);
+    getRows(nextState.currPage + 1);
   }
 
   componentDidMount() {
+    const { getHeadings, getRows } = this.props;
     const { currPage } = this.state;
-    this.props.getHeadings();
-    this.props.getRows(currPage + 1);
+
+    getHeadings();
+    getRows(currPage + 1);
   }
 
   render() {

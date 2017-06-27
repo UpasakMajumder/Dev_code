@@ -15,7 +15,7 @@ export const pageInfo = {
   pageInfo: {
     "pagesCount": 10,
     "rowsCount": 28,
-    "rowsOnPages": 3
+    "rowsOnPage": 3
   }
 };
 
