@@ -51,7 +51,6 @@
     <Compile Include="Clients\OrderSubmitClient.cs" />
     <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
-    <Compile Include="Communication\BaseResponse.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
