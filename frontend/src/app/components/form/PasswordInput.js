@@ -2,35 +2,35 @@ import React, { Component, PropTypes } from 'react';
 import removeProps from '../../helpers/object';
 import { LOGIN } from '../../globals';
 
-export default class PasswordInput extends Component {
-  constructor() {
-    super();
+class PasswordInput extends Component {
+  state = {
+    isShown: false
+  };
 
-    this.state = {
-      isShown: false
-    };
+  static defaultProps = {
+    passwordHideText: LOGIN.passwordHide,
+    passwordShowText: LOGIN.passwordShow
+  };
 
-    this.handleToggle = this.handleToggle.bind(this);
-    this.passwordHideText = LOGIN.passwordHide;
-    this.passwordShowText = LOGIN.passwordShow;
-  }
+  static propTypes = {
+    error: PropTypes.string,
+    label: PropTypes.string,
+    disabled: PropTypes.bool,
+    placeholder: PropTypes.string,
+    passwordHideText: PropTypes.string,
+    passwordShowText: PropTypes.string
+  };
 
-  handleToggle() {
-    this.setState((prevState) => {
-      return {
-        isShown: !prevState.isShown
-      };
-    });
-  }
+  handleToggle = () => this.setState(({ isShown }) => ({ isShown: !isShown }));
 
   render() {
     const { isShown } = this.state;
-    const { error, label, disabled } = this.props;
+    const { error, label, disabled, passwordHideText, passwordShowText } = this.props;
 
-    const inputProps = removeProps(this.props, ['error', 'label']);
+    const inputProps = removeProps(this.props, ['error', 'label', 'passwordHideText', 'passwordShowText']);
 
     const labelElement = label ? <span className="input__label">{label}</span> : null;
-    const toggler = isShown ? this.passwordHideText : this.passwordShowText;
+    const toggler = isShown ? passwordHideText : passwordShowText;
     const type = isShown ? 'text' : 'password';
     const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
     const onClick = disabled ? undefined : this.handleToggle;
@@ -53,9 +53,4 @@ export default class PasswordInput extends Component {
   }
 }
 
-PasswordInput.propTypes = {
-  error: PropTypes.string,
-  label: PropTypes.string,
-  disabled: PropTypes.bool,
-  placeholder: PropTypes.string
-};
+export default PasswordInput;
