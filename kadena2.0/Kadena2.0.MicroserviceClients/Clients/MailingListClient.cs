@@ -10,7 +10,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class MailingListClient : ClientBase, IMailingListClient
     {
-        public async Task<BaseResponseDTO<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName )
+        public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
         {
             using (var httpClient = new HttpClient())
             {
@@ -18,23 +18,9 @@ namespace Kadena2.MicroserviceClients.Clients
                 // TODO remove redundant settings keys
                 // var url = $"{serviceEndpoint.TrimEnd('/')}/api/mailing/allforcustomer/{encodedCustomerName}";
                 var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}";
-                var response = await httpClient.GetAsync(url);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                using (var response = await httpClient.GetAsync(url))
                 {
-                    return await ReadResponseJson<BaseResponseDTO<MailingListDataDTO[]>>(response);
-                }
-                else
-                {
-                    return new BaseResponseDTO<MailingListDataDTO[]>()
-                    {
-                        Success = false,
-                        Error = new ErrorMessageDTO()
-                        {
-                            Message = $"HTTP error - {response.StatusCode}",
-                        },
-                        Payload = null
-                    };
+                    return await ReadResponseJson<MailingListDataDTO[]>(response);
                 }
             }
         }

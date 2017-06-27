@@ -826,13 +826,6 @@
     <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.designer.cs">
       <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Orders\OrdersList.ascx.cs">
-      <DependentUpon>OrdersList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Orders\OrdersList.ascx.designer.cs">
-      <DependentUpon>OrdersList.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
       <DependentUpon>AddToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -891,19 +884,14 @@
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
-    <Compile Include="Old_App_Code\Helpers\ErrorMessage.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceDocumentResponse.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
-    <Compile Include="Old_App_Code\Helpers\AwsResponseMessage.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryData.cs" />
-    <Compile Include="Old_App_Code\Kadena\Orders\OrderHistoryDataContainer.cs" />
-    <Compile Include="Old_App_Code\Kadena\Orders\OrderItemHistoryData.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
@@ -912,9 +900,7 @@
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingAddressData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CMSFormControls\Kadena\Basic\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
@@ -943,7 +929,6 @@
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
     <Content Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx" />
-    <Content Include="CMSWebParts\Kadena\Orders\OrdersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
