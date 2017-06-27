@@ -691,6 +691,13 @@
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.cs">
+      <DependentUpon>OrdersList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.designer.cs">
+      <DependentUpon>OrdersList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx.cs">
       <DependentUpon>BlankPassword_Mailing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -903,6 +910,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
+    <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
