@@ -338,7 +338,7 @@ namespace Kadena.WebAPI.Services
             {
                 item.SetValue("DesignFilePathObtained", true);
                 item.SetValue("DesignFilePath", path);
-                item.SubmitChanges(false);
+                item.Update();
             }
         }
 

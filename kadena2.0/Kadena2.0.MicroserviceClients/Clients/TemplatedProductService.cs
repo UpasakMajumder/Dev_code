@@ -38,7 +38,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             using (var httpClient = new HttpClient())
             {
-                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{taskId}";
+                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdftask/{taskId}";
 
                 var response = await httpClient.GetAsync(url).ConfigureAwait(false);
 

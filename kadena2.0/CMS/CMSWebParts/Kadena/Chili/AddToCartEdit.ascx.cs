@@ -265,6 +265,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     cartItem.SetValue("DesignFilePathObtained", false);
                 }
+
+                cartItem.SubmitChanges(false);
+                cartItem.Update();
             }
             else
             {

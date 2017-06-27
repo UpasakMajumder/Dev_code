@@ -113,6 +113,7 @@ namespace Kadena.WebAPI.Services
             CheckCurrentOrDefaultAddress(checkoutPage);
             CheckCurrentOrDefaultShipping(checkoutPage);
             checkoutPage.PaymentMethods.CheckDefault();
+            checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
@@ -214,7 +215,7 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        public List<PaymentMethod> ArrangePaymentMethods(PaymentMethod[] allMethods)
+        private List<PaymentMethod> ArrangePaymentMethods(PaymentMethod[] allMethods)
         {
             var purchaseOrderMethod = allMethods.Where(m => m.ClassName.Contains("PurchaseOrder")).FirstOrDefault();
             if (purchaseOrderMethod != null)
