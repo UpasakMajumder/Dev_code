@@ -496,8 +496,8 @@ namespace Kadena.WebAPI.Services
 
 		public bool UserCanSeePrices()
         {
-            return IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName);
-		}
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
 		
 		public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
