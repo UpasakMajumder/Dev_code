@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SVG from '../../SVG';
 
-class Products extends Component {
+class CheckoutProduct extends Component {
   state = {
     quantity: 1,
     workingProcess: 0
+  };
+
+  static propsTypes = {
+    changeProductQuantity: PropTypes.func.isRequired,
+    pricePrefix: PropTypes.string.isRequired,
+    removeProduct: PropTypes.func.isRequired,
+    template: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    isQuantityEditable: PropTypes.bool,
+    quantityPrefix: PropTypes.string,
+    stockQuantity: PropTypes.number,
+    isMailingList: PropTypes.bool,
+    mailingList: PropTypes.string,
+    editorURL: PropTypes.string,
+    isEditable: PropTypes.bool,
+    delivery: PropTypes.string,
+    quantity: PropTypes.number,
+    image: PropTypes.string
   };
 
   componentWillReceiveProps(nextProps) {
@@ -145,4 +165,4 @@ class Products extends Component {
   }
 }
 
-export default Products;
+export default CheckoutProduct;

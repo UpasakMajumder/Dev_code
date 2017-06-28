@@ -8,17 +8,10 @@ import Products from './Products';
 import Total from './Total';
 import Spinner from '../Spinner';
 import Button from '../Button';
-import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
+import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
+  changeProductQuantity } from '../../AC/checkout';
 
-class ShoppingCart extends Component {
-  constructor() {
-    super();
-
-    this.sendData = this.sendData.bind(this);
-    this.initCheckedShoppingData = this.initCheckedShoppingData.bind(this);
-    this.checkPDFAvailability = this.checkPDFAvailability.bind(this);
-  }
-
+class Checkout extends Component {
   static fireNotification(fields) {
     let message = 'Please, select one of ';
 
@@ -51,10 +44,12 @@ class ShoppingCart extends Component {
   }
 
   componentDidMount() {
-    this.props.getUI();
+    const { getUI } = this.props;
+    getUI();
   }
 
-  sendData(checkedData) {
+  sendData = (checkedData) => {
+    const { sendData } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => !checkedData[key]);
 
     if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
@@ -66,13 +61,16 @@ class ShoppingCart extends Component {
     }
 
     if (invalidFields.length) {
-      ShoppingCart.fireNotification(invalidFields);
+      Checkout.fireNotification(invalidFields);
     } else {
-      this.props.sendData(checkedData);
+      sendData(checkedData);
     }
-  }
+  };
 
-  initCheckedShoppingData(ui) {
+  initCheckedShoppingData = (ui) => {
+    const { deliveryAddresses, deliveryMethods, paymentMethods } = ui;
+    const { initCheckedShoppingData } = this.props;
+
     let deliveryAddress = 0;
     let deliveryMethod = 0;
     let paymentMethod = {
@@ -80,66 +78,70 @@ class ShoppingCart extends Component {
       invoice: ''
     };
 
-    ui.deliveryAddresses.items.forEach((address) => {
+    deliveryAddresses.items.forEach((address) => {
       if (address.checked) deliveryAddress = address.id;
     });
 
-    ui.deliveryMethods.items.forEach((methodGroup) => {
+    deliveryMethods.items.forEach((methodGroup) => {
       methodGroup.items.forEach((method) => {
         if (method.checked && !deliveryMethod) deliveryMethod = method.id;
       });
     });
 
-    ui.paymentMethods.items.forEach((method) => {
+    paymentMethods.items.forEach((method) => {
       if (method.checked) paymentMethod = { id: method.id, invoice: '' };
     });
 
-    this.props.initCheckedShoppingData({
-      deliveryAddress, deliveryMethod, paymentMethod
+    initCheckedShoppingData({
+      deliveryAddress,
+      deliveryMethod,
+      paymentMethod
     });
-  }
+  };
 
-  checkPDFAvailability(nextProps) {
-    const { isWaitingPDF, isAskingPDF } = nextProps.shoppingCart;
-    if (isWaitingPDF && !isAskingPDF) this.props.checkPDFAvailability();
-  }
+  checkPDFAvailability = (nextProps) => {
+    const { isWaitingPDF, isAskingPDF } = nextProps.checkout;
+    const { checkPDFAvailability } = this.props;
+    if (isWaitingPDF && !isAskingPDF) checkPDFAvailability();
+  };
 
   componentWillReceiveProps(nextProps) {
-    const { ui: uiNext } = nextProps.shoppingCart;
-    const { ui: uiCurr } = this.props.shoppingCart;
+    const { ui: uiNext } = nextProps.checkout;
+    const { ui: uiCurr } = this.props.checkout;
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
     this.checkPDFAvailability(nextProps);
   }
 
   render() {
-    const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, isWaitingPDF } = shoppingCart;
-    const { submit } = ui;
+    const { checkout, changeShoppingData, changeProductQuantity, removeProduct } = this.props;
+    const { ui, checkedData, isSending, isWaitingPDF } = checkout;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
-      const submitDisabledText = isWaitingPDF ? <Alert type="info" text={submit.disabledText}/> : null;
+      const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
+      const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
+      const { disabledText, btnLabel } = submit;
 
-      const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
+      const submitDisabledText = isWaitingPDF ? <Alert type="info" text={disabledText}/> : null;
+
+      const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
 
       const deliveryContent = isDeliverable
         ? <div>
           <div className="shopping-cart__block">
             <DeliveryAddress
-              validationMessage={ui.validationMessage}
-              changeShoppingData={this.props.changeShoppingData}
-              checkedId={checkedData.deliveryAddress}
-              ui={ui.deliveryAddresses}/>
+              changeShoppingData={changeShoppingData}
+              checkedId={deliveryAddress}
+              ui={deliveryAddresses}/>
           </div>
 
           <div className="shopping-cart__block">
             <DeliveryMethod
-              validationMessage={ui.validationMessage}
-              changeShoppingData={this.props.changeShoppingData}
-              checkedId={checkedData.deliveryMethod}
+              changeShoppingData={changeShoppingData}
+              checkedId={deliveryMethod}
               isSending={isSending}
-              ui={ui.deliveryMethods}/>
+              ui={deliveryMethods}/>
           </div>
         </div>
         : <div className="shopping-cart__block">
@@ -150,9 +152,9 @@ class ShoppingCart extends Component {
       content = <div>
         <div className="shopping-cart__block">
           <Products
-            removeProduct={this.props.removeProduct}
-            changeProductQuantity={this.props.changeProductQuantity}
-            ui={ui.products}
+            removeProduct={removeProduct}
+            changeProductQuantity={changeProductQuantity}
+            ui={products}
           />
         </div>
 
@@ -160,20 +162,20 @@ class ShoppingCart extends Component {
 
         <div className="shopping-cart__block">
           <PaymentMethod
-            validationMessage={ui.validationMessage}
-            changeShoppingData={this.props.changeShoppingData}
-            checkedObj={checkedData.paymentMethod}
-            ui={ui.paymentMethods}/>
+            validationMessage={validationMessage}
+            changeShoppingData={changeShoppingData}
+            checkedObj={paymentMethod}
+            ui={paymentMethods}/>
         </div>
 
         <div className="shopping-cart__block">
-          <Total ui={ui.totals}/>
+          <Total ui={totals}/>
         </div>
 
         {submitDisabledText}
 
         <div className="shopping-cart__block text--right">
-          <Button text={submit.btnLabel}
+          <Button text={btnLabel}
                   isLoading={isWaitingPDF}
                   type="action"
                   onClick={() => this.sendData(checkedData)} />
@@ -186,12 +188,12 @@ class ShoppingCart extends Component {
 }
 
 export default connect((state) => {
-  const { shoppingCart } = state;
+  const { checkout } = state;
 
-  const { redirectURL } = shoppingCart.sendData;
+  const { redirectURL } = checkout.sendData;
   if (redirectURL) location.assign(redirectURL);
 
-  return { shoppingCart };
+  return { checkout };
 }, {
   getUI,
   initCheckedShoppingData,
@@ -200,4 +202,4 @@ export default connect((state) => {
   removeProduct,
   changeProductQuantity,
   checkPDFAvailability
-})(ShoppingCart);
+})(Checkout);

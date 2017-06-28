@@ -4,6 +4,19 @@ import Method from './Method';
 import Alert from '../../Alert';
 
 class PaymentMethod extends Component {
+  static propTypes = {
+    validationMessage: PropTypes.string.isRequired,
+    changeShoppingData: PropTypes.func.isRequired,
+    checkedObj: PropTypes.object.isRequired,
+    ui: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      items: PropTypes.arrayOf(PropTypes.object),
+      unPayableText: PropTypes.string,
+      description: PropTypes.string,
+      isPayable: PropTypes.bool
+    })
+  };
+
   componentDidMount() {
     const { ui, changeShoppingData } = this.props;
 

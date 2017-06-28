@@ -3,15 +3,20 @@ import PropTypes from 'prop-types';
 import MethodsGroup from './MethodsGroup';
 
 class DeliveryMethod extends Component {
-  constructor() {
-    super();
+  state = {
+    openId: 0
+  };
 
-    this.state = {
-      openId: 0
-    };
-
-    this.changeOpenId = this.changeOpenId.bind(this);
-  }
+  static propTypes = {
+    changeShoppingData: PropTypes.func.isRequired,
+    isSending: PropTypes.bool.isRequired,
+    checkedId: PropTypes.number,
+    ui: PropTypes.shape({
+      items: PropTypes.arrayOf(PropTypes.object.isRequired),
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string
+    }).isRequired
+  };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isSending || nextProps.ui !== this.props.ui) return;
@@ -19,17 +24,12 @@ class DeliveryMethod extends Component {
     const openedMethodGroup = items.filter((item) => { return item.opened; })[0];
 
     if (!openedMethodGroup) return;
-
-    this.setState({
-      openId: openedMethodGroup.id
-    });
+    this.setState({ openId: openedMethodGroup.id });
   }
 
-  changeOpenId(openId) {
-    this.setState({
-      openId
-    });
-  }
+  changeOpenId = (openId) => {
+    this.setState({ openId });
+  };
 
   render() {
     const { openId } = this.state;
