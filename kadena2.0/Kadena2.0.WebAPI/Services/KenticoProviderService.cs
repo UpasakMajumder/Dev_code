@@ -272,7 +272,7 @@ namespace Kadena.WebAPI.Services
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
+                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
@@ -437,6 +437,8 @@ namespace Kadena.WebAPI.Services
                     int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
                     i.SKU.SKUAvailableItems -= toRemove;
                     i.SKU.SubmitChanges(false);
+                    i.SKU.MakeComplete(true);
+                    i.SKU.Update();
                 }
             }
         }

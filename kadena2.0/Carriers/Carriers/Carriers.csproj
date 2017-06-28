@@ -42,6 +42,10 @@
     <Reference Include="CMS.Ecommerce">
       <HintPath>..\..\Lib\CMS.Ecommerce.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\CMS.EventLog.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Helpers">
       <HintPath>..\..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>

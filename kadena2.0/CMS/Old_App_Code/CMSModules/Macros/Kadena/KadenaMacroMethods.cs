@@ -139,7 +139,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 {
                     formattedValue = string.Format(
                     ResHelper.GetString("Kadena.Product.NumberOfAvailableProducts", ValidationHelper.GetString(parameters[3], "")),
-                    ValidationHelper.GetString(parameters[1], ""));
+                    ValidationHelper.GetString(parameters[3], ""));
                 }
 
                 return formattedValue;

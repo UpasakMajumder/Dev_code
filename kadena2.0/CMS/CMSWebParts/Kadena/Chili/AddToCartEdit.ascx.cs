@@ -191,7 +191,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
                     var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
-                    var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty);
+                    var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
 
 
@@ -217,7 +217,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ProductType", productType);
                     cartItem.SetValue("ProductPageID", documentId);
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
-                    cartItem.SetValue("ProductChilliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
+                    cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
 
                     if (MailingListData != null)
                     {
@@ -234,7 +234,11 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                     if (productType.Contains("KDA.TemplatedProduct"))
                     {
-                        CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId);
+                        if (!CallRunGeneratePdfTask(cartItem, templateId, chiliPdfGeneratorSettingsId))
+                        {
+                            ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Error", ScriptHelper.GetScript("alert('Unable to add item into cart because start generating hires PDF failed');"));
+                            return;
+                        }
                     }
 
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -245,7 +249,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         }
 
-        private void CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
+        private bool CallRunGeneratePdfTask(ShoppingCartItemInfo cartItem, Guid templateId, Guid settingsId)
         {
             string endpoint = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
             var templatedService = new TemplatedProductService();
@@ -268,10 +272,12 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                 cartItem.SubmitChanges(false);
                 cartItem.Update();
+                return true;
             }
             else
             {
-                EventLogProvider.LogEvent("Error", "Template service client", "ERROR", response?.Error?.Message ?? string.Empty);
+                EventLogProvider.LogEvent("Error", $"Template service client with templateId={templateId} and settingsId={settingsId}", "ERROR", response?.Error?.Message ?? string.Empty);
+                return false;
             }
         }
 
