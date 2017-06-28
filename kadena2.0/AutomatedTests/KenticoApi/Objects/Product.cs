@@ -29,7 +29,9 @@ namespace AutomatedTests.KenticoApi.Objects
         public string ProductArtworkLocation { get; set; }
         public int ProductNumberOfItemsInPackage { get; set; }
         public string ProductChiliTemplateID { get; set; }
-
+        public string ProductChiliWorkgroupID { get; set; }
+        public string ProductChiliPdfGeneratorSettingsId { get; set; }
+        
         public Product Init()
         {
             var name = StringHelper.RandomString(7);
@@ -39,6 +41,8 @@ namespace AutomatedTests.KenticoApi.Objects
             //DocumentSKUName = name;
             ProductArtworkLocation = Lorem.Word();
             ProductChiliTemplateID = Lorem.Word();
+            ProductChiliWorkgroupID = Lorem.Word();
+            ProductChiliPdfGeneratorSettingsId = Lorem.Word();
             ProductNumberOfItemsInPackage = Lorem.RandomNumber(1, 10);
             ProductType = "KDA.StaticProduct";
             NodeClassID = 5356;
