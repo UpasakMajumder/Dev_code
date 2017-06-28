@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getSearchObj } from '../../helpers/location';
-
 import TextInput from '../form/TextInput';
 import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 import requestLogin from '../../AC/login';
-import { LOGIN } from '../../globals';
 import Button from '../Button';
+import { LOGIN } from '../../globals';
 
 class Login extends Component {
   state = {
@@ -23,6 +23,22 @@ class Login extends Component {
     loginText: LOGIN.login,
     passwordPlaceholder: LOGIN.passwordPlaceholder,
     passwordText: LOGIN.password
+  };
+
+  static propTypes = {
+    keepMeLoggedInText: PropTypes.string.isRequired,
+    passwordText: PropTypes.string.isRequired,
+    requestLogin: PropTypes.func.isRequired,
+    emailText: PropTypes.string.isRequired,
+    loginText: PropTypes.string.isRequired,
+    passwordPlaceholder: PropTypes.string,
+    emailPlaceholder: PropTypes.string,
+    login: PropTypes.shape({
+      isLoading: PropTypes.bool.isRequired,
+      response: PropTypes.shape({
+        errorPropertyName: PropTypes.string.isRequired
+      })
+    }).isRequired
   };
 
   componentDidMount() {
