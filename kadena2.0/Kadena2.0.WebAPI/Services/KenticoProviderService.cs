@@ -437,6 +437,8 @@ namespace Kadena.WebAPI.Services
                     int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
                     i.SKU.SKUAvailableItems -= toRemove;
                     i.SKU.SubmitChanges(false);
+                    i.SKU.MakeComplete(true);
+                    i.SKU.Update();
                 }
             }
         }
