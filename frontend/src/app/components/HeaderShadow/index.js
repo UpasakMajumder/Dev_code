@@ -5,4 +5,8 @@ const HeaderShadow = ({ isShownHeaderShadow }) => {
   return isShownHeaderShadow ? <div className="header-overlay"> </div> : null;
 };
 
+HeaderShadow.propTypes = {
+  isShownHeaderShadow: PropTypes.bool.isRequired
+};
+
 export default connect(({ isShownHeaderShadow }) => ({ isShownHeaderShadow }), {})(HeaderShadow);
