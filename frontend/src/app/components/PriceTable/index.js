@@ -18,7 +18,7 @@ const PriceTable = ({ items }) => {
 };
 
 PriceTable.propTypes = {
-  items: PropTypes.array.isRequired // [{ title, value }]
+  items: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired // [{ title, value }]
 };
 
 export default PriceTable;
