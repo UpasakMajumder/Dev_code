@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
@@ -10,6 +11,19 @@ import Spinner from '../Spinner';
 import { getSearchObj } from '../../helpers/location';
 
 class OrderDetail extends Component {
+  static propTypes = {
+    getUI: PropTypes.func.isRequired,
+    orderDetail: PropTypes.shape({
+      ui: PropTypes.shape({
+        commonInfo: PropTypes.object,
+        orderedItems: PropTypes.object,
+        paymentInfo: PropTypes.object,
+        pricingInfo: PropTypes.object,
+        shippingInfo: PropTypes.object
+      }).isRequired
+    }).isRequired
+  };
+
   componentDidMount() {
     const { getUI } = this.props;
     const { orderID } = getSearchObj();
