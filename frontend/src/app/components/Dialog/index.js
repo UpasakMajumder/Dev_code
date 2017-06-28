@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SVG from '../SVG';
 
 const Dialog = (props) => {
@@ -9,6 +10,14 @@ const Dialog = (props) => {
     </button>
     : null;
 
+  const bodyElement = body
+    ? <div className="dialog__content">{body}</div>
+    : null;
+
+  const footerElement = footer
+    ? <div className="dialog__footer">{footer}</div>
+    : null;
+
   return (
     <div className="dialog active">
       <div onClick={closeDialog} className="dialog__shadow"> </div>
@@ -17,11 +26,19 @@ const Dialog = (props) => {
           <p>{title}</p>
           {closer}
         </div>
-        <div className="dialog__content">{body}</div>
-        <div className="dialog__footer">{footer}</div>
+        {bodyElement}
+        {footerElement}
       </div>
     </div>
   );
+};
+
+Dialog.propTypes = {
+  closeDialog: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  hasCloseBtn: PropTypes.bool,
+  footer: PropTypes.object,
+  body: PropTypes.object
 };
 
 export default Dialog;
