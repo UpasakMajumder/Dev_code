@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Kadena.WebAPI.Models
+namespace Kadena.WebAPI.Models.Checkout
 {
     public class DeliveryAddresses
     {
@@ -11,7 +11,7 @@ namespace Kadena.WebAPI.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public string AddAddressLabel { get; set; }
+        public NewAddressButton NewAddress { get; set; }
 
         public List<DeliveryAddress> items { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Kadena.WebAPI.Models
+namespace Kadena.WebAPI.Models.Checkout
 {
     public class PaymentMethods
     {
