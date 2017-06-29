@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Alert from '../../Alert';
 import Spinner from '../../Spinner';
 import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 import TemplateProduct from '../../TemplateProduct';
@@ -33,7 +34,7 @@ class SearchPageProducts extends Component {
   }
 
   render() {
-    const { filteredProducts, productsPage, productsLength, productsPaginationLimit } = this.props;
+    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, getAllResults } = this.props;
 
     const productList = filteredProducts.map((product) => {
       return (
@@ -55,22 +56,27 @@ class SearchPageProducts extends Component {
                     itemsOnPage={productsPaginationLimit}
                     itemsNumber={productsLength}
                     currPage={productsPage}
-                    onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}/>
+                    onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}
+        />
       </div>
     );
 
-    return productsLength ? content : <Spinner />;
+    const plug = getAllResults
+      ? <Alert type="info" text="No products found"/>
+      : <Spinner />;
+
+    return productsLength ? content : plug;
   }
 }
 
 export default connect((state) => {
-  const { products, productsPage, productsPaginationLimit } = state.searchPage;
+  const { products, productsPage, productsPaginationLimit, getAllResults } = state.searchPage;
 
   const filteredProducts = paginationFilter(products, productsPage, productsPaginationLimit);
 
   const productsLength = products.length;
 
-  return { filteredProducts, productsPage, productsLength, productsPaginationLimit };
+  return { filteredProducts, productsPage, productsLength, productsPaginationLimit, getAllResults };
 }, {
   getUI,
   changePage,

@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Models;
+﻿using Kadena.WebAPI.Models.Checkout;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
