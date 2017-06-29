@@ -13,6 +13,7 @@ class Search extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.redirectUserToResultPage = this.redirectUserToResultPage.bind(this);
   }
 
   handleChange(event) {
@@ -32,6 +33,35 @@ class Search extends Component {
     if (!query.length) this.props.closeDropdown();
   }
 
+  redirectUserToResultPage(e) {
+    const { workingProcess } = this.state;
+    const { query } = this.props;
+
+    if (e.keyCode === 13) {
+      clearTimeout(workingProcess);
+      this.props.sendQuery(query, true);
+      e.preventDefault();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { pressedEnter, products, pages } = nextProps;
+    if (pressedEnter) {
+      let urlTohResultPage = '#';
+      if (products) {
+        if (products.url) {
+          urlTohResultPage = products.url;
+        } else if (pages) {
+          if (pages.url) {
+            urlTohResultPage = pages.url;
+          }
+        }
+      }
+
+      location.href = urlTohResultPage;
+    }
+  }
+
   render() {
     const { query, products, pages, message, areResultsShown } = this.props;
 
@@ -39,7 +69,7 @@ class Search extends Component {
       <div>
         <SearchInput changeValue={this.handleChange}
                      closeDropdown={this.props.closeDropdown}
-                     searchPageUrl={products ? products.url : undefined}
+                     redirectUserToResultPage={this.redirectUserToResultPage}
                      value={query} />
           <SearchDropdown areResultsShown={areResultsShown}
                           products={products}
@@ -54,8 +84,8 @@ class Search extends Component {
 
 export default connect((state) => {
   const { search } = state;
-  const { products, pages, message, query, areResultsShown } = search;
-  return { query, products, pages, message, areResultsShown };
+  const { products, pages, message, query, areResultsShown, pressedEnter } = search;
+  return { query, products, pages, message, areResultsShown, pressedEnter };
 }, {
   changeSearchQuery,
   closeDropdown,
