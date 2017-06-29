@@ -31,7 +31,10 @@ class TemplateProduct extends Component {
       useTemplateBtn
     } = this.props;
 
-    const { type: stockType, text: stockText } = stock;
+    const stockElement = stock
+      ? <Stock text={stock.text} type={stock.type}/>
+      : null;
+
     const { url: btnUrl, text: btnText } = useTemplateBtn;
 
     const breadcrumbsList = breadcrumbs.map((item, i) => <span key={i}>{item}</span>);
@@ -48,7 +51,7 @@ class TemplateProduct extends Component {
           <h3 title={title}>{title}</h3>
         </div>
 
-        <Stock type={stockType} text={stockText} />
+        {stockElement}
 
         <div className="template__use template__use--only-btn">
           {/* <input type="number" className="input__text template__input" value={templateQuantity} onChange={(e) => { this.handleChange(e.target.value); }} min="1" /> */}

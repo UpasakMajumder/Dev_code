@@ -26,10 +26,7 @@ export default {
         "Mailings", "Repairs", "Street"
       ],
       "title": "Apr 16 17 Lamp post 2nd",
-      "stock": {
-        "type": "available", // types: available/unavailable/out
-        "text": "150 pcs in stock"
-      },
+      "stock": null,
       "useTemplateBtn": {
         "text": "Go to detail",
         "url": "#"
