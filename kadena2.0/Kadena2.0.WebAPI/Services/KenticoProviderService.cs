@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using Newtonsoft.Json;
+using Kadena.WebAPI.Models.Checkout;
 
 namespace Kadena.WebAPI.Services
 {
@@ -272,7 +273,7 @@ namespace Kadena.WebAPI.Services
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChilliPdfGeneratorSettingsId", Guid.Empty),
+                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
@@ -399,8 +400,8 @@ namespace Kadena.WebAPI.Services
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
-                
-            };
+                ProductType = doc.GetValue("ProductType", string.Empty)
+        };
 
             if (sku != null)
             {

@@ -1,6 +1,7 @@
 ﻿using Kadena.Dto.General;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,29 +29,32 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
+            BaseErrorDto innerError = null;
 
-            try
+            string responseContent = await response.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(responseContent))
             {
-                string responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
-            }
-            catch (JsonReaderException e)
-            {
-                result = new BaseResponseDto<TResult>
+                try
                 {
-                    Success = false,
-                    Payload = default(TResult),
-                    Error = new BaseErrorDto
-                    {
-                        Message = _responseIncorrectMessage,
-                        InnerError = new BaseErrorDto
-                        {
-                            Message = e.Message
-                        }
-                    }
-                };
+                    result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
+                }
+                catch (Exception e)
+                {
+                    innerError = new BaseErrorDto { Message = e.Message };
+                }
             }
-            return result;
+
+            return result ?? new BaseResponseDto<TResult>
+                                {
+                                    Success = false,
+                                    Payload = default(TResult),
+                                    Error = new BaseErrorDto
+                                    {
+                                        Message = _responseIncorrectMessage,
+                                        InnerError = innerError
+                                    }
+                                };
         }
     }
 }

@@ -19,7 +19,10 @@ export const getUI = (query) => {
       } else {
         dispatch({
           type: SEARCH_PAGE_UI_SUCCESS,
-          payload
+          payload: {
+            ...payload,
+            getAllResults: true
+          }
         });
       }
     })
@@ -30,7 +33,10 @@ export const getUI = (query) => {
     // setTimeout(() => {
     //   dispatch({
     //     type: SEARCH_PAGE_UI_SUCCESS,
-    //     payload: ui
+    //     payload: {
+    //       ...ui,
+    //       getAllResults: true
+    //     }
     //   });
     // }, 2000);
   };

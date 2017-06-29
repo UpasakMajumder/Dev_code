@@ -68,7 +68,7 @@ namespace Kadena.WebAPI.Services
                 {
                     RowsCount = orderList.TotalCount,
                     RowsOnPage = _pageCapacity,
-                    PagesCount = EnablePaging ? (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) : 0 + 1
+                    PagesCount = (EnablePaging ? (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) : 0) + 1
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems")
             };

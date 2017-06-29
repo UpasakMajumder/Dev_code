@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
+using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
 using System;
@@ -20,27 +21,38 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
             // First request to get total count of records.
             var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
 
-            // Second request to get all records.
-            data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
-            var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE, 
-                data.Payload.Orders.Select(o => o.CustomerId));
-
-            // Unigrid accept only DataSet as source type.
-            grdOrders.DataSource = ToDataSet(
-                data.Payload.Orders.Select(o =>
+            if (data?.Success ?? false)
+            {
+                if ((data.Payload.Orders?.Count() ?? 0) > 0)
                 {
-                    var customer = customers[o.CustomerId] as CustomerInfo;
-                    return new
-                    {
-                        o.Id,
-                        o.Status,
-                        o.TotalPrice,
-                        o.CreateDate,
-                        CustomerName = customer != null ?
-                                            $"{customer.CustomerFirstName} {customer.CustomerLastName}"
-                                            : string.Empty
-                    };
-                }));
+                    // Second request to get all records.
+                    data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
+                    var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE,
+                        data.Payload.Orders.Select(o => o.CustomerId));
+
+                    // Unigrid accept only DataSet as source type.
+                    grdOrders.DataSource = ToDataSet(
+                        data.Payload.Orders.Select(o =>
+                        {
+                            var customer = customers[o.CustomerId] as CustomerInfo;
+                            return new
+                            {
+                                o.Id,
+                                o.Status,
+                                o.TotalPrice,
+                                o.CreateDate,
+                                CustomerName = customer != null ?
+                                                    $"{customer.CustomerFirstName} {customer.CustomerLastName}"
+                                                    : string.Empty
+                            };
+                        }));
+                }
+            }
+            else
+            {
+                var exc = new InvalidOperationException(data?.ErrorMessages);
+                EventLogProvider.LogException("OrdersList - Load", "EXCEPTION", exc);
+            }
         }
 
         private static DataSet ToDataSet<T>(IEnumerable<T> list)

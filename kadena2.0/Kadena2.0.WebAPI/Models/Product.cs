@@ -9,5 +9,6 @@
         public int  StockItems { get; set; }
         public string DocumentUrl { get; set; }
         public string SkuImageUrl { get; set; }
+        public string ProductType { get; set; }
     }
 }
