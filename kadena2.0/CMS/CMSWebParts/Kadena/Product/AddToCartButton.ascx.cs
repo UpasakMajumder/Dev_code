@@ -33,6 +33,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblNumberOfItemsError.Visible = false;
                 inpNumberOfItems.Attributes.Add("class", "input__text");
 
+                PreviouslyAddedAmount = GetPreviouslyAddedAmmout();
+
                 if (IsStockEmpty() && IsProductInventoryType())
                 {
                     this.Visible = false;
@@ -45,20 +47,37 @@ namespace Kadena.CMSWebParts.Kadena.Product
         #region Event handlers
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
-        {
-            var previouslyAddedAmmount = GetPreviouslyAddedAmmout();
+        {        
 
-            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput + previouslyAddedAmmount))
+            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput + PreviouslyAddedAmount))
             {
-                if (IsProductInventoryType() && (ValidationHelper.GetInteger(inpNumberOfItems.Value, 0) > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0)))
+
+                if (IsProductInventoryType())
                 {
-                    lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode);
-                    SetErrorLblVisible();
+                    if (InsertedItemsHigherThanAvailableProducts())
+                    {
+                        lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode);
+                        SetErrorLblVisible();
+                    }
+
+                    else if (ItemsInCartAreExceeded())
+                    {
+                        lblNumberOfItemsError.Text = string.Format(
+                            ResHelper.GetString("Kadena.Product.ItemsInCartExceeded", LocalizationContext.CurrentCulture.CultureCode),
+                            PreviouslyAddedAmount, DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0) - PreviouslyAddedAmount);
+                        SetErrorLblVisible();
+                    }
+
+                    else
+                    {
+                        AddToCartProcess();
+                    }
+
                 }
+
                 else
                 {
-                    AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0), previouslyAddedAmmount, DocumentContext.CurrentDocument.DocumentID);
-                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
+                    AddToCartProcess();
                 }
                 // redirect
             }
@@ -80,6 +99,24 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
             }
 
+        }
+
+        private int PreviouslyAddedAmount { get; set; }
+        private void AddToCartProcess()
+        {
+            AddItemsToShoppingCart(ValidationHelper.GetInteger(inpNumberOfItems.Value, 0), PreviouslyAddedAmount, DocumentContext.CurrentDocument.DocumentID);
+            ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
+        }
+      
+
+        private bool ItemsInCartAreExceeded()
+        {
+            return PreviouslyAddedAmount + NumberOfItemsInInput > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0);           
+        }
+
+        private bool InsertedItemsHigherThanAvailableProducts()
+        {
+            return NumberOfItemsInInput > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0);
         }
 
         private void SetErrorLblVisible()
