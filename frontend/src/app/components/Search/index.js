@@ -14,6 +14,7 @@ class Search extends Component {
     changeSearchQuery: PropTypes.func.isRequired,
     areResultsShown: PropTypes.bool.isRequired,
     closeDropdown: PropTypes.func.isRequired,
+    pressedEnter: PropTypes.bool.isRequired,
     products: PropTypes.object.isRequired,
     sendQuery: PropTypes.func.isRequired,
     message: PropTypes.string.isRequired,
@@ -40,16 +41,16 @@ class Search extends Component {
     if (!query.length) closeDropdown();
   };
 
-  redirectUserToResultPage(e) {
+  redirectUserToResultPage = (e) => {
     const { workingProcess } = this.state;
-    const { query } = this.props;
+    const { query, sendQuery } = this.props;
 
     if (e.keyCode === 13) {
       clearTimeout(workingProcess);
-      this.props.sendQuery(query, true);
+      sendQuery(query, true);
       e.preventDefault();
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps) { // eslint-disable-line class-methods-use-this
     const { pressedEnter, products, pages } = nextProps;

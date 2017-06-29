@@ -58,7 +58,7 @@ TemplateProduct.propTypes = {
   stock: PropTypes.shape({
     type: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
-  }).isRequired,
+  }),
   useTemplateBtn: PropTypes.shape({
     url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired

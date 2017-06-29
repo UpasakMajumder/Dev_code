@@ -11,14 +11,15 @@ import { paginationFilter } from '../../../helpers/array';
 class SearchPagePages extends Component {
   static propTypes = {
     /* store */
+    getAllResults: PropTypes.bool.isRequired,
+    pagesLength: PropTypes.number.isRequired,
+    pagesPage: PropTypes.number.isRequired,
     changePage: PropTypes.func.isRequired,
     filteredPages: PropTypes.arrayOf(PropTypes.shape({
-      url: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
       text: PropTypes.string
-    })).isRequired,
-    pagesPage: PropTypes.number.isRequired,
-    pagesLength: PropTypes.number.isRequired
+    })).isRequired
   };
 
   render() {

@@ -106,8 +106,8 @@ class Checkout extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { ui: uiNext } = nextProps.shoppingCart;
-    const { ui: uiCurr } = this.props.shoppingCart;
+    const { ui: uiNext } = nextProps.checkout;
+    const { ui: uiCurr } = this.props.checkout;
 
     const { products } = uiNext;
     if (!products.items.length) location.reload();

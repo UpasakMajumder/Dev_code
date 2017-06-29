@@ -11,24 +11,25 @@ import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 
 class SearchPageProducts extends Component {
   static propTypes = {
+    productsLength: PropTypes.PropTypes.number.isRequired,
+    productsPaginationLimit: PropTypes.number.isRequired,
+    productsPage: PropTypes.PropTypes.number.isRequired,
+    getAllResults: PropTypes.bool.isRequired,
     changePage: PropTypes.func.isRequired,
     filteredProducts: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       stock: PropTypes.shape({
         type: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
-      }).isRequired,
+      }),
       useTemplateBtn: PropTypes.shape({
-        url: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
+        text: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
       }).isRequired,
+      breadcrumbs: PropTypes.arrayOf(PropTypes.string).isRequired,
       isFavourite: PropTypes.bool,
-      imgUrl: PropTypes.string,
-      breadcrumbs: PropTypes.arrayOf(PropTypes.string).isRequired
-    })),
-    productsPage: PropTypes.PropTypes.number.isRequired,
-    productsLength: PropTypes.PropTypes.number.isRequired,
-    productsPaginationLimit: PropTypes.number.isRequired
+      imgUrl: PropTypes.string
+    }))
   };
 
   componentDidMount() {
