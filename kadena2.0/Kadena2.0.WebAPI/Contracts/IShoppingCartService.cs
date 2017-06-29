@@ -1,16 +1,13 @@
-﻿using Kadena.WebAPI.Models;
+﻿using Kadena.WebAPI.Models.Checkout;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.WebAPI.Models.SubmitOrder;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 
 namespace Kadena.WebAPI.Contracts
 {
     public interface IShoppingCartService
     {
         Task<CheckoutPage> GetCheckoutPage();
-        List<PaymentMethod> ArrangePaymentMethods(PaymentMethod[] methods);
 
         Task<CheckoutPage> SelectShipipng(int id);
 
@@ -24,6 +21,8 @@ namespace Kadena.WebAPI.Contracts
 
         Task<double> EstimateTotalTax();
 
+        Task<bool> IsSubmittable();
+			
         Task<OrderDetail> GetOrderDetail(string orderId);
     }
 }

@@ -40,22 +40,48 @@ class Search extends Component {
     if (!query.length) closeDropdown();
   };
 
+  redirectUserToResultPage(e) {
+    const { workingProcess } = this.state;
+    const { query } = this.props;
+
+    if (e.keyCode === 13) {
+      clearTimeout(workingProcess);
+      this.props.sendQuery(query, true);
+      e.preventDefault();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) { // eslint-disable-line class-methods-use-this
+    const { pressedEnter, products, pages } = nextProps;
+    if (pressedEnter) {
+      let urlTohResultPage = '#';
+      if (products) {
+        if (products.url) {
+          urlTohResultPage = products.url;
+        } else if (pages) {
+          if (pages.url) {
+            urlTohResultPage = pages.url;
+          }
+        }
+      }
+
+      location.href = urlTohResultPage;
+    }
+  }
+
   render() {
     const { query, products, pages, message, areResultsShown, closeDropdown } = this.props;
 
     return (
       <div>
         <SearchInput changeValue={this.handleChange}
-                     closeDropdown={closeDropdown}
-                     searchPageUrl={products ? products.url : undefined}
-                     value={query}
-        />
-
-        <SearchDropdown areResultsShown={areResultsShown}
-                        products={products}
-                        pages={pages}
-                        message={message}
-        />
+                     closeDropdown={this.props.closeDropdown}
+                     redirectUserToResultPage={this.redirectUserToResultPage}
+                     value={query} />
+          <SearchDropdown areResultsShown={areResultsShown}
+                          products={products}
+                          pages={pages}
+                          message={message} />
       </div>
     );
   }
@@ -63,8 +89,8 @@ class Search extends Component {
 
 export default connect((state) => {
   const { search } = state;
-  const { products, pages, message, query, areResultsShown } = search;
-  return { products, pages, message, query, areResultsShown };
+  const { products, pages, message, query, areResultsShown, pressedEnter } = search;
+  return { query, products, pages, message, areResultsShown, pressedEnter };
 }, {
   changeSearchQuery,
   closeDropdown,

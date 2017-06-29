@@ -11,7 +11,6 @@ using Kadena.Dto.Checkout.Requests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.ViewOrder.Responses;
-using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -105,6 +104,16 @@ namespace Kadena.WebAPI.Controllers
             var submitRequest = mapper.Map<SubmitOrderRequest>(request);
             var serviceResponse = await service.SubmitOrder(submitRequest);
             var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            return ResponseJson(resultDto);
+        }
+
+        [HttpGet]
+        [Route("api/shoppingcart/submittable")]
+        [AuthorizationFilter]
+        public async Task<IHttpActionResult> Submittable()
+        {
+            var serviceResponse = await service.IsSubmittable();
+            var resultDto = Mapper.Map<bool>(serviceResponse);
             return ResponseJson(resultDto);
         }
     }

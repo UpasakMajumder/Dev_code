@@ -1,4 +1,5 @@
 ﻿using Kadena.WebAPI.Models;
+using Kadena.WebAPI.Models.Checkout;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Contracts
@@ -31,7 +32,6 @@ namespace Kadena.WebAPI.Contracts
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);
         DeliveryOption GetShippingOption(int id);
-        OrderItem[] GetShoppingCartOrderItems();
         CartItem[] GetShoppingCartItems();
         void RemoveCartItem(int id);
 
@@ -46,12 +46,18 @@ namespace Kadena.WebAPI.Contracts
 
         void SaveShippingAddress(DeliveryAddress address);
 
+        void SetCartItemDesignFilePath(int id, string path);
+
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
+        Product GetProductByDocumentId(int documentId);
+        string GetDocumentUrl(int documentId);
 
+        List<string> GetBreadcrumbs(int documentId);
+		
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
-
+		
         bool UserCanSeePrices();
     }
 }

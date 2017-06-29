@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Models.RecentOrders;
+﻿using Kadena.WebAPI.Models.Checkout;
+using Kadena.WebAPI.Models.RecentOrders;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Kadena.WebAPI.Models
 
         public DateTime DeliveryDate { get; set; }
 
-        public IEnumerable<OrderItem> Items { get; set; }
+        public IEnumerable<CartItem> Items { get; set; }
 
         public Button ViewBtn { get; set; }
     }

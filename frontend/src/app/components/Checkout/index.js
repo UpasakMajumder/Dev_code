@@ -106,8 +106,12 @@ class Checkout extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { ui: uiNext } = nextProps.checkout;
-    const { ui: uiCurr } = this.props.checkout;
+    const { ui: uiNext } = nextProps.shoppingCart;
+    const { ui: uiCurr } = this.props.shoppingCart;
+
+    const { products } = uiNext;
+    if (!products.items.length) location.reload();
+
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
     this.checkPDFAvailability(nextProps);
   }

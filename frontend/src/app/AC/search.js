@@ -22,7 +22,7 @@ export const changeSearchQuery = (query) => {
   };
 };
 
-export const sendQuery = (query) => {
+export const sendQuery = (query, pressedEnter) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_RESULT_GET_FETCH });
 
@@ -41,7 +41,10 @@ export const sendQuery = (query) => {
       } else {
         dispatch({
           type: SEARCH_RESULT_GET_SUCCESS,
-          payload
+          payload: {
+            ...payload,
+            pressedEnter: pressedEnter || false
+          }
         });
         dispatch({ type: HEADER_SHADOW_SHOW });
         dispatch({ type: SEARCH_RESULTS_SHOW });
@@ -55,7 +58,10 @@ export const sendQuery = (query) => {
     // setTimeout(() => {
     //   dispatch({
     //     type: SEARCH_RESULT_GET_SUCCESS,
-    //     payload: ui
+    //     payload: {
+    //       ...ui,
+    //       pressedEnter: pressedEnter || false
+    //     }
     //   });
     //
     //   dispatch({ type: HEADER_SHADOW_SHOW });
