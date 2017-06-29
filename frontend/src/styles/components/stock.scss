@@ -2,7 +2,7 @@
   @extend %flex--center--default;
   flex-wrap: nowrap;
   font-weight: 400;
-  font-size: $font-xs;
+  font-size: $font-size-default;
 
   svg {
     @include rem(margin-right, 5px);
