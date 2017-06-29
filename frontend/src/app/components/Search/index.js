@@ -44,7 +44,7 @@ class Search extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) { // eslint-disable-line class-methods-use-this
     const { pressedEnter, products, pages } = nextProps;
     if (pressedEnter) {
       let urlTohResultPage = '#';

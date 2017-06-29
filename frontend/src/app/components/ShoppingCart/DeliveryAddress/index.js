@@ -6,7 +6,7 @@ import Alert from '../../Alert';
 class DeliveryAddress extends Component {
   render() {
     const { ui, checkedId, changeShoppingData } = this.props;
-    const { title, description, addAddressLabel, items, emptyMessage } = ui;
+    const { title, description, newAddress, items, emptyMessage } = ui;
 
     const renderAddresses = (item) => {
       return (
@@ -30,12 +30,11 @@ class DeliveryAddress extends Component {
             <div className="cart-fill__block-inner cart-fill__block--flex">
               {addresses}
               <div className="btn-group btn-grout--left">
-                <button
-                  type="button"
-                  data-dialog="#cart-add-adress"
+                <a
+                  href={newAddress.url}
                   className="btn-action btn-action--secondary js-dialog">
-                  {addAddressLabel}
-                </button>
+                  {newAddress.label}
+                </a>
               </div>
             </div>
           </div>

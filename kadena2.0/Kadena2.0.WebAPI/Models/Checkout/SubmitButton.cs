@@ -1,4 +1,4 @@
-﻿namespace Kadena.WebAPI.Models
+﻿namespace Kadena.WebAPI.Models.Checkout
 {
     public class SubmitButton
     {

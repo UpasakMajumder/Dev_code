@@ -31,6 +31,7 @@ using Kadena.WebAPI.Models.Search;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.WebAPI.Factories;
+using Kadena.WebAPI.Models.Checkout;
 
 namespace Kadena.WebAPI
 {
@@ -196,6 +197,7 @@ namespace Kadena.WebAPI
                         d.OrderStatus = s.Status;
                     });
                 config.CreateMap<OrderBody, OrderBodyDto>();
+                config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
             });
         }
 

@@ -8,7 +8,7 @@ namespace Kadena.Dto.Checkout
         public string UnDeliverableText { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string AddAddressLabel { get; set; }
+        public NewAddressButtonDTO NewAddress { get; set; }
         public string EmptyMessage { get; set; }
         public List<DeliveryAddressDTO> Items { get; set; }
     }
