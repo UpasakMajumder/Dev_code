@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Models.RecentOrders;
+﻿using Kadena.WebAPI.Models.Checkout;
+using Kadena.WebAPI.Models.RecentOrders;
 using System;
 using System.Collections.Generic;
 

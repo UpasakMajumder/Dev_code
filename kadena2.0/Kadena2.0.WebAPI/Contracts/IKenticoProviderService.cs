@@ -1,4 +1,5 @@
 ﻿using Kadena.WebAPI.Models;
+using Kadena.WebAPI.Models.Checkout;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Contracts

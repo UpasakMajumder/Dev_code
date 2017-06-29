@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using Newtonsoft.Json;
+using Kadena.WebAPI.Models.Checkout;
 
 namespace Kadena.WebAPI.Services
 {
@@ -399,8 +400,8 @@ namespace Kadena.WebAPI.Services
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
-                
-            };
+                ProductType = doc.GetValue("ProductType", string.Empty)
+        };
 
             if (sku != null)
             {

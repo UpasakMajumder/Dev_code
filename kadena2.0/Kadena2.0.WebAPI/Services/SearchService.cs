@@ -114,11 +114,14 @@ namespace Kadena.WebAPI.Services
                 {
                     resultItem.ImgUrl = product.SkuImageUrl;
                     resultItem.Category = product.Category;
-                    resultItem.Stock = new Stock()
+                    if (product.ProductType.Contains("KDA.InventoryProduct"))
                     {
-                        Text = $"{product.StockItems} pcs in stock",
-                        Type = product.Availability
-                    };
+                        resultItem.Stock = new Stock()
+                        {
+                            Text = $"{product.StockItems} pcs in stock",
+                            Type = product.Availability
+                        };
+                    }
                     resultItem.UseTemplateBtn = new UseTemplateBtn()
                     {
                         Text = resources.GetResourceString("Kadena.Search.GoToDetailButton"),
