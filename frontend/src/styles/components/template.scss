@@ -1,7 +1,9 @@
 .template {
-  @extend .mb-5;
+  @extend .pb-5;
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   & > *:not(:last-child, :first-child) {
     @include rem(margin-bottom, 10px);
@@ -17,6 +19,11 @@
   }
 
   &__breadcrumbs {
+    @include create-hidden-shadow(100px);
+    $height: 24px;
+    height: $height;
+    overflow: hidden;
+
     span {
       @include rem(margin-right, 5px);
       display: inline-block;
@@ -41,8 +48,9 @@
       color: $font-black;
       font-weight: bold;
       margin: 0;
-      height: $font-size-default * 2 * $line-height;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -89,11 +97,11 @@
     }
 
     &--only-btn {
+      margin-top: auto;
+
       a,
       button {
         margin: 0;
-        width: 100%;
-        text-align: center;
       }
     }
   }
