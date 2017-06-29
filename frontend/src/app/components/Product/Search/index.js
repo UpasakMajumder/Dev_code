@@ -12,6 +12,10 @@ class SearchProduct extends Component {
       url
     } = this.props;
 
+    const stockElement = stock
+      ? <Stock text={stock.text} type={stock.type}/>
+      : null;
+
     return (
       <a href={url} className="search-result">
         <div className="search-result__img" style={{ backgroundImage: `url(${image})` }}> </div>
@@ -19,7 +23,7 @@ class SearchProduct extends Component {
         <div className="search-result__content">
           <p className="search-result__category">{category}</p>
           <p className="search-result__title">{title}</p>
-            <Stock text={stock.text} type={stock.type}/>
+          {stockElement}
         </div>
       </a>
     );

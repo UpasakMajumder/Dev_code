@@ -5,7 +5,8 @@ const defaultState = {
   pages: [],
   pagesPage: 0,
   productsPage: 0,
-  productsPaginationLimit: 8
+  productsPaginationLimit: 8,
+  getAllResults: false
 };
 
 export default (state = defaultState, action) => {
