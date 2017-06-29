@@ -4,7 +4,7 @@
   $content-margin: $padding;
   padding: $padding;
   border-bottom: 2px solid $main-gutter-color;
-  display: block;
+  display: flex;
   color: $brand-dark;
 
   &:active,
@@ -17,25 +17,14 @@
     @extend .inline-bg;
     width: $img-size;
     height: $img-size;
-    display: inline-block;
   }
 
   &__content {
-    display: inline-block;
+    $shadow-width: $padding + $padding / 2;
+
+    @include create-hidden-shadow($shadow-width);
     width: calc(100% - #{$img-size} - #{$content-margin} - 4px);
     margin-left: $content-margin;
-    position: relative;
-
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: $padding + $padding / 2;
-      background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 78%);
-    }
   }
 
   &__category {
