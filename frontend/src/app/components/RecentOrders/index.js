@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Order from './Order';
 import Pagination from '../Pagination';
@@ -9,6 +10,15 @@ class RecentOrders extends Component {
   state = {
     currPage: 0,
     prevPage: 0
+  };
+
+  static propTypes = {
+    getHeadings: PropTypes.func.isRequired,
+    getRows: PropTypes.func.isRequired,
+    headings: PropTypes.arrayOf(PropTypes.string).isRequired,
+    noOrdersMessage: PropTypes.string.isRequired,
+    pageInfo: PropTypes.object.isRequired,
+    rows: PropTypes.object.isRequired
   };
 
   changePage = ({ selected }) => {
