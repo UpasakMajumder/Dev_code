@@ -28,7 +28,10 @@ export default {
       "unDeliverableText": "Text",
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",
-      "addAddressLabel": "New address",
+      "newAddress": {
+        "label": "New address",
+        "url": "#?tab=t4"
+      },
       "emptyMessage": "Fill at least one address",
       "items": [
         {
