@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SearchInput from './SearchInput';
 import SearchDropdown from './SearchDropdown';
@@ -7,6 +8,17 @@ import { changeSearchQuery, closeDropdown, sendQuery } from '../../AC/search';
 class Search extends Component {
   state = {
     workingProcess: 0
+  };
+
+  static propTypes = {
+    changeSearchQuery: PropTypes.func.isRequired,
+    areResultsShown: PropTypes.bool.isRequired,
+    closeDropdown: PropTypes.func.isRequired,
+    products: PropTypes.object.isRequired,
+    sendQuery: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+    pages: PropTypes.object.isRequired,
+    query: PropTypes.string.isRequired
   };
 
   handleChange = (event) => {
