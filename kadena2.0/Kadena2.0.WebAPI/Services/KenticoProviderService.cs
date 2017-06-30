@@ -514,8 +514,13 @@ namespace Kadena.WebAPI.Services
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
-		
-		public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+
+        public bool UserCanSeeAllOrders()
+        {
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+
+        public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
         }
