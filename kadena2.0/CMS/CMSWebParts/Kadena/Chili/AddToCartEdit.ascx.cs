@@ -34,6 +34,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
                     
             SetupControl();
+            SetupDocument();          
 
         }
 
@@ -58,14 +59,16 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             get; set;
         }
 
+        private TreeNode ReferencedDocument { get; set; }
+
         private bool IsProductMailingType()
         {
             return GetProductType().Contains("KDA.MailingProduct");
         }
-       
+
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput))
+            if (NumberOfItemsInInput > 0)
             {
                 if (IsProductMailingType())
                 {
@@ -75,18 +78,25 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     }
                     else
                     {
-                        DisplayErrorMessage();
+                        DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
                     }
                 }
+
+                if (!IsAddedAmmountValid(NumberOfItemsInInput + GetItemsInCart()))
+                {
+                    DisplayErrorMessage(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
+                }
+
                 else
                 {
                     AddItemsToShoppingCart(NumberOfItemsInInput);
                 }
 
             }
+
             else
             {
-                DisplayErrorMessage();
+                DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
             }
         }
 
@@ -129,9 +139,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                          
             }          
         }
-        private void DisplayErrorMessage()
+        private void DisplayErrorMessage(string errorMessage)
         {
-            lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
+            lblNumberOfItemsError.Text = errorMessage;
             SetErrorLblVisible();
         }
         private void SetNumberOfAddresses()
@@ -287,12 +297,23 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             cart.ShoppingCartShippingAddress = customerAddress;
         }
 
+      
+
+        private void SetupDocument()
+        {
+            int documentId;
+
+            if (int.TryParse(Request.QueryString["id"], out documentId))
+            {
+                ReferencedDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            }
+
+        }
+      
         private bool IsAddedAmmountValid(int ammount)
         {
-            // is inserted value valid positive integer number?
-            if (ammount > 0)
-            {
-                var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(DocumentContext.CurrentDocument.GetStringValue("ProductDynamicPricing", string.Empty));
+          
+                var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(ReferencedDocument?.GetStringValue("ProductDynamicPricing", string.Empty) ?? string.Empty);
                 // do I have dynamic pricing data or I am using regular SKU price?
                 if (rawData != null && rawData.Count != 0)
                 {
@@ -318,13 +339,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     return true;
                 }
-            }
+            
             return false;
         }
 
         private double GetUnitPriceForAmmount(int ammount)
         {
-            var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(DocumentContext.CurrentDocument.GetStringValue("ProductDynamicPricing", string.Empty));
+            var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(ReferencedDocument?.GetStringValue("ProductDynamicPricing", string.Empty) ?? string.Empty);
 
             if (rawData == null || rawData.Count == 0)
             {
@@ -345,6 +366,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 }
             }
             return 0;
+        }
+
+        private int GetItemsInCart()
+        {
+          var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.Where(item => item.SKUID == DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0)).FirstOrDefault();
+
+            return cartItem?.CartItemUnits ?? 0; 
         }
     }
 }
