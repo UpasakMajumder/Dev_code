@@ -9,7 +9,7 @@ namespace Kadena.WebAPI
         {
             Formatting = Formatting.Indented,
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "yyyy-MM-dd HH:mm:ss"
+            DateFormatString = "MMM dd yyyy"
         };
     }
 }

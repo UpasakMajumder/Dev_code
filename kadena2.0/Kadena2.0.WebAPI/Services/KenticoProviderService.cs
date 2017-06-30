@@ -374,10 +374,15 @@ namespace Kadena.WebAPI.Services
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
 
-            var price = GetDynamicPrice( item.GetIntegerValue("ProductPageID", 0), quantity );
+            var price = GetDynamicPrice(item.GetIntegerValue("ProductPageID", 0), quantity);
             if (price != 0.0m)
             {
                 item.CartItemPrice = (double)price;
+                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+            }
+            else
+            {
+                throw new Exception("Inserted quantity is not in range");
             }
 
             cart.InvalidateCalculations();
