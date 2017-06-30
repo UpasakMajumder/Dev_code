@@ -19,7 +19,7 @@ namespace Kadena.Dto.Order
         [DataMember(Name = "deliveryDate")]
         public DateTime DeliveryDate { get; set; }
 
-        [DataMember(Name = "totalPrice")]
+        [DataMember(Name = "totalCost")]
         public double TotalPrice { get; set; }
 
         [DataMember(Name = "clientId")]
