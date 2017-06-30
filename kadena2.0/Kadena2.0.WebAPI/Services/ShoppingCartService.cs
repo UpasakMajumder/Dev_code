@@ -352,7 +352,8 @@ namespace Kadena.WebAPI.Services
                Site = new SiteDTO()
                {
                    KenticoSiteID = site.Id,
-                   KenticoSiteName = site.Name
+                   KenticoSiteName = site.Name,
+                   ErpCustomerId = site.ErpCustomerId
                },
                OrderCurrency = new CurrencyDTO()
                {
