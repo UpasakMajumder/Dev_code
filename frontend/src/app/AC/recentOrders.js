@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { GET_RECENT_ORDERS_HEADINGS_FETCH, GET_RECENT_ORDERS_ROWS_FETCH, GET_RECENT_ORDERS_HEADINGS_SUCCESS,
          GET_RECENT_ORDERS_ROWS_SUCCESS, GET_RECENT_ORDERS_HEADINGS_FAILURE, GET_RECENT_ORDERS_ROWS_FAILURE,
-         APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
-import { RECENT_ORDERS } from '../globals';
-// import { headings, pageInfo, rows1, rows2, noOrdersMessage } from './_ws/recentOrders';
+         APP_LOADING_START, APP_LOADING_FINISH } from 'app.consts';
+import { RECENT_ORDERS } from 'app.globals';
+import { headings, pageInfo, rows1, rows2, noOrdersMessage } from 'app.ws/recentOrders';
 
 export const getHeadings = () => {
   return (dispatch) => {
