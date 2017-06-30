@@ -212,6 +212,12 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         cartItem = cart.SetShoppingCartItem(parameters);
                     }
 
+                    var customizedName = Request?.Form?.GetValues("customizedProductName").FirstOrDefault();
+                    if (!string.IsNullOrEmpty(customizedName) && customizedName != cartItem.CartItemText)
+                    {
+                        cartItem.CartItemText = customizedName;
+                    }
+
                     cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                     cartItem.SetValue("ArtworkLocation", artworkLocation);
                     cartItem.SetValue("ProductType", productType);
