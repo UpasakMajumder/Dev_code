@@ -211,6 +211,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var parameters = new ShoppingCartItemParameters(product.SKUID, ammount);
                 var cartItem = cart.SetShoppingCartItem(parameters);
 
+                cartItem.CartItemText = product.SKUName;
                 cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                 cartItem.SetValue("ArtworkLocation", artworkLocation);
                 cartItem.SetValue("ProductType", productType);
