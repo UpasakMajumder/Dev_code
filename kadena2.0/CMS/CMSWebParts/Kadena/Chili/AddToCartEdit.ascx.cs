@@ -202,6 +202,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     var artworkLocation = document.GetStringValue("ProductArtworkLocation", string.Empty);
                     var chiliTemplateId = document.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
                     var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty);
+                    var productChiliWorkspaceId = document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
 
 
@@ -222,12 +223,19 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         cartItem = cart.SetShoppingCartItem(parameters);
                     }
 
+                    var customizedName = Request?.Form?.GetValues("customizedProductName").FirstOrDefault();
+                    if (!string.IsNullOrEmpty(customizedName) && customizedName != cartItem.CartItemText)
+                    {
+                        cartItem.CartItemText = customizedName;
+                    }
+
                     cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
                     cartItem.SetValue("ArtworkLocation", artworkLocation);
                     cartItem.SetValue("ProductType", productType);
                     cartItem.SetValue("ProductPageID", documentId);
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
                     cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
+                    cartItem.SetValue("ProductChiliWorkspaceId", productChiliWorkspaceId);
 
                     if (MailingListData != null)
                     {

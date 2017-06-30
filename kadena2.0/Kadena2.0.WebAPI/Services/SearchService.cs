@@ -4,7 +4,6 @@ using System.Data;
 using Kadena.WebAPI.Models.Search;
 using System.Collections.Generic;
 using System.Linq;
-using CMS.Helpers;
 using System.Web;
 using System.Text.RegularExpressions;
 
