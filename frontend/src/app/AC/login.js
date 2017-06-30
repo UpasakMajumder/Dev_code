@@ -1,7 +1,7 @@
 import axios from 'axios';
 import validator from 'validator';
-import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE, LOGIN_CLIENT_VALIDATION_ERROR } from '../constants';
-import { LOGIN } from '../globals';
+import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE, LOGIN_CLIENT_VALIDATION_ERROR } from 'app.consts';
+import { LOGIN } from 'app.globals';
 
 export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
   return (dispatch) => {
