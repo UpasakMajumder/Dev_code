@@ -13,6 +13,7 @@ using Kadena2.MicroserviceClients.MicroserviceRequests;
 using Kadena.WebAPI.Models.OrderDetail;
 using System.Security;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Models.Checkout;
 
 namespace Kadena.WebAPI.Services
 {
@@ -69,7 +70,11 @@ namespace Kadena.WebAPI.Services
                 {
                     IsDeliverable = true,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
-                    AddAddressLabel = resources.GetResourceString("Kadena.Checkout.NewAddress"),
+                    NewAddress = new NewAddressButton()
+                    {
+                        Label = resources.GetResourceString("Kadena.Checkout.NewAddress"),
+                        Url = "/settings?tab=t4"
+                    },
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
                     EmptyMessage = resources.GetResourceString("Kadena.Checkout.NoAddressesMessage"),
@@ -245,6 +250,12 @@ namespace Kadena.WebAPI.Services
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             var orderData = await GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+
+            if ((orderData?.Items?.Count() ?? 0) <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
+            }
+
             var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
             var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";

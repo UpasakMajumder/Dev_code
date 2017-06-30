@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SVG from '../../SVG';
 
-const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl }) => {
-  const redirectUser = (e) => {
-    if (e.keyCode === 13) {
-      if (searchPageUrl) location.href = searchPageUrl;
-      e.preventDefault();
-    }
-  };
-
+const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirectUserToResultPage }) => {
   const closer = value
     ? <button onClick={closeDropdown} type="button" className="search__closer">
       <SVG name="cross-xl" className="icon-close-search"/>
@@ -23,7 +16,7 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl }) => {
                className="input__text"
                placeholder="Search"
                onChange={(e) => { changeValue(e); }}
-               onKeyDown={(e) => { redirectUser(e); }}
+               onKeyDown={(e) => { redirectUserToResultPage(e); }}
                value={value}/>
         {closer}
       </div>

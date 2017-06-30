@@ -5,7 +5,8 @@ const defaultState = {
   pages: {},
   message: '',
   query: '',
-  areResultsShown: false
+  areResultsShown: false,
+  pressedEnter: false
 };
 
 export default (state = defaultState, action) => {
