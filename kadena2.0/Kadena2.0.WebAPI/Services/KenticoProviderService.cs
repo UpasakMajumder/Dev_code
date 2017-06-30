@@ -13,6 +13,7 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using Newtonsoft.Json;
 using Kadena.WebAPI.Models.Checkout;
+using CMS.Localization;
 
 namespace Kadena.WebAPI.Services
 {
@@ -350,24 +351,30 @@ namespace Kadena.WebAPI.Services
 
             if (item == null)
             {
-                throw new ArgumentOutOfRangeException($"item: {id}", "Item not found");
+
+                throw new ArgumentOutOfRangeException(string.Format(
+                    ResHelper.GetString("Kadena.Product.ItemInCartNotFound", LocalizationContext.CurrentCulture.CultureCode),
+                    id));
             }
 
             if (quantity < 1)
-            {
-                throw new ArgumentOutOfRangeException($"quantity: {quantity}", "Failed to set negative quantity");
+            {              
+                throw new ArgumentOutOfRangeException(string.Format(
+                    ResHelper.GetString("Kadena.Product.NegativeQuantityError", LocalizationContext.CurrentCulture.CultureCode), quantity));
             }
 
             var productType = item.GetStringValue("ProductType", string.Empty);
 
             if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
             {
-                throw new Exception($"Unable to set quantity for this product type");
+ 
+                throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
             if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
-            {
-                throw new ArgumentOutOfRangeException($"quantity: {quantity}, item: {id}", "Failed to set cart item quantity for InventoryProduct");
+            {                
+                throw new ArgumentOutOfRangeException(string.Format(
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, id));
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
@@ -380,8 +387,8 @@ namespace Kadena.WebAPI.Services
                 ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
             }
             else
-            {
-                throw new Exception("Inserted quantity is not in range");
+            {                
+                throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
             }
 
             cart.InvalidateCalculations();
