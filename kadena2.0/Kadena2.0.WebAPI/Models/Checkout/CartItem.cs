@@ -5,6 +5,7 @@ namespace Kadena.WebAPI.Models.Checkout
     public class CartItem
     {
         public int Id { get; set; }
+        public string CartItemText { get; set; }
         public string ProductType { get; set; }
         public string Image { get; set; }
         public string Template { get; set; }
@@ -51,7 +52,13 @@ namespace Kadena.WebAPI.Models.Checkout
         }
         public string MailingListName { get; set; }
         public Guid MailingListGuid { get; set; }
-        public string Delivery { get; set; }
+        public string Delivery
+        {
+            get
+            {
+                return IsMailingList && IsTemplated ? $"Delivery to {Quantity} addresses" : string.Empty;
+            }
+        }
         public string PricePrefix { get; set; }
         public double UnitPrice { get; set; }
         public double TotalPrice { get; set; }
@@ -67,6 +74,7 @@ namespace Kadena.WebAPI.Models.Checkout
         public int StockQuantity { get; set; }
         public double TotalTax { get; set; }
         public string PriceText { get; set; }
+        public Guid ProductChiliWorkspaceId { get; set; }
         public bool IsEditable
         {
             get
@@ -79,7 +87,7 @@ namespace Kadena.WebAPI.Models.Checkout
         {
             get
             {
-                return $"/products/product-tools/product-editor?id={ProductPageId}&skuid={SKUID}&templateid={EditorTemplateId}";
+                return $"/products/product-tools/product-editor?id={ProductPageId}&skuid={SKUID}&templateid={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}";
             }
         }
 
