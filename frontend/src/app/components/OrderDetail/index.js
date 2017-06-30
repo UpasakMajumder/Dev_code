@@ -13,14 +13,12 @@ import { getSearchObj } from '../../helpers/location';
 class OrderDetail extends Component {
   static propTypes = {
     getUI: PropTypes.func.isRequired,
-    orderDetail: PropTypes.shape({
-      ui: PropTypes.shape({
-        commonInfo: PropTypes.object,
-        orderedItems: PropTypes.object,
-        paymentInfo: PropTypes.object,
-        pricingInfo: PropTypes.object,
-        shippingInfo: PropTypes.object
-      }).isRequired
+    ui: PropTypes.shape({
+      commonInfo: PropTypes.object,
+      orderedItems: PropTypes.object,
+      paymentInfo: PropTypes.object,
+      pricingInfo: PropTypes.object,
+      shippingInfo: PropTypes.object
     }).isRequired
   };
 
@@ -36,8 +34,7 @@ class OrderDetail extends Component {
   }
 
   render() {
-    const { orderDetail } = this.props;
-    const { ui } = orderDetail;
+    const { ui } = this.props;
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
 
     const content = <div>
@@ -68,6 +65,9 @@ class OrderDetail extends Component {
   }
 }
 
-export default connect(({ orderDetail }) => ({ orderDetail }), {
+export default connect(({ orderDetail }) => {
+  const ui = orderDetail.get('ui');
+  return { ui };
+}, {
   getUI
 })(OrderDetail);

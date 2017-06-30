@@ -90,7 +90,8 @@ module.exports = {
                           configFile: eslintConfig,
                           rules: {
                             "indent": ["error", 2],
-                            "no-shadow": 0
+                            "no-shadow": 0,
+                            "new-cap": 0
                           }
                         }
                     }
