@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ORDER_DETAIL_GET_UI_FETCH, ORDER_DETAIL_GET_UI_FAILURE, ORDER_DETAIL_GET_UI_SUCCESS } from '../constants';
-import { ORDER_DETAIL } from '../globals';
-import ui from './_testServices/orderDetail';
+import { ORDER_DETAIL_GET_UI_FETCH, ORDER_DETAIL_GET_UI_FAILURE, ORDER_DETAIL_GET_UI_SUCCESS } from 'app.consts';
+import { ORDER_DETAIL } from 'app.globals';
+import ui from 'app.ws/orderDetail';
 
 export default (orderID) => {
   return (dispatch) => {

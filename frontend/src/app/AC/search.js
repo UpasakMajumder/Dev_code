@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SEARCH_RESULTS_HIDE, SEARCH_RESULTS_SHOW, SEARCH_RESULT_GET_SUCCESS, SEARCH_RESULT_GET_FAILURE,
   SEARCH_RESULT_GET_FETCH, SEARCH_QUERY_CHANGE, HEADER_SHADOW_SHOW, HEADER_SHADOW_HIDE } from '../constants';
 import { SEARCH } from '../globals';
-import ui from './_testServices/searchUI';
+import ui from './_ws/searchUI';
 
 export const closeDropdown = () => {
   return (dispatch) => {

@@ -91,7 +91,9 @@ module.exports = {
                           rules: {
                             "indent": ["error", 2],
                             "no-shadow": 0,
-                            "new-cap": 0
+                            "new-cap": 0, // immutable.js
+                            "import/no-unresolved": 0, // webpack aliases
+                            "import/extensions": 0  // webpack aliases
                           }
                         }
                     }
@@ -141,10 +143,14 @@ module.exports = {
     },
     resolve: {
         alias: {
-            components: path.resolve(process.cwd(), `${config.JS_BASE}/components`),
-            reducers: path.resolve(process.cwd(), `${config.JS_BASE}/store/reducers`),
-            utilities: path.resolve(process.cwd(), `${config.JS_BASE}/utilities`),
-            services: path.resolve(process.cwd(), `${config.JS_BASE}/utilities/service.map.js`)
+            'app.dump': path.resolve(process.cwd(), `${config.JS_BASE}/components/dump`),
+            'app.smart': path.resolve(process.cwd(), `${config.JS_BASE}/components/smart`),
+            'app.ac': path.resolve(process.cwd(), `${config.JS_BASE}/AC`),
+            'app.globals': path.resolve(process.cwd(), `${config.JS_BASE}/globals.js`),
+            'app.consts': path.resolve(process.cwd(), `${config.JS_BASE}/constants.js`),
+            'app.reducers': path.resolve(process.cwd(), `${config.JS_BASE}/reducers`),
+            'app.helpers': path.resolve(process.cwd(), `${config.JS_BASE}/helpers`),
+            'app.ws': path.resolve(process.cwd(), `${config.JS_BASE}/AC/_ws`)
         }
     }
 };
