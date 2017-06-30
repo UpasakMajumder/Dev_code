@@ -59,5 +59,7 @@ namespace Kadena.WebAPI.Contracts
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
 		
         bool UserCanSeePrices();
+
+        Site GetSite(int siteId);
     }
 }

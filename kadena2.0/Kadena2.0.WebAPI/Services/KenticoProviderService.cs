@@ -529,7 +529,22 @@ namespace Kadena.WebAPI.Services
             breadcrubs.Reverse();
             return breadcrubs;
         }
-		
 
+        public Site GetSite(int siteId)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+            if (site == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Site
+                {
+                    Id = site.SiteID,
+                    Name = site.SiteName
+                };
+            }
+        }
     }
 }
