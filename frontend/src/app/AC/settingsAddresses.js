@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { SETTINGS_ADDRESSES_UI_FAILURE, SETTINGS_ADDRESSES_UI_FETCH, SETTINGS_ADDRESSES_UI_SUCCESS,
   MODIFY_SHIPPING_ADDRESS_FETCH, MODIFY_SHIPPING_ADDRESS_SUCCESS, MODIFY_SHIPPING_ADDRESS_FAILURE, APP_LOADING_START,
-  APP_LOADING_FINISH, DIALOG_CLOSE } from '../constants';
-import { USER_SETTINGS } from '../globals';
-// import ui from './_ws/settingsUI';
+  APP_LOADING_FINISH, DIALOG_CLOSE } from 'app.consts';
+import { USER_SETTINGS } from 'app.globals';
+import ui from 'app.ws/settingsUI';
 
 const getUITest = (dispatch) => {
   dispatch({ type: SETTINGS_ADDRESSES_UI_FETCH });
