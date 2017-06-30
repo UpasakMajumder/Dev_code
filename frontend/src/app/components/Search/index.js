@@ -22,7 +22,7 @@ class Search extends Component {
 
     this.props.changeSearchQuery(query);
 
-    if (query.length > 3) {
+    if (query.length > 2) {
       clearTimeout(this.state.workingProcess);
       const workingProcess = setTimeout(() => {
         this.props.sendQuery(query);

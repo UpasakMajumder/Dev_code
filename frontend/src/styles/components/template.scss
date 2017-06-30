@@ -1,9 +1,11 @@
 .template {
+  $height: 340px;
+
   @extend .pb-5;
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: $height;
 
   & > *:not(:last-child, :first-child) {
     @include rem(margin-bottom, 10px);
