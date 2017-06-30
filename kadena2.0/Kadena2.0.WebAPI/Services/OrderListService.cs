@@ -110,8 +110,7 @@ namespace Kadena.WebAPI.Services
             }
             else
             {
-                var exc = new InvalidOperationException(response?.Error?.Message);
-                _logger.LogException("OrderListService - GetOrders", exc);
+                _logger.LogError("OrderListService - GetOrders", response?.Error?.Message);
                 return new OrderListDto();
             }
         }
