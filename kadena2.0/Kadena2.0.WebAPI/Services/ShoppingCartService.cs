@@ -472,7 +472,7 @@ namespace Kadena.WebAPI.Services
                 PaymentInfo = new PaymentInfo()
                 {
                     Date = CheckedDateTimeString(DateTime.MinValue), // TODO payment date unknown
-                    PaidBy  = data.PaymentInfo.PaymentMethod,
+                    PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
                     Title = "Payment"
@@ -513,13 +513,14 @@ namespace Kadena.WebAPI.Services
                 ShippingInfo = new ShippingInfo()
                 {
                     Title = "Shipping",
-                    DeliveryMethod =  kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
+                    DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = data.ShippingInfo.AddressTo,
-                    Tracking = new Tracking()
+                    Tracking = null, // TODO Track your package url unknown
+                    /*Tracking = new Tracking()
                     {
                         Text = "Track your packages",
-                        Url = string.Empty // TODO Track your package url unknown
-                    }
+                        Url = string.Empty 
+                    }*/
                 },
                 OrderedItems = new OrderedItems()
                 {
