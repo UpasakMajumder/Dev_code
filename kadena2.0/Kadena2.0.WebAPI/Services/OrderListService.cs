@@ -91,29 +91,28 @@ namespace Kadena.WebAPI.Services
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
             var siteName = _kenticoResources.GetKenticoSite().Name;
-            BaseResponseDto<OrderListDto> result = null;
+            BaseResponseDto<OrderListDto> response = null;
             if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
                 var url = _kenticoResources.GetSettingsKey("KDA_OrdersBySiteUrl");
-                result = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
-
+                response = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
             }
             else
             {
                 var customer = _kentico.GetCurrentCustomer();
                 var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
-                result = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
             }
 
-            if (result?.Success ?? false)
+            if (response?.Success ?? false)
             {
-                return result.Payload;
+                return response.Payload;
             }
             else
             {
-                var exc = new InvalidOperationException(result?.Error?.Message);
-                _logger.LogException("RecentOrdersService - GetOrders", exc);
-                throw exc;
+                var exc = new InvalidOperationException(response?.Error?.Message);
+                _logger.LogException("OrderListService - GetOrders", exc);
+                return new OrderListDto();
             }
         }
     }
