@@ -260,7 +260,8 @@ namespace Kadena.WebAPI.Services
                 CustomerNumber = customer.CustomerGUID.ToString(),
                 Phone = customer.CustomerPhone,
                 UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
+                Company = customer.CustomerCompany,
+                SiteId = customer.CustomerSiteID
             };
         }
 
