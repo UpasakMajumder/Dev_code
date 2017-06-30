@@ -38,7 +38,7 @@ namespace Kadena.WebAPI.Services
                 AttachmentOrderBy = String.Empty,
             };
 
-            var dataset = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}"));
+            var dataset = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}|{results}|{checkPermissions}"));
 
             if (dataset != null)
             {
