@@ -11,6 +11,7 @@
 
   &__img {
     @extend .inline-bg;
+    @extend .inline-bg--left;
     height: 150px;
 
     img {

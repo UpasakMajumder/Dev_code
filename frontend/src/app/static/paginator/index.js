@@ -116,9 +116,9 @@ class Pagination {
   // create skeleton
   create(wrapper) {
     const html = [
-      '<p class="generated-paginator__prev">&#60; Previous</p>', // previous button
+      '<p class="generated-paginator__prev">Previous</p>', // previous button
       '<span></span>', // pagination container
-      '<p class="generated-paginator__next">Next &#62;</p>' // next button
+      '<p class="generated-paginator__next">Next</p>' // next button
     ];
 
     wrapper.innerHTML = html.join('');

@@ -271,10 +271,12 @@ namespace Kadena.WebAPI.Services
             var result = items.Select(i => new CartItem()
             {
                 Id = i.CartItemID,
+                CartItemText = i.CartItemText,
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                 ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
@@ -290,9 +292,8 @@ namespace Kadena.WebAPI.Services
 				PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
-                Delivery = "", //TODO not known yet
                 MailingListName = i.GetValue("MailingListName", string.Empty),
-                Template = i.SKU.SKUName,
+                Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
