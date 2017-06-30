@@ -48,26 +48,28 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {        
-
-            if (NumberOfItemsInInput > 0 && IsAddedAmmountValid(NumberOfItemsInInput + PreviouslyAddedAmount))
+            
+            if (NumberOfItemsInInput > 0)
             {
 
                 if (IsProductInventoryType())
                 {
                     if (InsertedItemsHigherThanAvailableProducts())
-                    {
-                        lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode);
-                        SetErrorLblVisible();
+                    {                     
+                        DisplayErrorMessage(ResHelper.GetString("Kadena.Product.LowerNumberOfAvailableProducts", LocalizationContext.CurrentCulture.CultureCode));
                     }
 
                     else if (ItemsInCartAreExceeded())
                     {
-                        lblNumberOfItemsError.Text = string.Format(
+                        DisplayErrorMessage(string.Format(
                             ResHelper.GetString("Kadena.Product.ItemsInCartExceeded", LocalizationContext.CurrentCulture.CultureCode),
-                            PreviouslyAddedAmount, DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0) - PreviouslyAddedAmount);
-                        SetErrorLblVisible();
+                            PreviouslyAddedAmount, DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0) - PreviouslyAddedAmount));
                     }
 
+                    else if (!IsAddedAmmountValid(NumberOfItemsInInput + PreviouslyAddedAmount))
+                    {                      
+                        DisplayErrorMessage(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
+                    }
                     else
                     {
                         AddToCartProcess();
@@ -78,13 +80,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 else
                 {
                     AddToCartProcess();
-                }
-                // redirect
+                }              
             }
             else
-            {
-                lblNumberOfItemsError.Text = ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode);
-                SetErrorLblVisible();
+            {                
+                DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
             }
         }
 
@@ -119,6 +119,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
             return NumberOfItemsInInput > DocumentContext.CurrentDocument.GetIntegerValue("SKUAvailableItems", 0);
         }
 
+        private void DisplayErrorMessage(string errorMessage)
+        {
+            lblNumberOfItemsError.Text = errorMessage;
+            SetErrorLblVisible();
+        }
         private void SetErrorLblVisible()
         {
             lblNumberOfItemsError.Visible = true;
@@ -162,8 +167,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private bool IsAddedAmmountValid(int ammount)
         {
             // is inserted value valid positive integer number?
-            if (ammount > 0)
-            {
+          
                 var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(DocumentContext.CurrentDocument.GetStringValue("ProductDynamicPricing", string.Empty));
                 // do I have dynamic pricing data or I am using regular SKU price?
                 if (rawData != null && rawData.Count != 0)
@@ -190,7 +194,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     return true;
                 }
-            }
+            
             return false;
         }
 
