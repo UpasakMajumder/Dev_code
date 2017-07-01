@@ -1,16 +1,34 @@
 ﻿using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Models.CustomerData;
 using System.Linq;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
     public class CustomerDataService : ICustomerDataService
     {
         IKenticoProviderService kenticoProvider;
+        IKenticoResourceService kenticoResource;
 
-        public CustomerDataService(IKenticoProviderService kenticoProvider)
+        public CustomerDataService(IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResource)
         {
             this.kenticoProvider = kenticoProvider;
+            this.kenticoResource = kenticoResource;
+        }
+
+        public string GetAdmingEmail(int customerId)
+        {
+            string result = null;
+            var customer = kenticoProvider.GetCustomer(customerId);
+            if (customer != null)
+            {
+                var site = kenticoProvider.GetSite(customer.SiteId);
+                if (site != null)
+                {
+                    result = kenticoResource.GetSettingsKey(site?.Name ?? string.Empty, "KDA_OrderNotificationEmail");
+                }
+            }
+            return result;
         }
 
         public CustomerData GetCustomerData(int customerId)
@@ -19,7 +37,7 @@ namespace Kadena.WebAPI.Services
 
             if (customer == null)
                 return null;
-            
+
             var address = kenticoProvider.GetCustomerShippingAddresses(customerId).FirstOrDefault();
 
             if (address == null)
