@@ -60,6 +60,7 @@ namespace Kadena.WebAPI.Contracts
 		
         bool UserCanSeePrices();
 
-        Site GetSite(int siteId);
+        bool UserCanSeeAllOrders();
+	    Site GetSite(int siteId);
     }
 }

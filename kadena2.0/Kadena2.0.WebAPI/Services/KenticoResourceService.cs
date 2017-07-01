@@ -4,7 +4,6 @@ using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena.WebAPI.Models;
 using CMS.Ecommerce;
-using System;
 using System.Linq;
 
 namespace Kadena.WebAPI.Services
@@ -26,7 +25,8 @@ namespace Kadena.WebAPI.Services
             return new KenticoSite()
             {
                 Id = SiteContext.CurrentSiteID,
-                Name = SiteContext.CurrentSiteName
+                Name = SiteContext.CurrentSiteName,
+                ErpCustomerId = GetSettingsKey("KDA_ErpCustomerId")
             };
         }
 
