@@ -18,8 +18,7 @@ namespace Kadena.WebAPI.Services
 
         public string GetSettingsKey(string key)
         {
-            string resourceKey = $"{SiteContext.CurrentSiteName}.{key}";
-            return SettingsKeyInfoProvider.GetValue(resourceKey);
+            return GetSettingsKey(SiteContext.CurrentSiteName, key);
         }
 
         public KenticoSite GetKenticoSite()
@@ -61,6 +60,12 @@ namespace Kadena.WebAPI.Services
         public string GetDefaultCustomerCompanyName()
         {
             return GetSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
+        }
+
+        public string GetSettingsKey(string siteName, string key)
+        {
+            string resourceKey = $"{siteName}.{key}";
+            return SettingsKeyInfoProvider.GetValue(resourceKey);
         }
     }
 }

@@ -37,5 +37,13 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = mapper.Map<CustomerDataDTO>(result);
             return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {request.CustomerId}"); 
         }
+
+        [HttpPost]
+        [Route("api/customerdata/adminemail")]
+        public IHttpActionResult AdminEmail([FromBody]CustomerDataRequestDto request)
+        {
+            var result = service.GetAdmingEmail(request.CustomerId);
+            return ResponseJsonCheckingNull(result, $"Failed to retrieve admin's e-mail data for customerId: {request.CustomerId}");
+        }
     }
 }
