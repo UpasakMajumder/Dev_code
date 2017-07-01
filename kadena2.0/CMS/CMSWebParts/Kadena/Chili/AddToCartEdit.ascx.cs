@@ -32,9 +32,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 SetMailingListData();
                 SetNumberOfAddresses();
             }
-                    
+
             SetupControl();
-            SetupDocument();          
+            SetupDocument();
 
         }
 
@@ -46,7 +46,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 return ValidationHelper.GetInteger(inpNumberOfItems.Value, 0);
             }
-          
+
         }
 
         private MailingListDataDTO MailingListData
@@ -68,36 +68,27 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (NumberOfItemsInInput > 0)
-            {
-                if (IsProductMailingType())
-                {
-                    if (NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
-                    {
-                        AddItemsToShoppingCart(NumberOfItemsInInput);
-                    }
-                    else
-                    {
-                        DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
-                    }
-                }
-
-                if (!IsAddedAmmountValid(NumberOfItemsInInput + GetItemsInCart()))
-                {
-                    DisplayErrorMessage(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
-                }
-
-                else
-                {
-                    AddItemsToShoppingCart(NumberOfItemsInInput);
-                }
-
-            }
-
-            else
+            if (NumberOfItemsInInput < 1)
             {
                 DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
+                return;
             }
+
+            if (IsProductMailingType()
+                    && !NumberOfItemsInInput.Equals(NumberOfAddressesReturnedByService))
+            {
+                DisplayErrorMessage(ResHelper.GetString("Kadena.Product.InsertedAmmountValueIsNotValid", LocalizationContext.CurrentCulture.CultureCode));
+                return;
+            }
+
+            if (!IsAddedAmmountValid(NumberOfItemsInInput + GetItemsInCart()))
+            {
+                DisplayErrorMessage(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
+                return;
+            }
+
+            AddItemsToShoppingCart(NumberOfItemsInInput);
+
         }
 
         protected void SetupControl()
@@ -129,15 +120,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private void InitializeCurrentShoppingCartItem()
         {
-            int skuID;          
+            int skuID;
 
             if (int.TryParse(Request.QueryString["skuId"], out skuID))
             {
                 CurrentShoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItems().
                     WhereEquals("SKUID", skuID).
                     WhereEquals("ShoppingCartID", ECommerceContext.CurrentShoppingCart.ShoppingCartID).FirstObject;
-                         
-            }          
+
+            }
         }
         private void DisplayErrorMessage(string errorMessage)
         {
@@ -155,12 +146,12 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         private void SetMailingListData()
         {
             Guid containerId;
-          
+
             if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
             {
-                MailingListData = ServiceHelper.GetMailingList(containerId);    
+                MailingListData = ServiceHelper.GetMailingList(containerId);
             }
-       
+
         }
 
         private void SetErrorLblVisible()
@@ -176,9 +167,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
             if (int.TryParse(Request.QueryString["id"], out documentId))
             {
-               productType = DocumentHelper.GetDocument(
-                   documentId, 
-                   new TreeProvider(MembershipContext.AuthenticatedUser)).GetStringValue("ProductType", string.Empty);
+                productType = DocumentHelper.GetDocument(
+                    documentId,
+                    new TreeProvider(MembershipContext.AuthenticatedUser)).GetStringValue("ProductType", string.Empty);
             }
 
             return productType;
@@ -275,7 +266,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             // An asynchronous operation cannot be started at this time. Asynchronous operations may only be started
             // within an asynchronous handler or module or during certain events in the Page lifecycle.
             var response = templatedService.RunGeneratePdfTask(endpoint, templateId.ToString(), settingsId.ToString()).Result;
-            if (response.Success && response.Payload!=null)
+            if (response.Success && response.Payload != null)
             {
                 cartItem.SetValue("DesignFilePathTaskId", response.Payload.TaskId);
                 if (response.Payload.Finished)
@@ -305,7 +296,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             cart.ShoppingCartShippingAddress = customerAddress;
         }
 
-      
+
 
         private void SetupDocument()
         {
@@ -317,37 +308,37 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
 
         }
-      
+
         private bool IsAddedAmmountValid(int ammount)
         {
-          
-                var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(ReferencedDocument?.GetStringValue("ProductDynamicPricing", string.Empty) ?? string.Empty);
-                // do I have dynamic pricing data or I am using regular SKU price?
-                if (rawData != null && rawData.Count != 0)
+
+            var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(ReferencedDocument?.GetStringValue("ProductDynamicPricing", string.Empty) ?? string.Empty);
+            // do I have dynamic pricing data or I am using regular SKU price?
+            if (rawData != null && rawData.Count != 0)
+            {
+                List<DynamicPricingData> data;
+                // is JSON convertable to dynamic numbers?
+                if (new DynamicPricingDataHelper().ConvertDynamicPricingData(rawData, out data))
                 {
-                    List<DynamicPricingData> data;
-                    // is JSON convertable to dynamic numbers?
-                    if (new DynamicPricingDataHelper().ConvertDynamicPricingData(rawData, out data))
+                    foreach (var item in data)
                     {
-                        foreach (var item in data)
+                        if (ammount >= item.Min && ammount <= item.Max)
                         {
-                            if (ammount >= item.Min && ammount <= item.Max)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                    }
-                    else
-                    {
-                        EventLogProvider.LogEvent("E", "Add to cart button", "Dynamic pricing data", "Dynamic pricing data couldn't be restored");
-                        return false;
                     }
                 }
                 else
                 {
-                    return true;
+                    EventLogProvider.LogEvent("E", "Add to cart button", "Dynamic pricing data", "Dynamic pricing data couldn't be restored");
+                    return false;
                 }
-            
+            }
+            else
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -378,9 +369,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private int GetItemsInCart()
         {
-          var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.Where(item => item.SKUID == DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0)).FirstOrDefault();
+            var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.Where(item => item.SKUID == DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0)).FirstOrDefault();
 
-            return cartItem?.CartItemUnits ?? 0; 
+            return cartItem?.CartItemUnits ?? 0;
         }
     }
 }
