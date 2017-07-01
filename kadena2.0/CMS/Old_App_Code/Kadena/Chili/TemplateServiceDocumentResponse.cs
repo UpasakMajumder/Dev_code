@@ -13,5 +13,16 @@ namespace Kadena.Old_App_Code.Kadena.Chili
         public string user { get; set; }
         [DataMember(Name = "created")]
         public string created { get; set; }
+        [DataMember(Name = "mailingList")]
+        public TemplateServiceDocumentMailingList MailingList { get; set; }
+    }
+
+    [DataContract]
+    public class TemplateServiceDocumentMailingList
+    {
+        [DataMember(Name = "containerId")]
+        public string ContainerID { get; set; }
+        [DataMember(Name = "rowCount")]
+        public int RowCount { get; set; }
     }
 }
