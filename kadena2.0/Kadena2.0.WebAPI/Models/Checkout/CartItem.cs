@@ -11,7 +11,15 @@ namespace Kadena.WebAPI.Models.Checkout
         public string Template { get; set; }
         public string EditorTemplateId { get; set; }
         public int ProductPageId { get; set; }
+
+        /// <summary>
+        /// SKU object ID in DB
+        /// </summary>
         public int SKUID { get;set;}
+
+        /// <summary>
+        /// Nuber configurable in product's Form -> General -> SKU*
+        /// </summary>
         public string SKUNumber { get; set; }
         public string SKUName { get; set; }
         public int LineNumber { get; set; }
