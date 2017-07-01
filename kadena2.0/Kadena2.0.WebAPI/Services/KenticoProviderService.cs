@@ -261,7 +261,8 @@ namespace Kadena.WebAPI.Services
                 CustomerNumber = customer.CustomerGUID.ToString(),
                 Phone = customer.CustomerPhone,
                 UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
+                Company = customer.CustomerCompany,
+                SiteId = customer.CustomerSiteID
             };
         }
 
@@ -514,8 +515,13 @@ namespace Kadena.WebAPI.Services
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
-		
-		public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+
+        public bool UserCanSeeAllOrders()
+        {
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+
+        public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
         }
@@ -535,7 +541,22 @@ namespace Kadena.WebAPI.Services
             breadcrubs.Reverse();
             return breadcrubs;
         }
-		
 
+        public Site GetSite(int siteId)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+            if (site == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Site
+                {
+                    Id = site.SiteID,
+                    Name = site.SiteName
+                };
+            }
+        }
     }
 }

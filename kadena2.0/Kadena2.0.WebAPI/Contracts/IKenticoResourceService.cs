@@ -8,6 +8,8 @@ namespace Kadena.WebAPI.Contracts
 
         string GetSettingsKey(string key);
 
+        string GetSettingsKey(string siteName, string key);
+
         KenticoSite GetKenticoSite();
 
         Currency GetSiteCurrency();

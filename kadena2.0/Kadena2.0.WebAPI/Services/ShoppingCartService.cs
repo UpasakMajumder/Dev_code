@@ -352,7 +352,8 @@ namespace Kadena.WebAPI.Services
                Site = new SiteDTO()
                {
                    KenticoSiteID = site.Id,
-                   KenticoSiteName = site.Name
+                   KenticoSiteName = site.Name,
+                   ErpCustomerId = site.ErpCustomerId
                },
                OrderCurrency = new CurrencyDTO()
                {
@@ -445,7 +446,7 @@ namespace Kadena.WebAPI.Services
             return taxRequest;
         }
 		
-		       public async Task<OrderDetail> GetOrderDetail(string orderId)
+		 public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
             CheckOrderDetailPermisson(orderId, kenticoProvider.GetCurrentCustomer());
 
@@ -609,7 +610,11 @@ namespace Kadena.WebAPI.Services
                 throw new ArgumentOutOfRangeException(nameof(orderId), "Bad format of customer ID");
             }
 
-            if (orderUserId == customer.UserID && orderCustomerId == customer.Id)
+            // Allow admin who has set permission to see all orders in Kentico
+            // or Allow orders belonging to currently logged User and Customer
+            bool isAdmin = kenticoProvider.UserCanSeeAllOrders();
+            bool isOrderOwner = (orderUserId == customer.UserID && orderCustomerId == customer.Id);
+            if ( isAdmin || isOrderOwner)
             {
                 return;
             }

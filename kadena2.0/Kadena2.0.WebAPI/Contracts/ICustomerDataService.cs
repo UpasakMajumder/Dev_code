@@ -4,6 +4,7 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface ICustomerDataService
     {
+        string GetAdmingEmail(int customerId);
         CustomerData GetCustomerData(int customerId);
     }
 }

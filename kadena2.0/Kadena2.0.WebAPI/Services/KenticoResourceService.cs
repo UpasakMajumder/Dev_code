@@ -4,7 +4,6 @@ using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena.WebAPI.Models;
 using CMS.Ecommerce;
-using System;
 using System.Linq;
 
 namespace Kadena.WebAPI.Services
@@ -18,8 +17,7 @@ namespace Kadena.WebAPI.Services
 
         public string GetSettingsKey(string key)
         {
-            string resourceKey = $"{SiteContext.CurrentSiteName}.{key}";
-            return SettingsKeyInfoProvider.GetValue(resourceKey);
+            return GetSettingsKey(SiteContext.CurrentSiteName, key);
         }
 
         public KenticoSite GetKenticoSite()
@@ -27,7 +25,8 @@ namespace Kadena.WebAPI.Services
             return new KenticoSite()
             {
                 Id = SiteContext.CurrentSiteID,
-                Name = SiteContext.CurrentSiteName
+                Name = SiteContext.CurrentSiteName,
+                ErpCustomerId = GetSettingsKey("KDA_ErpCustomerId")
             };
         }
 
@@ -61,6 +60,12 @@ namespace Kadena.WebAPI.Services
         public string GetDefaultCustomerCompanyName()
         {
             return GetSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
+        }
+
+        public string GetSettingsKey(string siteName, string key)
+        {
+            string resourceKey = $"{siteName}.{key}";
+            return SettingsKeyInfoProvider.GetValue(resourceKey);
         }
     }
 }
