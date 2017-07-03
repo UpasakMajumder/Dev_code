@@ -556,7 +556,8 @@ namespace Kadena.WebAPI.Services
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
                 QuantityShipped = i.QuantityShipped,
-                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", 
+                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"), 
+                QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
                 ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
                 TrackingId = i.TrackingId

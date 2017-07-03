@@ -3,7 +3,7 @@ import SVG from '../../SVG';
 
 export default (props) => {
   const { image, template, mailingList, shippingDate, trackingId,
-    price, quantityPrefix, quantity, downloadPdfURL } = props;
+    price, quantityPrefix, quantity, downloadPdfURL, quantityShippedPrefix, quantityShipped } = props;
 
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
@@ -40,6 +40,19 @@ export default (props) => {
 
   const shippingElementFixed = shippingDate ? <div> </div> : null; // Keep flex
 
+  const quantityElement = mailingList
+    ? (
+      <div className="cart-product__optional">
+        <p>{quantityPrefix} {quantity}</p>
+      </div>
+    )
+    : (
+      <div className="cart-product__optional">
+        <p>{quantityPrefix} {quantity}</p>
+        <p>{quantityShippedPrefix} {quantityShipped}</p>
+      </div>
+    );
+
   return (
     <div className="cart-product">
       <div className="cart-product__img">
@@ -65,9 +78,7 @@ export default (props) => {
         <div className="cart-product__price">
           <span>{price}</span>
         </div>
-        <div className="cart-product__optional">
-          <span>{quantityPrefix} {quantity}</span>
-        </div>
+        {quantityElement}
         {downloadPdfLink}
       </div>
     </div>
