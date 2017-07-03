@@ -54,8 +54,10 @@ namespace Kadena.WebAPI
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
+        
 
-        private static void ConfigureMapper()
+        // TODO refactor not to be public
+        public static void ConfigureMapper()
         {
             Mapper.Initialize(config =>
             {

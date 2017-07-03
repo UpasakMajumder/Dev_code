@@ -25,7 +25,8 @@ namespace Kadena.WebAPI.Services
             return new KenticoSite()
             {
                 Id = SiteContext.CurrentSiteID,
-                Name = SiteContext.CurrentSiteName,
+                Name = SiteContext.CurrentSiteName,                
+                DisplayName = SiteContext.CurrentSite.DisplayName,
                 ErpCustomerId = GetSettingsKey("KDA_ErpCustomerId")
             };
         }

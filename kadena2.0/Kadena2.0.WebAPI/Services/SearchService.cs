@@ -71,8 +71,10 @@ namespace Kadena.WebAPI.Services
 
         public List<ResultItemPage> SearchPages(string phrase, int results)
         {
+            var site = resources.GetKenticoSite();
             var searchResultPages = new List<ResultItemPage>();
-            var datarowsResults = kenticoSearch.Search(phrase, "KDA_PagesIndex", "/%", results, true);
+            var indexName = $"KDA_PagesIndex.{site.Name}";
+            var datarowsResults = kenticoSearch.Search(phrase, indexName, "/%", results, true);
             
             foreach (DataRow dr in datarowsResults)
             {
@@ -94,8 +96,10 @@ namespace Kadena.WebAPI.Services
 
         public List<ResultItemProduct> SearchProducts(string phrase, int results)
         {
+            var site = resources.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
-            var datarowsResults = kenticoSearch.Search(phrase, "KDA_ProductsIndex", "/Products/%", results,  true);
+            var indexName = $"KDA_ProductsIndex.{site.Name}";
+            var datarowsResults = kenticoSearch.Search(phrase, indexName, "/Products/%", results,  true);
 
             foreach (DataRow dr in datarowsResults)
             {
