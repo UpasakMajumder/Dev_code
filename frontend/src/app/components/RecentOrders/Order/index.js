@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from '../../Link';
 
 function Order(props) {
-  const { orderNumber, orderDate, items, orderStatus, deliveryDate, viewBtn } = props;
+  const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn } = props;
 
   const getItemsTd = () => {
     const listOfItems = items.map((item, index) => {
@@ -32,7 +32,7 @@ function Order(props) {
       <td>{orderDate}</td>
       {getItemsTd()}
       <td className="show-table__will-hide">{orderStatus}</td>
-      <td className="show-table__will-hide">{deliveryDate}</td>
+      <td className="show-table__will-hide">{shippingDate}</td>
       <td className="show-table__will-appear">
         <Link text={viewBtn.text} href={viewBtn.url} type="action" />
       </td>
