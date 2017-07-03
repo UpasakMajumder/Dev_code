@@ -555,6 +555,7 @@ namespace Kadena.WebAPI.Services
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
+                QuantityShipped = i.QuantityShipped,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? "Addresses": "Quantity: ", 
                 ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
