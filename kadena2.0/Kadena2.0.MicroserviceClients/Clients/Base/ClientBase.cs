@@ -41,7 +41,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                 }
                 catch (Exception e)
                 {
-                    innerError = new BaseErrorDto { Message = e.Message };
+                    innerError = new BaseErrorDto { Message = e.Message + $" response content: '{responseContent}'" };
                 }
             }
 
@@ -51,7 +51,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                                     Payload = default(TResult),
                                     Error = new BaseErrorDto
                                     {
-                                        Message = _responseIncorrectMessage,
+                                        Message = _responseIncorrectMessage + $" response content: '{responseContent}'",
                                         InnerError = innerError
                                     }
                                 };
