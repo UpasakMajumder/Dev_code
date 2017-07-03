@@ -128,7 +128,7 @@ namespace Kadena.WebAPI.Services
             checkoutPage.SetDisplayType();
             SetPricesVisibility(checkoutPage);
 
-            if (kenticoProvider.UserCanSeePrices())
+            //if (kenticoProvider.UserCanSeePrices())
             {
                 var totals = kenticoProvider.GetShoppingCartTotals();
                 totals.TotalTax = await EstimateTotalTax();
