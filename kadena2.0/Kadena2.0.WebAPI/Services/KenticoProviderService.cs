@@ -14,6 +14,7 @@ using CMS.Membership;
 using Newtonsoft.Json;
 using Kadena.WebAPI.Models.Checkout;
 using CMS.Localization;
+using CMS.EventLog;
 
 namespace Kadena.WebAPI.Services
 {
@@ -183,6 +184,8 @@ namespace Kadena.WebAPI.Services
 
         public ShoppingCartTotals GetShoppingCartTotals()
         {
+            EventLogProvider.LogInformation("GetShoppingCartTotals():187", "Info", ECommerceContext.CurrentShoppingCart.TotalItemsPrice.ToString());
+
             return new ShoppingCartTotals()
             {
                 TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
