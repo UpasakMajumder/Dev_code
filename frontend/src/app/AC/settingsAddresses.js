@@ -8,35 +8,35 @@ import ui from 'app.ws/settingsUI';
 const getUITest = (dispatch) => {
   dispatch({ type: SETTINGS_ADDRESSES_UI_FETCH });
 
-  axios({
-    method: 'get',
-    url: USER_SETTINGS.addresses.initUIURL
-  }).then((response) => {
-    const { payload, success, errorMessage } = response.data;
+  // axios({
+  //   method: 'get',
+  //   url: USER_SETTINGS.addresses.initUIURL
+  // }).then((response) => {
+  //   const { payload, success, errorMessage } = response.data;
+  //
+  //   if (!success) {
+  //     dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
+  //     alert(errorMessage); // eslint-disable-line no-alert
+  //   } else {
+  //     dispatch({
+  //       type: SETTINGS_ADDRESSES_UI_SUCCESS,
+  //       payload: {
+  //         ui: payload
+  //       }
+  //     });
+  //   }
+  // })
+  // .catch((error) => {
+  //   dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
+  //   alert(error); // eslint-disable-line no-alert
+  // });
 
-    if (!success) {
-      dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
-      alert(errorMessage); // eslint-disable-line no-alert
-    } else {
-      dispatch({
-        type: SETTINGS_ADDRESSES_UI_SUCCESS,
-        payload: {
-          ui: payload
-        }
-      });
-    }
-  })
-  .catch((error) => {
-    dispatch({ type: SETTINGS_ADDRESSES_UI_FAILURE });
-    alert(error); // eslint-disable-line no-alert
-  });
-
-  // setTimeout(() => {
-  //   dispatch({
-  //     type: SETTINGS_ADDRESSES_UI_SUCCESS,
-  //     payload: { ui }
-  //   });
-  // }, 2000);
+  setTimeout(() => {
+    dispatch({
+      type: SETTINGS_ADDRESSES_UI_SUCCESS,
+      payload: { ui }
+    });
+  }, 2000);
 };
 
 export const getUI = () => dispatch => getUITest(dispatch);

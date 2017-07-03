@@ -1,4 +1,4 @@
-import { HEADER_SHADOW_SHOW, HEADER_SHADOW_HIDE } from '../constants';
+import { HEADER_SHADOW_SHOW, HEADER_SHADOW_HIDE } from 'app.consts';
 
 export default (state = false, action) => {
   const { type } = action;

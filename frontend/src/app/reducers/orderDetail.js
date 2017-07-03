@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { ORDER_DETAIL_GET_UI_SUCCESS } from '../constants';
+import { ORDER_DETAIL_GET_UI_SUCCESS } from 'app.consts';
 
 const defaultState = Map({ ui: {} });
 

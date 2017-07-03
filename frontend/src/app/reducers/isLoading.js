@@ -1,4 +1,4 @@
-import { APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
+import { APP_LOADING_START, APP_LOADING_FINISH } from 'app.consts';
 
 export default function mailing(state = false, action) {
   const { type } = action;

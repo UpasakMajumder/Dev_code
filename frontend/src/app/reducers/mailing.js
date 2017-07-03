@@ -1,4 +1,4 @@
-import * as constants from '../constants';
+import * as constants from 'app.consts';
 
 const defaultState = {
   response: null,

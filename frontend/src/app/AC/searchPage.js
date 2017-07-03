@@ -7,38 +7,38 @@ export const getUI = (query) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_PAGE_UI_FETCHING });
 
-    axios({
-      method: 'get',
-      url: `${SEARCH_PAGE.searchPageUrl}?phrase=${query}`
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
-
-      if (!success) {
-        dispatch({ type: SEARCH_PAGE_UI_FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
-        dispatch({
-          type: SEARCH_PAGE_UI_SUCCESS,
-          payload: {
-            ...payload,
-            getAllResults: true
-          }
-        });
-      }
-    })
-      .catch(() => {
-        dispatch({ type: SEARCH_PAGE_UI_FAILURE });
-      });
-
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SEARCH_PAGE_UI_SUCCESS,
-    //     payload: {
-    //       ...ui,
-    //       getAllResults: true
-    //     }
+    // axios({
+    //   method: 'get',
+    //   url: `${SEARCH_PAGE.searchPageUrl}?phrase=${query}`
+    // }).then((response) => {
+    //   const { payload, success, errorMessage } = response.data;
+    //
+    //   if (!success) {
+    //     dispatch({ type: SEARCH_PAGE_UI_FAILURE });
+    //     alert(errorMessage); // eslint-disable-line no-alert
+    //   } else {
+    //     dispatch({
+    //       type: SEARCH_PAGE_UI_SUCCESS,
+    //       payload: {
+    //         ...payload,
+    //         getAllResults: true
+    //       }
+    //     });
+    //   }
+    // })
+    //   .catch(() => {
+    //     dispatch({ type: SEARCH_PAGE_UI_FAILURE });
     //   });
-    // }, 2000);
+
+    setTimeout(() => {
+      dispatch({
+        type: SEARCH_PAGE_UI_SUCCESS,
+        payload: {
+          ...ui,
+          getAllResults: true
+        }
+      });
+    }, 2000);
   };
 };
 

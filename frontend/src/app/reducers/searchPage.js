@@ -1,4 +1,4 @@
-import { SEARCH_PAGE_UI_SUCCESS, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from '../constants';
+import { SEARCH_PAGE_UI_SUCCESS, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from 'app.consts';
 
 const defaultState = {
   products: [],

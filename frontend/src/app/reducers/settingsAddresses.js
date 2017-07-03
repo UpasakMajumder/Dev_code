@@ -1,4 +1,4 @@
-import { SETTINGS_ADDRESSES_UI_SUCCESS, MODIFY_SHIPPING_ADDRESS_SUCCESS } from '../constants';
+import { SETTINGS_ADDRESSES_UI_SUCCESS, MODIFY_SHIPPING_ADDRESS_SUCCESS } from 'app.consts';
 
 export default (state = {}, action) => {
   const { type, payload } = action;
