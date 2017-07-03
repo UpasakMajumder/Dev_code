@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Alert from 'app.dump/Alert';
 import DeliveryAddress from './DeliveryAddress';
-import Alert from '../Alert';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';

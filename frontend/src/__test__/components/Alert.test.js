@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import { getShallowComponent } from '../_helpers/shallow';
-import Alert from '../../app/components/Alert';
+import Alert from '../../app/components/dump/Alert';
 
 expect.extend(expectJSX);
 

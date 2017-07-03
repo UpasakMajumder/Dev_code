@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Alert from '../../Alert';
+import Alert from 'app.dump/Alert';
 import Pagination from '../../Pagination';
 import Spinner from '../../Spinner';
 import Page from '../../Pages/SearchPage/index';

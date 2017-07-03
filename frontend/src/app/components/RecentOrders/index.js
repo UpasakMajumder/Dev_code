@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'app.dump/Alert';
 import { connect } from 'react-redux';
 import Order from './Order';
 import Pagination from '../Pagination';
-import Alert from '../Alert';
 import { getHeadings, getRows } from '../../AC/recentOrders';
 
 class RecentOrders extends Component {

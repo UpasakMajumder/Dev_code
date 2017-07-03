@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'app.dump/Alert';
 import Address from './Address';
-import Alert from '../../Alert';
 
 const DeliveryAddress = (props) => {
   const { ui, checkedId, changeShoppingData } = props;

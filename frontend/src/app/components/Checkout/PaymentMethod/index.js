@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Alert from 'app.dump/Alert';
 import Method from './Method';
-import Alert from '../../Alert';
 
 class PaymentMethod extends Component {
   static propTypes = {
