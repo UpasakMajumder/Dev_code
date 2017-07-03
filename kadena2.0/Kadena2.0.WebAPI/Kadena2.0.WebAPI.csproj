@@ -153,11 +153,13 @@
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
+    <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\RecentOrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\SiteDataController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
+    <Compile Include="Services\SiteDataService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

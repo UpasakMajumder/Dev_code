@@ -16,21 +16,6 @@ namespace Kadena.WebAPI.Services
             this.kenticoResource = kenticoResource;
         }
 
-        public string GetAdmingEmail(int customerId)
-        {
-            string result = null;
-            var customer = kenticoProvider.GetCustomer(customerId);
-            if (customer != null)
-            {
-                var site = kenticoProvider.GetSite(customer.SiteId);
-                if (site != null)
-                {
-                    result = kenticoResource.GetSettingsKey(site?.Name ?? string.Empty, "KDA_OrderNotificationEmail");
-                }
-            }
-            return result;
-        }
-
         public CustomerData GetCustomerData(int customerId)
         {
             var customer = kenticoProvider.GetCustomer(customerId);

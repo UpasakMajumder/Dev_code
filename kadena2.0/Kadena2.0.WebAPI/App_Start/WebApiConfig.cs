@@ -212,6 +212,7 @@ namespace Kadena.WebAPI
             container.Register<ISearchService, SearchService>();
             container.Register<ICustomerDataService, CustomerDataService>();            
             container.Register<ISettingsService, SettingsService>();
+            container.Register<ISiteDataService, SiteDataService>();
             
 
             // microservice clients
