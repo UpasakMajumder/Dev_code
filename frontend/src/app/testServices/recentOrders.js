@@ -15,7 +15,7 @@ export const pageInfo = {
   pageInfo: {
     "pagesCount": 10,
     "rowsCount": 28,
-    "rowsOnPages": 3
+    "rowsOnPage": 3
   }
 };
 
@@ -34,6 +34,7 @@ export const rows1 = {
         ],
         "orderStatus": "Rejected",
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
@@ -58,6 +59,7 @@ export const rows1 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
@@ -86,6 +88,7 @@ export const rows1 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
@@ -102,6 +105,7 @@ export const rows1 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
@@ -118,6 +122,7 @@ export const rows1 = {
         ],
         "orderStatus": "Rejected",
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
@@ -143,6 +148,7 @@ export const rows2 = {
         ],
         "orderStatus": "Rejected",
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
@@ -167,6 +173,7 @@ export const rows2 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
@@ -195,6 +202,7 @@ export const rows2 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
@@ -211,6 +219,7 @@ export const rows2 = {
         ],
         "orderStatus": null,
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
@@ -227,6 +236,7 @@ export const rows2 = {
         ],
         "orderStatus": "Rejected",
         "deliveryDate": "0001-01-01 00:00:00",
+        "shippingDate": "Jan 010203",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
