@@ -7,12 +7,12 @@ const webpackStream = require('webpack-stream');
 const webpackConfig = require('../webpack.config.js');
 
 gulp.task('js', () => {
-    return gulp.src(config.JS_ENTRY)
-        .pipe(plumber(function() { this.emit('end'); }))
-        .pipe(webpackStream(webpackConfig, webpack))
-        .pipe(gulp.dest(config.JS_BUILD))
-        .pipe(notify({ message:"JS's been built", onLast: true }))
-        .pipe(plumber.stop());
+  return gulp.src(config.JS_ENTRY)
+    .pipe(plumber(function() { this.emit('end'); }))
+    .pipe(webpackStream(webpackConfig, webpack))
+    .pipe(gulp.dest(config.JS_BUILD))
+    .pipe(notify({ message:"JS's been built", onLast: true }))
+    .pipe(plumber.stop());
 });
 
 
