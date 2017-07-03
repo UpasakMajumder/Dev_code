@@ -360,7 +360,7 @@ namespace Kadena.WebAPI.Services
             }
 
             if (quantity < 1)
-            {              
+            {
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.NegativeQuantityError", LocalizationContext.CurrentCulture.CultureCode), quantity));
             }
@@ -369,28 +369,36 @@ namespace Kadena.WebAPI.Services
 
             if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
             {
- 
+
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
             if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
-            {                
+            {
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, id));
             }
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
+            var documentId = item.GetIntegerValue("ProductPageID", 0);          
+            var ranges = GetDynamicPricingRanges(documentId);
 
-            var price = GetDynamicPrice(item.GetIntegerValue("ProductPageID", 0), quantity);
-            if (price != 0.0m)
+            if ((ranges?.Count() ?? 0) > 0)
             {
-                item.CartItemPrice = (double)price;
-                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
-            }
-            else
-            {                
-                throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
+                var price = GetDynamicPrice(quantity, ranges);
+
+                if (price != 0.0m)
+                {
+                    item.CartItemPrice = (double)price;
+                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+                }
+
+                else
+                {
+                    throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
+                }
+
             }
 
             cart.InvalidateCalculations();
@@ -427,10 +435,8 @@ namespace Kadena.WebAPI.Services
             return product;
         }
 
-        private decimal GetDynamicPrice(int documentId, int quantity)
+        private decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
         {
-            var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
-            var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
 
             if (ranges != null)
             {
@@ -441,6 +447,14 @@ namespace Kadena.WebAPI.Services
             return 0.0m;
         }
 
+        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
+        {
+            var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
+            var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
+
+            return ranges;
+ 
+        }
         public void RemoveCurrentItemsFromStock()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
