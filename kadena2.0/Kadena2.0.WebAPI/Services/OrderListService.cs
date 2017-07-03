@@ -54,6 +54,11 @@ namespace Kadena.WebAPI.Services
         public async Task<OrderHead> GetHeaders()
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
+            int pages = 0;
+            if (EnablePaging && _pageCapacity > 0)
+            {
+                pages = orderList.TotalCount / _pageCapacity + (orderList.TotalCount % _pageCapacity > 0 ? 1 : 0);
+            }
             return new OrderHead
             {
                 Headings = new List<string> {
@@ -68,7 +73,7 @@ namespace Kadena.WebAPI.Services
                 {
                     RowsCount = orderList.TotalCount,
                     RowsOnPage = _pageCapacity,
-                    PagesCount = (EnablePaging ? (_pageCapacity > 0 ? orderList.TotalCount / _pageCapacity : 0) : 0) + 1
+                    PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems")
             };
