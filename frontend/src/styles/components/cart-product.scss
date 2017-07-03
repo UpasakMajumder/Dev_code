@@ -61,7 +61,8 @@
   &__optional {
     @include rem(margin-bottom, 8px);
 
-    span {
+    span,
+    p {
       white-space: nowrap;
 
       & > span {

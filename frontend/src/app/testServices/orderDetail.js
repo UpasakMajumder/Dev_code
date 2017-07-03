@@ -55,12 +55,13 @@ export default {
         "isReport": true,
         "image": "http://satyr.io/200-500x300-700",
         "template": "Information letter lamp post Mar 30 3017",
-        "isMailingList": false,
-        "mailingList": "",
+        "mailingList": "Mailing",
         "shippingDate": "10/27/2017",
         "trackingId": "",
         "price": "$ 112.2",
-        "quantityPrefix": "Quantity:", // Addresses/Quantity
+        "quantityPrefix": "Quantity:", // Addresses/Quantity,
+        "quantityShippedPrefix": "Quantity shipped:",
+        "quantityShipped": 22,
         "quantity": 11,
         "downloadPdfURL": "#"
       }
