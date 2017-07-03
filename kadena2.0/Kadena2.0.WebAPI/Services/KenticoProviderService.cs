@@ -184,8 +184,6 @@ namespace Kadena.WebAPI.Services
 
         public ShoppingCartTotals GetShoppingCartTotals()
         {
-            EventLogProvider.LogInformation("GetShoppingCartTotals():187", "Info", $"TotalItemsPrice={ECommerceContext.CurrentShoppingCart.TotalItemsPrice} id={ECommerceContext.CurrentShoppingCart.ShoppingCartID} ");
-
             return new ShoppingCartTotals()
             {
                 TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
