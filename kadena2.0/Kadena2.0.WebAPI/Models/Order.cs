@@ -13,7 +13,9 @@ namespace Kadena.WebAPI.Models
 
         public string Status { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+        //public DateTime DeliveryDate { get; set; }
+
+        public DateTime? ShippingDate { get; set; }
 
         public IEnumerable<CartItem> Items { get; set; }
 

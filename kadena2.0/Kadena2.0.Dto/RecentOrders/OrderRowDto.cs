@@ -10,6 +10,7 @@ namespace Kadena.Dto.RecentOrders
         public List<OrderItemDto> Items { get; set; }
         public string OrderStatus { get; set; }
         public DateTime DeliveryDate { get; set; }
+        public DateTime? ShippingDate { get; set; }
         public ButtonDto ViewBtn { get; set; }
     }
 }

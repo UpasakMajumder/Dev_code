@@ -66,7 +66,8 @@ namespace Kadena.WebAPI.Services
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.DeliveryDate"),
+                    //_kenticoResources.GetResourceString("Kadena.OrdersList.DeliveryDate"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
                     string.Empty
                 },
                 PageInfo = new Pagination
