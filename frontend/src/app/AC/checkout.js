@@ -16,38 +16,38 @@ export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: SHOPPING_CART_UI_FETCH });
 
-    setTimeout(() => {
-      dispatch({
-        type: SHOPPING_CART_UI_SUCCESS,
-        payload: {
-          ui: ui.payload,
-          isWaitingPDF: ui.payload.submit.isDisabled
-        }
-      });
-    }, 3000);
-
-    // axios.get(CHECKOUT.initUIURL)
-    //   .then((response) => {
-    //     const { payload, success, errorMessage } = response.data;
-    //
-    //     if (!success) {
-    //       dispatch({ type: SHOPPING_CART_UI_FAILURE });
-    //       alert(errorMessage); // eslint-disable-line no-alert
-    //       return;
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: SHOPPING_CART_UI_SUCCESS,
+    //     payload: {
+    //       ui: ui.payload,
+    //       isWaitingPDF: ui.payload.submit.isDisabled
     //     }
-    //
-    //     dispatch({
-    //       type: SHOPPING_CART_UI_SUCCESS,
-    //       payload: {
-    //         ui: payload,
-    //         isWaitingPDF: payload.submit.isDisabled
-    //       }
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     alert(error); // eslint-disable-line no-alert
-    //     dispatch({ type: SHOPPING_CART_UI_FAILURE });
     //   });
+    // }, 3000);
+
+    axios.get(CHECKOUT.initUIURL)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({ type: SHOPPING_CART_UI_FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
+
+        dispatch({
+          type: SHOPPING_CART_UI_SUCCESS,
+          payload: {
+            ui: payload,
+            isWaitingPDF: payload.submit.isDisabled
+          }
+        });
+      })
+      .catch((error) => {
+        alert(error); // eslint-disable-line no-alert
+        dispatch({ type: SHOPPING_CART_UI_FAILURE });
+      });
   };
 };
 
