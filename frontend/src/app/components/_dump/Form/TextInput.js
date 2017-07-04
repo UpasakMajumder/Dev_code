@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import removeProps from '../../helpers/object';
+import removeProps from 'app.helpers/object';
 
 const TextInput = (props) => {
   const { label, error, disabled, isOptional } = props;

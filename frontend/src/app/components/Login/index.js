@@ -5,9 +5,9 @@ import Button from 'app.dump/Button';
 import requestLogin from 'app.ac/login';
 import { LOGIN } from 'app.globals';
 import { getSearchObj } from 'app.helpers/location';
-import TextInput from '../form/TextInput';
-import PasswordInput from '../form/PasswordInput';
-import CheckboxInput from '../form/CheckboxInput';
+import TextInput from 'app.dump/Form/TextInput';
+import PasswordInput from 'app.dump/Form/PasswordInput';
+import CheckboxInput from 'app.dump/Form/CheckboxInput';
 
 class Login extends Component {
   state = {
