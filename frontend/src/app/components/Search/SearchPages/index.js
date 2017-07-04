@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Page from '../../Pages/Search';
+import Page from 'app.dump/Pages/Search';
 
 const SearchPages = ({ pages }) => {
   const { url, items } = pages;

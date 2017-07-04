@@ -6,7 +6,7 @@ import Pagination from 'app.dump/Pagination';
 import Spinner from 'app.dump/Spinner';
 import { changePage } from 'app.ac/searchPage';
 import { paginationFilter } from 'app.helpers/array';
-import Page from '../../Pages/SearchPage';
+import Page from 'app.dump/Pages/SearchPage';
 
 class SearchPagePages extends Component {
   static propTypes = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cutWords } from '../../../helpers/string';
+import { cutWords } from 'app.helpers/string';
 
 const Page = ({ url, title, text }) => {
   const descriptionText = text ? <p>{cutWords(text, 24)}</p> : null;
