@@ -227,9 +227,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     cartItem.CartItemPrice = dynamicUnitPrice;
                 }
                 ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-
-                cart.InvalidateCalculations();
-                ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
             }
         }
 
