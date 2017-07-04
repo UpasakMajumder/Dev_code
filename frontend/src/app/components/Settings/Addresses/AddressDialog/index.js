@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dialog from '../../../Dialog/index';
+import Dialog from 'app.dump/Dialog/index';
 import TextInput from '../../../form/TextInput';
 import Select from '../../../form/Select';
 
