@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
+import TemplateProduct from 'app.dump/TemplateProduct';
+import { getUI, changePage, setPaginationLimit } from 'app.ac/searchPage';
+import { getSearchObj } from 'app.helpers/location';
+import { paginationFilter } from 'app.helpers/array';
 import Spinner from '../../Spinner';
-import TemplateProduct from '../../TemplateProduct';
-import { getSearchObj } from '../../../helpers/location';
-import { paginationFilter } from '../../../helpers/array';
-import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
 
 class SearchPageProducts extends Component {
   static propTypes = {
