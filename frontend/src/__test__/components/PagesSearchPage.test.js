@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import { getShallowComponent } from '../_helpers/shallow';
-import PagesSearchPage from '../../app/components/dump/Pages/SearchPage';
+import PagesSearchPage from '../../app/components/_dump/Pages/SearchPage';
 
 expect.extend(expectJSX);
 
