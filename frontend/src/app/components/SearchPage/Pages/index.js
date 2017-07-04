@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
-import Spinner from '../../Spinner';
-import Page from '../../Pages/SearchPage/index';
-import { changePage } from '../../../AC/searchPage';
-import { paginationFilter } from '../../../helpers/array';
+import Spinner from 'app.dump/Spinner';
+import { changePage } from 'app.ac/searchPage';
+import { paginationFilter } from 'app.helpers/array';
+import Page from '../../Pages/SearchPage';
 
 class SearchPagePages extends Component {
   static propTypes = {

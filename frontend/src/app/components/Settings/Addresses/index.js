@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getUI, modifyAddress } from 'app.ac/settingsAddresses';
+import Spinner from 'app.dump/Spinner';
 import AddressBlock from './AddressBlock';
 import AddressDialog from './AddressDialog';
-import { getUI, modifyAddress } from '../../../AC/settingsAddresses';
-import Spinner from '../../Spinner';
 
 class SettingAddresses extends Component {
   state = {

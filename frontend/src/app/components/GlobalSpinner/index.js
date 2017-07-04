@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Spinner from '../Spinner';
+import Spinner from 'app.dump/Spinner';
 
 const GlobalSpinner = ({ isLoading }) => {
   return isLoading ? <div className="spinner__wrapper"><Spinner /></div> : null;

@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
+import Spinner from 'app.dump/Spinner';
+import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
+  changeProductQuantity } from 'app.ac/checkout';
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
-import Spinner from '../Spinner';
-import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity } from '../../AC/checkout';
 
 class Checkout extends Component {
   static fireNotification(fields) {

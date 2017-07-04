@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Spinner from 'app.dump/Spinner';
+import getUI from 'app.ac/orderDetail';
+import { getSearchObj } from 'app.helpers/location';
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
-import getUI from '../../AC/orderDetail';
-import Spinner from '../Spinner';
-import { getSearchObj } from '../../helpers/location';
 
 class OrderDetail extends Component {
   static propTypes = {

@@ -7,7 +7,7 @@ import TemplateProduct from 'app.dump/TemplateProduct';
 import { getUI, changePage, setPaginationLimit } from 'app.ac/searchPage';
 import { getSearchObj } from 'app.helpers/location';
 import { paginationFilter } from 'app.helpers/array';
-import Spinner from '../../Spinner';
+import Spinner from 'app.dump/Spinner';
 
 class SearchPageProducts extends Component {
   static propTypes = {
