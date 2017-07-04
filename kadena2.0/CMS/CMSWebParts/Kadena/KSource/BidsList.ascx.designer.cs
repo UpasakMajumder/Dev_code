@@ -13,6 +13,15 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
     public partial class BidsList {
         
         /// <summary>
+        /// pnlOpenProject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlOpenProject;
+        
+        /// <summary>
         /// lblOpenProject control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
         protected global::System.Web.UI.WebControls.PlaceHolder phOpenPagination;
         
         /// <summary>
+        /// pnlCompletedProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCompletedProjects;
+        
+        /// <summary>
         /// lblCompletedProjects control.
         /// </summary>
         /// <remarks>
@@ -65,5 +83,14 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phCompletedPagination;
+        
+        /// <summary>
+        /// pnlMicroserviceError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMicroserviceError;
     }
 }
