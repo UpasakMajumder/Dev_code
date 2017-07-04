@@ -11,6 +11,8 @@ namespace Kadena.Tests
     {
         private string _urlSetting = "KDA_GetProjectsUrl";
         private string _workgroupNameSetting = "KDA_WorkgroupName";
+        private const string _nooshApiSettingKey = "KDA_NooshApi";
+        private const string _nooshTokenSettingKey = "KDA_NooshToken";
 
         [TestCase("Abbott Nutrition"
             , "https://acdfsip0c6.execute-api.us-east-1.amazonaws.com/Qa/Api/bid"
@@ -31,6 +33,16 @@ namespace Kadena.Tests
                 {
                     KeyName = $"{_urlSetting}",
                     KeyValue = url
+                },
+                new SettingsKeyInfo
+                {
+                    KeyName = $"{_nooshApiSettingKey}",
+                    KeyValue = "https://api.scd.noosh.com/api/v1/"
+                },
+                new SettingsKeyInfo
+                {
+                    KeyName = $"{_nooshTokenSettingKey}",
+                    KeyValue = "IEKdhpOWS5IEq2aQHAp1ivCtEnlW1f1Jf0JhbbHsbN1IToFoqo5SrInnH5Kw7cnb"
                 }
             );
             return BidServiceHelper.GetProjects();
