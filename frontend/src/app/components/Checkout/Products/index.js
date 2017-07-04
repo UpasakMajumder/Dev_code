@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Product from '../../Product/Checkout';
+import Product from 'app.dump/Product/Checkout';
 
 const Products = (props) => {
   const { ui, removeProduct, changeProductQuantity } = props;

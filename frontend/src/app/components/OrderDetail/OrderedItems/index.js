@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Product from '../../Product/Order';
+import Product from 'app.dump/Product/Order';
 
 const OrderedItems = ({ ui }) => {
   const { title, items } = ui;

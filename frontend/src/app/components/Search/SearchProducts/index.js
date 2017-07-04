@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Product from '../../Product/Search';
+import Product from 'app.dump/Product/Search';
 
 const SearchProducts = ({ products }) => {
   const { url, items } = products;
