@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Alert from 'app.dump/Alert';
+import Button from 'app.dump/Button';
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
 import Spinner from '../Spinner';
-import Button from '../Button';
 import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity } from '../../AC/checkout';
 

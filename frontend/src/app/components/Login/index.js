@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Button from 'app.dump/Button';
 import { getSearchObj } from '../../helpers/location';
 import TextInput from '../form/TextInput';
 import PasswordInput from '../form/PasswordInput';
 import CheckboxInput from '../form/CheckboxInput';
 import requestLogin from '../../AC/login';
-import Button from '../Button';
 import { LOGIN } from '../../globals';
 
 class Login extends Component {
