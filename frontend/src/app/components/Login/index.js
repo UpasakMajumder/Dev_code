@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+/* components */
 import Button from 'app.dump/Button';
-import requestLogin from 'app.ac/login';
-import { LOGIN } from 'app.globals';
-import { getSearchObj } from 'app.helpers/location';
 import TextInput from 'app.dump/Form/TextInput';
 import PasswordInput from 'app.dump/Form/PasswordInput';
 import CheckboxInput from 'app.dump/Form/CheckboxInput';
+/* ac */
+import requestLogin from 'app.ac/login';
+/* utilities */
+import { LOGIN } from 'app.globals';
+import { getSearchObj } from 'app.helpers/location';
 
 class Login extends Component {
   state = {

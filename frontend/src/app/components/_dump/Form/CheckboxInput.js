@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* utilities */
 import removeProps from 'app.helpers/object';
 
 export default function CheckboxInput(props) {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { changeSearchQuery, closeDropdown, sendQuery } from 'app.ac/search';
 import { connect } from 'react-redux';
+/* ac */
+import { changeSearchQuery, closeDropdown, sendQuery } from 'app.ac/search';
+/* local components */
 import SearchInput from './SearchInput';
 import SearchDropdown from './SearchDropdown';
 

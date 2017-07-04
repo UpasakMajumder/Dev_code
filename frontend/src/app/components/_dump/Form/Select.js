@@ -1,4 +1,5 @@
 import React from 'react';
+/* utilities */
 import removeProps from 'app.helpers/object';
 
 const Select = (props) => {

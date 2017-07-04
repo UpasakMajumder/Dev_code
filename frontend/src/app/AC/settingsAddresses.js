@@ -1,8 +1,11 @@
 import axios from 'axios';
+/* constants */
 import { SETTINGS_ADDRESSES_UI_FAILURE, SETTINGS_ADDRESSES_UI_FETCH, SETTINGS_ADDRESSES_UI_SUCCESS,
   MODIFY_SHIPPING_ADDRESS_FETCH, MODIFY_SHIPPING_ADDRESS_SUCCESS, MODIFY_SHIPPING_ADDRESS_FAILURE, APP_LOADING_START,
   APP_LOADING_FINISH, DIALOG_CLOSE } from 'app.consts';
+/* globals */
 import { USER_SETTINGS } from 'app.globals';
+/* web service */
 import ui from 'app.ws/settingsUI';
 
 const getUITest = (dispatch) => {

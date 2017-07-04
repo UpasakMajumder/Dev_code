@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/* local components */
 import MethodsGroup from './MethodsGroup';
 
 class DeliveryMethod extends Component {

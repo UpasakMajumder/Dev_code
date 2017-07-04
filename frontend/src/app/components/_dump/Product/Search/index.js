@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* components */
 import Stock from 'app.dump/Stock';
 
 const SearchProduct = (props) => {

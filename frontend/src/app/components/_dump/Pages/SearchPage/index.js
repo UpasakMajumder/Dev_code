@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/* utilities */
 import { cutWords } from 'app.helpers/string';
 
 const Page = ({ url, title, text }) => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/* components */
 import Stock from 'app.dump/Stock';
 
 class TemplateProduct extends Component {

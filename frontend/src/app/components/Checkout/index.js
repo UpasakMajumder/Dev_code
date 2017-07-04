@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+/* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
+/* ac */
 import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity } from 'app.ac/checkout';
+/* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';

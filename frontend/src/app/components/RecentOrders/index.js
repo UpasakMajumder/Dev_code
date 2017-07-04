@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
+/* ac */
 import { getHeadings, getRows } from 'app.ac/recentOrders';
+/* local components */
 import Order from './Order';
 
 class RecentOrders extends Component {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+/* components */
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
 import TemplateProduct from 'app.dump/TemplateProduct';
+import Spinner from 'app.dump/Spinner';
+/* ac */
 import { getUI, changePage, setPaginationLimit } from 'app.ac/searchPage';
+/* utilities */
 import { getSearchObj } from 'app.helpers/location';
 import { paginationFilter } from 'app.helpers/array';
-import Spinner from 'app.dump/Spinner';
 
 class SearchPageProducts extends Component {
   static propTypes = {

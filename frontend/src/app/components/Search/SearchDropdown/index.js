@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* local components */
 import SearchProducts from '../SearchProducts';
 import SearchPages from '../SearchPages';
 

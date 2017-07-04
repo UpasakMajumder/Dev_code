@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* components */
 import SVG from 'app.dump/SVG';
+/* local components */
 import AddressCard from '../AddressCard';
 
 const AddressBlock = (props) => {

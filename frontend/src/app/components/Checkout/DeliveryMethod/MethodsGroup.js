@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+/* components */
 import SVG from 'app.dump/SVG';
+/* local components */
 import Method from './Method';
 
 const MethodsGroup = (props) => {

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
 import Spinner from 'app.dump/Spinner';
+/* ac */
 import getUI from 'app.ac/orderDetail';
+/* utilities */
 import { getSearchObj } from 'app.helpers/location';
+/* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';

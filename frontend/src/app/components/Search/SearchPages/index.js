@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* components */
 import Page from 'app.dump/Pages/Search';
 
 const SearchPages = ({ pages }) => {

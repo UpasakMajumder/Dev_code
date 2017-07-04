@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/* components */
 import Alert from 'app.dump/Alert';
+/* local components */
 import Address from './Address';
 
 const DeliveryAddress = (props) => {

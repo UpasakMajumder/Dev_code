@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getUI, modifyAddress } from 'app.ac/settingsAddresses';
+/* components */
 import Spinner from 'app.dump/Spinner';
+/* ac */
+import { getUI, modifyAddress } from 'app.ac/settingsAddresses';
+/* local components */
 import AddressBlock from './AddressBlock';
 import AddressDialog from './AddressDialog';
 

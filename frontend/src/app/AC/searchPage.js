@@ -1,6 +1,9 @@
 import axios from 'axios';
+/* constants */
 import { SEARCH_PAGE_UI_FETCHING, SEARCH_PAGE_UI_SUCCESS, SEARCH_PAGE_UI_FAILURE, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from 'app.consts';
+/* globals */
 import { SEARCH_PAGE } from 'app.globals';
+/* web service */
 import ui from 'app.ws/searchPageUI';
 
 export const getUI = (query) => {

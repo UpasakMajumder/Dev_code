@@ -1,6 +1,9 @@
 import axios from 'axios';
+/* constants */
 import { ORDER_DETAIL_GET_UI_FETCH, ORDER_DETAIL_GET_UI_FAILURE, ORDER_DETAIL_GET_UI_SUCCESS } from 'app.consts';
+/* globals */
 import { ORDER_DETAIL } from 'app.globals';
+/* web service */
 import ui from 'app.ws/orderDetail';
 
 export default (orderID) => {
