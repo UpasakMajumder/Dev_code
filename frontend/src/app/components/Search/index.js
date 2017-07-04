@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { changeSearchQuery, closeDropdown, sendQuery } from 'app.ac/search';
 import { connect } from 'react-redux';
 import SearchInput from './SearchInput';
 import SearchDropdown from './SearchDropdown';
-import { changeSearchQuery, closeDropdown, sendQuery } from '../../AC/search';
 
 class Search extends Component {
   state = {

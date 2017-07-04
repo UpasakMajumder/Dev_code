@@ -10,7 +10,6 @@ import Page from 'app.dump/Pages/SearchPage';
 
 class SearchPagePages extends Component {
   static propTypes = {
-    /* store */
     getAllResults: PropTypes.bool.isRequired,
     pagesLength: PropTypes.number.isRequired,
     pagesPage: PropTypes.number.isRequired,
