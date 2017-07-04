@@ -9,41 +9,41 @@ export const getHeadings = () => {
   return (dispatch) => {
     dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FETCH });
 
-    axios({
-      method: 'get',
-      url: RECENT_ORDERS.getHeaders
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    // axios({
+    //   method: 'get',
+    //   url: RECENT_ORDERS.getHeaders
+    // }).then((response) => {
+    //   const { payload, success, errorMessage } = response.data;
+    //
+    //   if (!success) {
+    //     dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+    //     alert(errorMessage); // eslint-disable-line no-alert
+    //   } else {
+    //     dispatch({
+    //       type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+    //       payload: {
+    //         headings: payload.headings,
+    //         pageInfo: payload.pageInfo,
+    //         noOrdersMessage: payload.noOrdersMessage
+    //       }
+    //     });
+    //   }
+    // }).catch((error) => {
+    //   dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+    //   alert(error); // eslint-disable-line no-alert
+    // });
 
-      if (!success) {
-        dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
-        dispatch({
-          type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
-          payload: {
-            headings: payload.headings,
-            pageInfo: payload.pageInfo,
-            noOrdersMessage: payload.noOrdersMessage
-          }
-        });
-      }
-    }).catch((error) => {
-      dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
-      alert(error); // eslint-disable-line no-alert
-    });
 
-
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
-    //     payload: {
-    //       headings: headings.headings,
-    //       pageInfo: pageInfo.pageInfo,
-    //       noOrdersMessage
-    //     }
-    //   });
-    // }, 2000);
+    setTimeout(() => {
+      dispatch({
+        type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+        payload: {
+          headings: headings.headings,
+          pageInfo: pageInfo.pageInfo,
+          noOrdersMessage
+        }
+      });
+    }, 2000);
   };
 };
 
