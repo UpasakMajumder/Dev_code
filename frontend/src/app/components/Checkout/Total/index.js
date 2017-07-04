@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PriceTable from '../../PriceTable';
+import PriceTable from 'app.dump/PriceTable';
 
 const Total = ({ ui }) => {
   const { title, description, items } = ui;
