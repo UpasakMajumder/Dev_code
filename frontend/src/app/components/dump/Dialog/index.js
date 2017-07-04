@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG/index';
+import SVG from 'app.dump/SVG';
 
 const Dialog = (props) => {
   const { closeDialog, hasCloseBtn, title, body, footer } = props;

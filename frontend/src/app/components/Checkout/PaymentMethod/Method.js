@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG';
+import SVG from 'app.dump/SVG';
 
 const Method = (props) => {
   const { title, icon, disabled, id, hasInput, inputPlaceholder, checkedObj,

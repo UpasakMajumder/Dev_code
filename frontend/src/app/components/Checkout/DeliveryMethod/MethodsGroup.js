@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import SVG from 'app.dump/SVG';
 import Method from './Method';
-import SVG from '../../SVG';
 
 const MethodsGroup = (props) => {
   const { id, title, icon, disabled, pricePrefix, price, datePrefix, date, items, checkedId,

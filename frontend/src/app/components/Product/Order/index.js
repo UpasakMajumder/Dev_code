@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG';
+import SVG from 'app.dump/SVG';
 
 const Order = (props) => {
   const { image, template, mailingList, shippingDate, trackingId,

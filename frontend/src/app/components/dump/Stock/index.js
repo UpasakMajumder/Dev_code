@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../SVG';
+import SVG from 'app.dump/SVG';
 
 const Stock = (props) => {
   const { type, text } = props;

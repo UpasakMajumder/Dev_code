@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SVG from 'app.dump/SVG';
 import AddressCard from '../AddressCard';
-import SVG from '../../../SVG/index';
 
 const AddressBlock = (props) => {
   const { ui, openDialog } = props;

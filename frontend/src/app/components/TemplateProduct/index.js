@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Stock from '../Stock';
+import Stock from 'app.dump/Stock';
 
 class TemplateProduct extends Component {
   state = {

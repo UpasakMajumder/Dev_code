@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG';
+import SVG from 'app.dump/SVG';
 
 const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirectUserToResultPage }) => {
   const closer = value

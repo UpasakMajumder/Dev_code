@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG/index';
+import SVG from 'app.dump/SVG';
 
 const Button = ({ text, type, disabled, isLoading, onClick, btnClass }) => {
   const isDisabled = isLoading || disabled;

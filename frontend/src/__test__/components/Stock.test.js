@@ -2,8 +2,8 @@ import React from 'react';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import { getShallowComponent } from '../_helpers/shallow';
-import SVG from '../../app/components/SVG';
-import Stock from '../../app/components/Stock';
+import SVG from '../../app/components/dump/SVG';
+import Stock from '../../app/components/dump/Stock';
 
 expect.extend(expectJSX);
 

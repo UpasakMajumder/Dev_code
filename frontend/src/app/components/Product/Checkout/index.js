@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG';
+import SVG from 'app.dump/SVG';
 
 class CheckoutProduct extends Component {
   state = {
