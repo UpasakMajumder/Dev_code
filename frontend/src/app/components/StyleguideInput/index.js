@@ -44,6 +44,6 @@ const StyleguideInput = () => {
       </tbody>
     </table>
   );
-}
+};
 
 export default StyleguideInput;
