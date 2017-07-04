@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BidsList.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.KSource.BidsList" %>
 
-<div class="bids-list__block">
+<asp:Panel runat="server" ID="pnlOpenProject" CssClass="bids-list__block">
     <h2 runat="server" id="lblOpenProject" class="bids-list__block-header"></h2>
     <div class="js-table-paginator">
         <table runat="server" id="tblOpenProjects" class="show-table show-table--hide-rows">
@@ -36,8 +36,8 @@
         </table>
         <asp:PlaceHolder runat="server" ID="phOpenPagination" />
     </div>
-</div>
-<div class="bids-list__block">
+</asp:Panel>
+<asp:Panel runat="server" ID="pnlCompletedProjects" CssClass="bids-list__block">
     <h2 runat="server" id="lblCompletedProjects" class="bids-list__block-header"></h2>
     <div class="js-table-paginator">
         <table runat="server" id="tblCompletedProjects" class="show-table show-table--hide-rows">
@@ -73,4 +73,9 @@
         </table>
         <asp:PlaceHolder runat="server" ID="phCompletedPagination" />
     </div>
-</div>
+</asp:Panel>
+<asp:Panel runat="server" ID="pnlMicroserviceError" CssClass="bids-list__block" Visible="false">
+    <h2 class="bids-list__block-header">
+        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.Error.MicroserviceFailed" />
+    </h2>
+</asp:Panel>

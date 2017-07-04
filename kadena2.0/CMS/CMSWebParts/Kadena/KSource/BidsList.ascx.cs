@@ -30,11 +30,18 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 projects = BidServiceHelper.GetProjects();
             }
+            catch (HttpRequestException exc)
+            {
+                pnlOpenProject.Visible = false;
+                pnlCompletedProjects.Visible = false;
+                pnlMicroserviceError.Visible = true;
+                EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
+                return;
+            }
             catch (Exception exc)
             {
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
             }
-
 
             int openCount = 0, completedCount = 0;
             if (projects != null)
@@ -51,6 +58,10 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
             lblOpenProject.InnerText = ResHelper.GetStringFormat("Kadena.KSource.OpenProjectsCaption", openCount);
             lblCompletedProjects.InnerText = ResHelper.GetStringFormat("Kadena.KSource.CompletedProjectsCaption", completedCount);
+
+            pnlOpenProject.Visible = true;
+            pnlCompletedProjects.Visible = true;
+            pnlMicroserviceError.Visible = false;
         }
 
         private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data, int recordsPerPage)
