@@ -1,8 +1,6 @@
 import axios from 'axios';
 /* constants */
-import { GET_RECENT_ORDERS_HEADINGS_FETCH, GET_RECENT_ORDERS_ROWS_FETCH, GET_RECENT_ORDERS_HEADINGS_SUCCESS,
-  GET_RECENT_ORDERS_ROWS_SUCCESS, GET_RECENT_ORDERS_HEADINGS_FAILURE, GET_RECENT_ORDERS_ROWS_FAILURE,
-  APP_LOADING_START, APP_LOADING_FINISH } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_ROWS, RECENT_ORDERS_HEADINGS, APP_LOADING } from 'app.consts';
 /* globals */
 import { RECENT_ORDERS } from 'app.globals';
 /* web service */
@@ -10,7 +8,7 @@ import { headings, pageInfo, rows1, rows2, noOrdersMessage } from 'app.ws/recent
 
 export const getHeadings = () => {
   return (dispatch) => {
-    dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FETCH });
+    dispatch({ type: RECENT_ORDERS_HEADINGS + FETCH });
 
     axios({
       method: 'get',
@@ -19,11 +17,11 @@ export const getHeadings = () => {
       const { payload, success, errorMessage } = response.data;
 
       if (!success) {
-        dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+        dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
         alert(errorMessage); // eslint-disable-line no-alert
       } else {
         dispatch({
-          type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+          type: RECENT_ORDERS_HEADINGS + SUCCESS,
           payload: {
             headings: payload.headings,
             pageInfo: payload.pageInfo,
@@ -32,14 +30,14 @@ export const getHeadings = () => {
         });
       }
     }).catch((error) => {
-      dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+      dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
       alert(error); // eslint-disable-line no-alert
     });
 
 
     // setTimeout(() => {
     //   dispatch({
-    //     type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+    //     type: RECENT_ORDERS_HEADINGS + SUCCESS,
     //     payload: {
     //       headings: headings.headings,
     //       pageInfo: pageInfo.pageInfo,
@@ -52,8 +50,8 @@ export const getHeadings = () => {
 
 export const getRows = (page) => {
   return (dispatch) => {
-    dispatch({ type: GET_RECENT_ORDERS_ROWS_FETCH });
-    dispatch({ type: APP_LOADING_START });
+    dispatch({ type: RECENT_ORDERS_ROWS + FETCH });
+    dispatch({ type: APP_LOADING + START });
 
     axios({
       method: 'get',
@@ -62,30 +60,30 @@ export const getRows = (page) => {
       const { payload, success, errorMessage } = response.data;
 
       if (!success) {
-        dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
+        dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
         alert(errorMessage); // eslint-disable-line no-alert
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
       } else {
         dispatch({
-          type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+          type: RECENT_ORDERS_ROWS + SUCCESS,
           payload: {
             rows: {
               [page - 1]: payload.rows
             }
           }
         });
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
       }
     }).catch((error) => {
-      dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
+      dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
       alert(error); // eslint-disable-line no-alert
-      dispatch({ type: APP_LOADING_FINISH });
+      dispatch({ type: APP_LOADING + FINISH });
     });
 
     // setTimeout(() => {
     //   if (page % 2 === 0) {
     //     dispatch({
-    //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+    //       type: RECENT_ORDERS_ROWS + SUCCESS,
     //       payload: {
     //         rows: {
     //           [page - 1]: rows1.payload.rows
@@ -94,7 +92,7 @@ export const getRows = (page) => {
     //     });
     //   } else {
     //     dispatch({
-    //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+    //       type: RECENT_ORDERS_ROWS + SUCCESS,
     //       payload: {
     //         rows: {
     //           [page - 1]: rows2.payload.rows
@@ -103,7 +101,7 @@ export const getRows = (page) => {
     //     });
     //   }
     //
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   dispatch({ type: APP_LOADING + FINISH });
     // }, 2500);
   };
 };

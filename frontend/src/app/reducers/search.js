@@ -1,4 +1,4 @@
-import { SEARCH_RESULTS_HIDE, SEARCH_RESULTS_SHOW, SEARCH_RESULT_GET_SUCCESS, SEARCH_QUERY_CHANGE } from 'app.consts';
+import { SHOW, HIDE, SUCCESS, SEARCH_RESULTS, CHANGE_SEARCH_QUERY } from 'app.consts';
 
 const defaultState = {
   products: {},
@@ -13,22 +13,22 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case SEARCH_QUERY_CHANGE:
+  case CHANGE_SEARCH_QUERY:
     return {
       ...state,
       query: payload.query
     };
 
-  case SEARCH_RESULTS_HIDE:
+  case SEARCH_RESULTS + HIDE:
     return defaultState;
 
-  case SEARCH_RESULTS_SHOW:
+  case SEARCH_RESULTS + SHOW:
     return {
       ...state,
       areResultsShown: true
     };
 
-  case SEARCH_RESULT_GET_SUCCESS:
+  case SEARCH_RESULTS + SUCCESS:
     return {
       ...state,
       ...payload

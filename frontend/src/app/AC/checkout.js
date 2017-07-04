@@ -1,24 +1,21 @@
 import axios from 'axios';
 /* constants */
-import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAILURE, CHANGE_SHOPPING_DATA,
-  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_FETCH, RECALCULATE_SHOPPING_PRICE_SUCCESS,
-  RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
-  SEND_SHOPPING_DATA_SUCCESS, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
-  REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
-  CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH, CHECKOUT_ASK_PDF_FETCH,
-  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FAILURE } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_ASK_PDF, CHECKOUT,
+  CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
+  CHANGE_PRODUCT_QUANTITY } from 'app.consts';
+
 /* globals */
-import { CHECKOUT } from 'app.globals';
+import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
 import ui from 'app.ws/checkoutUI';
 
 export const getUI = () => {
   return (dispatch) => {
-    dispatch({ type: SHOPPING_CART_UI_FETCH });
+    dispatch({ type: CHECKOUT + INIT_UI + FETCH });
 
     // setTimeout(() => {
     //   dispatch({
-    //     type: SHOPPING_CART_UI_SUCCESS,
+    //     type: CHECKOUT + INIT_UI + SUCCESS,
     //     payload: {
     //       ui: ui.payload,
     //       isWaitingPDF: ui.payload.submit.isDisabled
@@ -26,18 +23,18 @@ export const getUI = () => {
     //   });
     // }, 3000);
 
-    axios.get(CHECKOUT.initUIURL)
+    axios.get(CHECKOUT_URL.initUIURL)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SHOPPING_CART_UI_FAILURE });
+          dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
-          type: SHOPPING_CART_UI_SUCCESS,
+          type: CHECKOUT + INIT_UI + SUCCESS,
           payload: {
             ui: payload,
             isWaitingPDF: payload.submit.isDisabled
@@ -46,7 +43,7 @@ export const getUI = () => {
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: SHOPPING_CART_UI_FAILURE });
+        dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
       });
   };
 };
@@ -54,7 +51,7 @@ export const getUI = () => {
 export const initCheckedShoppingData = (data) => {
   return (dispatch) => {
     dispatch({
-      type: INIT_CHECKED_SHOPPING_DATA,
+      type: INIT_CHECKED_CHECKOUT_DATA,
       payload: {
         ...data
       }
@@ -65,25 +62,25 @@ export const initCheckedShoppingData = (data) => {
 export const removeProduct = (id) => {
   return (dispatch) => {
     dispatch({
-      type: APP_LOADING_START
+      type: APP_LOADING + START
     });
 
-    const url = CHECKOUT.removeProductURL;
+    const url = CHECKOUT_URL.removeProductURL;
 
     axios.post(url, { id })
       .then((response) => {
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
 
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: REMOVE_PRODUCT_FAILURE });
+          dispatch({ type: REMOVE_PRODUCT + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
-          type: REMOVE_PRODUCT_SUCCESS,
+          type: REMOVE_PRODUCT + SUCCESS,
           payload: {
             ui: payload,
             isWaitingPDF: payload.submit.isDisabled
@@ -92,12 +89,12 @@ export const removeProduct = (id) => {
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: REMOVE_PRODUCT_FAILURE });
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: REMOVE_PRODUCT + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
       });
 
     // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   dispatch({ type: APP_LOADING + FINISH });
     // }, 2000);
 
   };
@@ -106,25 +103,25 @@ export const removeProduct = (id) => {
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
     dispatch({
-      type: APP_LOADING_START
+      type: APP_LOADING + START
     });
 
-    const url = CHECKOUT.changeQuantityURL;
+    const url = CHECKOUT_URL.changeQuantityURL;
 
     axios.post(url, { id, quantity })
       .then((response) => {
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
 
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
+          dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
-          type: CHANGE_PRODUCT_QUANTITY_SUCCESS,
+          type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
           payload: {
             ui: payload,
             isWaitingPDF: payload.submit.isDisabled
@@ -133,12 +130,12 @@ export const changeProductQuantity = (id, quantity) => {
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: CHANGE_PRODUCT_QUANTITY_FAILURE });
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
       });
 
     // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   dispatch({ type: APP_LOADING + FINISH });
     // }, 2000);
   };
 };
@@ -146,7 +143,7 @@ export const changeProductQuantity = (id, quantity) => {
 export const changeShoppingData = (field, id, invoice) => {
   return (dispatch) => {
     dispatch({
-      type: CHANGE_SHOPPING_DATA,
+      type: CHANGE_CHECKOUT_DATA,
       payload: {
         field, id, invoice
       }
@@ -154,42 +151,42 @@ export const changeShoppingData = (field, id, invoice) => {
 
     if (field === 'paymentMethod') return;
 
-    dispatch({ type: RECALCULATE_SHOPPING_PRICE_FETCH });
+    dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
 
-    dispatch({ type: APP_LOADING_START });
+    dispatch({ type: APP_LOADING + START });
 
     let url = '';
     if (field === 'deliveryMethod') {
-      url = CHECKOUT.changeDeliveryMethodURL;
+      url = CHECKOUT_URL.changeDeliveryMethodURL;
     } else if (field === 'deliveryAddress') {
-      url = CHECKOUT.changeAddressURL;
+      url = CHECKOUT_URL.changeAddressURL;
     }
 
     // setTimeout(() => {
     //   dispatch({
-    //     type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
+    //     type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
     //     payload: {
     //       ui: ui2.payload
     //     }
     //   });
     //
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   dispatch({ type: APP_LOADING + FINISH });
     // }, 1000);
 
     axios.post(url, { id })
       .then((response) => {
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
 
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
+          dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
-          type: RECALCULATE_SHOPPING_PRICE_SUCCESS,
+          type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
           payload: {
             ui: payload,
             isWaitingPDF: payload.submit.isDisabled
@@ -198,31 +195,31 @@ export const changeShoppingData = (field, id, invoice) => {
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: RECALCULATE_SHOPPING_PRICE_FAILURE });
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
       });
   };
 };
 
 export const sendData = (data) => {
   return (dispatch) => {
-    dispatch({ type: SEND_SHOPPING_DATA_FETCH });
-    dispatch({ type: APP_LOADING_START });
+    dispatch({ type: SUBMIT_CHECKOUT + FETCH });
+    dispatch({ type: APP_LOADING + START });
 
-    axios.post(CHECKOUT.submitURL, { ...data })
+    axios.post(CHECKOUT_URL.submitURL, { ...data })
       .then((response) => {
-        dispatch({ type: APP_LOADING_FINISH });
+        dispatch({ type: APP_LOADING + FINISH });
 
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
+          dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
         dispatch({
-          type: SEND_SHOPPING_DATA_SUCCESS,
+          type: SUBMIT_CHECKOUT + SUCCESS,
           payload: {
             status: success,
             redirectURL: payload.redirectURL
@@ -231,27 +228,27 @@ export const sendData = (data) => {
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: APP_LOADING_FINISH });
-        dispatch({ type: SEND_SHOPPING_DATA_FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
+        dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
       });
 
     // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   dispatch({ type: APP_LOADING + FINISH });
     // }, 2000);
   };
 };
 
 export const checkPDFAvailability = () => {
   return (dispatch) => {
-    dispatch({ type: CHECKOUT_ASK_PDF_FETCH });
+    dispatch({ type: CHECKOUT_ASK_PDF + FETCH });
 
     setTimeout(() => {
-      axios.get(CHECKOUT.submittableURL)
+      axios.get(CHECKOUT_URL.submittableURL)
         .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
+            dispatch({ type: CHECKOUT_ASK_PDF + FAILURE });
             if (success !== undefined) {
               alert(errorMessage); // eslint-disable-line no-alert
             } else {
@@ -261,7 +258,7 @@ export const checkPDFAvailability = () => {
           }
 
           dispatch({
-            type: CHECKOUT_ASK_PDF_SUCCESS,
+            type: CHECKOUT_ASK_PDF + SUCCESS,
             payload: {
               isWaitingPDF: !payload // true -> is bad for service and good for me
             }
@@ -269,11 +266,11 @@ export const checkPDFAvailability = () => {
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
+          dispatch({ type: CHECKOUT_ASK_PDF + FAILURE });
         });
 
       // dispatch({
-      //   type: CHECKOUT_ASK_PDF_SUCCESS,
+      //   type: CHECKOUT_ASK_PDF + SUCCESS,
       //   payload: {
       //     isWaitingPDF: false
       //   }

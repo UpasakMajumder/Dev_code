@@ -1,8 +1,5 @@
-import { SHOPPING_CART_UI_SUCCESS, CHANGE_SHOPPING_DATA,
-  INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_SUCCESS, SEND_SHOPPING_DATA_SUCCESS,
-  RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, RECALCULATE_SHOPPING_PRICE_FAILURE,
-  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_SUCCESS, CHANGE_PRODUCT_QUANTITY_SUCCESS,
-  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FETCH, CHECKOUT_ASK_PDF_FAILURE } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, CHECKOUT, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA,
+  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_ASK_PDF } from 'app.consts';
 
 const defaultState = {
   ui: {},
@@ -27,30 +24,22 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case CHECKOUT_ASK_PDF_FETCH:
-  case CHECKOUT_ASK_PDF_FAILURE:
+  case CHECKOUT_ASK_PDF + FETCH:
+  case CHECKOUT_ASK_PDF + FAILURE:
     return {
       ...state,
       isAskingPDF: true
     };
 
 
-  case CHECKOUT_ASK_PDF_SUCCESS:
+  case CHECKOUT_ASK_PDF + SUCCESS:
     return {
       ...state,
       isWaitingPDF: payload.isWaitingPDF,
       isAskingPDF: false
     };
 
-  case CHANGE_PRODUCT_QUANTITY_SUCCESS:
-    return {
-      ...state,
-      ui: payload.ui,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
-    };
-
-  case REMOVE_PRODUCT_SUCCESS:
+  case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
       ...state,
       ui: payload.ui,
@@ -58,8 +47,16 @@ export default (state = defaultState, action) => {
       isAskingPDF: false
     };
 
-  case SHOPPING_CART_UI_SUCCESS:
-  case RECALCULATE_SHOPPING_PRICE_SUCCESS:
+  case REMOVE_PRODUCT + SUCCESS:
+    return {
+      ...state,
+      ui: payload.ui,
+      isWaitingPDF: payload.isWaitingPDF,
+      isAskingPDF: false
+    };
+
+  case CHECKOUT + INIT_UI + SUCCESS:
+  case RECALCULATE_CHECKOUT_PRICE + SUCCESS:
     return {
       ...state,
       ui: payload.ui,
@@ -68,7 +65,7 @@ export default (state = defaultState, action) => {
       isAskingPDF: false
     };
 
-  case INIT_CHECKED_SHOPPING_DATA:
+  case INIT_CHECKED_CHECKOUT_DATA:
     return {
       ...state,
       checkedData: {
@@ -78,7 +75,7 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case CHANGE_SHOPPING_DATA:
+  case CHANGE_CHECKOUT_DATA:
     return {
       ...state,
       checkedData: {
@@ -91,14 +88,14 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case RECALCULATE_SHOPPING_PRICE_FETCH:
-  case SEND_SHOPPING_DATA_FETCH:
+  case RECALCULATE_CHECKOUT_PRICE + FETCH:
+  case SUBMIT_CHECKOUT + FETCH:
     return {
       ...state,
       isSending: true
     };
 
-  case SEND_SHOPPING_DATA_SUCCESS:
+  case SUBMIT_CHECKOUT + SUCCESS:
     return {
       ...state,
       sendData: {
@@ -108,8 +105,8 @@ export default (state = defaultState, action) => {
       isSending: false
     };
 
-  case RECALCULATE_SHOPPING_PRICE_FAILURE:
-  case SEND_SHOPPING_DATA_FAILURE:
+  case RECALCULATE_CHECKOUT_PRICE + FAILURE:
+  case SUBMIT_CHECKOUT + FAILURE:
     return {
       ...state,
       isSending: false
