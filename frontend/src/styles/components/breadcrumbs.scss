@@ -12,10 +12,12 @@
       display: inline-block;
       margin-left: 7px;
       color: $brand-darkgrey;
+      text-decoration: none;
     }
 
     &:last-child {
       pointer-events: none;
+      display: inline-block;
       cursor: default;
       color: $brand-darkgrey;
 

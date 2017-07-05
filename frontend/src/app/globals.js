@@ -1,9 +1,22 @@
 const { localization } = config; // eslint-disable-line no-undef
 
 const {
-  login
+  login,
+  checkout,
+  spotfire,
+  userSettings,
+  searchPage,
+  search,
+  orderDetail,
+  recentOrders
 } = localization;
 
 
 export const LOGIN = login;
-export const blabla = '123';
+export const CHECKOUT = checkout;
+export const SPOTFIRE = spotfire;
+export const USER_SETTINGS = userSettings;
+export const ORDER_DETAIL = orderDetail;
+export const SEARCH_PAGE = searchPage;
+export const SEARCH = search;
+export const RECENT_ORDERS = recentOrders;

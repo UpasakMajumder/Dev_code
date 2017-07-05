@@ -1,0 +1,13 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Test' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <button onclick="notification.addNotification('info');" type="button" class="btn-action">Show info</button>
+  <button onclick="notification.addNotification('warning');" type="button" class="btn-info">Show warning</button>
+  <button onclick="notification.addNotification('error');" type="button" class="btn-main">Show error</button>
+  <button onclick="notification.addNotification('success');" type="button" class="btn-success">Show success</button>
+{% endblock %}

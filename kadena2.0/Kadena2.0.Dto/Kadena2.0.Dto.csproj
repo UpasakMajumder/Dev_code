@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kadena.Dto</RootNamespace>
+    <AssemblyName>Kadena2.0.Dto</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Checkout\CartItemsDTO.cs" />
+    <Compile Include="Checkout\CartItemDTO.cs" />
+    <Compile Include="Checkout\NewAddressButtonDTO.cs" />
+    <Compile Include="Checkout\SubmitButtonDTO.cs" />
+    <Compile Include="Checkout\CheckoutPageDTO.cs" />
+    <Compile Include="Checkout\DeliveryAddressDTO.cs" />
+    <Compile Include="Checkout\DeliveryAddressesDTO.cs" />
+    <Compile Include="Checkout\DeliveryMethodsDTO.cs" />
+    <Compile Include="Checkout\DeliveryMethodDTO.cs" />
+    <Compile Include="Checkout\DeliveryServiceDTO.cs" />
+    <Compile Include="Checkout\PaymentMethodsDTO.cs" />
+    <Compile Include="Checkout\PaymentMethodDTO.cs" />
+    <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
+    <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
+    <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
+    <Compile Include="General\BaseResponseDto.cs" />
+    <Compile Include="General\BaseErrorDto.cs" />
+    <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
+    <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />
+    <Compile Include="Search\Responses\PageDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteProductDTO.cs" />
+    <Compile Include="Search\Responses\ProductDTO.cs" />
+    <Compile Include="Search\Responses\AutocompleteResponseDTO.cs" />
+    <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
+    <Compile Include="Search\Responses\StockDTO.cs" />
+    <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
+    <Compile Include="Order\OrderDto.cs" />
+    <Compile Include="Order\OrderListDto.cs" />
+    <Compile Include="Order\OrderItemDto.cs" />
+    <Compile Include="RecentOrders\ButtonDto.cs" />
+    <Compile Include="RecentOrders\OrderBodyDto.cs" />
+    <Compile Include="RecentOrders\OrderHeadDto.cs" />
+    <Compile Include="RecentOrders\OrderItemDto.cs" />
+    <Compile Include="RecentOrders\OrderRowDto.cs" />
+    <Compile Include="RecentOrders\PaginationDto.cs" />
+    <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
+    <Compile Include="Settings\AddressDialogDto.cs" />
+    <Compile Include="Settings\AddressListDto.cs" />
+    <Compile Include="Settings\DialogButtonDto.cs" />
+    <Compile Include="Settings\DialogTypeDto.cs" />
+    <Compile Include="Settings\IdDto.cs" />
+    <Compile Include="Settings\PageButtonDto.cs" />
+    <Compile Include="Settings\SettingsAddressesDto.cs" />
+    <Compile Include="Site\SiteDataRequestDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
+    <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
+    <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
+    <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
+    <Compile Include="SubmitOrder\Responses\SubmitOrderResponseDto.cs" />
+    <Compile Include="CustomerData\CustomerAddressDTO.cs" />
+    <Compile Include="CustomerData\CustomerDataDTO.cs" />
+    <Compile Include="General\GeneralResultDTO.cs" />
+    <Compile Include="Logon\LogonUserResultDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Checkout\TotalsDTO.cs" />
+    <Compile Include="Checkout\TotalDTO.cs" />
+    <Compile Include="Settings\AddressDto.cs" />
+    <Compile Include="Settings\DialogFieldDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\AddressDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\CurrencyDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\CustomerDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\MailingListDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemTypeDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderStatusDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\OrderTrackingDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentOptionDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentResultDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\ShippingOptionDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />
+    <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskStatusResponseDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskResponseDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
+    <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tax\MicroserviceResponses\" />
+    <Folder Include="Tax\Requests\" />
+    <Folder Include="Tax\Responses\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

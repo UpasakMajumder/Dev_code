@@ -17,7 +17,7 @@ const app = {
     init('confirmation', document.getElementsByClassName('js-confirmation'));
     init('storage', document.getElementsByClassName('js-storage'));
     init('spotfire', document.getElementsByClassName('js-spotfire'));
-    init('money-format', document.getElementsByClassName('js-money-format'));
+    // init('money-format', document.getElementsByClassName('js-money-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
     init('collapse', document.getElementsByClassName('js-collapse'));
     init('tooltip', document.getElementsByClassName('js-tooltip'));
@@ -27,7 +27,10 @@ const app = {
     init('add-tr', document.getElementsByClassName('js-add-tr'));
     init('redirection', document.getElementsByClassName('js-redirection'));
     init('password', document.getElementsByClassName('js-password'));
-
+    init('closer', document.getElementsByClassName('js-close-this'));
+    init('datepicker', document.getElementsByClassName('js-datepicker'));
+    init('replace-value', document.getElementsByClassName('js-replace-value'));
+    init('table-paginator', document.getElementsByClassName('js-table-paginator'));
   },
 
   /* React */
@@ -35,8 +38,16 @@ const app = {
     /* Configure Redux store */
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
-    render('Mailing', document.querySelectorAll('.new-mailing'));
     render('Login', document.querySelectorAll('.js-login'));
+    render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
+    render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
+    render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
+    render('OrderDetail', document.querySelectorAll('.r-order-detail'));
+    render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
+    render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
+    render('Search', document.querySelectorAll('.r-search'));
+    render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
+    render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
   }
 };
 

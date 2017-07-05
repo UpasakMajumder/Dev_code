@@ -4,13 +4,19 @@ using CMS.Tests;
 using NUnit.Framework;
 using CMS.DataEngine;
 using System.IO;
+using CMS.SiteProvider;
 
 namespace Kadena.Tests
 {
-    class UploadFileTest : UnitTests
+    class UploadFileTest : IntegrationTests
     {
-        private string _customerNameSetting = "KDA_CustomerName";
         private string _urlSetting = "KDA_LoadFileUrl";
+
+        [SetUp]
+        public void Init()
+        {
+            SiteContext.CurrentSite = SiteInfoProvider.GetSiteInfo(1);
+        }
 
         [Test]
         public void UploadFileEmptyName()
@@ -58,54 +64,39 @@ namespace Kadena.Tests
             }
         }
 
-        [TestCase("",
-            "http://",
-            TestName = "UploadFileIncorrectCustomer",
-            Description = "Test for exception upon requesting with incorrect customer's name.")]
-        public void UploadFileIncorrectCustomer(string customerName, string url)
-        {
-            var exc = Assert.Catch(typeof(InvalidOperationException)
-                                        , () => UploadFile(customerName, url));
-            Assert.AreEqual("CustomerName not specified. Check settings for your site.", exc.Message);
-        }
-
-        [TestCase("actum",
-            "http://",
+        [TestCase("http://",
             TestName = "UploadFileIncorrectUrl",
             Description = "Test for exception upon requesting to incorrect url.")]
-        public void UploadFileIncorrectUrl(string customerName, string url)
+        public void UploadFileIncorrectUrl(string url)
         {
             var exc = Assert.Catch(typeof(InvalidOperationException)
-                                        , () => UploadFile(customerName, url));
+                                        , () => UploadFile(url));
             Assert.AreEqual("Url for file uploading is not in correct format. Check settings for your site.", exc.Message);
         }
 
-        [TestCase("actum",
-            "http://example.com",
+        [TestCase("http://example.com",
             TestName = "UploadFileFail",
             Description = "Test for exception upon requesting url not designed for this task.")]
-        public void NotMicroserviceCallTest(string customerName, string url)
+        public void NotMicroserviceCallTest(string url)
         {
             var exc = Assert.Catch(typeof(InvalidOperationException)
-                                        , () => UploadFile(customerName, url));
+                                        , () => UploadFile(url));
             Assert.AreEqual("Response from microservice is not in correct format.", exc.Message);
         }
 
-        [TestCase("actum",
-            "https://eauydb7sta.execute-api.us-east-1.amazonaws.com/Prod/Api/File",
+        [TestCase("https://eauydb7sta.execute-api.us-east-1.amazonaws.com/Qa/Api/File",
             TestName = "UploadFileSuccess")]
-        public void MicroserviceCallTest(string customerName, string url)
+        public void MicroserviceCallTest(string url)
         {
-            var fileId = UploadFile(customerName, url);
+            var fileId = UploadFile(url);
             TestContext.WriteLine($"File Id {fileId}");
-            Assert.AreNotEqual(Guid.Empty, fileId);
+            Assert.IsNotEmpty(fileId);
         }
 
-        private Guid UploadFile(string customerName, string url)
+        private string UploadFile(string url)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                         .WithData(
-                            new SettingsKeyInfo { KeyName = $"{_customerNameSetting}", KeyValue = customerName },
                             new SettingsKeyInfo
                             {
                                 KeyName = $"{_urlSetting}",

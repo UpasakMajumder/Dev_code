@@ -11,6 +11,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ _imgPath + 'favicon/apple-touch-icon.png' }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ _imgPath + 'favicon/favicon-32x32.png' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ _imgPath + 'favicon/favicon-16x16.png' }}">
+  <link rel="manifest" href="{{ _imgPath + 'favicon/manifest.json' }}">
+  <link rel="mask-icon" href="{{ _imgPath + 'favicon/safari-pinned-tab.svg' }}" color="#5bbad5 ">
+  <meta name="theme-color" content="#ffffff ">
+
   <title>{{ title }}</title>
   {% if firstVisit %}
     <style>
@@ -49,9 +57,10 @@
 <form>
   {# Main content of the page #}
   <div class="main-container">
+    <div class="r-spinner"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
-
+      <div class="r-header-shadow"></div>
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
@@ -66,10 +75,26 @@
           <div class="content__inner">
             <div class="content-header">
               <div class="content-header__inner">
-                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
-                {% if(headerAdd) %}
-                  {% include 'components/header-button.nunj' %}
+                <h1 class="content-header__page-name">{{ headerTitle }}
+                  {% if(headerAdd) %}
+                    {% include 'components/header-button.nunj' %}
+                  {% endif %}
+                </h1>
+                <div class="btn-group btn-group--right">
+                {% if (btns) %}
+
+                  {% for btn in btns %}
+
+                  {% if (btn.type === "button") %}
+                    <button type="button" class="{{ btn.class }}">{{ btn.name }}</button>
+                  {% elif (btn.type === "a")  %}
+                    <a href="#" class="{{ btn.class }}">{{ btn.name }}</a>
+                  {% endif %}
+
+                  {% endfor %}
+
                 {% endif %}
+                </div>
               </div>
               {% include 'components/breadcrumbs.nunj' %}
             </div>
@@ -84,10 +109,14 @@
 
     </div>
   </div>
+
+  {% include 'components/snack-notification.nunj' %}
+
 </form>
 
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
   var config = {
@@ -103,6 +132,37 @@
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in'
+      },
+      checkout: {
+        initUIURL: '',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: '',
+        submittableURL: ''
+      },
+      spotfire: {
+        serverUrl: 'http://spotfire.kadenadev.com/spotfire/wp/'
+      },
+      userSettings: {
+        addresses: {
+          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
+          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+        }
+      },
+      orderDetail: {
+        orderDetailUrl: ""
+      },
+      searchPage: {
+        searchPageUrl: ''
+      },
+      search: {
+        queryUrl: ""
+      },
+      recentOrders: {
+        getHeaders: '',
+        getPageItems: ''
       }
     }
   };

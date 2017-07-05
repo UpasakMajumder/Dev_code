@@ -4,7 +4,7 @@
 
   &__inner {
     background-color: $brand-white;
-    overflow: hidden;
     border-radius: $border-radius-xl;
+    position: relative;
   }
 }

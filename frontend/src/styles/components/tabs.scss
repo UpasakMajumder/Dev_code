@@ -2,12 +2,20 @@
   &__list {
     @extend .list--unstyled;
     display: flex;
+
+    & li:not(.css-tabs__tab) {
+      @extend .py-2;
+      @extend .px-3;
+      width: 100%;
+      text-align: right;
+    }
   }
 
   &__tab {
     @extend .py-2;
     @extend .px-3;
     position: relative;
+    white-space: nowrap;
     border-bottom: 2px solid $brand-grey;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;

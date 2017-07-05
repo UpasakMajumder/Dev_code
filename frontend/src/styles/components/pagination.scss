@@ -1,6 +1,11 @@
 .pagination {
+  & > * {
+    display: inline-block;
+  }
+
   &__item,
-  &__page {
+  &__page,
+  & > * {
     &:not(:last-child) {
       @include rem(margin-right, 5px);
     }
@@ -8,9 +13,59 @@
 
   &__item {
     display: inline-block;
+    cursor: pointer;
   }
 
-  & a.pagination__page--active {
+  & .pagination__page--active {
+    @extend .line-height--one;
+    @extend .link--no-decoration;
+    $padding-x: 2px;
+    $padding-y: 6px;
+
+    @include rem(padding-top, $padding-x);
+    @include rem(padding-bottom, $padding-x);
+    @include rem(padding-left, $padding-y);
+    @include rem(padding-right, $padding-y);
+    background-color: $brand-grey;
+    color: $brand-dark;
+    border-radius: 100%;
+
+    a {
+      color: $brand-dark;
+    }
+  }
+
+  &__dots {
+    @include rem(margin-right, 5px);
+  }
+
+  &__step {
+    svg {
+      display: none;
+      vertical-align: middle;
+    }
+  }
+
+  a {
+    @extend .link;
+  }
+}
+
+.generated-paginator {
+  p {
+    @include rem(padding, 0 8px);
+    margin: 0;
+    display: inline-block;
+    color: $brand-primary;
+    cursor: pointer;
+  }
+
+  &__prev:hover,
+  &__next:hover {
+    text-decoration: underline;
+  }
+
+  p.generated-paginator__current {
     @extend .line-height--one;
     @extend .link--no-decoration;
     $padding-x: 2px;
@@ -25,17 +80,7 @@
     border-radius: 100%;
   }
 
-  &__dots {
-    @include rem(margin-right, 5px);
-  }
-
-  &__step {
-    svg {
-      vertical-align: middle;
-    }
-  }
-
-  a {
-    @extend .link;
+  & * {
+    color: $brand-primary;
   }
 }

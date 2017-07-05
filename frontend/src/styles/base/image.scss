@@ -13,4 +13,13 @@
   background-size: contain;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+
+  &--left {
+    background-position: 0 50%;
+  }
+}
+
+.img-responsive {
+  width: 100%;
+  height: auto;
 }

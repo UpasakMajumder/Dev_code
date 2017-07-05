@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AutomatedTests.Utilities
@@ -106,5 +107,32 @@ namespace AutomatedTests.Utilities
             return Random.Next(min, max);
         }
 
+        /// <summary>
+        /// Returns message saying it is test
+        /// </summary>
+        /// <returns></returns>
+        public static string ThisIsTestMessage()
+        {
+            return "This is test. Do not reply";
+        }
+
+        /// <summary>
+        /// Returns random US address
+        /// </summary>
+        /// <returns></returns>
+        public static Address RandomUSAddress()
+        {
+            List<Address> addresses = new List<Address>()
+            {
+                new Address() {ID = 1, AddressLine1 =  "9708 Vermont St.", City = "Kansas City", State = "MO", Zip = "64151"},
+                new Address() {ID = 2, AddressLine1 =  "7 Glenwood Street", City = "Glendale", State = "AZ", Zip = "85302"},
+                new Address() {ID = 3, AddressLine1 =  "570 Albany Ave.", City = "Bronx", State = "NY", Zip = "10451"},
+                new Address() {ID = 4, AddressLine1 =  "8245 George Ave.", City = "Raleigh", State = "NC", Zip = "27603"},
+                new Address() {ID = 5, AddressLine1 =  "9802 W. Durham St.", City = "Danvers", State = "MA", Zip = "01923"},
+            };
+
+            int random = Random.Next(0, addresses.Count);
+            return addresses[random];
+        }
     }
 }

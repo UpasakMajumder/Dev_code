@@ -12,28 +12,11 @@
     {{ steps(1, ['Add a mailing list', 'Map columns', 'Wait for a proofing']) }}
 
     <div class="upload-mail__drop-zone">
-      <div class="drop-zone js-drop-zone">
-
-        <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="Do you need a help with a bulk upload?">
-          {{ svg('question-mark', 'icon-question') }}
-        </button>
-        <input accept="text/csv" type="file" name="file" class="js-drop-zone-file">
-
-        <div class="drop-zone__dropping">
-          {{ svg('draganddrop', 'icon-drop') }}
-          <p class="font-text">Drag and drop your .csv file here or click anywhere to upload</p>
-        </div>
-
-        <div class="drop-zone__dropped">
-          <div>
-            <button type="button" class="drop-zone__btn close js-drop-zone-btn">
-              {{ svg('cross', 'icon-cross') }}
-            </button>
-            <img src="{{ _imgPath + 'csv.png' }}" class="icon-csv">
-          </div>
-          <p class="js-drop-zone-name">File name</p>
-        </div>
-      </div>
+      {% set acceptedFormats = 'csv' %}
+      {% set description = 'Drag and drop your .csv file here or click anywhere to upload' %}
+      {% set descriptionIE = 'Click anywhere to upload your .csv file' %}
+      {% set maxItems = 1 %}
+      {% include "components/drop-zone.nunj" %}
     </div>
 
     <div class="upload-mail__row upload-mail__offer">
@@ -83,6 +66,6 @@
       </div>
     </div>
 
-    <button type="button" class="btn-action">Create mailing list</button>
+    <button type="button" class="btn-action js-drop-zone-submit">Create mailing list</button>
   </div>
 {% endblock %}

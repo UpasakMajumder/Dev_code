@@ -1,0 +1,20 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Search results for "Lorem ipsum"' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="css-tabs__container js-tabs" data-tab=".js-tab-serp" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
+    <ul class="css-tabs__list mb-4">
+      <li class="css-tabs__tab js-tab-serp" data-id="products" data-tab-content=".js-tab-content-1">Products</li>
+      <li class="css-tabs__tab js-tab-serp" data-id="pages" data-tab-content=".js-tab-content-2">Pages</li>
+    </ul>
+    <div>
+      <div class="css-tabs__content js-tab-content-1 r-search-page-products"></div>
+      <div class="css-tabs__content js-tab-content-2 r-search-page-pages"></div>
+    </div>
+  </div>
+{% endblock %}

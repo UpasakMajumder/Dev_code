@@ -15,14 +15,30 @@ namespace AutomatedTests.PageObjects
 
         [FindsBy(How = How.ClassName, Using = "main-container")]
         public IWebElement MainContainer { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".r-spinner")]
+        private IWebElement Spinner { get; set; }
+
         public BasePage()
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
 
+        /// <summary>
+        /// Waits for main container to be displayed
+        /// </summary>
         public void WaitForKadenaPageLoad()
         {
             MainContainer.WaitTillVisible();
+        }
+
+        /// <summary>
+        /// Waits until spinner appears and disappears
+        /// </summary>
+        public void WaitForLoading()
+        {
+            Spinner.WaitTillVisible();
+            Spinner.WaitTillNotVisible();
         }
 
     }

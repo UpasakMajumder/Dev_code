@@ -44,10 +44,10 @@ namespace AutomatedTests
         /// </summary>
         /// <param name="browser"></param>
         /// <param name="waitsec"></param>
-        public static void CreateDriver(int waitsec = 20)
+        public static void CreateDriver(int waitsec = 30)
         {
             Driver = new ChromeDriver();
-            Driver.Manage().Window.Maximize();
+            Maximize();
             Log.WriteLine("Driver created ({0})", Driver.GetType().Name);
             Edr = new EventFiringWebDriver(Driver);
             Log.WriteLine("Event firing driver created");

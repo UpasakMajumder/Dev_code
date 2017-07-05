@@ -1,14 +1,16 @@
 ﻿using CMS.CustomTables;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
+using CMS.EventLog;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Web;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -18,19 +20,19 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
+        private MailingListDataDTO _container;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            var containerId = Request.QueryString["containerid"];
+            if (!string.IsNullOrWhiteSpace(containerId))
+            {
+                var id = new Guid(containerId);
+                _container = ServiceHelper.GetMailingList(id);
+            }
             if (!IsPostBack)
             {
                 btnHelp.Attributes["title"] = GetString("Kadena.MailingList.HelpUpload");
-                textFileToUpload.InnerText = GetString("Kadena.MailingList.FileToUpload");
-                textOr.InnerText = GetString("Kadena.MailingList.Or");
-                textSkipField.InnerText = GetString("Kadena.MailingList.SkipField");
-                btnSubmit.InnerText = GetString("Kadena.MailingList.Create");
-                textFileName1.InnerText = GetString("Kadena.MailingList.FileName");
-                textFileName2.InnerText = GetString("Kadena.MailingList.FileName");
-                textFileNameDescr.InnerText = GetString("Kadena.MailingList.FileNameDescription");
                 inpFileName.Attributes["placeholder"] = GetString("Kadena.MailingList.FileName");
             }
 
@@ -40,7 +42,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phMailType.Controls.Add(new LiteralControl(
                     GetDictionaryHTML(GetString("Kadena.MailingList.MailType")
                                     , GetString("Kadena.MailingList.MailTypeDescription")
-                                    , mailTypes)));
+                                    , mailTypes
+                                    , _container?.MailType)));
 
             var products = CustomTableItemProvider.GetItems(_productTableName)
                     .OrderBy("ItemOrder")
@@ -48,7 +51,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phProduct.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Product")
                                     , GetString("Kadena.MailingList.ProductDescription")
-                                    , products)));
+                                    , products
+                                    , _container?.ProductType)));
 
             var validity = CustomTableItemProvider.GetItems(_validityTableName)
                     .OrderBy("ItemOrder")
@@ -56,7 +60,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             phValidity.Controls.Add(new LiteralControl(
                 GetDictionaryHTML(GetString("Kadena.MailingList.Validity")
                                     , GetString("Kadena.MailingList.ValidityDescription")
-                                    , validity)));
+                                    , validity
+                                    , _container != null ? (_container.ValidTo - _container.CreateDate).TotalDays.ToString() : null
+                                    )));
+
+            if (_container != null)
+            {
+                divFileName.CssClass = "input__wrapper input__wrapper--disabled";
+                inpFileName.Value = _container.Name;
+                inpFileName.Disabled = true;
+            }
         }
 
         /// <summary>
@@ -66,11 +79,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         /// <param name="description">Description of set.</param>
         /// <param name="options">Set of options.</param>
         /// <returns>String with html-code of radio button group.</returns>
-        private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options)
+        private static string GetDictionaryHTML(string name, string description, IDictionary<string, string> options, string predefinedOption = null)
         {
             // We could use classes from System.Web.UI.HtmlControls namespace but Kentico encrypts some attributes of tags for them.
 
-            var dictionaryName = GetHTMLName(name);
             using (var stringWriter = new StringWriter())
             {
                 using (var html = new HtmlTextWriter(stringWriter))
@@ -96,23 +108,44 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         bool isChecked = false;
                         foreach (var o in options)
                         {
-                            var id = $"{dictionaryName}{o.Key}Id";
+                            var id = $"{name}{o.Key}Id";
 
                             html.AddAttribute(HtmlTextWriterAttribute.Class, "col-lg-4 col-xl-3");
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
-                            html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                            // <div class="input__wrapper">
+                            if (string.IsNullOrWhiteSpace(predefinedOption))
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                            }
+                            else
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper input__wrapper--disabled");
+                            }
+
                             html.RenderBeginTag(HtmlTextWriterTag.Div);
 
                             html.AddAttribute(HtmlTextWriterAttribute.Class, "input__radio");
                             html.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-                            html.AddAttribute(HtmlTextWriterAttribute.Name, dictionaryName);
+                            html.AddAttribute(HtmlTextWriterAttribute.Name, name);
                             html.AddAttribute(HtmlTextWriterAttribute.Id, id);
                             html.AddAttribute(HtmlTextWriterAttribute.Value, o.Key);
-                            if (!isChecked)
+                            if (string.IsNullOrWhiteSpace(predefinedOption))
                             {
-                                html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
-                                isChecked = true;
+                                if (!isChecked)
+                                {
+                                    html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
+                                    isChecked = true;
+                                }
+                            }
+                            else
+                            {
+                                html.AddAttribute(HtmlTextWriterAttribute.Disabled, string.Empty);
+                                if (predefinedOption.Equals(o.Key))
+                                {
+                                    html.AddAttribute(HtmlTextWriterAttribute.Checked, string.Empty);
+                                    isChecked = true;
+                                }
                             }
                             html.RenderBeginTag(HtmlTextWriterTag.Input);
                             html.RenderEndTag();
@@ -123,7 +156,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             html.Write(o.Value);
                             html.RenderEndTag();
 
-                            html.RenderEndTag();
+                            html.RenderEndTag(); // </div class="input__wrapper">
+
                             html.RenderEndTag();
                         }
                         html.RenderEndTag();
@@ -134,33 +168,52 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             }
         }
 
-        /// <summary>
-        /// Converts to format appropriate to use as value of tag's attributes.
-        /// </summary>
-        /// <param name="value">Value to convert.</param>
-        /// <returns>Formated string.</returns>
-        private static string GetHTMLName(string value)
-        {
-            return value.Trim().Replace(' ', '-').ToLower();
-        }
-
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            Stream fileStream = null;
+            for(int i = 0; i < Request.Files.Count; i++)
             {
-                var mailType = Request.Form[GetHTMLName(GetString("Kadena.MailingList.MailType"))];
-                var product = Request.Form[GetHTMLName(GetString("Kadena.MailingList.Product"))];
-                var validity = int.Parse(Request.Form[GetHTMLName(GetString("Kadena.MailingList.Validity"))]);
-                var fileStream = inpFile.PostedFile.InputStream;
-                var fileName = inpFileName.Value;
+                var file = Request.Files[i];
+                if (file.ContentLength > 0 
+                    && (file.ContentType == "application/vnd.ms-excel" 
+                    || file.ContentType == "text/csv"))
+                {
+                    fileStream = file.InputStream;
+                    break;
+                }
+            }
 
-                var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                var containerId = ServiceHelper.CreateMailingContainer(mailType, product, validity);
+            if (fileStream != null)
+            {
+                try
+                {
+                    var fileName = inpFileName.Value;
 
-                var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-                Response.Redirect(nextStepUrl);
+                    var fileId = ServiceHelper.UploadFile(fileStream, fileName);
+                    var containerId = Guid.Empty;
+                    if (_container == null)
+                    {
+                        var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+                        var product = Request.Form[GetString("Kadena.MailingList.Product")];
+                        var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
+                        containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                    }
+                    else
+                    {
+                        containerId = new Guid(_container.Id);
+                        ServiceHelper.RemoveAddresses(containerId);
+                    }
+
+                    var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
+                    Response.Redirect(nextStepUrl);
+                }
+                catch (Exception exc)
+                {
+                    txtError.InnerText = exc.Message;
+                    EventLogProvider.LogException("Mailing List Create", "EXCEPTION", exc, CurrentSite.SiteID);
+                }
             }
         }
     }

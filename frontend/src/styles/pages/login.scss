@@ -38,6 +38,10 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
   &__custom-logo {
     text-align: center;
     height: 40px;
+
+    img {
+      height: 100%;
+    }
   }
 
   &__kadena-logo {

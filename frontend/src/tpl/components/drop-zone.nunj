@@ -1,0 +1,45 @@
+{# set description, descriptionIE #}
+{% from "macro/svg.nunj" import svg %}
+
+<div class="drop-zone js-drop-zone" data-max-items={{ maxItems }} {% if (acceptedFormats) %}data-accepted="{{ acceptedFormats }}"{% endif %}>
+  <input class="js-drop-zone-files-count" type="hidden" value="0" name="file-count">
+  <button type="button" class="drop-zone__btn question js-tooltip" data-tooltip-placement="left" title="Do you need a help with a bulk upload?">
+    {{ svg('question-mark', 'icon-question') }}
+  </button>
+  <input type="file" data-id="0" class="js-drop-zone-file">
+
+  <div class="drop-zone__dropping">
+    {{ svg('draganddrop', 'icon-drop') }}
+    <p class="font-text default-text">{{ description }}</p>
+    <p class="font-text reserved-text">{{ descriptionIE }}</p>
+  </div>
+
+  <div class="js-drop-zone-droppped drop-zone__dropped">
+    <div class="js-drop-zone-item drop-zone__item">
+      <div>
+        <button type="button" data-id="0" class="drop-zone__btn close js-drop-zone-btn">
+          {{ svg('cross', 'icon-cross') }}
+        </button>
+        <span class="drop-zone__ext js-drop-zone-ext"></span>
+        <img src="{{ _imgPath + 'fileValid.png' }}" class="icon-csv">
+      </div>
+      <p class="js-drop-zone-name">File name</p>
+    </div>
+  </div>
+
+  <div class="drop-zone__dropped drop-zone__dropped--not">
+    <div>
+      <button type="button" class="drop-zone__btn close js-drop-zone-invalid-btn">
+        {{ svg('cross', 'icon-cross') }}
+      </button>
+      <img src="{{ _imgPath + 'fileInvalid.png' }}" class="icon-csv">
+    </div>
+    <p class="default-text">
+      This file format is not supported.<br/>
+      Please drag & drop your .CSV file here or click anywhere to upload.
+    </p>
+    <p class="reserved-text">This file format is not supported.<br/>
+      Please click anywhere to upload your CSV file.
+    </p>
+  </div>
+</div>
