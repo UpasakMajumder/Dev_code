@@ -76,6 +76,7 @@
     <Compile Include="PageObjects\Dashboard.cs" />
     <Compile Include="PageObjects\Help.cs" />
     <Compile Include="PageObjects\KList.cs" />
+    <Compile Include="PageObjects\ListDetail.cs" />
     <Compile Include="PageObjects\ListProcessing.cs" />
     <Compile Include="PageObjects\Login.cs" />
     <Compile Include="PageObjects\ProductDetail.cs" />

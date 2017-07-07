@@ -44,6 +44,18 @@ namespace AutomatedTests.Tests
             kList.Open();
             Assert.IsTrue(kList.IsMailingListOnThePage(mailingListName));
             Assert.IsTrue(kList.WereAddressesValidated());
+            var listDetail = kList.OpenFirstList();
+
+            //verify if there are errors on list detail
+            Assert.IsTrue(listDetail.AreThereBadAddresses());
+            listDetail.UseOnlyCorrectAddresses();
+
+            //verify that there are no bad addresses after using only good ones
+            Assert.IsFalse(listDetail.AreThereBadAddresses());
+
+            //go back to K-List and check if the page is updated
+            kList.Open();
+            Assert.IsFalse(kList.AreThereAnyErrorsInFirstList());
         }
     }
 }
