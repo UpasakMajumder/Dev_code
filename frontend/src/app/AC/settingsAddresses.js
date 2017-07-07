@@ -46,8 +46,8 @@ export const getUI = () => {
       }, 2000);
     };
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
 
@@ -100,7 +100,7 @@ export const modifyAddress = (data) => {
       }, 2000);
     };
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
