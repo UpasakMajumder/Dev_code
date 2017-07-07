@@ -1,7 +1,5 @@
 ﻿using DryIoc.WebApi;
 using DryIoc;
-using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Services;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
@@ -13,8 +11,6 @@ using Kadena.WebAPI.Models.SubmitOrder;
 using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
 using Kadena.WebAPI.Models.CustomerData;
 using Kadena.Dto.CustomerData;
-using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.Clients;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
@@ -30,7 +26,6 @@ using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Models.Search;
 using Kadena.WebAPI.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
-using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Models.Checkout;
 
 namespace Kadena.WebAPI
@@ -205,33 +200,13 @@ namespace Kadena.WebAPI
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
-            var container = new Container();
-            
-            // BLL
-            container.Register<IShoppingCartService, ShoppingCartService>();
-            container.Register<ISearchService, SearchService>();
-            container.Register<ICustomerDataService, CustomerDataService>();            
-            container.Register<ISettingsService, SettingsService>();
-            container.Register<ISiteDataService, SiteDataService>();
-            container.Register<ITaxEstimationService, TaxEstimationService>();
-            container.Register<IOrderService, OrderService>();
-
-            // microservice clients
-            container.Register<IMailingListClient, MailingListClient>();
-            container.Register<IOrderSubmitClient, OrderSubmitClient>();
-			container.Register<IOrderViewClient, OrderViewClient>();
-            container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
-            container.Register<ITemplatedProductService, TemplatedProductService>();			
-
-            // Kentico
-            container.Register<IKenticoProviderService, KenticoProviderService>();
-            container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IKenticoSearchService, KenticoSearchService>();
-            container.Register<IKenticoLogger, KenticoLogger>();
-
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
-            container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
-            container.WithWebApi(apiConfig);
+            var container = new Container()
+                .RegisterInfrastructure()
+                .RegisterKentico()
+                .RegisterBLL()
+                .RegisterMicroservices()
+                .RegisterFactories()
+                .WithWebApi(apiConfig);
         }
 
         /// <summary>
