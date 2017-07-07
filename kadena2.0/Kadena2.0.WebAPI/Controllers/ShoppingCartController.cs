@@ -17,13 +17,19 @@ namespace Kadena.WebAPI.Controllers
     public class ShoppingCartController : ApiControllerBase
     {
         private readonly IShoppingCartService service;
+        private readonly IOrderService orderService;
         private readonly IMapper mapper;
 
-        public ShoppingCartController(IShoppingCartService service, IMapper mapper)
+        public ShoppingCartController(IShoppingCartService service, IOrderService orderService, IMapper mapper)
         {
             if (service == null)
             {
                 throw new ArgumentNullException(nameof(service));
+            }
+
+            if (orderService == null)
+            {
+                throw new ArgumentNullException(nameof(orderService));
             }
 
             if (mapper == null)
@@ -32,6 +38,7 @@ namespace Kadena.WebAPI.Controllers
             }
 
             this.service = service;
+            this.orderService = orderService;
             this.mapper = mapper;
         }
 
@@ -50,7 +57,7 @@ namespace Kadena.WebAPI.Controllers
         [AuthorizationFilter]
         public async Task<IHttpActionResult> Get([FromUri]string orderId)
         {
-            var detailPage = await service.GetOrderDetail(orderId);
+            var detailPage = await orderService.GetOrderDetail(orderId);
             var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
             return ResponseJson(detailPageDto); // TODO refactor using checking null
         }
@@ -102,7 +109,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
         {
             var submitRequest = mapper.Map<SubmitOrderRequest>(request);
-            var serviceResponse = await service.SubmitOrder(submitRequest);
+            var serviceResponse = await orderService.SubmitOrder(submitRequest);
             var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
             return ResponseJson(resultDto);
         }

@@ -213,13 +213,14 @@ namespace Kadena.WebAPI
             container.Register<ICustomerDataService, CustomerDataService>();            
             container.Register<ISettingsService, SettingsService>();
             container.Register<ISiteDataService, SiteDataService>();
-            
+            container.Register<ITaxEstimationService, TaxEstimationService>();
+            container.Register<IOrderService, OrderService>();
 
             // microservice clients
             container.Register<IMailingListClient, MailingListClient>();
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
 			container.Register<IOrderViewClient, OrderViewClient>();
-            container.Register<ITaxEstimationService, TaxEstimationServiceClient>();
+            container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedProductService, TemplatedProductService>();			
 
             // Kentico

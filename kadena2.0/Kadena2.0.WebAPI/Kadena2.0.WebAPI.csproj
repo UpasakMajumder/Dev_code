@@ -151,6 +151,8 @@
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
+    <Compile Include="Contracts\IOrderService.cs" />
+    <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
@@ -239,9 +241,11 @@
     <Compile Include="Services\KenticoResourceService.cs" />
     <Compile Include="Services\KenticoProviderService.cs" />
     <Compile Include="Services\KenticoSearchService.cs" />
+    <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\SiteDataService.cs" />
   </ItemGroup>

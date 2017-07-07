@@ -458,7 +458,8 @@
     <Compile Include="UploadMappingTest.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="ValidateAddressesTest.cs" />
-    <Compile Include="WebApi\Orders.cs" />
+    <Compile Include="WebApi\ShoppingCartService.cs" />
+    <Compile Include="WebApi\OrderService.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
   </ItemGroup>
   <ItemGroup>
