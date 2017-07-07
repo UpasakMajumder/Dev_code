@@ -1,5 +1,4 @@
-﻿using System;
-using Kadena.WebAPI.Contracts;
+﻿using Kadena.WebAPI.Contracts;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.Services;

@@ -11,7 +11,7 @@ using Kadena.Dto.General;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using System.Security;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI;
 
 namespace Kadena.Tests.WebApi
 {
@@ -44,39 +44,34 @@ namespace Kadena.Tests.WebApi
         }
 
         // TODO Refactor to use different setups
-        private OrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null)
+        private OrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null,
+                                                Mock<IOrderViewClient> orderViewClient = null)
         {
-            WebAPI.WebApiConfig.ConfigureMapper();
+            MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
+
             var kenticoProvider = new Mock<IKenticoProviderService>();
             kenticoProvider.Setup(p => p.UserCanSeeAllOrders())
                 .Returns(false);
             kenticoProvider.Setup(p => p.GetCurrentCustomer())
                .Returns(new Customer() { Id = 10, UserID = 16});
+
             var kenticoResource = new Mock<IKenticoResourceService>();
             kenticoResource.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
+
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
-            var orderViewClient = new Mock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-17-00006"))
-                .Returns(Task.FromResult( CreateOrderDetailDtoOK() ));
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0099-0099-17-00006"))
-                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-66-00006"))
-                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedProductService>();
 
-
-
             return new OrderService(mapper,
                 orderSubmitClient.Object,
-                orderViewClient.Object,
+                orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
                 mailingListClient.Object,
                 kenticoProvider.Object,
                 kenticoResource.Object,
-                kenticoLogger?.Object ?? new Mock<KenticoLogger>().Object,
+                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object);
         }
 
@@ -84,7 +79,10 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_UserCanSee()
         {
             // Arrange
-            var sut = CreateOrderService();
+            var orderViewClient = new Mock<IOrderViewClient>();
+            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-17-00006"))
+                .Returns(Task.FromResult(CreateOrderDetailDtoOK()));
+            var sut = CreateOrderService(orderViewClient: orderViewClient);
 
             // Act
             var result = await sut.GetOrderDetail("0010-0016-17-00006");
@@ -98,7 +96,10 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_UserCannotSee()
         {
             // Arrange
-            var sut = CreateOrderService();
+            var orderViewClient = new Mock<IOrderViewClient>();
+            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0099-0099-17-00006"))
+                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
+            var sut = CreateOrderService(orderViewClient: orderViewClient);
 
             // Act
             var result = sut.GetOrderDetail("0099-0099-17-00006");
@@ -113,7 +114,10 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var logger = new Mock<IKenticoLogger>();
-            var sut = CreateOrderService(logger);
+            var orderViewClient = new Mock<IOrderViewClient>();
+            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-66-00006"))
+                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
+            var sut = CreateOrderService(logger, orderViewClient);
 
             // Act
             var result = sut.GetOrderDetail("0010-0016-66-00006");

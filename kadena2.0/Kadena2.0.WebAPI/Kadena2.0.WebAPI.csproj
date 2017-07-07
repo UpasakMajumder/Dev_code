@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\ContainerBuilder.cs" />
+    <Compile Include="App_Start\MapperBuilder.cs" />
     <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
@@ -162,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
