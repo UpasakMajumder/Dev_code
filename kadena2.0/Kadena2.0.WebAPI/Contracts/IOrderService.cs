@@ -1,5 +1,5 @@
-﻿using Kadena.WebAPI.Models.OrderDetail;
-using Kadena.WebAPI.Models.SubmitOrder;
+﻿using Kadena.Models.OrderDetail;
+using Kadena.Models.SubmitOrder;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts

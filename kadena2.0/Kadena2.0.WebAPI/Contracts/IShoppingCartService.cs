@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Models.Checkout;
+﻿using Kadena.Models.Checkout;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts

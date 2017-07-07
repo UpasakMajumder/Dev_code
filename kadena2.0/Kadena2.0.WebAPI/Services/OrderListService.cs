@@ -1,14 +1,15 @@
 ﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models.RecentOrders;
+using Kadena.Models.RecentOrders;
 using System.Collections.Generic;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
-using Kadena.WebAPI.Models;
+using Kadena.Models;
 using System;
 using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {

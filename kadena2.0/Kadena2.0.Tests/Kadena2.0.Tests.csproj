@@ -475,6 +475,14 @@
       <Project>{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918ebdfb-d345-4be2-97a2-9d71513e0617}</Project>
+      <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
+      <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
+      <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
       <Project>{fb19606b-d327-4f43-ab3f-825000079b1a}</Project>
       <Name>Kadena2.0.WebAPI</Name>

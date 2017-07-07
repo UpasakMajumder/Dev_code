@@ -3,6 +3,7 @@ using Kadena.WebAPI.Contracts;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.Services;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Factories
 {

@@ -4,7 +4,7 @@ using System;
 using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.WebAPI.Models.SubmitOrder;
+using Kadena.Models.SubmitOrder;
 using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;

@@ -1,8 +1,9 @@
 ﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models;
+using Kadena.Models;
 using System.Threading.Tasks;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {

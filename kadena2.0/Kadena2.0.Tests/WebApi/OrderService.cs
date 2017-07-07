@@ -6,10 +6,12 @@ using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
 using System;
-using Kadena.WebAPI.Models;
+using Kadena.Models;
 using Kadena.Dto.General;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using System.Security;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders;
 
 namespace Kadena.Tests.WebApi
 {

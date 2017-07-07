@@ -4,12 +4,12 @@ using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
 using AutoMapper;
 using CMS.Ecommerce;
-using Kadena.WebAPI.Models;
+using Kadena.Models;
 using System.Linq;
 using Kadena.Dto.Checkout;
-using Kadena.WebAPI.Models.SubmitOrder;
-using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
-using Kadena.WebAPI.Models.CustomerData;
+using Kadena.Models.SubmitOrder;
+using PaymentMethod = Kadena.Models.PaymentMethod;
+using Kadena.Models.CustomerData;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
@@ -17,16 +17,16 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena.Dto.Settings;
 using System.Collections.Generic;
-using Kadena.WebAPI.Models.Settings;
+using Kadena.Models.Settings;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
-using Kadena.WebAPI.Models.RecentOrders;
+using Kadena.Models.RecentOrders;
 using Kadena.Dto.RecentOrders;
-using Kadena.WebAPI.Models.Search;
-using Kadena.WebAPI.Models.OrderDetail;
+using Kadena.Models.Search;
+using Kadena.Models.OrderDetail;
 using Kadena.Dto.ViewOrder.Responses;
-using Kadena.WebAPI.Models.Checkout;
+using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI
 {
@@ -52,6 +52,8 @@ namespace Kadena.WebAPI
         
 
         // TODO refactor not to be public
+        // TODO refactor mappping non-automappable 
+        // TODO get rid of CMS.ECommerce dependency
         public static void ConfigureMapper()
         {
             Mapper.Initialize(config =>

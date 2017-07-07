@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.WebAPI.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena.WebAPI.Models.Checkout;
-using Kadena.WebAPI.Models;
+using Kadena.Models.Checkout;
+using Kadena.Models;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {

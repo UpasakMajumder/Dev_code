@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models;
-using Kadena.WebAPI.Models.OrderDetail;
-using Kadena.WebAPI.Models.SubmitOrder;
+using Kadena.Models;
+using Kadena.Models.OrderDetail;
+using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {

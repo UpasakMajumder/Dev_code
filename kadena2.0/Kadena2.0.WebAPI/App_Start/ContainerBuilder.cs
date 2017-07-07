@@ -2,6 +2,8 @@
 using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
