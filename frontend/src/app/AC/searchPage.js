@@ -11,38 +11,44 @@ export const getUI = (query) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_PAGE + INIT_UI + FETCH });
 
-    axios({
-      method: 'get',
-      url: `${SEARCH_PAGE_URL.searchPageUrl}?phrase=${query}`
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    const prod = () => {
+      axios({
+        method: 'get',
+        url: `${SEARCH_PAGE_URL.searchPageUrl}?phrase=${query}`
+      }).then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-      if (!success) {
+        if (!success) {
+          dispatch({ type: SEARCH_PAGE + INIT_UI + FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+        } else {
+          dispatch({
+            type: SEARCH_PAGE + INIT_UI + SUCCESS,
+            payload: {
+              ...payload,
+              getAllResults: true
+            }
+          });
+        }
+      }).catch(() => {
         dispatch({ type: SEARCH_PAGE + INIT_UI + FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
+      });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
         dispatch({
           type: SEARCH_PAGE + INIT_UI + SUCCESS,
           payload: {
-            ...payload,
+            ...ui,
             getAllResults: true
           }
         });
-      }
-    })
-      .catch(() => {
-        dispatch({ type: SEARCH_PAGE + INIT_UI + FAILURE });
-      });
+      }, 2000);
+    };
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SEARCH_PAGE + INIT_UI + SUCCESS,
-    //     payload: {
-    //       ...ui,
-    //       getAllResults: true
-    //     }
-    //   });
-    // }, 2000);
+    // dev();
+    prod();
   };
 };
 

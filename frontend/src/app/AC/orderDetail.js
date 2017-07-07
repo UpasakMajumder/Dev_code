@@ -10,34 +10,41 @@ export default (orderID) => {
   return (dispatch) => {
     dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
 
-    axios({
-      method: 'get',
-      url: `${ORDER_DETAIL_URL.orderDetailUrl}/${orderID}`
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    const prod = () => {
+      axios({
+        method: 'get',
+        url: `${ORDER_DETAIL_URL.orderDetailUrl}/${orderID}`
+      }).then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-      if (!success) {
-        dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
-        dispatch({
-          type: ORDER_DETAIL + SUCCESS,
-          payload: {
-            ui: payload
-          }
+        if (!success) {
+          dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+        } else {
+          dispatch({
+            type: ORDER_DETAIL + SUCCESS,
+            payload: {
+              ui: payload
+            }
+          });
+        }
+      })
+        .catch((error) => {
+          dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
+          alert(error); // eslint-disable-line no-alert
         });
-      }
-    })
-    .catch((error) => {
-      dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
-      alert(error); // eslint-disable-line no-alert
-    });
+    };
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: ORDER_DETAIL + INIT_UI + SUCCESS,
-    //     payload: { ui }
-    //   });
-    // }, 2000);
+    const dev = () => {
+      setTimeout(() => {
+        dispatch({
+          type: ORDER_DETAIL + INIT_UI + SUCCESS,
+          payload: { ui }
+        });
+      }, 2000);
+    };
+
+    // dev();
+    prod();
   };
 };

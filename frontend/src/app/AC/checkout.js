@@ -13,38 +13,45 @@ export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: CHECKOUT + INIT_UI + FETCH });
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: CHECKOUT + INIT_UI + SUCCESS,
-    //     payload: {
-    //       ui: ui.payload,
-    //       isWaitingPDF: ui.payload.submit.isDisabled
-    //     }
-    //   });
-    // }, 3000);
+    const prod = () => {
+      axios.get(CHECKOUT_URL.initUIURL)
+        .then((response) => {
+          const { payload, success, errorMessage } = response.data;
 
-    axios.get(CHECKOUT_URL.initUIURL)
-      .then((response) => {
-        const { payload, success, errorMessage } = response.data;
+          if (!success) {
+            dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
+          }
 
-        if (!success) {
+          dispatch({
+            type: CHECKOUT + INIT_UI + SUCCESS,
+            payload: {
+              ui: payload,
+              isWaitingPDF: payload.submit.isDisabled
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
+        });
+    };
 
+    const dev = () => {
+      setTimeout(() => {
         dispatch({
           type: CHECKOUT + INIT_UI + SUCCESS,
           payload: {
-            ui: payload,
-            isWaitingPDF: payload.submit.isDisabled
+            ui: ui.payload,
+            isWaitingPDF: ui.payload.submit.isDisabled
           }
         });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
-      });
+      }, 3000);
+    };
+
+    // dev();
+    prod();
   };
 };
 
@@ -52,91 +59,96 @@ export const initCheckedShoppingData = (data) => {
   return (dispatch) => {
     dispatch({
       type: INIT_CHECKED_CHECKOUT_DATA,
-      payload: {
-        ...data
-      }
+      payload: { ...data }
     });
   };
 };
 
 export const removeProduct = (id) => {
   return (dispatch) => {
-    dispatch({
-      type: APP_LOADING + START
-    });
+    dispatch({ type: APP_LOADING + START });
 
-    const url = CHECKOUT_URL.removeProductURL;
+    const prod = () => {
+      const url = CHECKOUT_URL.removeProductURL;
+      axios.post(url, { id })
+        .then((response) => {
+          dispatch({ type: APP_LOADING + FINISH });
 
-    axios.post(url, { id })
-      .then((response) => {
-        dispatch({ type: APP_LOADING + FINISH });
+          const { payload, success, errorMessage } = response.data;
 
-        const { payload, success, errorMessage } = response.data;
-
-        if (!success) {
-          dispatch({ type: REMOVE_PRODUCT + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
-
-        dispatch({
-          type: REMOVE_PRODUCT + SUCCESS,
-          payload: {
-            ui: payload,
-            isWaitingPDF: payload.submit.isDisabled
+          if (!success) {
+            dispatch({ type: REMOVE_PRODUCT + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
           }
+
+          dispatch({
+            type: REMOVE_PRODUCT + SUCCESS,
+            payload: {
+              ui: payload,
+              isWaitingPDF: payload.submit.isDisabled
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: REMOVE_PRODUCT + FAILURE });
+          dispatch({ type: APP_LOADING + FINISH });
         });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: REMOVE_PRODUCT + FAILURE });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
         dispatch({ type: APP_LOADING + FINISH });
-      });
+      }, 2000);
+    };
 
-    // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING + FINISH });
-    // }, 2000);
-
+    // dev();
+    prod();
   };
 };
 
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
-    dispatch({
-      type: APP_LOADING + START
-    });
+    dispatch({ type: APP_LOADING + START });
 
-    const url = CHECKOUT_URL.changeQuantityURL;
+    const prod = () => {
+      const url = CHECKOUT_URL.changeQuantityURL;
+      axios.post(url, { id, quantity })
+        .then((response) => {
+          dispatch({ type: APP_LOADING + FINISH });
 
-    axios.post(url, { id, quantity })
-      .then((response) => {
-        dispatch({ type: APP_LOADING + FINISH });
+          const { payload, success, errorMessage } = response.data;
 
-        const { payload, success, errorMessage } = response.data;
-
-        if (!success) {
-          dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
-
-        dispatch({
-          type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
-          payload: {
-            ui: payload,
-            isWaitingPDF: payload.submit.isDisabled
+          if (!success) {
+            dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
           }
-        });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
-        dispatch({ type: APP_LOADING + FINISH });
-      });
 
-    // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING + FINISH });
-    // }, 2000);
+          dispatch({
+            type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
+            payload: {
+              ui: payload,
+              isWaitingPDF: payload.submit.isDisabled
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
+          dispatch({ type: APP_LOADING + FINISH });
+        });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
+        dispatch({ type: APP_LOADING + FINISH });
+      }, 2000);
+    };
+
+    // dev();
+    prod();
   };
 };
 
@@ -162,42 +174,49 @@ export const changeShoppingData = (field, id, invoice) => {
       url = CHECKOUT_URL.changeAddressURL;
     }
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
-    //     payload: {
-    //       ui: ui2.payload
-    //     }
-    //   });
-    //
-    //   dispatch({ type: APP_LOADING + FINISH });
-    // }, 1000);
+    const prod = () => {
+      axios.post(url, { id })
+        .then((response) => {
+          dispatch({ type: APP_LOADING + FINISH });
 
-    axios.post(url, { id })
-      .then((response) => {
-        dispatch({ type: APP_LOADING + FINISH });
+          const { payload, success, errorMessage } = response.data;
 
-        const { payload, success, errorMessage } = response.data;
+          if (!success) {
+            dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
+          }
 
-        if (!success) {
+          dispatch({
+            type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
+            payload: {
+              ui: payload,
+              isWaitingPDF: payload.submit.isDisabled
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
+          dispatch({ type: APP_LOADING + FINISH });
+        });
+    };
 
+    const dev = () => {
+      setTimeout(() => {
         dispatch({
           type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
           payload: {
-            ui: payload,
-            isWaitingPDF: payload.submit.isDisabled
+            ui: ui.payload
           }
         });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+
         dispatch({ type: APP_LOADING + FINISH });
-      });
+      }, 1000);
+    };
+
+    // dev();
+    prod();
   };
 };
 
@@ -206,35 +225,42 @@ export const sendData = (data) => {
     dispatch({ type: SUBMIT_CHECKOUT + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    axios.post(CHECKOUT_URL.submitURL, { ...data })
-      .then((response) => {
-        dispatch({ type: APP_LOADING + FINISH });
+    const prod = () => {
+      axios.post(CHECKOUT_URL.submitURL, { ...data })
+        .then((response) => {
+          dispatch({ type: APP_LOADING + FINISH });
 
-        const { payload, success, errorMessage } = response.data;
+          const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          return;
-        }
-
-        dispatch({
-          type: SUBMIT_CHECKOUT + SUCCESS,
-          payload: {
-            status: success,
-            redirectURL: payload.redirectURL
+          if (!success) {
+            dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
           }
-        });
-      })
-      .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
-        dispatch({ type: APP_LOADING + FINISH });
-        dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
-      });
 
-    // setTimeout(() => {
-    //   dispatch({ type: APP_LOADING + FINISH });
-    // }, 2000);
+          dispatch({
+            type: SUBMIT_CHECKOUT + SUCCESS,
+            payload: {
+              status: success,
+              redirectURL: payload.redirectURL
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: APP_LOADING + FINISH });
+          dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
+        });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
+        dispatch({ type: APP_LOADING + FINISH });
+      }, 2000);
+    };
+
+    // dev();
+    prod();
   };
 };
 
@@ -243,38 +269,45 @@ export const checkPDFAvailability = () => {
     dispatch({ type: CHECKOUT_ASK_PDF + FETCH });
 
     setTimeout(() => {
-      axios.get(CHECKOUT_URL.submittableURL)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
+      const prod = () => {
+        axios.get(CHECKOUT_URL.submittableURL)
+          .then((response) => {
+            const { payload, success, errorMessage } = response.data;
 
-          if (!success) {
+            if (!success) {
+              dispatch({ type: CHECKOUT_ASK_PDF + FAILURE });
+              if (success !== undefined) {
+                alert(errorMessage); // eslint-disable-line no-alert
+              } else {
+                alert('ERROR: Missing PDF'); // eslint-disable-line no-alert
+              }
+              return;
+            }
+
+            dispatch({
+              type: CHECKOUT_ASK_PDF + SUCCESS,
+              payload: {
+                isWaitingPDF: !payload // true -> is bad for service and good for me
+              }
+            });
+          })
+          .catch((error) => {
+            alert(error); // eslint-disable-line no-alert
             dispatch({ type: CHECKOUT_ASK_PDF + FAILURE });
-            if (success !== undefined) {
-              alert(errorMessage); // eslint-disable-line no-alert
-            } else {
-              alert('ERROR: Missing PDF'); // eslint-disable-line no-alert
-            }
-            return;
-          }
-
-          dispatch({
-            type: CHECKOUT_ASK_PDF + SUCCESS,
-            payload: {
-              isWaitingPDF: !payload // true -> is bad for service and good for me
-            }
           });
-        })
-        .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT_ASK_PDF + FAILURE });
-        });
+      };
 
-      // dispatch({
-      //   type: CHECKOUT_ASK_PDF + SUCCESS,
-      //   payload: {
-      //     isWaitingPDF: false
-      //   }
-      // });
+      const dev = () => {
+        dispatch({
+          type: CHECKOUT_ASK_PDF + SUCCESS,
+          payload: {
+            isWaitingPDF: false
+          }
+        });
+      };
+
+      // dev();
+      prod();
     }, 1500);
   };
 };

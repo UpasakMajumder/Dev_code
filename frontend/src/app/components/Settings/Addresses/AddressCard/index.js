@@ -60,7 +60,7 @@ AddressCard.propTypes = {
   }).isRequired,
   editButtonText: PropTypes.string.isRequired,
   openDialog: PropTypes.func.isRequired,
-  removeButtonText: PropTypes.string.isRequired
+  removeButtonText: PropTypes.string
 };
 
 export default AddressCard;

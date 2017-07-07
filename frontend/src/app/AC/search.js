@@ -28,46 +28,53 @@ export const sendQuery = (query, pressedEnter) => {
   return (dispatch) => {
     dispatch({ type: SEARCH_RESULTS + FETCH });
 
-    axios({
-      method: 'post',
-      url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
-      data: {
-        query
-      }
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    const prod = () => {
+      axios({
+        method: 'post',
+        url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
+        data: {
+          query
+        }
+      }).then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-      if (!success) {
-        dispatch({ type: SEARCH_RESULTS + FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
+        if (!success) {
+          dispatch({ type: SEARCH_RESULTS + FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+        } else {
+          dispatch({
+            type: SEARCH_RESULTS + SUCCESS,
+            payload: {
+              ...payload,
+              pressedEnter: pressedEnter || false
+            }
+          });
+          dispatch({ type: SEARCH_RESULTS + SHOW });
+          dispatch({ type: HEADER_SHADOW + SHOW });
+        }
+      })
+        .catch((error) => {
+          dispatch({ type: SEARCH_RESULTS + FAILURE });
+          alert(error); // eslint-disable-line no-alert
+        });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
         dispatch({
           type: SEARCH_RESULTS + SUCCESS,
           payload: {
-            ...payload,
+            ...ui,
             pressedEnter: pressedEnter || false
           }
         });
+
         dispatch({ type: SEARCH_RESULTS + SHOW });
         dispatch({ type: HEADER_SHADOW + SHOW });
-      }
-    })
-      .catch((error) => {
-        dispatch({ type: SEARCH_RESULTS + FAILURE });
-        alert(error); // eslint-disable-line no-alert
-      });
+      }, 200);
+    };
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SEARCH_RESULTS + SUCCESS,
-    //     payload: {
-    //       ...ui,
-    //       pressedEnter: pressedEnter || false
-    //     }
-    //   });
-    //
-    //   dispatch({ type: SEARCH_RESULTS + SHOW });
-    //   dispatch({ type: HEADER_SHADOW + SHOW });
-    // }, 200);
+    // dev();
+    prod();
   };
 };
