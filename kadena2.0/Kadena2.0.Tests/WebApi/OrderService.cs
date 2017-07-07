@@ -14,7 +14,7 @@ using System.Security;
 namespace Kadena.Tests.WebApi
 {
     
-    public class Orders
+    public class OrderServiceTests
     {
         private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK()
         {
@@ -42,7 +42,7 @@ namespace Kadena.Tests.WebApi
         }
 
         // TODO Refactor to use different setups
-        private ShoppingCartService CreateShoppingCartService(Mock<IKenticoLogger> kenticoLogger = null)
+        private OrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null)
         {
             WebAPI.WebApiConfig.ConfigureMapper();
             var mapper = Mapper.Instance;
@@ -52,6 +52,8 @@ namespace Kadena.Tests.WebApi
             kenticoProvider.Setup(p => p.GetCurrentCustomer())
                .Returns(new Customer() { Id = 10, UserID = 16});
             var kenticoResource = new Mock<IKenticoResourceService>();
+            kenticoResource.Setup(p => p.GetKenticoSite())
+                .Returns(new KenticoSite());
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var orderViewClient = new Mock<IOrderViewClient>();
             orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-17-00006"))
@@ -64,24 +66,23 @@ namespace Kadena.Tests.WebApi
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedProductService>();
 
-            
 
-            return new ShoppingCartService(mapper,
-                kenticoProvider.Object,
-                kenticoResource.Object,
+
+            return new OrderService(mapper,
                 orderSubmitClient.Object,
                 orderViewClient.Object,
-                taxCalculator.Object,
                 mailingListClient.Object,
-                templateProductService.Object,
-                kenticoLogger?.Object ?? new Mock<KenticoLogger>().Object);
+                kenticoProvider.Object,
+                kenticoResource.Object,
+                kenticoLogger?.Object ?? new Mock<KenticoLogger>().Object,
+                taxCalculator.Object);
         }
 
         [Fact]
-        public async Task ShoppingCartServiceTest_UserCanSee()
+        public async Task OrderServiceTest_UserCanSee()
         {
             // Arrange
-            var sut = CreateShoppingCartService();
+            var sut = CreateOrderService();
 
             // Act
             var result = await sut.GetOrderDetail("0010-0016-17-00006");
@@ -92,10 +93,10 @@ namespace Kadena.Tests.WebApi
 
 
         [Fact]
-        public async Task ShoppingCartServiceTest_UserCannotSee()
+        public async Task OrderServiceTest_UserCannotSee()
         {
             // Arrange
-            var sut = CreateShoppingCartService();
+            var sut = CreateOrderService();
 
             // Act
             var result = sut.GetOrderDetail("0099-0099-17-00006");
@@ -106,11 +107,11 @@ namespace Kadena.Tests.WebApi
 
 
         [Fact]
-        public async Task ShoppingCartServiceTest_MicroserviceErrorLogged()
+        public async Task OrderServiceTest_MicroserviceErrorLogged()
         {
             // Arrange
             var logger = new Mock<IKenticoLogger>();
-            var sut = CreateShoppingCartService(logger);
+            var sut = CreateOrderService(logger);
 
             // Act
             var result = sut.GetOrderDetail("0010-0016-66-00006");
@@ -125,10 +126,10 @@ namespace Kadena.Tests.WebApi
         [Theory]
         [InlineData("123")]
         [InlineData("asdgfdsrfgsdfg")]
-        public async Task ShoppingCartServiceTest_BadFormatOrderId(string orderId)
+        public async Task OrderServiceTest_BadFormatOrderId(string orderId)
         {
             // Arrange
-            var sut = CreateShoppingCartService();
+            var sut = CreateOrderService();
 
             // Act
             var result = sut.GetOrderDetail(orderId);
@@ -141,10 +142,10 @@ namespace Kadena.Tests.WebApi
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public async Task ShoppingCartServiceTest_EmptyOrderId(string orderId)
+        public async Task OrderServiceTest_EmptyOrderId(string orderId)
         {
             // Arrange
-            var sut = CreateShoppingCartService();
+            var sut = CreateOrderService();
 
             // Act
             var result = sut.GetOrderDetail(orderId);
