@@ -77,6 +77,7 @@
     <Compile Include="PageObjects\Dashboard.cs" />
     <Compile Include="PageObjects\Help.cs" />
     <Compile Include="PageObjects\KList.cs" />
+    <Compile Include="PageObjects\KSource.cs" />
     <Compile Include="PageObjects\ListDetail.cs" />
     <Compile Include="PageObjects\ListProcessing.cs" />
     <Compile Include="PageObjects\Login.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="SeleniumExtentions\GetMethods.cs" />
     <Compile Include="SeleniumExtentions\SetMethods.cs" />
     <Compile Include="Tests\HelpTests.cs" />
+    <Compile Include="Tests\KSourceTests.cs" />
     <Compile Include="Tests\MailingListTests.cs" />
     <Compile Include="IntegrationTests\Testing.cs" />
     <Compile Include="Tests\CheckoutProcess.cs" />
