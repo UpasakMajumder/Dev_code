@@ -106,9 +106,10 @@ namespace Kadena.Tests.WebApi
             var sut = CreateShoppingCartService();
 
             // Act
-            await sut.ChangeItemQuantity(1, 10);
+            var result = await sut.ChangeItemQuantity(1, 10);
 
             // Assert
+            Assert.NotNull(result);
         }
 
     }
