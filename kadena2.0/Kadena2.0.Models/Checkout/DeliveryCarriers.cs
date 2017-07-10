@@ -57,7 +57,7 @@ namespace Kadena.Models.Checkout
 
         public void RemoveCarriersWithoutOptions()
         {
-            var toRemove = items.Where(i => i.items.Count == 0).ToList();
+            var toRemove = items.Where(i => (i.items?.Count ?? 0)== 0).ToList();
             toRemove.ForEach(i => items.Remove(i));
         }
 

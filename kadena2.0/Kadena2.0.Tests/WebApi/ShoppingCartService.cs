@@ -35,7 +35,8 @@ namespace Kadena.Tests.WebApi
         {
             return new PaymentMethod()
             {
-                Title = "Card"
+                Title = "Card",
+                ClassName = "PurchaseOrder"
             };
         }
 
@@ -44,7 +45,11 @@ namespace Kadena.Tests.WebApi
             return new CartItem()
             {
                 Id = 1,
-                CartItemText = "Item1"
+                CartItemText = "Item1",
+                ProductType = "KDA.StaticProduct",
+                TotalPrice = 10,
+                UnitPrice = 2,
+                Quantity = 5
             };
         }
 
@@ -90,6 +95,8 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             Assert.NotNull(result);
+            Assert.Equal(1, result.Products.Items.Count);
+            Assert.Equal(10, result.Products.Items[0].TotalPrice);
         }
 
         [Fact]
