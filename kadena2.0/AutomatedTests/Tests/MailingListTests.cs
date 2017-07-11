@@ -17,11 +17,7 @@ namespace AutomatedTests.Tests
         public void When_UploadingMailingList_Expect_MailingListCorrectlyUploaded()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            var dashboard = InitializeTest();
 
             //open K-list
             var kList = new KList();

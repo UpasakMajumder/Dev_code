@@ -15,11 +15,7 @@ namespace AutomatedTests.Tests
         public void When_Searching_Expect_ResultsAreFound()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            var dashboard = InitializeTest();
             dashboard.WaitForLoading();
 
             //type into search input and verify search suggestions

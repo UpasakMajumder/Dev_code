@@ -23,6 +23,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".search__input input")]
         private IWebElement SearchBar { get; set; }
 
+        [FindsBy(How = How.Id, Using = "js-logout")]
+        private IWebElement LogoutBtn { get; set; }
+
         public SearchSuggestionBox searchSuggestionBox;
 
         public BasePage()
@@ -51,6 +54,18 @@ namespace AutomatedTests.PageObjects
         public void SearchForText(string text)
         {
             SearchBar.EnterText(text);
+        }
+
+        public bool IsLogoutButtonDisplayed()
+        {
+            try
+            {
+                return LogoutBtn.IsDisplayed();
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
     }
 }

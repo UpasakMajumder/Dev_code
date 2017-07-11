@@ -15,11 +15,7 @@ namespace AutomatedTests.Tests
         public void When_KSourceIsOPened_Expect_ListOfProjects()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            var dashboard = InitializeTest();
 
             //open Ksource and check if there are projects in the table
             var kSource = new KSource();
