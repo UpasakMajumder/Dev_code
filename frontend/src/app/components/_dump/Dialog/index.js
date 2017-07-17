@@ -1,9 +1,19 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
+/* flow-types */
 
-const Dialog = (props) => {
+type Props = {
+  closeDialog: () => void,
+  hasCloseBtn: ?boolean,
+  title: string,
+  body: ?{},
+  footer: ?{}
+};
+
+const Dialog = (props: Props) => {
   const { closeDialog, hasCloseBtn, title, body, footer } = props;
   const closer = hasCloseBtn
     ? <button onClick={closeDialog} type="button" className="btn--off dialog__closer">

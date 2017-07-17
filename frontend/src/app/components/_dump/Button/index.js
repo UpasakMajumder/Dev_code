@@ -1,12 +1,21 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
 
-const Button = ({ text, type, disabled, isLoading, onClick, btnClass }) => {
-  const isDisabled = isLoading || disabled;
+const Button = (props: {
+  text: string,
+  type: string,
+  btnClass: ?string,
+  disabled: ?boolean,
+  onClick: ?() => void,
+  isLoading: ?boolean
+}) => {
+  const { text, type, disabled, isLoading, onClick, btnClass } = props;
+  const isDisabled: boolean = !!isLoading || !!disabled;
 
-  const spinner = isLoading
+  const spinner: ?{} = isLoading
     ? (
       <div className="btn__spinner">
         <SVG name="btn-spinner" />

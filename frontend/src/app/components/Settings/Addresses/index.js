@@ -62,13 +62,8 @@ class SettingAddresses extends Component {
                        address={address}
         />
 
-        <div className="settings__item">
-          <AddressBlock ui={billing} {...commonProps} />
-        </div>
-
-        <div className="settings__item">
-          <AddressBlock ui={shipping} {...commonProps} />
-        </div>
+        <AddressBlock ui={billing} {...commonProps} />
+        <AddressBlock ui={shipping} {...commonProps} />
       </div>
     : <Spinner />;
   }

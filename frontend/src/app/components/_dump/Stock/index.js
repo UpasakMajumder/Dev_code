@@ -1,12 +1,13 @@
+// @flow
 import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
 
-const Stock = (props) => {
+const Stock = (props: { type: ?string, text: string }) => {
   const { type, text } = props;
 
-  let stockClass;
+  let stockClass: string;
 
   switch (type) {
   case 'available':
