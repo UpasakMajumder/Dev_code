@@ -1,9 +1,20 @@
-/* eslint-disable import/first, import/no-webpack-loader-syntax, import/no-named-default */
+// @flow
+
+/* helpers */
+import { consoleException } from 'app.helpers/io';
+
 export default class Collapse {
-  constructor(container) {
+  container: HTMLElement;
+
+  constructor(container: HTMLElement) {
     this.container = container;
-    const toggler = this.container.querySelector('.js-toggle');
-    const expandedCssClass = 'isOpen';
+    const expandedCssClass: string = 'isOpen';
+    const toggler: ?HTMLElement = this.container.querySelector('.js-toggle');
+
+    if (!toggler) {
+      consoleException('No toggler with .js-toggle class in', container);
+      return;
+    }
 
     toggler.addEventListener('click', () => {
       if (this.container.classList.contains(expandedCssClass)) {
@@ -14,4 +25,3 @@ export default class Collapse {
     });
   }
 }
-/* eslint-enable */

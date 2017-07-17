@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import login from './login';
-import shoppingCart from './shoppingCart';
+import checkout from './checkout';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
 import orderDetail from './orderDetail';
@@ -12,7 +12,7 @@ import recentOrders from './recentOrders';
 
 const rootReducer = combineReducers({
   login,
-  shoppingCart,
+  checkout,
   isLoading,
   settingsAddresses,
   searchPage,

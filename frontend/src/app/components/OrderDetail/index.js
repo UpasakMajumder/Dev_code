@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
+import Spinner from 'app.dump/Spinner';
+/* ac */
+import getUI from 'app.ac/orderDetail';
+/* utilities */
+import { getSearchObj } from 'app.helpers/location';
+/* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
-import getUI from '../../AC/orderDetail';
-import Spinner from '../Spinner';
-import { getSearchObj } from '../../helpers/location';
 
 class OrderDetail extends Component {
+  static propTypes = {
+    getUI: PropTypes.func.isRequired,
+    ui: PropTypes.shape({
+      commonInfo: PropTypes.object,
+      orderedItems: PropTypes.object,
+      paymentInfo: PropTypes.object,
+      pricingInfo: PropTypes.object,
+      shippingInfo: PropTypes.object
+    }).isRequired
+  };
+
   componentDidMount() {
+    const { getUI } = this.props;
     const { orderID } = getSearchObj();
 
     if (orderID) {
-      this.props.getUI(orderID);
+      getUI(orderID);
     } else {
-      this.props.getUI('');
+      getUI('');
     }
   }
 
   render() {
-    const { orderDetail } = this.props;
-    const { ui } = orderDetail;
+    const { ui } = this.props;
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
 
     const content = <div>
@@ -53,9 +69,9 @@ class OrderDetail extends Component {
   }
 }
 
-export default connect((state) => {
-  const { orderDetail } = state;
-  return { orderDetail };
+export default connect(({ orderDetail }) => {
+  const ui = orderDetail.get('ui');
+  return { ui };
 }, {
   getUI
 })(OrderDetail);
