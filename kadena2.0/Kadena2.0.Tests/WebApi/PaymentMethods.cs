@@ -1,5 +1,5 @@
-﻿using Kadena.WebAPI.Models;
-using Kadena.WebAPI.Models.Checkout;
+﻿using Kadena.Models;
+using Kadena.Models.Checkout;
 using System.Linq;
 using Xunit;
 

@@ -1,8 +1,9 @@
 ﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models;
-using Kadena.WebAPI.Models.Settings;
+using Kadena.Models;
+using Kadena.Models.Settings;
 using System.Linq;
 using System.Collections.Generic;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {

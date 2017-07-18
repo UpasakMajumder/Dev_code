@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Models.Search;
+﻿using Kadena.Models.Search;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Contracts

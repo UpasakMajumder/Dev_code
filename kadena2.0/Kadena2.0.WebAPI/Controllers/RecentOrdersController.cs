@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Kadena.Dto.General;
 using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.WebAPI.Infrastructure.Filters;
-using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
 using System.Web.Http;
 
