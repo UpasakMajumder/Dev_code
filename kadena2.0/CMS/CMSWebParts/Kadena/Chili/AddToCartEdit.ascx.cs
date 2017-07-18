@@ -101,18 +101,19 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
                 lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
 
+                InitializeCurrentShoppingCartItem();
+
                 if (IsProductMailingType())
                 {
                     inpNumberOfItems.Attributes.Add("disabled", "true");
                     inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
                 }
-
-                InitializeCurrentShoppingCartItem();
-
-                if (CurrentShoppingCartItem != null)
+                else
                 {
-                    inpNumberOfItems.Value = CurrentShoppingCartItem.CartItemUnits.ToString();
-
+                    if (CurrentShoppingCartItem != null)
+                    {
+                        inpNumberOfItems.Value = CurrentShoppingCartItem.CartItemUnits.ToString();
+                    }
                 }
             }
         }
