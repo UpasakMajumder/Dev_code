@@ -1,10 +1,12 @@
-﻿using AutomatedTests.Utilities;
+﻿using AutomatedTests.PageObjects;
+using AutomatedTests.Utilities;
 using NUnit.Framework;
 
 namespace AutomatedTests.Tests
 {
     class BaseTest
     {
+
         [OneTimeSetUp]
         public void BeforeAllTests()
         {
@@ -31,6 +33,33 @@ namespace AutomatedTests.Tests
         {
 		    Log.EndOfFixture();
             Browser.QuitDriver();
+        }
+
+        /// <summary>
+        /// If user is not logged in, logs into the website
+        /// </summary>
+        /// <returns></returns>
+        public Dashboard InitializeTest()
+        {
+            var dashboard = new Dashboard();
+
+            //verify if you are logged in
+            if (dashboard.IsLogoutButtonDisplayed())
+            {
+                return dashboard;
+            }
+            else
+            {
+                //if not logged in, login to Kadena
+                var login = new Login();
+                login.Open();
+                login.FillLogin(TestCustomer.Name, TestCustomer.Password);
+                dashboard = login.Submit();
+                dashboard.WaitForKadenaPageLoad();
+                return dashboard;
+            }
+
+            
         }
     }
 }

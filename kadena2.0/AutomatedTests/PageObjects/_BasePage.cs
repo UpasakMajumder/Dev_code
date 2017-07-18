@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using AutomatedTests.PageObjects.BasePageComponents;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,18 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".r-spinner")]
         private IWebElement Spinner { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".search__input input")]
+        private IWebElement SearchBar { get; set; }
+
+        [FindsBy(How = How.Id, Using = "js-logout")]
+        private IWebElement LogoutBtn { get; set; }
+
+        public SearchSuggestionBox searchSuggestionBox;
+
         public BasePage()
         {
             PageFactory.InitElements(Browser.Driver, this);
+            this.searchSuggestionBox = new SearchSuggestionBox();
         }
 
         /// <summary>
@@ -41,5 +51,21 @@ namespace AutomatedTests.PageObjects
             Spinner.WaitTillNotVisible();
         }
 
+        public void SearchForText(string text)
+        {
+            SearchBar.EnterText(text);
+        }
+
+        public bool IsLogoutButtonDisplayed()
+        {
+            try
+            {
+                return LogoutBtn.IsDisplayed();
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -9,20 +9,18 @@ using System.Threading.Tasks;
 
 namespace AutomatedTests.Tests
 {
-    class RecentOrdersTests : BaseTest
+    class KSourceTests : BaseTest
     {
         [Test]
-        public void When_RecentOrdersOpened_Expect_OrdersDisplayed()
+        public void When_KSourceIsOPened_Expect_ListOfProjects()
         {
             //login
             var dashboard = InitializeTest();
 
-            //Open recent orders
-            var recentOrders = new RecentOrders();
-            recentOrders.Open();
-
-            //Are There any orders
-            Assert.IsTrue(recentOrders.IsThereAnyOrderInTable());
+            //open Ksource and check if there are projects in the table
+            var kSource = new KSource();
+            kSource.Open();
+            Assert.IsTrue(kSource.AreThereAnyProjects());
         }
     }
 }
