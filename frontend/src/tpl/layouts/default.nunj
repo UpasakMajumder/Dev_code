@@ -164,6 +164,9 @@
         getHeaders: '',
         getPageItems: ''
       },
+      modifyMailingList: {
+        useCorrectUrl: '#'
+      },
       ui: {
         modifyMailingList: {
           errorList: {
