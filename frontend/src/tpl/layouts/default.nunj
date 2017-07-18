@@ -163,6 +163,98 @@
       recentOrders: {
         getHeaders: '',
         getPageItems: ''
+      },
+      ui: {
+        modifyMailingList: {
+          errorList: {
+            header: "We have found 8 errors in your file",
+            tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
+            btns: {
+              reupload: {
+                text: "Reupload .csv",
+                url: "#"
+              },
+              correct: "Correct errors"
+            },
+            items: [
+              {
+                line: {
+                  value: "1"
+                },
+                fullName: {
+                  value: "Jane Doe"
+                },
+                firstAddressLine: {
+                  value: "2167 255th Ave",
+                  isInvalid: true,
+                  message: "Non-deliverable"
+                },
+                secondAddressLine: {
+                  value: ""
+                },
+                city: {
+                  value: "San Francisco"
+                },
+                state: {
+                  value: "CA"
+                },
+                postalCode: {
+                  value: "94116"
+                }
+              }
+            ]
+          },
+          successList: {
+            header: "332 addresses have been processed successfuly",
+            btns: {
+              use: "Use only correct"
+            },
+            items: [
+              {
+                line: "1",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "CA",
+                postalCode: "94116"
+              }
+            ]
+          },
+          formInfo: {
+            downloadErrorFile: {
+              url: "#",
+              text: "Download error file"
+            },
+            discardChange: "Discard changes",
+            confirmChanges: "Confirm & reprocess addresses",
+            message: {
+              required: "The field is required"
+            },
+            fields: {
+              line: {
+                required: true,
+              },
+              fullName: {
+                required: true
+              },
+              firstAddressLine: {
+                required: true
+              },
+              secondAddressLine: {},
+              city: {
+                required: true
+              },
+              state: {
+                required: true,
+                value: []
+              },
+              postalCode: {
+                required: true
+              }
+            }
+          }
+        }
       }
     }
   };

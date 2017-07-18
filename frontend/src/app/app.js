@@ -48,6 +48,7 @@ const app = {
     render('Search', document.querySelectorAll('.r-search'));
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
+    render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
   }
 };
 
