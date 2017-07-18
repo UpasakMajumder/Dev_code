@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CMS.Ecommerce;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
@@ -31,45 +30,6 @@ namespace Kadena.WebAPI
         {
             Mapper.Initialize(config =>
             {
-                config.CreateMap<AddressInfo, DeliveryAddress>().ProjectUsing(ai => new DeliveryAddress()
-                {
-                    Id = ai.AddressID,
-                    Checked = false,
-                    City = ai.AddressCity,
-                    State = ai.GetStateCode(),
-                    Country = ai.GetCountryTwoLetterCode(),
-                    StateId = ai.AddressStateID,
-                    CountryId = ai.AddressCountryID,
-                    Street = new[] { ai.AddressLine1 }.ToList(),
-                    Zip = ai.AddressZip
-                });
-
-                config.CreateMap<CarrierInfo, DeliveryCarrier>().ProjectUsing(ci => new DeliveryCarrier()
-                {
-                    Id = ci.CarrierID,
-                    Opened = false,
-                    Title = ci.CarrierDisplayName
-                });
-
-                config.CreateMap<ShippingOptionInfo, DeliveryOption>().ProjectUsing(s => new DeliveryOption()
-                {
-                    Id = s.ShippingOptionID,
-                    CarrierId = s.ShippingOptionCarrierID,
-                    Title = s.ShippingOptionDisplayName,
-                    Service = s.ShippingOptionCarrierServiceName,
-                });
-
-                config.CreateMap<PaymentOptionInfo, Models.PaymentMethod>().ProjectUsing(p => new Models.PaymentMethod()
-                {
-                    Id = p.PaymentOptionID,
-                    Checked = false,
-                    Disabled = !p.PaymentOptionEnabled,
-                    Icon = p.GetStringValue("IconResource", string.Empty),
-                    Title = p.PaymentOptionDisplayName,
-                    ClassName = p.PaymentOptionClassName,
-                    IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
-                });
-
                 config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.ProductType)
                 {
                     DesignFilePath = p.DesignFilePath,

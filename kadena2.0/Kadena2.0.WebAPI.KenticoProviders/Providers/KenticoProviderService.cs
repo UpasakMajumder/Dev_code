@@ -15,6 +15,7 @@ using Kadena.Models.Checkout;
 using CMS.Localization;
 using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Factories;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -38,7 +39,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 query = query.Where($"AddressType ='{addressType}'");
             }
             var addresses = query.ToArray();
-            return mapper.Map<DeliveryAddress[]>(addresses);
+            return AddressFactory.CreateDeliveryAddresses(addresses);
         }
 
         public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
@@ -46,17 +47,14 @@ namespace Kadena.WebAPI.KenticoProviders
             var addresses = AddressInfoProvider.GetAddresses(customerId)
                 .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
                 .ToArray();
-            return mapper.Map<DeliveryAddress[]>(addresses);
+
+            return AddressFactory.CreateDeliveryAddresses(addresses);
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-
-            if (address == null)
-                return null;
-
-            return mapper.Map<DeliveryAddress>(address);            
+            return AddressFactory.CreateDeliveryAddress(address);            
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -89,7 +87,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shippingOptions = GetShippingOptions();
             var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
 
-            var deliveryMethods = mapper.Map<DeliveryCarrier[]>(carriers);
+            var deliveryMethods = DeliveryFactory.CreateCarriers(carriers);
 
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
@@ -134,7 +132,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
-            var result = mapper.Map<DeliveryOption[]>(services);
+            var result = DeliveryFactory.CreateOptions(services);
             GetShippingPrice(result);          
             return result;
         }
@@ -142,7 +140,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption GetShippingOption(int id)
         {
             var service = ShippingOptionInfoProvider.GetShippingOptionInfo(id);
-            var result = mapper.Map<DeliveryOption>(service);
+            var result = DeliveryFactory.CreateOption(service);
             var carrier = CarrierInfoProvider.GetCarrierInfo(service.ShippingOptionCarrierID);
             result.CarrierCode = carrier.CarrierName;
             return result;
@@ -173,13 +171,13 @@ namespace Kadena.WebAPI.KenticoProviders
         public PaymentMethod[] GetPaymentMethods()
         {
             var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();            
-            return mapper.Map<PaymentMethod[]>(methods);
+            return PaymentOptionFactory.CreateMethods(methods);
         }
 
         public PaymentMethod GetPaymentMethod(int id)
         {
             var method = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
-            return mapper.Map<PaymentMethod>(method);
+            return PaymentOptionFactory.CreateMethod(method);
         }
 
         public ShoppingCartTotals GetShoppingCartTotals()

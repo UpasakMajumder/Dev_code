@@ -2,31 +2,6 @@
 using DryIoc;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
-using AutoMapper;
-using CMS.Ecommerce;
-using Kadena.Models;
-using System.Linq;
-using Kadena.Dto.Checkout;
-using Kadena.Models.SubmitOrder;
-using PaymentMethod = Kadena.Models.PaymentMethod;
-using Kadena.Models.CustomerData;
-using Kadena.Dto.CustomerData;
-using Kadena.Dto.SubmitOrder.Requests;
-using Kadena.Dto.SubmitOrder.Responses;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
-using Kadena.Dto.Settings;
-using System.Collections.Generic;
-using Kadena.Models.Settings;
-using Kadena.Dto.Search.Responses;
-using Kadena.Dto.General;
-using Kadena.Dto.Order;
-using Kadena.Models.RecentOrders;
-using Kadena.Dto.RecentOrders;
-using Kadena.Models.Search;
-using Kadena.Models.OrderDetail;
-using Kadena.Dto.ViewOrder.Responses;
-using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI
 {

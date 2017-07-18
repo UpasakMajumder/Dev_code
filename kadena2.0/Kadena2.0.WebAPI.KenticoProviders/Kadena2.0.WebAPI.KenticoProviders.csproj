@@ -88,6 +88,9 @@
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
+    <Compile Include="Factories\AddressFactory.cs" />
+    <Compile Include="Factories\DeliveryFactory.cs" />
+    <Compile Include="Factories\PaymentOptionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\KenticoLogger.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
