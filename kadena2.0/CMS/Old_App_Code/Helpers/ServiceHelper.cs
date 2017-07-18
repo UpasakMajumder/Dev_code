@@ -366,39 +366,7 @@ namespace Kadena.Old_App_Code.Helpers
         {
             return SiteContext.CurrentSiteName;
         }
-
-        /// <summary>
-        /// Get all mailing lists for particular customer (whole site)
-        /// </summary>
-        public static IEnumerable<MailingListDataDTO> GetMailingLists()
-        {
-            var customerName = GetCustomerName();
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
-                {
-                    BaseResponseDto<IEnumerable<MailingListDataDTO>> response;
-                    try
-                    {
-                        response = (BaseResponseDto<IEnumerable<MailingListDataDTO>>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload;
-                    }
-                    else
-                    {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                    }
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Get all mailing list for particular customer (whole site) by specified Id.
         /// </summary>

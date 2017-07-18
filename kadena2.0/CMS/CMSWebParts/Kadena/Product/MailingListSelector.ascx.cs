@@ -6,6 +6,9 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.Chili;
+using CMS.DataEngine;
+using CMS.SiteProvider;
+using Kadena2.MicroserviceClients.Clients;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -21,7 +24,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists().Where(l => l.AddressCount > 0);
+            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
+            var client = new MailingListClient();
+
+            var mailingListData = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result.Payload
+                .Where(l => l.AddressCount > 0);
             if (mailingListData.Count() > 0)
             {
                 foreach (var d in mailingListData)

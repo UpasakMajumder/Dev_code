@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 // TODO remove redundant settings keys
                 // var url = $"{serviceEndpoint.TrimEnd('/')}/api/mailing/allforcustomer/{encodedCustomerName}";
                 var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}";
-                using (var response = await httpClient.GetAsync(url))
+                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
                     return await ReadResponseJson<MailingListDataDTO[]>(response);
                 }
