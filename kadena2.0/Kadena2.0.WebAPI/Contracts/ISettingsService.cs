@@ -1,5 +1,5 @@
-﻿using Kadena.WebAPI.Models;
-using Kadena.WebAPI.Models.Settings;
+﻿using Kadena.Models;
+using Kadena.Models.Settings;
 
 namespace Kadena.WebAPI.Contracts
 {

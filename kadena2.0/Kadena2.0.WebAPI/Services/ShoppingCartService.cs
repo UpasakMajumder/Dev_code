@@ -1,19 +1,13 @@
-﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models;
-using AutoMapper;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
-using PaymentMethod = Kadena.WebAPI.Models.PaymentMethod;
-using System;
+using AutoMapper;
+using Kadena.WebAPI.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Kadena.WebAPI.Models.OrderDetail;
-using System.Security;
-using CMS.SiteProvider;
-using Kadena.WebAPI.Models.Checkout;
+using Kadena.Models.Checkout;
+using Kadena.Models;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
@@ -22,30 +16,21 @@ namespace Kadena.WebAPI.Services
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoResourceService resources;
-        private readonly IOrderSubmitClient orderSubmitClient;
-        private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
-        private readonly IMailingListClient mailingClient;		
         private readonly ITemplatedProductService templateService;
 
         public ShoppingCartService(IMapper mapper, 
                                    IKenticoProviderService kenticoProvider,
-                                   IKenticoResourceService resources, 
-                                   IOrderSubmitClient orderSubmitClient,
-                                   IOrderViewClient orderViewClient,
+                                   IKenticoResourceService resources,                                    
                                    ITaxEstimationService taxCalculator,
-                                   IMailingListClient mailingClient,
                                    ITemplatedProductService templateService,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
-            this.resources = resources;
-            this.orderSubmitClient = orderSubmitClient;
-            this.orderViewClient = orderViewClient;			
-            this.taxCalculator = taxCalculator;
-            this.mailingClient = mailingClient;			
+            this.resources = resources;            
+            this.taxCalculator = taxCalculator;            
             this.templateService = templateService;
             this.kenticoLog = kenticoLog;
         }
@@ -131,7 +116,7 @@ namespace Kadena.WebAPI.Services
             if (kenticoProvider.UserCanSeePrices())
             {
                 var totals = kenticoProvider.GetShoppingCartTotals();
-                totals.TotalTax = await EstimateTotalTax();
+                totals.TotalTax = await taxCalculator.EstimateTotalTax();
                 checkoutPage.Totals.Items = MapTotals(totals);
             }
             
@@ -246,136 +231,6 @@ namespace Kadena.WebAPI.Services
             return checkoutPage;
         }
 
-        public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
-        {
-            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            var orderData = await GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
-
-            if ((orderData?.Items?.Count() ?? 0) <= 0)
-            {
-                throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
-            }
-
-            var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
-            var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
-            var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
-            serviceResult.RedirectURL = redirectUrl;
-
-            if (serviceResult.Success)
-            {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
-                await OrderCurrentCart();
-            }
-            else
-            {
-                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
-            }
-
-            return serviceResult;
-        }
-
-
-        private async Task<OrderDTO> GetSubmitOrderData(int deliveryMethodId, int paymentMethodId, string invoice)
-        {
-            var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
-            var billingAddress = kenticoProvider.GetDefaultBillingAddress();
-            var customer = kenticoProvider.GetCurrentCustomer();
-            var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
-            var site = resources.GetKenticoSite();
-
-            var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
-            var cartItems = kenticoProvider.GetShoppingCartItems();
-            var currency = resources.GetSiteCurrency();
-            var totals = kenticoProvider.GetShoppingCartTotals();
-            totals.TotalTax = await EstimateTotalTax();
-
-            if (string.IsNullOrWhiteSpace(customer.Company))
-                customer.Company = resources.GetDefaultCustomerCompanyName();
-
-            return new OrderDTO()
-            {
-                BillingAddress = new AddressDTO()
-                {
-                    AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
-                    AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
-                    City = billingAddress.City,
-                    State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
-                    KenticoStateID = billingAddress.StateId,
-                    KenticoCountryID = billingAddress.CountryId,
-                    AddressCompanyName = resources.GetDefaultSiteCompanyName(),
-                    isoCountryCode = billingAddress.Country,
-                    AddressPersonalName = resources.GetDefaultSitePersonalName(),
-                    Zip = billingAddress.Zip,
-                    Country = billingAddress.Country,
-                    KenticoAddressID = 0
-               },
-               ShippingAddress = new AddressDTO()
-               {
-                   AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
-                   AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
-                   City = shippingAddress.City,
-                   State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
-                   KenticoStateID = shippingAddress.StateId,
-                   KenticoCountryID = shippingAddress.CountryId,
-                   AddressCompanyName = customer.Company,
-                   isoCountryCode = shippingAddress.Country,
-                   AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
-                   Zip = shippingAddress.Zip,
-                   Country = shippingAddress.Country,
-                   KenticoAddressID = shippingAddress.Id
-               },
-               Customer = new CustomerDTO()
-               {
-                   CustomerNumber = customer.CustomerNumber,
-                   Email = customer.Email,
-                   FirstName = customer.FirstName,
-                   LastName = customer.LastName,
-                   KenticoCustomerID = customer.Id,
-                   KenticoUserID = customer.UserID,
-                   Phone = customer.Phone
-               },
-               KenticoOrderCreatedByUserID = customer.UserID,
-               OrderDate = DateTime.Now,
-               PaymentOption = new PaymentOptionDTO()
-               {
-                   KenticoPaymentOptionID = paymentMethod.Id,
-                   PaymentOptionName = paymentMethod.Title,
-                   PONumber = invoice
-               },
-               ShippingOption = new ShippingOptionDTO()
-               {
-                  KenticoShippingOptionID = deliveryMethod.Id,
-                  CarrierCode = deliveryMethod.Title,
-                  ShippingCompany = deliveryMethod.CarrierCode,
-                  ShippingService = deliveryMethod.Service.Replace("#","")
-               },
-               Site = new SiteDTO()
-               {
-                   KenticoSiteID = site.Id,
-                   KenticoSiteName = site.Name,
-                   ErpCustomerId = site.ErpCustomerId
-               },
-               OrderCurrency = new CurrencyDTO()
-               {
-                   CurrencyCode = currency.Code,
-                   KenticoCurrencyID = currency.Id
-               },
-               OrderStatus = new OrderStatusDTO()
-               {
-                   KenticoOrderStatusID = resources.GetOrderStatusId("Pending"),
-                   OrderStatusName = "PENDING" 
-               },
-               OrderTracking = new OrderTrackingDTO()
-               {
-                   OrderTrackingNumber = ""
-               },
-               TotalPrice = totals.TotalItemsPrice,
-               TotalShipping = totals.TotalShipping,
-               TotalTax = totals.TotalTax,
-               Items = mapper.Map<OrderItemDTO[]>(cartItems)
-            };
-        }
-
         public async Task<CheckoutPage> ChangeItemQuantity(int id, int quantity)
         {
             kenticoProvider.SetCartItemQuantity(id, quantity);
@@ -388,244 +243,7 @@ namespace Kadena.WebAPI.Services
             return await GetCheckoutPage();
         }
 
-        public async Task<CheckoutPage> OrderCurrentCart()
-        {
-            kenticoProvider.RemoveCurrentItemsFromStock();
-            kenticoProvider.RemoveCurrentItemsFromCart();
-            return await GetCheckoutPage();
-        }
-
-        public async Task<double> EstimateTotalTax()
-        {
-            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
-            var addressTo = kenticoProvider.GetCurrentCartShippingAddress();
-            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
-            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
-
-            if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
-            {
-                // not call microservice in this case
-                return 0.0d;
-            }
-
-            var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
-            var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
-
-            if (!taxResponse.Success)
-            {
-                kenticoLog.LogError("Tax estimation", $"Failed to estimate tax: {taxResponse.ErrorMessages}");
-                return 0.0d;
-            }
-
-            return taxResponse.Payload;
-        }
-
-        private TaxCalculatorRequestDto CreateTaxCalculatorRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
-        {
-            var taxRequest = new TaxCalculatorRequestDto()
-            {
-                TotalBasePrice = totalItemsPrice,
-                ShipCost = shippingCosts
-            };
-
-            if (addressFrom != null)
-            {
-                taxRequest.ShipFromCity = addressFrom.City ?? string.Empty;
-                taxRequest.ShipFromState = addressFrom.State ?? string.Empty;
-                taxRequest.ShipFromZip = addressFrom.Zip ?? string.Empty;
-            }
-
-            if (addressTo != null)
-            {
-                taxRequest.ShipToCity = addressTo.City ?? string.Empty;
-                taxRequest.ShipToState = addressTo.State ?? string.Empty;
-                taxRequest.ShipToZip = addressTo.Zip ?? string.Empty;
-            }
-
-            return taxRequest;
-        }
-		
-		 public async Task<OrderDetail> GetOrderDetail(string orderId)
-        {
-            CheckOrderDetailPermisson(orderId, kenticoProvider.GetCurrentCustomer());
-
-            var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
-
-            if (!microserviceResponse.Success || microserviceResponse.Payload == null)
-            {
-                kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessages);
-                throw new Exception("Failed to obtain order detail from microservice"); // TODO refactor using checking null
-            }
-
-            var data = microserviceResponse.Payload;
-
-            var orderDetail = new OrderDetail()
-            {
-                CommonInfo = new CommonInfo()
-                {
-                    OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
-                    ShippingDate = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue),
-                    Status = data.Status,
-                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
-                },
-                PaymentInfo = new PaymentInfo()
-                {
-                    Date = CheckedDateTimeString(DateTime.MinValue), // TODO payment date unknown
-                    PaidBy = data.PaymentInfo.PaymentMethod,
-                    PaymentDetail = string.Empty,
-                    PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
-                    Title = "Payment"
-                },
-                PricingInfo = new PricingInfo()
-                {
-                    Title = "Pricing",
-                    Items = new PricingInfoItem[]
-                    {
-                        new PricingInfoItem()
-                        {
-                            Title = "Summary",
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary)
-                        },
-                        new PricingInfoItem()
-                        {
-                            Title = "Shipping",
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Shipping)
-                        },
-                        new PricingInfoItem()
-                        {
-                            Title = "Subtotal",
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping)
-                        },
-                        new PricingInfoItem()
-                        {
-                            Title = "Tax",
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Tax)
-                        },
-                        new PricingInfoItem()
-                        {
-                            Title = "Totals",
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
-                        }
-                    }
-
-                },
-                ShippingInfo = new ShippingInfo()
-                {
-                    Title = "Shipping",
-                    DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = data.ShippingInfo.AddressTo,
-                    Tracking = null, // TODO Track your package url unknown
-                    /*Tracking = new Tracking()
-                    {
-                        Text = "Track your packages",
-                        Url = string.Empty 
-                    }*/
-                },
-                OrderedItems = new OrderedItems()
-                {
-                    Title = "Ordered items",
-                    Items = await MapOrderedItems(data.Items)
-                }
-            };
-
-            return orderDetail;
-        }
-
-        private string CheckedDateTimeString(DateTime dt)
-        {
-            return dt == DateTime.MinValue ? resources.GetResourceString("Kadena.Order.ItemShippingDateNA") : dt.ToString("MM/dd/yyyy");
-        }
-
-        private string GetPaymentMethodIcon(string paymentMethod)
-        {
-            var methods = kenticoProvider.GetPaymentMethods();
-            var method = methods.FirstOrDefault(m => m.Title == paymentMethod);
-            return method?.Icon ?? string.Empty;
-        }
-
-        private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
-        {
-            var orderedItems = items.Select(i => new OrderedItem()
-            {
-                Id = i.SkuId,
-                DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
-                Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
-                MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
-                Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
-                Quantity = i.Quantity,
-                QuantityShipped = i.QuantityShipped,
-                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"), 
-                QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
-                ShippingDate = string.Empty, // TODO Shipping date per item unknown
-                Template = i.Name,
-                TrackingId = i.TrackingId
-            }).ToList();
-
-
-            await SetMailingListNames(orderedItems);
-
-            return orderedItems;
-        }
-
-        private async Task SetMailingListNames(List<OrderedItem> orderedItems)
-        {
-            var endpoint = resources.GetSettingsKey("KDA_GetMailingListsUrl");
-            var customerName = SiteContext.CurrentSiteName;
-            var mailingResponse = await mailingClient.GetMailingListsForCustomer(endpoint, customerName);
-
-            if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
-            {
-                kenticoLog.LogError("MailingList client", $"Call to microservice failed. {mailingResponse?.ErrorMessages}");
-                return;
-            }
-
-            var mailingLists = mailingResponse.Payload;
-            var itemsWithMailing = orderedItems.Where(i => !string.IsNullOrWhiteSpace(i.MailingList) && i.MailingList != Guid.Empty.ToString());
-
-            foreach (var item in itemsWithMailing)
-            {
-                var matchingList = mailingLists.FirstOrDefault(m => m.Id == item.MailingList);
-
-                if(matchingList != null)
-                {
-                    item.MailingList = matchingList.Name;
-                }
-            }
-        }
-
-
-        private void CheckOrderDetailPermisson(string orderId, Customer customer)
-        {
-            if(string.IsNullOrWhiteSpace(orderId))
-            {
-                throw new ArgumentNullException(nameof(orderId));
-            }
-
-            int orderUserId;
-            int orderCustomerId;
-            var orderIdparts = orderId.Split(new char[] { '-' }, 3);
-
-            if ( orderIdparts.Length!=3  || !int.TryParse(orderIdparts[0], out orderCustomerId) || !int.TryParse(orderIdparts[1], out orderUserId))
-            {
-                throw new ArgumentOutOfRangeException(nameof(orderId), "Bad format of customer ID");
-            }
-
-            // Allow admin who has set permission to see all orders in Kentico
-            // or Allow orders belonging to currently logged User and Customer
-            bool isAdmin = kenticoProvider.UserCanSeeAllOrders();
-            bool isOrderOwner = (orderUserId == customer.UserID && orderCustomerId == customer.Id);
-            if ( isAdmin || isOrderOwner)
-            {
-                return;
-            }
-
-            throw new SecurityException("Permission denied");
-        }
-		
-
-        public async Task<bool> IsSubmittable()
+        public async Task<bool> IsSubmittable() // TODO not refactored into Order service, will change after implementing microservice to handle pdf creation
         {
             string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
             var items = kenticoProvider.GetShoppingCartItems().Where(i => i.DesignFilePathRequired && !i.DesignFilePathObtained).ToList();

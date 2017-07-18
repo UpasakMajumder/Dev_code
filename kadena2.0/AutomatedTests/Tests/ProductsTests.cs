@@ -15,11 +15,7 @@ namespace AutomatedTests.Tests
         public void When_UserWantsToRequestNewProduct_Expect_FormIsSubmitted()
         {
             //Login to Kadena
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            var dashboard = InitializeTest();
 
             //Navigate to products and click request new product
             Products products = new Products();

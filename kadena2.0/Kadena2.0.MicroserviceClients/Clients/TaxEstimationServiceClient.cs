@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class TaxEstimationServiceClient : ClientBase, ITaxEstimationService
+    public class TaxEstimationServiceClient : ClientBase, ITaxEstimationServiceClient
     {
         public async Task<BaseResponseDto<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
         {
