@@ -378,8 +378,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, id));
             }
 
-            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
-
             var documentId = item.GetIntegerValue("ProductPageID", 0);          
             var ranges = GetDynamicPricingRanges(documentId);
 
@@ -398,6 +396,10 @@ namespace Kadena.WebAPI.KenticoProviders
                     throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
                 }
 
+            }
+            else
+            {
+                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
             }
 
             cart.InvalidateCalculations();
