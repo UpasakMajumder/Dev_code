@@ -47,10 +47,10 @@ export const getHeadings = () => {
   };
 };
 
-export const getRows = (page) => {
+export const getRows = (page, isNotFirst) => {
   return (dispatch) => {
     dispatch({ type: GET_RECENT_ORDERS_ROWS_FETCH });
-    dispatch({ type: APP_LOADING_START });
+    if (isNotFirst) dispatch({ type: APP_LOADING_START });
 
     axios({
       method: 'get',
@@ -61,7 +61,7 @@ export const getRows = (page) => {
       if (!success) {
         dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
         alert(errorMessage); // eslint-disable-line no-alert
-        dispatch({ type: APP_LOADING_FINISH });
+        if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
       } else {
         dispatch({
           type: GET_RECENT_ORDERS_ROWS_SUCCESS,
@@ -71,12 +71,12 @@ export const getRows = (page) => {
             }
           }
         });
-        dispatch({ type: APP_LOADING_FINISH });
+        if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
       }
     }).catch((error) => {
       dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
       alert(error); // eslint-disable-line no-alert
-      dispatch({ type: APP_LOADING_FINISH });
+      if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
     });
 
     // setTimeout(() => {
@@ -100,7 +100,7 @@ export const getRows = (page) => {
     //     });
     //   }
     //
-    //   dispatch({ type: APP_LOADING_FINISH });
+    //   if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
     // }, 2500);
   };
 };
