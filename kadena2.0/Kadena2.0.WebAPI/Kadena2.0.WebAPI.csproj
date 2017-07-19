@@ -116,6 +116,7 @@
     <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
+    <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="App_Start\WebApiInitModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CustomerDataService.cs" />
+    <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
