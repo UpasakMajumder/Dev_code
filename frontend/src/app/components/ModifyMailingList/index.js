@@ -42,6 +42,10 @@ class ModifyMailingList extends Component {
     successList: PropTypes.array
   };
 
+  state = {
+    isDialogShown: false
+  };
+
   componentDidMount() {
     const { initUI } = this.props;
     initUI();
@@ -59,13 +63,19 @@ class ModifyMailingList extends Component {
     useCorrect(containerId, successUI.btns.use.url);
   };
 
+  openDialog = () => {
+    this.setState({ isDialogShown: true });
+  };
+
   render() {
+    const { isDialogShown } = this.state;
     const { uiFail, errorUI, successUI, errorList, successList, formInfo } = this.props;
     if (uiFail) return null;
 
     let errorContainer = null;
     let successContainer = null;
     let btnCorrectErrors = null;
+    let dialog = null;
 
     if (errorList) {
       const { reupload, correct } = errorUI.btns;
@@ -77,7 +87,7 @@ class ModifyMailingList extends Component {
             <h3>{errorUI.header}</h3>
             <div className="btn-group btn-group--right">
               <a className="btn-action btn-action--secondary" href={reupload.url}>{reupload.text}</a>
-              <Button text={correct} type="action" btnClass="btn-action--secondary"/>
+              <Button text={correct} onClick={this.openDialog} type="action" btnClass="btn-action--secondary"/>
             </div>
           </div>
 
@@ -111,8 +121,13 @@ class ModifyMailingList extends Component {
       );
     }
 
+    if (isDialogShown) {
+      dialog = <div>hi</div>;
+    }
+
     return (
       <div className="processed-list">
+        {dialog}
         {errorContainer}
         {successContainer}
       </div>
