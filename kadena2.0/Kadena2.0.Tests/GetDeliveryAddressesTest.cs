@@ -5,7 +5,7 @@ using CMS.DataEngine;
 using Kadena.Old_App_Code.Helpers;
 using System.Net.Http;
 using System.Collections.Generic;
-using Kadena.Old_App_Code.Kadena.MailingList;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Tests
 {
@@ -24,7 +24,7 @@ namespace Kadena.Tests
             Assert.IsNotNull(addresses);
         }
 
-        private IEnumerable<MailingAddressData> GetAddresses(Guid containerId, string url)
+        private IEnumerable<MailingAddressDto> GetAddresses(Guid containerId, string url)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
                 .WithData(

@@ -2,7 +2,6 @@
 using CMS.Helpers;
 using System.IO;
 using CMS.SiteProvider;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using Kadena.Dto.General;
-using Kadena.Dto.Order;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Old_App_Code.Helpers
@@ -472,7 +470,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// </summary>
         /// <param name="containerId">Id of container.</param>
         /// <returns>List of addresses.</returns>
-        public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
+        public static IEnumerable<MailingAddressDto> GetMailingAddresses(Guid containerId)
         {
             if (containerId == Guid.Empty)
             {
@@ -493,10 +491,10 @@ namespace Kadena.Old_App_Code.Helpers
             {
                 using (var message = client.GetAsync(parameterizedUrl))
                 {
-                    BaseResponseDto<IEnumerable<MailingAddressData>> response;
+                    BaseResponseDto<IEnumerable<MailingAddressDto>> response;
                     try
                     {
-                        response = (BaseResponseDto<IEnumerable<MailingAddressData>>)message.Result;
+                        response = (BaseResponseDto<IEnumerable<MailingAddressDto>>)message.Result;
                     }
                     catch (JsonReaderException e)
                     {

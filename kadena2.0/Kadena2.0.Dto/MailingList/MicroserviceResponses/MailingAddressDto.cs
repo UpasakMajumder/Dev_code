@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Kadena.MailingList
+namespace Kadena.Dto.MailingList.MicroserviceResponses
 {
     [DataContract]
-    public class MailingAddressData
+    public class MailingAddressDto
     {
         [DataMember(IsRequired = true, Name = "id")]
         public Guid Id { get; set; }

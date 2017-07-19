@@ -4,7 +4,6 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
 using System.IO;

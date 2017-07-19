@@ -1,7 +1,7 @@
 ﻿using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class AddressViewer : CMSAbstractWebPart
     {
         private Guid _containerId;
-        private IEnumerable<MailingAddressData> _badAddresses;
+        private IEnumerable<MailingAddressDto> _badAddresses;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,7 +63,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             }
         }
 
-        private static void FillTable(Table table, IEnumerable<MailingAddressData> addresses)
+        private static void FillTable(Table table, IEnumerable<MailingAddressDto> addresses)
         {
             table.Rows.Clear();
             var haveTitle = addresses.Count(a => a.Title != null) > 0;
