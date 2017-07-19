@@ -26,5 +26,12 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// <param name="containerId">Id of container.</param>
         /// <returns>Id of file with valid addresses.</returns>
         Task<BaseResponseDto<string>> Validate(string serviceEndpoint, string customerName, Guid containerId);
+
+        /// <summary>
+        /// Gets list of addresses in specified container.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <returns>List of addresses.</returns>
+        Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId);
     }
 }
