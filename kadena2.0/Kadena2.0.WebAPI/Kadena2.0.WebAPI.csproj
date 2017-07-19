@@ -126,6 +126,7 @@
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
+    <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\RecentOrdersController.cs" />
