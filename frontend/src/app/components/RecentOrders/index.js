@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Order from './Order';
 import Pagination from '../Pagination';
+import Spinner from '../Spinner';
 import Alert from '../Alert';
 import { getHeadings, getRows } from '../../AC/recentOrders';
 
@@ -31,7 +32,7 @@ class RecentOrders extends Component {
     if (nextState.currPage === this.state.currPage) return;
     if (!Object.keys(nextProps.rows).length) return;
     if (nextProps.rows[nextState.currPage]) return;
-    this.props.getRows(nextState.currPage + 1);
+    this.props.getRows(nextState.currPage + 1, true);
   }
 
   componentDidMount() {
@@ -58,7 +59,7 @@ class RecentOrders extends Component {
       }
     }
 
-    let content = null;
+    let content = <Spinner />;
 
     if (Object.keys(rows).length) {
       if (!rows[0].length) {
