@@ -21,7 +21,8 @@ class OrderDetail extends Component {
   }
 
   render() {
-    const { ui } = this.props;
+    const { orderDetail } = this.props;
+    const { ui } = orderDetail;
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
 
     const content = <div>
@@ -52,9 +53,9 @@ class OrderDetail extends Component {
   }
 }
 
-export default connect(({ orderDetail }) => {
-  const { ui } = orderDetail;
-  return { ui };
+export default connect((state) => {
+  const { orderDetail } = state;
+  return { orderDetail };
 }, {
   getUI
 })(OrderDetail);
