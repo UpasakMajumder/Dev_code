@@ -7,23 +7,7 @@ export default {
       "items": [
         {
           "id": 33,
-          "image": "http://satyr.io/400-500x100-200?1",
-          "template": "Template",
-          "isMailingList": false,
-          "mailingList": "Mailing list",
-          "delivery": "",
-          "pricePrefix": "$",
-          "price": "112.2",
-          "isEditable": true,
-          "editorURL": "#",
-          "quantityPrefix": "Quantity:",
-          "quantity": 11,
-          "stockQuantity": 15,
-          "isQuantityEditable": true
-        },
-        {
-          "id": 34,
-          "image": "http://satyr.io/100-200x400-500?2",
+          "image": "http://localhost:56000/getmetafile/8a32283f-214e-4b9b-84f8-6a0736d069ad/my-product",
           "template": "Template",
           "isMailingList": false,
           "mailingList": "Mailing list",
