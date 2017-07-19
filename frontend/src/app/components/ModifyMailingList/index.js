@@ -32,7 +32,10 @@ class ModifyMailingList extends Component {
     successUI: PropTypes.shape({
       header: PropTypes.string.isRequired,
       btns: PropTypes.shape({
-        use: PropTypes.string.isRequired
+        use: PropTypes.shape({
+          text: PropTypes.string.isRequired,
+          url: PropTypes.string.isRequired
+        }).isRequired
       }).isRequired
     }),
     errorList: PropTypes.array,
@@ -51,9 +54,9 @@ class ModifyMailingList extends Component {
   }
 
   handleUseCorrect = () => {
-    const { useCorrect } = this.props;
+    const { useCorrect, successUI } = this.props;
     const { containerId } = getSearchObj();
-    useCorrect(containerId);
+    useCorrect(containerId, successUI.btns.use.url);
   };
 
   render() {
@@ -90,7 +93,7 @@ class ModifyMailingList extends Component {
 
       btnCorrectErrors = (
         <div className="btn-group btn-group--right">
-          <Button text={use} onClick={() => this.handleUseCorrect()} type="action" btnClass="btn-action--secondary"/>
+          <Button text={use.text} onClick={() => this.handleUseCorrect()} type="action" btnClass="btn-action--secondary"/>
         </div>
       );
     }

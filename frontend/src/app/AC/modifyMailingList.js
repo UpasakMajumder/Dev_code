@@ -3,7 +3,7 @@ import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING, START, FINISH } from 'app.consts';
 /* globals */
-import { MODIFY_MAILING_LIST_UI, MODIFY_MAILING_LIST as MODIFY_MAILING_LIST_URL } from 'app.globals';
+import { MODIFY_MAILING_LIST_UI } from 'app.globals';
 /* helpers */
 import removeProps from 'app.helpers/object';
 
@@ -34,7 +34,7 @@ export const initUI = () => {
   };
 };
 
-export const useCorrect = (id) => {
+export const useCorrect = (id, url) => {
   return (dispatch) => {
     dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FETCH });
     dispatch({ type: APP_LOADING + START });
@@ -42,10 +42,9 @@ export const useCorrect = (id) => {
     const prod = () => {
       axios({
         method: 'get',
-        url: `${MODIFY_MAILING_LIST_URL.useCorrectUrl}/${id}`
+        url: `${url}/${id}`
       }).then((response) => {
         const { success, errorMessage } = response.data;
-
         if (!success) {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert

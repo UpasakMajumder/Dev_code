@@ -22,7 +22,6 @@ export const ORDER_DETAIL = orderDetail;
 export const SEARCH_PAGE = searchPage;
 export const SEARCH = search;
 export const RECENT_ORDERS = recentOrders;
-export const MODIFY_MAILING_LIST = modifyMailingList;
 
 /* UI */
 export const MODIFY_MAILING_LIST_UI = ui.modifyMailingList;

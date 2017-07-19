@@ -164,9 +164,6 @@
         getHeaders: '',
         getPageItems: ''
       },
-      modifyMailingList: {
-        useCorrectUrl: '#'
-      },
       ui: {
         modifyMailingList: {
           errorList: {
@@ -210,7 +207,10 @@
           successList: {
             header: "332 addresses have been processed successfuly",
             btns: {
-              use: "Use only correct"
+              use: {
+                text: "Use only correct",
+                url: "#"
+              }
             },
             items: [
               {
