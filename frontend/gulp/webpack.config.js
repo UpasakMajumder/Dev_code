@@ -1,12 +1,14 @@
 /* Configuration */
 const config = require('./config');
 const DEVELOPMENT = process.env.isDevelopment !== 'false';
+process.env.BABEL_ENV = process.env.BABEL_ENV || 'development';
 
 /* Modules */
 const path = require('path');
 const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const eslintConfig = require('eslint-config-actum').getConfig({ environment: false });
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /* Plugins for Webpack */
 const pluginsCollection = {
@@ -15,6 +17,7 @@ const pluginsCollection = {
     /* Declare Node environment within Webpack */
     new webpack.DefinePlugin({
       'process.env': {
+        'BABEL_ENV': JSON.stringify(process.env.BABEL_ENV),
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'isDevelopment': JSON.stringify(DEVELOPMENT)
       }
@@ -34,7 +37,8 @@ const pluginsCollection = {
     }),
     new WriteFilePlugin({
       log: false
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ],
 
   production: [
@@ -45,6 +49,14 @@ const pluginsCollection = {
       },
       sourceMap: false,
       comments: false
+    }),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 10
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      filename: '[name].min.js',
+      minChunks: Infinity
     }),
     new webpack.NoEmitOnErrorsPlugin()
   ]
@@ -59,7 +71,7 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 module.exports = {
   entry: {
     [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-    common: ['react', 'react-dom', 'redux']
+    common: ['react', 'react-dom', 'redux', 'popper.js']
   },
   output: {
     path: path.resolve(process.cwd(), config.JS_BUILD),
