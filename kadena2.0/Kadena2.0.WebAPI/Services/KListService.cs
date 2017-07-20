@@ -4,6 +4,10 @@ using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Kadena.Models;
+using System.Collections.Generic;
+using AutoMapper;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.WebAPI.Services
 {
@@ -11,11 +15,23 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMailingListClient _client;
         private readonly IKenticoResourceService _kentico;
+        private readonly IMapper _mapper;
 
-        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource)
+        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IMapper mapper)
         {
             _client = client;
             _kentico = kenticoResource;
+            _mapper = mapper;
+        }
+
+        public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
+        {
+            var url = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
+            var customerName = _kentico.GetKenticoSite().Name;
+            var changes = _mapper.Map<MailingAddressDto[]>(addresses);
+
+            var result = await _client.UpdateAddresses(url, customerName, containerId, changes);
+            return result.Success;
         }
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
