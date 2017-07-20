@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Kadena.Dto.MailingList;
+using Kadena.Models;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System;
@@ -20,7 +22,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("klist/useonlycorrect/{containerId}")]
-        public async Task<IHttpActionResult> UsOnlyCorrect(Guid containerId)
+        public async Task<IHttpActionResult> UseOnlyCorrect(Guid containerId)
         {
             var result = await _service.UseOnlyCorrectAddresses(containerId);
             if (result)
@@ -31,7 +33,22 @@ namespace Kadena.WebAPI.Controllers
             {
                 return ErrorJson("Failed request.");
             }
+        }
 
+        [HttpPost]
+        [Route("klist/update/{containerId}")]
+        public async Task<IHttpActionResult> Update([FromUri] Guid containerId, [FromBody] UpdateAddressDto[] addresses)
+        {
+            var changes = _mapper.Map<MailingAddress[]>(addresses);
+            var result = await _service.UpdateAddresses(containerId, changes);
+            if (result)
+            {
+                return ResponseJson(result);
+            }
+            else
+            {
+                return ErrorJson("Failed request.")
+            }
         }
     }
 }
