@@ -7,7 +7,7 @@ export default {
       "items": [
         {
           "id": 33,
-          "image": "http://satyr.io/400-500x100-200?1",
+          "image": "",
           "template": "Template",
           "isMailingList": false,
           "mailingList": "Mailing list",

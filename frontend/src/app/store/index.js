@@ -10,7 +10,7 @@ export default function configureStore(initialState) {
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  if (process.env.BABEL_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     return createStore(
       rootReducer,
       initialState,
