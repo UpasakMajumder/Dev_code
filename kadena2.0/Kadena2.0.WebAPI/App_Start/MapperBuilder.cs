@@ -2,6 +2,8 @@
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
+using Kadena.Dto.MailingList;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.Order;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
@@ -20,7 +22,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kadena.WebAPI
 {
@@ -130,6 +131,26 @@ namespace Kadena.WebAPI
                     });
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
+                config.CreateMap<UpdateAddressDto, MailingAddress>().ProjectUsing(a => new MailingAddress
+                {
+                    Id = a.Id,
+                    Name = a.FullName,
+                    Address1 = a.FirstAddressLine,
+                    Address2 = a.SecondAddressLine,
+                    City = a.City,
+                    State = a.State,
+                    Zip = a.PostalCode
+                });
+                config.CreateMap<MailingAddress, MailingAddressDto>().ProjectUsing(a => new MailingAddressDto
+                {
+                    Id = a.Id,
+                    firstName = a.Name,
+                    address1 = a.Address1,
+                    address2 = a.Address2,
+                    city = a.City,
+                    state = a.State,
+                    zip = a.Zip
+                });
             });
         }
     }
