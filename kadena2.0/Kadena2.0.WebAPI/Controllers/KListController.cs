@@ -19,10 +19,19 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/klist/useonlycorrect/{containerId}")]
+        [Route("klist/useonlycorrect/{containerId}")]
         public async Task<IHttpActionResult> UsOnlyCorrect(Guid containerId)
         {
-            return ResponseJson(await _service.UseOnlyCorrectAddresses(containerId));
+            var result = await _service.UseOnlyCorrectAddresses(containerId);
+            if (result)
+            {
+                return ResponseJson(result);
+            }
+            else
+            {
+                return ErrorJson("Failed request.");
+            }
+
         }
     }
 }
