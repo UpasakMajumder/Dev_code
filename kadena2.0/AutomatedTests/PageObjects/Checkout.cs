@@ -29,6 +29,24 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".r-spinner")]
         private IWebElement Spinner { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".alert .p-info")]
+        private IWebElement ShoppingCartEmptyInfo { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".cart-product")]
+        private IList<IWebElement> ProductsInCart { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".cart-product__action button")]
+        private IList<IWebElement> RemoveProductButtons { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".input__wrapper>.input__wrapper>input[name=paymentMethod]")]
+        private IWebElement PurchaseOrderInputField { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".shopping-cart__block>button")]
+        private IWebElement SubmitOrderBtn { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".icon-shipping")]
+        private IList<IWebElement> ShippingOptionsIcons { get; set; }
+
         private decimal summary;
         private decimal shipping;
         private decimal tax;
@@ -65,6 +83,7 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool AreShippingCostEstimated()
         {
+            WaitForShippingOptions();
             if (DeliveryAddresses.Count == 0)
             {
                 return false;
@@ -84,6 +103,7 @@ namespace AutomatedTests.PageObjects
         /// </summary>
         public void SelectEstimatedCarrier()
         {
+            WaitForShippingOptions();
             for (int i = 0; i < DeliveryMethods.Count; i++)
             {
                 if (DeliveryMethods[i].Text.Contains("$"))
@@ -154,6 +174,57 @@ namespace AutomatedTests.PageObjects
             return tax > 0;
         }
 
-        
+        /// <summary>
+        /// Empty the cart if it is not empty
+        /// </summary>
+        public void EmptyTheCart()
+        {
+            Browser.BaseWait.Until(r => ProductsInCart.Count > 0 || ShoppingCartEmptyInfo.IsPresent());
+
+            if (ShoppingCartEmptyInfo.IsPresent())
+            {
+                return;
+            }
+            if (RemoveProductButtons.Count == 0)
+            {
+                throw new Exception("There are no remove buttons");
+            }
+            else
+            {
+                //click on each remove button and wait each time while the page is recalculated
+                foreach (var item in RemoveProductButtons)
+                {
+                    item.Click();
+                    WaitForLoading();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fills out random number to Purchase Order field
+        /// </summary>
+        public void FillOutPurchaseOrderNumber()
+        {
+            PurchaseOrderInputField.EnterText(Lorem.RandomNumber(10000, 99999).ToString());
+        }
+
+        /// <summary>
+        /// Clicks Place Order Button
+        /// </summary>
+        public void PlaceOrder()
+        {
+            SubmitOrderBtn.ClickElement();
+        }
+
+        /// <summary>
+        /// Waits until there is at least one shipping icon
+        /// </summary>
+        public void WaitForShippingOptions()
+        {
+            Browser.BaseWait.Until(r => ShippingOptionsIcons.Count > 0);
+            ShippingOptionsIcons[0].WaitTillClickable();
+        }
+
+
     }
 }
