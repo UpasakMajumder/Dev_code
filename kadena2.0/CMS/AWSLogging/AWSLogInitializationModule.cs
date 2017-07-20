@@ -33,7 +33,12 @@ namespace Kadena.AWSLogging
             var accessKey = SettingsKeyInfoProvider.GetValue("KDA_AWS_RegionEndpoint");
             var accessSecret = SettingsKeyInfoProvider.GetValue("KDA_AWS_AccessSecret");
             var logGroup = SettingsKeyInfoProvider.GetValue("KDA_AWS_LogGroup");
+            var regionSettingsKey = SettingsKeyInfoProvider.GetValue("KDA_AWS_RegionEndpoint");
             var region = RegionEndpoint.GetBySystemName(SettingsKeyInfoProvider.GetValue("KDA_AWS_RegionEndpoint"));
+
+            // to prevent error when not filled in kentico
+            if (region.DisplayName == "Unknown")
+                region = RegionEndpoint.USEast1;
 
             return new AWSLoggerConfig("kenticoLogs")
             {
