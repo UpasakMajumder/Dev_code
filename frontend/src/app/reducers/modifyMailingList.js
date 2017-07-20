@@ -1,13 +1,17 @@
 /* constants */
-import { SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT } from 'app.consts';
+import { SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS,
+  MODIFY_MAILING_LIST_USE_CORRECT, MODIFY_MAILING_LIST_REPROCESS } from 'app.consts';
 
 const defaultState = {
+  containerId: null,
   errorUI: null,
   successUI: null,
   errorList: null,
   successList: null,
   formInfo: null,
-  uiFail: false
+  uiFail: false,
+  canReprocess: false,
+  emptyFields: {}
 };
 
 export default (state = defaultState, action) => {
@@ -21,7 +25,8 @@ export default (state = defaultState, action) => {
       successUI: payload.successUI,
       errorList: payload.errorList,
       successList: payload.successList,
-      formInfo: payload.formInfo
+      formInfo: payload.formInfo,
+      containerId: payload.containerId
     };
 
   case MODIFY_MAILING_LIST + INIT_UI + FAILURE:
@@ -35,6 +40,19 @@ export default (state = defaultState, action) => {
       ...state,
       errorList: null
     };
+
+  case MODIFY_MAILING_LIST_REPROCESS + SUCCESS:
+    return {
+      ...state,
+      canReprocess: true
+    };
+
+  case MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS:
+    return {
+      ...state,
+      emptyFields: payload.emptyFields
+    };
+
 
   default:
     return state;

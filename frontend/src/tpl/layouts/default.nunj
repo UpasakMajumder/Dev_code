@@ -183,7 +183,27 @@
                 firstAddressLine: "2167 255th Ave",
                 secondAddressLine: "",
                 city: "San Francisco",
-                state: "CA",
+                state: "AA",
+                postalCode: "94116",
+                errorMessage: "Error"
+              },
+              {
+                id: "2",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "BB",
+                postalCode: "94116",
+                errorMessage: "Error"
+              },
+              {
+                id: "3",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "BB",
                 postalCode: "94116",
                 errorMessage: "Error"
               }
@@ -210,37 +230,43 @@
             ]
           },
           formInfo: {
+            title: "We have found errors in the following entries:",
             downloadErrorFile: {
-              url: "#",
-              text: "Download error file"
+              text: "Download error file",
+              url: "#"
             },
-            discardChange: "Discard changes",
+            discardChanges: "Discard changes",
             confirmChanges: {
               text: "Confirm & reprocess addresses",
-              url: "#"
+              redirect: "https://google.com",
+              request: "#"
             },
             message: {
               required: "The field is required"
             },
             fields: {
-              line: {
-                required: true,
-              },
               fullName: {
+                header: "Full Name",
                 required: true
               },
               firstAddressLine: {
+                header: "First Address Line",
                 required: true
               },
-              secondAddressLine: {},
+              secondAddressLine: {
+                header: "Second Address",
+              },
               city: {
+                header: "City",
                 required: true
               },
               state: {
+                header: "State",
                 required: true,
-                value: []
+                value: ['AA', 'BB']
               },
               postalCode: {
+                header: "Postal Code",
                 required: true
               }
             }

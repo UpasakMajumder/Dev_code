@@ -1,13 +1,14 @@
 /* libraries */
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING, START, FINISH } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING,
+  START, FINISH, MODIFY_MAILING_LIST_REPROCESS, MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS } from 'app.consts';
 /* globals */
 import { MODIFY_MAILING_LIST_UI } from 'app.globals';
 /* helpers */
 import removeProps from 'app.helpers/object';
 
-export const initUI = () => {
+export const initUI = (containerId) => {
   return (dispatch) => {
     dispatch({ type: MODIFY_MAILING_LIST + INIT_UI + FETCH });
 
@@ -25,7 +26,8 @@ export const initUI = () => {
           successUI,
           errorList,
           successList,
-          formInfo
+          formInfo,
+          containerId
         }
       });
     } else {
@@ -41,7 +43,7 @@ export const useCorrect = (id, url) => {
 
     const prod = () => {
       axios({
-        method: 'get',
+        method: 'post',
         url: `${url}/${id}`
       }).then((response) => {
         const { success, errorMessage } = response.data;
@@ -66,7 +68,54 @@ export const useCorrect = (id, url) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    // dev();
-    prod();
+    dev();
+    // prod();
+  };
+};
+
+export const reprocessAddresses = (id, url, data) => {
+  return (dispatch) => {
+    dispatch({ type: APP_LOADING + START });
+    dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FETCH });
+
+    const prod = () => {
+      axios({
+        method: 'post',
+        url: `${url}/${id}`,
+        data: { data }
+      }).then((response) => {
+        const { success, errorMessage } = response.data;
+        if (!success) {
+          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({ type: APP_LOADING + FINISH });
+        } else {
+          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
+          dispatch({ type: APP_LOADING + FINISH });
+        }
+      })
+        .catch((error) => {
+          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
+          dispatch({ type: APP_LOADING + FINISH });
+          alert(error); // eslint-disable-line no-alert
+        });
+    };
+
+    const dev = () => setTimeout(() => {
+      dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
+      dispatch({ type: APP_LOADING + FINISH });
+    }, 2000);
+
+    dev();
+    // prod();
+  };
+};
+
+export const validationErrors = (emptyFields) => {
+  return (dispatch) => {
+    dispatch({
+      type: MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS,
+      payload: { emptyFields }
+    });
   };
 };

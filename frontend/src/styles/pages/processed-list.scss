@@ -78,6 +78,10 @@ $heading-round-mark-size: 19px;
     tbody tr td {
       @include rem(padding-top, 22px);
       @include rem(padding-bottom, 22px);
+
+      &:first-child {
+        text-align: center;
+      }
     }
   }
 

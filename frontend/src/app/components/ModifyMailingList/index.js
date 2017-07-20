@@ -10,13 +10,20 @@ import SVG from 'app.dump/SVG';
 import { consoleException } from 'app.helpers/io';
 import { getSearchObj } from 'app.helpers/location';
 /* AC */
-import { initUI, useCorrect } from 'app.ac/modifyMailingList';
+import { initUI, useCorrect, reprocessAddresses, validationErrors } from 'app.ac/modifyMailingList';
 /* local components */
 import MailingTable from './MailingTable';
+import MailingDialog from './MailingDialog';
 
 class ModifyMailingList extends Component {
   static propTypes = {
+    emptyFields: PropTypes.object.isRequired,
+    containerId: PropTypes.string,
+    canReprocess: PropTypes.bool.isRequired,
     initUI: PropTypes.func.isRequired,
+    useCorrect: PropTypes.func.isRequired,
+    reprocessAddresses: PropTypes.func.isRequired,
+    validationErrors: PropTypes.func.isRequired,
     uiFail: PropTypes.bool.isRequired,
     errorUI: PropTypes.shape({
       header: PropTypes.string.isRequired,
@@ -28,7 +35,12 @@ class ModifyMailingList extends Component {
         correct: PropTypes.string.isRequired
       }).isRequired
     }),
-    formInfo: PropTypes.object,
+    formInfo: PropTypes.shape({
+      confirmChanges: PropTypes.shape({
+        redirect: PropTypes.string.isRequired,
+        request: PropTypes.string.isRequired
+      }).isRequired
+    }),
     successUI: PropTypes.shape({
       header: PropTypes.string.isRequired,
       btns: PropTypes.shape({
@@ -48,34 +60,69 @@ class ModifyMailingList extends Component {
 
   componentDidMount() {
     const { initUI } = this.props;
-    initUI();
+    const { containerId } = getSearchObj();
+    initUI(containerId);
   }
 
   componentWillReceiveProps(nextProps) { // eslint-disable-line class-methods-use-this
     if (nextProps.uiFail) {
       alert('No UI, try to reload the page'); // eslint-disable-line no-alert
     }
+
+    if (nextProps.canReprocess) {
+      location.href = nextProps.formInfo.confirmChanges.redirect;
+    }
   }
 
   handleUseCorrect = () => {
-    const { useCorrect, successUI } = this.props;
-    const { containerId } = getSearchObj();
+    const { useCorrect, successUI, containerId } = this.props;
     useCorrect(containerId, successUI.btns.use.url);
   };
 
-  openDialog = () => {
-    this.setState({ isDialogShown: true });
+  getEmptyFields = (errorList) => {
+    const { fields } = this.props.formInfo;
+    const emptyFields = {};
+
+    errorList.forEach((errorItem, index) => {
+      Object.entries(errorItem).forEach((item) => {
+        const key = item[0];
+        const value = item[1];
+
+        if (fields[key]) {
+          const isRequired = fields[key].required;
+          if (isRequired && !value) {
+            if (!emptyFields[index]) emptyFields[index] = [];
+            emptyFields[index].push(key);
+          }
+        }
+      });
+    });
+
+    return emptyFields;
+  };
+
+  handleReprocessAddresses = (errorList) => {
+    const { containerId, formInfo, reprocessAddresses, validationErrors } = this.props;
+    const emptyFields = this.getEmptyFields(errorList);
+    validationErrors(emptyFields);
+    if (!Object.keys(emptyFields).length) reprocessAddresses(containerId, formInfo.confirmChanges.request, errorList);
+  };
+
+  openDialog = () => this.setState({ isDialogShown: true });
+  closeDialog = () => {
+    this.props.validationErrors({});
+    this.setState({ isDialogShown: false });
   };
 
   render() {
     const { isDialogShown } = this.state;
-    const { uiFail, errorUI, successUI, errorList, successList, formInfo } = this.props;
+    const { uiFail, errorUI, successUI, errorList, successList, formInfo, emptyFields } = this.props;
     if (uiFail) return null;
 
     let errorContainer = null;
     let successContainer = null;
     let btnCorrectErrors = null;
-    let dialog = null;
+    let mailingDialog = null;
 
     if (errorList) {
       const { reupload, correct } = errorUI.btns;
@@ -122,12 +169,16 @@ class ModifyMailingList extends Component {
     }
 
     if (isDialogShown) {
-      dialog = <div>hi</div>;
+      mailingDialog = <MailingDialog closeDialog={this.closeDialog}
+                                     formInfo={formInfo}
+                                     emptyFields={emptyFields}
+                                     reprocessAddresses={this.handleReprocessAddresses}
+                                     errorList={errorList}/>;
     }
 
     return (
       <div className="processed-list">
-        {dialog}
+        {mailingDialog}
         {errorContainer}
         {successContainer}
       </div>
@@ -136,9 +187,11 @@ class ModifyMailingList extends Component {
 }
 
 export default connect((state) => {
-  const { uiFail, errorUI, successUI, errorList, successList, formInfo } = state.modifyMailingList;
-  return { errorUI, successUI, errorList, successList, uiFail, formInfo };
+  const { uiFail, errorUI, successUI, errorList, successList, formInfo, canReprocess, containerId, emptyFields } = state.modifyMailingList;
+  return { errorUI, successUI, errorList, successList, uiFail, formInfo, canReprocess, containerId, emptyFields };
 }, {
   initUI,
-  useCorrect
+  useCorrect,
+  reprocessAddresses,
+  validationErrors
 })(ModifyMailingList);
