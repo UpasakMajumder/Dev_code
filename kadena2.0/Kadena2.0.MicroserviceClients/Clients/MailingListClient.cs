@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -58,6 +59,39 @@ namespace Kadena2.MicroserviceClients.Clients
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<object>(message);
+                    }
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<MailingAddressDto> addresses)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), serviceEndpoint)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        CustomerName = customerName,
+                        UpdateObjects = addresses.Select(a => new
+                        {
+                            HashKey = containerId,
+                            RangeKey = a.Id,
+                            UpdateField = new Dictionary<string, string> {
+                                { nameof(a.firstName), a.firstName },
+                                { nameof(a.address1), a.address1 },
+                                { nameof(a.address2), a.address2 },
+                                { nameof(a.city), a.city },
+                                { nameof(a.state), a.state },
+                                { nameof(a.zip), a.zip },
+                            }
+                        })
+                    }), System.Text.Encoding.UTF8, "application/json"),
+                })
+                {
+                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<IEnumerable<string>>(message);
                     }
                 }
             }
