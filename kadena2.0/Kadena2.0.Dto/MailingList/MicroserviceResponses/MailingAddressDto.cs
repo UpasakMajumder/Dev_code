@@ -16,25 +16,25 @@ namespace Kadena.Dto.MailingList.MicroserviceResponses
         public string Title { get; set; }
 
         [DataMember(Name = "firstName")]
-        public string Name { get; set; }
+        public string firstName { get; set; }
 
         [DataMember(Name = "lastName")]
         public string LastName { get; set; }
 
         [DataMember(Name = "address1")]
-        public string Address1 { get; set; }
+        public string address1 { get; set; }
 
         [DataMember(Name = "address2")]
-        public string Address2 { get; set; }
+        public string address2 { get; set; }
 
         [DataMember(Name = "city")]
-        public string City { get; set; }
+        public string city { get; set; }
 
         [DataMember(Name = "state")]
-        public string State { get; set; }
+        public string state { get; set; }
 
         [DataMember(Name = "zip")]
-        public string Zip { get; set; }
+        public string zip { get; set; }
 
         [DataMember(IsRequired = true, Name = "errorMessage")]
         public string Error { get; set; }

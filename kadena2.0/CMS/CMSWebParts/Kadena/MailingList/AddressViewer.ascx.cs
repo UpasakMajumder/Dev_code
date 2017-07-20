@@ -96,16 +96,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     row.Cells.Add(new TableCell { Text = a.Title ?? "-" });
                 }
-                row.Cells.Add(new TableCell { Text = a.Name ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.firstName ?? "-" });
                 if (haveLastName)
                 {
                     row.Cells.Add(new TableCell { Text = a.LastName ?? "-" });
                 }
-                row.Cells.Add(new TableCell { Text = a.Address1 ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.Address2 ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.City ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.State ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.Zip ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.address1 ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.address2 ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.city ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.state ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.zip ?? "-" });
                 table.Rows.Add(row);
             }
             #endregion
