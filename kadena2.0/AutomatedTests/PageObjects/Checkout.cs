@@ -88,14 +88,7 @@ namespace AutomatedTests.PageObjects
             {
                 return false;
             }
-            for (int i = 0; i < DeliveryMethods.Count; i++)
-            {
-                if (DeliveryMethods[i].Text.Contains("$"))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return DeliveryMethods.Any(r => r.Text.Contains("$"));
         }
 
         /// <summary>
