@@ -31,7 +31,7 @@ namespace AutomatedTests.Tests
             productRequestForm.FillOutDescription();            
             productRequestForm.SubmitForm();
 
-            FormSuccess formSuccess = new FormSuccess();
+            SuccessPage formSuccess = new SuccessPage();
             Assert.IsTrue(formSuccess.IsSubmitConfirmationDisplayed());
         }
     }

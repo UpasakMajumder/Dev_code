@@ -28,7 +28,7 @@ namespace AutomatedTests.Tests
             //Fill out the form and submit
             contactUs.FillOutTheContactForm();
             contactUs.ClickSubmitButton();
-            var contactFormSuccess = new FormSuccess();
+            var contactFormSuccess = new SuccessPage();
             Assert.IsTrue(contactFormSuccess.IsSubmitConfirmationDisplayed());
         }
     }
