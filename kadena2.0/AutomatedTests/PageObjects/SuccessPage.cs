@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 
 namespace AutomatedTests.PageObjects
 {
-    class FormSuccess : BasePage
+    class SuccessPage : BasePage
     {
         [FindsBy(How = How.CssSelector, Using = ".submitted")]
         private IWebElement SubmitConfirmation { get; set; }
 
-        public FormSuccess()
+        [FindsBy(How = How.CssSelector, Using = ".submitted svg use")]
+        private IWebElement InformationPicture { get; set; }
+
+        public SuccessPage()
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
@@ -22,6 +25,16 @@ namespace AutomatedTests.PageObjects
         {
             SubmitConfirmation.WaitTillVisible();
             return SubmitConfirmation.IsDisplayed();
+        }
+
+        /// <summary>
+        /// Verifies if the picture on the page indicates success of order submission
+        /// </summary>
+        /// <returns></returns>
+        public bool IsSuccessPictureDisplayed()
+        {
+            SubmitConfirmation.WaitTillVisible();
+            return InformationPicture.GetAttribute("xlink:href") == "/gfx/svg/sprites/icons.svg#order-ready";
         }
     }
 }
