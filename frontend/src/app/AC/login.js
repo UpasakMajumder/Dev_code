@@ -3,9 +3,8 @@ import validator from 'validator';
 import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE, LOGIN_CLIENT_VALIDATION_ERROR } from '../constants';
 import { LOGIN } from '../globals';
 
-export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
+export default (loginEmail, password, isKeepMeLoggedIn) => {
   return (dispatch) => {
-
     if (!validator.isEmail(loginEmail)) {
       dispatch({
         type: LOGIN_CLIENT_VALIDATION_ERROR,
@@ -61,4 +60,4 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
         alert(error); // eslint-disable-line no-alert
       });
   };
-}
+};

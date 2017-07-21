@@ -73,7 +73,7 @@
     <Compile Include="KenticoApi\Objects\Response.cs" />
     <Compile Include="PageObjects\BasePageComponents\SearchSuggestionBox.cs" />
     <Compile Include="PageObjects\Checkout.cs" />
-    <Compile Include="PageObjects\FormSuccess.cs" />
+    <Compile Include="PageObjects\SuccessPage.cs" />
     <Compile Include="PageObjects\Dashboard.cs" />
     <Compile Include="PageObjects\Help.cs" />
     <Compile Include="PageObjects\KList.cs" />

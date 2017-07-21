@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SVG from '../../SVG';
+import DefaultImg from '../../DefaultImg';
 
 class Products extends Component {
   constructor() {
@@ -110,7 +111,9 @@ class Products extends Component {
       ? <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
-      : null;
+      : <div className="cart-product__img">
+        <DefaultImg />
+      </div>;
 
     return (
       <div className={productClassName}>

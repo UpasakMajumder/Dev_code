@@ -3,7 +3,6 @@ using System.Web.Http;
 using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Net.Http;
 using System.Linq;

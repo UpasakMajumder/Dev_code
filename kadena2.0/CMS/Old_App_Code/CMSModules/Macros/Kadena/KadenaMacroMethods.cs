@@ -51,8 +51,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             // Inventory product - Must be of type static
             if (selectedProductTypeCodeNames.Contains("KDA.InventoryProduct"))
             {
-                if (!selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.POD") ||
+                if (selectedProductTypeCodeNames.Contains("KDA.POD") ||
                     selectedProductTypeCodeNames.Contains("KDA.MailingProduct") ||
                     selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
                 {

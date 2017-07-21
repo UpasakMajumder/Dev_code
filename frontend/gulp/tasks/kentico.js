@@ -21,3 +21,9 @@ gulp.task('kentico', (done) => {
     done();
   })
 });
+
+gulp.task('kentico:deploy', (done) => {
+  runSequence('clean', ['images', 'svg', 'styles', 'js'], 'tpl', 'styleguide', 'copySgAssets', 'replace-kentico', () => {
+    done();
+  })
+});
