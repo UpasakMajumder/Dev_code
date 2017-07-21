@@ -47,7 +47,7 @@ namespace Kadena.WebAPI.Controllers
             }
             else
             {
-                return ErrorJson("Failed request.")
+                return ErrorJson("Failed request.");
             }
         }
     }
