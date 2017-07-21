@@ -1,8 +1,7 @@
 import { SHOPPING_CART_UI_SUCCESS, CHANGE_SHOPPING_DATA,
   INIT_CHECKED_SHOPPING_DATA, RECALCULATE_SHOPPING_PRICE_SUCCESS, SEND_SHOPPING_DATA_SUCCESS,
   RECALCULATE_SHOPPING_PRICE_FETCH, SEND_SHOPPING_DATA_FETCH, RECALCULATE_SHOPPING_PRICE_FAILURE,
-  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_SUCCESS, CHANGE_PRODUCT_QUANTITY_SUCCESS,
-  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FETCH, CHECKOUT_ASK_PDF_FAILURE } from '../constants';
+  SEND_SHOPPING_DATA_FAILURE, REMOVE_PRODUCT_SUCCESS, CHANGE_PRODUCT_QUANTITY_SUCCESS } from '../constants';
 
 const defaultState = {
   ui: {},
@@ -18,8 +17,6 @@ const defaultState = {
     status: '',
     redirectUrl: ''
   },
-  isWaitingPDF: false,
-  isAskingPDF: false,
   isSending: false
 };
 
@@ -27,20 +24,6 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case CHECKOUT_ASK_PDF_FETCH:
-  case CHECKOUT_ASK_PDF_FAILURE:
-    return {
-      ...state,
-      isAskingPDF: true
-    };
-
-
-  case CHECKOUT_ASK_PDF_SUCCESS:
-    return {
-      ...state,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
-    };
 
   case CHANGE_PRODUCT_QUANTITY_SUCCESS:
     return {

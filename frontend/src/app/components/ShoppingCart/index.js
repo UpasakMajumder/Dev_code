@@ -8,7 +8,7 @@ import Products from './Products';
 import Total from './Total';
 import Spinner from '../Spinner';
 import Button from '../Button';
-import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
+import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct, changeProductQuantity } from '../../AC/shoppingCart';
 
 class ShoppingCart extends Component {
   constructor() {
@@ -16,7 +16,6 @@ class ShoppingCart extends Component {
 
     this.sendData = this.sendData.bind(this);
     this.initCheckedShoppingData = this.initCheckedShoppingData.bind(this);
-    this.checkPDFAvailability = this.checkPDFAvailability.bind(this);
   }
 
   static fireNotification(fields) {
@@ -99,11 +98,6 @@ class ShoppingCart extends Component {
     });
   }
 
-  checkPDFAvailability(nextProps) {
-    const { isWaitingPDF, isAskingPDF } = nextProps.shoppingCart;
-    if (isWaitingPDF && !isAskingPDF) this.props.checkPDFAvailability();
-  }
-
   componentWillReceiveProps(nextProps) {
     const { ui: uiNext } = nextProps.shoppingCart;
     const { ui: uiCurr } = this.props.shoppingCart;
@@ -112,19 +106,16 @@ class ShoppingCart extends Component {
     if (!products.items.length) location.reload();
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
-    this.checkPDFAvailability(nextProps);
   }
 
   render() {
     const { shoppingCart } = this.props;
-    const { ui, checkedData, isSending, isWaitingPDF } = shoppingCart;
+    const { ui, checkedData, isSending } = shoppingCart;
     const { submit } = ui;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
-      const submitDisabledText = isWaitingPDF ? <Alert type="info" text={submit.disabledText}/> : null;
-
       const { isDeliverable, unDeliverableText, title } = ui.deliveryAddresses;
 
       const deliveryContent = isDeliverable
@@ -174,11 +165,8 @@ class ShoppingCart extends Component {
           <Total ui={ui.totals}/>
         </div>
 
-        {submitDisabledText}
-
         <div className="shopping-cart__block text--right">
           <Button text={submit.btnLabel}
-                  isLoading={isWaitingPDF}
                   type="action"
                   onClick={() => this.sendData(checkedData)} />
         </div>
@@ -202,6 +190,5 @@ export default connect((state) => {
   changeShoppingData,
   sendData,
   removeProduct,
-  changeProductQuantity,
-  checkPDFAvailability
+  changeProductQuantity
 })(ShoppingCart);

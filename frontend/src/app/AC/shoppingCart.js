@@ -4,10 +4,9 @@ import { SHOPPING_CART_UI_FETCH, SHOPPING_CART_UI_SUCCESS, SHOPPING_CART_UI_FAIL
   RECALCULATE_SHOPPING_PRICE_FAILURE, SEND_SHOPPING_DATA_FETCH, SEND_SHOPPING_DATA_FAILURE,
   SEND_SHOPPING_DATA_SUCCESS, REMOVE_PRODUCT_FETCH, REMOVE_PRODUCT_SUCCESS,
   REMOVE_PRODUCT_FAILURE, CHANGE_PRODUCT_QUANTITY_FAILURE, CHANGE_PRODUCT_QUANTITY_FETCH,
-  CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH, CHECKOUT_ASK_PDF_FETCH,
-  CHECKOUT_ASK_PDF_SUCCESS, CHECKOUT_ASK_PDF_FAILURE } from '../constants';
+  CHANGE_PRODUCT_QUANTITY_SUCCESS, APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
 import { CHECKOUT } from '../globals';
-// import ui from '../testServices/checkoutUI';
+import ui from '../testServices/checkoutUI';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -235,46 +234,5 @@ export const sendData = (data) => {
     // setTimeout(() => {
     //   dispatch({ type: APP_LOADING_FINISH });
     // }, 2000);
-  };
-};
-
-export const checkPDFAvailability = () => {
-  return (dispatch) => {
-    dispatch({ type: CHECKOUT_ASK_PDF_FETCH });
-
-    setTimeout(() => {
-      axios.get(CHECKOUT.submittableURL)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
-            if (success !== undefined) {
-              alert(errorMessage); // eslint-disable-line no-alert
-            } else {
-              alert('ERROR: Missing PDF'); // eslint-disable-line no-alert
-            }
-            return;
-          }
-
-          dispatch({
-            type: CHECKOUT_ASK_PDF_SUCCESS,
-            payload: {
-              isWaitingPDF: !payload // true -> is bad for service and good for me
-            }
-          });
-        })
-        .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT_ASK_PDF_FAILURE });
-        });
-
-      // dispatch({
-      //   type: CHECKOUT_ASK_PDF_SUCCESS,
-      //   payload: {
-      //     isWaitingPDF: false
-      //   }
-      // });
-    }, 1500);
   };
 };
