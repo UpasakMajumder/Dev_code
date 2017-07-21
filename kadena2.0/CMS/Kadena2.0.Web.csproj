@@ -51,9 +51,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="AWSSDK.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\AWSSDK.Core.dll</HintPath>
+    <Reference Include="AWSSDK.CloudWatchLogs, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.CloudWatchLogs.3.3.2.16\lib\net45\AWSSDK.CloudWatchLogs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.17\lib\net45\AWSSDK.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AWSSDK.S3, Version=3.1.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -684,6 +688,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AWSLogging\AWSLogCore.cs" />
+    <Compile Include="AWSLogging\AWSLoggerConfig.cs" />
+    <Compile Include="AWSLogging\AWSLogInitializationModule.cs" />
+    <Compile Include="AWSLogging\IAWSLoggerCore.cs" />
+    <Compile Include="AWSLogging\LogEventBatch.cs" />
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -907,7 +916,9 @@
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingAddressData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.CloudWatchLogs.3.3.2.16\analyzers\dotnet\cs\AWSSDK.CloudWatchLogs.CodeAnalysis.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
