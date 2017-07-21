@@ -7,6 +7,14 @@
 {% set breadcrumbs = [title, 'New K-List'] %}
 {% set headerTitle = 'Your processed list' %}
 
+{% set btns = [
+  {
+    type: 'button',
+    name: 'Save list',
+    class: 'btn-action'
+  }
+] %}
+
 {% block content %}
   <div class="r-modify-mlist"></div>
 {% endblock %}
