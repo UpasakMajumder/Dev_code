@@ -39,33 +39,32 @@ class OrderDetail extends Component {
 
   render() {
     const { ui } = this.props;
+    if (!Object.keys(ui).length) return <Spinner />;
+
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
+    return (
+      <div>
+        <CommonInfo ui={commonInfo} />
 
-    const content = <div>
-      <CommonInfo ui={commonInfo} />
+        <div className="order-block">
+          <div className="row">
+            <div className="col-lg-4 mb-4">
+              <ShippingInfo ui={shippingInfo} />
+            </div>
 
-      <div className="order-block">
-        <div className="row">
-          <div className="col-lg-4 mb-4">
-            <ShippingInfo ui={shippingInfo} />
-          </div>
+            <div className="col-lg-4 mb-4">
+              <PaymentInfo ui={paymentInfo} />
+            </div>
 
-          <div className="col-lg-4 mb-4">
-            <PaymentInfo ui={paymentInfo} />
-          </div>
-
-          <div className="col-lg-4 mb-4">
-            <PricingInfo ui={pricingInfo} />
+            <div className="col-lg-4 mb-4">
+              <PricingInfo ui={pricingInfo} />
+            </div>
           </div>
         </div>
+
+        <OrderedItems ui={orderedItems}/>
       </div>
-
-      <OrderedItems ui={orderedItems}/>
-    </div>;
-
-    return Object.keys(ui).length
-      ? content
-      : <Spinner />;
+    );
   }
 }
 
