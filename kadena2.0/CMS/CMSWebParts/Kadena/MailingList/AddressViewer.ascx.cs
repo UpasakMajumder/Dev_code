@@ -1,7 +1,11 @@
-﻿using CMS.Helpers;
+﻿using CMS.Globalization;
+using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,30 +40,146 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 _badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
 
-                if (_badAddresses.Count() > 0)
-                {
-                    pnlBadAddresses.Visible = true;
-                    textBadAddresses.InnerText = ResHelper.GetStringFormat("Kadena.MailingList.BadAddressesFound",
-                        _badAddresses.Count());
-                    FillTable(tblBadAddresses, _badAddresses.Take(4));
-                }
-                else
-                {
-                    pnlBadAddresses.Visible = false;
-                    btnUseOnlyGoodAddresses.Visible = false;
-                }
+                //if (_badAddresses.Count() > 0)
+                //{
+                //    pnlBadAddresses.Visible = true;
+                //    textBadAddresses.InnerText = ResHelper.GetStringFormat("Kadena.MailingList.BadAddressesFound",
+                //        _badAddresses.Count());
+                //    FillTable(tblBadAddresses, _badAddresses.Take(4));
+                //}
+                //else
+                //{
+                //    pnlBadAddresses.Visible = false;
+                //    btnUseOnlyGoodAddresses.Visible = false;
+                //}
 
-                if (goodAddresses.Count() > 0)
+                //if (goodAddresses.Count() > 0)
+                //{
+                //    pnlGoodAddresses.Visible = true;
+                //    textGoodAddresses.InnerText = ResHelper.GetStringFormat("Kadena.MailingList.GoodAddressesFound",
+                //        goodAddresses.Count());
+                //    FillTable(tblGoodAddresses, goodAddresses.Take(4));
+                //}
+                //else
+                //{
+                //    pnlGoodAddresses.Visible = false;
+                //}
+
+                var setting = new JsonSerializerSettings
                 {
-                    pnlGoodAddresses.Visible = true;
-                    textGoodAddresses.InnerText = ResHelper.GetStringFormat("Kadena.MailingList.GoodAddressesFound",
-                        goodAddresses.Count());
-                    FillTable(tblGoodAddresses, goodAddresses.Take(4));
-                }
-                else
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
+                var config = new
                 {
-                    pnlGoodAddresses.Visible = false;
-                }
+                    ModifyMailingList = new
+                    {
+                        ErrorList = new
+                        {
+                            Header = ResHelper.GetStringFormat("Kadena.MailingList.BadAddressesFound", _badAddresses.Count()),
+                            Tip = ResHelper.GetString("Kadena.MailingList.ToCorrectErrorsGoTo"),
+                            Btns = new
+                            {
+                                Reupload = new
+                                {
+                                    Text = ResHelper.GetString("Kadena.MailingList.ReuploadList"),
+                                    Url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty), "containerid", _containerId.ToString())
+                                },
+                                Correct = ResHelper.GetString("Kadena.MailingList.CorrectErrors")
+                            },
+                            Items = _badAddresses.Select(a => new UpdateAddressDto
+                            {
+                                Id = a.Id,
+                                FullName = a.firstName,
+                                FirstAddressLine = a.address1,
+                                SecondAddressLine = a.address2,
+                                City = a.city,
+                                State = a.state,
+                                PostalCode = a.zip,
+                                ErrorMessage = a.Error
+                            })
+                        },
+                        SuccessList = new
+                        {
+                            Header = ResHelper.GetStringFormat("Kadena.MailingList.GoodAddressesFound", goodAddresses.Count()),
+                            Btns = new
+                            {
+                                Use = new
+                                {
+                                    Text = ResHelper.GetString("Kadena.MailingList.UseOnlyCorrect"),
+                                    Url = "/klist/useonlycorrect"
+                                }
+                            },
+                            Items = goodAddresses.Select(a => new UpdateAddressDto
+                            {
+                                Id = a.Id,
+                                FullName = a.firstName,
+                                FirstAddressLine = a.address1,
+                                SecondAddressLine = a.address2,
+                                City = a.city,
+                                State = a.state,
+                                PostalCode = a.zip,
+                                ErrorMessage = a.Error
+                            })
+                        },
+                        FormInfo = new
+                        {
+                            Title = string.Empty,
+                            DownloadErrorFile = new
+                            {
+                                Url = string.Empty,
+                                Text = ResHelper.GetString("Kadena.MailingList.DownloadErrorFile")
+                            },
+                            DiscardChange = ResHelper.GetString("Kadena.MailingList.DiscardChange"),
+                            ConfirmChanges = new
+                            {
+                                Text = ResHelper.GetString("Kadena.MailingList.ConfirmChanges"),
+                                Redirect = "/k-list/processing",
+                                Request = "/klist/update"
+                            },
+                            Message = new
+                            {
+                                Required = ResHelper.GetString("Kadena.MailingList.EnterValidValue")
+                            },
+                            Fields = new
+                            {
+                                FullName = new
+                                {
+                                    Required = true,
+                                    Header = ResHelper.GetString("Kadena.MailingList.Name", string.Empty)
+                                },
+                                FirstAddressLine = new
+                                {
+                                    Required = true,
+                                    Header = ResHelper.GetString("Kadena.MailingList.Address1", string.Empty)
+                                },
+                                SecondAddressLine = new
+                                {
+                                    Header = ResHelper.GetString("Kadena.MailingList.Address2", string.Empty)
+                                },
+                                City = new
+                                {
+                                    Required = true,
+                                    Header = ResHelper.GetString("Kadena.MailingList.City", string.Empty)
+                                },
+                                State = new
+                                {
+                                    Required = true,
+                                    Header = ResHelper.GetString("Kadena.MailingList.State", string.Empty),
+                                    Value = StateInfoProvider
+                                                    .GetStates()
+                                                    .Column("StateCode")
+                                                    .Select(s => s["StateCode"].ToString())
+                                },
+                                PostalCode = new
+                                {
+                                    Required = true,
+                                    Header = ResHelper.GetString("Kadena.MailingList.Zip", string.Empty)
+                                }
+                            }
+                        }
+                    }
+                };
+                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "ui", $"<script>config.localization.ui = {JsonConvert.SerializeObject(config, setting)}</script>");
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AddressViewer.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.MailingList.AddressViewer" %>
 
-<asp:Panel runat="server" ID="pnlBadAddresses" CssClass="processed-list__table-block" Visible="false">
+<div class="r-modify-mlist"></div>
+<%--<asp:Panel runat="server" ID="pnlBadAddresses" CssClass="processed-list__table-block" Visible="false">
     <div class="processed-list__table-heading processed-list__table-heading--error">
         <h3 runat="server" id="textBadAddresses"></h3>
         <div class="btn-group btn-group--right">
@@ -39,4 +40,4 @@
     <button runat="server" id="btnSaveList" type="button" class="btn-action" onserverclick="btnSaveList_ServerClick">
         <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.SaveList" />
     </button>
-</div>
+</div>--%>
