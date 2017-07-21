@@ -1,7 +1,6 @@
 /* Configuration */
 const config = require('./config');
 const DEVELOPMENT = process.env.isDevelopment !== 'false';
-process.env.BABEL_ENV = process.env.BABEL_ENV || 'development';
 
 /* Modules */
 const path = require('path');
@@ -17,7 +16,6 @@ const pluginsCollection = {
     /* Declare Node environment within Webpack */
     new webpack.DefinePlugin({
       'process.env': {
-        'BABEL_ENV': JSON.stringify(process.env.BABEL_ENV),
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'isDevelopment': JSON.stringify(DEVELOPMENT)
       }

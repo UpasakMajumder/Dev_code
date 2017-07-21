@@ -276,25 +276,26 @@ if (!String.prototype.format) {
             base.find(settings.passwordsDontMatchErrorLabel).hide();
             base.find(settings.generalErrorLabel).hide();
 
-            if (base.find(settings.oldPasswordInput).val() == ''
-              || !!base.find(settings.oldPasswordInput).val().match(/ /)) {
+            var oldPassword = base.find(settings.oldPasswordInput).val().replace(/ /g, '');
+            var newPassword = base.find(settings.newPasswordInput).val().replace(/ /g, '');
+            var confirmPassword = base.find(settings.confirmPasswordInput).val().replace(/ /g, '');
+
+            if (!oldPassword) {
                 base.find(settings.oldPasswordInput).addClass("input--error");
                 base.find(settings.oldPasswordErrorLabel).show();
                 return;
             }
-            if (base.find(settings.newPasswordInput).val() == ''
-              || !!base.find(settings.newPasswordInput).val().match(/ /)) {
+            if (!newPassword) {
                 base.find(settings.newPasswordInput).addClass("input--error");
                 base.find(settings.newPasswordErrorLabel).show();
                 return;
             }
-            if (base.find(settings.confirmPasswordInput).val() == ''
-              || !!base.find(settings.confirmPasswordInput).val().match(/ /)) {
+            if (!confirmPassword) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.confirmPasswordErrorLabel).show();
                 return;
             }
-            if (base.find(settings.newPasswordInput).val() != base.find(settings.confirmPasswordInput).val()) {
+            if (newPassword !== confirmPassword) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.passwordsDontMatchErrorLabel).show();
                 return;
@@ -303,9 +304,9 @@ if (!String.prototype.format) {
 
             var passedData = {
                 userGUID: userGUID,
-                oldPassword: base.find(settings.oldPasswordInput).val(),
-                newPassword: base.find(settings.newPasswordInput).val(),
-                confirmPassword: base.find(settings.confirmPasswordInput).val()
+                oldPassword: oldPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
             };
 
             base.find(settings.submitButton).attr("disabled", "disabled");
