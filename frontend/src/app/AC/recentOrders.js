@@ -54,10 +54,10 @@ export const getHeadings = () => {
   };
 };
 
-export const getRows = (page) => {
+export const getRows = (page, isNotFirst) => {
   return (dispatch) => {
     dispatch({ type: RECENT_ORDERS_ROWS + FETCH });
-    dispatch({ type: APP_LOADING + START });
+    if (isNotFirst) dispatch({ type: APP_LOADING + START });
 
     const prod = () => {
       axios({
@@ -69,7 +69,7 @@ export const getRows = (page) => {
         if (!success) {
           dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
-          dispatch({ type: APP_LOADING + FINISH });
+          if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({
             type: RECENT_ORDERS_ROWS + SUCCESS,
@@ -79,12 +79,12 @@ export const getRows = (page) => {
               }
             }
           });
-          dispatch({ type: APP_LOADING + FINISH });
+          if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
         }
       }).catch((error) => {
         dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
         alert(error); // eslint-disable-line no-alert
-        dispatch({ type: APP_LOADING + FINISH });
+        if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
       });
     };
 
@@ -110,7 +110,7 @@ export const getRows = (page) => {
           });
         }
 
-        dispatch({ type: APP_LOADING + FINISH });
+        if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
       }, 2500);
     };
 

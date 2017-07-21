@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
+import DefaultImg from 'app.dump/DefaultImg';
 
 class CheckoutProduct extends Component {
   state = {
@@ -125,11 +126,16 @@ class CheckoutProduct extends Component {
       ? <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
-      : null;
+      : <div className="cart-product__img">
+        <DefaultImg />
+      </div>;
 
     return (
       <div className={productClassName}>
-        {imgElement}
+        <div className="cart-product__img">
+          <DefaultImg img={image} alt={template}/>
+        </div>
+
 
         <div className="cart-product__content">
           <div className="cart-product__template">

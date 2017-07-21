@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Models.RecentOrders;
+﻿using Kadena.Models.RecentOrders;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts

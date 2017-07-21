@@ -5,9 +5,8 @@ import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
 /* globals */
 import { LOGIN } from 'app.globals';
 
-export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
+export default (loginEmail, password, isKeepMeLoggedIn) => {
   return (dispatch) => {
-
     if (!validator.isEmail(loginEmail)) {
       dispatch({
         type: LOG_IN + VALIDATION_ERROR,
@@ -63,4 +62,4 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
         alert(error); // eslint-disable-line no-alert
       });
   };
-}
+};

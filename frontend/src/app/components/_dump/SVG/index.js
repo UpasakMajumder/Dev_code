@@ -7,7 +7,7 @@ const SVG = (props) => {
   let Icon = null;
 
   try {
-    Icon = require(`../../../../gfx/svg/${name}.svg`); // eslint-disable-line global-require
+    Icon = require(`app.gfx/svg/react/${name}.svg`); // eslint-disable-line global-require
   } catch (e) {
     console.warn(e); // eslint-disable-line
   }

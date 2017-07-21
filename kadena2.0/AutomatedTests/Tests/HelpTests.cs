@@ -15,11 +15,7 @@ namespace AutomatedTests.Tests
         public void When_UserContactsCenveo_Expect_FormIsSubmitted()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestUser.Name, TestUser.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            var dashboard = InitializeTest();
 
             //open contact us page
             var contactUs = new ContactUs();
@@ -32,7 +28,7 @@ namespace AutomatedTests.Tests
             //Fill out the form and submit
             contactUs.FillOutTheContactForm();
             contactUs.ClickSubmitButton();
-            var contactFormSuccess = new FormSuccess();
+            var contactFormSuccess = new SuccessPage();
             Assert.IsTrue(contactFormSuccess.IsSubmitConfirmationDisplayed());
         }
     }

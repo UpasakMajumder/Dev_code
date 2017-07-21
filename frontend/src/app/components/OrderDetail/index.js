@@ -70,7 +70,7 @@ class OrderDetail extends Component {
 }
 
 export default connect(({ orderDetail }) => {
-  const ui = orderDetail.get('ui');
+  const { ui } = orderDetail;
   return { ui };
 }, {
   getUI

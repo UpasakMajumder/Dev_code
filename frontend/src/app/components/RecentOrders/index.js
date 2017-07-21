@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 /* components */
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
+import Spinner from 'app.dump/Spinner';
 /* ac */
 import { getHeadings, getRows } from 'app.ac/recentOrders';
 /* local components */
@@ -39,7 +40,7 @@ class RecentOrders extends Component {
     if (nextState.currPage === this.state.currPage) return;
     if (!Object.keys(nextProps.rows).length) return;
     if (nextProps.rows[nextState.currPage]) return;
-    getRows(nextState.currPage + 1);
+    this.props.getRows(nextState.currPage + 1, true);
   }
 
   componentDidMount() {
@@ -68,7 +69,7 @@ class RecentOrders extends Component {
       }
     }
 
-    let content = null;
+    let content = <Spinner />;
 
     if (Object.keys(rows).length) {
       if (!rows[0].length) {

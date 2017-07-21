@@ -41,5 +41,23 @@ namespace AutomatedTests.PageObjects
         {
             Browser.AcceptAlert();
         }
+
+        /// <summary>
+        /// Checks if add to cart button is displayed
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAddToCartButtonDisplayed()
+        {
+            try
+            {
+                //it is needed to look for text because Open Template In Design button has same selector
+                return AddToCart.GetText().Contains("Add to");
+            }
+            catch
+            {
+                AddToCart.WaitTillVisible();
+                return AddToCart.GetText().Contains("Add to");
+            }
+        }
     }
 }
