@@ -278,7 +278,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                 ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                DesignFilePathObtained = i.GetValue("DesignFilePathObtained", false),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
