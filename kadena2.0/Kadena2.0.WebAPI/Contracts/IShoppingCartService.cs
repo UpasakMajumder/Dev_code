@@ -13,7 +13,5 @@ namespace Kadena.WebAPI.Contracts
 
         Task<CheckoutPage> ChangeItemQuantity(int id, int quantity);
         Task<CheckoutPage> RemoveItem(int id);
-
-        Task<bool> IsSubmittable();
     }
 }
