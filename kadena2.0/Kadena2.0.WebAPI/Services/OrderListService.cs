@@ -80,7 +80,12 @@ namespace Kadena.WebAPI.Services
                     RowsOnPage = _pageCapacity,
                     PagesCount = pages
                 },
-                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems")
+                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
+                Rows = orderList.Orders.Select(o =>
+                {
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    return o;
+                })
             };
         }
 
