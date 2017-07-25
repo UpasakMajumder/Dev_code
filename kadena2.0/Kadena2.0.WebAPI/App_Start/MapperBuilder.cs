@@ -143,16 +143,7 @@ namespace Kadena.WebAPI
                     State = a.State,
                     Zip = a.PostalCode
                 });
-                config.CreateMap<MailingAddress, MailingAddressDto>().ProjectUsing(a => new MailingAddressDto
-                {
-                    Id = a.Id,
-                    firstName = a.Name,
-                    address1 = a.Address1,
-                    address2 = a.Address2,
-                    city = a.City,
-                    state = a.State,
-                    zip = a.Zip
-                });
+                config.CreateMap<MailingAddress, MailingAddressDto>().AfterMap((s, d) => d.FirstName = s.Name);
             });
         }
     }

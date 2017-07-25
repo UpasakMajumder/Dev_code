@@ -89,12 +89,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             Items = _badAddresses.Select(a => new UpdateAddressDto
                             {
                                 Id = a.Id,
-                                FullName = a.firstName,
-                                FirstAddressLine = a.address1,
-                                SecondAddressLine = a.address2,
-                                City = a.city,
-                                State = a.state,
-                                PostalCode = a.zip,
+                                FullName = a.FirstName,
+                                FirstAddressLine = a.Address1,
+                                SecondAddressLine = a.Address2,
+                                City = a.City,
+                                State = a.State,
+                                PostalCode = a.Zip,
                                 ErrorMessage = a.Error
                             })
                         },
@@ -112,12 +112,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             Items = goodAddresses.Select(a => new UpdateAddressDto
                             {
                                 Id = a.Id,
-                                FullName = a.firstName,
-                                FirstAddressLine = a.address1,
-                                SecondAddressLine = a.address2,
-                                City = a.city,
-                                State = a.state,
-                                PostalCode = a.zip,
+                                FullName = a.FirstName,
+                                FirstAddressLine = a.Address1,
+                                SecondAddressLine = a.Address2,
+                                City = a.City,
+                                State = a.State,
+                                PostalCode = a.Zip,
                                 ErrorMessage = a.Error
                             })
                         },
@@ -216,16 +216,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     row.Cells.Add(new TableCell { Text = a.Title ?? "-" });
                 }
-                row.Cells.Add(new TableCell { Text = a.firstName ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.FirstName ?? "-" });
                 if (haveLastName)
                 {
                     row.Cells.Add(new TableCell { Text = a.LastName ?? "-" });
                 }
-                row.Cells.Add(new TableCell { Text = a.address1 ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.address2 ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.city ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.state ?? "-" });
-                row.Cells.Add(new TableCell { Text = a.zip ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.Address1 ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.Address2 ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.City ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.State ?? "-" });
+                row.Cells.Add(new TableCell { Text = a.Zip ?? "-" });
                 table.Rows.Add(row);
             }
             #endregion
