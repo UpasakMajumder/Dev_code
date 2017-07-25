@@ -448,7 +448,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetDeliveryAddressesTest.cs" />
     <Compile Include="GetHeaderTest.cs" />
     <Compile Include="GetProjectsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

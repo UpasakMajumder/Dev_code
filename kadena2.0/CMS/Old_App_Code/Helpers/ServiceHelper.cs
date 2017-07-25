@@ -464,54 +464,7 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
         }
-
-        /// <summary>
-        /// Gets list of addresses in specified container.
-        /// </summary>
-        /// <param name="containerId">Id of container.</param>
-        /// <returns>List of addresses.</returns>
-        public static IEnumerable<MailingAddressDto> GetMailingAddresses(Guid containerId)
-        {
-            if (containerId == Guid.Empty)
-            {
-                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
-            }
-
-            Uri url;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getAddressesSettingKey}")
-                , UriKind.Absolute
-                , out url))
-            {
-                throw new InvalidOperationException(_getAddressesIncorrectMessage);
-            }
-
-            var parameterizedUrl = $"{url.AbsoluteUri}/{containerId}";
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(parameterizedUrl))
-                {
-                    BaseResponseDto<IEnumerable<MailingAddressDto>> response;
-                    try
-                    {
-                        response = (BaseResponseDto<IEnumerable<MailingAddressDto>>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload;
-                    }
-                    else
-                    {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                    }
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Returns order statistics for current customer (website).
         /// </summary>
