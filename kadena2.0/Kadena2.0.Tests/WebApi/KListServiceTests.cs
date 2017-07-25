@@ -84,6 +84,25 @@ namespace Kadena.Tests.WebApi
             };
         }
 
+        private BaseResponseDto<IEnumerable<string>> UpdateSuccess()
+        {
+            return new BaseResponseDto<IEnumerable<string>>
+            {
+                Success = true,
+                Payload = new string[0]
+            };
+        }
+
+        private BaseResponseDto<IEnumerable<string>> UpdateFailed()
+        {
+            return new BaseResponseDto<IEnumerable<string>>
+            {
+                Success = false,
+                Payload = new string[0],
+                ErrorMessages = "Some error."
+            };
+        }
+
         [Fact(DisplayName = "UseOnlyCorrectTestSuccess")]
         public async Task UseOnlyCorrectTestSuccess()
         {
@@ -126,6 +145,58 @@ namespace Kadena.Tests.WebApi
             var srvs = Create(mailingClient);
             Assert.ThrowsAsync(typeof(NullReferenceException), () => srvs.UseOnlyCorrectAddresses(_containerId));
 
+        }
+
+        [Fact(DisplayName = "UpdateTestSuccess")]
+        public async Task UpdateTestSuccess()
+        {
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
+                .Returns(Task.FromResult(UpdateSuccess()));
+            mailingClient
+                .Setup(c => c.Validate(null, null, _containerId))
+                .Returns(Task.FromResult(ValidateSuccess()));
+            var srvs = Create(mailingClient);
+            var result = await srvs.UpdateAddresses(_containerId, null);
+
+            Assert.True(result);
+        }
+
+        [Fact(DisplayName = "UpdateTestValidationFailed")]
+        public async Task UpdateTestValidationFailed()
+        {
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
+                .Returns(Task.FromResult(UpdateSuccess()));
+            mailingClient
+                .Setup(c => c.Validate(null, null, _containerId))
+                .Returns(Task.FromResult(ValidateFailed()));
+            var srvs = Create(mailingClient);
+            var result = await srvs.UpdateAddresses(_containerId, null);
+
+            Assert.False(result);
+        }
+
+        [Fact(DisplayName = "UpdateTestUpdateFailed")]
+        public async Task UpdateTestUpdateFailed()
+        {
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
+                .Returns(Task.FromResult(UpdateFailed()));
+            var srvs = Create(mailingClient);
+            var result = await srvs.UpdateAddresses(_containerId, null);
+
+            Assert.False(result);
+        }
+
+        [Fact(DisplayName = "UpdateTestEmptyChanges")]
+        public void UpdateTestEmptyChanges()
+        {
+            var srvs = Create();
+            Assert.ThrowsAsync(typeof(NullReferenceException), () => srvs.UpdateAddresses(_containerId, null));
         }
     }
 }
