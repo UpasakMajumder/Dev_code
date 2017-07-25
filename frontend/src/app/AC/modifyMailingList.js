@@ -82,7 +82,7 @@ export const reprocessAddresses = (id, url, data) => {
       axios({
         method: 'post',
         url: `${url}/${id}`,
-        data
+        data: { data }
       }).then((response) => {
         const { success, errorMessage } = response.data;
         if (!success) {
