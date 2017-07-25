@@ -77,7 +77,8 @@
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in'
-      }
+      },
+      ui: {}
     }
   };
 </script>

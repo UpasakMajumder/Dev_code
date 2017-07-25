@@ -1,7 +1,7 @@
+// @flow
 // <div class="js-storage" data-storage-change="true" data-storage-active="false" data-storage-key="isSidebarCollapsed" data-storage-value="true">
-
 class Storage {
-  constructor(container) {
+  constructor(container: HTMLElement) {
     const { storageActive, storageKey, storageValue, storageChange } = container.dataset;
 
     if (storageActive === 'true') localStorage.setItem(storageKey, storageValue);
