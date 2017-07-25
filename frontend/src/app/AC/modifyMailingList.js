@@ -68,8 +68,8 @@ export const useCorrect = (id, url) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
 
@@ -106,8 +106,8 @@ export const reprocessAddresses = (id, url, data) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
 
