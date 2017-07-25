@@ -129,7 +129,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                 Url = string.Empty,
                                 Text = ResHelper.GetString("Kadena.MailingList.DownloadErrorFile")
                             },
-                            DiscardChange = ResHelper.GetString("Kadena.MailingList.DiscardChange"),
+                            DiscardChanges = ResHelper.GetString("Kadena.MailingList.DiscardChange"),
                             ConfirmChanges = new
                             {
                                 Text = ResHelper.GetString("Kadena.MailingList.ConfirmChanges"),
