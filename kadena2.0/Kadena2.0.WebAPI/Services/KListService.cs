@@ -26,12 +26,21 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
         {
-            var url = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
+            var updateUrl = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
             var customerName = _kentico.GetKenticoSite().Name;
+            var validateUrl = _kentico.GetSettingsKey("KDA_ValidateAddressUrl");
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
-            var result = await _client.UpdateAddresses(url, customerName, containerId, changes);
-            return result.Success;
+            var updateResult = await _client.UpdateAddresses(updateUrl, customerName, containerId, changes);
+            if (updateResult.Success)
+            {
+                var validateResult = await _client.Validate(validateUrl, customerName, containerId);
+                return validateResult.Success;
+            }
+            else
+            {
+                return updateResult.Success;
+            }
         }
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
