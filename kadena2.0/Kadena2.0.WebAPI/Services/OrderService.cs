@@ -323,11 +323,7 @@ namespace Kadena.WebAPI.Services
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
-            if (cartItems.All(i => i.IsMailingList))
-            {
-                orderDto.ShippingOption = null;
-            }
-            else
+            if (!cartItems.All(i => i.IsMailingList))
             {
                 var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
                 orderDto.ShippingOption = new ShippingOptionDTO()
