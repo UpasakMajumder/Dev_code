@@ -25,9 +25,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 Session["PrevPageUrl"] = Request.UrlReferrer?.ToString();
             }
 
-            if (!string.IsNullOrWhiteSpace(Request.QueryString["containerid"]))
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["containerId"]))
             {
-                _containerId = new Guid(Request.QueryString["containerid"]);
+                _containerId = new Guid(Request.QueryString["containerId"]);
             }
             LoadData();
         }
@@ -82,7 +82,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                 Reupload = new
                                 {
                                     Text = ResHelper.GetString("Kadena.MailingList.ReuploadList"),
-                                    Url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty), "containerid", _containerId.ToString())
+                                    Url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty), "containerId", _containerId.ToString())
                                 },
                                 Correct = ResHelper.GetString("Kadena.MailingList.CorrectErrors")
                             },
@@ -242,7 +242,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         protected void btnReupload_ServerClick(object sender, EventArgs e)
         {
             var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
-                , "containerid", _containerId.ToString());
+                , "containerId", _containerId.ToString());
             Response.Redirect(url);
         }
 

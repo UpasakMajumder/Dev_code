@@ -37,7 +37,7 @@
                 <%# Eval("errorCount") %>
             </td>
             <td class="text--center">
-                <a href="<%# ViewListUrl %>?containerid=<%# Eval("id") %>" class="mailing-lists__btn btn-action btn-action--secondary">
+                <a href="<%# ViewListUrl %>?containerId=<%# Eval("id") %>" class="mailing-lists__btn btn-action btn-action--secondary">
                     <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.View" />
                 </a> 
             </td>
