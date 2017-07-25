@@ -31,6 +31,7 @@ const app = {
     init('datepicker', document.getElementsByClassName('js-datepicker'));
     init('replace-value', document.getElementsByClassName('js-replace-value'));
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
+    init('chili-editor', document.getElementsByClassName('js-chili-editor'));
   },
 
   /* React */
