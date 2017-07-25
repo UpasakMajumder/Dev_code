@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             using (var client = new HttpClient())
             {
-                using (var message = await client.GetAsync($"{serviceEndpoint}/{containerId}"))
+                using (var message = await client.GetAsync($"{serviceEndpoint}/{containerId}").ConfigureAwait(false))
                 {
                     return await ReadResponseJson<IEnumerable<MailingAddressDto>>(message);
                 }

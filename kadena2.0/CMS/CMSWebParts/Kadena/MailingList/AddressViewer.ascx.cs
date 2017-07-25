@@ -1,8 +1,11 @@
-﻿using CMS.Globalization;
+﻿using CMS.DataEngine;
+using CMS.Globalization;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Dto.MailingList;
 using Kadena.Old_App_Code.Helpers;
+using Kadena2.MicroserviceClients.Clients;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -27,7 +30,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var addresses = ServiceHelper.GetMailingAddresses(_containerId);
+                var getAddressUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingAddressesUrl");
+                var client = new MailingListClient();
+
+                var addresses = client.GetAddresses(getAddressUrl, _containerId).Result.Payload;
                 var badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
 
