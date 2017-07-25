@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.Services
             var addresses = await _client.GetAddresses(getAddressUrl, containerId);
             await _client.RemoveAddresses(removeAddressesUrl, customerName, containerId,
                 addresses.Payload.Where(a => a.Error != null).Select(a => a.Id));
-            var validateResult = await _client.Validate(removeAddressesUrl, customerName, containerId);
+            var validateResult = await _client.Validate(validateUrl, customerName, containerId);
 
             return validateResult.Success;
         }
