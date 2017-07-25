@@ -154,7 +154,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
         /// <param name="containerId">Id of container.</param>
         /// <param name="templateId">Id of template.</param>
         /// <param name="workspaceId">Id of template workspace</param>
-        /// <returns>Url to Chilli's editor.</returns>
+        /// <returns>Url to Chili's editor.</returns>
         public string SetMailingList(string containerId, string templateId, string workSpaceId)
         {
             var requestUrl = string.Format("{0}api/template/datasource", ServiceBaseUrl);
