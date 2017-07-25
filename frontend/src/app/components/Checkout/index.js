@@ -5,7 +5,7 @@ import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, checkPDFAvailability, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
+import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity } from 'app.ac/checkout';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -102,12 +102,6 @@ class Checkout extends Component {
     });
   };
 
-  checkPDFAvailability = (nextProps) => {
-    const { isWaitingPDF, isAskingPDF } = nextProps.checkout;
-    const { checkPDFAvailability } = this.props;
-    if (isWaitingPDF && !isAskingPDF) checkPDFAvailability();
-  };
-
   componentWillReceiveProps(nextProps) {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
@@ -116,21 +110,17 @@ class Checkout extends Component {
     if (!products.items.length) location.reload();
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
-    this.checkPDFAvailability(nextProps);
   }
 
   render() {
     const { checkout, changeShoppingData, changeProductQuantity, removeProduct } = this.props;
-    const { ui, checkedData, isSending, isWaitingPDF } = checkout;
+    const { ui, checkedData, isSending } = checkout;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
       const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
-      const { disabledText, btnLabel } = submit;
-
-      const submitDisabledText = isWaitingPDF ? <Alert type="info" text={disabledText}/> : null;
 
       const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
 
@@ -179,11 +169,8 @@ class Checkout extends Component {
           <Total ui={totals}/>
         </div>
 
-        {submitDisabledText}
-
         <div className="shopping-cart__block text--right">
-          <Button text={btnLabel}
-                  isLoading={isWaitingPDF}
+          <Button text={submit.btnLabel}
                   type="action"
                   onClick={() => this.sendData(checkedData)} />
         </div>
@@ -207,6 +194,5 @@ export default connect((state) => {
   changeShoppingData,
   sendData,
   removeProduct,
-  changeProductQuantity,
-  checkPDFAvailability
+  changeProductQuantity
 })(Checkout);

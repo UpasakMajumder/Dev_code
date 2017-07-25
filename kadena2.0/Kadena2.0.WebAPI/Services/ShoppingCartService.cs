@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.WebAPI.Contracts;
-using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -18,20 +17,17 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
-        private readonly ITemplatedProductService templateService;
 
         public ShoppingCartService(IMapper mapper, 
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationService taxCalculator,
-                                   ITemplatedProductService templateService,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            
-            this.templateService = templateService;
             this.kenticoLog = kenticoLog;
         }
 
@@ -93,7 +89,7 @@ namespace Kadena.WebAPI.Services
                 {
                     BtnLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
-                    IsDisabled = cartItems.Any(i => i.DesignFilePathRequired && !i.DesignFilePathObtained)
+                    IsDisabled = false
                 },
                 
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
@@ -241,29 +237,6 @@ namespace Kadena.WebAPI.Services
         {
             kenticoProvider.RemoveCartItem(id);
             return await GetCheckoutPage();
-        }
-
-        public async Task<bool> IsSubmittable() // TODO not refactored into Order service, will change after implementing microservice to handle pdf creation
-        {
-            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var items = kenticoProvider.GetShoppingCartItems().Where(i => i.DesignFilePathRequired && !i.DesignFilePathObtained).ToList();
-
-            foreach(var item in items)// todo consider parallel for-each
-            {
-                var state = await templateService.GetGeneratePdfTaskStatus(endpoint, item.ChilliEditorTemplateId.ToString(), item.DesignFilePathTaskId);
-                if (state.Success && state.Payload!=null) 
-                {
-                    var payload = state.Payload;
-                    if (payload.Finished && payload.Succeeded)
-                    {
-                        item.DesignFilePath = payload.FileName.ToString();
-                        item.DesignFilePathObtained = true;
-                        kenticoProvider.SetCartItemDesignFilePath(item.Id, item.DesignFilePath);
-                    }
-                }
-            }
-
-            return items.TrueForAll(i => i.DesignFilePathObtained);
         }
     }
 }

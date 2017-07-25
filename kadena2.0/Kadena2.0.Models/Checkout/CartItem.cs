@@ -133,10 +133,5 @@ namespace Kadena.Models.Checkout
         /// Template product service's task Id
         /// </summary>
         public string DesignFilePathTaskId { get; set; }
-
-        /// <summary>
-        /// indicates if DesignFilePath was already obtained
-        /// </summary>
-        public bool DesignFilePathObtained { get; set; } = false;
     }
 }

@@ -15,8 +15,6 @@ const defaultState = {
     status: '',
     redirectUrl: ''
   },
-  isWaitingPDF: false,
-  isAskingPDF: false,
   isSending: false
 };
 
@@ -24,21 +22,6 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case CHECKOUT_ASK_PDF + FETCH:
-  case CHECKOUT_ASK_PDF + FAILURE:
-    return {
-      ...state,
-      isAskingPDF: true
-    };
-
-
-  case CHECKOUT_ASK_PDF + SUCCESS:
-    return {
-      ...state,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
-    };
-
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
       ...state,

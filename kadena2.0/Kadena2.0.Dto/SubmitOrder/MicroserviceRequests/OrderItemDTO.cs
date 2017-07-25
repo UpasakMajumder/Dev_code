@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 {
@@ -44,7 +45,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public double TotalTax { get; set; }
 
         public MailingListDTO MailingList { get; set; }
-
+        public string ChilliTaskId { get; set; }
+        public string ChilliTemplateId { get; set; }
         public string DesignFilePath { get; set; }
   }
 }
