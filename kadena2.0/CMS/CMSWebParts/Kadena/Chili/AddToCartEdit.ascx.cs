@@ -196,6 +196,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty);
                     var productChiliWorkspaceId = document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty);
                     var productType = document.GetStringValue("ProductType", string.Empty);
+                    var productThumbnail = document.GetGuidValue("ProductThumbnail", Guid.Empty);
 
 
                     var cart = ECommerceContext.CurrentShoppingCart;
@@ -228,6 +229,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     cartItem.SetValue("ChilliEditorTemplateID", templateId);
                     cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
                     cartItem.SetValue("ProductChiliWorkspaceId", productChiliWorkspaceId);
+                    cartItem.SetValue("ProductThumbnail", productThumbnail);
 
                     if (MailingListData != null)
                     {
