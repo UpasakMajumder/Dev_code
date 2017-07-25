@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Spinner from '../Spinner';
+/* components */
+import Spinner from 'app.dump/Spinner';
 
-class GlobalSpinner extends Component {
-  render() {
-    const { isLoading } = this.props;
+const GlobalSpinner = ({ isLoading }) => {
+  return isLoading ? <div className="spinner__wrapper"><Spinner /></div> : null;
+};
 
-    const spinner = <div className="spinner__wrapper"><Spinner /></div>;
+GlobalSpinner.propTypes = {
+  isLoading: PropTypes.bool.isRequired
+};
 
-    return isLoading ? spinner : null;
-  }
-}
-
-export default connect((state) => {
-  const { isLoading } = state;
-  return { isLoading };
-}, {})(GlobalSpinner);
+export default connect(({ isLoading }) => ({ isLoading }), {})(GlobalSpinner);

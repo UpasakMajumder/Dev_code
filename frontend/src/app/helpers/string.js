@@ -1,10 +1,11 @@
-export const cutWords = (text, number) => {
-  const array = text.split(' ');
-  const filteredArray = array.filter((word, i) => i < number - 1);
-  const string = filteredArray.join(' ');
+// @flow
+export const cutWords = (text: string, limit: number): string => {
+  const array: string[] = text.split(' ');
+  const filteredArray: string[] = array.filter((word, i) => i < limit - 1);
+  const newText: string = filteredArray.join(' ');
 
-  if (array.length > number) return `${string}...`;
-  return string;
+  if (array.length > limit) return `${newText}...`;
+  return newText;
 };
 
 export const bla = 1;

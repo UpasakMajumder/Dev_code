@@ -163,6 +163,115 @@
       recentOrders: {
         getHeaders: '',
         getPageItems: ''
+      },
+      ui: {
+        modifyMailingList: {
+          errorList: {
+            header: "We have found 8 errors in your file",
+            tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
+            btns: {
+              reupload: {
+                text: "Reupload .csv",
+                url: "#"
+              },
+              correct: "Correct errors"
+            },
+            items: [
+              {
+                id: "1",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "AA",
+                postalCode: "94116",
+                errorMessage: "Error"
+              },
+              {
+                id: "2",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "BB",
+                postalCode: "94116",
+                errorMessage: "Error"
+              },
+              {
+                id: "3",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "BB",
+                postalCode: "94116",
+                errorMessage: "Error"
+              }
+            ]
+          },
+          successList: {
+            header: "332 addresses have been processed successfuly",
+            btns: {
+              use: {
+                text: "Use only correct",
+                url: "#"
+              }
+            },
+            items: [
+              {
+                id: "1",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "CA",
+                postalCode: "94116"
+              }
+            ]
+          },
+          formInfo: {
+            title: "We have found errors in the following entries:",
+            downloadErrorFile: {
+              text: "Download error file",
+              url: "#"
+            },
+            discardChanges: "Discard changes",
+            confirmChanges: {
+              text: "Confirm & reprocess addresses",
+              redirect: "https://google.com",
+              request: "#"
+            },
+            message: {
+              required: "The field is required"
+            },
+            fields: {
+              fullName: {
+                header: "Full Name",
+                required: true
+              },
+              firstAddressLine: {
+                header: "First Address Line",
+                required: true
+              },
+              secondAddressLine: {
+                header: "Second Address",
+              },
+              city: {
+                header: "City",
+                required: true
+              },
+              state: {
+                header: "State",
+                required: true,
+                value: ['AA', 'BB']
+              },
+              postalCode: {
+                header: "Postal Code",
+                required: true
+              }
+            }
+          }
+        }
       }
     }
   };
