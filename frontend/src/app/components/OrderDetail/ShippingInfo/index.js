@@ -1,17 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-/* components */
-import SVG from 'app.dump/SVG';
+import SVG from '../../SVG';
 
-const ShippingInfo = ({ ui }) => {
+export default ({ ui }) => {
   const { title, deliveryMethod, address, tracking } = ui;
 
-  let trackingLink = null;
-
-  if (tracking) {
-    const { url, text } = tracking;
-    trackingLink = <a className="link" href={url}>{text}</a>;
-  }
+  const trackingLink = tracking ? <a className="link" href={tracking.url}>{tracking.text}</a> : null;
 
   return (
     <div className="order-block order-block--tile ">
@@ -24,17 +17,3 @@ const ShippingInfo = ({ ui }) => {
     </div>
   );
 };
-
-ShippingInfo.propTypes = {
-  ui: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    deliveryMethod: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    tracking: PropTypes.shape({
-      url: PropTypes.string,
-      text: PropTypes.string
-    })
-  })
-};
-
-export default ShippingInfo;

@@ -1,11 +1,10 @@
-// @flow
-export default function separate(str: string, symbol: string): string {
+export default function separate(str, symbol) {
   if (str.length < 4) return str;
 
-  const array: string[] = Array.from(str);
-  const formattedArray: string[] = [];
+  const array = Array.from(str);
+  const formattedArray = [];
 
-  array.reverse().forEach((item: string, index: number) => {
+  array.reverse().forEach((item, index) => {
     if (!(index % 3) && index) formattedArray.push(symbol);
     formattedArray.push(item);
   });

@@ -1,4 +1,4 @@
-import { RECENT_ORDERS_ROWS, RECENT_ORDERS_HEADINGS, SUCCESS } from 'app.consts';
+import { GET_RECENT_ORDERS_HEADINGS_SUCCESS, GET_RECENT_ORDERS_ROWS_SUCCESS } from '../constants';
 
 const defaultState = {
   headings: [],
@@ -11,7 +11,7 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case RECENT_ORDERS_HEADINGS + SUCCESS:
+  case GET_RECENT_ORDERS_HEADINGS_SUCCESS:
     return {
       ...state,
       headings: payload.headings,
@@ -19,7 +19,7 @@ export default (state = defaultState, action) => {
       noOrdersMessage: payload.noOrdersMessage
     };
 
-  case RECENT_ORDERS_ROWS + SUCCESS:
+  case GET_RECENT_ORDERS_ROWS_SUCCESS:
     return {
       ...state,
       rows: {

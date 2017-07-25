@@ -42,11 +42,6 @@ $content-inner-padding: 24px;
       flex-wrap: nowrap;
     }
 
-    &__page-name {
-      @extend %flex--center--default;
-      @extend .mb-0;
-    }
-
     &__btn {
       @extend .bg-secondary;
       @extend .btn--circle;

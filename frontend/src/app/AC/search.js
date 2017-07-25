@@ -1,22 +1,20 @@
 import axios from 'axios';
-/* constants */
-import { SHOW, HIDE, FETCH, SUCCESS, FAILURE, SEARCH_RESULTS, HEADER_SHADOW, CHANGE_SEARCH_QUERY } from 'app.consts';
-/* globals */
-import { SEARCH } from 'app.globals';
-/* web service */
-import ui from 'app.ws/searchUI';
+import { SEARCH_RESULTS_HIDE, SEARCH_RESULTS_SHOW, SEARCH_RESULT_GET_SUCCESS, SEARCH_RESULT_GET_FAILURE,
+  SEARCH_RESULT_GET_FETCH, SEARCH_QUERY_CHANGE, HEADER_SHADOW_SHOW, HEADER_SHADOW_HIDE } from '../constants';
+import { SEARCH } from '../globals';
+import ui from '../testServices/searchUI';
 
 export const closeDropdown = () => {
   return (dispatch) => {
-    dispatch({ type: SEARCH_RESULTS + HIDE });
-    dispatch({ type: HEADER_SHADOW + HIDE });
+    dispatch({ type: SEARCH_RESULTS_HIDE });
+    dispatch({ type: HEADER_SHADOW_HIDE });
   };
 };
 
 export const changeSearchQuery = (query) => {
   return (dispatch) => {
     dispatch({
-      type: CHANGE_SEARCH_QUERY,
+      type: SEARCH_QUERY_CHANGE,
       payload: {
         query
       }
@@ -26,55 +24,48 @@ export const changeSearchQuery = (query) => {
 
 export const sendQuery = (query, pressedEnter) => {
   return (dispatch) => {
-    dispatch({ type: SEARCH_RESULTS + FETCH });
+    dispatch({ type: SEARCH_RESULT_GET_FETCH });
 
-    const prod = () => {
-      axios({
-        method: 'post',
-        url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
-        data: {
-          query
-        }
-      }).then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    axios({
+      method: 'post',
+      url: `${SEARCH.queryUrl}?phrase=${encodeURI(query)}`,
+      data: {
+        query
+      }
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-        } else {
-          dispatch({
-            type: SEARCH_RESULTS + SUCCESS,
-            payload: {
-              ...payload,
-              pressedEnter: pressedEnter || false
-            }
-          });
-          dispatch({ type: SEARCH_RESULTS + SHOW });
-          dispatch({ type: HEADER_SHADOW + SHOW });
-        }
-      })
-        .catch((error) => {
-          dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(error); // eslint-disable-line no-alert
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
+      if (!success) {
+        dispatch({ type: SEARCH_RESULT_GET_FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+      } else {
         dispatch({
-          type: SEARCH_RESULTS + SUCCESS,
+          type: SEARCH_RESULT_GET_SUCCESS,
           payload: {
-            ...ui,
+            ...payload,
             pressedEnter: pressedEnter || false
           }
         });
+        dispatch({ type: HEADER_SHADOW_SHOW });
+        dispatch({ type: SEARCH_RESULTS_SHOW });
+      }
+    })
+      .catch((error) => {
+        dispatch({ type: SEARCH_RESULT_GET_FAILURE });
+        alert(error); // eslint-disable-line no-alert
+      });
 
-        dispatch({ type: SEARCH_RESULTS + SHOW });
-        dispatch({ type: HEADER_SHADOW + SHOW });
-      }, 200);
-    };
-
-    // dev();
-    prod();
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: SEARCH_RESULT_GET_SUCCESS,
+    //     payload: {
+    //       ...ui,
+    //       pressedEnter: pressedEnter || false
+    //     }
+    //   });
+    //
+    //   dispatch({ type: HEADER_SHADOW_SHOW });
+    //   dispatch({ type: SEARCH_RESULTS_SHOW });
+    // }, 200);
   };
 };

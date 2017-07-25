@@ -1,4 +1,4 @@
-import { SETTINGS_ADDRESSES, MODIFY_SHIPPING_ADDRESS, SUCCESS, INIT_UI } from 'app.consts';
+import { SETTINGS_ADDRESSES_UI_SUCCESS, MODIFY_SHIPPING_ADDRESS_SUCCESS } from '../constants';
 
 export default (state = {}, action) => {
   const { type, payload } = action;
@@ -7,10 +7,10 @@ export default (state = {}, action) => {
   let addresses = [];
 
   switch (type) {
-  case SETTINGS_ADDRESSES + INIT_UI + SUCCESS:
+  case SETTINGS_ADDRESSES_UI_SUCCESS:
     return payload.ui;
 
-  case MODIFY_SHIPPING_ADDRESS + SUCCESS:
+  case MODIFY_SHIPPING_ADDRESS_SUCCESS:
     mappedAddresses = state.shipping.addresses.map((address) => {
       if (address.id === payload.data.id) {
         return {
@@ -40,5 +40,6 @@ export default (state = {}, action) => {
 
   default:
     return state;
+
   }
 };
