@@ -73,6 +73,7 @@ namespace Kadena.Tests.WebApi
                 Payload = string.Empty
             };
         }
+
         private BaseResponseDto<string> ValidateFailed()
         {
             return new BaseResponseDto<string>
@@ -83,7 +84,7 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        [Fact]
+        [Fact(DisplayName = "UseOnlyCorrectTestSuccess")]
         public async Task UseOnlyCorrectTestSuccess()
         {
             var mailingClient = new Mock<IMailingListClient>();
@@ -99,7 +100,7 @@ namespace Kadena.Tests.WebApi
             Assert.True(result);
         }
 
-        [Fact]
+        [Fact(DisplayName = "UseOnlyCorrectTestValidationFailed")]
         public async Task UseOnlyCorrectTestValidationFailed()
         {
             var mailingClient = new Mock<IMailingListClient>();
@@ -115,7 +116,7 @@ namespace Kadena.Tests.WebApi
             Assert.False(result);
         }
 
-        [Fact]
+        [Fact(DisplayName = "UseOnlyCorrectTestEmptyAddresses")]
         public void UseOnlyCorrectTestEmptyAddresses()
         {
             var mailingClient = new Mock<IMailingListClient>();
