@@ -9,8 +9,7 @@ const {
   search,
   orderDetail,
   recentOrders,
-  ui,
-  modifyMailingList
+  ui
 } = localization;
 
 
@@ -24,4 +23,4 @@ export const SEARCH = search;
 export const RECENT_ORDERS = recentOrders;
 
 /* UI */
-export const MODIFY_MAILING_LIST_UI = ui.modifyMailingList;
+export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
