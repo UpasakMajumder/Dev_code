@@ -1,9 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-/* components */
-import PriceTable from 'app.dump/PriceTable';
+import PriceTable from '../../PriceTable';
 
-const PricingInfo = ({ ui }) => {
+export default ({ ui }) => {
   const { title, items } = ui;
 
   return (
@@ -15,12 +13,3 @@ const PricingInfo = ({ ui }) => {
     </div>
   );
 };
-
-PricingInfo.propTypes = {
-  ui: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    items: PropTypes.array.isRequired
-  })
-};
-
-export default PricingInfo;

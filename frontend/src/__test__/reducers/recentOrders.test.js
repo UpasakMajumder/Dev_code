@@ -1,7 +1,7 @@
 import reducer from '../../app/reducers/recentOrders';
 import configureStore from '../../app/store';
 import { GET_RECENT_ORDERS_HEADINGS_SUCCESS, GET_RECENT_ORDERS_ROWS_SUCCESS } from '../../app/constants';
-import { headings, pageInfo, rows1 } from '../../app/AC/_ws/recentOrders';
+import { headings, pageInfo, rows1 } from '../../app/testServices/recentOrders';
 
 describe('recentOrders reducer', () => {
   const defaultState = {
@@ -46,7 +46,7 @@ describe('recentOrders reducer', () => {
       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
       payload: {
         rows: {
-          0: rows1.payload.rows
+          0: rows1.rows
         }
       }
     };
@@ -58,105 +58,48 @@ describe('recentOrders reducer', () => {
       pageInfo: {},
       rows: {
         0: [{
-          "orderNumber": "0010-00162-17-фывто123",
-          "orderDate": "2017-06-23 13:36:36",
-          "items": [
-            {
-              "name": "Product 3",
-              "quantity": 1
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
-          }
-        },
-        {
-          "orderNumber": "0001-00091-17-324фыв",
-          "orderDate": "2017-06-21 13:17:36",
-          "items": [
-            {
-              "name": "Chilli product",
-              "quantity": 1
-            },
-            {
-              "name": "POD static product",
-              "quantity": 1
-            },
-            {
-              "name": "Static product",
-              "quantity": 1
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
-          }
-        },
-        {
-          "orderNumber": "0010-00184-17-1фывф",
-          "orderDate": "2017-06-22 12:05:49",
-          "items": [
-            {
-              "name": "POD",
-              "quantity": 4
-            },
-            {
-              "name": "Inventory",
-              "quantity": 6
-            },
-            {
-              "name": "Product 3",
-              "quantity": 5
-            },
-            {
-              "name": "Katkas product",
-              "quantity": 78
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-фывт123",
-          "orderDate": "2017-06-21 14:16:24",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-121",
-          "orderDate": "2017-06-23 13:26:16",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
-          }
-        }]
+          }]
       }
     };
 
@@ -169,7 +112,7 @@ describe('recentOrders reducer', () => {
         type: GET_RECENT_ORDERS_ROWS_SUCCESS,
         payload: {
           rows: {
-            0: rows1.payload.rows
+            0: rows1.rows
           }
         }
       },
@@ -177,7 +120,7 @@ describe('recentOrders reducer', () => {
         type: GET_RECENT_ORDERS_ROWS_SUCCESS,
         payload: {
           rows: {
-            3: rows1.payload.rows
+            3: rows1.rows
           }
         }
       }
@@ -192,208 +135,93 @@ describe('recentOrders reducer', () => {
     const expected = {
       headings: [],
       pageInfo: {},
-      noOrdersMessage: "",
       rows: {
         0: [{
-          "orderNumber": "0010-00162-17-фывто123",
-          "orderDate": "2017-06-23 13:36:36",
-          "items": [
-            {
-              "name": "Product 3",
-              "quantity": 1
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
-          }
-        },
-        {
-          "orderNumber": "0001-00091-17-324фыв",
-          "orderDate": "2017-06-21 13:17:36",
-          "items": [
-            {
-              "name": "Chilli product",
-              "quantity": 1
-            },
-            {
-              "name": "POD static product",
-              "quantity": 1
-            },
-            {
-              "name": "Static product",
-              "quantity": 1
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
-          }
-        },
-        {
-          "orderNumber": "0010-00184-17-1фывф",
-          "orderDate": "2017-06-22 12:05:49",
-          "items": [
-            {
-              "name": "POD",
-              "quantity": 4
-            },
-            {
-              "name": "Inventory",
-              "quantity": 6
-            },
-            {
-              "name": "Product 3",
-              "quantity": 5
-            },
-            {
-              "name": "Katkas product",
-              "quantity": 78
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-фывт123",
-          "orderDate": "2017-06-21 14:16:24",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-121",
-          "orderDate": "2017-06-23 13:26:16",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
-          }
-        }],
+          }],
         3: [{
-          "orderNumber": "0010-00162-17-фывто123",
-          "orderDate": "2017-06-23 13:36:36",
-          "items": [
-            {
-              "name": "Product 3",
-              "quantity": 1
+            "orderNumber": 1,
+            "orderDate": "10/01/2017",
+            "items": [
+              "1", "2", "3"
+            ],
+            "orderStatus": "In rogressing",
+            "deliveryDate": "10/05/2017",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
-          }
-        },
-        {
-          "orderNumber": "0001-00091-17-324фыв",
-          "orderDate": "2017-06-21 13:17:36",
-          "items": [
-            {
-              "name": "Chilli product",
-              "quantity": 1
-            },
-            {
-              "name": "POD static product",
-              "quantity": 1
-            },
-            {
-              "name": "Static product",
-              "quantity": 1
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 2,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
-          }
-        },
-        {
-          "orderNumber": "0010-00184-17-1фывф",
-          "orderDate": "2017-06-22 12:05:49",
-          "items": [
-            {
-              "name": "POD",
-              "quantity": 4
-            },
-            {
-              "name": "Inventory",
-              "quantity": 6
-            },
-            {
-              "name": "Product 3",
-              "quantity": 5
-            },
-            {
-              "name": "Katkas product",
-              "quantity": 78
+          },
+          {
+            "deliveryDate": "10/05/2017",
+            "items": [
+              "1",
+              "2",
+              "3"
+            ],
+            "orderDate": "10/01/2017",
+            "orderNumber": 3,
+            "orderStatus": "In rogressing",
+            "viewBtn": {
+              "text": "View",
+              "url": "#"
             }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-фывт123",
-          "orderDate": "2017-06-21 14:16:24",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": null,
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
-          }
-        },
-        {
-          "orderNumber": "0001-00174-17-121",
-          "orderDate": "2017-06-23 13:26:16",
-          "items": [
-            {
-              "name": "Inventory",
-              "quantity": 1
-            }
-          ],
-          "orderStatus": "Rejected",
-          "deliveryDate": "0001-01-01 00:00:00",
-          "viewBtn": {
-            "text": "View",
-            "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
-          }
-        }]
+          }]
       }
     };
 

@@ -1,50 +1,40 @@
 import axios from 'axios';
-/* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL } from 'app.consts';
-/* globals */
-import { ORDER_DETAIL as ORDER_DETAIL_URL } from 'app.globals';
-/* web service */
-import ui from 'app.ws/orderDetail';
+import { ORDER_DETAIL_GET_UI_FETCH, ORDER_DETAIL_GET_UI_FAILURE, ORDER_DETAIL_GET_UI_SUCCESS } from '../constants';
+import { ORDER_DETAIL } from '../globals';
+// import ui from '../testServices/orderDetail';
 
 export default (orderID) => {
   return (dispatch) => {
-    dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
+    dispatch({ type: ORDER_DETAIL_GET_UI_FETCH });
 
-    const prod = () => {
-      axios({
-        method: 'get',
-        url: `${ORDER_DETAIL_URL.orderDetailUrl}/${orderID}`
-      }).then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    axios({
+      method: 'get',
+      url: `${ORDER_DETAIL.orderDetailUrl}/${orderID}`
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-        } else {
-          dispatch({
-            type: ORDER_DETAIL + SUCCESS,
-            payload: {
-              ui: payload
-            }
-          });
-        }
-      })
-        .catch((error) => {
-          dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
-          alert(error); // eslint-disable-line no-alert
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
+      if (!success) {
+        dispatch({ type: ORDER_DETAIL_GET_UI_FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+      } else {
         dispatch({
-          type: ORDER_DETAIL + INIT_UI + SUCCESS,
-          payload: { ui }
+          type: ORDER_DETAIL_GET_UI_SUCCESS,
+          payload: {
+            ui: payload
+          }
         });
-      }, 2000);
-    };
+      }
+    })
+    .catch((error) => {
+      dispatch({ type: ORDER_DETAIL_GET_UI_FAILURE });
+      alert(error); // eslint-disable-line no-alert
+    });
 
-    // dev();
-    prod();
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: ORDER_DETAIL_GET_UI_SUCCESS,
+    //     payload: { ui }
+    //   });
+    // }, 2000);
   };
 };

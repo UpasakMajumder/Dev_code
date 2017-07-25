@@ -1,120 +1,106 @@
 import axios from 'axios';
-/* constants */
-import { FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_ROWS, RECENT_ORDERS_HEADINGS, APP_LOADING } from 'app.consts';
-/* globals */
-import { RECENT_ORDERS } from 'app.globals';
-/* web service */
-import { headings, pageInfo, rows1, rows2, noOrdersMessage } from 'app.ws/recentOrders';
+import { GET_RECENT_ORDERS_HEADINGS_FETCH, GET_RECENT_ORDERS_ROWS_FETCH, GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+         GET_RECENT_ORDERS_ROWS_SUCCESS, GET_RECENT_ORDERS_HEADINGS_FAILURE, GET_RECENT_ORDERS_ROWS_FAILURE,
+         APP_LOADING_START, APP_LOADING_FINISH } from '../constants';
+import { RECENT_ORDERS } from '../globals';
+// import { headings, pageInfo, rows1, rows2, noOrdersMessage } from '../testServices/recentOrders';
 
 export const getHeadings = () => {
   return (dispatch) => {
-    dispatch({ type: RECENT_ORDERS_HEADINGS + FETCH });
+    dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FETCH });
 
-    const prod = () => {
-      axios({
-        method: 'get',
-        url: RECENT_ORDERS.getHeaders
-      }).then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    axios({
+      method: 'get',
+      url: RECENT_ORDERS.getHeaders
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-        } else {
-          dispatch({
-            type: RECENT_ORDERS_HEADINGS + SUCCESS,
-            payload: {
-              headings: payload.headings,
-              pageInfo: payload.pageInfo,
-              noOrdersMessage: payload.noOrdersMessage
-            }
-          });
-        }
-      }).catch((error) => {
-        dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
-        alert(error); // eslint-disable-line no-alert
-      });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
+      if (!success) {
+        dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+      } else {
         dispatch({
-          type: RECENT_ORDERS_HEADINGS + SUCCESS,
+          type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
           payload: {
-            headings: headings.headings,
-            pageInfo: pageInfo.pageInfo,
-            noOrdersMessage
+            headings: payload.headings,
+            pageInfo: payload.pageInfo,
+            noOrdersMessage: payload.noOrdersMessage
           }
         });
-      }, 2000);
-    };
+      }
+    }).catch((error) => {
+      dispatch({ type: GET_RECENT_ORDERS_HEADINGS_FAILURE });
+      alert(error); // eslint-disable-line no-alert
+    });
 
-    // dev();
-    prod();
+
+    // setTimeout(() => {
+    //   dispatch({
+    //     type: GET_RECENT_ORDERS_HEADINGS_SUCCESS,
+    //     payload: {
+    //       headings: headings.headings,
+    //       pageInfo: pageInfo.pageInfo,
+    //       noOrdersMessage
+    //     }
+    //   });
+    // }, 2000);
   };
 };
 
 export const getRows = (page, isNotFirst) => {
   return (dispatch) => {
-    dispatch({ type: RECENT_ORDERS_ROWS + FETCH });
-    if (isNotFirst) dispatch({ type: APP_LOADING + START });
+    dispatch({ type: GET_RECENT_ORDERS_ROWS_FETCH });
+    if (isNotFirst) dispatch({ type: APP_LOADING_START });
 
-    const prod = () => {
-      axios({
-        method: 'get',
-        url: `${RECENT_ORDERS.getPageItems}/${page}`
-      }).then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    axios({
+      method: 'get',
+      url: `${RECENT_ORDERS.getPageItems}/${page}`
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
-          if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
-        } else {
-          dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
-            payload: {
-              rows: {
-                [page - 1]: payload.rows
-              }
+      if (!success) {
+        dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+        if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
+      } else {
+        dispatch({
+          type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+          payload: {
+            rows: {
+              [page - 1]: payload.rows
             }
-          });
-          if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
-        }
-      }).catch((error) => {
-        dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
-        alert(error); // eslint-disable-line no-alert
-        if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
-      });
-    };
+          }
+        });
+        if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
+      }
+    }).catch((error) => {
+      dispatch({ type: GET_RECENT_ORDERS_ROWS_FAILURE });
+      alert(error); // eslint-disable-line no-alert
+      if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
+    });
 
-    const dev = () => {
-      setTimeout(() => {
-        if (page % 2 === 0) {
-          dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
-            payload: {
-              rows: {
-                [page - 1]: rows1.payload.rows
-              }
-            }
-          });
-        } else {
-          dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
-            payload: {
-              rows: {
-                [page - 1]: rows2.payload.rows
-              }
-            }
-          });
-        }
-
-        if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
-      }, 2500);
-    };
-
-    // dev();
-    prod();
+    // setTimeout(() => {
+    //   if (page % 2 === 0) {
+    //     dispatch({
+    //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+    //       payload: {
+    //         rows: {
+    //           [page - 1]: rows1.payload.rows
+    //         }
+    //       }
+    //     });
+    //   } else {
+    //     dispatch({
+    //       type: GET_RECENT_ORDERS_ROWS_SUCCESS,
+    //       payload: {
+    //         rows: {
+    //           [page - 1]: rows2.payload.rows
+    //         }
+    //       }
+    //     });
+    //   }
+    //
+    //   if (isNotFirst) dispatch({ type: APP_LOADING_FINISH });
+    // }, 2500);
   };
 };

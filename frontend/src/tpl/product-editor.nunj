@@ -32,8 +32,8 @@
         </div>
         <div>
           <div class="btn-group">
-            <button type="button" class="btn-main btn-main--secondary js-chili-revert">Discard changes</button>
-            <button type="button" class="btn-action btn-action--secondary js-chili-save">Save project</button>
+            <button type="button" class="btn-main btn-main--secondary">Discard changes</button>
+            <button type="button" class="btn-action btn-action--secondary">Save project</button>
           </div>
         </div>
         <div>
@@ -41,13 +41,13 @@
             <span class="input__label">Quantity</span>
             <input type="number" class="input__text" value="1" min="1">
           </div>
-          <button type="button" class="btn-action js-chili-addtocart">Add to cart</button>
+          <button type="button" class="btn-action">Add to cart</button>
         </div>
       </div>
     </div>
     <div>
       <div class="product-editor__iframe">
-        <iframe src="" frameborder="0" class="js-chili-editor"></iframe>
+        <iframe src="" frameborder="0"></iframe>
       </div>
     </div>
   </div>

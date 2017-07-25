@@ -1,48 +1,22 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-/* components */
-import Alert from 'app.dump/Alert';
-import Pagination from 'app.dump/Pagination';
-import TemplateProduct from 'app.dump/TemplateProduct';
-import Spinner from 'app.dump/Spinner';
-/* ac */
-import { getUI, changePage, setPaginationLimit } from 'app.ac/searchPage';
-/* utilities */
-import { getSearchObj } from 'app.helpers/location';
-import { paginationFilter } from 'app.helpers/array';
+import Alert from '../../Alert';
+import Spinner from '../../Spinner';
+import { getUI, changePage, setPaginationLimit } from '../../../AC/searchPage';
+import TemplateProduct from '../../TemplateProduct';
+import Pagination from '../../Pagination';
+import { paginationFilter } from '../../../helpers/array';
+import { getSearchObj } from '../../../helpers/location';
 
 class SearchPageProducts extends Component {
-  static propTypes = {
-    productsLength: PropTypes.PropTypes.number.isRequired,
-    productsPaginationLimit: PropTypes.number.isRequired,
-    productsPage: PropTypes.PropTypes.number.isRequired,
-    getAllResults: PropTypes.bool.isRequired,
-    changePage: PropTypes.func.isRequired,
-    filteredProducts: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      stock: PropTypes.shape({
-        type: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
-      }),
-      useTemplateBtn: PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired
-      }).isRequired,
-      breadcrumbs: PropTypes.arrayOf(PropTypes.string).isRequired,
-      isFavourite: PropTypes.bool,
-      imgUrl: PropTypes.string
-    }))
-  };
 
   componentDidMount() {
     const { phrase } = getSearchObj();
-    const { getUI, setPaginationLimit } = this.props;
 
     if (phrase) {
-      getUI(phrase);
+      this.props.getUI(phrase);
     } else {
-      getUI('');
+      this.props.getUI('');
     }
 
     function changePaginationLimit(callback) {
@@ -55,15 +29,19 @@ class SearchPageProducts extends Component {
       callback('productsPaginationLimit', 8);
     }
 
-    changePaginationLimit(setPaginationLimit);
-    window.addEventListener('resize', () => changePaginationLimit(setPaginationLimit));
+    changePaginationLimit(this.props.setPaginationLimit);
+    window.addEventListener('resize', () => changePaginationLimit(this.props.setPaginationLimit));
   }
 
   render() {
-    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, changePage, getAllResults } = this.props;
+    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, getAllResults } = this.props;
 
     const productList = filteredProducts.map((product) => {
-      return <div key={product.id} className="col-lg-4 col-xl-3"><TemplateProduct {...product} /></div>;
+      return (
+        <div key={product.id} className="col-lg-4 col-xl-3">
+          <TemplateProduct {...product} />
+        </div>
+      );
     });
 
     const pageCount = productsLength / productsPaginationLimit;
@@ -78,7 +56,7 @@ class SearchPageProducts extends Component {
                     itemsOnPage={productsPaginationLimit}
                     itemsNumber={productsLength}
                     currPage={productsPage}
-                    onPageChange={(e) => { changePage(e.selected, 'productsPage'); }}
+                    onPageChange={(e) => { this.props.changePage(e.selected, 'productsPage'); }}
         />
       </div>
     );
