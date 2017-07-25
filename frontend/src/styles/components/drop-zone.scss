@@ -37,11 +37,20 @@
   }
 
   &__btn {
-    @extend .tooler;
-    @extend .tooler--hover;
+    @extend .bg-darker;
+    @extend .badge;
+    @extend .badge--m;
+    @extend .badge--hover;
+    position: absolute;
+    cursor: pointer;
+    z-index: 3;
+    border: 0;
+
+    svg {
+      width: 10px;
+    }
 
     &.question {
-      position: absolute;
       right: 10px;
       top: 10px;
 

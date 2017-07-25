@@ -1,4 +1,4 @@
-import { SUCCESS, INIT_UI, ORDER_DETAIL } from 'app.consts';
+import { ORDER_DETAIL_GET_UI_SUCCESS } from '../constants';
 
 const defaultState = {
   ui: {}
@@ -8,8 +8,9 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case ORDER_DETAIL + INIT_UI + SUCCESS:
+  case ORDER_DETAIL_GET_UI_SUCCESS:
     return {
+      ...state,
       ui: payload.ui
     };
 

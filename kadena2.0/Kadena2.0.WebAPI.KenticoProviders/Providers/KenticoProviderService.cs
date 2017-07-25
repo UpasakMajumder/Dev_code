@@ -280,10 +280,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 CartItemText = i.CartItemText,
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
-                ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
+                ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,

@@ -1,4 +1,4 @@
-import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
+import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_VALIDATION_ERROR, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE } from '../constants';
 
 const defaultState = {
   response: null,
@@ -7,25 +7,25 @@ const defaultState = {
 
 export default function login(state = defaultState, action = {}) {
   switch (action.type) {
-  case LOG_IN + FETCH:
+  case LOGIN_CLIENT_FETCH:
     return {
       ...state,
       isLoading: action.isLoading
     };
 
-  case LOG_IN + VALIDATION_ERROR:
+  case LOGIN_CLIENT_VALIDATION_ERROR:
     return {
       ...state,
       ...action.data
     };
 
-  case LOG_IN + FAILURE:
+  case LOGIN_CLIENT_FAILURE:
     return {
       ...state,
       isLoading: action.isLoading
     };
 
-  case LOG_IN + SUCCESS:
+  case LOGIN_CLIENT_SUCCESS:
     return {
       ...state,
       response: action.data,

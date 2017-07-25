@@ -1,14 +1,7 @@
-// @flow
-import { getSearchObj, createNewUrl } from 'app.helpers/location';
-import { consoleException } from 'app.helpers/io';
+import { getSearchObj, createNewUrl } from '../../helpers/location';
 
 export default class Tabs {
-  container: HTMLElement;
-  activeClass: string;
-  showClass: string;
-  activeTab: ?HTMLElement;
-
-  constructor(container: HTMLElement) {
+  constructor(container) {
     this.container = container;
 
     const { tab: tabQuery } = getSearchObj();
@@ -18,21 +11,18 @@ export default class Tabs {
     this.activeClass = 'active';
     this.showClass = 'show';
 
-    const activeTab: ?HTMLElement = tabQuery
-      ? this.container.querySelector(`[data-id="${tabQuery}"]`)
-      : null;
+    const activeTab = this.container.querySelector(`[data-id="${tabQuery}"]`);
 
     this.activeTab = activeTab || this.container.querySelector(`[data-tab-content="${tabActiveDefault}"]`);
 
     this.styleActiveTab();
 
-    const tabs: HTMLElement[] = Array.from(this.container.querySelectorAll(tabSelector));
+    const tabs = Array.from(this.container.querySelectorAll(tabSelector));
 
-    tabs.forEach((tab: EventTarget) => {
-      tab.addEventListener('click', (event: Event): void => {
-        const target: EventTarget = event.target;
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (event) => {
+        const target = event.target;
 
-        if (!(target instanceof HTMLElement)) return;
         if (target === this.activeTab) return;
 
         this.unstyleActiveTab();
@@ -45,21 +35,15 @@ export default class Tabs {
           props: {
             tab: id
           }
-        } });
-
+        } }, location);
         history.pushState({}, '', newUrl);
       });
     });
   }
 
-  styleActiveTab(): void {
-    if (!this.activeTab) {
-      consoleException('Undefined tab');
-      return;
-    }
-
+  styleActiveTab() {
     this.activeTab.classList.add(this.activeClass);
-    const content: ?HTMLElement = this.findContent();
+    const content = this.findContent(this.activeTab);
 
     if (content) {
       setTimeout(() => {
@@ -72,14 +56,9 @@ export default class Tabs {
     }
   }
 
-  unstyleActiveTab(): void {
-    if (!this.activeTab) {
-      consoleException('Undefined tab');
-      return;
-    }
-
+  unstyleActiveTab() {
     this.activeTab.classList.remove(this.activeClass);
-    const content = this.findContent();
+    const content = this.findContent(this.activeTab);
 
     if (content) {
       content.classList.remove(this.showClass);
@@ -90,19 +69,8 @@ export default class Tabs {
     }
   }
 
-  findContent(): ?HTMLElement {
-    if (!this.activeTab) {
-      consoleException('Undefined tab');
-      return null;
-    }
-
-    const selector: ?string = this.activeTab.dataset.tabContent;
-
-    if (!selector) {
-      consoleException('Cannot find the content block, no data-tab-content');
-      return null;
-    }
-
+  findContent(tab) {
+    const selector = tab.dataset.tabContent;
     return this.container.querySelector(selector);
   }
 }

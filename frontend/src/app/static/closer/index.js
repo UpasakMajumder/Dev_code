@@ -1,20 +1,18 @@
-// @flow
 export default class Close {
-  constructor(closeContainer: HTMLElement) {
-    const closeTogglerClass: string = 'js-close-this-trigger';
-    const animateClass: string = 'isAnimated';
-    const hideClass: string = 'isHidden';
-    const togglers: HTMLElement[] = Array.from(closeContainer.querySelectorAll(`.${closeTogglerClass}`));
-    const { animationLength }: { animationLength: string } = closeContainer.dataset;
+  constructor(closeContainer) {
+    const closeTogglerClass = 'js-close-this-trigger';
+    const animateClass = 'isAnimated';
+    const hideClass = 'isHidden';
+    const { animationLength } = closeContainer.dataset;
+    const togglers = Array.from(closeContainer.querySelectorAll(`.${closeTogglerClass}`));
 
-    const animationLengthNumber: number = +animationLength;
-
-    togglers.forEach((toggler: EventTarget) => {
+    togglers.forEach((toggler) => {
       toggler.addEventListener('click', () => {
+
         closeContainer.classList.add(animateClass);
         setTimeout(() => {
           closeContainer.classList.add(hideClass);
-        }, animationLengthNumber);
+        }, animationLength);
 
       });
     });

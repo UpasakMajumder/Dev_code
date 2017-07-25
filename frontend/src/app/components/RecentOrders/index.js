@@ -1,42 +1,34 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-/* components */
-import Alert from 'app.dump/Alert';
-import Pagination from 'app.dump/Pagination';
-import Spinner from 'app.dump/Spinner';
-/* ac */
-import { getHeadings, getRows } from 'app.ac/recentOrders';
-/* local components */
 import Order from './Order';
+import Pagination from '../Pagination';
+import Spinner from '../Spinner';
+import Alert from '../Alert';
+import { getHeadings, getRows } from '../../AC/recentOrders';
 
 class RecentOrders extends Component {
-  state = {
-    currPage: 0,
-    prevPage: 0
-  };
+  constructor() {
+    super();
 
-  static propTypes = {
-    getHeadings: PropTypes.func.isRequired,
-    getRows: PropTypes.func.isRequired,
-    headings: PropTypes.arrayOf(PropTypes.string).isRequired,
-    noOrdersMessage: PropTypes.string.isRequired,
-    pageInfo: PropTypes.object.isRequired,
-    rows: PropTypes.object.isRequired
-  };
+    this.state = {
+      currPage: 0,
+      prevPage: 0
+    };
 
-  changePage = ({ selected }) => {
-    this.setState(({ currPage }) => {
+    this.changePage = this.changePage.bind(this);
+  }
+
+  changePage({ selected }) {
+    this.setState((prevState) => {
       return {
         currPage: selected,
-        prevPage: currPage
+        prevPage: prevState.currPage
       };
     });
-  };
+
+  }
 
   componentWillUpdate(nextProps, nextState) {
-    const { getRows } = this.props;
-
     if (nextState.currPage === this.state.currPage) return;
     if (!Object.keys(nextProps.rows).length) return;
     if (nextProps.rows[nextState.currPage]) return;
@@ -44,11 +36,9 @@ class RecentOrders extends Component {
   }
 
   componentDidMount() {
-    const { getHeadings, getRows } = this.props;
     const { currPage } = this.state;
-
-    getHeadings();
-    getRows(currPage + 1);
+    this.props.getHeadings();
+    this.props.getRows(currPage + 1);
   }
 
   render() {

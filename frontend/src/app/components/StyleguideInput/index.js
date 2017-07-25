@@ -1,9 +1,10 @@
-import React from 'react';
-import TextInput from 'app.dump/Form/TextInput';
-import PasswordInput from 'app.dump/Form/PasswordInput';
-import CheckboxInput from 'app.dump/Form/CheckboxInput';
+import React, { Component, PropTypes } from 'react';
 
-const StyleguideInput = () => {
+import TextInput from '../form/TextInput';
+import PasswordInput from '../form/PasswordInput';
+import CheckboxInput from '../form/CheckboxInput';
+
+function StyleguideInput() {
   const thead = <tr>
     <th>State</th>
     <th>Text</th>
@@ -44,6 +45,6 @@ const StyleguideInput = () => {
       </tbody>
     </table>
   );
-};
+}
 
 export default StyleguideInput;
