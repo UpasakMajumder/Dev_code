@@ -83,13 +83,13 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public async Task GetCheckoutPageTest() //TODO not finished
+        public void GetCheckoutPageTest() //TODO not finished
         {
             // Arrange
             var sut = CreateShoppingCartService();
 
             // Act
-            var result = await sut.GetCheckoutPage(); 
+            var result = sut.GetCheckoutPage(); 
 
             // Assert
             Assert.NotNull(result);
@@ -98,13 +98,13 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public async Task ChangeItemQuantityTest() //TODO not finished
+        public void ChangeItemQuantityTest() //TODO not finished
         {
             // Arrange
             var sut = CreateShoppingCartService();
 
             // Act
-            var result = await sut.ChangeItemQuantity(1, 10);
+            var result = sut.ChangeItemQuantity(1, 10);
 
             // Assert
             Assert.NotNull(result);

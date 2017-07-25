@@ -31,10 +31,9 @@ namespace Kadena.WebAPI.Services
             this.kenticoLog = kenticoLog;
         }
 
-        public async Task<CheckoutPage> GetCheckoutPage()
+        public CheckoutPage GetCheckoutPage()
         {
             var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
-            var carriers = kenticoProvider.GetShippingCarriers();
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
@@ -61,21 +60,6 @@ namespace Kadena.WebAPI.Services
                     EmptyMessage = resources.GetResourceString("Kadena.Checkout.NoAddressesMessage"),
                     items = addresses.ToList()
                 },
-
-                DeliveryMethods = new DeliveryCarriers()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
-                    Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
-                    items = carriers.ToList()
-                },
-
-                Totals = new Totals()
-                {
-                    Title = kenticoProvider.UserCanSeePrices() ? resources.GetResourceString("Kadena.Checkout.Totals.Title") : string.Empty,
-                    Description = null, // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
-                    // will be assigned after computing TotalTax, which may be changed aftes selecting default shipping or address
-                },
-
                 PaymentMethods = new PaymentMethods()
                 {
                     IsPayable = true,
@@ -94,60 +78,87 @@ namespace Kadena.WebAPI.Services
                 
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
-
-            checkoutPage.DeliveryMethods.RemoveCarriersWithoutOptions();
+            
             CheckCurrentOrDefaultAddress(checkoutPage);
-            CheckCurrentOrDefaultShipping(checkoutPage);
+            
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.PaymentMethods.CheckPayability();
-            checkoutPage.DeliveryMethods.UpdateSummaryText(
+            checkoutPage.SetDisplayType();
+            SetPricesVisibility(checkoutPage);
+            return checkoutPage;
+        }
+
+        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
+        {
+            var carriers = kenticoProvider.GetShippingCarriers();
+
+            var result = new CheckoutPageDeliveryTotals()
+            {
+                DeliveryMethods = new DeliveryCarriers()
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
+                    Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
+                    items = carriers.ToList()
+                },
+                Totals = new Totals()
+                {
+                    Title = string.Empty,
+                    Description = null // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
+                }
+            };
+
+            result.DeliveryMethods.RemoveCarriersWithoutOptions();
+            CheckCurrentOrDefaultShipping(result);
+            result.DeliveryMethods.UpdateSummaryText(
                     resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
                     resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
                     resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
                     resources.GetResourceString("Kadena.Checkout.CustomerPrice")
                 );
-            checkoutPage.SetDisplayType();
-            SetPricesVisibility(checkoutPage);
 
             if (kenticoProvider.UserCanSeePrices())
             {
-                var totals = kenticoProvider.GetShoppingCartTotals();
-                totals.TotalTax = await taxCalculator.EstimateTotalTax();
-                checkoutPage.Totals.Items = MapTotals(totals);
+                await UpdateTotals(result);
             }
-            
 
-            return checkoutPage;
+            SetPricesVisibility(result);
+            return result;
         }
 
-        private List<Total> MapTotals(ShoppingCartTotals totals)
+
+
+        private async Task UpdateTotals(CheckoutPageDeliveryTotals page)
         {
-            return new Total[]
+            var totals = page.Totals;
+            totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
+            var shoppingCartTotals = kenticoProvider.GetShoppingCartTotals();
+            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax();
+            totals.Items = new Total[]
             {
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Summary"),
-                    Value = String.Format("$ {0:#,0.00}", totals.TotalItemsPrice)
+                    Value = String.Format("$ {0:#,0.00}", shoppingCartTotals.TotalItemsPrice)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Shipping"),
-                    Value = String.Format("$ {0:#,0.00}", totals.TotalShipping)
+                    Value = String.Format("$ {0:#,0.00}", shoppingCartTotals.TotalShipping)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Subtotal"),
-                    Value = String.Format("$ {0:#,0.00}", totals.Subtotal)
+                    Value = String.Format("$ {0:#,0.00}", shoppingCartTotals.Subtotal)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Tax"),
-                    Value = String.Format("$ {0:#,0.00}", totals.TotalTax)
+                    Value = String.Format("$ {0:#,0.00}", shoppingCartTotals.TotalTax)
                 },
                 new Total()
                 {
                     Title = resources.GetResourceString("Kadena.Checkout.Totals.Totals"),
-                    Value = String.Format("$ {0:#,0.00}", totals.TotalPrice)
+                    Value = String.Format("$ {0:#,0.00}", shoppingCartTotals.TotalPrice)
                 }
             }.ToList();
         }
@@ -170,7 +181,7 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        private void CheckCurrentOrDefaultShipping(CheckoutPage page)
+        private void CheckCurrentOrDefaultShipping(CheckoutPageDeliveryTotals page)
         {
             int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
 
@@ -184,7 +195,7 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        private void SetDefaultShipping(CheckoutPage page)
+        private void SetDefaultShipping(CheckoutPageDeliveryTotals page)
         {
             int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
             kenticoProvider.SelectShipping(defaultMethodId);
@@ -195,9 +206,15 @@ namespace Kadena.WebAPI.Services
         {
             if (!kenticoProvider.UserCanSeePrices())
             {
-                page.DeliveryMethods.HidePrices();
-
                 page.Products.HidePrices();
+            }
+        }
+
+        private void SetPricesVisibility(CheckoutPageDeliveryTotals page)
+        {
+            if (!kenticoProvider.UserCanSeePrices())
+            {
+                page.DeliveryMethods.HidePrices();
             }
         }
 
@@ -213,30 +230,30 @@ namespace Kadena.WebAPI.Services
             return allMethods.ToList();
         }
 
-        public async Task<CheckoutPage> SelectShipipng(int id)
+        public CheckoutPage SelectShipipng(int id)
         {
             kenticoProvider.SelectShipping(id);
-            return await GetCheckoutPage();
+            return GetCheckoutPage();
         }
 
-        public async Task<CheckoutPage> SelectAddress(int id)
+        public CheckoutPage SelectAddress(int id)
         {
             kenticoProvider.SetShoppingCartAddres(id);
-            var checkoutPage = await GetCheckoutPage();
+            var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
         }
 
-        public async Task<CheckoutPage> ChangeItemQuantity(int id, int quantity)
+        public CheckoutPage ChangeItemQuantity(int id, int quantity)
         {
             kenticoProvider.SetCartItemQuantity(id, quantity);
-            return await GetCheckoutPage();
+            return GetCheckoutPage();
         }
 
-        public async Task<CheckoutPage> RemoveItem(int id)
+        public CheckoutPage RemoveItem(int id)
         {
             kenticoProvider.RemoveCartItem(id);
-            return await GetCheckoutPage();
+            return GetCheckoutPage();
         }
     }
 }

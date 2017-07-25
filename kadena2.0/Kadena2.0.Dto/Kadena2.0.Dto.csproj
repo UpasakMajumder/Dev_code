@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Checkout\CartItemsDTO.cs" />
     <Compile Include="Checkout\CartItemDTO.cs" />
+    <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
