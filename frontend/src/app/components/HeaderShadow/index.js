@@ -1,13 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const HeaderShadow = ({ isShownHeaderShadow }) => {
-  return isShownHeaderShadow ? <div className="header-overlay"> </div> : null;
+const HeaderShadow = (props) => {
+  return props.isShownHeaderShadow ? <div className="header-overlay"> </div> : null;
 };
 
-HeaderShadow.propTypes = {
-  isShownHeaderShadow: PropTypes.bool.isRequired
-};
-
-export default connect(({ isShownHeaderShadow }) => ({ isShownHeaderShadow }), {})(HeaderShadow);
+export default connect((state) => {
+  const { isShownHeaderShadow } = state;
+  return { isShownHeaderShadow };
+}, {})(HeaderShadow);

@@ -1,16 +1,14 @@
-// @flow
-// $FlowIgnore
 import query from 'url-query';
 
-export const getSearchObj = (): { tab?: string} => {
-  const search: ?string = window.location.search;
+export const getSearchObj = () => {
+  const search = window.location.search;
   if (search) return query(search);
   return {};
 };
 
-export const createSearchStr = (obj: {}): string => {
+export const createSearchStr = (obj) => {
   let search = '?';
-  const keys: number[] = Object.keys(obj);
+  const keys = Object.keys(obj);
   keys.forEach((key, index) => {
     if (index) {
       search += `&${key}=${obj[key]}`;
@@ -21,23 +19,17 @@ export const createSearchStr = (obj: {}): string => {
   return search;
 };
 
-export const createNewUrl = (data: {
-  protocol?: string,
-  host?: string,
-  pathname?: ?string,
-  search?: { props: {}, method: ?string }
-}) => {
-  const { protocol: dataProtocol,
-    host: dataHost,
-    pathname: dataPathname,
-    search: dataSearch } = data;
-
+export const createNewUrl = (data, loc) => {
   const { protocol: locationProtocol,
           host: locationHost,
           pathname: locationPathname,
-          search: locationSearch } = location;
+          search: locationSearch } = loc;
 
-  let newUrl: string = '';
+  const { protocol: dataProtocol,
+          host: dataHost,
+          pathname: dataPathname,
+          search: dataSearch } = data;
+  let newUrl = '';
 
   // Set protocol
   if (dataProtocol) {
@@ -74,7 +66,7 @@ export const createNewUrl = (data: {
       newUrl += '';
     }
   } else {
-    newUrl += locationSearch || '';
+    newUrl += locationSearch;
   }
 
   return newUrl;

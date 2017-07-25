@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Link from '../../Link';
 
 function Order(props) {
   const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn } = props;
-  const { url, text } = viewBtn;
 
   const getItemsTd = () => {
     const listOfItems = items.map((item, index) => {
@@ -34,7 +34,7 @@ function Order(props) {
       <td className="show-table__will-hide">{orderStatus}</td>
       <td className="show-table__will-hide">{shippingDate}</td>
       <td className="show-table__will-appear">
-        <a href={url} className="btn-action">{text}</a>
+        <Link text={viewBtn.text} href={viewBtn.url} type="action" />
       </td>
     </tr>
   );

@@ -1,66 +1,55 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-/* components */
-import Button from 'app.dump/Button';
-import TextInput from 'app.dump/Form/TextInput';
-import PasswordInput from 'app.dump/Form/PasswordInput';
-import CheckboxInput from 'app.dump/Form/CheckboxInput';
-/* ac */
-import requestLogin from 'app.ac/login';
-/* utilities */
-import { LOGIN } from 'app.globals';
-import { getSearchObj } from 'app.helpers/location';
+import queryString from 'query-string';
+
+import TextInput from '../form/TextInput';
+import PasswordInput from '../form/PasswordInput';
+import CheckboxInput from '../form/CheckboxInput';
+import requestLogin from '../../AC/login';
+import { LOGIN } from '../../globals';
+import Button from '../Button';
 
 class Login extends Component {
-  state = {
-    loginEmail: '',
-    password: '',
-    isKeepMeLoggedIn: false
-  };
+  constructor(props) {
+    super(props);
 
-  static defaultProps = {
-    emailText: LOGIN.email,
-    emailPlaceholder: LOGIN.emailPlaceholder,
-    keepMeLoggedInText: LOGIN.keepMeLoggedIn,
-    loginText: LOGIN.login,
-    passwordPlaceholder: LOGIN.passwordPlaceholder,
-    passwordText: LOGIN.password
-  };
+    this.state = {
+      loginEmail: '',
+      password: '',
+      isKeepMeLoggedIn: false
+    };
 
-  static propTypes = {
-    keepMeLoggedInText: PropTypes.string.isRequired,
-    passwordText: PropTypes.string.isRequired,
-    requestLogin: PropTypes.func.isRequired,
-    emailText: PropTypes.string.isRequired,
-    loginText: PropTypes.string.isRequired,
-    passwordPlaceholder: PropTypes.string,
-    emailPlaceholder: PropTypes.string,
-    login: PropTypes.shape({
-      isLoading: PropTypes.bool.isRequired,
-      response: PropTypes.shape({
-        errorPropertyName: PropTypes.string.isRequired
-      })
-    }).isRequired
-  };
-
-  componentDidMount() {
-    const { loginEmail, password, isKeepMeLoggedIn } = this.state;
-    const { requestLogin } = this.props;
+    // from config
+    this.emailText = LOGIN.email;
+    this.emailPlaceholder = LOGIN.emailPlaceholder;
+    this.keepMeLoggedInText = LOGIN.keepMeLoggedIn;
+    this.loginText = LOGIN.login;
+    this.passwordPlaceholder = LOGIN.passwordPlaceholder;
+    this.passwordText = LOGIN.password;
 
     document.querySelector('body').addEventListener('keypress', (event) => {
-      if (event.keyCode === 13) requestLogin(loginEmail, password, isKeepMeLoggedIn);
+      if (event.keyCode === 13) {
+        this.props.requestLogin(this.state.loginEmail, this.state.password, this.state.isKeepMeLoggedIn);
+      }
     });
   }
 
-  handleLoginEmailChange = e => this.setState({ loginEmail: e.target.value });
-  handlePasswordChange = e => this.setState({ password: e.target.value });
-  handleIsKeepMeLoggedIn = e => this.setState({ isKeepMeLoggedIn: e.target.checked });
+  handleLoginEmailChange(e) {
+    this.setState({ loginEmail: e.target.value });
+  }
+
+  handlePasswordChange(e) {
+    this.setState({ password: e.target.value });
+  }
+
+  handleIsKeepMeLoggedIn(e) {
+    this.setState({ isKeepMeLoggedIn: e.target.checked });
+  }
 
   static getErrorMessage(propertyName, failureResponse) {
     let errorMessage = null;
 
-    if (failureResponse !== null && failureResponse.errorPropertyName === propertyName) {
+    if (failureResponse !== null && (failureResponse.errorPropertyName === propertyName)) {
       errorMessage = failureResponse.errorMessage;
     }
 
@@ -68,51 +57,43 @@ class Login extends Component {
   }
 
   render() {
-    const { login, emailText, emailPlaceholder, keepMeLoggedInText,
-      loginText, passwordPlaceholder, passwordText, requestLogin } = this.props;
+    const { requestLogin: request, login: { response, isLoading } } = this.props;
     const { loginEmail, password, isKeepMeLoggedIn } = this.state;
-    const { response, isLoading } = login;
 
     return (
       <div className="css-login">
         <div className="mb-2">
-          <TextInput label={emailText}
-                     placeholder={emailPlaceholder}
+          <TextInput label={this.emailText}
+                     placeholder={this.emailPlaceholder}
                      value={loginEmail}
                      onChange={e => this.handleLoginEmailChange(e)}
-                     error={Login.getErrorMessage('loginEmail', response)}
-          />
+                     error={Login.getErrorMessage('loginEmail', response)} />
         </div>
-
         <div className="mb-2">
-          <PasswordInput label={passwordText}
-                         placeholder={passwordPlaceholder}
+          <PasswordInput label={this.passwordText}
+                         placeholder={this.passwordPlaceholder}
                          value={password}
                          onChange={e => this.handlePasswordChange(e)}
-                         error={Login.getErrorMessage('password', response)}
-          />
+                         error={Login.getErrorMessage('password', response)} />
         </div>
-
         <div className="mb-3">
           <div className="input__wrapper">
             <CheckboxInput
               id="dom-1"
               type="checkbox"
-              label={keepMeLoggedInText}
+              label={this.keepMeLoggedInText}
               value={isKeepMeLoggedIn}
               onChange={e => this.handleIsKeepMeLoggedIn(e)}
             />
           </div>
         </div>
-
         <div className="mb-3">
           <div className="text-center">
-            <Button text={loginText}
+            <Button text={this.loginText}
                     type="action"
                     btnClass="login__login-button btn--no-shadow"
                     isLoading={isLoading}
-                    onClick={() => requestLogin(loginEmail, password, isKeepMeLoggedIn)}
-            />
+                    onClick={() => request(loginEmail, password, isKeepMeLoggedIn)}/>
           </div>
         </div>
       </div>
@@ -120,17 +101,20 @@ class Login extends Component {
   }
 }
 
-export default connect((state) => {
-  const { login } = state;
-  if (login.response && login.response.success) {
-    const query = getSearchObj();
-    if (query.returnurl) {
-      location.assign(query.returnurl);
-    } else {
-      location.assign('/');
+export default connect(
+  (state) => {
+    const { login } = state;
+    if (login.response && login.response.success) {
+      const query = queryString.parse(location.search);
+      if (query.returnurl) {
+        location.assign(query.returnurl);
+      } else {
+        location.assign('/');
+      }
     }
+    return { login };
+  },
+  {
+    requestLogin
   }
-  return { login };
-}, {
-  requestLogin
-})(Login);
+)(Login);

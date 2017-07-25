@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-/* components */
-import SVG from 'app.dump/SVG';
+import SVG from '../../SVG';
 
 const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirectUserToResultPage }) => {
   const closer = value
@@ -26,10 +25,9 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirec
 };
 
 SearchInput.propTypes = {
-  closeDropdown: PropTypes.func.isRequired,
-  changeValue: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  searchPageUrl: PropTypes.string
+  closeDropdown: PropTypes.func.isRequired,
+  changeValue: PropTypes.func.isRequired
 };
 
 export default SearchInput;

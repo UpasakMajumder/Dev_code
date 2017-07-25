@@ -1,71 +1,72 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-/* components */
-import Spinner from 'app.dump/Spinner';
-/* ac */
-import { getUI, modifyAddress } from 'app.ac/settingsAddresses';
-/* local components */
 import AddressBlock from './AddressBlock';
 import AddressDialog from './AddressDialog';
+import { getUI, modifyAddress } from '../../../AC/settingsAddresses';
+import Spinner from '../../Spinner';
 
 class SettingAddresses extends Component {
-  state = {
-    isDialogOpen: false,
-    address: {}
-  };
+  constructor() {
+    super();
 
-  static propTypes = {
-    ui: PropTypes.shape({
-      billing: PropTypes.object,
-      shipping: PropTypes.object,
-      dialog: PropTypes.object
-    }).isRequired
-  };
+    this.state = {
+      isDialogOpen: false,
+      address: {}
+    };
+
+    this.closeDialog = this.closeDialog.bind(this);
+    this.openDialog = this.openDialog.bind(this);
+    this.changeDataAddress = this.changeDataAddress.bind(this);
+  }
 
   componentDidMount() {
     this.props.getUI();
   }
 
-  openDialog = (address) => {
+  openDialog(address) {
     this.setState({
       isDialogOpen: true,
       address
     });
-  };
+  }
 
-  closeDialog = () => {
-    this.setState({ isDialogOpen: false });
-  };
+  closeDialog() {
+    this.setState({
+      isDialogOpen: false
+    });
+  }
 
-  changeDataAddress = (data) => {
-    const { modifyAddress } = this.props;
-    modifyAddress(data);
+  changeDataAddress(data) {
+    this.props.modifyAddress(data);
     this.closeDialog();
-  };
+  }
 
   render() {
     const { ui } = this.props;
     const { isDialogOpen, address } = this.state;
-    const { dialog, billing, shipping } = ui;
 
     const commonProps = {
-      openDialog: this.openDialog
+      openDialog: this.openDialog,
+      closeDialog: this.closeDialog
     };
 
-    return Object.keys(ui).length
+    const content = Object.keys(ui).length
     ? <div className="settings__block">
         <AddressDialog isDialogOpen={isDialogOpen}
                        closeDialog={this.closeDialog}
                        changeDataAddress={this.changeDataAddress}
-                       dialog={dialog}
-                       address={address}
-        />
-
-        <AddressBlock ui={billing} {...commonProps} />
-        <AddressBlock ui={shipping} {...commonProps} />
+                       dialog={ui.dialog}
+                       address={address} />
+        <div className="settings__item">
+          <AddressBlock ui={ui.billing} {...commonProps} />
+        </div>
+        <div className="settings__item">
+          <AddressBlock ui={ui.shipping} {...commonProps} />
+        </div>
       </div>
     : <Spinner />;
+
+    return content;
   }
 }
 

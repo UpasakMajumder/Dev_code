@@ -224,23 +224,19 @@ $arrow-width: 10px;
   }
 }
 
-.tippy-popper {
-  z-index: 10001 !important;
-}
-
 .tippy-tooltip {
-  position: relative !important;
-  font-size: $font-xs !important;
-  color: $brand-darker !important;
-  border-radius: 4px !important;
-  padding: .3rem .5rem !important;
-  text-align: center !important;
-  will-change: transform !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  background-color: $brand-info-light !important;
-  border: 1px solid $brand-info !important;
-  line-height: 1 !important;
+  position: relative;
+  font-size: $font-xs;
+  color: $brand-darker;
+  border-radius: 4px;
+  padding: .3rem .5rem;
+  text-align: center;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: $brand-info-light;
+  border: 1px solid $brand-info;
+  line-height: 1;
 
   [x-arrow] {
     z-index: -1;
