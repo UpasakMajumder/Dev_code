@@ -49,7 +49,9 @@ namespace Kadena.WebAPI
                     TotalTax = p.TotalTax,
                     UnitCount = p.Quantity,
                     UnitOfMeasure = p.UnitOfMeasure,
-                    UnitPrice = p.UnitPrice
+                    UnitPrice = p.UnitPrice,
+                    ChilliTaskId = p.DesignFilePathTaskId,
+                    ChilliTemplateId = p.ChilliEditorTemplateId.ToString()
                 });
 
                 config.CreateMap<CustomerData, CustomerDataDTO>();

@@ -17,7 +17,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             var url = SettingsKeyInfoProvider.GetValue("KDA_OrdersBySiteUrl");
             var client = new OrderViewClient();
-            
+
             // First request to get total count of records.
             var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
 
@@ -27,28 +27,33 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                 {
                     // Second request to get all records.
                     data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
-                    var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE,
-                        data.Payload.Orders.Select(o => o.CustomerId));
 
-                    // Unigrid accept only DataSet as source type.
-                    grdOrders.DataSource = ToDataSet(
-                        data.Payload.Orders.Select(o =>
-                        {
-                            var customer = customers[o.CustomerId] as CustomerInfo;
-                            return new
+                    if (data?.Success ?? false)
+                    {
+                        var customers = BaseAbstractInfoProvider.GetInfosByIds(CustomerInfo.OBJECT_TYPE, 
+                            data.Payload.Orders.Select(o => o.CustomerId));
+
+                        // Unigrid accept only DataSet as source type.
+                        grdOrders.DataSource = ToDataSet(
+                            data.Payload.Orders.Select(o =>
                             {
-                                o.Id,
-                                o.Status,
-                                o.TotalPrice,
-                                o.CreateDate,
-                                CustomerName = customer != null ?
-                                                    $"{customer.CustomerFirstName} {customer.CustomerLastName}"
-                                                    : string.Empty
-                            };
-                        }));
+                                var customer = customers[o.CustomerId] as CustomerInfo;
+                                return new
+                                {
+                                    o.Id,
+                                    o.Status,
+                                    o.TotalPrice,
+                                    o.CreateDate,
+                                    CustomerName = customer != null ?
+                                                        $"{customer.CustomerFirstName} {customer.CustomerLastName}"
+                                                        : string.Empty
+                                };
+                            }));
+                    }
                 }
             }
-            else
+
+            if(!(data?.Success ?? false))
             {
                 var exc = new InvalidOperationException(data?.ErrorMessages);
                 EventLogProvider.LogException("OrdersList - Load", "EXCEPTION", exc);

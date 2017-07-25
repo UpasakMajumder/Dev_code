@@ -1,6 +1,6 @@
 .settings {
   &__block {
-    & > *:not(:last-child) {
+    & > &__item:not(:last-child) {
       @include rem(margin-bottom, 30px);
     }
   }

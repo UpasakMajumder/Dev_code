@@ -1,4 +1,4 @@
-import { SEARCH_PAGE_UI_SUCCESS, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from '../constants';
+import { SUCCESS, INIT_UI, SEARCH_PAGE, CHANGE_PAGE_PAGINATOR, CHANGE_PAGINATION_LIMIT } from 'app.consts';
 
 const defaultState = {
   products: [],
@@ -13,7 +13,7 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case SEARCH_PAGE_UI_SUCCESS:
+  case SEARCH_PAGE + INIT_UI + SUCCESS:
     return {
       ...state,
       ...payload
@@ -25,7 +25,7 @@ export default (state = defaultState, action) => {
       [payload.type]: payload.page
     };
 
-  case CHANGE_PAGE_PAGINATION_LIMIT:
+  case CHANGE_PAGINATION_LIMIT:
     return {
       ...state,
       [payload.type]: payload.value

@@ -42,9 +42,22 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     tr.Cells.Add(new TableCell { Text = d.ValidTo.ToString("MMM dd yyyy") });
                     tr.Cells.Add(new TableCell { Text = d.State?.ToString() ?? string.Empty });
 
-                    if (d.ValidTo > DateTime.Now.Date)
+                    TableCell btnCell = null;
+                    if (btnCell == null && d.ValidTo <= DateTime.Now.Date)
                     {
-                        var btnCell = new TableCell();
+                        btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListExpired") };
+                    }
+
+                    if (btnCell == null 
+                        && !d.State.Equals("Addresses verified") 
+                        && !d.State.Equals("Addresses need to be verified"))
+                    {
+                        btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
+                    }
+
+                    if (btnCell == null)
+                    {
+                        btnCell = new TableCell();
                         var btn = new HtmlButton();
                         btn.ID = d.Id;
                         btn.ClientIDMode = ClientIDMode.Static;
@@ -52,12 +65,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         btn.Attributes["class"] = "btn-action";
                         btn.ServerClick += btnUse_ServerClick;
                         btnCell.Controls.Add(btn);
+                    }
+
+                    if (btnCell != null)
+                    {
                         tr.Cells.Add(btnCell);
                     }
-                    else
-                    {
-                        tr.Cells.Add(new TableCell { Text = GetString("Kadena.MailingList.ListExpired") });
-                    }
+
                     tblMalilingList.Rows.Add(tr);
                 }
                 tblMalilingList.Visible = true;
