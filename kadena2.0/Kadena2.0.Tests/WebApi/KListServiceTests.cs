@@ -30,31 +30,30 @@ namespace Kadena.Tests.WebApi
                 _addresses.Add(new MailingAddressDto
                 {
                     Id = Guid.NewGuid(),
-                    firstName = $"Name{i}",
+                    FirstName = $"Name{i}",
                     ContainerId = _containerId,
-                    address1 = $"Address 1, {i}",
-                    address2 = $"Address 2, {i}",
-                    city = $"City {i}",
-                    state = $"State {i}",
-                    zip = $"Zip {i}",
+                    Address1 = $"Address 1, {i}",
+                    Address2 = $"Address 2, {i}",
+                    City = $"City {i}",
+                    State = $"State {i}",
+                    Zip = $"Zip {i}",
                     Error = i % 2 == 0 ? $"Some error {i}" : null
                 });
             }
         }
 
-        private KListService Create()
+        private KListService Create(Mock<IMailingListClient> mailingClient = null)
         {
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
 
-            var mailingClient = new Mock<IMailingListClient>();
-            mailingClient.Setup(c => c.GetAddresses(null, _containerId)).Returns(Task.FromResult(GetAddresses()));
-            mailingClient.Setup(c => c.Validate(null, null, _containerId)).Returns(Task.FromResult(Validate()));
+            
             var kenticoClient = new Mock<IKenticoResourceService>();
             kenticoClient.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
             
-            return new KListService(mailingClient.Object, kenticoClient.Object, mapper);
+            return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
+                kenticoClient.Object, mapper);
         }
 
         private BaseResponseDto<IEnumerable<MailingAddressDto>> GetAddresses()
@@ -66,7 +65,7 @@ namespace Kadena.Tests.WebApi
             };
         }
         
-        private BaseResponseDto<string> Validate()
+        private BaseResponseDto<string> ValidateSuccess()
         {
             return new BaseResponseDto<string>
             {
@@ -74,14 +73,58 @@ namespace Kadena.Tests.WebApi
                 Payload = string.Empty
             };
         }
+        private BaseResponseDto<string> ValidateFailed()
+        {
+            return new BaseResponseDto<string>
+            {
+                Success = false,
+                Payload = string.Empty,
+                ErrorMessages = "Some error."
+            };
+        }
 
         [Fact]
-        public async Task UseOnlyCorrectTest()
+        public async Task UseOnlyCorrectTestSuccess()
         {
-            var srvs = Create();
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.GetAddresses(null, _containerId))
+                .Returns(Task.FromResult(GetAddresses()));
+            mailingClient
+                .Setup(c => c.Validate(null, null, _containerId))
+                .Returns(Task.FromResult(ValidateSuccess()));
+            var srvs = Create(mailingClient);
             var result = await srvs.UseOnlyCorrectAddresses(_containerId);
 
             Assert.True(result);
+        }
+
+        [Fact]
+        public async Task UseOnlyCorrectTestValidationFailed()
+        {
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.GetAddresses(null, _containerId))
+                .Returns(Task.FromResult(GetAddresses()));
+            mailingClient
+                .Setup(c => c.Validate(null, null, _containerId))
+                .Returns(Task.FromResult(ValidateFailed()));
+            var srvs = Create(mailingClient);
+            var result = await srvs.UseOnlyCorrectAddresses(_containerId);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void UseOnlyCorrectTestEmptyAddresses()
+        {
+            var mailingClient = new Mock<IMailingListClient>();
+            mailingClient
+                .Setup(c => c.GetAddresses(null, _containerId))
+                .Returns(Task.FromResult((BaseResponseDto<IEnumerable<MailingAddressDto>>)null));
+            var srvs = Create(mailingClient);
+            Assert.ThrowsAsync(typeof(NullReferenceException), () => srvs.UseOnlyCorrectAddresses(_containerId));
+
         }
     }
 }
