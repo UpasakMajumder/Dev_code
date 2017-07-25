@@ -78,12 +78,12 @@ namespace Kadena2.MicroserviceClients.Clients
                             HashKey = containerId,
                             RangeKey = a.Id,
                             UpdateField = new Dictionary<string, string> {
-                                { nameof(a.firstName), a.firstName },
-                                { nameof(a.address1), a.address1 },
-                                { nameof(a.address2), a.address2 },
-                                { nameof(a.city), a.city },
-                                { nameof(a.state), a.state },
-                                { nameof(a.zip), a.zip },
+                                { nameof(a.firstName), a.firstName ?? string.Empty },
+                                { nameof(a.address1), a.address1 ?? string.Empty },
+                                { nameof(a.address2), a.address2 ?? string.Empty },
+                                { nameof(a.city), a.city ?? string.Empty },
+                                { nameof(a.state), a.state ?? string.Empty },
+                                { nameof(a.zip), a.zip ?? string.Empty },
                             }
                         })
                     }), System.Text.Encoding.UTF8, "application/json"),
