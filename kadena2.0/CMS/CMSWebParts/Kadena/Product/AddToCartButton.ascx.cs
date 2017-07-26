@@ -205,6 +205,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             var artworkLocation = DocumentContext.CurrentDocument.GetStringValue("ProductArtworkLocation", string.Empty);
             var chiliTemplateId = DocumentContext.CurrentDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
             var productType = DocumentContext.CurrentDocument.GetStringValue("ProductType", string.Empty);
+            var productThumbnail = DocumentContext.CurrentDocument.GetGuidValue("ProductThumbnail", Guid.Empty);
 
             if (product != null)
             {
@@ -220,6 +221,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 cartItem.SetValue("ArtworkLocation", artworkLocation);
                 cartItem.SetValue("ProductType", productType);
                 cartItem.SetValue("ProductPageID", documentId);
+                cartItem.SetValue("ProductThumbnail", productThumbnail);
 
                 var dynamicUnitPrice = GetUnitPriceForAmmount(ammount + previouslyAddedAmmount);
                 if (dynamicUnitPrice > 0)
