@@ -1,7 +1,9 @@
 import React from 'react';
-import Product from '../../Product/Order';
+import PropTypes from 'prop-types';
+/* components */
+import Product from 'app.dump/Product/Order';
 
-export default ({ ui }) => {
+const OrderedItems = ({ ui }) => {
   const { title, items } = ui;
 
   const products = items.map(item => <Product key={item.id} {...item} />);
@@ -13,3 +15,12 @@ export default ({ ui }) => {
     </div>
   );
 };
+
+OrderedItems.propTypes = {
+  ui: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired
+  })
+};
+
+export default OrderedItems;

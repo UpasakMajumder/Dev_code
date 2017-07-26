@@ -39,7 +39,7 @@ const app = {
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Login', document.querySelectorAll('.js-login'));
-    render('ShoppingCart', document.querySelectorAll('#r-shopping-cart'));
+    render('Checkout', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
     render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
     render('OrderDetail', document.querySelectorAll('.r-order-detail'));
@@ -48,6 +48,7 @@ const app = {
     render('Search', document.querySelectorAll('.r-search'));
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
+    render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
   }
 };
 

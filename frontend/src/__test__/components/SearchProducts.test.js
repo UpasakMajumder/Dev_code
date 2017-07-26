@@ -1,8 +1,8 @@
 import React from 'react';
-import Shallow from 'react-test-renderer/shallow';
-import SearchProducts from '../../app/components/Search/SearchProducts';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
+import { getShallowComponent } from '../_helpers/shallow';
+import SearchProducts from '../../app/components/Search/SearchProducts';
 
 expect.extend(expectJSX);
 
@@ -25,9 +25,8 @@ describe('Products', () => {
   };
 
   test('Products should have Link', () => {
-    const shallow = Shallow.createRenderer();
-    shallow.render(<SearchProducts products={products} />);
-    const actual = shallow.getRenderOutput();
+    const Component = <SearchProducts products={products} />;
+    const actual = getShallowComponent(Component);
     const expected = <a href="#">Show all products</a>;
     expect(actual).toIncludeJSX(expected);
   });
