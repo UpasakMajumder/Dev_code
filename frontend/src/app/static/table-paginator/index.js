@@ -1,22 +1,30 @@
+// @flow
+/* helpers */
+import { consoleException } from 'app.helpers/io';
+/* 3rd part libraries */
 import Pagination from '../paginator';
 
 class TablePaginator {
-  constructor(tableWrapper) {
-    const startPageNumber = 1;
-    const step = 1;
-    const paginatorPageFromClass = 'js-table-paginator-from';
-    const paginatorPageToClass = 'js-table-paginator-to';
-    const paginatorWrapperClass = 'js-table-paginator-wrapper';
-    const paginatorFromPage = tableWrapper.querySelector(`.${paginatorPageFromClass}`);
-    const paginatorToPage = tableWrapper.querySelector(`.${paginatorPageToClass}`);
-    const paginatorWrapper = tableWrapper.querySelector(`.${paginatorWrapperClass}`);
+  constructor(tableWrapper: HTMLElement) {
+    const startPageNumber: number = 1;
+    const step: number = 1;
+    const paginatorPageFromClass: string = 'js-table-paginator-from';
+    const paginatorPageToClass: string = 'js-table-paginator-to';
+    const paginatorWrapperClass: string = 'js-table-paginator-wrapper';
+    const paginatorFromPage: ?HTMLElement = tableWrapper.querySelector(`.${paginatorPageFromClass}`);
+    const paginatorToPage: ?HTMLElement = tableWrapper.querySelector(`.${paginatorPageToClass}`);
+    const paginatorWrapper: ?HTMLElement = tableWrapper.querySelector(`.${paginatorWrapperClass}`);
 
+    if (TablePaginator.handleNodeSearchException(paginatorFromPage, paginatorPageFromClass)
+      || TablePaginator.handleNodeSearchException(paginatorToPage, paginatorPageToClass)
+      || TablePaginator.handleNodeSearchException(paginatorWrapper, paginatorWrapperClass)) return;
+
+    // Flow doesn't consider handleNodeSearchException
+    // $FlowIgnore
     const { pages: paginatorPagesNumber, rowsOnPage: paginatorRowsToShow } = paginatorWrapper.dataset;
 
-    if (!paginatorWrapper) return;
-
     const init = () => {
-      const paginator = new Pagination(paginatorWrapper, {
+      const paginator: {} = new Pagination(paginatorWrapper, {
         size: +paginatorPagesNumber, // pages size
         page: startPageNumber, // selected page
         step, // pages before and after current
@@ -31,27 +39,44 @@ class TablePaginator {
     init();
   }
 
-  static callback(prevPage, currPage, wrapper, to, from, rowsOnPage) {
-    const rowActiveClass = 'active';
-    let toNumber = 0;
+  static handleNodeSearchException(element: ?HTMLElement, selector: string): boolean {
+    if (!element || !(element instanceof HTMLElement)) {
+      consoleException(`No element with .${selector} selector`);
+      return true;
+    }
+    return false;
+  }
 
-    const findRows = (num) => {
+  static callback(prevPage: number, currPage: number, wrapper: HTMLElement, to: HTMLElement, from: HTMLElement, rowsOnPage: number): void {
+    const rowActiveClass: string = 'active';
+    let toNumber: number = 0;
+
+    const findRows = (num: number): ?HTMLElement[] => {
       const rows = wrapper.querySelectorAll(`tr[data-page="${num}"]`);
+      if (!rows.length) {
+        consoleException(`No element with tr[data-page="${num}"] selector`);
+        return null;
+      }
       return Array.from(rows);
     };
 
-    const unstyleActiveRows = (rows) => {
+    const unstyleActiveRows = (rows): void => {
       rows.forEach(row => row.classList.remove(rowActiveClass));
     };
 
-    const styleActiveRows = (rows) => {
+    const styleActiveRows = (rows): void => {
       rows.forEach(row => row.classList.add(rowActiveClass));
     };
 
-    const prevRows = findRows(prevPage);
-    const nextRows = findRows(currPage);
+    const prevRows: ?HTMLElement[] = findRows(prevPage);
+    const nextRows: ?HTMLElement[] = findRows(currPage);
 
-    const fromNumber = (((currPage - 1) * rowsOnPage) + 1);
+    if (!prevRows || !nextRows) {
+      consoleException('No found rows');
+      return;
+    }
+
+    const fromNumber: number = (((currPage - 1) * rowsOnPage) + 1);
 
     if (nextRows.length < rowsOnPage) {
       toNumber = ((currPage - 1) * rowsOnPage) + nextRows.length;
@@ -62,8 +87,8 @@ class TablePaginator {
     unstyleActiveRows(prevRows);
     styleActiveRows(nextRows);
 
-    from.innerHTML = fromNumber;
-    to.innerHTML = toNumber;
+    from.innerHTML = fromNumber.toString();
+    to.innerHTML = toNumber.toString();
   }
 }
 
