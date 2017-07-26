@@ -247,9 +247,9 @@ export default {
           "icon": "usps-delivery",
           "opened": false,
           "disabled": false,
-          "pricePrefix": "Price based on your contract",
+          "pricePrefix": "$ 14.00",
           "price": "",
-          "datePrefix": null,
+          "datePrefix": "Tomorrow",
           "date": null,
           "items": [
             {

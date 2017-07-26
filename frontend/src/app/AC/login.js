@@ -1,13 +1,14 @@
 import axios from 'axios';
-import validator from 'validator';
 /* constants */
 import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
 /* globals */
 import { LOGIN } from 'app.globals';
+/* helpers */
+import { emailRegExp } from 'app.helpers/regexp';
 
 export default (loginEmail, password, isKeepMeLoggedIn) => {
   return (dispatch) => {
-    if (!validator.isEmail(loginEmail)) {
+    if (!loginEmail.match(emailRegExp)) {
       dispatch({
         type: LOG_IN + VALIDATION_ERROR,
         data: {
@@ -50,8 +51,7 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
         const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
         dispatch({
           type: LOG_IN + SUCCESS,
-          data,
-          isLoading: false
+          data
         });
       })
       .catch((error) => {

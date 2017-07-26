@@ -44,12 +44,15 @@ class Login extends Component {
     }).isRequired
   };
 
-  componentDidMount() {
+  submit = () => {
     const { loginEmail, password, isKeepMeLoggedIn } = this.state;
     const { requestLogin } = this.props;
+    requestLogin(loginEmail.trim(), password, isKeepMeLoggedIn);
+  };
 
+  componentDidMount() {
     document.querySelector('body').addEventListener('keypress', (event) => {
-      if (event.keyCode === 13) requestLogin(loginEmail, password, isKeepMeLoggedIn);
+      if (event.keyCode === 13) this.submit();
     });
   }
 
@@ -111,7 +114,7 @@ class Login extends Component {
                     type="action"
                     btnClass="login__login-button btn--no-shadow"
                     isLoading={isLoading}
-                    onClick={() => requestLogin(loginEmail, password, isKeepMeLoggedIn)}
+                    onClick={this.submit}
             />
           </div>
         </div>
