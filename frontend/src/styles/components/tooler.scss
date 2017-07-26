@@ -1,0 +1,21 @@
+.tooler {
+  @extend .bg-darker;
+  @extend .badge;
+  @extend .badge--m;
+  position: relative;
+  cursor: pointer;
+  z-index: 3;
+  border: 0;
+
+  &--error {
+    background-color: $brand-dangerous;
+  }
+
+  &--hover {
+    @extend .badge--hover;
+  }
+
+  svg {
+    width: 10px;
+  }
+}

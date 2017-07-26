@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Alert from '../../Alert';
-import Pagination from '../../Pagination';
-import Spinner from '../../Spinner';
-import Page from '../../Pages/SearchPage/index';
-import { changePage } from '../../../AC/searchPage';
-import { paginationFilter } from '../../../helpers/array';
+/* components */
+import Alert from 'app.dump/Alert';
+import Pagination from 'app.dump/Pagination';
+import Spinner from 'app.dump/Spinner';
+import Page from 'app.dump/Pages/SearchPage';
+/* ac */
+import { changePage } from 'app.ac/searchPage';
+/* utilities */
+import { paginationFilter } from 'app.helpers/array';
 
 class SearchPagePages extends Component {
+  static propTypes = {
+    getAllResults: PropTypes.bool.isRequired,
+    pagesLength: PropTypes.number.isRequired,
+    pagesPage: PropTypes.number.isRequired,
+    changePage: PropTypes.func.isRequired,
+    filteredPages: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      text: PropTypes.string
+    })).isRequired
+  };
+
   render() {
-    const { filteredPages, pagesPage, pagesLength, getAllResults } = this.props;
+    const { filteredPages, pagesPage, pagesLength, changePage, getAllResults } = this.props;
 
     const pageList = filteredPages.map(page => <Page key={page.id} {...page} />);
 
@@ -23,7 +39,7 @@ class SearchPagePages extends Component {
                     itemsOnPage={6}
                     itemsNumber={pagesLength}
                     currPage={pagesPage}
-                    onPageChange={(e) => { this.props.changePage(e.selected, 'pagesPage'); }}/>
+                    onPageChange={(e) => { changePage(e.selected, 'pagesPage'); }}/>
       </div>
     );
 
@@ -39,7 +55,6 @@ export default connect((state) => {
   const { pages, pagesPage, getAllResults } = state.searchPage;
 
   const filteredPages = paginationFilter(pages, pagesPage, 6);
-
   const pagesLength = pages.length;
 
   return { filteredPages, pagesPage, pagesLength, getAllResults };

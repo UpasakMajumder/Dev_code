@@ -1,13 +1,16 @@
 import axios from 'axios';
-import validator from 'validator';
-import { LOGIN_CLIENT_FETCH, LOGIN_CLIENT_SUCCESS, LOGIN_CLIENT_FAILURE, LOGIN_CLIENT_VALIDATION_ERROR } from '../constants';
-import { LOGIN } from '../globals';
+/* constants */
+import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
+/* globals */
+import { LOGIN } from 'app.globals';
+/* helpers */
+import { emailRegExp } from 'app.helpers/regexp';
 
 export default (loginEmail, password, isKeepMeLoggedIn) => {
   return (dispatch) => {
-    if (!validator.isEmail(loginEmail)) {
+    if (!loginEmail.match(emailRegExp)) {
       dispatch({
-        type: LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOG_IN + VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -23,7 +26,7 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
 
     if (password.length === 0) {
       dispatch({
-        type: LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOG_IN + VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -38,7 +41,7 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
     }
 
     dispatch({
-      type: LOGIN_CLIENT_FETCH,
+      type: LOG_IN + FETCH,
       isLoading: true
     });
 
@@ -47,14 +50,13 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
       .then((response) => {
         const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
         dispatch({
-          type: LOGIN_CLIENT_SUCCESS,
-          data,
-          isLoading: false
+          type: LOG_IN + SUCCESS,
+          data
         });
       })
       .catch((error) => {
         dispatch({
-          type: LOGIN_CLIENT_FAILURE,
+          type: LOG_IN + FAILURE,
           isLoading: false
         });
         alert(error); // eslint-disable-line no-alert
