@@ -104,7 +104,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 return string.Empty;
 
             var sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var skuurl = sku?.SKUImagePath ?? string.Empty;
+
+            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty) {
+                return URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", document.GetGuidValue("ProductThumbnail", Guid.Empty)));
+            }
             return URLHelper.GetAbsoluteUrl(skuurl);
         }
 
@@ -268,6 +273,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public CartItem[] GetShoppingCartItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
+
             var result = items.Select(i => new CartItem()
             {
                 Id = i.CartItemID,
@@ -284,7 +290,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitOfMeasure = "EA",
-                Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
+                Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = i.UnitPrice * i.CartItemUnits,
