@@ -45,8 +45,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public double TotalTax { get; set; }
 
         public MailingListDTO MailingList { get; set; }
-        public string ChilliTaskId { get; set; }
-        public string ChilliTemplateId { get; set; }
+        public Guid ChiliTaskId { get; set; }
+        public Guid ChiliTemplateId { get; set; }
         public string DesignFilePath { get; set; }
   }
 }

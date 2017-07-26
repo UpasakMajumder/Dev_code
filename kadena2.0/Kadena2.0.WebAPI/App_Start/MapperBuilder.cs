@@ -49,8 +49,8 @@ namespace Kadena.WebAPI
                     UnitCount = p.Quantity,
                     UnitOfMeasure = p.UnitOfMeasure,
                     UnitPrice = p.UnitPrice,
-                    ChilliTaskId = p.DesignFilePathTaskId,
-                    ChilliTemplateId = p.ChilliEditorTemplateId.ToString()
+                    ChiliTaskId = p.DesignFilePathTaskId,
+                    ChiliTemplateId = p.ChiliEditorTemplateId
                 });
 
                 config.CreateMap<CustomerData, CustomerDataDTO>();

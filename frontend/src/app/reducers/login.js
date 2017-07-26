@@ -10,7 +10,8 @@ export default function login(state = defaultState, action = {}) {
   case LOG_IN + FETCH:
     return {
       ...state,
-      isLoading: action.isLoading
+      isLoading: action.isLoading,
+      response: null
     };
 
   case LOG_IN + VALIDATION_ERROR:
@@ -28,8 +29,7 @@ export default function login(state = defaultState, action = {}) {
   case LOG_IN + SUCCESS:
     return {
       ...state,
-      response: action.data,
-      isLoading: action.isLoading
+      response: action.data
     };
   default:
     return state;

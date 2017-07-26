@@ -104,7 +104,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 return string.Empty;
 
             var sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var skuurl = sku?.SKUImagePath ?? string.Empty;
+
+            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty) {
+                return URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", document.GetGuidValue("ProductThumbnail", Guid.Empty)));
+            }
             return URLHelper.GetAbsoluteUrl(skuurl);
         }
 
@@ -268,23 +273,24 @@ namespace Kadena.WebAPI.KenticoProviders
         public CartItem[] GetShoppingCartItems()
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
+
             var result = items.Select(i => new CartItem()
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
                 DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ChilliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChilliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
-                ChilliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                DesignFilePathTaskId = i.GetStringValue("DesignFilePathTaskId", string.Empty),
+                ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
+                DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 TotalTax = 0.0d,
                 UnitPrice = i.UnitPrice,
                 UnitOfMeasure = "EA",
-                Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
+                Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = i.UnitPrice * i.CartItemUnits,

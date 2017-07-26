@@ -1,50 +1,92 @@
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_ASK_PDF, CHECKOUT,
+import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY } from 'app.consts';
+  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC } from 'app.consts';
 
 /* globals */
 import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
-import ui from 'app.ws/checkoutUI';
+import { staticUI, priceUI, completeUI } from 'app.ws/checkoutUI';
 
-export const getUI = () => {
+export const getStaticUI = () => {
   return (dispatch) => {
-    dispatch({ type: CHECKOUT + INIT_UI + FETCH });
+    dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
 
     const prod = () => {
-      axios.get(CHECKOUT_URL.initUIURL)
+      axios.get(CHECKOUT_URL.initRenderUIURL)
         .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
+            dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
             alert(errorMessage); // eslint-disable-line no-alert
             return;
           }
 
           dispatch({
-            type: CHECKOUT + INIT_UI + SUCCESS,
+            type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
             payload: {
-              ui: payload,
-              isWaitingPDF: payload.submit.isDisabled
+              ui: payload
             }
           });
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
+          dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
     };
 
     const dev = () => {
       setTimeout(() => {
         dispatch({
-          type: CHECKOUT + INIT_UI + SUCCESS,
+          type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
           payload: {
-            ui: ui.payload,
-            isWaitingPDF: ui.payload.submit.isDisabled
+            ui: staticUI.payload
+          }
+        });
+      }, 1500);
+    };
+
+    // dev();
+    prod();
+  };
+};
+
+export const getDynamicUI = () => {
+  return (dispatch) => {
+    dispatch({ type: CHECKOUT_PRICING + INIT_UI + FETCH });
+
+    const prod = () => {
+      axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
+        .then((response) => {
+          const { payload, success, errorMessage } = response.data;
+
+          if (!success) {
+            dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
+          }
+
+          dispatch({
+            type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+            payload: {
+              ui: payload
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+        });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
+        dispatch({
+          type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+          payload: {
+            ui: priceUI.payload
           }
         });
       }, 3000);
@@ -63,6 +105,7 @@ export const initCheckedShoppingData = (data) => {
     });
   };
 };
+
 
 export const removeProduct = (id) => {
   return (dispatch) => {
@@ -207,7 +250,7 @@ export const changeShoppingData = (field, id, invoice) => {
         dispatch({
           type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
           payload: {
-            ui: ui.payload
+            ui: completeUI.payload
           }
         });
 

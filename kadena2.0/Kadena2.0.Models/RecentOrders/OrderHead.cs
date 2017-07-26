@@ -7,5 +7,6 @@ namespace Kadena.Models.RecentOrders
         public List<string> Headings { get; set; }
         public Pagination PageInfo { get; set; }
         public string NoOrdersMessage { get; set; }
+        public IEnumerable<Order> Rows { get; set; }
     }
 }

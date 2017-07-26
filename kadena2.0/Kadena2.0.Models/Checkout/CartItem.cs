@@ -100,16 +100,16 @@ namespace Kadena.Models.Checkout
         }
 
         /// <summary>
-        /// Main Chilli template ID
+        /// Main Chili template ID
         /// </summary>
-        public Guid ChilliTemplateId { get; set; }
+        public Guid ChiliTemplateId { get; set; }
 
         /// <summary>
         /// Selected template instance ID
         /// </summary>
-        public Guid ChilliEditorTemplateId { get; set; }
+        public Guid ChiliEditorTemplateId { get; set; }
 
-        public Guid ProductChilliPdfGeneratorSettingsId { get; set; }
+        public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
 
         public string DesignFilePath { get; set; }
 
@@ -132,6 +132,6 @@ namespace Kadena.Models.Checkout
         /// <summary>
         /// Template product service's task Id
         /// </summary>
-        public string DesignFilePathTaskId { get; set; }
+        public Guid DesignFilePathTaskId { get; set; }
     }
 }
