@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
+import ReactPaginate from './PaginationBoxView';
 
 const Pagination = (props) => {
   const { pagesNumber, initialPage, onPageChange, itemsOnPage, itemsNumber, currPage } = props;
