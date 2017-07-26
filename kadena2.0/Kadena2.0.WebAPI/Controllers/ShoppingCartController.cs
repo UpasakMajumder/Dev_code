@@ -55,9 +55,9 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/deliverytotals")]
         [AuthorizationFilter]
-        public IHttpActionResult GetDeliveryTotals()
+        public async Task<IHttpActionResult> GetDeliveryTotals()
         {
-            var deliveryTotals = service.GetDeliveryAndTotals();
+            var deliveryTotals = await service.GetDeliveryAndTotals();
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }

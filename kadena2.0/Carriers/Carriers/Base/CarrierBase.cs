@@ -3,18 +3,20 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.SiteProvider;
-using Kadena2.Carriers.ServiceApi;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
+using Kadena.Dto.General;
+using Kadena2.MicroserviceClients.Clients;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 
 namespace Kadena2.Carriers
 {
     public abstract class CarrierBase : ICarrierProvider
     {
+        private ShippingCostServiceClient microserviceClient = new ShippingCostServiceClient();
+
         protected string ServiceUrl { get; set; }
 
         protected string ProviderApiKey { get; set; }
@@ -39,32 +41,16 @@ namespace Kadena2.Carriers
             return Guid.Empty;
         }
 
-        protected EstimateDeliveryPriceResponse CallEstimationService(string requestBody)
+        protected BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(string requestBody)
         {
-            using (var httpClient = new HttpClient())
+            var response = microserviceClient.EstimateShippingCost(ServiceUrl, requestBody).Result;
+
+            if (!response.Success || response.Payload == null)
             {
-                var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                var response = httpClient.PostAsync(ServiceUrl, content).Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    try
-                    {
-                        string responseContent = response.Content.ReadAsStringAsync().Result;
-                        return JsonConvert.DeserializeObject<EstimateDeliveryPriceResponse>(responseContent);
-                    }
-                    catch (Exception ex)
-                    {
-                        EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from {CarrierProviderName} provider to service URL '{ServiceUrl}' was succesfull but failed to parse the response");
-                    }
-                }
-                else
-                {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{CarrierProviderName}' provider to service URL '{ServiceUrl}' resulted with status {response.StatusCode}");
-                }
-
-                return new EstimateDeliveryPriceResponse() { success = false, payload = null };
+                EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{CarrierProviderName}' provider to service URL '{ServiceUrl}' resulted with error {response.Error?.Message ?? string.Empty}");
             }
+
+            return response;
         }
 
         public bool CanDeliver(Delivery delivery)
@@ -74,19 +60,19 @@ namespace Kadena2.Carriers
                 return false;
 
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
-            var requestString = JsonConvert.SerializeObject(requestObject);
+            var requestString = microserviceClient.GetRequestString(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
-            return result.success;
+            var result = CacheHelper.Cache<BaseResponseDto<EstimateDeliveryPricePayloadDto>>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
+            return result.Success;
         }
 
         public decimal GetPrice(Delivery delivery, string currencyCode)
         {
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
-            var requestString = JsonConvert.SerializeObject(requestObject);
+            var requestString = microserviceClient.GetRequestString(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<EstimateDeliveryPriceResponse>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
-            return result.success ? (decimal)result.payload?.cost : 0.0m;
+            var result = CacheHelper.Cache<BaseResponseDto<EstimateDeliveryPricePayloadDto>>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
+            return result.Success ? (decimal)result.Payload?.Cost : 0.0m;
         }
 
         public abstract List<KeyValuePair<string, string>> GetServices();
