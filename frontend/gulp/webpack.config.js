@@ -68,7 +68,7 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 module.exports = {
     entry: {
         [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-        common: ['react', 'react-dom', 'redux', 'popper.js']
+        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy']
     },
     output: {
         path: path.resolve(process.cwd(), config.JS_BUILD),
