@@ -5,8 +5,8 @@ import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity } from 'app.ac/checkout';
+import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
+  changeProductQuantity, getStaticUI, getDynamicUI } from 'app.ac/checkout';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -47,8 +47,9 @@ class Checkout extends Component {
   }
 
   componentDidMount() {
-    const { getUI } = this.props;
-    getUI();
+    const { getStaticUI, getDynamicUI } = this.props;
+    getStaticUI();
+    getDynamicUI();
   }
 
   sendData = (checkedData) => {
@@ -85,11 +86,14 @@ class Checkout extends Component {
       if (address.checked) deliveryAddress = address.id;
     });
 
-    deliveryMethods.items.forEach((methodGroup) => {
-      methodGroup.items.forEach((method) => {
-        if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+
+    if (deliveryMethods) {
+      deliveryMethods.items.forEach((methodGroup) => {
+        methodGroup.items.forEach((method) => {
+          if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+        });
       });
-    });
+    }
 
     paymentMethods.items.forEach((method) => {
       if (method.checked) paymentMethod = { id: method.id, invoice: '' };
@@ -124,6 +128,26 @@ class Checkout extends Component {
 
       const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
 
+      const deliveryMethodComponent = deliveryMethods
+        ? <DeliveryMethod
+          changeShoppingData={changeShoppingData}
+          checkedId={deliveryMethod}
+          isSending={isSending}
+          ui={deliveryMethods}
+        />
+        : null;
+
+      const totalsComponent = totals
+        ? <Total ui={totals}/>
+        : null;
+
+      const submitComponent = totals
+        ? <Button text={submit.btnLabel}
+                  type="action"
+                  onClick={() => this.sendData(checkedData)}
+          />
+        : null;
+
       const deliveryContent = isDeliverable
         ? <div>
           <div className="shopping-cart__block">
@@ -134,11 +158,7 @@ class Checkout extends Component {
           </div>
 
           <div className="shopping-cart__block">
-            <DeliveryMethod
-              changeShoppingData={changeShoppingData}
-              checkedId={deliveryMethod}
-              isSending={isSending}
-              ui={deliveryMethods}/>
+            {deliveryMethodComponent}
           </div>
         </div>
         : <div className="shopping-cart__block">
@@ -166,13 +186,11 @@ class Checkout extends Component {
         </div>
 
         <div className="shopping-cart__block">
-          <Total ui={totals}/>
+          {totalsComponent}
         </div>
 
         <div className="shopping-cart__block text--right">
-          <Button text={submit.btnLabel}
-                  type="action"
-                  onClick={() => this.sendData(checkedData)} />
+          {submitComponent}
         </div>
       </div>;
     }
@@ -189,7 +207,8 @@ export default connect((state) => {
 
   return { checkout };
 }, {
-  getUI,
+  getStaticUI,
+  getDynamicUI,
   initCheckedShoppingData,
   changeShoppingData,
   sendData,

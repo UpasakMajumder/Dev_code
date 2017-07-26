@@ -1,5 +1,5 @@
-import { FETCH, SUCCESS, FAILURE, INIT_UI, CHECKOUT, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA,
-  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_ASK_PDF } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, CHECKOUT_STATIC,
+  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING } from 'app.consts';
 
 const defaultState = {
   ui: {},
@@ -22,30 +22,34 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+  case CHECKOUT_STATIC + INIT_UI + SUCCESS:
+  case CHECKOUT_PRICING + INIT_UI + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        ...payload.ui
+      }
+    };
+
+
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
       ...state,
-      ui: payload.ui,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
+      ui: payload.ui
     };
 
   case REMOVE_PRODUCT + SUCCESS:
     return {
       ...state,
-      ui: payload.ui,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
+      ui: payload.ui
     };
 
-  case CHECKOUT + INIT_UI + SUCCESS:
   case RECALCULATE_CHECKOUT_PRICE + SUCCESS:
     return {
       ...state,
       ui: payload.ui,
-      isSending: false,
-      isWaitingPDF: payload.isWaitingPDF,
-      isAskingPDF: false
+      isSending: false
     };
 
   case INIT_CHECKED_CHECKOUT_DATA:
