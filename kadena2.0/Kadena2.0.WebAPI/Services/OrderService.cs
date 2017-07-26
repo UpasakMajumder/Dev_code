@@ -236,9 +236,7 @@ namespace Kadena.WebAPI.Services
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var customer = kenticoProvider.GetCurrentCustomer();
-            var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
             var site = resources.GetKenticoSite();
-
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var currency = resources.GetSiteCurrency();
@@ -248,7 +246,7 @@ namespace Kadena.WebAPI.Services
             if (string.IsNullOrWhiteSpace(customer.Company))
                 customer.Company = resources.GetDefaultCustomerCompanyName();
 
-            return new OrderDTO()
+            var orderDto = new OrderDTO()
             {
                 BillingAddress = new AddressDTO()
                 {
@@ -297,14 +295,7 @@ namespace Kadena.WebAPI.Services
                     KenticoPaymentOptionID = paymentMethod.Id,
                     PaymentOptionName = paymentMethod.Title,
                     PONumber = invoice
-                },
-                ShippingOption = new ShippingOptionDTO()
-                {
-                    KenticoShippingOptionID = deliveryMethod.Id,
-                    CarrierCode = deliveryMethod.Title,
-                    ShippingCompany = deliveryMethod.CarrierCode,
-                    ShippingService = deliveryMethod.Service.Replace("#", "")
-                },
+                },                
                 Site = new SiteDTO()
                 {
                     KenticoSiteID = site.Id,
@@ -330,6 +321,21 @@ namespace Kadena.WebAPI.Services
                 TotalTax = totals.TotalTax,
                 Items = mapper.Map<OrderItemDTO[]>(cartItems)
             };
+
+            // If only mailing list items in cart, we are not picking any delivery option
+            if (!cartItems.All(i => i.IsMailingList))
+            {
+                var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
+                orderDto.ShippingOption = new ShippingOptionDTO()
+                {
+                    KenticoShippingOptionID = deliveryMethod.Id,
+                    CarrierCode = deliveryMethod.Title,
+                    ShippingCompany = deliveryMethod.CarrierCode,
+                    ShippingService = deliveryMethod.Service.Replace("#", "")
+                };
+            }
+
+            return orderDto;
         }
 
         private string CheckedDateTimeString(DateTime dt)
