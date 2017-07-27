@@ -111,12 +111,17 @@ namespace Kadena.WebAPI.Services
                     Title = dr[4].ToString(),
                     Breadcrumbs = kenticoProvider.GetBreadcrumbs(documentId),
                     IsFavourite = false,
+                    ImgUrl = kenticoProvider.GetProductTeaserImageUrl(documentId)
                 };
 
                 var product = kenticoProvider.GetProductByDocumentId(documentId);
                 if (product != null)
                 {
-                    resultItem.ImgUrl = product.SkuImageUrl;
+                    // fill in SKU image if teaser is empty
+                    if (string.IsNullOrEmpty(resultItem.ImgUrl))
+                    {
+                        resultItem.ImgUrl = product.SkuImageUrl;
+                    }                    
                     resultItem.Category = product.Category;
                     if (product.ProductType.Contains("KDA.InventoryProduct"))
                     {
