@@ -9,7 +9,42 @@ import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
 import { staticUI, priceUI, completeUI } from 'app.ws/checkoutUI';
 
-export const getStaticUI = () => {
+const getTotalPrice = () => {
+  axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
+    .then((response) => {
+      const { payload, success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+        return;
+      }
+
+      dispatch({
+        type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+        payload: {
+          ui: payload
+        }
+      });
+    })
+    .catch((error) => {
+      alert(error); // eslint-disable-line no-alert
+      dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+    });
+};
+
+const getTotalPriceDev = () => {
+  setTimeout(() => {
+    dispatch({
+      type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+      payload: {
+        ui: priceUI.payload
+      }
+    });
+  }, 3000);
+};
+
+export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
 
@@ -35,6 +70,8 @@ export const getStaticUI = () => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
+
+      getTotalPrice();
     };
 
     const dev = () => {
@@ -46,50 +83,8 @@ export const getStaticUI = () => {
           }
         });
       }, 1500);
-    };
 
-    // dev();
-    prod();
-  };
-};
-
-export const getDynamicUI = () => {
-  return (dispatch) => {
-    dispatch({ type: CHECKOUT_PRICING + INIT_UI + FETCH });
-
-    const prod = () => {
-      axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
-            return;
-          }
-
-          dispatch({
-            type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-            payload: {
-              ui: payload
-            }
-          });
-        })
-        .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
-        dispatch({
-          type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-          payload: {
-            ui: priceUI.payload
-          }
-        });
-      }, 3000);
+      getTotalPriceDev();
     };
 
     // dev();
@@ -109,14 +104,10 @@ export const initCheckedShoppingData = (data) => {
 
 export const removeProduct = (id) => {
   return (dispatch) => {
-    dispatch({ type: APP_LOADING + START });
-
     const prod = () => {
       const url = CHECKOUT_URL.removeProductURL;
       axios.post(url, { id })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -136,31 +127,21 @@ export const removeProduct = (id) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: REMOVE_PRODUCT + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice();
     };
 
-    const dev = () => {
-      setTimeout(() => {
-        dispatch({ type: APP_LOADING + FINISH });
-      }, 2000);
-    };
-
-    // dev();
     prod();
   };
 };
 
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
-    dispatch({ type: APP_LOADING + START });
-
     const prod = () => {
       const url = CHECKOUT_URL.changeQuantityURL;
       axios.post(url, { id, quantity })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -180,8 +161,9 @@ export const changeProductQuantity = (id, quantity) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice();
     };
 
     const dev = () => {
@@ -208,8 +190,6 @@ export const changeShoppingData = (field, id, invoice) => {
 
     dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
 
-    dispatch({ type: APP_LOADING + START });
-
     let url = '';
     if (field === 'deliveryMethod') {
       url = CHECKOUT_URL.changeDeliveryMethodURL;
@@ -220,8 +200,6 @@ export const changeShoppingData = (field, id, invoice) => {
     const prod = () => {
       axios.post(url, { id })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -241,8 +219,9 @@ export const changeShoppingData = (field, id, invoice) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice();
     };
 
     const dev = () => {
@@ -254,7 +233,8 @@ export const changeShoppingData = (field, id, invoice) => {
           }
         });
 
-        dispatch({ type: APP_LOADING + FINISH });
+        getTotalPriceDev();
+
       }, 1000);
     };
 
