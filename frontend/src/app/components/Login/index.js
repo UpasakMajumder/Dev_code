@@ -125,14 +125,16 @@ class Login extends Component {
 
 export default connect((state) => {
   const { login } = state;
+
   if (login.response && login.response.success) {
     const query = getSearchObj();
     if (query.returnurl) {
-      location.assign(query.returnurl);
+      location.assign(decodeURIComponent(query.returnurl));
     } else {
       location.assign('/');
     }
   }
+
   return { login };
 }, {
   requestLogin
