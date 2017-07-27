@@ -21,6 +21,8 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoLogger _logger;
 
+        private readonly string _orderDetailUrl;
+
         private int _pageCapacity;
         private string _pageCapacityKey;
 
@@ -50,6 +52,7 @@ namespace Kadena.WebAPI.Services
             _kenticoResources = kenticoResources;
             _kentico = kentico;
             _logger = logger;
+            _orderDetailUrl = _kenticoResources.GetSettingsKey("KDA_OrderDetailUrl");
         }
 
         public async Task<OrderHead> GetHeaders()
@@ -77,19 +80,23 @@ namespace Kadena.WebAPI.Services
                     RowsOnPage = _pageCapacity,
                     PagesCount = pages
                 },
-                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems")
+                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
+                Rows = orderList.Orders.Select(o =>
+                {
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    return o;
+                })
             };
         }
 
         public async Task<OrderBody> GetBody(int pageNumber)
         {
-            var orderDetailUrl = _kenticoResources.GetSettingsKey("KDA_OrderDetailUrl");
             var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
             return new OrderBody
             {
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };

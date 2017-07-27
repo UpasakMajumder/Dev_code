@@ -30,9 +30,14 @@ const Method = (props) => {
     ? <span> | </span>
     : null;
 
-  const extraInfo = (priceElement || dateElement)
-    ? <span>{`(${dateElement}`}{stick}{`${priceElement})`}</span>
-    : null;
+  let extraInfo = null;
+  if (priceElement && dateElement) {
+    extraInfo = <span>({dateElement}{stick}{priceElement})</span>;
+  } else if (dateElement) {
+    extraInfo = <span>({dateElement})</span>;
+  } else if (priceElement) {
+    extraInfo = <span>({priceElement})</span>;
+  }
 
   return (
     <div className={className}>

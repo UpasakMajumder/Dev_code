@@ -1,37 +1,38 @@
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_ROWS, RECENT_ORDERS_HEADINGS, APP_LOADING } from 'app.consts';
+import { INIT_UI, FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_CHANGE_PAGE, APP_LOADING, RECENT_ORDERS } from 'app.consts';
 /* globals */
-import { RECENT_ORDERS } from 'app.globals';
+import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL } from 'app.globals';
 /* web service */
 import { headings, pageInfo, rows1, rows2, noOrdersMessage } from 'app.ws/recentOrders';
 
-export const getHeadings = () => {
+export const initUI = () => {
   return (dispatch) => {
-    dispatch({ type: RECENT_ORDERS_HEADINGS + FETCH });
+    dispatch({ type: RECENT_ORDERS + INIT_UI + FETCH });
 
     const prod = () => {
       axios({
         method: 'get',
-        url: RECENT_ORDERS.getHeaders
+        url: RECENT_ORDERS_GLOBAL.getHeaders
       }).then((response) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
+          dispatch({ type: RECENT_ORDERS + INIT_UI + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
         } else {
           dispatch({
-            type: RECENT_ORDERS_HEADINGS + SUCCESS,
+            type: RECENT_ORDERS + INIT_UI + SUCCESS,
             payload: {
               headings: payload.headings,
               pageInfo: payload.pageInfo,
+              rows: { 0: payload.rows },
               noOrdersMessage: payload.noOrdersMessage
             }
           });
         }
       }).catch((error) => {
-        dispatch({ type: RECENT_ORDERS_HEADINGS + FAILURE });
+        dispatch({ type: RECENT_ORDERS + INIT_UI + FAILURE });
         alert(error); // eslint-disable-line no-alert
       });
     };
@@ -39,10 +40,11 @@ export const getHeadings = () => {
     const dev = () => {
       setTimeout(() => {
         dispatch({
-          type: RECENT_ORDERS_HEADINGS + SUCCESS,
+          type: RECENT_ORDERS + INIT_UI + SUCCESS,
           payload: {
             headings: headings.headings,
             pageInfo: pageInfo.pageInfo,
+            rows: { 0: rows2.payload.rows },
             noOrdersMessage
           }
         });
@@ -54,25 +56,25 @@ export const getHeadings = () => {
   };
 };
 
-export const getRows = (page, isNotFirst) => {
+export const changePage = (page, isNotFirst) => {
   return (dispatch) => {
-    dispatch({ type: RECENT_ORDERS_ROWS + FETCH });
+    dispatch({ type: RECENT_ORDERS_CHANGE_PAGE + FETCH });
     if (isNotFirst) dispatch({ type: APP_LOADING + START });
 
     const prod = () => {
       axios({
         method: 'get',
-        url: `${RECENT_ORDERS.getPageItems}/${page}`
+        url: `${RECENT_ORDERS_GLOBAL.getPageItems}/${page}`
       }).then((response) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
+          dispatch({ type: RECENT_ORDERS_CHANGE_PAGE + FAILURE });
           alert(errorMessage); // eslint-disable-line no-alert
           if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
+            type: RECENT_ORDERS_CHANGE_PAGE + SUCCESS,
             payload: {
               rows: {
                 [page - 1]: payload.rows
@@ -82,7 +84,7 @@ export const getRows = (page, isNotFirst) => {
           if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
         }
       }).catch((error) => {
-        dispatch({ type: RECENT_ORDERS_ROWS + FAILURE });
+        dispatch({ type: RECENT_ORDERS_CHANGE_PAGE + FAILURE });
         alert(error); // eslint-disable-line no-alert
         if (isNotFirst) dispatch({ type: APP_LOADING + FINISH });
       });
@@ -92,7 +94,7 @@ export const getRows = (page, isNotFirst) => {
       setTimeout(() => {
         if (page % 2 === 0) {
           dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
+            type: RECENT_ORDERS_CHANGE_PAGE + SUCCESS,
             payload: {
               rows: {
                 [page - 1]: rows1.payload.rows
@@ -101,7 +103,7 @@ export const getRows = (page, isNotFirst) => {
           });
         } else {
           dispatch({
-            type: RECENT_ORDERS_ROWS + SUCCESS,
+            type: RECENT_ORDERS_CHANGE_PAGE + SUCCESS,
             payload: {
               rows: {
                 [page - 1]: rows2.payload.rows

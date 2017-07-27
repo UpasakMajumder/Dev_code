@@ -22,7 +22,7 @@ export default (orderID) => {
           alert(errorMessage); // eslint-disable-line no-alert
         } else {
           dispatch({
-            type: ORDER_DETAIL + SUCCESS,
+            type: ORDER_DETAIL + INIT_UI + SUCCESS,
             payload: {
               ui: payload
             }
