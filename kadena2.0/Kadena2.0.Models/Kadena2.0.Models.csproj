@@ -7,7 +7,7 @@
     <ProjectGuid>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2.Models</RootNamespace>
+    <RootNamespace>Kadena.Models</RootNamespace>
     <AssemblyName>Kadena2.0.Models</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -61,6 +61,7 @@
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
     <Compile Include="KenticoSite.cs" />
+    <Compile Include="MailingAddress.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />
