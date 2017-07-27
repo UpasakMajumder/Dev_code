@@ -11,7 +11,6 @@ const SearchProduct = (props) => {
     stock,
     url
   } = props;
-  const { type, text } = stock;
 
   const stockElement = stock
     ? <Stock text={stock.text} type={stock.type}/>
