@@ -2,7 +2,6 @@
 using CMS.Helpers;
 using System.IO;
 using CMS.SiteProvider;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using Kadena.Dto.General;
-using Kadena.Dto.Order;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.Old_App_Code.Helpers
@@ -366,39 +364,7 @@ namespace Kadena.Old_App_Code.Helpers
         {
             return SiteContext.CurrentSiteName;
         }
-
-        /// <summary>
-        /// Get all mailing lists for particular customer (whole site)
-        /// </summary>
-        public static IEnumerable<MailingListDataDTO> GetMailingLists()
-        {
-            var customerName = GetCustomerName();
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getMailingListsSettingKey}") + "/" + customerName))
-                {
-                    BaseResponseDto<IEnumerable<MailingListDataDTO>> response;
-                    try
-                    {
-                        response = (BaseResponseDto<IEnumerable<MailingListDataDTO>>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload;
-                    }
-                    else
-                    {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                    }
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Get all mailing list for particular customer (whole site) by specified Id.
         /// </summary>
@@ -498,54 +464,7 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
         }
-
-        /// <summary>
-        /// Gets list of addresses in specified container.
-        /// </summary>
-        /// <param name="containerId">Id of container.</param>
-        /// <returns>List of addresses.</returns>
-        public static IEnumerable<MailingAddressData> GetMailingAddresses(Guid containerId)
-        {
-            if (containerId == Guid.Empty)
-            {
-                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
-            }
-
-            Uri url;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getAddressesSettingKey}")
-                , UriKind.Absolute
-                , out url))
-            {
-                throw new InvalidOperationException(_getAddressesIncorrectMessage);
-            }
-
-            var parameterizedUrl = $"{url.AbsoluteUri}/{containerId}";
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(parameterizedUrl))
-                {
-                    BaseResponseDto<IEnumerable<MailingAddressData>> response;
-                    try
-                    {
-                        response = (BaseResponseDto<IEnumerable<MailingAddressData>>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        throw new InvalidOperationException(_responseIncorrectMessage, e);
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload;
-                    }
-                    else
-                    {
-                        throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                    }
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Returns order statistics for current customer (website).
         /// </summary>
