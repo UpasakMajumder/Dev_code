@@ -26,17 +26,17 @@ const pluginsCollection = {
   development: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: DEVELOPMENT ? 10 : 20
+      maxChunks: 1
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       filename: '[name].js',
-      minChunks: Infinity
+      minChunks: 0
     }),
     new WriteFilePlugin({
       log: false
     }),
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
@@ -86,9 +86,6 @@ module.exports = {
                 exclude: /node_modules/,
                 include: [path.resolve(process.cwd(), config.JS_BASE)],
                 loaders: [
-                    {
-                        loader: 'react-hot-loader'
-                    },
                     {
                         loader: 'babel-loader',
                         query: { cacheDirectory: true }

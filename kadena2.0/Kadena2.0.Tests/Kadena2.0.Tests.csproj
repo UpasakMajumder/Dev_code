@@ -448,7 +448,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetDeliveryAddressesTest.cs" />
     <Compile Include="GetHeaderTest.cs" />
     <Compile Include="GetProjectsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -458,6 +457,7 @@
     <Compile Include="UploadMappingTest.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="ValidateAddressesTest.cs" />
+    <Compile Include="WebApi\KListServiceTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderService.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />

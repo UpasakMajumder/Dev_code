@@ -9,7 +9,6 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;

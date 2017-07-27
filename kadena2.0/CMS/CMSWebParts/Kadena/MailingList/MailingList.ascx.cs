@@ -1,5 +1,8 @@
 ﻿using CMS.PortalEngine.Web.UI;
 using System.Linq;
+using Kadena2.MicroserviceClients.Clients;
+using CMS.SiteProvider;
+using CMS.DataEngine;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -35,7 +38,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
     private void GetMailingLists()
     {
-      var mailingListData = Old_App_Code.Helpers.ServiceHelper.GetMailingLists();
+            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
+
+            var client = new MailingListClient();
+            var mailingListData = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result.Payload;
       repMailingLists.DataSource = mailingListData.OrderByDescending(x => x.CreateDate);
       repMailingLists.DataBind();
     }
