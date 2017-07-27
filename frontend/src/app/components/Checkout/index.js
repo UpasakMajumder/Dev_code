@@ -6,7 +6,7 @@ import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity, getStaticUI, getDynamicUI } from 'app.ac/checkout';
+  changeProductQuantity, getUI } from 'app.ac/checkout';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -47,9 +47,8 @@ class Checkout extends Component {
   }
 
   componentDidMount() {
-    const { getStaticUI, getDynamicUI } = this.props;
-    getStaticUI();
-    getDynamicUI();
+    const { getUI } = this.props;
+    getUI();
   }
 
   sendData = (checkedData) => {
@@ -126,27 +125,22 @@ class Checkout extends Component {
       const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
 
+      const disableInteractivity = !totals;
+
       const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
 
-      const deliveryMethodComponent = deliveryMethods
-        ? <DeliveryMethod
+      const deliveryMethodComponent = disableInteractivity
+        ? <Spinner/>
+        : <DeliveryMethod
           changeShoppingData={changeShoppingData}
           checkedId={deliveryMethod}
           isSending={isSending}
           ui={deliveryMethods}
-        />
-        : null;
+        />;
 
-      const totalsComponent = totals
-        ? <Total ui={totals}/>
-        : null;
-
-      const submitComponent = totals
-        ? <Button text={submit.btnLabel}
-                  type="action"
-                  onClick={() => this.sendData(checkedData)}
-          />
-        : null;
+      const totalsComponent = disableInteractivity
+        ? <Spinner/>
+        : <Total ui={totals}/>;
 
       const deliveryContent = isDeliverable
         ? <div>
@@ -154,6 +148,7 @@ class Checkout extends Component {
             <DeliveryAddress
               changeShoppingData={changeShoppingData}
               checkedId={deliveryAddress}
+              disableInteractivity={disableInteractivity}
               ui={deliveryAddresses}/>
           </div>
 
@@ -170,6 +165,7 @@ class Checkout extends Component {
         <div className="shopping-cart__block">
           <Products
             removeProduct={removeProduct}
+            disableInteractivity={disableInteractivity}
             changeProductQuantity={changeProductQuantity}
             ui={products}
           />
@@ -190,7 +186,11 @@ class Checkout extends Component {
         </div>
 
         <div className="shopping-cart__block text--right">
-          {submitComponent}
+          <Button text={submit.btnLabel}
+                  type="action"
+                  isLoading={disableInteractivity}
+                  onClick={() => this.sendData(checkedData)}
+          />
         </div>
       </div>;
     }
@@ -207,8 +207,7 @@ export default connect((state) => {
 
   return { checkout };
 }, {
-  getStaticUI,
-  getDynamicUI,
+  getUI,
   initCheckedShoppingData,
   changeShoppingData,
   sendData,
