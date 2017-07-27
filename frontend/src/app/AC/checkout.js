@@ -9,7 +9,7 @@ import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
 import { staticUI, priceUI, completeUI } from 'app.ws/checkoutUI';
 
-const getTotalPrice = () => {
+const getTotalPrice = (dispatch) => {
   axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
     .then((response) => {
       const { payload, success, errorMessage } = response.data;
@@ -33,7 +33,7 @@ const getTotalPrice = () => {
     });
 };
 
-const getTotalPriceDev = () => {
+const getTotalPriceDev = (dispatch) => {
   setTimeout(() => {
     dispatch({
       type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
@@ -71,7 +71,7 @@ export const getUI = () => {
           dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
 
-      getTotalPrice();
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -84,7 +84,7 @@ export const getUI = () => {
         });
       }, 1500);
 
-      getTotalPriceDev();
+      getTotalPriceDev(dispatch);
     };
 
     // dev();
@@ -129,7 +129,7 @@ export const removeProduct = (id) => {
           dispatch({ type: REMOVE_PRODUCT + FAILURE });
         });
 
-      getTotalPrice();
+      getTotalPrice(dispatch);
     };
 
     prod();
@@ -163,7 +163,7 @@ export const changeProductQuantity = (id, quantity) => {
           dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
         });
 
-      getTotalPrice();
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -221,7 +221,7 @@ export const changeShoppingData = (field, id, invoice) => {
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
         });
 
-      getTotalPrice();
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -233,7 +233,7 @@ export const changeShoppingData = (field, id, invoice) => {
           }
         });
 
-        getTotalPriceDev();
+        getTotalPriceDev(dispatch);
 
       }, 1000);
     };
