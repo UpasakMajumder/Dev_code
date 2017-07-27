@@ -562,6 +562,17 @@ namespace Kadena.WebAPI.KenticoProviders
             return breadcrubs;
         }
 
+        public string GetProductTeaserImageUrl(int documentId) {
+            var result = string.Empty;
+
+            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            if ((doc?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
+            {
+                result = URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", doc.GetGuidValue("ProductThumbnail", Guid.Empty)));
+            }
+            return result;
+        }
+
         public Site GetSite(int siteId)
         {
             var site = SiteInfoProvider.GetSiteInfo(siteId);
