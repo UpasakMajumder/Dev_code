@@ -177,9 +177,9 @@ class ModifyMailingList extends Component {
 
     return (
       <div className="processed-list">
-        {mailingDialog}
         {errorContainer}
         {successContainer}
+        {mailingDialog}
       </div>
     );
   }
