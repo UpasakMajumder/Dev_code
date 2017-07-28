@@ -50,6 +50,7 @@ const app = {
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
+    render('CartPreview', document.querySelectorAll('.r-cart-preview'));
   }
 };
 
