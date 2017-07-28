@@ -87,6 +87,14 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
+            if (password.Contains(" "))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordContainsWhitespace", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (confirmPassword.Contains(" "))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordContainsWhitespace", LocalizationContext.CurrentCulture.CultureCode) };
+            }
             if (password != confirmPassword)
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame", LocalizationContext.CurrentCulture.CultureCode) };
@@ -118,13 +126,24 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
+            if (oldPassword.Contains(" "))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.OldPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
+            }
             if (string.IsNullOrEmpty(newPassword))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.NewPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
+            if (newPassword.Contains(" "))
+            {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.NewPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
+            }
             if (string.IsNullOrEmpty(confirmPassword))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+            }
+            if (confirmPassword.Contains(" ")) {
+                return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
             }
             if (newPassword != confirmPassword)
             {
