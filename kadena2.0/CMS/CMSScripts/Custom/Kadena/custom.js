@@ -83,9 +83,21 @@ if (!String.prototype.format) {
                 base.find(settings.passwordErrorLabel).show();
                 return;
             }
+            if (base.find(settings.passwordInput).val().indexOf(' ') != -1) {
+                base.find(settings.passwordInput).addClass("input--error");
+                base.find(settings.passwordErrorLabel).html(config.localization.initialPasswordSetting.passwordContainsWhitespaceValidationMessage);
+                base.find(settings.passwordErrorLabel).show();
+                return;
+            }
             if (base.find(settings.confirmPasswordInput).val() == '') {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.confirmPasswordErrorLabel).html(config.localization.initialPasswordSetting.passwordEmptyValidationMessage);
+                base.find(settings.confirmPasswordErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.confirmPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.confirmPasswordInput).addClass("input--error");
+                base.find(settings.confirmPasswordErrorLabel).html(config.localization.initialPasswordSetting.passwordContainsWhitespaceValidationMessage);
                 base.find(settings.confirmPasswordErrorLabel).show();
                 return;
             }
@@ -234,9 +246,12 @@ if (!String.prototype.format) {
             newPasswordInput: ".j-new-password",
             confirmPasswordInput: ".j-confirm-password",
 
-            oldPasswordErrorLabel: ".j-old-password-error-label",
-            newPasswordErrorLabel: ".j-new-password-error-label",
-            confirmPasswordErrorLabel: ".j-confirm-password-error-label",
+            oldPasswordEmptyErrorLabel: ".j-old-password-empty-error-label",
+            oldPasswordWhitespaceErrorLabel: ".j-old-password-whitespace-error-label",
+            newPasswordEmptyErrorLabel: ".j-new-password-empty-error-label",
+            newPasswordWhitespaceErrorLabel: ".j-new-password-whitespace-error-label",
+            confirmPasswordEmptyErrorLabel: ".j-confirm-password-empty-error-label",
+            confirmPasswordWhitespaceErrorLabel: ".j-confirm-password-whitespace-error-label",
             passwordsDontMatchErrorLabel: ".j-passwords-dont-match-error-label",
             generalErrorLabel: ".j-general-error-label",
 
@@ -267,35 +282,53 @@ if (!String.prototype.format) {
         base.find(settings.submitButton).click(function (e) {
             e.preventDefault();
 
-            base.find(settings.oldPasswordErrorLabel).hide();
+            base.find(settings.oldPasswordEmptyErrorLabel).hide();
+            base.find(settings.oldPasswordWhitespaceErrorLabel).hide();
             base.find(settings.oldPasswordInput).removeClass("input--error");
-            base.find(settings.newPasswordErrorLabel).hide();
+            base.find(settings.newPasswordEmptyErrorLabel).hide();
+            base.find(settings.newPasswordWhitespaceErrorLabel).hide();
             base.find(settings.newPasswordInput).removeClass("input--error");
-            base.find(settings.confirmPasswordErrorLabel).hide();
+            base.find(settings.confirmPasswordEmptyErrorLabel).hide();
+            base.find(settings.confirmPasswordWhitespaceErrorLabel).hide();
             base.find(settings.confirmPasswordInput).removeClass("input--error");
             base.find(settings.passwordsDontMatchErrorLabel).hide();
             base.find(settings.generalErrorLabel).hide();
 
-            var oldPassword = base.find(settings.oldPasswordInput).val().replace(/ /g, '');
-            var newPassword = base.find(settings.newPasswordInput).val().replace(/ /g, '');
-            var confirmPassword = base.find(settings.confirmPasswordInput).val().replace(/ /g, '');
+            //var oldPassword = base.find(settings.oldPasswordInput).val().replace(/ /g, '');
+            //var newPassword = base.find(settings.newPasswordInput).val().replace(/ /g, '');
+            //var confirmPassword = base.find(settings.confirmPasswordInput).val().replace(/ /g, '');
 
-            if (!oldPassword) {
+            if (base.find(settings.oldPasswordInput).val().length == 0) {
                 base.find(settings.oldPasswordInput).addClass("input--error");
-                base.find(settings.oldPasswordErrorLabel).show();
+                base.find(settings.oldPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (!newPassword) {
+            if (base.find(settings.oldPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.oldPasswordInput).addClass("input--error");
+                base.find(settings.oldPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.newPasswordInput).val().length == 0) {
                 base.find(settings.newPasswordInput).addClass("input--error");
-                base.find(settings.newPasswordErrorLabel).show();
+                base.find(settings.newPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (!confirmPassword) {
+            if (base.find(settings.newPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.newPasswordInput).addClass("input--error");
+                base.find(settings.newPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.confirmPasswordInput).val().length == 0) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
-                base.find(settings.confirmPasswordErrorLabel).show();
+                base.find(settings.confirmPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (newPassword !== confirmPassword) {
+            if (base.find(settings.confirmPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.confirmPasswordInput).addClass("input--error");
+                base.find(settings.confirmPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.newPasswordInput).val() !== base.find(settings.confirmPasswordInput).val()) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.passwordsDontMatchErrorLabel).show();
                 return;
@@ -304,9 +337,9 @@ if (!String.prototype.format) {
 
             var passedData = {
                 userGUID: userGUID,
-                oldPassword: oldPassword,
-                newPassword: newPassword,
-                confirmPassword: confirmPassword
+                oldPassword: base.find(settings.oldPasswordInput).val(),
+                newPassword: base.find(settings.newPasswordInput).val(),
+                confirmPassword: base.find(settings.confirmPasswordInput).val()
             };
 
             base.find(settings.submitButton).attr("disabled", "disabled");

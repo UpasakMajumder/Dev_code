@@ -9,10 +9,7 @@ export default {
         "category": "Category Name",
         "title": "Apr 16 17 Lamp post 2nd",
         "url": "#",
-        "stock": {
-          "type": "available", // types: available/unavailable/out
-          "text": "150 pcs in stock"
-        }
+        "stock": null
       }
     ]
   },
@@ -27,4 +24,4 @@ export default {
     ]
   },
   "message": ""
-}
+};
