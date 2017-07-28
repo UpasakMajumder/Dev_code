@@ -11,6 +11,8 @@ export const FINISH = '_FINISH';
 
 export const INIT_UI = '_INIT_UI';
 
+export const TOGGLE = '_TOGGLE';
+
 export const VALIDATION_ERROR = '_VALIDATION_ERROR';
 
 /* main part */
@@ -23,6 +25,8 @@ export const HEADER_SHADOW = 'HEADER_SHADOW';
 export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const SUBMIT_CHECKOUT = 'SUBMIT_CHECKOUT';
+export const CHECKOUT_ASK_PDF = 'CHECKOUT_ASK_PDF';
+export const CART_PREVIEW = 'CART_PREVIEW';
 export const SETTINGS_ADDRESSES = 'SETTINGS_ADDRESSES';
 export const RECENT_ORDERS = 'RECENT_ORDERS';
 export const RECENT_ORDERS_CHANGE_PAGE = 'RECENT_ORDERS_CHANGE_PAGE';
