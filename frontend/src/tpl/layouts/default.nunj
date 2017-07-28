@@ -134,7 +134,8 @@
         login: 'Log in'
       },
       checkout: {
-        initUIURL: '',
+        initRenderUIURL: '',
+        initTotalDeliveryUIURL: '',
         changeAddressURL: '',
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',

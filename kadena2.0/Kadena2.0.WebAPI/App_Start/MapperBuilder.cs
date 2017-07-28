@@ -22,6 +22,7 @@ using Kadena.Models.Settings;
 using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI
 {
@@ -70,6 +71,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
+                config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<SubmitButton, SubmitButtonDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
                 config.CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
@@ -133,6 +135,7 @@ namespace Kadena.WebAPI
                     });
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
+                config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<UpdateAddressDto, MailingAddress>().ProjectUsing(a => new MailingAddress
                 {
                     Id = a.Id,
