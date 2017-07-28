@@ -91,7 +91,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/shoppingcart/itemspreview")]
         [AuthorizationFilter]
         public IHttpActionResult ItemsPreview()
@@ -101,7 +101,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/shoppingcart/itemscount")]
         [AuthorizationFilter]
         public IHttpActionResult ItemsCount()
