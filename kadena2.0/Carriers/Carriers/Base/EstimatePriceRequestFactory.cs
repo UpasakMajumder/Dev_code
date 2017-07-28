@@ -1,7 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.SiteProvider;
-using Kadena2.Carriers.ServiceApi;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,19 +9,19 @@ namespace Kadena2.Carriers
 {
     class EstimatePriceRequestFactory
     {
-        public EstimateDeliveryPriceRequest Create(Delivery delivery, string provider, string service)
+        public EstimateDeliveryPriceRequestDto Create(Delivery delivery, string provider, string service)
         {
-            return new EstimateDeliveryPriceRequest()
+            return new EstimateDeliveryPriceRequestDto()
             {
-                provider = provider,
-                providerService = service.Replace("#", ""), // hack to solve non-unique service keys
-                sourceAddress = GetSourceAddressFromConfig(),
-                targetAddress = GetAddress(delivery.DeliveryAddress),
-                weight = new Weight() { unit = "Lb", value = (double)delivery.Weight }
+                Provider = provider,
+                ProviderService = service.Replace("#", ""), // hack to solve non-unique service keys
+                SourceAddress = GetSourceAddressFromConfig(),
+                TargetAddress = GetAddress(delivery.DeliveryAddress),
+                Weight = new WeightDto() { Unit = "Lb", Value = (double)delivery.Weight }
             };
         }
 
-        private Address GetSourceAddressFromConfig()
+        private AddressDto GetSourceAddressFromConfig()
         {
             var addressLines = new[]
             {
@@ -29,28 +29,28 @@ namespace Kadena2.Carriers
                 SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
             }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
 
-            return new Address()
+            return new AddressDto()
             {
-                city = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
-                country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
-                postal = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
-                state = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
-                streetLines = addressLines
+                City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
+                Country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
+                Postal = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
+                State = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
+                StreetLines = addressLines
             };
         }
 
-        private Address GetAddress(IAddress address)
+        private AddressDto GetAddress(IAddress address)
         {
             if (address == null)
-                return new Address();
+                return new AddressDto();
 
-            return new Address()
+            return new AddressDto()
             {
-                city = address.AddressCity,
-                country = address.GetCountryTwoLetterCode(),
-                postal = address.AddressZip,
-                state = address.GetStateCode(),
-                streetLines = new List<string> { address.AddressLine1, address.AddressLine2 }
+                City = address.AddressCity,
+                Country = address.GetCountryTwoLetterCode(),
+                Postal = address.AddressZip,
+                State = address.GetStateCode(),
+                StreetLines = new List<string> { address.AddressLine1, address.AddressLine2 }
             };
         }
     }

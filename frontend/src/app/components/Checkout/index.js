@@ -5,8 +5,8 @@ import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity } from 'app.ac/checkout';
+import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
+  changeProductQuantity, getUI } from 'app.ac/checkout';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -85,11 +85,14 @@ class Checkout extends Component {
       if (address.checked) deliveryAddress = address.id;
     });
 
-    deliveryMethods.items.forEach((methodGroup) => {
-      methodGroup.items.forEach((method) => {
-        if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+
+    if (deliveryMethods) {
+      deliveryMethods.items.forEach((methodGroup) => {
+        methodGroup.items.forEach((method) => {
+          if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+        });
       });
-    });
+    }
 
     paymentMethods.items.forEach((method) => {
       if (method.checked) paymentMethod = { id: method.id, invoice: '' };
@@ -122,7 +125,22 @@ class Checkout extends Component {
       const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
 
+      const disableInteractivity = !totals;
+
       const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
+
+      const deliveryMethodComponent = disableInteractivity
+        ? <Spinner/>
+        : <DeliveryMethod
+          changeShoppingData={changeShoppingData}
+          checkedId={deliveryMethod}
+          isSending={isSending}
+          ui={deliveryMethods}
+        />;
+
+      const totalsComponent = disableInteractivity
+        ? <Spinner/>
+        : <Total ui={totals}/>;
 
       const deliveryContent = isDeliverable
         ? <div>
@@ -130,15 +148,12 @@ class Checkout extends Component {
             <DeliveryAddress
               changeShoppingData={changeShoppingData}
               checkedId={deliveryAddress}
+              disableInteractivity={disableInteractivity}
               ui={deliveryAddresses}/>
           </div>
 
           <div className="shopping-cart__block">
-            <DeliveryMethod
-              changeShoppingData={changeShoppingData}
-              checkedId={deliveryMethod}
-              isSending={isSending}
-              ui={deliveryMethods}/>
+            {deliveryMethodComponent}
           </div>
         </div>
         : <div className="shopping-cart__block">
@@ -150,6 +165,7 @@ class Checkout extends Component {
         <div className="shopping-cart__block">
           <Products
             removeProduct={removeProduct}
+            disableInteractivity={disableInteractivity}
             changeProductQuantity={changeProductQuantity}
             ui={products}
           />
@@ -166,13 +182,15 @@ class Checkout extends Component {
         </div>
 
         <div className="shopping-cart__block">
-          <Total ui={totals}/>
+          {totalsComponent}
         </div>
 
         <div className="shopping-cart__block text--right">
           <Button text={submit.btnLabel}
                   type="action"
-                  onClick={() => this.sendData(checkedData)} />
+                  isLoading={disableInteractivity}
+                  onClick={() => this.sendData(checkedData)}
+          />
         </div>
       </div>;
     }

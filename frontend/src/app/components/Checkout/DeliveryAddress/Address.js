@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Address = (props) => {
-  const { id, street, city, state, zip, checkedId, changeShoppingData } = props;
+  const { id, street, city, state, zip, checkedId, changeShoppingData, disableInteractivity } = props;
 
   const streets = street.map((st, i) => <p key={i}>{st}</p>);
 
@@ -11,6 +11,7 @@ const Address = (props) => {
       <input
         onChange={(e) => { changeShoppingData(e.target.name, id); }}
         id={`da-${id}`}
+        disabled={disableInteractivity}
         name="deliveryAddress"
         checked={id === checkedId}
         type="radio"
@@ -32,7 +33,8 @@ Address.propTypes = {
   id: PropTypes.number.isRequired,
   checkedId: PropTypes.number,
   checked: PropTypes.bool,
-  state: PropTypes.string
+  state: PropTypes.string,
+  disableInteractivity: PropTypes.bool.isRequired
 };
 
 export default Address;
