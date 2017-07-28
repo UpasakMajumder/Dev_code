@@ -11,5 +11,7 @@ namespace Kadena.WebAPI.Contracts
         CheckoutPage SelectAddress(int id);
         CheckoutPage ChangeItemQuantity(int id, int quantity);
         CheckoutPage RemoveItem(int id);
+        CartItemsPreview ItemsPreview();
+        int ItemsCount();
     }
 }

@@ -22,7 +22,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kadena.WebAPI
 {
@@ -147,6 +146,7 @@ namespace Kadena.WebAPI
                     Zip = a.PostalCode
                 });
                 config.CreateMap<MailingAddress, MailingAddressDto>().AfterMap((s, d) => d.FirstName = s.Name);
+                config.CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
             });
         }
     }

@@ -255,6 +255,16 @@ namespace Kadena.WebAPI.Services
             kenticoProvider.RemoveCartItem(id);
             return GetCheckoutPage();
         }
+
+        public CartItemsPreview ItemsPreview()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ItemsCount()
+        {
+            return kenticoProvider.GetShoppingCartItemsCount();
+        }
     }
 }
  

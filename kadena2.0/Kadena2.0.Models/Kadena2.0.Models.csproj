@@ -43,6 +43,7 @@
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Checkout\CartItem.cs" />
     <Compile Include="Checkout\CartItems.cs" />
+    <Compile Include="Checkout\CartItemsPreview.cs" />
     <Compile Include="Checkout\CheckoutPageDeliveryTotals.cs" />
     <Compile Include="Checkout\CheckoutPage.cs" />
     <Compile Include="Checkout\DeliveryAddresses.cs" />

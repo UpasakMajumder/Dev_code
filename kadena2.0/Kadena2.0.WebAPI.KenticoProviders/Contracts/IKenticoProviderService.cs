@@ -34,7 +34,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         DeliveryOption GetShippingOption(int id);
         CartItem[] GetShoppingCartItems();
         void RemoveCartItem(int id);
-
+        int GetShoppingCartItemsCount();
         void SetCartItemQuantity(int id, int quantity);
         void RemoveCurrentItemsFromStock();
 
@@ -64,5 +64,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         bool UserCanSeeAllOrders();
 	    Site GetSite(int siteId);
+
+
     }
 }

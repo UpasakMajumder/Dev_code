@@ -91,5 +91,23 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
+        [HttpPost]
+        [Route("api/shoppingcart/itemspreview")]
+        [AuthorizationFilter]
+        public IHttpActionResult ItemsPreview()
+        {
+            var result = service.ItemsPreview();
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
+        [HttpPost]
+        [Route("api/shoppingcart/itemscount")]
+        [AuthorizationFilter]
+        public IHttpActionResult ItemsCount()
+        {
+            int count = service.ItemsCount();
+            return ResponseJson(count);
+        }
     }
 }
