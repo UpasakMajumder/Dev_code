@@ -149,7 +149,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
             if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
             {
-                MailingListData = ServiceHelper.GetMailingList(containerId);
+                try
+                {
+                    MailingListData = ServiceHelper.GetMailingList(containerId);
+                }
+                catch (System.Net.Http.HttpRequestException ex)
+                {
+                    EventLogProvider.LogException("Add to cart edit", "SET MAILING LIST DATA", ex);
+                    this.Visible = false;
+                }                
             }
 
         }
