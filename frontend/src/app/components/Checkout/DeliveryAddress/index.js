@@ -6,13 +6,17 @@ import Alert from 'app.dump/Alert';
 import Address from './Address';
 
 const DeliveryAddress = (props) => {
-  const { ui, checkedId, changeShoppingData } = props;
+  const { ui, checkedId, changeShoppingData, disableInteractivity } = props;
   const { title, description, newAddress, items, emptyMessage } = ui;
 
   const renderAddresses = (item) => {
     return (
       <div key={`da-${item.id}`} className="input__wrapper">
-        <Address changeShoppingData={changeShoppingData} checkedId={checkedId} {...item} />
+        <Address disableInteractivity={disableInteractivity}
+                 changeShoppingData={changeShoppingData}
+                 checkedId={checkedId}
+                 {...item}
+        />
       </div>
     );
   };
@@ -48,6 +52,7 @@ const DeliveryAddress = (props) => {
 DeliveryAddress.propTypes = {
   changeShoppingData: PropTypes.func.isRequired,
   checkedId: PropTypes.number,
+  disableInteractivity: PropTypes.bool.isRequired,
   ui: PropTypes.shape({
     items: PropTypes.arrayOf(PropTypes.object.isRequired),
     newAddress: PropTypes.shape({
