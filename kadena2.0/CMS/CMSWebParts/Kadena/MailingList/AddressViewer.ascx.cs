@@ -1,4 +1,6 @@
-﻿using CMS.DataEngine;
+﻿using CMS.CustomTables;
+using CMS.DataEngine;
+using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
@@ -9,6 +11,7 @@ using Kadena2.MicroserviceClients.Clients;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -36,6 +39,28 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var addresses = client.GetAddresses(getAddressUrl, _containerId).Result.Payload;
                 var badAddresses = addresses.Where(a => a.Error != null);
                 var goodAddresses = addresses.Where(a => a.Error == null);
+                var errorsDictionary = CustomTableItemProvider.GetItems("KDA.AddressErrors").ToDictionary(i => i["ErrorCode"].ToString(), i => i["ErrorDescription"].ToString());
+                var missingCodes = new HashSet<string>();
+                foreach (var a in badAddresses)
+                {
+                    string val;
+                    if (errorsDictionary.TryGetValue(a.Error, out val))
+                    {
+                        a.Error = val;
+                    }
+                    else
+                    {
+                        if (!missingCodes.Contains(a.Error))
+                        {
+                            missingCodes.Add(a.Error);
+                        }
+                    }
+                }
+                if (missingCodes.Count > 0)
+                {
+                    var exc = new KeyNotFoundException($"The error description is not found for following key(s): {string.Join(", ", missingCodes)}");
+                    EventLogProvider.LogWarning("Mailing Addresses Load", "WARNING", exc, CurrentSite.SiteID, string.Empty);
+                }
 
                 var setting = new JsonSerializerSettings
                 {
@@ -91,8 +116,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                                 City = a.City,
                                 State = a.State,
                                 PostalCode = a.Zip,
-                                ErrorMessage = a.Error
                             })
+                            .Take(4)
                             : null
                         },
                         FormInfo = new
