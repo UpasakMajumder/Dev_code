@@ -28,26 +28,13 @@ class ChiliEditor {
 
   initActions() {
     const saveBtn = document.querySelector('.js-chili-save');
-    if (!saveBtn) {
-      consoleException('No found save btn with .js-chili-save');
-      return;
-    }
+    if (saveBtn) saveBtn.addEventListener('click', this.saveTemplate);
 
     const addToCartBtn = document.querySelector('.js-chili-addtocart');
-    if (!addToCartBtn) {
-      consoleException('No found add to cart btn with .js-chili-addtocart');
-      return;
-    }
+    if (addToCartBtn) addToCartBtn.addEventListener('click', this.saveTemplate);
 
     const revertBtn = document.querySelector('.js-chili-revert');
-    if (!addToCartBtn) {
-      consoleException('No found revert btn with .js-chili-revert');
-      return;
-    }
-
-    saveBtn.addEventListener('click', this.saveTemplate);
-    addToCartBtn.addEventListener('click', this.saveTemplate);
-    revertBtn.addEventListener('click', this.revertTemplate);
+    if (revertBtn) revertBtn.addEventListener('click', this.revertTemplate);
   }
 
   saveTemplate() {
