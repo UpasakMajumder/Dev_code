@@ -59,6 +59,8 @@ export const getUI = () => {
             return;
           }
 
+          getTotalPrice(dispatch);
+
           dispatch({
             type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
             payload: {
@@ -70,12 +72,12 @@ export const getUI = () => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
-
-      getTotalPrice(dispatch);
     };
 
     const dev = () => {
       setTimeout(() => {
+        getTotalPriceDev(dispatch);
+
         dispatch({
           type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
           payload: {
@@ -83,8 +85,6 @@ export const getUI = () => {
           }
         });
       }, 1500);
-
-      getTotalPriceDev(dispatch);
     };
 
     // dev();
@@ -116,6 +116,8 @@ export const removeProduct = (id) => {
             return;
           }
 
+          getTotalPrice(dispatch);
+
           dispatch({
             type: REMOVE_PRODUCT + SUCCESS,
             payload: {
@@ -128,8 +130,6 @@ export const removeProduct = (id) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: REMOVE_PRODUCT + FAILURE });
         });
-
-      getTotalPrice(dispatch);
     };
 
     prod();
@@ -150,6 +150,8 @@ export const changeProductQuantity = (id, quantity) => {
             return;
           }
 
+          getTotalPrice(dispatch);
+
           dispatch({
             type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
             payload: {
@@ -162,8 +164,6 @@ export const changeProductQuantity = (id, quantity) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
         });
-
-      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -208,6 +208,8 @@ export const changeShoppingData = (field, id, invoice) => {
             return;
           }
 
+          getTotalPrice(dispatch);
+
           dispatch({
             type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
             payload: {
@@ -220,21 +222,18 @@ export const changeShoppingData = (field, id, invoice) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
         });
-
-      getTotalPrice(dispatch);
     };
 
     const dev = () => {
       setTimeout(() => {
+        getTotalPriceDev(dispatch);
+
         dispatch({
           type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
           payload: {
             ui: completeUI.payload
           }
         });
-
-        getTotalPriceDev(dispatch);
-
       }, 1000);
     };
 
