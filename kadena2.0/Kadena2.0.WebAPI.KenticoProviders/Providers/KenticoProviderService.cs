@@ -54,7 +54,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-            return AddressFactory.CreateDeliveryAddress(address);            
+            return AddressFactory.CreateDeliveryAddress(address);
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -107,7 +107,8 @@ namespace Kadena.WebAPI.KenticoProviders
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var skuurl = sku?.SKUImagePath ?? string.Empty;
 
-            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty) {
+            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
+            {
                 return URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", document.GetGuidValue("ProductThumbnail", Guid.Empty)));
             }
             return URLHelper.GetAbsoluteUrl(skuurl);
@@ -118,19 +119,21 @@ namespace Kadena.WebAPI.KenticoProviders
         /// </summary>
         public string GetShippingProviderIcon(string title)
         {
-            var dictionary = new Dictionary<string, string>()
+            if (title != null)
             {
-                {"fedex","fedex-delivery"},
-                {"usps","usps-delivery" },
-                {"ups","ups-delivery" }
-            };
+                var dictionary = new Dictionary<string, string>()
+                {
+                    {"fedex","fedex-delivery"},
+                    {"usps","usps-delivery" },
+                    {"ups","ups-delivery" }
+                };
 
-            foreach (var kvp in dictionary)
-            {
-                if (title.ToLower().Contains(kvp.Key))
-                    return kvp.Value;
+                foreach (var kvp in dictionary)
+                {
+                    if (title.ToLower().Contains(kvp.Key))
+                        return kvp.Value;
+                }
             }
-            
             return string.Empty;
         }
 
@@ -138,7 +141,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = DeliveryFactory.CreateOptions(services);
-            GetShippingPrice(result);          
+            GetShippingPrice(result);
             return result;
         }
 
@@ -175,7 +178,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();            
+            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
             return PaymentOptionFactory.CreateMethods(methods);
         }
 
@@ -294,7 +297,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = i.UnitPrice * i.CartItemUnits,
-				PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
+                PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
                 PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 MailingListName = i.GetValue("MailingListName", string.Empty),
@@ -302,7 +305,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems				
+                StockQuantity = i.SKU.SKUAvailableItems
             }
             ).ToArray();
 
@@ -383,7 +386,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, id));
             }
 
-            var documentId = item.GetIntegerValue("ProductPageID", 0);          
+            var documentId = item.GetIntegerValue("ProductPageID", 0);
             var ranges = GetDynamicPricingRanges(documentId);
 
             if ((ranges?.Count() ?? 0) > 0)
@@ -429,7 +432,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
                 ProductType = doc.GetValue("ProductType", string.Empty)
-        };
+            };
 
             if (sku != null)
             {
@@ -459,7 +462,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
 
             return ranges;
- 
+
         }
         public void RemoveCurrentItemsFromStock()
         {
@@ -531,7 +534,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
 
-		public bool UserCanSeePrices()
+        public bool UserCanSeePrices()
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
@@ -545,7 +548,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
         }
-		
+
 
         public List<string> GetBreadcrumbs(int documentId)
         {
@@ -562,7 +565,8 @@ namespace Kadena.WebAPI.KenticoProviders
             return breadcrubs;
         }
 
-        public string GetProductTeaserImageUrl(int documentId) {
+        public string GetProductTeaserImageUrl(int documentId)
+        {
             var result = string.Empty;
 
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
