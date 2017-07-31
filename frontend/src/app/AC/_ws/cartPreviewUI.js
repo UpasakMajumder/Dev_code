@@ -5,6 +5,10 @@ export default {
     "label": "Proceed to checkout",
     "url": "#"
   },
+  "totalPrice": {
+    "pricePrefix": "$",
+    "price": "1000.0"
+  },
   "items": [
     {
       "id": 33,

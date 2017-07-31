@@ -5,18 +5,26 @@ import { connect } from 'react-redux';
 import { getUI, togglePreview } from 'app.ac/cartPreview';
 /* components */
 import CartPreviewProduct from 'app.dump/Product/CartPreview';
+import Spinner from 'app.dump/Spinner';
 
 class CartPreview extends Component {
   static propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object).isRequired,
-    togglePreview: PropTypes.func.isRequired,
-    getUI: PropTypes.func.isRequired,
-    emptyCartMessage: PropTypes.string.isRequired,
-    isVisible: PropTypes.bool.isRequired,
-    cart: PropTypes.shape({
-      label: PropTypes.string,
-      url: PropTypes.string
-    }).isRequired
+    cartPreview: PropTypes.shape({
+      items: PropTypes.arrayOf(PropTypes.object).isRequired,
+      getUI: PropTypes.func.isRequired,
+      emptyCartMessage: PropTypes.string.isRequired,
+      isVisible: PropTypes.bool.isRequired,
+      cart: PropTypes.shape({
+        label: PropTypes.string,
+        url: PropTypes.string
+      }).isRequired,
+      isLoaded: PropTypes.bool.isRequired,
+      totalPrice: PropTypes.shape({
+        pricePrefix: PropTypes.string,
+        price: PropTypes.string
+      }).isRequired
+    }).isRequired,
+    togglePreview: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -24,36 +32,42 @@ class CartPreview extends Component {
   }
 
   render() {
-    const { emptyCartMessage, cart, items, isVisible, togglePreview } = this.props;
+    const { cartPreview, togglePreview } = this.props;
+    const { emptyCartMessage, cart, items, isVisible, isLoaded, totalPrice } = cartPreview;
 
-    let content = (
-      <div className="cart-preview__container">
-        <div className="cart-preview__empty">
-          <p>{emptyCartMessage}</p>
-        </div>
-      </div>
-    );
+    let content = <Spinner/>;
 
-    if (items.length) {
-      const products = items.map(product => <CartPreviewProduct key={product.id} {...product} />);
+    if (isLoaded) {
+      if (items.length) {
+        const products = items.map(product => <CartPreviewProduct key={product.id} {...product} />);
 
-      content = (
-        <div className="cart-preview__container">
-          <div className="cart-preview__products">
-            {products}
+        content = (
+          <div>
+            <div className="cart-preview__products">
+              {products}
+            </div>
+            <div className="cart-preview__footer">
+              <span className="cart-preview__total-price">{totalPrice.pricePrefix} {totalPrice.price}</span>
+              <a className="btn-action cart-preview__proceed" href={cart.url}>{cart.label}</a>
+            </div>
           </div>
-          <div className="cart-preview__footer">
-            <a className="btn-action cart-preview__proceed" href={cart.url}>{cart.label}</a>
-          </div>
-        </div>
-      );
+        );
+      } else {
+        content = (
+            <div className="cart-preview__empty">
+              <p>{emptyCartMessage}</p>
+            </div>
+        );
+      }
     }
+
+    const preview = <div className="cart-preview__container">{content}</div>;
 
     return (
       <div onMouseEnter={() => togglePreview(true)}
            onMouseLeave={() => togglePreview(false)}
            className="cart-preview">
-        { isVisible ? content : null}
+        { isVisible ? preview : null}
       </div>
     );
   }
@@ -62,7 +76,7 @@ class CartPreview extends Component {
 
 export default connect((state) => {
   const { cartPreview } = state;
-  return { ...cartPreview };
+  return { cartPreview };
 }, {
   getUI,
   togglePreview

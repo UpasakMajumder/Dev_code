@@ -78,6 +78,11 @@
     }
   }
 
+  &__total-price {
+    font-weight: bold;
+    font-size: $font-l;
+  }
+
   &__price {
     font-weight: bold;
     font-size: $font-m;
@@ -95,6 +100,6 @@
   }
 
   &__footer {
-    text-align: right;
+    @extend %flex--center--between;
   }
 }

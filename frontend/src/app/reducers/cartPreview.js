@@ -4,7 +4,9 @@ const defaultState = {
   emptyCartMessage: '',
   cart: {},
   items: [],
-  isVisible: false
+  totalPrice: {},
+  isVisible: false,
+  isLoaded: false
 };
 
 export default (state = defaultState, action) => {
@@ -16,7 +18,9 @@ export default (state = defaultState, action) => {
       ...state,
       emptyCartMessage: payload.emptyCartMessage,
       cart: payload.cart,
-      items: payload.items
+      items: payload.items,
+      totalPrice: payload.totalPrice,
+      isLoaded: true
     };
 
   case CART_PREVIEW + TOGGLE:

@@ -43,10 +43,11 @@ export const getUI = () => {
           payload: {
             emptyCartMessage: ui.emptyCartMessage,
             cart: ui.cart,
-            items: ui.items
+            items: ui.items,
+            totalPrice: ui.totalPrice
           }
         });
-      }, 1200);
+      }, 0);
     };
 
     // dev();
