@@ -13,7 +13,6 @@ using CMS.Membership;
 using Newtonsoft.Json;
 using Kadena.Models.Checkout;
 using CMS.Localization;
-using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 
@@ -268,6 +267,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 Company = customer.CustomerCompany,
                 SiteId = customer.CustomerSiteID
             };
+        }
+
+        public int GetShoppingCartItemsCount()
+        {
+            return ECommerceContext.CurrentShoppingCart.CartItems.Count;
         }
 
         public CartItem[] GetShoppingCartItems()

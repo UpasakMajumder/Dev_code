@@ -1,53 +1,90 @@
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_ASK_PDF, CHECKOUT,
+import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY } from 'app.consts';
+  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC } from 'app.consts';
 
 /* globals */
 import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
-import ui from 'app.ws/checkoutUI';
+import { staticUI, priceUI, completeUI } from 'app.ws/checkoutUI';
+
+const getTotalPrice = (dispatch) => {
+  axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
+    .then((response) => {
+      const { payload, success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+        alert(errorMessage); // eslint-disable-line no-alert
+        return;
+      }
+
+      dispatch({
+        type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+        payload: {
+          ui: payload
+        }
+      });
+    })
+    .catch((error) => {
+      alert(error); // eslint-disable-line no-alert
+      dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+    });
+};
+
+const getTotalPriceDev = (dispatch) => {
+  setTimeout(() => {
+    dispatch({
+      type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
+      payload: {
+        ui: priceUI.payload
+      }
+    });
+  }, 3000);
+};
 
 export const getUI = () => {
   return (dispatch) => {
-    dispatch({ type: CHECKOUT + INIT_UI + FETCH });
+    dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
 
     const prod = () => {
-      axios.get(CHECKOUT_URL.initUIURL)
+      axios.get(CHECKOUT_URL.initRenderUIURL)
         .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
+            dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
             alert(errorMessage); // eslint-disable-line no-alert
             return;
           }
 
           dispatch({
-            type: CHECKOUT + INIT_UI + SUCCESS,
+            type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
             payload: {
-              ui: payload,
-              isWaitingPDF: payload.submit.isDisabled
+              ui: payload
             }
           });
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
-          dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
+          dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
+
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
       setTimeout(() => {
         dispatch({
-          type: CHECKOUT + INIT_UI + SUCCESS,
+          type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
           payload: {
-            ui: ui.payload,
-            isWaitingPDF: ui.payload.submit.isDisabled
+            ui: staticUI.payload
           }
         });
-      }, 3000);
+      }, 1500);
+
+      getTotalPriceDev(dispatch);
     };
 
     // dev();
@@ -64,16 +101,13 @@ export const initCheckedShoppingData = (data) => {
   };
 };
 
+
 export const removeProduct = (id) => {
   return (dispatch) => {
-    dispatch({ type: APP_LOADING + START });
-
     const prod = () => {
       const url = CHECKOUT_URL.removeProductURL;
       axios.post(url, { id })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -93,31 +127,21 @@ export const removeProduct = (id) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: REMOVE_PRODUCT + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice(dispatch);
     };
 
-    const dev = () => {
-      setTimeout(() => {
-        dispatch({ type: APP_LOADING + FINISH });
-      }, 2000);
-    };
-
-    // dev();
     prod();
   };
 };
 
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
-    dispatch({ type: APP_LOADING + START });
-
     const prod = () => {
       const url = CHECKOUT_URL.changeQuantityURL;
       axios.post(url, { id, quantity })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -137,8 +161,9 @@ export const changeProductQuantity = (id, quantity) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -165,8 +190,6 @@ export const changeShoppingData = (field, id, invoice) => {
 
     dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
 
-    dispatch({ type: APP_LOADING + START });
-
     let url = '';
     if (field === 'deliveryMethod') {
       url = CHECKOUT_URL.changeDeliveryMethodURL;
@@ -177,8 +200,6 @@ export const changeShoppingData = (field, id, invoice) => {
     const prod = () => {
       axios.post(url, { id })
         .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
@@ -198,8 +219,9 @@ export const changeShoppingData = (field, id, invoice) => {
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
         });
+
+      getTotalPrice(dispatch);
     };
 
     const dev = () => {
@@ -207,11 +229,12 @@ export const changeShoppingData = (field, id, invoice) => {
         dispatch({
           type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
           payload: {
-            ui: ui.payload
+            ui: completeUI.payload
           }
         });
 
-        dispatch({ type: APP_LOADING + FINISH });
+        getTotalPriceDev(dispatch);
+
       }, 1000);
     };
 

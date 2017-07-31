@@ -34,20 +34,29 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/shoppingcart")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> Get()
+        public IHttpActionResult Get()
         {
-            var checkoutPage = await service.GetCheckoutPage();
+            var checkoutPage = service.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }
         
+        [HttpGet]
+        [Route("api/deliverytotals")]
+        [AuthorizationFilter]
+        public async Task<IHttpActionResult> GetDeliveryTotals()
+        {
+            var deliveryTotals = await service.GetDeliveryAndTotals();
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotalsDto);
+        }
 
         [HttpPost]
         [Route("api/shoppingcart/selectshipping")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
+        public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectShipipng(request.Id);
+            var result = service.SelectShipipng(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
@@ -55,9 +64,9 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/selectaddress")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> SelectAddress([FromBody]ChangeSelectionRequestDto request)
+        public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectAddress(request.Id);
+            var result = service.SelectAddress(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
@@ -65,9 +74,9 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/removeitem")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> RemoveItem([FromBody]RemoveItemRequestDto request)
+        public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
-            var result = await service.RemoveItem(request.Id);
+            var result = service.RemoveItem(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
@@ -75,12 +84,30 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/changequantity")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
+        public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
-            var result = await service.ChangeItemQuantity(request.Id, request.Quantity);
+            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
 
+        [HttpGet]
+        [Route("api/shoppingcart/itemspreview")]
+        [AuthorizationFilter]
+        public IHttpActionResult ItemsPreview()
+        {
+            var result = service.ItemsPreview();
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
+            return ResponseJson(resultDto);
+        }
+
+        [HttpGet]
+        [Route("api/shoppingcart/itemscount")]
+        [AuthorizationFilter]
+        public IHttpActionResult ItemsCount()
+        {
+            int count = service.ItemsCount();
+            return ResponseJson(count);
+        }
     }
 }

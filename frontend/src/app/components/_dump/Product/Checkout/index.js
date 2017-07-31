@@ -18,6 +18,7 @@ class CheckoutProduct extends Component {
     price: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     isQuantityEditable: PropTypes.bool,
+    disableInteractivity: PropTypes.bool.isRequired,
     quantityPrefix: PropTypes.string,
     stockQuantity: PropTypes.number,
     isMailingList: PropTypes.bool,
@@ -62,14 +63,15 @@ class CheckoutProduct extends Component {
   };
 
   defineEditButton = () => {
-    const { isEditable, editorURL, isMailingList } = this.props;
+    const { isEditable, editorURL, isMailingList, disableInteractivity } = this.props;
 
     if (isMailingList) return null;
 
     if (isEditable) {
       if (editorURL) {
         return (
-          <a href={editorURL} className="cart-product__btn">
+          <a href={editorURL}
+             className="cart-product__btn">
             <SVG name="edit"/>
             Edit
           </a>
@@ -77,7 +79,9 @@ class CheckoutProduct extends Component {
       }
 
       return (
-        <button type="button" className="cart-product__btn">
+        <button type="button"
+                disabled={disableInteractivity}
+                className="cart-product__btn">
           <div>
             <SVG name="edit"/>
           </div>
@@ -91,13 +95,14 @@ class CheckoutProduct extends Component {
 
   render() {
     const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix,
-      template, removeProduct, isQuantityEditable } = this.props;
+      template, removeProduct, isQuantityEditable, disableInteractivity } = this.props;
     const { quantity } = this.state;
 
     const quantityElement = isQuantityEditable
       ? <input onChange={(e) => { this.handleChange(e.target); }}
                type="number"
                min="1"
+               disabled={disableInteractivity}
                value={quantity}/>
       : <span>{quantity}</span>;
 
@@ -158,7 +163,10 @@ class CheckoutProduct extends Component {
           <div className="cart-product__action">
             {this.defineEditButton()}
 
-            <button onClick={() => { removeProduct(id); }} type="button" className="cart-product__btn">
+            <button onClick={() => { removeProduct(id); }}
+                    type="button"
+                    disabled={disableInteractivity}
+                    className="cart-product__btn">
               <div>
                 <SVG name="cross--dark"/>
               </div>

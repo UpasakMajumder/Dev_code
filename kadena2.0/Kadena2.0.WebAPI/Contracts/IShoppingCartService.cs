@@ -5,13 +5,13 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IShoppingCartService
     {
-        Task<CheckoutPage> GetCheckoutPage();
-
-        Task<CheckoutPage> SelectShipipng(int id);
-
-        Task<CheckoutPage> SelectAddress(int id);
-
-        Task<CheckoutPage> ChangeItemQuantity(int id, int quantity);
-        Task<CheckoutPage> RemoveItem(int id);
+        CheckoutPage GetCheckoutPage();
+        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
+        CheckoutPage SelectShipipng(int id);
+        CheckoutPage SelectAddress(int id);
+        CheckoutPage ChangeItemQuantity(int id, int quantity);
+        CheckoutPage RemoveItem(int id);
+        CartItemsPreview ItemsPreview();
+        int ItemsCount();
     }
 }

@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Checkout\CartItemsDTO.cs" />
     <Compile Include="Checkout\CartItemDTO.cs" />
+    <Compile Include="Checkout\CartItemsPreviewDTO.cs" />
+    <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
@@ -61,6 +63,11 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
+    <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
+    <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
+    <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\WeightDto.cs" />
+    <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPricePayloadDto.cs" />
+    <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPriceResponseDto.cs" />
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
