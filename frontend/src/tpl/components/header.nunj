@@ -32,9 +32,7 @@
       <a class="nav-link" href="#">
         {{ svg('cart', 'icon-navigation icon-dashboard') }}
         Shopping cart
-        <div class="nav-badge">
-          <span class="nav-badge__text">10</span>
-        </div>
+        <div class="r-cart-items"></div>
         <div class="r-cart-preview"></div>
       </a>
     </li>

@@ -11,7 +11,6 @@ class CartPreview extends Component {
   static propTypes = {
     cartPreview: PropTypes.shape({
       items: PropTypes.arrayOf(PropTypes.object).isRequired,
-      getUI: PropTypes.func.isRequired,
       emptyCartMessage: PropTypes.string.isRequired,
       isVisible: PropTypes.bool.isRequired,
       cart: PropTypes.shape({
@@ -24,6 +23,7 @@ class CartPreview extends Component {
         price: PropTypes.string
       }).isRequired
     }).isRequired,
+    getUI: PropTypes.func.isRequired,
     togglePreview: PropTypes.func.isRequired
   };
 
