@@ -26,7 +26,8 @@ export const getUI = () => {
             payload: {
               emptyCartMessage: payload.emptyCartMessage,
               cart: payload.cart,
-              items: payload.items
+              items: payload.items,
+              totalPrice: payload.totalPrice
             }
           });
         }
