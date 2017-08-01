@@ -6,4 +6,13 @@ export const paginationFilter = (list: {}[], currentPage: number, pagesNumber: n
   return list.filter((page, index) => index >= minPage && index <= maxPage);
 };
 
-export const bla = 1;
+/**
+ * @param number
+ * @param arr
+ * @returns {Array}
+ */
+
+export const filterByLessNumber = (number, arr) => {
+  if (!arr) return [];
+  return arr.filter((item, index) => index < number);
+};
