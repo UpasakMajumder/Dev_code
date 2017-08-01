@@ -42,8 +42,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (_containerId != Guid.Empty)
             {
                 var addresses = GetAddresses();
-                var badAddresses = addresses.Where(a => a.Error != null);
-                var goodAddresses = addresses.Where(a => a.Error == null);
+                var badAddresses = addresses.Where(a => a.ErrorMessage != null);
+                var goodAddresses = addresses.Where(a => a.ErrorMessage == null);
 
                 PopulateErrors(badAddresses);
 
@@ -76,15 +76,15 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             foreach (var address in badAddresses)
             {
                 string errorDescription;
-                if (errorsDictionary.TryGetValue(address.Error, out errorDescription))
+                if (errorsDictionary.TryGetValue(address.ErrorMessage, out errorDescription))
                 {
-                    address.Error = errorDescription;
+                    address.ErrorMessage = errorDescription;
                 }
                 else
                 {
-                    if (!missingCodes.Contains(address.Error))
+                    if (!missingCodes.Contains(address.ErrorMessage))
                     {
-                        missingCodes.Add(address.Error);
+                        missingCodes.Add(address.ErrorMessage);
                     }
                 }
             }
@@ -126,7 +126,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     City = a.City,
                     State = a.State,
                     PostalCode = a.Zip,
-                    ErrorMessage = a.Error
+                    ErrorMessage = a.ErrorMessage
                 })
                 : null
             };
