@@ -60,6 +60,9 @@ namespace Kadena.WebAPI
                 config.CreateMap<CartItem, CartItemDTO>()
                     .AfterMap((src, dest) => dest.Price = src.PriceText)
                     .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
+                config.CreateMap<CartItem, CartItemPreviewDTO>()
+                    .AfterMap((src, dest) => dest.Price = src.PriceText)
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<Models.PaymentMethod, PaymentMethodDTO>();
                 config.CreateMap<PaymentMethods, PaymentMethodsDTO>();
                 config.CreateMap<Total, TotalDTO>();
@@ -147,6 +150,8 @@ namespace Kadena.WebAPI
                 });
                 config.CreateMap<MailingAddress, MailingAddressDto>().AfterMap((s, d) => d.FirstName = s.Name);
                 config.CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
+                config.CreateMap<CartButton, CartButtonDTO>();
+                config.CreateMap<CartPrice, CartPriceDTO>();
             });
         }
     }

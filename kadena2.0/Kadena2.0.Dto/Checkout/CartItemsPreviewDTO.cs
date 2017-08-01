@@ -10,6 +10,6 @@ namespace Kadena.Dto.Checkout
 
         public CartPriceDTO TotalPrice { get; set; }
 
-        public List<CartItemDTO> Items { get; set; }
+        public List<CartItemPreviewDTO> Items { get; set; }
     }
 }
