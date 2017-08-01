@@ -42,17 +42,6 @@ export default {
       "price": "112.2",
       "quantityPrefix": "Quantity:",
       "quantity": 100
-    },
-    {
-      "id": 32,
-      "image": "http://satyr.io/50-200x100-300?4",
-      "template": "Template",
-      "isMailingList": false,
-      "mailingList": "Mailing list",
-      "pricePrefix": "$",
-      "price": "112.2",
-      "quantityPrefix": "Quantity:",
-      "quantity": 11
     }
   ]
 };

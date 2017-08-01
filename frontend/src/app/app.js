@@ -51,6 +51,7 @@ const app = {
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
     render('CartPreview', document.querySelectorAll('.r-cart-preview'));
+    render('CartItems', document.querySelectorAll('.r-cart-items'));
   }
 };
 
