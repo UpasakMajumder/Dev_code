@@ -18,16 +18,16 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
 
-        public ShoppingCartService(IMapper mapper, 
+        public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
-                                   IKenticoResourceService resources,                                    
+                                   IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
-            this.resources = resources;            
-            this.taxCalculator = taxCalculator;            
+            this.resources = resources;
+            this.taxCalculator = taxCalculator;
             this.kenticoLog = kenticoLog;
         }
 
@@ -75,12 +75,12 @@ namespace Kadena.WebAPI.Services
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
                     IsDisabled = false
                 },
-                
+
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
-            
+
             CheckCurrentOrDefaultAddress(checkoutPage);
-            
+
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.SetDisplayType();
@@ -258,7 +258,21 @@ namespace Kadena.WebAPI.Services
 
         public CartItemsPreview ItemsPreview()
         {
-            throw new NotImplementedException();
+            return new CartItemsPreview
+            {
+                EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
+                Cart = new CartButton
+                {
+                    Label = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
+                    Url = "/checkout"
+                },
+                TotalPrice = new CartPrice
+                {
+                    PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                    Price = string.Format("{0:#,0.00}", kenticoProvider.GetShoppingCartTotals().TotalPrice)
+                },
+                Items = kenticoProvider.GetShoppingCartItems().ToList()
+            };
         }
 
         public int ItemsCount()
@@ -267,4 +281,3 @@ namespace Kadena.WebAPI.Services
         }
     }
 }
- 
