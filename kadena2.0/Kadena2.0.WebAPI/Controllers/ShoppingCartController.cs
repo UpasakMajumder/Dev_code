@@ -100,14 +100,5 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
             return ResponseJson(resultDto);
         }
-
-        [HttpGet]
-        [Route("api/shoppingcart/itemscount")]
-        [AuthorizationFilter]
-        public IHttpActionResult ItemsCount()
-        {
-            int count = service.ItemsCount();
-            return ResponseJson(count);
-        }
     }
 }

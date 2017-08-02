@@ -278,10 +278,5 @@ namespace Kadena.WebAPI.Services
                 Items = cartItems.ToList()
             };
         }
-
-        public int ItemsCount()
-        {
-            return kenticoProvider.GetShoppingCartItemsCount();
-        }
     }
 }
