@@ -269,7 +269,7 @@ namespace Kadena.WebAPI.Services
                 TotalPrice = new CartPrice
                 {
                     PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
-                    Price = string.Format("{0:#,0.00}", kenticoProvider.GetShoppingCartTotals().TotalPrice)
+                    Price = string.Format("{0:#,0.00}", kenticoProvider.GetShoppingCartTotals().TotalItemsPrice)
                 },
                 Items = kenticoProvider.GetShoppingCartItems().ToList()
             };
