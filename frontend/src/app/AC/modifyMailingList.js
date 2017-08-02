@@ -6,7 +6,7 @@ import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_L
 /* globals */
 import { MODIFY_MAILING_LIST_UI } from 'app.globals';
 /* helpers */
-import removeProps from 'app.helpers/object';
+import { removeProps } from 'app.helpers/object';
 
 export const initUI = (containerId) => {
   return (dispatch) => {
