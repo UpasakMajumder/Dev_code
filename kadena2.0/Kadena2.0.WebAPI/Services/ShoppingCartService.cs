@@ -36,6 +36,7 @@ namespace Kadena.WebAPI.Services
             var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
+            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
 
             var checkoutPage = new CheckoutPage()
@@ -43,9 +44,13 @@ namespace Kadena.WebAPI.Services
                 Products = new CartItems()
                 {
                     Number = $"You have {cartItems.Length} {items} in your shopping cart",
-                    Items = cartItems.ToList()
+                    Items = cartItems.ToList(),
+                    SummaryPrice = new CartPrice
+                    {
+                        PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                        Price = string.Format("{0:#,0.00}", cartItemsTotals.TotalItemsPrice)
+                    }
                 },
-
                 DeliveryAddresses = new DeliveryAddresses()
                 {
                     IsDeliverable = true,
@@ -68,14 +73,12 @@ namespace Kadena.WebAPI.Services
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
                     Items = ArrangePaymentMethods(paymentMethods)
                 },
-
                 Submit = new SubmitButton()
                 {
                     BtnLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
                     IsDisabled = false
                 },
-
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
 
@@ -124,8 +127,6 @@ namespace Kadena.WebAPI.Services
             SetPricesVisibility(result);
             return result;
         }
-
-
 
         private async Task UpdateTotals(CheckoutPageDeliveryTotals page)
         {
