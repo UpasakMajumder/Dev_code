@@ -8,7 +8,7 @@ namespace Kadena.Dto.Checkout
 
         public CartButtonDTO Cart { get; set; }
 
-        public CartPriceDTO TotalPrice { get; set; }
+        public CartPriceDTO SummaryPrice { get; set; }
 
         public List<CartItemPreviewDTO> Items { get; set; }
     }

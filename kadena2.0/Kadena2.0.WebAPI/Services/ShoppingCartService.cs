@@ -266,7 +266,7 @@ namespace Kadena.WebAPI.Services
                     Label = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
                     Url = "/checkout"
                 },
-                TotalPrice = new CartPrice
+                SummaryPrice = new CartPrice
                 {
                     PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                     Price = string.Format("{0:#,0.00}", kenticoProvider.GetShoppingCartTotals().TotalItemsPrice)
