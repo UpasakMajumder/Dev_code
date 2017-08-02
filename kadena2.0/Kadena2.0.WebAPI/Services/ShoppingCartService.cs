@@ -259,6 +259,9 @@ namespace Kadena.WebAPI.Services
 
         public CartItemsPreview ItemsPreview()
         {
+            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
+            var cartItems = kenticoProvider.GetShoppingCartItems();
+
             return new CartItemsPreview
             {
                 EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
@@ -270,9 +273,9 @@ namespace Kadena.WebAPI.Services
                 SummaryPrice = new CartPrice
                 {
                     PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
-                    Price = string.Format("{0:#,0.00}", kenticoProvider.GetShoppingCartTotals().TotalItemsPrice)
+                    Price = string.Format("{0:#,0.00}", cartItemsTotals.TotalItemsPrice)
                 },
-                Items = kenticoProvider.GetShoppingCartItems().ToList()
+                Items = cartItems.ToList()
             };
         }
 
