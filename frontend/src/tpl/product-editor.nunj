@@ -27,7 +27,7 @@
         <div>
           <div class="input__wrapper">
             <span class="input__label">Product name</span>
-            <input type="text" class="input__text" placeholder="March 2017 Events">
+            <input value="1" type="text" class="input__text js-add-to-cart-nam" placeholder="March 2017 Events">
           </div>
         </div>
         <div>
@@ -37,11 +37,12 @@
           </div>
         </div>
         <div>
-          <div class="input__wrapper">
+          <div class="input__wrapper js-add-to-cart-error">
             <span class="input__label">Quantity</span>
-            <input type="number" class="input__text" value="1" min="1">
+            <input type="number" class="input__text js-add-to-cart-error"  value="1"/>
+            <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
           </div>
-          <button type="button" class="btn-action js-chili-addtocart">Add to cart</button>
+          <button type="button" class="btn-action js-chili-addtocart js-add-to-cart">Add to cart</button>
         </div>
       </div>
     </div>
