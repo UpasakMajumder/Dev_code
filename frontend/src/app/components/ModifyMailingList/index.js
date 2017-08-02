@@ -8,7 +8,8 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import { consoleException } from 'app.helpers/io';
 import { getSearchObj } from 'app.helpers/location';
-import { filterByLessNumber } from 'app.helpers/array';
+import { filterByLessNumber, compareArrays } from 'app.helpers/array';
+import { findInequals } from 'app.helpers/object';
 /* AC */
 import { initUI, useCorrect, reprocessAddresses, validationErrors } from 'app.ac/modifyMailingList';
 /* local components */
@@ -106,7 +107,14 @@ class ModifyMailingList extends Component {
     const { containerId, formInfo, reprocessAddresses, validationErrors } = this.props;
     const emptyFields = this.getEmptyFields(errorList);
     validationErrors(emptyFields);
-    if (!Object.keys(emptyFields).length) reprocessAddresses(containerId, formInfo.confirmChanges.request, errorList);
+    const getDifferentRows = compareArrays.bind(null, findInequals);
+    const differentRows = getDifferentRows(errorList, this.props.errorList);
+
+    if (differentRows.length) {
+      if (!Object.keys(emptyFields).length) reprocessAddresses(containerId, formInfo.confirmChanges.request, differentRows);
+    } else {
+      this.closeDialog();
+    }
   };
 
   openDialog = () => this.setState({ isDialogShown: true });
