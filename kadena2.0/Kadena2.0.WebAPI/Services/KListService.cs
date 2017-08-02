@@ -24,6 +24,15 @@ namespace Kadena.WebAPI.Services
             _mapper = mapper;
         }
 
+        public async Task<MailingList> GetMailingList(Guid containerId)
+        {
+            var url = _kentico.GetSettingsKey("KDA_GetMailingListByIdUrl");
+            var customerName = _kentico.GetKenticoSite().Name;
+
+            var data = await _client.GetMailingList(url, customerName, containerId);
+            return _mapper.Map<MailingList>(data);
+        }
+
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
         {
             var updateUrl = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
