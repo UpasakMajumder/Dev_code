@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* utilities */
-import removeProps from 'app.helpers/object';
+import { removeProps } from 'app.helpers/object';
 import { LOGIN } from 'app.globals';
 
 class PasswordInput extends Component {
