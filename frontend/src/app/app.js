@@ -32,6 +32,8 @@ const app = {
     init('replace-value', document.getElementsByClassName('js-replace-value'));
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
     init('chili-editor', document.getElementsByClassName('js-chili-editor'));
+    init('add-to-cart', document.getElementsByClassName('js-add-to-cart'));
+
   },
 
   /* React */

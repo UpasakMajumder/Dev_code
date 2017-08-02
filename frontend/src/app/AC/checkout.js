@@ -2,12 +2,13 @@ import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC } from 'app.consts';
+  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
 
 /* globals */
 import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
-import { staticUI, priceUI, completeUI } from 'app.ws/checkoutUI';
+import { staticUI, staticUI2, priceUI, completeUI } from 'app.ws/checkoutUI';
+import { newState } from 'app.ws/cartPreviewUI';
 
 const getTotalPrice = (dispatch) => {
   axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
@@ -104,6 +105,15 @@ export const initCheckedShoppingData = (data) => {
 
 export const removeProduct = (id) => {
   return (dispatch) => {
+    const dev = () => {
+      dispatch({
+        type: REMOVE_PRODUCT + SUCCESS,
+        payload: {
+          ui: staticUI2.payload
+        }
+      });
+    };
+
     const prod = () => {
       const url = CHECKOUT_URL.removeProductURL;
       axios.post(url, { id })
@@ -119,8 +129,7 @@ export const removeProduct = (id) => {
           dispatch({
             type: REMOVE_PRODUCT + SUCCESS,
             payload: {
-              ui: payload,
-              isWaitingPDF: payload.submit.isDisabled
+              ui: payload
             }
           });
         })
@@ -132,6 +141,7 @@ export const removeProduct = (id) => {
       getTotalPrice(dispatch);
     };
 
+    // dev();
     prod();
   };
 };
@@ -153,8 +163,7 @@ export const changeProductQuantity = (id, quantity) => {
           dispatch({
             type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
             payload: {
-              ui: payload,
-              isWaitingPDF: payload.submit.isDisabled
+              ui: payload
             }
           });
         })
@@ -211,8 +220,7 @@ export const changeShoppingData = (field, id, invoice) => {
           dispatch({
             type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
             payload: {
-              ui: payload,
-              isWaitingPDF: payload.submit.isDisabled
+              ui: payload
             }
           });
         })

@@ -7,6 +7,7 @@ import Spinner from 'app.dump/Spinner';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity, getUI } from 'app.ac/checkout';
+import { changeProducts } from 'app.ac/cartPreview';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -105,6 +106,11 @@ class Checkout extends Component {
     });
   };
 
+  refreshCartPreview = (products) => {
+    const { items, summaryPrice } = products;
+    this.props.changeProducts(items, summaryPrice);
+  };
+
   componentWillReceiveProps(nextProps) {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
@@ -113,6 +119,7 @@ class Checkout extends Component {
     if (!products.items.length) location.reload();
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
+    if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
 
   render() {
@@ -212,5 +219,6 @@ export default connect((state) => {
   changeShoppingData,
   sendData,
   removeProduct,
-  changeProductQuantity
+  changeProductQuantity,
+  changeProducts
 })(Checkout);

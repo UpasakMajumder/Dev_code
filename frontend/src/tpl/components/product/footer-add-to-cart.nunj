@@ -11,6 +11,6 @@
       <input type="number" class="input__text" placeholder="1">
     </div>
     <span class="add-to-cart__right-label">pack of 50 (50)</span>
-    <button class="btn-action btn-action" type="button">Add to cart</button>
+    <button class="btn-action btn-action js-add-to-cart" type="button">Add to cart</button>
   </div>
 </div>

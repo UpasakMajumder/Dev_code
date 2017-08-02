@@ -10,7 +10,8 @@ const {
   orderDetail,
   recentOrders,
   ui,
-  cartPreview
+  cartPreview,
+  addToCartUrl
 } = localization;
 
 
@@ -23,6 +24,7 @@ export const SEARCH_PAGE = searchPage;
 export const SEARCH = search;
 export const RECENT_ORDERS = recentOrders;
 export const CART_PREVIEW = cartPreview;
+export const ADD_TO_CART_URL = addToCartUrl;
 
 /* UI */
 export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
