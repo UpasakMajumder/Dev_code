@@ -1,6 +1,6 @@
 import axios from 'axios';
 /* constants */
-import { CART_PREVIEW, INIT_UI, FETCH, SUCCESS, FAILURE, TOGGLE, SHOW, HEADER_SHADOW, HIDE } from 'app.consts';
+import { CART_PREVIEW, INIT_UI, FETCH, SUCCESS, FAILURE, TOGGLE, SHOW, HEADER_SHADOW, HIDE, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
 /* globals */
 import { CART_PREVIEW as CART_PREVIEW_GLOBAL } from 'app.globals';
 /* web service */
@@ -27,7 +27,7 @@ export const getUI = () => {
               emptyCartMessage: payload.emptyCartMessage,
               cart: payload.cart,
               items: payload.items,
-              totalPrice: payload.totalPrice
+              summaryPrice: payload.summaryPrice
             }
           });
         }
@@ -45,7 +45,7 @@ export const getUI = () => {
             emptyCartMessage: ui.emptyCartMessage,
             cart: ui.cart,
             items: ui.items,
-            totalPrice: ui.totalPrice
+            summaryPrice: ui.summaryPrice
           }
         });
       }, 0);
@@ -67,6 +67,18 @@ export const togglePreview = (isVisible) => {
     dispatch({
       type: CART_PREVIEW + TOGGLE,
       payload: { isVisible }
+    });
+  };
+};
+
+export const changeProducts = (items, summaryPrice) => {
+  return (dispatch) => {
+    dispatch({
+      type: CART_PREVIEW_CHANGE_ITEMS,
+      payload: {
+        items,
+        summaryPrice
+      }
     });
   };
 };

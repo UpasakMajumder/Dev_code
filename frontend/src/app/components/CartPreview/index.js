@@ -18,7 +18,7 @@ class CartPreview extends Component {
         url: PropTypes.string
       }).isRequired,
       isLoaded: PropTypes.bool.isRequired,
-      totalPrice: PropTypes.shape({
+      summaryPrice: PropTypes.shape({
         pricePrefix: PropTypes.string,
         price: PropTypes.string
       }).isRequired
@@ -33,7 +33,7 @@ class CartPreview extends Component {
 
   render() {
     const { cartPreview, togglePreview } = this.props;
-    const { emptyCartMessage, cart, items, isVisible, isLoaded, totalPrice } = cartPreview;
+    const { emptyCartMessage, cart, items, isVisible, isLoaded, summaryPrice } = cartPreview;
 
     let content = <Spinner/>;
 
@@ -47,7 +47,7 @@ class CartPreview extends Component {
               {products}
             </div>
             <div className="cart-preview__footer">
-              <span className="cart-preview__total-price">{totalPrice.pricePrefix} {totalPrice.price}</span>
+              <span className="cart-preview__total-price">{summaryPrice.pricePrefix} {summaryPrice.price}</span>
               <a className="btn-action cart-preview__proceed" href={cart.url}>{cart.label}</a>
             </div>
           </div>

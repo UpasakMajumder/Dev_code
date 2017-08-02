@@ -1,10 +1,10 @@
-import { CART_PREVIEW, INIT_UI, SUCCESS, TOGGLE } from 'app.consts';
+import { CART_PREVIEW, CART_PREVIEW_CHANGE_ITEMS, INIT_UI, SUCCESS, TOGGLE } from 'app.consts';
 
 const defaultState = {
   emptyCartMessage: '',
   cart: {},
   items: [],
-  totalPrice: {},
+  summaryPrice: {},
   isVisible: false,
   isLoaded: false
 };
@@ -19,7 +19,7 @@ export default (state = defaultState, action) => {
       emptyCartMessage: payload.emptyCartMessage,
       cart: payload.cart,
       items: payload.items,
-      totalPrice: payload.totalPrice,
+      summaryPrice: payload.summaryPrice,
       isLoaded: true
     };
 
@@ -28,6 +28,14 @@ export default (state = defaultState, action) => {
       ...state,
       isVisible: payload.isVisible
     };
+
+  case CART_PREVIEW_CHANGE_ITEMS: {
+    return {
+      ...state,
+      items: payload.items,
+      summaryPrice: payload.summaryPrice
+    };
+  }
 
   default:
     return state;
