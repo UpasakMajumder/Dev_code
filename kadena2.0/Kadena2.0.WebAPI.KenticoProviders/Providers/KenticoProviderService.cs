@@ -451,7 +451,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
         {
-
             if (ranges != null)
             {
                 var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
@@ -463,11 +462,16 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
         {
-            var rawJson = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser))?.GetStringValue("ProductDynamicPricing", string.Empty);
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetDynamicPricingRanges(document);
+        }
+
+        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(TreeNode document)
+        {
+            var rawJson = document?.GetStringValue("ProductDynamicPricing", string.Empty);
             var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
 
             return ranges;
-
         }
 
         public void RemoveCurrentItemsFromStock()
