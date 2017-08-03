@@ -102,7 +102,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/shoppingcart/addtocart")]
         [AuthorizationFilter]
         public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
