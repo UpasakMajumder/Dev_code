@@ -390,7 +390,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
             {
                 throw new ArgumentOutOfRangeException(string.Format(
-                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, id));
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
