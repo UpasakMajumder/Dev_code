@@ -15,13 +15,8 @@ class AddToCart {
       consoleException('Not found element .js-add-to-cart-name');
     }
 
-    const {  } = getSearchObj();
-    // define id
-    // define number
-    // define errorMessage
-    const body = {
-      name
-    };
+    const { documentId, quantity, templateId, containerId } = getSearchObj();
+    const body = { name, documentId, quantity, templateId, containerId };
 
     button.addEventListener('click', () => {
       const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
