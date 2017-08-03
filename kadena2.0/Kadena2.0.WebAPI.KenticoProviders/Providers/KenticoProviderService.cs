@@ -367,23 +367,23 @@ namespace Kadena.WebAPI.KenticoProviders
                     id));
             }
 
-            UpdateCartItemQuantity(item, quantity);
-        }
-
-        private void UpdateCartItemQuantity(ShoppingCartItemInfo item, int quantity)
-        {
-            var cart = ECommerceContext.CurrentShoppingCart;
             if (quantity < 1)
             {
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.NegativeQuantityError", LocalizationContext.CurrentCulture.CultureCode), quantity));
             }
 
+            UpdateCartItemQuantity(item, quantity);
+        }
+
+        private void UpdateCartItemQuantity(ShoppingCartItemInfo item, int quantity)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+            
             var productType = item.GetStringValue("ProductType", string.Empty);
 
             if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
             {
-
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
@@ -405,7 +405,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     item.CartItemPrice = (double)price;
                     ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
                 }
-
                 else
                 {
                     throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
