@@ -620,7 +620,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == doc.NodeSKUID);
             if (cartItem == null)
             {
-                return AddItemsToShoppingCart(doc, item.TemplateId, item.Quantity, item.CustomProductName);
+                return AddItemsToShoppingCart(doc, item.TemplateId, item.Quantity, item.CustomProductName, mailingList);
             }
             else
             {
