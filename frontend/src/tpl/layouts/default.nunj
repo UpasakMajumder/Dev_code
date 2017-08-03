@@ -161,6 +161,7 @@
       searchPage: {
         searchPageUrl: ''
       },
+      addToCartUrl: '',
       search: {
         queryUrl: ""
       },
