@@ -49,19 +49,21 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
             if ((templatesData?.Count ?? 0) > 0)
             {
-                repTemplates.DataSource = 
+                repTemplates.DataSource =
                     templatesData
-                    .OrderByDescending(t => t.Date)
-                    .Select(d => new {
-                        EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}&containerId={4}&quantity={5}", 
-                            ProductEditorUrl, 
-                            DocumentContext.CurrentDocument.DocumentID, 
-                            d.templateId, 
-                            DocumentContext.CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty), 
+                    .Select(d => new
+                    {
+                        EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}&containerId={4}&quantity={5}",
+                            ProductEditorUrl,
+                            DocumentContext.CurrentDocument.DocumentID,
+                            d.templateId,
+                            DocumentContext.CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty),
                             d.MailingList?.ContainerID ?? string.Empty,
                             (d.MailingList?.RowCount ?? 0).ToString()),
                         TemplateID = d.templateId,
-                        Date = DateTime.Parse(d.created).ToString() });
+                        Date = DateTime.Parse(d.created).ToString()
+                    })
+                    .OrderByDescending(t => t.Date);
                 repTemplates.DataBind();
             }
             else
