@@ -49,10 +49,18 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
     axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
       .then((response) => {
         const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
-        dispatch({
-          type: LOG_IN + SUCCESS,
-          data
-        });
+        if (data.success) {
+          dispatch({
+            type: LOG_IN + SUCCESS,
+            data
+          });
+        } else {
+          dispatch({
+            type: LOG_IN + FAILURE,
+            isLoading: false,
+            data
+          });
+        }
       })
       .catch((error) => {
         dispatch({

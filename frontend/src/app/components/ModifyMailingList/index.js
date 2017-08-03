@@ -8,6 +8,8 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import { consoleException } from 'app.helpers/io';
 import { getSearchObj } from 'app.helpers/location';
+import { filterByLessNumber, compareArrays } from 'app.helpers/array';
+import { findInequals } from 'app.helpers/object';
 /* AC */
 import { initUI, useCorrect, reprocessAddresses, validationErrors } from 'app.ac/modifyMailingList';
 /* local components */
@@ -50,7 +52,8 @@ class ModifyMailingList extends Component {
       }).isRequired
     }),
     errorList: PropTypes.array,
-    successList: PropTypes.array
+    filteredErrorList: PropTypes.array,
+    filteredSuccessList: PropTypes.array
   };
 
   state = {
@@ -104,7 +107,14 @@ class ModifyMailingList extends Component {
     const { containerId, formInfo, reprocessAddresses, validationErrors } = this.props;
     const emptyFields = this.getEmptyFields(errorList);
     validationErrors(emptyFields);
-    if (!Object.keys(emptyFields).length) reprocessAddresses(containerId, formInfo.confirmChanges.request, errorList);
+    const getDifferentRows = compareArrays.bind(null, findInequals);
+    const differentRows = getDifferentRows(errorList, this.props.errorList);
+
+    if (differentRows.length) {
+      if (!Object.keys(emptyFields).length) reprocessAddresses(containerId, formInfo.confirmChanges.request, differentRows);
+    } else {
+      this.closeDialog();
+    }
   };
 
   openDialog = () => this.setState({ isDialogShown: true });
@@ -115,7 +125,16 @@ class ModifyMailingList extends Component {
 
   render() {
     const { isDialogShown } = this.state;
-    const { uiFail, errorUI, successUI, errorList, successList, formInfo, emptyFields } = this.props;
+    const { uiFail,
+      errorUI,
+      successUI,
+      errorList,
+      formInfo,
+      emptyFields,
+      filteredErrorList,
+      filteredSuccessList
+    } = this.props;
+
     if (uiFail) return null;
 
     let errorContainer = null;
@@ -123,7 +142,7 @@ class ModifyMailingList extends Component {
     let btnCorrectErrors = null;
     let mailingDialog = null;
 
-    if (errorList) {
+    if (filteredErrorList.length) {
       const { reupload, correct } = errorUI.btns;
       const { use } = successUI.btns;
 
@@ -138,7 +157,7 @@ class ModifyMailingList extends Component {
           </div>
 
           <div className="processed-list__table-inner">
-            <MailingTable items={errorList}/>
+            <MailingTable items={filteredErrorList}/>
             <span className="processed-list__table-helper">
               {errorUI.tip}
               <SVG name="info-arrow" className="help-arrow"/>
@@ -154,7 +173,7 @@ class ModifyMailingList extends Component {
       );
     }
 
-    if (successList) {
+    if (filteredSuccessList.length) {
       successContainer = (
         <div className="processed-list__table-block">
           <div className="processed-list__table-heading processed-list__table-heading--success">
@@ -162,7 +181,7 @@ class ModifyMailingList extends Component {
             {btnCorrectErrors}
           </div>
 
-          <MailingTable items={successList}/>
+          <MailingTable items={filteredSuccessList}/>
         </div>
       );
     }
@@ -177,9 +196,9 @@ class ModifyMailingList extends Component {
 
     return (
       <div className="processed-list">
-        {mailingDialog}
         {errorContainer}
         {successContainer}
+        {mailingDialog}
       </div>
     );
   }
@@ -187,7 +206,23 @@ class ModifyMailingList extends Component {
 
 export default connect((state) => {
   const { uiFail, errorUI, successUI, errorList, successList, formInfo, canReprocess, containerId, emptyFields } = state.modifyMailingList;
-  return { errorUI, successUI, errorList, successList, uiFail, formInfo, canReprocess, containerId, emptyFields };
+
+  const filterByLessFour = filterByLessNumber.bind(null, 4);
+
+  const filteredErrorList = filterByLessFour(errorList);
+  const filteredSuccessList = filterByLessFour(successList);
+
+  return { errorUI,
+    successUI,
+    errorList,
+    uiFail,
+    formInfo,
+    canReprocess,
+    containerId,
+    emptyFields,
+    filteredErrorList,
+    filteredSuccessList
+  };
 }, {
   initUI,
   useCorrect,

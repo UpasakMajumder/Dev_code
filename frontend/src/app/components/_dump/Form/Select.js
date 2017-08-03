@@ -1,6 +1,6 @@
 import React from 'react';
 /* utilities */
-import removeProps from 'app.helpers/object';
+import { removeProps } from 'app.helpers/object';
 
 const Select = (props) => {
   const { label, error, disabled, isOptional, options, onChange, value } = props;

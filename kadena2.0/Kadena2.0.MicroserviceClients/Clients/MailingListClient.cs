@@ -97,6 +97,7 @@ namespace Kadena2.MicroserviceClients.Clients
                                 { nameof(a.City), a.City ?? string.Empty },
                                 { nameof(a.State), a.State ?? string.Empty },
                                 { nameof(a.Zip), a.Zip ?? string.Empty },
+                                { nameof(a.ErrorMessage), string.Empty }
                             }
                         })
                     }), System.Text.Encoding.UTF8, "application/json"),
