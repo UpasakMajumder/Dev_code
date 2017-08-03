@@ -10,28 +10,28 @@ namespace AutomatedTests.Tests
         [OneTimeSetUp]
         public void BeforeAllTests()
         {
-			Log.StartOfFixture();
+            Log.StartOfFixture();
             Browser.CreateDriver();
         }
 
         [SetUp]
         public void BeforeTest()
         {
-			Log.StartOfTest();
+            Log.StartOfTest();
         }
 
         [TearDown]
         public void AfterTest()
         {
-			Log.EndOfTest();
-			if(TestEnvironment.IsTestFailed())
-				Screenshot.TakeScreenshot();
+            Log.EndOfTest();
+            if (TestEnvironment.IsTestFailed())
+                Screenshot.TakeScreenshot();
         }
 
         [OneTimeTearDown]
         public void AfterAllTests()
         {
-		    Log.EndOfFixture();
+            Log.EndOfFixture();
             Browser.QuitDriver();
         }
 
@@ -59,7 +59,21 @@ namespace AutomatedTests.Tests
                 return dashboard;
             }
 
-            
+
+        }
+
+        /// <summary>
+        /// Logs in to the website as an admin
+        /// </summary>
+        /// <returns></returns>
+        public Dashboard InitializeAdminTest()
+        {
+            var login = new Login();
+            login.Open();
+            login.FillLogin(TestUser.Name, TestUser.Password);           
+            var dashboard = login.Submit();
+            dashboard.WaitForKadenaPageLoad();
+            return dashboard;
         }
     }
 }
