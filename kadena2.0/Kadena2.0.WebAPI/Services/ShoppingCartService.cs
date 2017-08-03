@@ -290,21 +290,16 @@ namespace Kadena.WebAPI.Services
         {
             var mailingList = await mailingService.GetMailingList(item.ContainerId);
             var addedItem = kenticoProvider.AddCartItem(item, mailingList);
+            var result = ItemsPreview();
             if (addedItem != null)
             {
                 if (addedItem.IsTemplated)
                 {
                     await CallRunGeneratePdfTask(addedItem);
-                    //if (!(await CallRunGeneratePdfTask(addedItem)))
-                    //{
-                    //    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Error", ScriptHelper.GetScript("alert('Unable to add item into cart because start generating hires PDF failed');"));
-                    //    return;
-                    //}
                 }
-
-                //ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
+                result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
             }
-            return ItemsPreview();
+            return result;
         }
 
         private async Task<bool> CallRunGeneratePdfTask(CartItem cartItem)
