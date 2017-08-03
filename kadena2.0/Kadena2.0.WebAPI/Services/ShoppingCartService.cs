@@ -7,6 +7,7 @@ using Kadena.WebAPI.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
@@ -17,18 +18,24 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
+        private readonly IKListService mailingService;
+        private readonly ITemplatedProductService templateService;
 
         public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
-                                   IKenticoLogger kenticoLog)
+                                   IKListService mailingService,
+                                   IKenticoLogger kenticoLog,
+                                   ITemplatedProductService templateService)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;
             this.taxCalculator = taxCalculator;
+            this.mailingService = mailingService;
             this.kenticoLog = kenticoLog;
+            this.templateService = templateService;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -277,6 +284,43 @@ namespace Kadena.WebAPI.Services
                 },
                 Items = cartItems.ToList()
             };
+        }
+
+        public async Task<CartItemsPreview> AddToCart(NewCartItem item)
+        {
+            var addedItem = kenticoProvider.AddCartItem(item);
+            if (addedItem != null)
+            {
+                if (addedItem.IsTemplated)
+                {
+                    await CallRunGeneratePdfTask(addedItem);
+                    //if (!(await CallRunGeneratePdfTask(addedItem)))
+                    //{
+                    //    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Error", ScriptHelper.GetScript("alert('Unable to add item into cart because start generating hires PDF failed');"));
+                    //    return;
+                    //}
+                }
+
+                //ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "Alert", ScriptHelper.GetScript("alert('" + ResHelper.GetString("Kadena.Product.ItemsAddedToCart", LocalizationContext.CurrentCulture.CultureCode) + "');"));
+            }
+            return ItemsPreview();
+        }
+
+        private async Task<bool> CallRunGeneratePdfTask(CartItem cartItem)
+        {
+            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
+            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
+            if (response.Success && response.Payload != null)
+            {
+                kenticoProvider.SetPdfGenerationTaskId(cartItem.Id, new Guid(response.Payload.TaskId));
+                return true;
+            }
+            else
+            {
+                kenticoLog.LogError($"Template service client with templateId={cartItem.EditorTemplateId} and settingsId={cartItem.ProductChiliPdfGeneratorSettingsId}",
+                    response?.Error?.Message ?? string.Empty);
+                return false;
+            }
         }
     }
 }
