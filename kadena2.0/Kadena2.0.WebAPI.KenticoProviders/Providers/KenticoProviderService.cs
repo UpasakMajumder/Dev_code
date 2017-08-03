@@ -379,7 +379,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private void UpdateCartItemQuantity(ShoppingCartItemInfo item, int quantity)
         {
             var cart = ECommerceContext.CurrentShoppingCart;
-            
+
             var productType = item.GetStringValue("ProductType", string.Empty);
 
             if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
@@ -600,6 +600,99 @@ namespace Kadena.WebAPI.KenticoProviders
                     Id = site.SiteID,
                     Name = site.SiteName
                 };
+            }
+        }
+
+        public CartItem AddCartItem(NewCartItem item, MailingList mailingList = null)
+        {
+            if ((item?.Quantity ?? 0) < 1)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+
+            var doc = DocumentHelper.GetDocument(item.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+
+            if (doc.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct")
+                && !item.Quantity.Equals(mailingList?.AddressCount ?? 0))
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+            var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == doc.NodeSKUID);
+            if (cartItem == null)
+            {
+                return AddItemsToShoppingCart(doc, item.TemplateId, item.Quantity, item.CustomProductName);
+            }
+            else
+            {
+                UpdateCartItemQuantity(cartItem, item.Quantity);
+                return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
+            }
+        }
+
+        private CartItem AddItemsToShoppingCart(TreeNode document, Guid templateId, int ammount, string customName, MailingList mailingList = null)
+        {
+            var sku = SKUInfoProvider.GetSKUInfo(document.NodeSKUID);
+
+            if (document != null && sku != null)
+            {
+                var cart = ECommerceContext.CurrentShoppingCart;
+                AssignCartShippingAddress(cart);
+                ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
+
+                var parameters = new ShoppingCartItemParameters(sku.SKUID, ammount);
+                ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
+
+                if (!string.IsNullOrEmpty(customName) && customName != cartItem.CartItemText)
+                {
+                    cartItem.CartItemText = customName;
+                }
+                var productType = document.GetStringValue("ProductType", string.Empty);
+                var chiliPdfGeneratorSettingsId = document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty);
+
+                cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
+                cartItem.SetValue("ArtworkLocation", document.GetStringValue("ProductArtworkLocation", string.Empty));
+                cartItem.SetValue("ProductType", productType);
+                cartItem.SetValue("ProductPageID", document.DocumentID);
+                cartItem.SetValue("ChilliEditorTemplateID", templateId);
+                cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", chiliPdfGeneratorSettingsId);
+                cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
+                cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
+
+                if (mailingList != null)
+                {
+                    cartItem.SetValue("MailingListName", mailingList.Name);
+                    cartItem.SetValue("MailingListGuid", mailingList.Id);
+                }
+
+                var priceRanges = GetDynamicPricingRanges(document);
+                var dynamicUnitPrice = GetDynamicPrice(ammount, priceRanges);
+                if (dynamicUnitPrice > 0)
+                {
+                    cartItem.CartItemPrice = (double)dynamicUnitPrice;
+                }
+
+                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
+
+                return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
+            }
+            return null;
+        }
+
+        private void AssignCartShippingAddress(ShoppingCartInfo cart)
+        {
+            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
+            cart.ShoppingCartShippingAddress = customerAddress;
+        }
+
+        public void SetPdfGenerationTaskId(int cartItemId, Guid taskId)
+        {
+            var item = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(cartItemId);
+            if (item != null)
+            {
+                item.SetValue("DesignFilePathTaskId", taskId);
+                item.SubmitChanges(false);
+                item.Update();
+
             }
         }
     }

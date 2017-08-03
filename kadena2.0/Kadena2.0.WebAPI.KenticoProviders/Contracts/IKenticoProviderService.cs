@@ -1,5 +1,6 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
+using System;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -26,20 +27,31 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetShoppingCartAddres(int addressId);
 
         void SelectShipping(int shippingOptionsId);
+
         int GetCurrentCartAddresId();
 
         int GetCurrentCartShippingOptionId();
+
         Customer GetCurrentCustomer();
+
         Customer GetCustomer(int customerId);
+
         DeliveryOption GetShippingOption(int id);
+
         CartItem[] GetShoppingCartItems();
+
         void RemoveCartItem(int id);
+
         int GetShoppingCartItemsCount();
+
         void SetCartItemQuantity(int id, int quantity);
+
         void RemoveCurrentItemsFromStock();
 
         void RemoveCurrentItemsFromCart();
+
         double GetCurrentCartTotalItemsPrice();
+
         double GetCurrentCartShippingCost();
 
         IEnumerable<State> GetStates();
@@ -51,7 +63,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
+
         Product GetProductByDocumentId(int documentId);
+
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);
@@ -63,8 +77,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool UserCanSeePrices();
 
         bool UserCanSeeAllOrders();
-	    Site GetSite(int siteId);
 
+        Site GetSite(int siteId);
 
+        void SetPdfGenerationTaskId(int cartItemId, Guid taskId);
+
+        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
     }
 }
