@@ -288,7 +288,8 @@ namespace Kadena.WebAPI.Services
 
         public async Task<CartItemsPreview> AddToCart(NewCartItem item)
         {
-            var addedItem = kenticoProvider.AddCartItem(item);
+            var mailingList = await mailingService.GetMailingList(item.ContainerId);
+            var addedItem = kenticoProvider.AddCartItem(item, mailingList);
             if (addedItem != null)
             {
                 if (addedItem.IsTemplated)
