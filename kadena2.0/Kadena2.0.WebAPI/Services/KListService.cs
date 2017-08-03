@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.Services
             var customerName = _kentico.GetKenticoSite().Name;
 
             var data = await _client.GetMailingList(url, customerName, containerId);
-            return _mapper.Map<MailingList>(data);
+            return _mapper.Map<MailingList>(data.Payload);
         }
 
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
