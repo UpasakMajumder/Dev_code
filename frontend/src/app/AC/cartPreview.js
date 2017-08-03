@@ -51,8 +51,8 @@ export const getUI = () => {
       }, 0);
     };
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
 
