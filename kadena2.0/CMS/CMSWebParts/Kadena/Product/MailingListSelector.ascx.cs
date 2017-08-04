@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.Chili;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
@@ -53,8 +54,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     }
 
                     if (cellButton == null 
-                        && !d.State.Equals("Addresses verified") 
-                        && !d.State.Equals("Addresses need to be verified"))
+                        && !d.State.Equals(MailingListState.AddressesVerified) 
+                        && !d.State.Equals(MailingListState.AddressesNeedToBeVerified))
                     {
                         cellButton = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
                     }

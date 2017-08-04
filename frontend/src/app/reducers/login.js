@@ -23,6 +23,7 @@ export default function login(state = defaultState, action = {}) {
   case LOG_IN + FAILURE:
     return {
       ...state,
+      response: action.data,
       isLoading: action.isLoading
     };
 

@@ -118,19 +118,21 @@ namespace Kadena.WebAPI.KenticoProviders
         /// </summary>
         public string GetShippingProviderIcon(string title)
         {
-            var dictionary = new Dictionary<string, string>()
+            if (title != null)
             {
-                {"fedex","fedex-delivery"},
-                {"usps","usps-delivery" },
-                {"ups","ups-delivery" }
-            };
+                var dictionary = new Dictionary<string, string>()
+                {
+                    {"fedex","fedex-delivery"},
+                    {"usps","usps-delivery" },
+                    {"ups","ups-delivery" }
+                };
 
-            foreach (var kvp in dictionary)
-            {
-                if (title.ToLower().Contains(kvp.Key))
-                    return kvp.Value;
+                foreach (var kvp in dictionary)
+                {
+                    if (title.ToLower().Contains(kvp.Key))
+                        return kvp.Value;
+                }
             }
-
             return string.Empty;
         }
 
