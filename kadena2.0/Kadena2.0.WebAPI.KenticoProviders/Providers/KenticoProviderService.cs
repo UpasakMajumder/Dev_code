@@ -704,17 +704,5 @@ namespace Kadena.WebAPI.KenticoProviders
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
             cart.ShoppingCartShippingAddress = customerAddress;
         }
-
-        public void SetPdfGenerationTaskId(int cartItemId, Guid taskId)
-        {
-            var item = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(cartItemId);
-            if (item != null)
-            {
-                item.SetValue("DesignFilePathTaskId", taskId);
-                item.SubmitChanges(false);
-                item.Update();
-
-            }
-        }
     }
 }

@@ -80,8 +80,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Site GetSite(int siteId);
 
-        void SetPdfGenerationTaskId(int cartItemId, Guid taskId);
-
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
     }
 }
