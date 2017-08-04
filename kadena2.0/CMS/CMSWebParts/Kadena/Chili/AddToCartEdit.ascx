@@ -1,12 +1,14 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AddToCartEdit.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.Chili.AddToCartExtended" %>
 
-<asp:UpdatePanel ID="updatePanelId" runat="server" class="input__wrapper">
-    <ContentTemplate>     
-    <asp:Label ID="lblQuantity" runat="server" CssClass="input__label" />    
-    <input id="inpNumberOfItems" runat="server" type="number" class="input__text"  value="1" enableviewstate="false">  
-    <asp:Label ID="lblNumberOfItemsError" runat="server" CssClass="input__error input__error--noborder" Visible="false" EnableViewState="false" />
+<div class="input__wrapper js-add-to-cart-error">
+    <span class="input__label">
+        <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.AddToCartQuantity" EnableViewState="false" />
+    </span>
+    <input id="inpNumberOfItems" runat="server" type="number" class="input__text js-add-to-cart-error" value="1" enableviewstate="false">
+    <span class="input__error input__error--noborder js-add-to-cart-message" />
 
-    <asp:Button ID="btnAddToCart" runat="server" OnClick="btnAddToCart_Click" CssClass="btn-action js-chili-addtocart" />
-    </ContentTemplate>
-</asp:UpdatePanel>
+</div>
+<button type="button" class="btn-action js-chili-addtocart js-add-to-cart">
+    <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.AddToCart" EnableViewState="false" />
+</button>
 

@@ -22,18 +22,20 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 {
     public partial class AddToCartExtended : CMSAbstractWebPart
     {
+        private TreeNode _document;
+
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
 
-            if (IsProductMailingType())
-            {
-                SetMailingListData();
-                SetNumberOfAddresses();
-            }
+            //if (IsProductMailingType())
+            //{
+            //    SetMailingListData();
+            //    SetNumberOfAddresses();
+            //}
 
             SetupControl();
-            SetupDocument();
+            //SetupDocument();
 
         }
 
@@ -94,18 +96,19 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing)
             {
-                btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
-                inpNumberOfItems.Attributes.Add("class", "input__text");
-                lblNumberOfItemsError.Visible = false;
+                //btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
+                //inpNumberOfItems.Attributes.Add("class", "input__text");
+                //lblNumberOfItemsError.Visible = false;
 
-                lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
+                //lblQuantity.Text = ResHelper.GetString("Kadena.Product.AddToCartQuantity", LocalizationContext.CurrentCulture.CultureCode);
 
+                SetupDocument();
                 InitializeCurrentShoppingCartItem();
 
                 if (IsProductMailingType())
                 {
                     inpNumberOfItems.Attributes.Add("disabled", "true");
-                    inpNumberOfItems.Value = NumberOfAddressesReturnedByService.ToString();
+                    inpNumberOfItems.Value = Request.QueryString["quantity"];
                 }
                 else
                 {
@@ -117,24 +120,22 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
-
         private void InitializeCurrentShoppingCartItem()
         {
-            int skuID;
-
-            if (int.TryParse(Request.QueryString["skuId"], out skuID))
+            if (ReferencedDocument != null)
             {
                 CurrentShoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItems().
-                    WhereEquals("SKUID", skuID).
+                    WhereEquals("SKUID", ReferencedDocument.NodeSKUID).
                     WhereEquals("ShoppingCartID", ECommerceContext.CurrentShoppingCart.ShoppingCartID).FirstObject;
-
             }
         }
+
         private void DisplayErrorMessage(string errorMessage)
         {
-            lblNumberOfItemsError.Text = errorMessage;
-            SetErrorLblVisible();
+            //lblNumberOfItemsError.Text = errorMessage;
+            //SetErrorLblVisible();
         }
+
         private void SetNumberOfAddresses()
         {
             if (MailingListData != null)
@@ -143,33 +144,21 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
-        private void SetMailingListData()
-        {
-            Guid containerId;
-
-            if (Guid.TryParse(Request.QueryString["containerId"], out containerId))
-            {
-                MailingListData = ServiceHelper.GetMailingList(containerId);
-            }
-
-        }
+        
 
         private void SetErrorLblVisible()
         {
-            lblNumberOfItemsError.Visible = true;
-            inpNumberOfItems.Attributes.Add("class", "input__text input--error");
+            //lblNumberOfItemsError.Visible = true;
+            //inpNumberOfItems.Attributes.Add("class", "input__text input--error");
         }
 
         private string GetProductType()
         {
-            int documentId;
             string productType = string.Empty;
 
-            if (int.TryParse(Request.QueryString["id"], out documentId))
+            if (ReferencedDocument != null)
             {
-                productType = DocumentHelper.GetDocument(
-                    documentId,
-                    new TreeProvider(MembershipContext.AuthenticatedUser)).GetStringValue("ProductType", string.Empty);
+                productType = ReferencedDocument.GetStringValue("ProductType", string.Empty);
             }
 
             return productType;
@@ -304,7 +293,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             int documentId;
 
-            if (int.TryParse(Request.QueryString["id"], out documentId))
+            if (int.TryParse(Request.QueryString["documentId"], out documentId))
             {
                 ReferencedDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             }
