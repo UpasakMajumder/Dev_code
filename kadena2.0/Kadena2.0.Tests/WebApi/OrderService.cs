@@ -72,7 +72,8 @@ namespace Kadena.Tests.WebApi
                 kenticoProvider.Object,
                 kenticoResource.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
-                taxCalculator.Object);
+                taxCalculator.Object,
+                templateProductService.Object);
         }
 
         [Fact]

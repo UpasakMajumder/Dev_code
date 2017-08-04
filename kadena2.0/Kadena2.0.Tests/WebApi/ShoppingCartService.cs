@@ -74,15 +74,13 @@ namespace Kadena.Tests.WebApi
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingService = new Mock<IKListService>();
-            var templateProductService = new Mock<ITemplatedProductService>();
 
             return new ShoppingCartService(mapper,
                 kenticoProvider.Object,
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
-                templateProductService.Object);
+                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object);
         }
 
         [Fact]

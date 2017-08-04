@@ -19,15 +19,13 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
-        private readonly ITemplatedProductService templateService;
 
         public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
-                                   IKenticoLogger kenticoLog,
-                                   ITemplatedProductService templateService)
+                                   IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -35,7 +33,6 @@ namespace Kadena.WebAPI.Services
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
             this.kenticoLog = kenticoLog;
-            this.templateService = templateService;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -291,32 +288,8 @@ namespace Kadena.WebAPI.Services
             var mailingList = await mailingService.GetMailingList(item.ContainerId);
             var addedItem = kenticoProvider.AddCartItem(item, mailingList);
             var result = ItemsPreview();
-            if (addedItem != null)
-            {
-                if (addedItem.IsTemplated)
-                {
-                    await CallRunGeneratePdfTask(addedItem);
-                }
-                result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
-            }
+            result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
             return result;
-        }
-
-        private async Task<bool> CallRunGeneratePdfTask(CartItem cartItem)
-        {
-            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
-            if (response.Success && response.Payload != null)
-            {
-                kenticoProvider.SetPdfGenerationTaskId(cartItem.Id, new Guid(response.Payload.TaskId));
-                return true;
-            }
-            else
-            {
-                kenticoLog.LogError($"Template service client with templateId={cartItem.EditorTemplateId} and settingsId={cartItem.ProductChiliPdfGeneratorSettingsId}",
-                    response?.Error?.Message ?? string.Empty);
-                return false;
-            }
         }
     }
 }
