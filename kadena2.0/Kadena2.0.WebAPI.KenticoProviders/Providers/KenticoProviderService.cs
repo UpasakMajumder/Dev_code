@@ -468,15 +468,22 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var ranges = GetDynamicPricingRanges(document);
 
-            if (ranges != null)
+            if (ranges != null && ranges.Count() > 0)
             {
                 var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
                 if (matchingRange != null)
                 {
                     return matchingRange.Price;
                 }
+                else
+                {
+                    return decimal.MinusOne;
+                }
             }
-            return 0.0m;
+            else
+            {
+                return (decimal)document.GetDoubleValue("SKUPrice", 0);
+            }
         }
 
         private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
