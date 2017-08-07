@@ -638,28 +638,13 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var doc = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == doc.NodeSKUID);
-            if (doc.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct"))
+            if (doc.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct")
+                && !actualQuantity.Equals(mailingList?.AddressCount ?? 0))
             {
-                if (!actualQuantity.Equals(mailingList?.AddressCount ?? 0))
-                {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
-                }
-            }
-            else
-            {
-                actualQuantity += (cartItem?.CartItemUnits ?? 0);
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            if (cartItem == null)
-            {
-                return AddItemToShoppingCart(doc, newItem.TemplateId, actualQuantity, newItem.CustomProductName, mailingList);
-            }
-            else
-            {
-                UpdateCartItemQuantity(cartItem, actualQuantity);
-                return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
-            }
+            return AddItemToShoppingCart(doc, newItem.TemplateId, actualQuantity, newItem.CustomProductName, mailingList);
         }
 
         private CartItem AddItemToShoppingCart(TreeNode document, Guid templateId, int ammount, string customName, MailingList mailingList = null)
@@ -678,8 +663,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 AssignCartShippingAddress(cart);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
-                var parameters = new ShoppingCartItemParameters(sku.SKUID, ammount);
-                ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
+                var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == document.NodeSKUID);
+                if (cartItem != null)
+                {
+                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItem, ammount);
+                }
+                else
+                {
+                    var parameters = new ShoppingCartItemParameters(sku.SKUID, ammount);
+                    cartItem = cart.SetShoppingCartItem(parameters);
+                }
 
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
                 cartItem.SetValue("ArtworkLocation", document.GetStringValue("ProductArtworkLocation", string.Empty));
