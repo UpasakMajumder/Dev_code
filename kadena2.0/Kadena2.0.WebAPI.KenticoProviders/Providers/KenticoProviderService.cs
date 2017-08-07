@@ -174,7 +174,6 @@ namespace Kadena.WebAPI.KenticoProviders
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
         }
 
-
         public PaymentMethod[] GetPaymentMethods()
         {
             var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
@@ -670,7 +669,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (document != null && sku != null)
             {
                 var dynamicUnitPrice = GetDynamicPrice(document, ammount);
-                if (dynamicUnitPrice == decimal.Zero)
+                if (dynamicUnitPrice == decimal.MinusOne)
                 {
                     throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
                 }
@@ -690,7 +689,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
                 cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
                 cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
-                cartItem.CartItemPrice = decimal.ToDouble(dynamicUnitPrice);
+
+                if (dynamicUnitPrice > decimal.Zero)
+                {
+                    cartItem.CartItemPrice = decimal.ToDouble(dynamicUnitPrice);
+                }
+
                 if (!string.IsNullOrEmpty(customName) && customName != cartItem.CartItemText)
                 {
                     cartItem.CartItemText = customName;
