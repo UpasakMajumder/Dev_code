@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SVG from 'app.dump/SVG';
 
 const ShippingInfo = ({ ui }) => {
-  const { title, deliveryMethod, address, tracking } = ui;
+  const { title, deliveryMethod, address, message, tracking } = ui;
 
   let trackingLink = null;
 
@@ -18,7 +18,7 @@ const ShippingInfo = ({ ui }) => {
       <h2 className="order-block__header">{title}</h2>
       <div className="order-block__detail">
         <SVG name={deliveryMethod} />
-        <p>{address}</p>
+        <p>{address || message}</p>
         {trackingLink}
       </div>
     </div>
@@ -29,7 +29,8 @@ ShippingInfo.propTypes = {
   ui: PropTypes.shape({
     title: PropTypes.string.isRequired,
     deliveryMethod: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
+    address: PropTypes.string,
+    message: PropTypes.string,
     tracking: PropTypes.shape({
       url: PropTypes.string,
       text: PropTypes.string
