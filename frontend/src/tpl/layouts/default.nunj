@@ -61,6 +61,7 @@
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
       <div class="r-header-shadow"></div>
+      {% include "components/product/preview.nunj" %}
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
@@ -178,6 +179,26 @@
               correct: "Correct errors"
             },
             items: [
+              {
+                id: "1",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "CA",
+                postalCode: "94116",
+                errorMessage: "Error"
+              },
+              {
+                id: "2",
+                fullName: "Jane Doe",
+                firstAddressLine: "2167 255th Ave",
+                secondAddressLine: "",
+                city: "San Francisco",
+                state: "CA",
+                postalCode: "94116",
+                errorMessage: "Error"
+              }
             ]
           },
           successList: {
