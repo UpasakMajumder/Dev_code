@@ -11,7 +11,7 @@ class DeliveryMethod extends Component {
   static propTypes = {
     changeShoppingData: PropTypes.func.isRequired,
     isSending: PropTypes.bool.isRequired,
-    checkedId: PropTypes.number,
+    checkedId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     ui: PropTypes.shape({
       items: PropTypes.arrayOf(PropTypes.object.isRequired),
       title: PropTypes.string.isRequired,

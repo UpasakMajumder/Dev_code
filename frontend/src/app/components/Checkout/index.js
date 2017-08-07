@@ -53,7 +53,7 @@ class Checkout extends Component {
 
   sendData = (checkedData) => {
     const { sendData } = this.props;
-    const invalidFields = Object.keys(checkedData).filter(key => !checkedData[key]);
+    const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
 
@@ -81,17 +81,22 @@ class Checkout extends Component {
       invoice: ''
     };
 
-    deliveryAddresses.items.forEach((address) => {
-      if (address.checked) deliveryAddress = address.id;
-    });
-
-
-    if (deliveryMethods) {
-      deliveryMethods.items.forEach((methodGroup) => {
-        methodGroup.items.forEach((method) => {
-          if (method.checked && !deliveryMethod) deliveryMethod = method.id;
-        });
+    if (deliveryAddresses.isDeliverable) {
+      deliveryAddresses.items.forEach((address) => {
+        if (address.checked) deliveryAddress = address.id;
       });
+
+
+      if (deliveryMethods) {
+        deliveryMethods.items.forEach((methodGroup) => {
+          methodGroup.items.forEach((method) => {
+            if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+          });
+        });
+      }
+    } else {
+      deliveryAddress = 'non-deliverable';
+      deliveryMethod = 'non-deliverable';
     }
 
     paymentMethods.items.forEach((method) => {
