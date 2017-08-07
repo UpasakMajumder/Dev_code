@@ -5,6 +5,7 @@ export default {
     "label": "Proceed to checkout",
     "url": "#"
   },
+  "alertMessage": "Added to cart",
   "summaryPrice": {
     "pricePrefix": "$",
     "price": "1000.0"
@@ -51,6 +52,7 @@ export const newState = {
     "pricePrefix": "$",
     "price": "500.0"
   },
+  "alertMessage": "Added to cart",
   "items": [
     {
       "id": 33,

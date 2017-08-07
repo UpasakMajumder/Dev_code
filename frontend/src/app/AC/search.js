@@ -74,7 +74,7 @@ export const sendQuery = (query, pressedEnter) => {
       }, 200);
     };
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };

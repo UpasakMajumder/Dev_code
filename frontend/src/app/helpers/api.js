@@ -18,6 +18,8 @@ export const addToCartRequest = (body) => {
   //         summaryPrice: newState.summaryPrice
   //       }
   //     });
+  //
+  //     alert(newState.alertMessage);  // eslint-disable-line no-alert
   //   } else {
   //     resolve('hi');
   //   }
@@ -34,6 +36,8 @@ export const addToCartRequest = (body) => {
           return;
         }
 
+        const { alertMessage } = payload;
+
         dispatch({
           type: CART_PREVIEW_CHANGE_ITEMS,
           payload: {
@@ -41,6 +45,10 @@ export const addToCartRequest = (body) => {
             summaryPrice: payload.summaryPrice
           }
         });
+
+        if (alertMessage) {
+          alert(alertMessage);  // eslint-disable-line no-alert
+        }
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
