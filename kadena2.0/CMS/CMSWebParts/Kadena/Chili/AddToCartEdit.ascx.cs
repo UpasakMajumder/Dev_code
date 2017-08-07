@@ -25,22 +25,10 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
-
-            //if (IsProductMailingType())
-            //{
-            //    SetMailingListData();
-            //    SetNumberOfAddresses();
-            //}
-
             SetupControl();
-            //SetupDocument();
-
         }
 
-        private ShoppingCartItemInfo CurrentShoppingCartItem
-        {
-            get; set;
-        }
+        private ShoppingCartItemInfo CurrentShoppingCartItem { get; set; }
 
         private TreeNode ReferencedDocument { get; set; }
 
