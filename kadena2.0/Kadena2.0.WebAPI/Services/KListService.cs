@@ -24,6 +24,15 @@ namespace Kadena.WebAPI.Services
             _mapper = mapper;
         }
 
+        public async Task<MailingList> GetMailingList(Guid containerId)
+        {
+            var url = _kentico.GetSettingsKey("KDA_GetMailingListByIdUrl");
+            var customerName = _kentico.GetKenticoSite().Name;
+
+            var data = await _client.GetMailingList(url, customerName, containerId);
+            return _mapper.Map<MailingList>(data.Payload);
+        }
+
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
         {
             var updateUrl = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
@@ -52,7 +61,7 @@ namespace Kadena.WebAPI.Services
 
             var addresses = await _client.GetAddresses(getAddressUrl, containerId);
             await _client.RemoveAddresses(removeAddressesUrl, customerName, containerId,
-                addresses.Payload.Where(a => a.Error != null).Select(a => a.Id));
+                addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
             var validateResult = await _client.Validate(validateUrl, customerName, containerId);
 
             return validateResult.Success;

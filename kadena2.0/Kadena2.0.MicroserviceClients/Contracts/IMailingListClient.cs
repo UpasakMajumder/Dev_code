@@ -35,5 +35,11 @@ namespace Kadena2.MicroserviceClients.Contracts
         Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId);
 
         Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<MailingAddressDto> addresses);
+
+        /// <summary>
+        /// Get all mailing list for particular customer (whole site) by specified Id.
+        /// </summary>
+        /// <param name="containerId">Id of container to get.</param>
+        Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId);
     }
 }

@@ -7,6 +7,7 @@ using Kadena.WebAPI.Infrastructure;
 using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
+using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -101,13 +102,15 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
-        [HttpGet]
-        [Route("api/shoppingcart/itemscount")]
+        [HttpPost]
+        [Route("api/shoppingcart/addtocart")]
         [AuthorizationFilter]
-        public IHttpActionResult ItemsCount()
+        public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
         {
-            int count = service.ItemsCount();
-            return ResponseJson(count);
+            var addItem = mapper.Map<NewCartItem>(item);
+            var result = await service.AddToCart(addItem);
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
+            return ResponseJson(resultDto);
         }
     }
 }

@@ -152,6 +152,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
                 config.CreateMap<CartButton, CartButtonDTO>();
                 config.CreateMap<CartPrice, CartPriceDTO>();
+                config.CreateMap<MailingListDataDTO, MailingList>();
+                config.CreateMap<NewCartItemDto, NewCartItem>();
             });
         }
     }

@@ -25,6 +25,19 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
+        public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId)
+        {
+            string url = $"{serviceEndpoint}/{customerName}/{containerId}";
+
+            using (var client = new HttpClient())
+            {
+                using (var message = await client.GetAsync(url))
+                {
+                    return await ReadResponseJson<MailingListDataDTO>(message);
+                }
+            }
+        }
+
         public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
         {
             using (var httpClient = new HttpClient())
@@ -84,6 +97,7 @@ namespace Kadena2.MicroserviceClients.Clients
                                 { nameof(a.City), a.City ?? string.Empty },
                                 { nameof(a.State), a.State ?? string.Empty },
                                 { nameof(a.Zip), a.Zip ?? string.Empty },
+                                { nameof(a.ErrorMessage), string.Empty }
                             }
                         })
                     }), System.Text.Encoding.UTF8, "application/json"),

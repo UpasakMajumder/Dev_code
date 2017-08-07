@@ -37,7 +37,7 @@ namespace Kadena.Tests.WebApi
                     City = $"City {i}",
                     State = $"State {i}",
                     Zip = $"Zip {i}",
-                    Error = i % 2 == 0 ? $"Some error {i}" : null
+                    ErrorMessage = i % 2 == 0 ? $"Some error {i}" : null
                 });
             }
         }

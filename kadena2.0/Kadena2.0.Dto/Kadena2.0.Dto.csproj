@@ -54,6 +54,7 @@
     <Compile Include="Checkout\CartPriceDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
+    <Compile Include="Checkout\NewCartItemDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />

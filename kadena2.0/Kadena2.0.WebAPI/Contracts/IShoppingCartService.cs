@@ -1,4 +1,5 @@
 ﻿using Kadena.Models.Checkout;
+using System;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts
@@ -12,6 +13,6 @@ namespace Kadena.WebAPI.Contracts
         CheckoutPage ChangeItemQuantity(int id, int quantity);
         CheckoutPage RemoveItem(int id);
         CartItemsPreview ItemsPreview();
-        int ItemsCount();
+        Task<CartItemsPreview> AddToCart(NewCartItem item);
     }
 }

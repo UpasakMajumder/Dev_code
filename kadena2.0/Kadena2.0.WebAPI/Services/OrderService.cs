@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI.Services
 {
@@ -24,8 +25,17 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
+        private readonly ITemplatedProductService templateService;
 
-        public OrderService(IMapper mapper, IOrderSubmitClient orderSubmitClient, IOrderViewClient orderViewClient, IMailingListClient mailingClient, IKenticoProviderService kenticoProvider, IKenticoResourceService resources, IKenticoLogger kenticoLog, ITaxEstimationService taxService)
+        public OrderService(IMapper mapper,
+            IOrderSubmitClient orderSubmitClient,
+            IOrderViewClient orderViewClient,
+            IMailingListClient mailingClient,
+            IKenticoProviderService kenticoProvider,
+            IKenticoResourceService resources,
+            IKenticoLogger kenticoLog,
+            ITaxEstimationService taxService,
+            ITemplatedProductService templateService)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -35,6 +45,7 @@ namespace Kadena.WebAPI.Services
             this.mailingClient = mailingClient;
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
+            this.templateService = templateService;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -129,7 +140,8 @@ namespace Kadena.WebAPI.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
+                // TODO Uncomment this when DownloadPDF will be developed.
+                // DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
@@ -231,6 +243,22 @@ namespace Kadena.WebAPI.Services
             return serviceResult;
         }
 
+        private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
+        {
+            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
+            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
+            if (response.Success && response.Payload != null)
+            {
+                return new Guid(response.Payload.TaskId);
+            }
+            else
+            {
+                kenticoLog.LogError($"Template service client with templateId={cartItem.EditorTemplateId} and settingsId={cartItem.ProductChiliPdfGeneratorSettingsId}",
+                    response?.Error?.Message ?? string.Empty);
+            }
+            return Guid.Empty;
+        }
+
         private async Task<OrderDTO> GetSubmitOrderData(int deliveryMethodId, int paymentMethodId, string invoice)
         {
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
@@ -244,7 +272,15 @@ namespace Kadena.WebAPI.Services
             totals.TotalTax = await taxService.EstimateTotalTax();
 
             if (string.IsNullOrWhiteSpace(customer.Company))
+            {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
+            }
+
+            foreach (var item in cartItems.Where(i => i.IsMailingList))
+            {
+                var taskId = await CallRunGeneratePdfTask(item);
+                item.DesignFilePathTaskId = taskId;
+            }
 
             var orderDto = new OrderDTO()
             {
@@ -295,7 +331,7 @@ namespace Kadena.WebAPI.Services
                     KenticoPaymentOptionID = paymentMethod.Id,
                     PaymentOptionName = paymentMethod.Title,
                     PONumber = invoice
-                },                
+                },
                 Site = new SiteDTO()
                 {
                     KenticoSiteID = site.Id,

@@ -37,6 +37,6 @@ namespace Kadena.Dto.MailingList.MicroserviceResponses
         public string Zip { get; set; }
 
         [DataMember(IsRequired = true, Name = "errorMessage")]
-        public string Error { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
