@@ -631,17 +631,18 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
         {
-            if ((newItem?.Quantity ?? 0) < 1)
+            int actualQuantity = newItem?.Quantity ?? 0;
+
+            if (actualQuantity < 1)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
             var doc = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == doc.NodeSKUID);
-            int actualQuantity = newItem.Quantity;
             if (doc.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct"))
             {
-                if (!newItem.Quantity.Equals(mailingList?.AddressCount ?? 0))
+                if (!actualQuantity.Equals(mailingList?.AddressCount ?? 0))
                 {
                     throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
                 }
