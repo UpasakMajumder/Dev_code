@@ -12,9 +12,6 @@ namespace AutomatedTests.PageObjectsKentico
 {
     class PagesContentTree : BasePage
     {
-        [FindsBy(How = How.Id, Using = "m_c_layoutElem_cmsdesktop")]
-        private IWebElement EditorFrame { get; set; }
-
         [FindsBy(How = How.CssSelector, Using = ".TreeContextMenu")]
         private IWebElement ContextMenu { get; set; }
 
@@ -24,11 +21,14 @@ namespace AutomatedTests.PageObjectsKentico
             PageFactory.InitElements(Browser.Driver, this);
         }
 
-        private IWebElement EditorFrame1()
+        private IWebElement EditorFrame
         {
-            return Browser.Driver.FindElement(By.Id("m_c_layoutElem_cmsdesktop"));
-
+            get
+            {
+                return Browser.Driver.FindElement(By.Id("m_c_layoutElem_cmsdesktop"));
+            }
         }
+
         /// <summary>
         /// Right click item from content tree
         /// </summary>
@@ -36,7 +36,7 @@ namespace AutomatedTests.PageObjectsKentico
         public void RightClickItem(string itemName)
         {
             Browser.Driver.SwitchTo().DefaultContent();
-            EditorFrame1().SwitchToIframe();
+            EditorFrame.SwitchToIframe();
             Browser.Driver.FindElement(By.XPath("//span[text() = '" + itemName + "']")).RightClickElement();
         }
 
@@ -65,7 +65,6 @@ namespace AutomatedTests.PageObjectsKentico
                     Thread.Sleep(500);
                 }
             }
-
         }
     }
 }
