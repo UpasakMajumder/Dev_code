@@ -108,9 +108,8 @@ namespace Kadena.WebAPI.Services
                 }
             };
 
-            Predicate<Dto.ViewOrder.MicroserviceResponses.GetOrderByOrderIdResponseDTO> hasOnlyMailingListProducts = 
-                (order) => order.Items.All(item => Guid.Empty.ToString() == item.MailingList);
-            if (hasOnlyMailingListProducts(data))
+            var hasOnlyMailingListProducts = data.Items.All(item => Guid.Empty.ToString() == item.MailingList);
+            if (hasOnlyMailingListProducts)
             {
                 orderDetail.ShippingInfo = new ShippingInfo
                 {
