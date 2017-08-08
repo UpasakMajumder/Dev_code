@@ -51,6 +51,8 @@
     width: $img-size;
     align-self: center;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     img {
       max-height: $max-height-img;
