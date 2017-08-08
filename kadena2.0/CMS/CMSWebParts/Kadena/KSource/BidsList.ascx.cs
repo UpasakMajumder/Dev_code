@@ -79,7 +79,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
                         firstCol,
                         new HtmlTableCell { InnerText = pr.RequestId.ToString()},
                         new HtmlTableCell { InnerText = pr.Status},
-                        new HtmlTableCell { InnerText = pr.UpdateDate.ToString("MMM dd yyyy")}
+                        new HtmlTableCell { InnerText = pr.UpdateDate?.ToString("MMM dd yyyy") ?? "" }
                         }
                 };
 
