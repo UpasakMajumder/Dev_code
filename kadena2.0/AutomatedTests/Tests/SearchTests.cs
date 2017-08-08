@@ -16,7 +16,7 @@ namespace AutomatedTests.Tests
         {
             //login
             var dashboard = InitializeTest();
-            dashboard.WaitForLoading();
+            dashboard.WaitForRecentOrders();
 
             //type into search input and verify search suggestions
             string productText = "product";
