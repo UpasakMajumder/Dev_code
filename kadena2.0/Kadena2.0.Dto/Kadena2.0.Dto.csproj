@@ -46,10 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\CartButtonDTO.cs" />
+    <Compile Include="Checkout\CartItemPreviewDTO.cs" />
     <Compile Include="Checkout\CartItemsDTO.cs" />
     <Compile Include="Checkout\CartItemDTO.cs" />
+    <Compile Include="Checkout\CartItemsPreviewDTO.cs" />
+    <Compile Include="Checkout\CartPriceDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
+    <Compile Include="Checkout\NewCartItemDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />

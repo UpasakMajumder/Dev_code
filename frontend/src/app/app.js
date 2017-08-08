@@ -31,7 +31,9 @@ const app = {
     init('datepicker', document.getElementsByClassName('js-datepicker'));
     init('replace-value', document.getElementsByClassName('js-replace-value'));
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
+    init('add-to-cart', document.getElementsByClassName('js-add-to-cart'));
     init('chili-editor', document.getElementsByClassName('js-chili-editor'));
+
   },
 
   /* React */
@@ -50,6 +52,8 @@ const app = {
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
+    render('CartPreview', document.querySelectorAll('.r-cart-preview'));
+    render('CartItems', document.querySelectorAll('.r-cart-items'));
   }
 };
 
