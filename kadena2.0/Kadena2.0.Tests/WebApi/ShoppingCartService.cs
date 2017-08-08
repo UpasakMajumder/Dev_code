@@ -9,12 +9,15 @@ using Moq;
 using Xunit;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.Tests.WebApi
 {
-    
     public class ShoppingCartServiceTests
     {
+        private List<CartItem> _items = new List<CartItem>();
+
         private DeliveryAddress CreateDeliveryAddress()
         {
             return new DeliveryAddress()
@@ -42,14 +45,32 @@ namespace Kadena.Tests.WebApi
 
         private CartItem CreateCartitem()
         {
-            return new CartItem()
+            var id = _items.Count + 1;
+            var result = new CartItem()
             {
-                Id = 1,
-                CartItemText = "Item1",
+                Id = id,
+                CartItemText = $"Item{id}",
                 ProductType = "KDA.StaticProduct",
                 TotalPrice = 10,
                 UnitPrice = 2,
                 Quantity = 5
+            };
+            _items.Add(result);
+            return result;
+        }
+
+        private IEnumerable<CartItem> GetItems()
+        {
+            return _items;
+        }
+
+        private ShoppingCartTotals GetShoppingCartTotals()
+        {
+            return new ShoppingCartTotals()
+            {
+                TotalItemsPrice = _items.Sum(i => i.TotalPrice),
+                TotalShipping = 19.99,
+                TotalTax = 0.2 * _items.Sum(i => i.TotalPrice)
             };
         }
 
@@ -67,18 +88,22 @@ namespace Kadena.Tests.WebApi
             kenticoProvider.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
             kenticoProvider.Setup(p => p.GetShoppingCartItems())
-                .Returns(new[] { CreateCartitem() });
-
+                .Returns(() => GetItems().ToArray());
+            kenticoProvider.Setup(p => p.GetShoppingCartTotals())
+                .Returns(() => GetShoppingCartTotals());
+            kenticoProvider.Setup(p => p.AddCartItem(It.IsAny<NewCartItem>(), null))
+                .Returns(() => CreateCartitem());
 
             var kenticoResource = new Mock<IKenticoResourceService>();
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
-            var templateProductService = new Mock<ITemplatedProductService>();
+            var mailingService = new Mock<IKListService>();
 
             return new ShoppingCartService(mapper,
                 kenticoProvider.Object,
                 kenticoResource.Object,
                 taxCalculator.Object,
+                mailingService.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object);
         }
 
@@ -87,9 +112,9 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var sut = CreateShoppingCartService();
-
+            CreateCartitem();
             // Act
-            var result = sut.GetCheckoutPage(); 
+            var result = sut.GetCheckoutPage();
 
             // Assert
             Assert.NotNull(result);
@@ -110,5 +135,26 @@ namespace Kadena.Tests.WebApi
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public void ItemPreview()
+        {
+            var service = CreateShoppingCartService();
+            var result = service.ItemsPreview();
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Items);
+            Assert.Equal(0, result.Items.Count);
+        }
+
+        [Fact]
+        public async Task AddToCart()
+        {
+            var service = CreateShoppingCartService();
+            var result = await service.AddToCart(new NewCartItem());
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Items);
+            Assert.Equal(1, result.Items.Count);
+        }
     }
 }
