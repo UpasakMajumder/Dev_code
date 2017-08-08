@@ -1,24 +1,25 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using Kadena.Dto.General;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models;
+using Kadena.WebAPI;
 using Kadena.WebAPI.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
-using Xunit;
 using System;
-using Kadena.Models;
-using Kadena.Dto.General;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security;
-using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Kadena.Tests.WebApi
 {
-    
     public class OrderServiceTests
     {
-        private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK()
+        private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK(OrderItemDTO[] items = null)
         {
             return new BaseResponseDto<GetOrderByOrderIdResponseDTO>()
             {
@@ -26,7 +27,7 @@ namespace Kadena.Tests.WebApi
                 Payload = new GetOrderByOrderIdResponseDTO()
                 {
                     Id = "1",
-                    Items = new System.Collections.Generic.List<OrderItemDTO>(),
+                    Items = new List<OrderItemDTO>(items ?? Enumerable.Empty<OrderItemDTO>()),
                     PaymentInfo = new PaymentInfoDTO(),
                     ShippingInfo = new ShippingInfoDTO(),
                     Status = "Shipped"
@@ -54,7 +55,7 @@ namespace Kadena.Tests.WebApi
             kenticoProvider.Setup(p => p.UserCanSeeAllOrders())
                 .Returns(false);
             kenticoProvider.Setup(p => p.GetCurrentCustomer())
-               .Returns(new Customer() { Id = 10, UserID = 16});
+               .Returns(new Customer() { Id = 10, UserID = 16 });
 
             var kenticoResource = new Mock<IKenticoResourceService>();
             kenticoResource.Setup(p => p.GetKenticoSite())
@@ -92,7 +93,6 @@ namespace Kadena.Tests.WebApi
             Assert.Equal("Shipped", result.CommonInfo.Status);
         }
 
-
         [Fact]
         public async Task OrderServiceTest_UserCannotSee()
         {
@@ -106,9 +106,8 @@ namespace Kadena.Tests.WebApi
             var result = sut.GetOrderDetail("0099-0099-17-00006");
 
             // Assert
-            await Assert.ThrowsAsync<SecurityException>( async () => await result );
+            await Assert.ThrowsAsync<SecurityException>(async () => await result);
         }
-
 
         [Fact]
         public async Task OrderServiceTest_MicroserviceErrorLogged()
@@ -128,7 +127,6 @@ namespace Kadena.Tests.WebApi
             Assert.Contains("Failed to obtain order detail", exception.Message);
             logger.Verify(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
         }
-
 
         [Theory]
         [InlineData("123")]
@@ -158,9 +156,29 @@ namespace Kadena.Tests.WebApi
             var result = sut.GetOrderDetail(orderId);
 
             // Assert
-            var exception = await Assert.ThrowsAsync <ArgumentNullException>(async () => await result);
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await result);
             Assert.Equal("orderId", exception.ParamName);
         }
 
+        [Fact]
+        public async Task OrderServiceTest_EmptyShippingAddressWhenMailingOnly()
+        {
+            // Arrange
+            var orderId = "0010-0016-17-00006";
+            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderResponse = CreateOrderDetailDtoOK(new[] 
+            {
+                new OrderItemDTO { MailingList = Guid.Empty.ToString() }
+            });
+            orderViewClient.Setup(o => o.GetOrderByOrderId(null, orderId))
+                .Returns(Task.FromResult(orderResponse));
+            var sut = CreateOrderService(orderViewClient: orderViewClient);
+
+            // Act
+            var result = await sut.GetOrderDetail(orderId);
+
+            // Assert
+            Assert.Null(result.ShippingInfo.Address);
+        }
     }
 }
