@@ -52,6 +52,55 @@ namespace AutomatedTests.Tests
             //go back to K-List and check if the page is updated
             kList.Open();
             Assert.IsFalse(kList.AreThereAnyErrorsInFirstList());
+
+        }
+
+        [Test]
+        public void When_CorrectingAddresses_Expect_AddressesAreCorrected()
+        {
+            //login
+            var dashboard = InitializeTest();
+
+            //open K-list
+            var kList = new KList();
+            kList.Open();
+            var newKList = kList.ClickAddMailingListBtn();
+
+            //select mailing list and submit it
+            newKList.SelectMailingList();
+            string mailingListName = StringHelper.RandomString(7);
+            newKList.FillOutMailingListName(mailingListName);
+            var mapColumns = newKList.SubmitMailingList();
+
+            //confirm mapping
+            var listProcessing = mapColumns.ClickProcessList();
+
+            //verify if the list is being processed
+            Assert.True(listProcessing.WasMailingListSubmitted());
+
+            //go back to K-List and check if the list is there
+            kList.Open();
+            Assert.IsTrue(kList.IsMailingListOnThePage(mailingListName));
+            Assert.IsTrue(kList.WereAddressesValidated());
+            int numberOfErrors = kList.NumberOfErrors;
+            var listDetail = kList.OpenFirstList();
+
+            //verify if there are errors on list detail
+            Assert.IsTrue(listDetail.AreThereBadAddresses());
+
+            //correct one address
+            listDetail.CorrectErrors();
+            listDetail.CorrectFirstRow();
+            
+            //verify if the list is being processed
+            Assert.True(listProcessing.WasMailingListSubmitted());
+
+            //wait for validation and check if number of errors is correct
+            kList.Open();
+            Assert.IsTrue(kList.WereAddressesValidated());
+            int numberOfErrorsAfterCorrection = kList.NumberOfErrors;
+            Assert.IsTrue(numberOfErrorsAfterCorrection > 0);
+            Assert.IsTrue(numberOfErrorsAfterCorrection < numberOfErrors);
         }
     }
 }
