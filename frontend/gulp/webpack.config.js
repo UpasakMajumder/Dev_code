@@ -154,6 +154,7 @@ module.exports = {
             'app.globals': path.resolve(process.cwd(), `${config.JS_BASE}/globals.js`),
             'app.consts': path.resolve(process.cwd(), `${config.JS_BASE}/constants.js`),
             'app.reducers': path.resolve(process.cwd(), `${config.JS_BASE}/reducers`),
+            'app.store': path.resolve(process.cwd(), `${config.JS_BASE}/store`),
             'app.helpers': path.resolve(process.cwd(), `${config.JS_BASE}/helpers`),
             'app.ws': path.resolve(process.cwd(), `${config.JS_BASE}/AC/_ws`),
             'app.gfx': path.resolve(process.cwd(), config.GFX_BASE)

@@ -43,6 +43,39 @@ export default {
       "price": "112.2",
       "quantityPrefix": "Quantity:",
       "quantity": 100
+    },
+    {
+      "id": 13123,
+      "image": "http://satyr.io/50-200x100-300?3",
+      "template": "Template",
+      "isMailingList": true,
+      "mailingList": "Mailing list",
+      "pricePrefix": "$",
+      "price": "112.2",
+      "quantityPrefix": "Quantity:",
+      "quantity": 100
+    },
+    {
+      "id": 13123123,
+      "image": "http://satyr.io/50-200x100-300?3",
+      "template": "Template",
+      "isMailingList": true,
+      "mailingList": "Mailing list",
+      "pricePrefix": "$",
+      "price": "112.2",
+      "quantityPrefix": "Quantity:",
+      "quantity": 100
+    },
+    {
+      "id": 131231231,
+      "image": "http://satyr.io/50-200x100-300?3",
+      "template": "Template",
+      "isMailingList": true,
+      "mailingList": "Mailing list",
+      "pricePrefix": "$",
+      "price": "112.2",
+      "quantityPrefix": "Quantity:",
+      "quantity": 100
     }
   ]
 };
