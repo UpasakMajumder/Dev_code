@@ -46,7 +46,9 @@ namespace AutomatedTests
         /// <param name="waitsec"></param>
         public static void CreateDriver(int waitsec = 30)
         {
-            Driver = new ChromeDriver();
+            ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            Driver = new ChromeDriver(chromeDriverService, chromeOptions, TimeSpan.FromSeconds(90));     
             Maximize();
             Log.WriteLine("Driver created ({0})", Driver.GetType().Name);
             Edr = new EventFiringWebDriver(Driver);

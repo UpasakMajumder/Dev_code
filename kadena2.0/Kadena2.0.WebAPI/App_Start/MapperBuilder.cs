@@ -22,7 +22,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kadena.WebAPI
 {
@@ -43,7 +42,7 @@ namespace Kadena.WebAPI
                     SKU = new SKUDTO()
                     {
                         KenticoSKUID = p.SKUID,
-                        Name = p.CartItemText,
+                        Name = p.SKUName, 
                         SKUNumber = p.SKUNumber
                     },
                     TotalPrice = p.TotalPrice,
@@ -59,6 +58,9 @@ namespace Kadena.WebAPI
                 config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
                 config.CreateMap<CartItem, CartItemDTO>()
+                    .AfterMap((src, dest) => dest.Price = src.PriceText)
+                    .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
+                config.CreateMap<CartItem, CartItemPreviewDTO>()
                     .AfterMap((src, dest) => dest.Price = src.PriceText)
                     .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
                 config.CreateMap<Models.PaymentMethod, PaymentMethodDTO>();
@@ -147,6 +149,11 @@ namespace Kadena.WebAPI
                     Zip = a.PostalCode
                 });
                 config.CreateMap<MailingAddress, MailingAddressDto>().AfterMap((s, d) => d.FirstName = s.Name);
+                config.CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
+                config.CreateMap<CartButton, CartButtonDTO>();
+                config.CreateMap<CartPrice, CartPriceDTO>();
+                config.CreateMap<MailingListDataDTO, MailingList>();
+                config.CreateMap<NewCartItemDto, NewCartItem>();
             });
         }
     }

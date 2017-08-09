@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Browser.cs" />
+    <Compile Include="Domain\Constants\KenticoApplicationsNames.cs" />
+    <Compile Include="Domain\Constants\PagesOptionsNames.cs" />
     <Compile Include="KenticoApi\Connection.cs" />
     <Compile Include="KenticoApi\Api.cs" />
     <Compile Include="KenticoApi\Objects\CmsDocument.cs" />
@@ -71,6 +73,13 @@
     <Compile Include="KenticoApi\Objects\ProductModul.cs" />
     <Compile Include="KenticoApi\Objects\CmsDocuments.cs" />
     <Compile Include="KenticoApi\Objects\Response.cs" />
+    <Compile Include="PageObjectsKentico\AdminHomePage.cs" />
+    <Compile Include="PageObjectsKentico\BasePage.cs" />
+    <Compile Include="PageObjectsKentico\BasePageComponents\ApplicationsMenu.cs" />
+    <Compile Include="PageObjectsKentico\NewProductForm.cs" />
+    <Compile Include="PageObjectsKentico\Pages.cs" />
+    <Compile Include="PageObjectsKentico\PageTab.cs" />
+    <Compile Include="PageObjectsKentico\SelectNewPageType.cs" />
     <Compile Include="PageObjects\BasePageComponents\SearchSuggestionBox.cs" />
     <Compile Include="PageObjects\Checkout.cs" />
     <Compile Include="PageObjects\SuccessPage.cs" />
@@ -174,6 +183,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.30.0.1\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.30.0.1\build\Selenium.WebDriver.ChromeDriver.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

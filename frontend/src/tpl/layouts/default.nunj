@@ -153,12 +153,16 @@
           editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
         }
       },
+      cartPreview: {
+        cartPreviewUrl: '#'
+      },
       orderDetail: {
         orderDetailUrl: ""
       },
       searchPage: {
         searchPageUrl: ''
       },
+      addToCartUrl: '',
       search: {
         queryUrl: ""
       },
