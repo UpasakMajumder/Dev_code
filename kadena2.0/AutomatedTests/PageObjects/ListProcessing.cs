@@ -19,7 +19,7 @@ namespace AutomatedTests.PageObjects
 
         public bool WasMailingListSubmitted()
         {
-            return SubmitConfirmation.Displayed;
+            return SubmitConfirmation.IsDisplayed();
         }
     }
 }
