@@ -33,6 +33,7 @@ const app = {
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
     init('add-to-cart', document.getElementsByClassName('js-add-to-cart'));
     init('chili-editor', document.getElementsByClassName('js-chili-editor'));
+    init('cart-preview', document.getElementsByClassName('js-cart-preview'));
 
   },
 
