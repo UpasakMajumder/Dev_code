@@ -9,6 +9,7 @@ export default {
   "shippingInfo": {
     "title": "Shipping",
     "deliveryMethod": "fedex-delivery",
+    "message": "All items will be mailed according to the selected mailing list",
     "address": "4001 Valley Industrial Blvd, Shakopee, MN 55379",
     "tracking": { // null
       "text": "Track your packages",
