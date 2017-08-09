@@ -7,6 +7,7 @@ using Kadena.WebAPI.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
@@ -17,17 +18,20 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
+        private readonly IKListService mailingService;
 
-        public ShoppingCartService(IMapper mapper, 
+        public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
-                                   IKenticoResourceService resources,                                    
+                                   IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
+                                   IKListService mailingService,
                                    IKenticoLogger kenticoLog)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
-            this.resources = resources;            
-            this.taxCalculator = taxCalculator;            
+            this.resources = resources;
+            this.taxCalculator = taxCalculator;
+            this.mailingService = mailingService;
             this.kenticoLog = kenticoLog;
         }
 
@@ -36,6 +40,7 @@ namespace Kadena.WebAPI.Services
             var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
+            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
 
             var checkoutPage = new CheckoutPage()
@@ -43,9 +48,13 @@ namespace Kadena.WebAPI.Services
                 Products = new CartItems()
                 {
                     Number = $"You have {cartItems.Length} {items} in your shopping cart",
-                    Items = cartItems.ToList()
+                    Items = cartItems.ToList(),
+                    SummaryPrice = new CartPrice
+                    {
+                        PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                        Price = string.Format("{0:#,0.00}", cartItemsTotals.TotalItemsPrice)
+                    }
                 },
-
                 DeliveryAddresses = new DeliveryAddresses()
                 {
                     IsDeliverable = true,
@@ -68,19 +77,17 @@ namespace Kadena.WebAPI.Services
                     Description = null, // resources.GetResourceString("Kadena.Checkout.Payment.Description"), if needed
                     Items = ArrangePaymentMethods(paymentMethods)
                 },
-
                 Submit = new SubmitButton()
                 {
                     BtnLabel = resources.GetResourceString("Kadena.Checkout.ButtonPlaceOrder"),
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
                     IsDisabled = false
                 },
-                
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
             };
-            
+
             CheckCurrentOrDefaultAddress(checkoutPage);
-            
+
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.SetDisplayType();
@@ -124,8 +131,6 @@ namespace Kadena.WebAPI.Services
             SetPricesVisibility(result);
             return result;
         }
-
-
 
         private async Task UpdateTotals(CheckoutPageDeliveryTotals page)
         {
@@ -255,6 +260,36 @@ namespace Kadena.WebAPI.Services
             kenticoProvider.RemoveCartItem(id);
             return GetCheckoutPage();
         }
+
+        public CartItemsPreview ItemsPreview()
+        {
+            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
+            var cartItems = kenticoProvider.GetShoppingCartItems();
+
+            return new CartItemsPreview
+            {
+                EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
+                Cart = new CartButton
+                {
+                    Label = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
+                    Url = "/checkout"
+                },
+                SummaryPrice = new CartPrice
+                {
+                    PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                    Price = string.Format("{0:#,0.00}", cartItemsTotals.TotalItemsPrice)
+                },
+                Items = cartItems.ToList()
+            };
+        }
+
+        public async Task<CartItemsPreview> AddToCart(NewCartItem item)
+        {
+            var mailingList = await mailingService.GetMailingList(item.ContainerId);
+            var addedItem = kenticoProvider.AddCartItem(item, mailingList);
+            var result = ItemsPreview();
+            result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
+            return result;
+        }
     }
 }
- 
