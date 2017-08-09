@@ -56,21 +56,6 @@ export const getUI = () => {
   };
 };
 
-export const togglePreview = (isVisible) => {
-  return (dispatch) => {
-    if (isVisible) {
-      dispatch({ type: HEADER_SHADOW + SHOW });
-    } else {
-      dispatch({ type: HEADER_SHADOW + HIDE });
-    }
-
-    dispatch({
-      type: CART_PREVIEW + TOGGLE,
-      payload: { isVisible }
-    });
-  };
-};
-
 export const changeProducts = (items, summaryPrice) => {
   return (dispatch) => {
     dispatch({

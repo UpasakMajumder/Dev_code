@@ -34,6 +34,7 @@ const app = {
     init('add-to-cart', document.getElementsByClassName('js-add-to-cart'));
     init('chili-editor', document.getElementsByClassName('js-chili-editor'));
     init('product-view', document.getElementsByClassName('js-product-view'));
+    init('cart-preview', document.getElementsByClassName('js-cart-preview'));
   },
 
   /* React */

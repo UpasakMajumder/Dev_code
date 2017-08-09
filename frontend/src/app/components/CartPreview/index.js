@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 /* ac */
-import { getUI, togglePreview } from 'app.ac/cartPreview';
+import { getUI } from 'app.ac/cartPreview';
 /* components */
 import CartPreviewProduct from 'app.dump/Product/CartPreview';
 import Spinner from 'app.dump/Spinner';
@@ -23,8 +23,7 @@ class CartPreview extends Component {
         price: PropTypes.string
       }).isRequired
     }).isRequired,
-    getUI: PropTypes.func.isRequired,
-    togglePreview: PropTypes.func.isRequired
+    getUI: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -32,7 +31,7 @@ class CartPreview extends Component {
   }
 
   render() {
-    const { cartPreview, togglePreview } = this.props;
+    const { cartPreview } = this.props;
     const { emptyCartMessage, cart, items, isVisible, isLoaded, summaryPrice } = cartPreview;
 
     let content = <Spinner/>;
@@ -64,9 +63,7 @@ class CartPreview extends Component {
     const preview = <div className="cart-preview__container">{content}</div>;
 
     return (
-      <div onMouseEnter={() => togglePreview(true)}
-           onMouseLeave={() => togglePreview(false)}
-           className="cart-preview">
+      <div className="cart-preview">
         { isVisible ? preview : null}
       </div>
     );
@@ -78,6 +75,5 @@ export default connect((state) => {
   const { cartPreview } = state;
   return { cartPreview };
 }, {
-  getUI,
-  togglePreview
+  getUI
 })(CartPreview);
