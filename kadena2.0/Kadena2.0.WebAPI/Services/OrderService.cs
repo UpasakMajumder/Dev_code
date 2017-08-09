@@ -111,9 +111,26 @@ namespace Kadena.WebAPI.Services
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
                         }
                     }
-
                 },
-                ShippingInfo = new ShippingInfo()
+                OrderedItems = new OrderedItems()
+                {
+                    Title = "Ordered items",
+                    Items = await MapOrderedItems(data.Items)
+                }
+            };
+
+            var hasOnlyMailingListProducts = data.Items.All(item => Guid.Empty.ToString() == item.MailingList);
+            if (hasOnlyMailingListProducts)
+            {
+                orderDetail.ShippingInfo = new ShippingInfo
+                {
+                    Title = "Shipping",
+                    Message = resources.GetResourceString("Kadena.Checkout.UndeliverableText")
+                };
+            }
+            else
+            {
+                orderDetail.ShippingInfo = new ShippingInfo
                 {
                     Title = "Shipping",
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
@@ -124,13 +141,8 @@ namespace Kadena.WebAPI.Services
                         Text = "Track your packages",
                         Url = string.Empty 
                     }*/
-                },
-                OrderedItems = new OrderedItems()
-                {
-                    Title = "Ordered items",
-                    Items = await MapOrderedItems(data.Items)
-                }
-            };
+                };
+            }
 
             return orderDetail;
         }
