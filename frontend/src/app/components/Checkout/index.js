@@ -7,6 +7,7 @@ import Spinner from 'app.dump/Spinner';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity, getUI } from 'app.ac/checkout';
+import { changeProducts } from 'app.ac/cartPreview';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -53,7 +54,7 @@ class Checkout extends Component {
 
   sendData = (checkedData) => {
     const { sendData } = this.props;
-    const invalidFields = Object.keys(checkedData).filter(key => !checkedData[key]);
+    const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
 
@@ -81,17 +82,22 @@ class Checkout extends Component {
       invoice: ''
     };
 
-    deliveryAddresses.items.forEach((address) => {
-      if (address.checked) deliveryAddress = address.id;
-    });
-
-
-    if (deliveryMethods) {
-      deliveryMethods.items.forEach((methodGroup) => {
-        methodGroup.items.forEach((method) => {
-          if (method.checked && !deliveryMethod) deliveryMethod = method.id;
-        });
+    if (deliveryAddresses.isDeliverable) {
+      deliveryAddresses.items.forEach((address) => {
+        if (address.checked) deliveryAddress = address.id;
       });
+
+
+      if (deliveryMethods) {
+        deliveryMethods.items.forEach((methodGroup) => {
+          methodGroup.items.forEach((method) => {
+            if (method.checked && !deliveryMethod) deliveryMethod = method.id;
+          });
+        });
+      }
+    } else {
+      deliveryAddress = 'non-deliverable';
+      deliveryMethod = 'non-deliverable';
     }
 
     paymentMethods.items.forEach((method) => {
@@ -105,6 +111,11 @@ class Checkout extends Component {
     });
   };
 
+  refreshCartPreview = (products) => {
+    const { items, summaryPrice } = products;
+    this.props.changeProducts(items, summaryPrice);
+  };
+
   componentWillReceiveProps(nextProps) {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
@@ -113,6 +124,7 @@ class Checkout extends Component {
     if (!products.items.length) location.reload();
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
+    if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
 
   render() {
@@ -212,5 +224,6 @@ export default connect((state) => {
   changeShoppingData,
   sendData,
   removeProduct,
-  changeProductQuantity
+  changeProductQuantity,
+  changeProducts
 })(Checkout);

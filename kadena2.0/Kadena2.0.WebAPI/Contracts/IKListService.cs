@@ -10,5 +10,7 @@ namespace Kadena.WebAPI.Contracts
         Task<bool> UseOnlyCorrectAddresses(Guid containerId);
 
         Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses);
+
+        Task<MailingList> GetMailingList(Guid containerId);
     }
 }
