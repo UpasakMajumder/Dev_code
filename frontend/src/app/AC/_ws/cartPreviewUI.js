@@ -85,7 +85,15 @@ export const newState = {
     "pricePrefix": "$",
     "price": "500.0"
   },
-  "alertMessage": "Added to cart",
+  "alertMessage": "Your selected product(s) have been added to the shopping cart. Please select an option below",
+  "cart": {
+    "url": "/checkout",
+    "btns": {
+      "cancel": "Continue Shopping",
+      "checkout": "Checkout"
+    },
+    "productUrl": "/product"
+  },
   "items": [
     {
       "id": 33,

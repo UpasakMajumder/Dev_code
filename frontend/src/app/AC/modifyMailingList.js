@@ -3,6 +3,8 @@ import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING,
   START, FINISH, MODIFY_MAILING_LIST_REPROCESS, MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { MODIFY_MAILING_LIST_UI } from 'app.globals';
 /* helpers */
@@ -68,8 +70,7 @@ export const useCorrect = (id, url) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -106,8 +107,7 @@ export const reprocessAddresses = (id, url, data) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
