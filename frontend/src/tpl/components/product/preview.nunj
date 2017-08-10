@@ -1,6 +1,6 @@
 {% from "macro/svg.nunj" import svg %}
 
 <div class="product-view__preview js-product-preview js-collapse">
-  <img src="http://satyr.io/1500x1000" alt="">
+  <img class="js-product-preview-image" data-src="http://satyr.io/1500x1000" src="" alt="">
   <div class="product-view__preview-wrapper js-toggle"></div>
 </div>
