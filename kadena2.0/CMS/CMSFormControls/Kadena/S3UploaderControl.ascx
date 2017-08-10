@@ -10,12 +10,12 @@
         var btnUpload = _ifrUploader.contentWindow.document.getElementById('btnUpload');
         var lnkFile = _ifrUploader.contentWindow.document.getElementById('lnkFile');
 
-        if (lnkFile.value.length == 0) {
+        if (lnkFile.textContent.length == 0) {
             lnkFile.setAttribute('href', _fldFileUrl.value);
             lnkFile.textContent = _fldFileUrl.value;
         }
         else {
-            _fldFileUrl.value = lnkFile.value;
+            _fldFileUrl.value = lnkFile.getAttribute('href');
         }
 
         btnUpload.onclick = function (event) {
@@ -57,9 +57,9 @@
     }
 </script>
 
+<asp:HiddenField ID="fldFileUrl" runat="server" ClientIDMode="Static"/>
 <div id="divFrame">
     <iframe id="ifrUploader" onload="initPhotoUpload()" scrolling="no" hidefocus="true" 
         style="text-align: center; vertical-align: middle; padding:0px; margin: 0px; width: 100%; height: 70px" src="/CMSFormControls/S3Uploader.aspx"></iframe>
 </div>
-<asp:HiddenField ID="fldFileUrl" runat="server" ClientIDMode="Static"/>
 <div id="divUploadMessage" style="display: none"></div>
