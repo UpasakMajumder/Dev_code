@@ -3,7 +3,7 @@
     Theme="Default" %>
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
-    <asp:HyperLink runat="server" ID="lnkFile" ClientIDMode="Static" />
+    <asp:HyperLink runat="server" ID="lnkFile" ClientIDMode="Static" Target="_blank" />
     <cms:FormErrorLabel runat="server" ID="lblMessage" />
     <div>
         <input id="inpFile" clientidmode="Static" type="file" runat="server" style="display: none" />
