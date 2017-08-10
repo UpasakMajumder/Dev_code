@@ -6,9 +6,9 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IFileClient
     {
-        Task<BaseResponseDto<string>> UploadToS3(string serviceEndpoint, string siteName, string folderName, string moduleName,
-            Stream fileStream, string fileName);
+        Task<BaseResponseDto<string>> UploadToS3(string serviceEndpoint, string siteName, FileFolder folderName,
+            FileModule moduleName, Stream fileStream, string fileName);
 
-        string GetFileUrl(string serviceEndpoint, string fileName, string moduleName);
+        string GetFileUrl(string serviceEndpoint, string fileName, FileModule moduleName);
     }
 }
