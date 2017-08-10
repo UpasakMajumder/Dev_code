@@ -20,7 +20,7 @@ namespace Kadena.CMSFormControls
         {
             if ((inpFile.PostedFile?.ContentLength ?? 0) == 0)
             {
-                lblMessage.Text = string.Format(SCRIPT_TEMPLATE, "Please specify a valid file.", "true");
+                lblMessage.Text = GetString("Kadena.Admin.NotValidFile");
                 lnkFile.NavigateUrl = string.Empty;
                 lnkFile.Text = string.Empty;
             }
