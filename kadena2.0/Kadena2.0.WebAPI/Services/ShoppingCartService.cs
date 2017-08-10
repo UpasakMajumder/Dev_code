@@ -97,31 +97,22 @@ namespace Kadena.WebAPI.Services
 
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
-            var carriers = kenticoProvider.GetShippingCarriers();
+            var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
+                .Any(item => !item.IsMailingList);
+            if (!isShippingApplicable)
+            {
+                UnsetShipping();
+            }
 
             var result = new CheckoutPageDeliveryTotals()
             {
-                DeliveryMethods = new DeliveryCarriers()
-                {
-                    Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
-                    Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
-                    items = carriers.ToList()
-                },
+                DeliveryMethods = GetDeliveryMethods(isShippingApplicable),
                 Totals = new Totals()
                 {
                     Title = string.Empty,
                     Description = null // resources.GetResourceString("Kadena.Checkout.Totals.Description"), if needed
                 }
             };
-
-            result.DeliveryMethods.RemoveCarriersWithoutOptions();
-            CheckCurrentOrDefaultShipping(result);
-            result.DeliveryMethods.UpdateSummaryText(
-                    resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
-                    resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
-                    resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
-                    resources.GetResourceString("Kadena.Checkout.CustomerPrice")
-                );
 
             if (kenticoProvider.UserCanSeePrices())
             {
@@ -130,6 +121,36 @@ namespace Kadena.WebAPI.Services
 
             SetPricesVisibility(result);
             return result;
+        }
+
+        private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)
+        {
+            if (!isShippingApplicable)
+            {
+                var defaultDeliveryMethods = new DeliveryCarriers();
+                return defaultDeliveryMethods;
+            }
+
+            var carriers = kenticoProvider.GetShippingCarriers();
+            var deliveryMethods = new DeliveryCarriers()
+            {
+                Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
+                Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
+                items = carriers.ToList()
+            };
+
+            deliveryMethods.RemoveCarriersWithoutOptions();
+
+            CheckCurrentOrDefaultShipping(deliveryMethods);
+
+            deliveryMethods.UpdateSummaryText(
+                resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
+                resources.GetResourceString("Kadena.Checkout.ShippingPrice"),
+                resources.GetResourceString("Kadena.Checkout.CannotBeDelivered"),
+                resources.GetResourceString("Kadena.Checkout.CustomerPrice")
+            );
+
+            return deliveryMethods;
         }
 
         private async Task UpdateTotals(CheckoutPageDeliveryTotals page)
@@ -186,25 +207,30 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        private void CheckCurrentOrDefaultShipping(CheckoutPageDeliveryTotals page)
+        private void CheckCurrentOrDefaultShipping(DeliveryCarriers deliveryMethods)
         {
             int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
 
-            if (page.DeliveryMethods.IsPresent(currentShipping) && !page.DeliveryMethods.IsDisabled(currentShipping))
+            if (deliveryMethods.IsPresent(currentShipping) && !deliveryMethods.IsDisabled(currentShipping))
             {
-                page.DeliveryMethods.CheckMethod(currentShipping);
+                deliveryMethods.CheckMethod(currentShipping);
             }
             else
             {
-                SetDefaultShipping(page);
+                SetDefaultShipping(deliveryMethods);
             }
         }
 
-        private void SetDefaultShipping(CheckoutPageDeliveryTotals page)
+        private void SetDefaultShipping(DeliveryCarriers deliveryMethods)
         {
-            int defaultMethodId = page.DeliveryMethods.GetDefaultMethodId();
+            int defaultMethodId = deliveryMethods.GetDefaultMethodId();
             kenticoProvider.SelectShipping(defaultMethodId);
-            page.DeliveryMethods.CheckMethod(defaultMethodId);
+            deliveryMethods.CheckMethod(defaultMethodId);
+        }
+
+        private void UnsetShipping()
+        {
+            kenticoProvider.SelectShipping(0);
         }
 
         private void SetPricesVisibility(CheckoutPage page)
