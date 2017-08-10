@@ -7,8 +7,9 @@
 
         var btnUpload = _ifrUploader.contentWindow.document.getElementById('btnUpload');
         var lnkFile = _ifrUploader.contentWindow.document.getElementById('lnkFile');
-
-        if (lnkFile.textContent.length == 0) {
+        var lblMessage = _ifrUploader.contentWindow.document.getElementById('lblMessage');
+        if (lnkFile.textContent.length == 0
+            && lblMessage.textContent.length == 0) {
             lnkFile.setAttribute('href', _fldFileUrl.value);
             lnkFile.textContent = _fldFileUrl.value;
         }
