@@ -38,10 +38,5 @@ namespace Kadena.CMSFormControls
             //Now inject the script which will fire when the page is refreshed.
             //ClientScript.RegisterStartupScript(this.GetType(), "uploadNotify", script);
         }
-
-        protected void btnUpload_Click(object sender, EventArgs e)
-        {
-            
-        }
     }
 }
