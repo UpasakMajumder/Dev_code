@@ -18,13 +18,12 @@ namespace Kadena.CMSFormControls
 
         private void UploadFile()
         {
-
             if ((inpFile.PostedFile?.ContentLength ?? 0) == 0)
             {
                 lblMessage.Text = string.Format(SCRIPT_TEMPLATE, "Please specify a valid file.", "true");
+                lnkFile.NavigateUrl = string.Empty;
+                lnkFile.Text = string.Empty;
             }
-            
-            
             
             {
                 //Uploaded file is valid, now we can do whatever we like to do, copying it file system,
