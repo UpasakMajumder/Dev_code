@@ -1,21 +1,9 @@
-﻿using CMS.Base;
-using CMS.Base.Web.UI;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
-using CMS.FormEngine.Web.UI;
-using CMS.Helpers;
-using CMS.Membership;
-using CMS.Modules;
-using CMS.SiteProvider;
-using CMS.UIControls;
-using System;
-using System.Data;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using CMS.FormEngine.Web.UI;
 
 namespace Kadena.CMSFormControls.Kadena
 {
+    // Solution taken from http://geekswithblogs.net/rashid/archive/2007/08/01/Create-An-Ajax-Style-File-Upload.aspx
+
     public partial class S3Uploader : FormEngineUserControl
     {
         public override object Value
@@ -28,11 +16,6 @@ namespace Kadena.CMSFormControls.Kadena
             {
                 fldFileUrl.Value = value?.ToString();
             }
-        }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
