@@ -4,7 +4,7 @@
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcBeforeContent" runat="Server">
     <asp:HyperLink runat="server" ID="lnkFile" ClientIDMode="Static" Target="_blank" />
-    <cms:FormErrorLabel runat="server" ID="lblMessage" />
+    <cms:FormLabel runat="server" ID="lblMessage" ClientIDMode="Static" ForeColor="Red"/>
     <div style="margin-top: 5px">
         <input id="inpFile" clientidmode="Static" type="file" runat="server" style="display: none" />
         <cms:LocalizedButton runat="server" ID="btnUpload" ClientIDMode="Static" ButtonStyle="Default" EnableViewState="false" ResourceString="attach.uploadfile" />

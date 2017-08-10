@@ -28,7 +28,7 @@ namespace Kadena.CMSFormControls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.FormEngine.Web.UI.FormErrorLabel lblMessage;
+        protected global::CMS.FormEngine.Web.UI.FormLabel lblMessage;
         
         /// <summary>
         /// inpFile control.
