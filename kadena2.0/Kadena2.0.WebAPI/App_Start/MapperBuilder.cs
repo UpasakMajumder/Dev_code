@@ -42,7 +42,7 @@ namespace Kadena.WebAPI
                     SKU = new SKUDTO()
                     {
                         KenticoSKUID = p.SKUID,
-                        Name = p.CartItemText,
+                        Name = p.SKUName, 
                         SKUNumber = p.SKUNumber
                     },
                     TotalPrice = p.TotalPrice,
