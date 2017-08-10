@@ -27,5 +27,6 @@
 <asp:HiddenField ID="fldFileUrl" runat="server" ClientIDMode="Static"/>
 <div id="divFrame">
     <iframe id="ifrUploader" onload="initPhotoUpload()" scrolling="no" frameborder="0" hidefocus="true" 
-        style="text-align: center; vertical-align: middle; padding:0px; margin: 0px; border-style:none; width: 100%; height: 70px" src="/CMSFormControls/S3Uploader.aspx"></iframe>
+        style="text-align: center; vertical-align: middle; padding:0px; margin: 0px; border-style:none; width: 100%; height: 70px" 
+        src="/CMSPages/Kadena/S3Uploader.aspx"></iframe>
 </div>
