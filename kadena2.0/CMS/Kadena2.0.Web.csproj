@@ -700,6 +700,20 @@
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.cs">
+      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.designer.cs">
+      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSFormControls\S3Uploader.aspx.cs">
+      <DependentUpon>S3Uploader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\S3Uploader.aspx.designer.cs">
+      <DependentUpon>S3Uploader.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.cs">
       <DependentUpon>OrdersList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -921,6 +935,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
+    <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
+    <Content Include="CMSFormControls\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
