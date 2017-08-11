@@ -88,8 +88,8 @@ export const getUI = () => {
       }, 1500);
     };
 
-    dev();
-    // prod();
+    // dev();
+    prod();
   };
 };
 
