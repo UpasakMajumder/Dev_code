@@ -16,9 +16,7 @@ namespace Kadena.Old_App_Code.Helpers
 {
     public static class ServiceHelper
     {
-        private const string _bucketType = "original-mailing";
         private const string _moduleName = "Klist";
-        private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
@@ -32,7 +30,6 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
-        private const string _loadFileIncorrectMessage = "Url for file uploading is not in correct format. Check settings for your site.";
         private const string _createContainerIncorrectMessage = "Url for creating container is not in correct format. Check settings for your site.";
         private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
