@@ -4,6 +4,6 @@
     {
         public string AlertMessage { get; set; }
 
-        public RequestButtons Buttons { get; set; }
+        public RequestButtons Btns { get; set; }
     }
 }

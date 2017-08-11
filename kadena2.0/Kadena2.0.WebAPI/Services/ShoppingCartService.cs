@@ -320,7 +320,7 @@ namespace Kadena.WebAPI.Services
                 Confirmation = new RequestResult
                 {
                     AlertMessage = resources.GetResourceString("Kadena.Product.ItemsAddedToCart"),
-                    Buttons = new RequestButtons
+                    Btns = new RequestButtons
                     {
                         Cancel = new Button
                         {
