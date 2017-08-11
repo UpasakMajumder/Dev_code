@@ -17,27 +17,29 @@ export const addToCartRequest = (body) => {
   };
 
   if (isDevelopment) {
+    const { confirmation, cartPreview } = newState;
+
     return new Promise((resolve) => {
       dispatch({
         type: CART_PREVIEW_CHANGE_ITEMS,
         payload: {
-          items: newState.items,
-          summaryPrice: newState.summaryPrice
+          items: cartPreview.items,
+          summaryPrice: cartPreview.summaryPrice
         }
       });
 
       const confirmBtn = [
         {
-          label: newState.cart.btns.cancel,
-          func: () => window.location.assign(newState.cart.productUrl)
+          label: confirmation.btns.cancel.text,
+          func: () => window.location.assign(confirmation.btns.cancel.url)
         },
         {
-          label: newState.cart.btns.checkout,
-          func: () => window.location.assign(newState.cart.url)
+          label: confirmation.btns.checkout.text,
+          func: () => window.location.assign(confirmation.btns.checkout.url)
         }
       ];
 
-      toggleDialogAlert(true, newState.alertMessage, closeDialog, confirmBtn);
+      toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
       // resolve('hi');
     });
   }
