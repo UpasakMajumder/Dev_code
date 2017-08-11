@@ -13,12 +13,7 @@ class AddToCart {
       const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
       wrappers.forEach(wrapper => wrapper.classList.remove(showMessageClass));
 
-      let name = '';
-      if (nameElement) {
-        name = nameElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-name');
-      }
+      const name = nameElement && nameElement.value;
 
       let quantity = 0;
       if (quantityElement) {
