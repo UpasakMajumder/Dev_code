@@ -29,6 +29,12 @@ namespace AutomatedTests
         /// Wait for driver actions
         /// </summary>
         public static WebDriverWait BaseWait { get; set; }
+       
+        /// <summary>
+        /// Waits for driver actions, short timeout
+        /// </summary>
+        public static WebDriverWait ShortWait { get; set; }
+
         /// <summary>
         /// Represents a pseudo-random number generator, a device that produces a sequence of numbers that meet certain statistical requirements for randomness.
         /// </summary>
@@ -63,6 +69,7 @@ namespace AutomatedTests
             Log.WriteLine("Event firing driver added to driver");
 
             BaseWait = new WebDriverWait(Driver, TimeSpan.FromSeconds(waitsec));
+            ShortWait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
             ActionsBuilder = new Actions(Driver);
             Random = new Random();
             JsExecutor = (IJavaScriptExecutor)Driver;
