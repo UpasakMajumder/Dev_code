@@ -173,6 +173,7 @@ namespace AutomatedTests
         /// <param name="element">Any HTML element</param>
         public static void RightClickElement(this IWebElement element)
         {
+            element.WaitTillClickable();
             Browser.ActionsBuilder.ContextClick(element).Build().Perform();
         }
 
@@ -367,7 +368,7 @@ namespace AutomatedTests
             Browser.BaseWait.Until((d) => !element.IsPresent());
             return element;
         }
-
+        
         /// <summary>
         /// Waits till element is displayed
         /// </summary>

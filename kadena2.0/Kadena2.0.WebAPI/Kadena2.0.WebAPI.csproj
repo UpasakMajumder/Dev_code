@@ -129,7 +129,7 @@
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\RecentOrdersController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\SiteDataController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />

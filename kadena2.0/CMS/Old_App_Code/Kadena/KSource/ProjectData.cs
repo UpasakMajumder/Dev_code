@@ -16,7 +16,7 @@ namespace Kadena.Old_App_Code.Kadena.KSource
         public string Status { get; set; }
 
         [DataMember(Name = "lastUpdate")]
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         [DataMember(Name = "isActive")]
         public bool Active { get; set; }
