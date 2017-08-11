@@ -1,9 +1,13 @@
+/* helpers */
 import { consoleException } from 'app.helpers/io';
+import { getSecondLevelDomain } from 'app.helpers/location';
 
 class ChiliEditor {
   constructor(frame) {
     this.editor = null;
     this.frameWindow = null;
+
+    document.domain = getSecondLevelDomain();
 
     this.initEditor = this.initEditor.bind(this);
     this.initActions = this.initActions.bind(this);
