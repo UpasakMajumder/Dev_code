@@ -95,7 +95,7 @@ namespace Kadena.Models.Checkout
         {
             get
             {
-                return $"/products/product-tools/product-editor?id={ProductPageId}&skuid={SKUID}&templateid={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}";
+                return $"/products/product-tools/product-editor?documentId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}";
             }
         }
 

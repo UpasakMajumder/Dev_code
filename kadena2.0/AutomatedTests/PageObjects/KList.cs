@@ -18,7 +18,14 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".mailing-lists tr:nth-child(2) td")]
         private IList<IWebElement> MailingListsFirstRowColumns { get; set; }
 
-      
+        public int NumberOfErrors
+        {
+            get
+            {
+                return int.Parse(MailingListsFirstRowColumns[3].GetText());
+            }            
+        }
+
         public KList()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -51,7 +58,7 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool WereAddressesValidated()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 25; i++)
             {
                 if (AreThereAnyErrorsInFirstList())
                 {
@@ -71,7 +78,11 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool AreThereAnyErrorsInFirstList()
         {
-            int numberOfErrors = int.Parse(MailingListsFirstRowColumns[3].GetText());
+            int numberOfErrors;
+            if (!int.TryParse(MailingListsFirstRowColumns[3].GetText(), out numberOfErrors))
+            {
+                return false;
+            }
             return numberOfErrors > 0;           
         }
 

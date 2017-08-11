@@ -751,6 +751,13 @@
     <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
       <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
+      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -778,13 +785,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\General\Button.ascx.designer.cs">
       <DependentUpon>Button.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx.cs">
       <DependentUpon>AddressViewer.ascx</DependentUpon>
@@ -956,11 +956,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
-    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />

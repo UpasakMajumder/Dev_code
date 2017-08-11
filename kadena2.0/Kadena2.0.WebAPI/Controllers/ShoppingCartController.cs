@@ -4,32 +4,23 @@ using System;
 using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.Models.SubmitOrder;
 using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
-using Kadena.Dto.SubmitOrder.Requests;
-using Kadena.Dto.SubmitOrder.Responses;
-using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class ShoppingCartController : ApiControllerBase
     {
-        private readonly IShoppingCartService service;
-        private readonly IOrderService orderService;
+        private readonly IShoppingCartService service;        
         private readonly IMapper mapper;
 
-        public ShoppingCartController(IShoppingCartService service, IOrderService orderService, IMapper mapper)
+        public ShoppingCartController(IShoppingCartService service, IMapper mapper)
         {
             if (service == null)
             {
                 throw new ArgumentNullException(nameof(service));
-            }
-
-            if (orderService == null)
-            {
-                throw new ArgumentNullException(nameof(orderService));
             }
 
             if (mapper == null)
@@ -38,7 +29,6 @@ namespace Kadena.WebAPI.Controllers
             }
 
             this.service = service;
-            this.orderService = orderService;
             this.mapper = mapper;
         }
 
@@ -51,7 +41,7 @@ namespace Kadena.WebAPI.Controllers
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }
-
+        
         [HttpGet]
         [Route("api/deliverytotals")]
         [AuthorizationFilter]
@@ -60,16 +50,6 @@ namespace Kadena.WebAPI.Controllers
             var deliveryTotals = await service.GetDeliveryAndTotals();
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
-        }
-
-        [HttpGet]
-        [Route("api/orderdetail/{orderId}")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> Get([FromUri]string orderId)
-        {
-            var detailPage = await orderService.GetOrderDetail(orderId);
-            var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto); // TODO refactor using checking null
         }
 
         [HttpPost]
@@ -112,15 +92,24 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
+        [HttpGet]
+        [Route("api/shoppingcart/itemspreview")]
+        [AuthorizationFilter]
+        public IHttpActionResult ItemsPreview()
+        {
+            var result = service.ItemsPreview();
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
+            return ResponseJson(resultDto);
+        }
 
         [HttpPost]
-        [Route("api/shoppingcart/submit")]
+        [Route("api/shoppingcart/addtocart")]
         [AuthorizationFilter]
-        public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
+        public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
         {
-            var submitRequest = mapper.Map<SubmitOrderRequest>(request);
-            var serviceResponse = await orderService.SubmitOrder(submitRequest);
-            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            var addItem = mapper.Map<NewCartItem>(item);
+            var result = await service.AddToCart(addItem);
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
             return ResponseJson(resultDto);
         }
     }

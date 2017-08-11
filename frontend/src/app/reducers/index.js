@@ -10,6 +10,7 @@ import search from './search';
 import isShownHeaderShadow from './headerShadow';
 import recentOrders from './recentOrders';
 import modifyMailingList from './modifyMailingList';
+import cartPreview from './cartPreview';
 
 const rootReducer = combineReducers({
   login,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   isShownHeaderShadow,
   orderDetail,
   recentOrders,
-  modifyMailingList
+  modifyMailingList,
+  cartPreview
 });
 
 export default rootReducer;
