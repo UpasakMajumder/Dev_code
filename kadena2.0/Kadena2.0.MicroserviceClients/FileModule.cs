@@ -2,10 +2,15 @@
 {
     public class FileModule
     {
-        private string _value;
+        private readonly string _value;
 
-        public static FileModule KList { get; } = new FileModule { _value = "KList" };
-        public static FileModule KProducts { get; } = new FileModule { _value = "KProducts" };
+        public static FileModule KList { get; } = new FileModule("KList");
+        public static FileModule KProducts { get; } = new FileModule("KProducts");
+
+        private FileModule(string value)
+        {
+            _value = value;
+        }
 
         public override string ToString()
         {
