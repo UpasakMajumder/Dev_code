@@ -54,25 +54,28 @@ export const addToCartRequest = (body) => {
           return;
         }
 
-        const { alertMessage, cart, items, summaryPrice } = payload;
+        const { confirmation, cartPreview } = payload;
 
         dispatch({
           type: CART_PREVIEW_CHANGE_ITEMS,
-          payload: { items, summaryPrice }
+          payload: {
+            items: cartPreview.items,
+            summaryPrice: cartPreview.summaryPrice
+          }
         });
 
         const confirmBtn = [
           {
-            label: cart.btns.cancel,
-            func: () => window.location.assign(cart.productUrl)
+            label: confirmation.btns.cancel.text,
+            func: () => window.location.assign(confirmation.btns.cancel.url)
           },
           {
-            label: cart.btns.checkout,
-            func: () => window.location.assign(cart.url)
+            label: confirmation.btns.checkout.text,
+            func: () => window.location.assign(confirmation.btns.checkout.url)
           }
         ];
 
-        toggleDialogAlert(true, alertMessage, closeDialog, confirmBtn);
+        toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
       })
       .catch((error) => {
         alert(error); // eslint-disable-line no-alert
