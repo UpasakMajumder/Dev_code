@@ -12,6 +12,7 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using Newtonsoft.Json;
 using Kadena.Models.Checkout;
+using Kadena.Models.Product;
 using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
