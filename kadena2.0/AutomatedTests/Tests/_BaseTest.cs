@@ -70,7 +70,7 @@ namespace AutomatedTests.Tests
         {
             var login = new Login();
             login.Open();
-            login.FillLogin(TestUser.Name, TestUser.Password);           
+            login.FillLogin(TestUser.Name, TestUser.Password);
             var dashboard = login.Submit();
             dashboard.WaitForKadenaPageLoad();
             return dashboard;

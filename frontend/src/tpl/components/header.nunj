@@ -28,13 +28,13 @@
       </a>
     </li>
 
-    <li class="nav-item {% if(headerActive === 'Shopping cart') %} active {% endif %}">
+    <li class="nav-item {% if(headerActive === 'Shopping cart') %} active {% endif %} js-cart-preview">
       <a class="nav-link" href="#">
         {{ svg('cart', 'icon-navigation icon-dashboard') }}
         Shopping cart
         <div class="r-cart-items"></div>
-        <div class="r-cart-preview"></div>
       </a>
+      <div class="r-cart-preview"></div>
     </li>
 
     <li class="nav-item">

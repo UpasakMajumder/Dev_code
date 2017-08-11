@@ -7,7 +7,7 @@ import { CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
 import { ADD_TO_CART_URL } from 'app.globals';
 
 export const addToCartRequest = (body) => {
-  const dispatch = store.dispatch; // eslint-disable-line no-undef
+  const dispatch = window.store.dispatch;
 
   // return new Promise((resolve) => {
   //   if (true) {
