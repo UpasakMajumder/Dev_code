@@ -8,9 +8,10 @@
   </div>
   <div class="add-to-cart__right">
     <div class="input__wrapper">
-      <input type="number" class="input__text" placeholder="1">
+      <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" placeholder="1">
+      <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
     </div>
     <span class="add-to-cart__right-label">pack of 50 (50)</span>
-    <button class="btn-action btn-action js-add-to-cart" type="button">Add to cart</button>
+    <button type="button" class="btn-action js-add-to-cart">Add to cart</button>
   </div>
 </div>
