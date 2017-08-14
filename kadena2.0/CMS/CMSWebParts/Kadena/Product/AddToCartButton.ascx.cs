@@ -27,11 +27,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             if (!StopProcessing)
             {
-                SetupNumberOfItemsInPackageInformation();
+                //SetupNumberOfItemsInPackageInformation();
 
-                btnAddToCart.Text = ResHelper.GetString("Kadena.Product.AddToCart", LocalizationContext.CurrentCulture.CultureCode);
-                lblNumberOfItemsError.Visible = false;
-                inpNumberOfItems.Attributes.Add("class", "input__text");
+                //lblNumberOfItemsError.Visible = false;
+                //inpNumberOfItems.Attributes.Add("class", "input__text");
 
                 PreviouslyAddedAmount = GetPreviouslyAddedAmmout();
 
@@ -47,8 +46,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         #region Event handlers
 
         protected void btnAddToCart_Click(object sender, EventArgs e)
-        {        
-            
+        {
             if (NumberOfItemsInInput > 0)
             {
 
@@ -91,6 +89,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
         #endregion
 
         #region Private methods
+
+        private static void AddHiddenInput(string name, string value)
+        {
+            
+        }
 
         private int NumberOfItemsInInput
         {
