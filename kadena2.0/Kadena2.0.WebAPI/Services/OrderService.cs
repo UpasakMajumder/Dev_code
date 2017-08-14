@@ -265,7 +265,8 @@ namespace Kadena.WebAPI.Services
             }
             else
             {
-                kenticoLog.LogError($"Template service client with templateId={cartItem.EditorTemplateId} and settingsId={cartItem.ProductChiliPdfGeneratorSettingsId}",
+                kenticoLog.LogError($"Call run generate PDF task",
+                    $"Template service client with templateId = {cartItem.EditorTemplateId} and settingsId = {cartItem.ProductChiliPdfGeneratorSettingsId}" +
                     response?.Error?.Message ?? string.Empty);
             }
             return Guid.Empty;
