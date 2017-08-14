@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AddToCartEdit.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.Chili.AddToCartExtended" %>
 
-<div class="input__wrapper js-add-to-cart-error">
+<div class="input__wrapper">
     <span class="input__label">
         <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.AddToCartQuantity" EnableViewState="false" />
     </span>
