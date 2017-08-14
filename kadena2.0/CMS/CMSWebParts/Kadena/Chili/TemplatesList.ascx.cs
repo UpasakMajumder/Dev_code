@@ -61,7 +61,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                             d.MailingList?.ContainerID ?? string.Empty,
                             (d.MailingList?.RowCount ?? 0).ToString()),
                         TemplateID = d.templateId,
-                        Date = DateTime.Parse(d.created).ToString()
+                        Date = DateTime.Parse(d.created)
                     })
                     .OrderByDescending(t => t.Date);
                 repTemplates.DataBind();
