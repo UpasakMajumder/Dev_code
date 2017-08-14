@@ -934,6 +934,10 @@
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
+      <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
       <Name>CMSApp</Name>
