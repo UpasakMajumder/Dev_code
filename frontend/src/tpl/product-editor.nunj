@@ -37,7 +37,7 @@
           </div>
         </div>
         <div>
-          <div class="input__wrapper js-add-to-cart-error">
+          <div class="input__wrapper">
             <span class="input__label">Quantity</span>
             <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1"/>
             <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>

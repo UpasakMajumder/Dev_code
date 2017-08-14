@@ -10,24 +10,20 @@ class AddToCart {
     const quantityElement = document.querySelector('.js-add-to-cart-quantity');
 
     button.addEventListener('click', () => {
-      const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
-      wrappers.forEach(wrapper => wrapper.classList.remove(showMessageClass));
+      const wrapper = document.querySelector('.js-add-to-cart-error');
+      wrapper.classList.remove(showMessageClass);
 
       const name = nameElement && nameElement.value;
 
       let quantity = 0;
-      if (quantityElement) {
-        quantity = quantityElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-quantity');
-      }
+      if (quantityElement) quantity = quantityElement.value;
 
       const { documentId, templateId, containerId } = getSearchObj();
       const body = { name, documentId, quantity, templateId, containerId };
 
       addToCartRequest(body)
         .then((message) => { // show if bad response
-          wrappers.forEach(wrapper => wrapper.classList.add(showMessageClass));
+          wrapper.classList.add(showMessageClass);
           const messageElement = document.querySelector('.js-add-to-cart-message');
           messageElement.innerHTML = message;
         });
