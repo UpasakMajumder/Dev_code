@@ -368,7 +368,7 @@ namespace Kadena.WebAPI.Services
                 TotalPrice = totals.TotalItemsPrice,
                 TotalShipping = totals.TotalShipping,
                 TotalTax = totals.TotalTax,
-                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item))// mapper.Map<OrderItemDTO[]>(cartItems)
+                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item))
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
