@@ -288,7 +288,7 @@ namespace Kadena.WebAPI.Services
                 customer.Company = resources.GetDefaultCustomerCompanyName();
             }
 
-            foreach (var item in cartItems.Where(i => i.IsMailingList))
+            foreach (var item in cartItems.Where(i => i.IsTemplated))
             {
                 var taskId = await CallRunGeneratePdfTask(item);
                 item.DesignFilePathTaskId = taskId;

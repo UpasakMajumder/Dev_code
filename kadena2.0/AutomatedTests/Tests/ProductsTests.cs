@@ -64,7 +64,7 @@ namespace AutomatedTests.Tests
             string productName = "automation" + StringHelper.RandomString(5);
             newProductForm.FillOutFields(productName);
             newProductForm.SaveForm();
-
+            EndAdminTest();
             //Delete the product
             var deleteResponse = Api.DeleteDocument<Product>("/Products/" + productName);
         }

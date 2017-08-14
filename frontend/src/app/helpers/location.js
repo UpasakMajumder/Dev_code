@@ -1,6 +1,15 @@
 // @flow
 // $FlowIgnore
 import query from 'url-query';
+/* constants */
+import { DOMAIN } from 'app.consts';
+
+export const getSecondLevelDomain = () => {
+  const { domain } = document;
+  const array = domain.split('.');
+  const index = array.indexOf(DOMAIN);
+  return [array[index - 1], array[index]].join('.');
+};
 
 export const getSearchObj = (): { tab?: string} => {
   const search: ?string = window.location.search;

@@ -67,6 +67,12 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
                     if (page.GetStringValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
                     {
                         var inventoryProduct = SKUInfoProvider.GetSKUInfo(page.NodeSKUID);
+                        if (inventoryProduct == null)
+                        {
+                            // skip invalid SKU id
+                            continue;
+                        }
+
                         if (inventoryProduct.SKUTrackInventory == TrackInventoryTypeEnum.Disabled)
                         {
                             result++;
