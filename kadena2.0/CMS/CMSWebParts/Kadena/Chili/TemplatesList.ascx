@@ -12,7 +12,7 @@
                 <tbody>
                     <tr>
                         <th>ID</th>
-                        <th>Date changed</th>
+                        <th>Date created</th>
                         <th>&nbsp;</th>
                     </tr>
         </HeaderTemplate>
