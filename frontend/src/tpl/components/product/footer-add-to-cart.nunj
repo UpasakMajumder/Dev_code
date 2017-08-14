@@ -10,6 +10,10 @@
     <div class="input__wrapper">
       <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" placeholder="1">
       <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
+      <input type="hidden" name="1" value="123" class="js-add-to-cart-property" />
+      <input type="hidden" name="2" value="4" class="js-add-to-cart-property" />
+      <input type="hidden" name="3" value="1" class="js-add-to-cart-property" />
+      <input type="hidden" name="4" value="2" class="js-add-to-cart-property" />
     </div>
     <span class="add-to-cart__right-label">pack of 50 (50)</span>
     <button type="button" class="btn-action js-add-to-cart">Add to cart</button>

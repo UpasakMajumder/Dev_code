@@ -8,6 +8,7 @@ class AddToCart {
     const showMessageClass = 'input--error';
     const nameElement = document.querySelector('.js-add-to-cart-name');
     const quantityElement = document.querySelector('.js-add-to-cart-quantity');
+    const properyFields = Array.from(document.querySelectorAll('.js-add-to-cart-property'));
 
     button.addEventListener('click', () => {
       const wrapper = document.querySelector('.js-add-to-cart-error');
@@ -18,8 +19,12 @@ class AddToCart {
       let quantity = 0;
       if (quantityElement) quantity = quantityElement.value;
 
-      const { documentId, templateId, containerId } = getSearchObj();
-      const body = { name, documentId, quantity, templateId, containerId };
+      const body = { name, quantity };
+
+      properyFields.forEach((field) => {
+        const name = field.getAttribute('name');
+        body[name] = field.value;
+      });
 
       addToCartRequest(body)
         .then((message) => { // show if bad response
