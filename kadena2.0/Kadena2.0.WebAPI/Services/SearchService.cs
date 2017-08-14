@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.Services
 {
@@ -28,8 +29,12 @@ namespace Kadena.WebAPI.Services
         public SearchResultPage Search(string phrase, int results = 100)
         {
             var searchResultPages = SearchPages(phrase, results);
-            var searchResultProducts = SearchProducts(phrase, results);
+            var searchResultProducts = new List<ResultItemProduct>();
 
+            if (SettingsKeyInfoProvider.GetValue($"{resources.GetKenticoSite().Name}.KDA_ProductsModuleEnabled") == "enabled")
+            {
+                searchResultProducts = SearchProducts(phrase, results);
+            }
             return new SearchResultPage()
             {
                 Pages = searchResultPages,
@@ -40,8 +45,12 @@ namespace Kadena.WebAPI.Services
         public AutocompleteResponse Autocomplete(string phrase, int results = 3)
         {
             var searchResultPages = SearchPages(phrase, results);
-            var searchResultProducts = SearchProducts(phrase, results);
+            var searchResultProducts = new List<ResultItemProduct>();
 
+            if (SettingsKeyInfoProvider.GetValue($"{resources.GetKenticoSite().Name}.KDA_ProductsModuleEnabled") == "enabled")
+            {
+                searchResultProducts = SearchProducts(phrase, results);
+            }
             var result = new AutocompleteResponse()
             {
                 Pages = new AutocompletePages()
@@ -53,15 +62,15 @@ namespace Kadena.WebAPI.Services
                 {
                     Url = $"/serp?phrase={HttpUtility.UrlEncode(phrase)}&tab=products",
                     Items = searchResultProducts.Select(p => new AutocompleteProduct()
-                        {
-                            Id = p.Id,
-                            Category = p.Category,
-                            Image = p.ImgUrl,
-                            Stock = p.Stock,
-                            Title = p.Title,
-                            Url = kenticoProvider.GetDocumentUrl(p.Id)
-                        }
-                    ).ToList()
+                    {
+                        Id = p.Id,
+                        Category = p.Category,
+                        Image = p.ImgUrl,
+                        Stock = p.Stock,
+                        Title = p.Title,
+                        Url = kenticoProvider.GetDocumentUrl(p.Id)
+                    }
+                ).ToList()
                 },
                 Message = string.Empty
             };
@@ -76,10 +85,10 @@ namespace Kadena.WebAPI.Services
             var searchResultPages = new List<ResultItemPage>();
             var indexName = $"KDA_PagesIndex.{site.Name}";
             var datarowsResults = kenticoSearch.Search(phrase, indexName, "/%", results, true);
-            
+
             foreach (DataRow dr in datarowsResults)
             {
-                int documentId = GetDocumentId(dr[0]);                
+                int documentId = GetDocumentId(dr[0]);
 
                 var resultItem = new ResultItemPage()
                 {
@@ -100,7 +109,7 @@ namespace Kadena.WebAPI.Services
             var site = resources.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
             var indexName = $"KDA_ProductsIndex.{site.Name}";
-            var datarowsResults = kenticoSearch.Search(phrase, indexName, "/Products/%", results,  true);
+            var datarowsResults = kenticoSearch.Search(phrase, indexName, "/Products/%", results, true);
 
             foreach (DataRow dr in datarowsResults)
             {
@@ -121,7 +130,7 @@ namespace Kadena.WebAPI.Services
                     if (string.IsNullOrEmpty(resultItem.ImgUrl))
                     {
                         resultItem.ImgUrl = product.SkuImageUrl;
-                    }                    
+                    }
                     resultItem.Category = product.Category;
                     if (product.ProductType.Contains("KDA.InventoryProduct"))
                     {
@@ -148,7 +157,7 @@ namespace Kadena.WebAPI.Services
         private int GetDocumentId(object o)
         {
             int documentId = 0;
-            var parsedId = o.ToString().Split(new char[]{';'})?[0].Split(new char[] {'_'})[0];
+            var parsedId = o.ToString().Split(new char[] { ';' })?[0].Split(new char[] { '_' })[0];
             int.TryParse(parsedId, out documentId);
             return documentId;
         }
