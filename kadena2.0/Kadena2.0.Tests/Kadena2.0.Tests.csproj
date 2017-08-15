@@ -453,6 +453,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CreateContainerTest.cs" />
     <Compile Include="RemoveAddressesTest.cs" />
+    <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UploadFileTest.cs" />
     <Compile Include="UploadMappingTest.cs" />
     <Compile Include="UserHierarchyTest.cs" />
@@ -478,6 +479,10 @@
     <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
       <Project>{918ebdfb-d345-4be2-97a2-9d71513e0617}</Project>
       <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj">
+      <Project>{43388b1f-8597-46eb-8346-e9c6544c5306}</Project>
+      <Name>Kadena2.0.ScheduledTasks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
       <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
