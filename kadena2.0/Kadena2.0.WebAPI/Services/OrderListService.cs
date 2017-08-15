@@ -5,7 +5,6 @@ using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.Models;
-using System;
 using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
@@ -58,6 +57,7 @@ namespace Kadena.WebAPI.Services
         public async Task<OrderHead> GetHeaders()
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
             if (EnablePaging && _pageCapacity > 0)
             {
@@ -92,6 +92,7 @@ namespace Kadena.WebAPI.Services
         public async Task<OrderBody> GetBody(int pageNumber)
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             return new OrderBody
             {
                 Rows = orderList.Orders.Select(o =>
@@ -101,6 +102,38 @@ namespace Kadena.WebAPI.Services
                 })
             };
         }
+
+        private void MapOrdersStatusToGeneric(IEnumerable<Order> orders)
+        {
+            if (orders == null)
+                return;
+
+            foreach (var o in orders)
+            {
+                switch (o.Status)
+                {
+                    case "Initial record":
+                    case "Waiting for artwork":
+                    case "Artwork received":
+                    case "Failed to receive artwork":
+                    case "Sent to Tibco - Waiting for Response":
+                    case "Error sending to Tibco":
+                    case "Unknown":
+                    case "Rejected":
+                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.SubmissionInProgress");
+                        break;
+
+                    case "Submitted":
+                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.Submitted");
+                        break;
+
+                    case "SHIPPED":
+                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.Shipped");
+                        break;
+                }
+            }
+        }
+
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
