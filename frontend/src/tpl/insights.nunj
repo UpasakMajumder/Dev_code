@@ -15,9 +15,9 @@
 ] %}
 
 {% block content %}
-  <script async src="http://spotfire.kadenadev.com/spotfire/wp/render/GkeTDq95c3VQZnVdbt/GetJavaScriptApi.ashx?Version=7.5"></script>
+  <script async src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
 
-  <div class="spotfire">
+  <div class="spotfire js-spotfire">
     {#<div class="css-tabs__container js-tabs spotfire__controllers" data-tab=".js-filter-spotfire" data-tab-active="active" data-tab-active-default=".js-filter-content-1">#}
       {#<ul class="css-tabs__list">#}
         {#<li class="css-tabs__tab js-filter-spotfire" data-filter-time="all" data-tab-content=".js-filter-content-1">All period</li>#}
@@ -29,16 +29,24 @@
 
     <div class="row">
       {% set spotfires = {
-        '1': '/Kadena/Single Graphs/Acme Spend Overview by Quarter - Business Unit',
-        '2': '/Kadena/Single Graphs/YTD Acme Spend Overview by Business Unit',
-        '3': '/Kadena/Single Graphs/Inventory_Report_Product Inventory By Client',
-        '4': '/Kadena/Single Graphs/OrderTrends – Order_by_Source',
-        '5': '/Kadena/Single Graphs/OrderTrend-OrderTrendByType',
-        '6': '/Kadena/Single Graphs/DIRECTMAILCDH-ReceivedMailPerformance'
+        '1': 'Total Inventory',
+        '2': 'Low Stock',
+        '3': 'Materials Consumption',
+        '4': 'Back Orders',
+        '5': 'Top 10 Shipped Orders by Material',
+        '6': 'Top 10 Shipped Qty by Material',
+        '7': 'Top 10 Open Orders by Material',
+        '8': 'Top 10 Open Qty by Material',
+        '9': 'Open Quantity by Material',
+        '10': 'Overdue Materials',
+        '11': 'Top Requested Items by Orders',
+        '12': 'POD vs Inventory',
+        '13': 'Material Receipts',
+        '14': 'Details - Consumption'
       } %}
-      {% for index, url in spotfires %}
+      {% for index, doc in spotfires %}
       <div class="col-lg-6">
-        <div id="spotfire-{{ index }}" data-url="{{ url }}" class="spotfire__item js-spotfire">
+        <div id="spotfire-{{ index }}" data-tab="{{ doc }}" class="spotfire__item js-spotfire-tab">
           <div class="spinner">
             {{ svg('spinner') }}
           </div>

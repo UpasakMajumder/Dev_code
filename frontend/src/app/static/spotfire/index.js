@@ -5,25 +5,54 @@ export default class Spotfire {
   customisation: any;
 
   constructor(container: HTMLElement) { // container is a card block
-    const { id, dataset } = container;
-    const { url } = dataset;
-    const { serverUrl } = SPOTFIRE;
-
+    const { serverUrl, url, customerId } = SPOTFIRE;
     const parameters = '';
     const reloadAnalysisInstance = false;
 
     // $FlowIgnore
-    this.customisation = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
+    this.customisation = new window.spotfire.webPlayer.Customization();
     this.initCustomization();
 
-    const app = new spotfire.webPlayer.Application(  // eslint-disable-line no-undef
+    const app = new window.spotfire.webPlayer.Application(
       serverUrl,
       this.customisation,
       url,
       parameters,
       reloadAnalysisInstance);
 
-    const doc = app.openDocument(id, 0, this.customisation);
+    const docEls = Array.from(container.querySelectorAll('.js-spotfire-tab'));
+
+    const docs = []; // keep docs
+
+    // prefilter
+    const filteringSchemeName = 'Filtering scheme';
+    const dataTableName = 'CDH_Inventory_Extract_VW_IL';
+    const dataColumnName = 'Client_ID';
+    const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
+
+    const filterColumn = {
+      filteringSchemeName,
+      dataTableName,
+      dataColumnName,
+      filteringOperation,
+      filterSettings: { values: [customerId] }
+    };
+
+    window.filterColumn = filterColumn;
+    window.app = app;
+    window.filteringOperation = filteringOperation;
+
+
+    docEls.forEach((docEl) => {
+      const { id, dataset } = docEl;
+      const { tab } = dataset;
+
+      const doc = app.openDocument(id, tab, this.customisation);
+
+      docs.push(doc);
+    });
+
+    app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
 
     // Past here
   }
