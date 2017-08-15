@@ -19,6 +19,11 @@ namespace Kadena2.MicroserviceClients.Contracts
         Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, Guid mailingListId);
 
         /// <summary>
+        /// Removes mailing lists with validity date older than speficied date.
+        /// </summary>
+        Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, DateTime olderThan);
+
+        /// <summary>
         /// Removes all address from specified container.
         /// </summary>
         /// <param name="containerId">Id of container to be cleared.</param>

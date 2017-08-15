@@ -1,7 +1,10 @@
-﻿using Kadena.ScheduledTasks.Infrastructure;
+﻿using Kadena.Dto.General;
+using Kadena.ScheduledTasks.Infrastructure;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
@@ -39,23 +42,42 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             this.mailingService = mailingService;
         }
 
-        public Task Delete()
+        public async Task Delete()
         {
             var customers = kenticoProvider.GetSites();
             var now = GetCurrentTime();
 
-            var tasks = new List<Task>(customers.Length);
+            var tasks = new List<Task<BaseResponseDto<object>>>();
             foreach (var customer in customers)
             {
                 var config = configurationProvider.Get<MailingListConfiguration>(customer);
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    tasks.Add(mailingService. // TODO: add method to microservice client once it is ready
+                    tasks.Add(mailingService.RemoveMailingList(config.DeleteMailingListsByValidToDateURL, customer, deleteOlderThan));
                 }
             }
 
-            return Task.WhenAll(tasks);
+            var results = await Task.WhenAll(tasks);
+            if (results.Any(r => !r.Success))
+            {
+                throw new Exception(CreateErrorMessageFromResponses(results, customers));
+            }
+        }
+
+        private string CreateErrorMessageFromResponses(BaseResponseDto<object>[] responses, string[] customers)
+        {
+            var error = new StringBuilder();
+            for (int i = 0; i < responses.Length; i++)
+            {
+                var response = responses[i];
+                if (!response.Success)
+                {
+                    error.AppendLine($"Failure for {customers[i]} - { response.Error?.Message}");
+                }
+            }
+
+            return error.ToString();
         }
     }
 }
