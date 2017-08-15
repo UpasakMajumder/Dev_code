@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CMS.Scheduler">
+      <HintPath>..\Lib\CMS.Scheduler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +44,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteExpiredMailingLists\DeleteExpiredMailingListsService.cs" />
+    <Compile Include="DeleteExpiredMailingLists\KenticoTask.cs" />
+    <Compile Include="Infrastructure\IConfigurationProvider.cs" />
+    <Compile Include="Infrastructure\KenticoConfigurationProvider.cs" />
+    <Compile Include="Infrastructure\MailingListConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
+      <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
+      <Name>Kadena2.0.MicroserviceClients</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918ebdfb-d345-4be2-97a2-9d71513e0617}</Project>
+      <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
+      <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
+      <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
