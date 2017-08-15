@@ -620,12 +620,16 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             else
             {
-                return new Site
-                {
-                    Id = site.SiteID,
-                    Name = site.SiteName
-                };
+                return SiteFactory.CreateSite(site);
             }
+        }
+
+        public Site[] GetSites()
+        {
+            return SiteInfoProvider.GetSites()
+                .ToList()
+                .Select(SiteFactory.CreateSite)
+                .ToArray();
         }
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)

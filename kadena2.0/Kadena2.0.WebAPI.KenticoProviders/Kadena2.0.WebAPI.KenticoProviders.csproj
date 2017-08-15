@@ -91,6 +91,7 @@
     <Compile Include="Factories\AddressFactory.cs" />
     <Compile Include="Factories\DeliveryFactory.cs" />
     <Compile Include="Factories\PaymentOptionFactory.cs" />
+    <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\KenticoLogger.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
