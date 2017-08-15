@@ -252,8 +252,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 {
                     foreach (var mappingItem in mappingItems)
                     {
-                        var isModuleEnabled = SettingsKeyInfoProvider.GetBoolValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
-                        if (isModuleEnabled == isForEnabledItems)
+                        var moduleState = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
+                        if ((isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.enabled.ToString())) || (!isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.disabled.ToString())))
                         {
                             pageTypes.Add(mappingItem.GetStringValue("PageTypeCodeName", string.Empty));
                         }
