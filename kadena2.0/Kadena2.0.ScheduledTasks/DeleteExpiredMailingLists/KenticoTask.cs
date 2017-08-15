@@ -1,4 +1,8 @@
-﻿using CMS.Scheduler;
+﻿using CMS;
+using CMS.Scheduler;
+using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
+
+[assembly: RegisterCustomClass("DeleteExpiredMailingLists", typeof(KenticoTask))]
 
 namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 {
