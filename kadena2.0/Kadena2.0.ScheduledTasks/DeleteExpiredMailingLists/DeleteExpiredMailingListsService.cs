@@ -1,12 +1,14 @@
 ﻿using Kadena.ScheduledTasks.Infrastructure;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 {
     public interface IDeleteExpiredMailingListsService
     {
-        void Delete();
+        Task Delete();
     }
 
     public class DeleteExpiredMailingListsService : IDeleteExpiredMailingListsService
@@ -37,20 +39,23 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             this.mailingService = mailingService;
         }
 
-        public void Delete()
+        public Task Delete()
         {
             var customers = kenticoProvider.GetSites();
             var now = GetCurrentTime();
 
+            var tasks = new List<Task>(customers.Length);
             foreach (var customer in customers)
             {
                 var config = configurationProvider.Get<MailingListConfiguration>(customer);
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    mailingService. // TODO: add method to microservice client once it is ready
+                    tasks.Add(mailingService. // TODO: add method to microservice client once it is ready
                 }
             }
+
+            return Task.WhenAll(tasks);
         }
     }
 }

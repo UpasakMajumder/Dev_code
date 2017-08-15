@@ -6,7 +6,8 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     {
         public string Execute(TaskInfo task)
         {
-            Services.Resolve<IDeleteExpiredMailingListsService>().Delete();
+            Services.Resolve<IDeleteExpiredMailingListsService>()
+                .Delete().Wait();
             return "done";
         }
     }
