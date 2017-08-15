@@ -80,8 +80,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Site GetSite(int siteId);
 
-        Site[] GetSites();
-
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
     }
 }

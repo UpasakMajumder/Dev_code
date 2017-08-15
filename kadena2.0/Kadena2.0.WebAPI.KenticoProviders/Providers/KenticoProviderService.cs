@@ -624,14 +624,6 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public Site[] GetSites()
-        {
-            return SiteInfoProvider.GetSites()
-                .ToList()
-                .Select(SiteFactory.CreateSite)
-                .ToArray();
-        }
-
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
         {
             int actualQuantity = newItem?.Quantity ?? 0;

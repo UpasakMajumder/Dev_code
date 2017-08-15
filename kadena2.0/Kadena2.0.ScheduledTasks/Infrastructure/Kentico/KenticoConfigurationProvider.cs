@@ -1,14 +1,12 @@
-﻿using Kadena.WebAPI.KenticoProviders.Contracts;
-
-namespace Kadena.ScheduledTasks.Infrastructure
+﻿namespace Kadena.ScheduledTasks.Infrastructure.Kentico
 {
     public class KenticoConfigurationProvider : IConfigurationProvider
     {
-        private IKenticoResourceService kenticoService;
+        private IKenticoResourceProvider kenticoResources;
 
-        public KenticoConfigurationProvider(IKenticoResourceService kenticoService)
+        public KenticoConfigurationProvider(IKenticoResourceProvider kenticoResources)
         {
-            this.kenticoService = kenticoService;
+            this.kenticoResources = kenticoResources;
         }
 
         public T Get<T>(string siteName) where T : IConfigurationSection, new()
@@ -31,8 +29,8 @@ namespace Kadena.ScheduledTasks.Infrastructure
 
         private void LoadSection(MailingListConfiguration section, string siteName)
         {
-            section.DeleteMailingListsByValidToDateURL = kenticoService.GetSettingsKey(siteName, ""); // TODO
-            section.DeleteMailingListsPeriod = StringToInt(kenticoService.GetSettingsKey(siteName, "KDA_MailingList_DeleteExpiredAfter"));
+            section.DeleteMailingListsByValidToDateURL = kenticoResources.GetSettingsByKey(siteName, ""); // TODO
+            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsByKey(siteName, "KDA_MailingList_DeleteExpiredAfter"));
         }
     }
 }

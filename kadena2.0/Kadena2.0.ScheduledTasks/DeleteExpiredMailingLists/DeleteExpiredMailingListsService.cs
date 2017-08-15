@@ -1,5 +1,4 @@
 ﻿using Kadena.ScheduledTasks.Infrastructure;
-using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 
@@ -13,12 +12,12 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     public class DeleteExpiredMailingListsService : IDeleteExpiredMailingListsService
     {
         private IConfigurationProvider configurationProvider;
-        private IKenticoProviderService kenticoProvider;
+        private IKenticoProvider kenticoProvider;
         private IMailingListClient mailingService;
 
         public Func<DateTime> GetCurrentTime { get; set; } = () => DateTime.Now;
 
-        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoProviderService kenticoProvider, IMailingListClient mailingService)
+        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoProvider kenticoProvider, IMailingListClient mailingService)
         {
             if (configurationProvider == null)
             {
@@ -45,7 +44,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 
             foreach (var customer in customers)
             {
-                var config = configurationProvider.Get<MailingListConfiguration>(customer.Name);
+                var config = configurationProvider.Get<MailingListConfiguration>(customer);
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
