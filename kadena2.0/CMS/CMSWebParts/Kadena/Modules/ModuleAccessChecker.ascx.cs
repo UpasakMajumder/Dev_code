@@ -4,6 +4,7 @@ using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,8 @@ namespace Kadena.CMSWebParts.Kadena.Modules
                 {
                     if (pageTypeModuleMappings.Select(ptmm => ptmm.Item1).Contains(currentDocument.ClassName))
                     {
-                        var isModuleEnabled = SettingsKeyInfoProvider.GetBoolValue($"{SiteContext.CurrentSiteName}.{pageTypeModuleMappings.Where(ptmm => ptmm.Item1 == currentDocument.ClassName).FirstOrDefault().Item2}");
-                        if (isModuleEnabled)
+                        var moduleState = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{pageTypeModuleMappings.Where(ptmm => ptmm.Item1 == currentDocument.ClassName).FirstOrDefault().Item2}");
+                        if (moduleState.ToLowerInvariant().Equals(KadenaModuleState.enabled.ToString()))
                         {
                             return;
                         }
