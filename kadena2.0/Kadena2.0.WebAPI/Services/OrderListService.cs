@@ -110,27 +110,7 @@ namespace Kadena.WebAPI.Services
 
             foreach (var o in orders)
             {
-                switch (o.Status)
-                {
-                    case "Initial record":
-                    case "Waiting for artwork":
-                    case "Artwork received":
-                    case "Failed to receive artwork":
-                    case "Sent to Tibco - Waiting for Response":
-                    case "Error sending to Tibco":
-                    case "Unknown":
-                    case "Rejected":
-                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.SubmissionInProgress");
-                        break;
-
-                    case "Submitted":
-                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.Submitted");
-                        break;
-
-                    case "SHIPPED":
-                        o.Status = _kenticoResources.GetResourceString("Kadena.OrderStatus.Shipped");
-                        break;
-                }
+                o.Status = _kentico.MapOrderStatus(o.Status);
             }
         }
 
