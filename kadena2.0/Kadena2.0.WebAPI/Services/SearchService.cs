@@ -7,7 +7,6 @@ using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using CMS.DataEngine;
 
 namespace Kadena.WebAPI.Services
 {
@@ -29,12 +28,8 @@ namespace Kadena.WebAPI.Services
         public SearchResultPage Search(string phrase, int results = 100)
         {
             var searchResultPages = SearchPages(phrase, results);
-            var searchResultProducts = new List<ResultItemProduct>();
+            var searchResultProducts = SearchProducts(phrase, results);
 
-            if (SettingsKeyInfoProvider.GetValue($"{resources.GetKenticoSite().Name}.KDA_ProductsModuleEnabled") == "enabled")
-            {
-                searchResultProducts = SearchProducts(phrase, results);
-            }
             return new SearchResultPage()
             {
                 Pages = searchResultPages,
@@ -45,12 +40,8 @@ namespace Kadena.WebAPI.Services
         public AutocompleteResponse Autocomplete(string phrase, int results = 3)
         {
             var searchResultPages = SearchPages(phrase, results);
-            var searchResultProducts = new List<ResultItemProduct>();
+            var searchResultProducts = SearchProducts(phrase, results);
 
-            if (SettingsKeyInfoProvider.GetValue($"{resources.GetKenticoSite().Name}.KDA_ProductsModuleEnabled") == "enabled")
-            {
-                searchResultProducts = SearchProducts(phrase, results);
-            }
             var result = new AutocompleteResponse()
             {
                 Pages = new AutocompletePages()
