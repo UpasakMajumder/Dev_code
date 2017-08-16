@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Services
 {
@@ -123,7 +124,7 @@ namespace Kadena.WebAPI.Services
                         resultItem.ImgUrl = product.SkuImageUrl;
                     }
                     resultItem.Category = product.Category;
-                    if (product.ProductType.Contains("KDA.InventoryProduct"))
+                    if (product.ProductType.Contains(ProductTypes.InventoryProduct))
                     {
                         resultItem.Stock = new Stock()
                         {
