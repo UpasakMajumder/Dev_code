@@ -8,8 +8,10 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
+using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -90,9 +92,21 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         #region Private methods
 
-        private static void AddHiddenInput(string name, string value)
+        private static string GetHiddenInput(string name, string value)
         {
-            
+            using (var stringWriter = new StringWriter())
+            {
+                using (var html = new HtmlTextWriter(stringWriter))
+                {
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, "js-add-to-cart-property");
+                    html.AddAttribute(HtmlTextWriterAttribute.Name, name);
+                    html.AddAttribute(HtmlTextWriterAttribute.Value, value);
+                    html.AddAttribute(HtmlTextWriterAttribute.Type, "hidden");
+                    html.RenderBeginTag(HtmlTextWriterTag.Input);
+                    html.RenderEndTag();
+                    return stringWriter.ToString();
+                }
+            }
         }
 
         private int NumberOfItemsInInput
