@@ -46,7 +46,7 @@
       } %}
       {% for index, doc in spotfires %}
       <div class="col-lg-6">
-        <div id="spotfire-{{ index }}" data-tab="{{ doc }}" class="spotfire__item js-spotfire-tab">
+        <div id="spotfire-{{ index }}" data-doc="{{ doc }}" class="spotfire__item js-spotfire-tab">
           <div class="spinner">
             {{ svg('spinner') }}
           </div>

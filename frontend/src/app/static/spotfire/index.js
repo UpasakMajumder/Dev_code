@@ -10,8 +10,8 @@ export default class Spotfire {
     const reloadAnalysisInstance = false;
 
     // $FlowIgnore
+
     this.customisation = new window.spotfire.webPlayer.Customization();
-    this.initCustomization();
 
     const app = new window.spotfire.webPlayer.Application(
       serverUrl,
@@ -19,10 +19,6 @@ export default class Spotfire {
       url,
       parameters,
       reloadAnalysisInstance);
-
-    const docEls = Array.from(container.querySelectorAll('.js-spotfire-tab'));
-
-    const docs = []; // keep docs
 
     // prefilter
     const filteringSchemeName = 'Filtering scheme';
@@ -38,26 +34,28 @@ export default class Spotfire {
       filterSettings: { values: [customerId] }
     };
 
-    window.filterColumn = filterColumn;
-    window.app = app;
-    window.filteringOperation = filteringOperation;
+    if (container.dataset.report) {
+      const { id } = container;
+      this.initCustomization(true);
 
+      app.openDocument(id, 0, this.customisation);
+    } else {
+      const tabs = Array.from(container.querySelectorAll('.js-spotfire-tab'));
+      this.initCustomization(false);
 
-    docEls.forEach((docEl) => {
-      const { id, dataset } = docEl;
-      const { tab } = dataset;
+      tabs.forEach((tab) => {
+        const { id, dataset } = tab;
+        const { doc } = dataset;
 
-      const doc = app.openDocument(id, tab, this.customisation);
-
-      docs.push(doc);
-    });
+        app.openDocument(id, doc, this.customisation);
+      });
+    }
 
     app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
-
     // Past here
   }
 
-  initCustomization() {
+  initCustomization(showPageNavigation) {
     this.customisation.showClose = false;
     this.customisation.showUndoRedo = true;
     this.customisation.showToolBar = false;
@@ -66,39 +64,7 @@ export default class Spotfire {
     this.customisation.showExportFile = false;
     this.customisation.showFilterPanel = false;
     this.customisation.showAnalysisInfo = true;
-    this.customisation.showPageNavigation = false;
+    this.customisation.showPageNavigation = showPageNavigation;
     this.customisation.showExportVisualization = false;
   }
 }
-
-// const filterBtns = document.querySelectorAll('.js-filter-spotfire');
-// Array.from(filterBtns).forEach((btn) => {
-//   btn.addEventListener('click', (event) => {
-//     const { target } = event;
-//     const { filterTime } = target.dataset;
-//
-//     if (filterTime === 'all') {
-//       doc.filtering.resetAllFilters();
-//     } else {
-//       doc.data.getActiveDataTable((dataTable) => {
-//         const filterColumn = {
-//           filteringSchemeName: "Filtering scheme",
-//           dataTableName: dataTable.dataTableName,
-//           dataColumnName: filterColumnNameInput.value, ///// COLUMN
-//           filteringOperation: spotfire.webPlayer.filteringOperation.REPLACE,
-//           filterSettings: {
-//             includeEmpty: true,
-//             values: filterValuesInput.value.split(',').map(item => item.trim()) // filterTime
-//           }
-//         };
-//
-//         const filteringOperation = spotfire.webPlayer.filteringOperation.REPLACE;
-//
-//         doc.filtering.setFilter(
-//           filterColumn,
-//           filteringOperation);
-//       });
-//     }
-//
-//   });
-// });
