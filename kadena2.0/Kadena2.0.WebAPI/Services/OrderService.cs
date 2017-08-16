@@ -119,7 +119,8 @@ namespace Kadena.WebAPI.Services
                 }
             };
 
-            var hasOnlyMailingListProducts = data.Items.All(item => Guid.Empty.ToString() == item.MailingList);
+            var mailingTypeCode = OrderItemTypeDTO.Mailing.ToString();
+            var hasOnlyMailingListProducts = data.Items.All(item => item.Type == mailingTypeCode);
             if (hasOnlyMailingListProducts)
             {
                 orderDetail.ShippingInfo = new ShippingInfo
@@ -367,7 +368,7 @@ namespace Kadena.WebAPI.Services
                 TotalPrice = totals.TotalItemsPrice,
                 TotalShipping = totals.TotalShipping,
                 TotalTax = totals.TotalTax,
-                Items = mapper.Map<OrderItemDTO[]>(cartItems)
+                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item))
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
@@ -384,6 +385,40 @@ namespace Kadena.WebAPI.Services
             }
 
             return orderDto;
+        }
+
+        private OrderItemDTO MapCartItemTypeToOrderItemType(CartItem item)
+        {
+            var mappedItem = mapper.Map<OrderItemDTO>(item);
+            mappedItem.Type = ConvertCartItemProductTypeToOrderItemProductType(item.ProductType);
+            return mappedItem;
+        }
+
+        private OrderItemTypeDTO ConvertCartItemProductTypeToOrderItemProductType(string productType)
+        {
+            var cartItemFlags = productType.Split('|');
+
+            var standardTypes = new[] 
+            {
+                ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.InventoryProduct, ProductTypes.ProductWithAddOns
+            };
+
+            if (cartItemFlags.Contains(ProductTypes.MailingProduct))
+            {
+                return OrderItemTypeDTO.Mailing;
+            }
+            else if (cartItemFlags.Contains(ProductTypes.TemplatedProduct))
+            {
+                return OrderItemTypeDTO.TemplatedProduct;
+            }
+            else if (cartItemFlags.Any(flag => standardTypes.Contains(flag)))
+            {
+                return OrderItemTypeDTO.StandardOnStockItem;
+            }
+            else
+            {
+                throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
+            }
         }
 
         private string CheckedDateTimeString(DateTime dt)
