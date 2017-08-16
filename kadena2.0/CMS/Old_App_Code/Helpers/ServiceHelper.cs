@@ -16,9 +16,7 @@ namespace Kadena.Old_App_Code.Helpers
 {
     public static class ServiceHelper
     {
-        private const string _bucketType = "original-mailing";
         private const string _moduleName = "Klist";
-        private const string _loadFileSettingKey = "KDA_LoadFileUrl";
         private const string _getHeaderSettingKey = "KDA_GetHeadersUrl";
         private const string _createContainerSettingKey = "KDA_CreateContainerUrl";
         private const string _uploadMappingSettingKey = "KDA_UploadMappingUrl";
@@ -32,7 +30,6 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
-        private const string _loadFileIncorrectMessage = "Url for file uploading is not in correct format. Check settings for your site.";
         private const string _createContainerIncorrectMessage = "Url for creating container is not in correct format. Check settings for your site.";
         private const string _getHeadersIncorrectMessage = "Url for getting headers is not in correct format. Check settings for your site.";
         private const string _uploadMappingIncorrectMessage = "Url for uploading mapping is not in correct format. Check settings for your site.";
@@ -108,70 +105,7 @@ namespace Kadena.Old_App_Code.Helpers
             }
             return containerId;
         }
-
-        /// <summary>
-        /// Uploads file with request to microservice.
-        /// </summary>
-        /// <param name="fileStream">Stream to upload.</param>
-        /// <param name="fileName">Name of file to pass to microservice.</param>
-        /// <returns>Id of uploaded file.</returns>
-        public static string UploadFile(Stream fileStream, string fileName)
-        {
-            if (fileStream == null || fileStream.Length == 0)
-            {
-                throw new ArgumentException(_valueEmptyMessage, nameof(fileStream));
-            }
-
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentException(_valueEmptyMessage, nameof(fileName));
-            }
-
-            string customerName = GetCustomerName();
-
-            Uri postFileUrl;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_loadFileSettingKey}")
-                , UriKind.Absolute
-                , out postFileUrl))
-            {
-                throw new InvalidOperationException(_loadFileIncorrectMessage);
-            }
-
-            var fileId = string.Empty;
-            using (var client = new HttpClient())
-            {
-                using (var content = new MultipartFormDataContent())
-                {
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    content.Add(new StreamContent(fileStream), "file", fileName);
-                    content.Add(new StringContent(_bucketType), "ConsumerDetails.BucketType");
-                    content.Add(new StringContent(customerName), "ConsumerDetails.CustomerName");
-                    content.Add(new StringContent(_moduleName), "ConsumerDetails.Module");
-                    using (var message = client.PostAsync(postFileUrl, content))
-                    {
-                        BaseResponseDto<string> response;
-                        try
-                        {
-                            response = (BaseResponseDto<string>)message.Result;
-                        }
-                        catch (JsonReaderException e)
-                        {
-                            throw new InvalidOperationException(_responseIncorrectMessage, e);
-                        }
-                        if (response?.Success ?? false)
-                        {
-                            fileId = response.Payload;
-                        }
-                        else
-                        {
-                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                        }
-                    }
-                }
-            }
-            return fileId;
-        }
-
+        
         /// <summary>
         /// Requests for headers of specified file.
         /// </summary>

@@ -4,6 +4,7 @@ using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Chili;
 using System;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                   workspaceID);
 
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
-                if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))
+                if (productTypes.Contains(ProductTypes.MailingProduct) && productTypes.Contains(ProductTypes.TemplatedProduct))
                 {
                     var selectMailingList = URLHelper.AddParameterToUrl(SelectMailingListUrl, "url", URLHelper.URLEncode(destinationUrl));
                     Response.Redirect(selectMailingList);
