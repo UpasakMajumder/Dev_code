@@ -5,6 +5,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System;
 using System.Collections.Generic;
@@ -145,7 +146,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             if (DocumentContext.CurrentDocument.GetValue("ProductType") != null)
             {
-                return DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains("KDA.InventoryProduct");
+                return DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains(ProductTypes.InventoryProduct);
             }
 
             return false;
