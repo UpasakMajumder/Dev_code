@@ -67,7 +67,10 @@ class Checkout extends Component {
     if (invalidFields.length) {
       Checkout.fireNotification(invalidFields);
     } else {
-      sendData(checkedData);
+      const data = { ...checkedData };
+      if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
+      if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
+      sendData(data);
     }
   };
 

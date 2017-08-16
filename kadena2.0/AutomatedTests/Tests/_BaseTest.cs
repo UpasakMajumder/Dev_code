@@ -75,5 +75,13 @@ namespace AutomatedTests.Tests
             dashboard.WaitForKadenaPageLoad();
             return dashboard;
         }
+
+        /// <summary>
+        /// Switches to default content
+        /// </summary>
+        public void EndAdminTest()
+        {
+            Browser.Driver.SwitchTo().DefaultContent();
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace Kadena.Tests.WebApi
             {
                 Id = id,
                 CartItemText = $"Item{id}",
-                ProductType = "KDA.StaticProduct",
+                ProductType = ProductTypes.StaticProduct,
                 TotalPrice = 10,
                 UnitPrice = 2,
                 Quantity = 5
