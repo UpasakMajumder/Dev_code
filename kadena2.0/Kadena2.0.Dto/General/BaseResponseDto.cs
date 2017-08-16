@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -10,19 +11,33 @@ namespace Kadena.Dto.General
     [DataContract]
     public class BaseResponseDto<TResponse>
     {
+        private string _errorMessage;
+        private BaseErrorDto _error;
+
         [DataMember(Name = "success")]
         public bool Success { get; set; }
 
         [DataMember(Name = "payload")]
         public TResponse Payload { get; set; }
 
+        // TODO Remove DataMember attribute when all microservices will omit it.
         [DataMember(Name = "errorMessages")]
-        [Obsolete("Will be removed after all microservices will use Error property.")]
         public string ErrorMessages
         {
             get
             {
-                return Error?.Message ?? string.Empty;
+                if (_errorMessage == null)
+                {
+                    var messages = new List<string>(4);
+                    var error = Error;
+                    while (error != null)
+                    {
+                        messages.Add($"ErrorMessage: {error.Message}");
+                        error = error.InnerError;
+                    }
+                    _errorMessage = string.Join(Environment.NewLine, messages);
+                }
+                return _errorMessage;
             }
             set
             {
@@ -31,7 +46,18 @@ namespace Kadena.Dto.General
         }
 
         [DataMember(Name = "error")]
-        public BaseErrorDto Error { get; set; }
+        public BaseErrorDto Error
+        {
+            get
+            {
+                return _error;
+            }
+            set
+            {
+                _error = value;
+                _errorMessage = null;
+            }
+        }
 
         public static explicit operator BaseResponseDto<TResponse>(HttpResponseMessage message)
         {
@@ -48,7 +74,5 @@ namespace Kadena.Dto.General
             }
             return JsonConvert.DeserializeObject<BaseResponseDto<TResponse>>(resultString);
         }
-
-        // TODO create some ToString method for nested errors
     }
 }
