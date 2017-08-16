@@ -4,7 +4,7 @@
     <span class="input__label">
         <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.AddToCartQuantity" EnableViewState="false" />
     </span>
-    <input id="inpNumberOfItems" runat="server" type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1" enableviewstate="false">
+    <input id="inpNumberOfItems" runat="server" type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1" min="1" enableviewstate="false">
     <span class="input__error input__error--noborder js-add-to-cart-message" />
 
 </div>
