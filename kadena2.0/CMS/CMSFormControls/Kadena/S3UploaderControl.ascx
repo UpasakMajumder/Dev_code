@@ -8,7 +8,8 @@
         var btnUpload = _ifrUploader.contentWindow.document.getElementById('btnUpload');
         var lnkFile = _ifrUploader.contentWindow.document.getElementById('lnkFile');
         var lblMessage = _ifrUploader.contentWindow.document.getElementById('lblMessage');
-
+        var inpFile = _ifrUploader.contentWindow.document.getElementById('inpFile');
+        
         if (lnkFile.textContent.length == 0
             && lblMessage.textContent.length == 0) {
             lnkFile.setAttribute('href', _fldFileUrl.value);
@@ -18,10 +19,12 @@
             _fldFileUrl.value = lnkFile.getAttribute('href');
         }
 
-        btnUpload.onclick = function (event) {
-            var inpFile = _ifrUploader.contentWindow.document.getElementById('inpFile');
-            inpFile.click();
+        inpFile.onchange = function (event) {
             _ifrUploader.contentWindow.document.getElementById('aspnetForm').submit();
+        }
+
+        btnUpload.onclick = function (event) {
+            inpFile.click();
         }
     }
 </script>
