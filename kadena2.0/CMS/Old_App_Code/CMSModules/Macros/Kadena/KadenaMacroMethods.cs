@@ -10,6 +10,7 @@ using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using System.Collections.Generic;
+using Kadena.Models;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -28,10 +29,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
             // Static product - can be of type Inventory or can be print on demand (POD) or can be withh add-on
-            if (selectedProductTypeCodeNames.Contains("KDA.StaticProduct"))
+            if (selectedProductTypeCodeNames.Contains(ProductTypes.StaticProduct))
             {
-                if (selectedProductTypeCodeNames.Contains("KDA.MailingProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
+                if (selectedProductTypeCodeNames.Contains(ProductTypes.MailingProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct))
                 {
                     return false;
                 }
@@ -49,11 +50,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
             // Inventory product - Must be of type static
-            if (selectedProductTypeCodeNames.Contains("KDA.InventoryProduct"))
+            if (selectedProductTypeCodeNames.Contains(ProductTypes.InventoryProduct))
             {
-                if (selectedProductTypeCodeNames.Contains("KDA.POD") ||
-                    selectedProductTypeCodeNames.Contains("KDA.MailingProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
+                if (selectedProductTypeCodeNames.Contains(ProductTypes.POD) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.MailingProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct))
                 {
                     return false;
                 }
@@ -71,12 +72,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
             // Mailing product - Must be of type Template
-            if (selectedProductTypeCodeNames.Contains("KDA.MailingProduct"))
+            if (selectedProductTypeCodeNames.Contains(ProductTypes.MailingProduct))
             {
-                if (!selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.InventoryProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.POD"))
+                if (!selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.StaticProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.InventoryProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.POD))
                 {
                     return false;
                 }
@@ -94,11 +95,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
             // Templated product - Can be of type Mailing
-            if (selectedProductTypeCodeNames.Contains("KDA.TemplatedProduct"))
+            if (selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct))
             {
-                if (selectedProductTypeCodeNames.Contains("KDA.StaticProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.InventoryProduct") ||
-                    selectedProductTypeCodeNames.Contains("KDA.POD"))
+                if (selectedProductTypeCodeNames.Contains(ProductTypes.StaticProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.InventoryProduct) ||
+                    selectedProductTypeCodeNames.Contains(ProductTypes.POD))
                 {
                     return false;
                 }
@@ -118,7 +119,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            if (!ValidationHelper.GetString(parameters[0], "").Contains("KDA.InventoryProduct"))
+            if (!ValidationHelper.GetString(parameters[0], "").Contains(ProductTypes.InventoryProduct))
             {
                 return string.Empty;
             }
@@ -156,7 +157,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            if (ValidationHelper.GetString(parameters[1], "").Contains("KDA.InventoryProduct"))
+            if (ValidationHelper.GetString(parameters[1], "").Contains(ProductTypes.InventoryProduct))
             {
                 if (parameters[0] == null)
                 {
@@ -252,8 +253,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 {
                     foreach (var mappingItem in mappingItems)
                     {
-                        var isModuleEnabled = SettingsKeyInfoProvider.GetBoolValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
-                        if (isModuleEnabled == isForEnabledItems)
+                        var moduleState = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
+                        if ((isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.enabled.ToString())) || (!isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.disabled.ToString())))
                         {
                             pageTypes.Add(mappingItem.GetStringValue("PageTypeCodeName", string.Empty));
                         }

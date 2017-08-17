@@ -168,7 +168,7 @@ namespace Kadena.Tests.WebApi
             var orderViewClient = new Mock<IOrderViewClient>();
             var orderResponse = CreateOrderDetailDtoOK(new[] 
             {
-                new OrderItemDTO { MailingList = Guid.Empty.ToString() }
+                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
             });
             orderViewClient.Setup(o => o.GetOrderByOrderId(null, orderId))
                 .Returns(Task.FromResult(orderResponse));
