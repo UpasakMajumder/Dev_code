@@ -16,5 +16,9 @@ body {
   line-height: 1.5;
 }
 
+.container-fluid {
+  height: 100%;
+}
+
 @import 'pages/*';
 @import 'components/*';
