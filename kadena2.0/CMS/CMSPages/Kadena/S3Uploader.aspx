@@ -7,6 +7,8 @@
     <cms:FormLabel runat="server" ID="lblMessage" ClientIDMode="Static" ForeColor="Red"/>
     <div style="margin-top: 5px">
         <input id="inpFile" clientidmode="Static" type="file" runat="server" style="display: none" />
-        <cms:LocalizedButton runat="server" ID="btnUpload" ClientIDMode="Static" ButtonStyle="Default" EnableViewState="false" ResourceString="attach.uploadfile" />
+        <button type="button" id="btnUpload" class="btn btn-default">
+            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="attach.uploadfile"/>
+        </button>
     </div>
 </asp:Content>
