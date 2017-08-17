@@ -1,14 +1,17 @@
 ﻿using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
+using Kadena2.MicroserviceClients;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Web;
 using System.Web.UI;
 
@@ -186,32 +189,44 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 try
                 {
+                    var serviceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_LoadFileUrl");
                     var fileName = inpFileName.Value;
+                    var module = FileModule.KList;
 
-                    var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                    var containerId = Guid.Empty;
-                    if (_container == null)
+                    var client = new FileClient();
+                    var uploadResult = client.UploadToS3(serviceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
+                        fileStream, fileName).Result;
+                    if (uploadResult.Success)
                     {
-                        var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                        var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                        var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                        containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                        var containerId = Guid.Empty;
+                        if (_container == null)
+                        {
+                            var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+                            var product = Request.Form[GetString("Kadena.MailingList.Product")];
+                            var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
+                            containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                        }
+                        else
+                        {
+                            containerId = new Guid(_container.Id);
+                            ServiceHelper.RemoveAddresses(containerId);
+                        }
+                        var fileId = uploadResult.Payload;
+                        var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", URLHelper.URLEncode(fileId));
+                        Response.Redirect(nextStepUrl, false);
+                        Context.ApplicationInstance.CompleteRequest();
                     }
                     else
                     {
-                        containerId = new Guid(_container.Id);
-                        ServiceHelper.RemoveAddresses(containerId);
+                        throw new InvalidOperationException(uploadResult.ErrorMessages);
                     }
-
-                    var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-                    Response.Redirect(nextStepUrl);
                 }
                 catch (Exception exc)
                 {
                     txtError.InnerText = exc.Message;
-                    EventLogProvider.LogException("Mailing List Create", "EXCEPTION", exc, CurrentSite.SiteID);
+                    EventLogProvider.LogException(GetType().Name, "EXCEPTION", exc, CurrentSite.SiteID);
                 }
             }
         }

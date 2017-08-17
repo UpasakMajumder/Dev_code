@@ -13,9 +13,9 @@ class AddToCart {
       const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
       wrappers.forEach(wrapper => wrapper.classList.remove(showMessageClass));
 
-      let name = '';
+      let customProductName = '';
       if (nameElement) {
-        name = nameElement.value;
+        customProductName = nameElement.value;
       } else {
         consoleException('Not found element .js-add-to-cart-name');
       }
@@ -28,7 +28,7 @@ class AddToCart {
       }
 
       const { documentId, templateId, containerId } = getSearchObj();
-      const body = { name, documentId, quantity, templateId, containerId };
+      const body = { customProductName, documentId, quantity, templateId, containerId };
 
       addToCartRequest(body)
         .then((message) => { // show if bad response
