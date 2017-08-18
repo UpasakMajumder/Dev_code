@@ -15,6 +15,7 @@ using Kadena.Models.Checkout;
 using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
+using CMS.CustomTables;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -708,6 +709,17 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
             cart.ShoppingCartShippingAddress = customerAddress;
+        }
+
+
+        public string MapOrderStatus(string microserviceStatus)
+        {
+            var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")
+                .FirstOrDefault(i => i["MicroserviceStatus"].ToString().ToLower() == microserviceStatus.ToLower());
+
+            var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
+
+            return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
         }
     }
 }

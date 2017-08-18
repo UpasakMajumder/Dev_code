@@ -81,5 +81,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Site GetSite(int siteId);
 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
+
+        string MapOrderStatus(string microserviceStatus);
     }
 }
