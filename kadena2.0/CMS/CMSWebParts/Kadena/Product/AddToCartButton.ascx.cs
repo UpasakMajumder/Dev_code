@@ -5,6 +5,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System;
 using System.Collections.Generic;
@@ -145,7 +146,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             if (DocumentContext.CurrentDocument.GetValue("ProductType") != null)
             {
-                return DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains("KDA.InventoryProduct");
+                return DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains(ProductTypes.InventoryProduct);
             }
 
             return false;
@@ -202,10 +203,20 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             var product = SKUInfoProvider.GetSKUInfo(DocumentContext.CurrentDocument.GetIntegerValue("SKUID", 0));
 
-            var artworkLocation = DocumentContext.CurrentDocument.GetStringValue("ProductArtworkLocation", string.Empty);
             var chiliTemplateId = DocumentContext.CurrentDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty);
             var productType = DocumentContext.CurrentDocument.GetStringValue("ProductType", string.Empty);
             var productThumbnail = DocumentContext.CurrentDocument.GetGuidValue("ProductThumbnail", Guid.Empty);
+
+            string artworkLocation = null;
+            if (productType.Contains(ProductTypes.StaticProduct))
+            {
+                artworkLocation = DocumentContext.CurrentDocument.GetStringValue("ProductArtworkLocation", string.Empty);
+            }
+            else
+            {
+                artworkLocation = DocumentContext.CurrentDocument.GetStringValue("ProductDigitalPrinting", string.Empty);
+            }
+
 
             if (product != null)
             {
@@ -218,7 +229,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
                 cartItem.CartItemText = product.SKUName;
                 cartItem.SetValue("ChiliTemplateID", chiliTemplateId);
-                cartItem.SetValue("ArtworkLocation", artworkLocation);
+                cartItem.SetValue("DesignFilePath", artworkLocation);
                 cartItem.SetValue("ProductType", productType);
                 cartItem.SetValue("ProductPageID", documentId);
                 cartItem.SetValue("ProductThumbnail", productThumbnail);

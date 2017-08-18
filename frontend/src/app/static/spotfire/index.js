@@ -5,30 +5,57 @@ export default class Spotfire {
   customisation: any;
 
   constructor(container: HTMLElement) { // container is a card block
-    const { id, dataset } = container;
-    const { url } = dataset;
-    const { serverUrl } = SPOTFIRE;
-
+    const { serverUrl, url, customerId } = SPOTFIRE;
     const parameters = '';
     const reloadAnalysisInstance = false;
 
     // $FlowIgnore
-    this.customisation = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
-    this.initCustomization();
 
-    const app = new spotfire.webPlayer.Application(  // eslint-disable-line no-undef
+    this.customisation = new window.spotfire.webPlayer.Customization();
+
+    const app = new window.spotfire.webPlayer.Application(
       serverUrl,
       this.customisation,
       url,
       parameters,
       reloadAnalysisInstance);
 
-    const doc = app.openDocument(id, 0, this.customisation);
+    // prefilter
+    const filteringSchemeName = 'Filtering scheme';
+    const dataTableName = 'CDH_Inventory_Extract_VW_IL';
+    const dataColumnName = 'Client_ID';
+    const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
 
+    const filterColumn = {
+      filteringSchemeName,
+      dataTableName,
+      dataColumnName,
+      filteringOperation,
+      filterSettings: { values: [customerId] }
+    };
+
+    if (container.dataset.report) {
+      const { id } = container;
+      this.initCustomization(true);
+
+      app.openDocument(id, 0, this.customisation);
+    } else {
+      const tabs = Array.from(container.querySelectorAll('.js-spotfire-tab'));
+      this.initCustomization(false);
+
+      tabs.forEach((tab) => {
+        const { id, dataset } = tab;
+        const { doc } = dataset;
+
+        app.openDocument(id, doc, this.customisation);
+      });
+    }
+
+    app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
     // Past here
   }
 
-  initCustomization() {
+  initCustomization(showPageNavigation) {
     this.customisation.showClose = false;
     this.customisation.showUndoRedo = true;
     this.customisation.showToolBar = false;
@@ -37,39 +64,7 @@ export default class Spotfire {
     this.customisation.showExportFile = false;
     this.customisation.showFilterPanel = false;
     this.customisation.showAnalysisInfo = true;
-    this.customisation.showPageNavigation = false;
+    this.customisation.showPageNavigation = showPageNavigation;
     this.customisation.showExportVisualization = false;
   }
 }
-
-// const filterBtns = document.querySelectorAll('.js-filter-spotfire');
-// Array.from(filterBtns).forEach((btn) => {
-//   btn.addEventListener('click', (event) => {
-//     const { target } = event;
-//     const { filterTime } = target.dataset;
-//
-//     if (filterTime === 'all') {
-//       doc.filtering.resetAllFilters();
-//     } else {
-//       doc.data.getActiveDataTable((dataTable) => {
-//         const filterColumn = {
-//           filteringSchemeName: "Filtering scheme",
-//           dataTableName: dataTable.dataTableName,
-//           dataColumnName: filterColumnNameInput.value, ///// COLUMN
-//           filteringOperation: spotfire.webPlayer.filteringOperation.REPLACE,
-//           filterSettings: {
-//             includeEmpty: true,
-//             values: filterValuesInput.value.split(',').map(item => item.trim()) // filterTime
-//           }
-//         };
-//
-//         const filteringOperation = spotfire.webPlayer.filteringOperation.REPLACE;
-//
-//         doc.filtering.setFilter(
-//           filterColumn,
-//           filteringOperation);
-//       });
-//     }
-//
-//   });
-// });
