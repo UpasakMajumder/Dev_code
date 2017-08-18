@@ -55,6 +55,8 @@ const app = {
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
     render('CartPreview', document.querySelectorAll('.r-cart-preview'));
     render('CartItems', document.querySelectorAll('.r-cart-items'));
+    render('Toastr', document.querySelectorAll('.r-toastr'));
+    render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
   }
 };
 

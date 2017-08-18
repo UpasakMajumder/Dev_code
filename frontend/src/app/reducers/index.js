@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as toastr } from 'react-redux-toastr';
 import login from './login';
 import checkout from './checkout';
 import isLoading from './isLoading';
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   orderDetail,
   recentOrders,
   modifyMailingList,
-  cartPreview
+  cartPreview,
+  toastr
 });
 
 export default rootReducer;
