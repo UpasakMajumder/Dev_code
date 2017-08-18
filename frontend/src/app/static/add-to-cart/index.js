@@ -15,7 +15,7 @@ class AddToCart {
       wrapper.classList.remove(showMessageClass);
 
       const customProductName = nameElement && nameElement.value;
-	  const quantity = quantityElement ? quantityElement.value : 0;
+      const quantity = quantityElement ? quantityElement.value : 0;
 
       const body = { customProductName, quantity };
 
