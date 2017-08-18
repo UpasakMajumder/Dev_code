@@ -15,7 +15,8 @@ namespace AutomatedTests.Tests
         public void When_RecentOrdersOpened_Expect_OrdersDisplayed()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Open recent orders
             var recentOrders = new RecentOrders();

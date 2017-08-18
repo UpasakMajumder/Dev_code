@@ -15,7 +15,8 @@ namespace AutomatedTests.Tests
         [Test]
         public void When_ProductInCart_Expect_ShippingCostsEstimated()
         {
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
             dashboard.Open();
             dashboard.WaitForRecentOrders();
 
@@ -46,7 +47,8 @@ namespace AutomatedTests.Tests
         [Test]
         public void When_PlacingAnOrder_Expect_OrderIsSubmitted()
         {
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
             dashboard.Open();
             dashboard.WaitForRecentOrders();
 

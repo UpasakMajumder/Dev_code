@@ -20,7 +20,8 @@ namespace AutomatedTests.Tests
         public void When_UserWantsToRequestNewProduct_Expect_FormIsSubmitted()
         {
             //Login to Kadena
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Navigate to products and click request new product
             Products products = new Products();

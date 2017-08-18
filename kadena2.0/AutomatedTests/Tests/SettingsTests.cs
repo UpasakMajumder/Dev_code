@@ -15,7 +15,8 @@ namespace AutomatedTests.Tests
         public void When_UserChangesHisProfile_Expect_ProfileIsUpdated()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //edit contact form and save
             var settings = new Settings();
@@ -32,7 +33,8 @@ namespace AutomatedTests.Tests
         public void When_ChangingPassword_Expect_PasswordIsValidated()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Switch to password tab and try to submit password which is
             //not strong enough
@@ -47,7 +49,8 @@ namespace AutomatedTests.Tests
         public void When_ChangingAddress_Expect_AddressIsChanged()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Go to addresses, change the first address and verify if it was successfully changed
             var settings = new Settings();
