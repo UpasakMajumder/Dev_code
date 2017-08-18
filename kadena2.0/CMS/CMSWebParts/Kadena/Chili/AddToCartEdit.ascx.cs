@@ -1,22 +1,8 @@
-﻿using CMS.Base.Web.UI;
-using CMS.DocumentEngine;
+﻿using CMS.DocumentEngine;
 using CMS.Ecommerce;
-using CMS.EventLog;
-using CMS.Helpers;
-using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.DynamicPricing;
-using Kadena2.MicroserviceClients.Clients;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Script.Serialization;
-using System.Threading.Tasks;
-using CMS.DataEngine;
-using CMS.SiteProvider;
+using Kadena.Models;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -34,7 +20,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
 
         private bool IsProductMailingType()
         {
-            return GetProductType().Contains("KDA.MailingProduct");
+            return GetProductType().Contains(ProductTypes.MailingProduct);
         }
 
         protected void SetupControl()
