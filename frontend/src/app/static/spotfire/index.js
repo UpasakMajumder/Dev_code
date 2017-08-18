@@ -20,20 +20,6 @@ export default class Spotfire {
       parameters,
       reloadAnalysisInstance);
 
-    // prefilter
-    const filteringSchemeName = 'Filtering scheme';
-    const dataTableName = 'CDH_Inventory_Extract_VW_IL';
-    const dataColumnName = 'Client_ID';
-    const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
-
-    const filterColumn = {
-      filteringSchemeName,
-      dataTableName,
-      dataColumnName,
-      filteringOperation,
-      filterSettings: { values: [customerId] }
-    };
-
     if (container.dataset.report) {
       const { id } = container;
       this.initCustomization(true);
@@ -51,8 +37,41 @@ export default class Spotfire {
       });
     }
 
-    app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
-    // Past here
+    const filterData = [
+      {
+        dataTableName: 'CDH_Inventory_Extract_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'CDH_Sales_Order_Extract_VW_IL',
+        dataColumnName: 'ClientID'
+      },
+      {
+        dataTableName: 'CDH_Material_Usage_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'Material_Receipt_Adjustment_Destruction_IL',
+        dataColumnName: 'Client ID'
+      }
+    ];
+
+    // prefilters
+    filterData.forEach((data) => {
+      const filteringSchemeName = 'Filtering scheme';
+      const { dataTableName, dataColumnName } = data;
+      const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
+
+      const filterColumn = {
+        filteringSchemeName,
+        dataTableName,
+        dataColumnName,
+        filteringOperation,
+        filterSettings: { values: [customerId] }
+      };
+
+      app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
+    });
   }
 
   initCustomization(showPageNavigation) {
