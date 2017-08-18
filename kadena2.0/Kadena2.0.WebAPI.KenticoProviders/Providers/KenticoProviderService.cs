@@ -715,7 +715,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public string MapOrderStatus(string microserviceStatus)
         {
             var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")
-                .FirstOrDefault(i => i["MicroserviceStatus"].ToString() == microserviceStatus);
+                .FirstOrDefault(i => i["MicroserviceStatus"].ToString().ToLower() == microserviceStatus.ToLower());
 
             var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
 
