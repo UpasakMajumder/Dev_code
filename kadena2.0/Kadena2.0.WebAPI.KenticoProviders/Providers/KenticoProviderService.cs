@@ -639,6 +639,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var productType = productDocument.GetValue("ProductType", string.Empty);
             var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == productDocument.NodeSKUID);
             var existingAmountInCart = 0;
             if (cartItem == null)
@@ -650,19 +651,23 @@ namespace Kadena.WebAPI.KenticoProviders
                 existingAmountInCart = cartItem.CartItemUnits;
             }
 
-            if (productDocument.GetValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+            if (productType.Contains("KDA.InventoryProduct"))
             {
                 EnsureInventoryAmount(productDocument, addedAmount, existingAmountInCart);
             }
 
-            if (productDocument.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct"))
+            if (productType.Contains("KDA.MailingProduct")
+                || productType.Contains("KDA.TemplateProduct"))
             {
-                if (!addedAmount.Equals(mailingList?.AddressCount ?? 0))
+                if (productType.Contains("KDA.MailingProduct"))
                 {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+                    if (!addedAmount.Equals(mailingList?.AddressCount ?? 0))
+                    {
+                        throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+                    }
+                    SetMailingList(cartItem, mailingList);
                 }
                 SetAmount(cartItem, addedAmount);
-                SetMailingList(cartItem, mailingList);
             }
             else
             {
@@ -762,7 +767,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItem, amount);
         }
-        
+
         private static void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
