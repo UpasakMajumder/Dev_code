@@ -657,7 +657,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             if (productType.Contains("KDA.MailingProduct")
-                || productType.Contains("KDA.TemplateProduct"))
+                || productType.Contains("KDA.TemplatedProduct"))
             {
                 if (productType.Contains("KDA.MailingProduct"))
                 {
