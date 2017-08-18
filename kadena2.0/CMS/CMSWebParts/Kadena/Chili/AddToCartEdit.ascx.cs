@@ -17,6 +17,8 @@ using System.Web.Script.Serialization;
 using System.Threading.Tasks;
 using CMS.DataEngine;
 using CMS.SiteProvider;
+using System.IO;
+using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -56,6 +58,13 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         inpNumberOfItems.Value = CurrentShoppingCartItem.CartItemUnits.ToString();
                     }
                 }
+
+                Controls.Add(new LiteralControl(GetHiddenInput("documentId", Request.QueryString["documentId"])));
+                Controls.Add(new LiteralControl(GetHiddenInput("templateId", Request.QueryString["templateId"])));
+                if (!string.IsNullOrWhiteSpace(Request.QueryString["containerId"]))
+                {
+                    Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
+                }
             }
         }
 
@@ -91,5 +100,23 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
 
         }
+
+        private static string GetHiddenInput(string name, string value)
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                using (var html = new HtmlTextWriter(stringWriter))
+                {
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, "js-add-to-cart-property");
+                    html.AddAttribute(HtmlTextWriterAttribute.Name, name);
+                    html.AddAttribute(HtmlTextWriterAttribute.Value, value);
+                    html.AddAttribute(HtmlTextWriterAttribute.Type, "hidden");
+                    html.RenderBeginTag(HtmlTextWriterTag.Input);
+                    html.RenderEndTag();
+                    return stringWriter.ToString();
+                }
+            }
+        }
+
     }
 }
