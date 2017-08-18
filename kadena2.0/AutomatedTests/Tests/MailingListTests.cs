@@ -17,7 +17,8 @@ namespace AutomatedTests.Tests
         public void When_UploadingMailingList_Expect_MailingListCorrectlyUploaded()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //open K-list
             var kList = new KList();
@@ -26,7 +27,7 @@ namespace AutomatedTests.Tests
 
             //select mailing list and submit it
             newKList.SelectMailingList();
-            string mailingListName = StringHelper.RandomString(7);
+            string mailingListName = "automation " + StringHelper.RandomString(7);
             newKList.FillOutMailingListName(mailingListName);
             var mapColumns = newKList.SubmitMailingList();
 
@@ -59,16 +60,18 @@ namespace AutomatedTests.Tests
         public void When_CorrectingAddresses_Expect_AddressesAreCorrected()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //open K-list
             var kList = new KList();
+            SaveAuthenticationCookiesToFile();
             kList.Open();
             var newKList = kList.ClickAddMailingListBtn();
 
             //select mailing list and submit it
             newKList.SelectMailingList();
-            string mailingListName = StringHelper.RandomString(7);
+            string mailingListName = "automation " + StringHelper.RandomString(7);
             newKList.FillOutMailingListName(mailingListName);
             var mapColumns = newKList.SubmitMailingList();
 
@@ -101,6 +104,6 @@ namespace AutomatedTests.Tests
             int numberOfErrorsAfterCorrection = kList.NumberOfErrors;
             Assert.IsTrue(numberOfErrorsAfterCorrection > 0);
             Assert.IsTrue(numberOfErrorsAfterCorrection < numberOfErrors);
-        }
+        }      
     }
 }
