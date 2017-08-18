@@ -778,7 +778,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private static void SetAmount(ShoppingCartItemInfo cartItem, int amount)
         {
-            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItem, amount);
+            cartItem.CartItemUnits = amount;
         }
 
         private static void AssignCartShippingAddress(ShoppingCartInfo cart)
