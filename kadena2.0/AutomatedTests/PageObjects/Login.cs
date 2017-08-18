@@ -36,7 +36,7 @@ namespace AutomatedTests.PageObjects
 
         public void Open()
         {
-            Browser.GoToUrl(TestEnvironment.Url);
+            Browser.GoToUrl($"{TestEnvironment.Url}/login");
         }
 
         public void FillLogin(string name, string pass)

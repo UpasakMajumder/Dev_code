@@ -384,12 +384,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var productType = item.GetStringValue("ProductType", string.Empty);
 
-            if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
+            if (!productType.Contains(ProductTypes.InventoryProduct) && !productType.Contains(ProductTypes.POD) && !productType.Contains(ProductTypes.StaticProduct))
             {
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
-            if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
+            if (productType.Contains(ProductTypes.InventoryProduct) && quantity > item.SKU.SKUAvailableItems)
             {
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
@@ -506,7 +506,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             foreach (var i in items)
             {
-                if (i.GetValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                if (i.GetValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
                 {
                     int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
                     i.SKU.SKUAvailableItems -= toRemove;
@@ -651,15 +651,15 @@ namespace Kadena.WebAPI.KenticoProviders
                 existingAmountInCart = cartItem.CartItemUnits;
             }
 
-            if (productType.Contains("KDA.InventoryProduct"))
+            if (productType.Contains(ProductTypes.InventoryProduct))
             {
                 EnsureInventoryAmount(productDocument, addedAmount, existingAmountInCart);
             }
 
-            if (productType.Contains("KDA.MailingProduct")
-                || productType.Contains("KDA.TemplatedProduct"))
+            if (productType.Contains(ProductTypes.MailingProduct)
+                || productType.Contains(ProductTypes.TemplatedProduct))
             {
-                if (productType.Contains("KDA.MailingProduct"))
+                if (productType.Contains(ProductTypes.MailingProduct))
                 {
                     if (!addedAmount.Equals(mailingList?.AddressCount ?? 0))
                     {
@@ -674,6 +674,15 @@ namespace Kadena.WebAPI.KenticoProviders
                 SetAmount(cartItem, addedAmount + existingAmountInCart);
             }
 
+            if (productType.Contains(ProductTypes.POD))
+            {
+                SetArtwork(cartItem, productDocument.GetStringValue("ProductDigitalPrinting", string.Empty));
+            }
+            else
+            {
+                SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
+            }
+
             RefreshPrice(cartItem, productDocument);
             SetCustomName(cartItem, newItem.CustomProductName);
             SetTemplateId(cartItem, newItem.TemplateId);
@@ -681,6 +690,11 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
 
             return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
+        }
+
+        private void SetArtwork(ShoppingCartItemInfo cartItem, string artworkUrl)
+        {
+            cartItem.SetValue("ArtworkLocation", artworkUrl);
         }
 
         private void EnsureInventoryAmount(TreeNode productDocument, int addedAmount, int existingAmount)
@@ -746,7 +760,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
                 cartItem.CartItemText = sku.SKUName;
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
-                cartItem.SetValue("ArtworkLocation", document.GetStringValue("ProductArtworkLocation", string.Empty));
                 cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
                 cartItem.SetValue("ProductPageID", document.DocumentID);
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));

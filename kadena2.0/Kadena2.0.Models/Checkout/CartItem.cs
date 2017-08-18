@@ -27,35 +27,35 @@ namespace Kadena.Models.Checkout
         {
             get
             {
-                return ProductType.Contains("KDA.MailingProduct");
+                return ProductType.Contains(ProductTypes.MailingProduct);
             }
         }
         public bool IsTemplated
         {
             get
             {
-                return ProductType.Contains("KDA.TemplatedProduct");
+                return ProductType.Contains(ProductTypes.TemplatedProduct);
             }
         }
         public bool IsInventory
         {
             get
             {
-                return ProductType.Contains("KDA.InventoryProduct");
+                return ProductType.Contains(ProductTypes.InventoryProduct);
             }
         }
         public bool IsPOD
         {
             get
             {
-                return ProductType.Contains("KDA.POD");
+                return ProductType.Contains(ProductTypes.POD);
             }
         }
         public bool IsStatic
         {
             get
             {
-                return ProductType.Contains("KDA.StaticProduct");
+                return ProductType.Contains(ProductTypes.StaticProduct);
             }
         }
         public string MailingListName { get; set; }

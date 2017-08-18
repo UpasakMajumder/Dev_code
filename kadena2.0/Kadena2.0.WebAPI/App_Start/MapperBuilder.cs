@@ -33,7 +33,7 @@ namespace Kadena.WebAPI
         {
             Mapper.Initialize(config =>
             {
-                config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO(p.ProductType)
+                config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
                 {
                     DesignFilePath = p.DesignFilePath,
                     LineNumber = p.LineNumber,

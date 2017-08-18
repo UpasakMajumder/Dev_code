@@ -14,6 +14,14 @@ namespace Kadena.CMSWebParts.Kadena.General
             }
         }
 
+        public string LinkParameters
+        {
+            get
+            {
+                return GetStringValue("LinkParameters", string.Empty);
+            }
+        }
+
         public string Text
         {
             get
@@ -48,11 +56,13 @@ namespace Kadena.CMSWebParts.Kadena.General
             SetupControl();
         }
 
+        #endregion
+
         protected void SetupControl()
         {
             if (!StopProcessing)
             {
-                hlLink.NavigateUrl = Link;
+                hlLink.NavigateUrl = CombineLinkAndParameters(Link, LinkParameters);
                 hlLink.Text = Text;
                 hlLink.CssClass = "btn-action " + Type;
 
@@ -63,6 +73,22 @@ namespace Kadena.CMSWebParts.Kadena.General
             }
         }
 
-        #endregion
+        private string CombineLinkAndParameters(string link, string parameters)
+        {
+            if (!string.IsNullOrWhiteSpace(parameters))
+            {
+                var finalLink = link.TrimEnd('/').TrimEnd('?');
+
+                var containsParameters = link.Contains("?");
+                finalLink += containsParameters
+                    ? "&"
+                    : "?";
+
+                finalLink += parameters;
+                return finalLink;
+            }
+
+            return link;
+        }
     }
 }

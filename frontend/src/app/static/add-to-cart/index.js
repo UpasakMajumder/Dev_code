@@ -14,12 +14,10 @@ class AddToCart {
       const wrapper = document.querySelector('.js-add-to-cart-error');
       wrapper.classList.remove(showMessageClass);
 
-      const name = nameElement && nameElement.value;
+      const customProductName = nameElement && nameElement.value;
+	  const quantity = quantityElement ? quantityElement.value : 0;
 
-      let quantity = 0;
-      if (quantityElement) quantity = quantityElement.value;
-
-      const body = { name, quantity };
+      const body = { customProductName, quantity };
 
       properyFields.forEach((field) => {
         const name = field.getAttribute('name');
