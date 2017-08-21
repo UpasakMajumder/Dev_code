@@ -71,8 +71,8 @@ class ChiliEditor extends AddToCart {
   }
 
   saveTemplate(isAddToCart) {
-    this.editor.ExecuteFunction('document', 'Save');
     this.addToCart(isAddToCart);
+    this.editor.ExecuteFunction('document', 'Save');
   }
 
   revertTemplate() {
