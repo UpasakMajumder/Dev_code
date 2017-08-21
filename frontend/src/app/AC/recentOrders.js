@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { INIT_UI, FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_CHANGE_PAGE, APP_LOADING, RECENT_ORDERS } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL } from 'app.globals';
 /* web service */
@@ -51,8 +53,7 @@ export const initUI = () => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -116,7 +117,6 @@ export const changePage = (page, isNotFirst) => {
       }, 2500);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };

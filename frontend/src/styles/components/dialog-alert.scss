@@ -1,0 +1,5 @@
+.dialog-alert {
+  &__btns {
+    @extend %flex--center--around;
+  }
+}

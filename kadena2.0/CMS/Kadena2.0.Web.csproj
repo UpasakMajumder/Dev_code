@@ -751,13 +751,6 @@
     <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
       <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -961,7 +954,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />

@@ -1,8 +1,9 @@
 import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, MODIFY_SHIPPING_ADDRESS,
-  APP_LOADING, DIALOG } from 'app.consts';
-
+  APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { USER_SETTINGS } from 'app.globals';
 /* web service */
@@ -46,8 +47,7 @@ export const getUI = () => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -100,7 +100,6 @@ export const modifyAddress = (data) => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
