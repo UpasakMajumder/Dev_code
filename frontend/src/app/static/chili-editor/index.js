@@ -13,7 +13,8 @@ class ChiliEditor extends AddToCart {
     this.editor = null;
     this.frameWindow = null;
 
-    // document.domain = getSecondLevelDomain();
+    const newDomain = getSecondLevelDomain();
+    if (newDomain) document.domain = newDomain;
 
     this.initEditor = this.initEditor.bind(this);
     this.addToCart = this.addToCart.bind(this);

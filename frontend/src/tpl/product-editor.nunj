@@ -33,7 +33,7 @@
         <div>
           <div class="btn-group">
             <button type="button" class="btn-main btn-main--secondary js-chili-revert">Discard changes</button>
-            <button type="button" class="btn-action btn-action--secondary js-chili-save">Save project</button>
+            <button type="button" disabled class="btn-action btn-action--secondary js-chili-save">Save project</button>
           </div>
         </div>
         <div>
@@ -42,7 +42,7 @@
             <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1"/>
             <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
           </div>
-          <button type="button" class="btn-action js-chili-addtocart">Add to cart</button>
+          <button type="button" disabled class="btn-action js-chili-addtocart">Add to cart</button>
         </div>
       </div>
     </div>
