@@ -1,7 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, SEARCH_PAGE, CHANGE_PAGE_PAGINATOR, CHANGE_PAGINATION_LIMIT } from 'app.consts';
-
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { SEARCH_PAGE as SEARCH_PAGE_URL } from 'app.globals';
 /* web service */
@@ -47,8 +48,7 @@ export const getUI = (query) => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 

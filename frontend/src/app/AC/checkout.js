@@ -3,7 +3,8 @@ import axios from 'axios';
 import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
   CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
-
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
 /* web service */
@@ -88,8 +89,7 @@ export const getUI = () => {
       }, 1500);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -141,8 +141,7 @@ export const removeProduct = (id) => {
         });
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -181,8 +180,7 @@ export const changeProductQuantity = (id, quantity) => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -245,8 +243,7 @@ export const changeShoppingData = (field, id, invoice) => {
       }, 1000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -289,7 +286,6 @@ export const sendData = (data) => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };

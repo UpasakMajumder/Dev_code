@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { ORDER_DETAIL as ORDER_DETAIL_URL } from 'app.globals';
 /* web service */
@@ -44,7 +46,6 @@ export default (orderID) => {
       }, 2000);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
