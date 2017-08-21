@@ -53,6 +53,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SetupNumberOfItemsInPackageInformation();
                 }
 
+                if (IsProductTemplatedType())
+                {
+                    btnAddToCart.Attributes.Add("class", "btn-action js-chili-addtocart");
+                }
+                else
+                {
+                    btnAddToCart.Attributes.Add("class", "btn-action js-add-to-cart");
+                }
+
                 Controls.Add(new LiteralControl(GetHiddenInput("documentId", _productDocument.DocumentID.ToString())));
                 if (!string.IsNullOrWhiteSpace(Request.QueryString["templateId"]))
                 {
