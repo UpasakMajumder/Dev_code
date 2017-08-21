@@ -62,7 +62,7 @@ class ChiliEditor extends AddToCart {
 
     const addToCartBtn = document.querySelector('.js-chili-addtocart');
     if (addToCartBtn) {
-      saveBtn.disabled = false;
+      addToCartBtn.disabled = false;
       addToCartBtn.addEventListener('click', () => this.saveTemplate(true));
     }
 
