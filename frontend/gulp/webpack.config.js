@@ -150,6 +150,7 @@ module.exports = {
     resolve: {
         alias: {
             'app.dump': path.resolve(process.cwd(), `${config.JS_BASE}/components/_dump`),
+            'app.smart': path.resolve(process.cwd(), `${config.JS_BASE}/components`),
             'app.ac': path.resolve(process.cwd(), `${config.JS_BASE}/AC`),
             'app.globals': path.resolve(process.cwd(), `${config.JS_BASE}/globals.js`),
             'app.consts': path.resolve(process.cwd(), `${config.JS_BASE}/constants.js`),

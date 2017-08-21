@@ -1,6 +1,6 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
-using System;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
