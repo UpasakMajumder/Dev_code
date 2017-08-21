@@ -31,7 +31,7 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
-        public async Task<BaseResponseDto<bool>> SetName(string endpoint, Guid templateId, string name)
+        public async Task<BaseResponseDto<bool?>> SetName(string endpoint, Guid templateId, string name)
         {
             using (var httpClient = new HttpClient())
             {
@@ -44,7 +44,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     using (var response = await httpClient.PutAsync(url, content))
                     {
-                        return await ReadResponseJson<bool>(response);
+                        return await ReadResponseJson<bool?>(response);
                     }
                 }
             }
