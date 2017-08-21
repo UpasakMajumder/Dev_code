@@ -56,6 +56,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (IsProductTemplatedType())
                 {
                     btnAddToCart.Attributes.Add("class", "btn-action js-chili-addtocart");
+                    btnAddToCart.Disabled = true;
                 }
                 else
                 {
