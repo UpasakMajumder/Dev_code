@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.Models.Checkout;
+using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Threading.Tasks;
@@ -16,10 +17,10 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/template/setname/{templateId}/{name}")]
-        public async Task<IHttpActionResult> SetName(Guid templateId, string name)
+        [Route("api/template/setname")]
+        public async Task<IHttpActionResult> SetName([FromBody] NewCartItem item)
         {
-            var result = await _templateService.SetName(templateId, name);
+            var result = await _templateService.SetName(item.TemplateId, item.CustomProductName);
             if (result)
             {
                 return ResponseJson(result);
