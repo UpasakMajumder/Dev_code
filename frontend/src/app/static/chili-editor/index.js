@@ -26,8 +26,8 @@ class ChiliEditor extends AddToCart {
     window.addToCart = this.addToCart;
 
     frame.addEventListener('load', () => {
-      this.initEditor(frame);
       this.initActions();
+      this.initEditor(frame);
     });
   }
 
