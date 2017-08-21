@@ -20,8 +20,10 @@ export default (orderID) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: ORDER_DETAIL + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: ORDER_DETAIL + INIT_UI + SUCCESS,
@@ -32,8 +34,7 @@ export default (orderID) => {
         }
       })
         .catch((error) => {
-          dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
-          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
         });
     };
 

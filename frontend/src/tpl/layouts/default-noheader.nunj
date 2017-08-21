@@ -66,6 +66,32 @@
 <script>
   var config = {
     localization: {
+      notification: {
+        removeProduct: {
+          title: 'Success',
+          text: 'The product has been removed'
+        },
+        addProduct: {
+          title: 'Success',
+          text: 'The product has been added'
+        },
+        recentOrdersError: {
+          title: 'Recent orders could not be loaded',
+          // title is also from errorMessage
+        },
+        modifyAddress: {
+          title: 'Success',
+          text: 'The address has been changed'
+        },
+        wrongAddressesRemoved: {
+          title: 'Success',
+          text: 'The addresses with errors have been removed'
+        },
+        serverNotAvailable: {
+          title: 'Error',
+          text: 'The addresses with errors have been removed'
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',

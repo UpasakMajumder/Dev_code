@@ -6,7 +6,7 @@ import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_L
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { MODIFY_MAILING_LIST_UI } from 'app.globals';
+import { MODIFY_MAILING_LIST_UI, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { removeProps } from 'app.helpers/object';
 
@@ -50,24 +50,27 @@ export const useCorrect = (id, url) => {
       }).then((response) => {
         const { success, errorMessage } = response.data;
         if (!success) {
-          dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
           dispatch({ type: APP_LOADING + FINISH });
+          window.toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
         }
       })
         .catch((error) => {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
           dispatch({ type: APP_LOADING + FINISH });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 
     const dev = () => setTimeout(() => {
       dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
       dispatch({ type: APP_LOADING + FINISH });
+      window.toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
     }, 2000);
 
     callAC(dev, prod);
@@ -87,8 +90,10 @@ export const reprocessAddresses = (id, url, data) => {
       }).then((response) => {
         const { success, errorMessage } = response.data;
         if (!success) {
-          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: MODIFY_MAILING_LIST_REPROCESS + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
@@ -98,7 +103,6 @@ export const reprocessAddresses = (id, url, data) => {
         .catch((error) => {
           dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
           dispatch({ type: APP_LOADING + FINISH });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 

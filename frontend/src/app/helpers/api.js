@@ -2,10 +2,9 @@ import axios from 'axios';
 /* wc */
 import { newState } from 'app.ws/cartPreviewUI';
 /* constants */
-import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment } from 'app.consts';
+import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment, FAILURE } from 'app.consts';
 /* globals */
-import { ADD_TO_CART_URL } from 'app.globals';
-import { toastr } from 'react-redux-toastr';
+import { ADD_TO_CART_URL, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
 
@@ -27,6 +26,8 @@ export const addToCartRequest = (body) => {
           summaryPrice: cartPreview.summaryPrice
         }
       });
+
+      window.toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
 
       const confirmBtn = [
         {
@@ -64,6 +65,8 @@ export const addToCartRequest = (body) => {
           }
         });
 
+        window.toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
+
         const confirmBtn = [
           {
             label: confirmation.btns.cancel.text,
@@ -78,7 +81,7 @@ export const addToCartRequest = (body) => {
         toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
       })
       .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
+        dispatch({ type: CART_PREVIEW_CHANGE_ITEMS + FAILURE });
       });
   });
 };
