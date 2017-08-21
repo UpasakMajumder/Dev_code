@@ -42,7 +42,7 @@
             <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1"/>
             <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
           </div>
-          <button type="button" class="btn-action js-chili-addtocart js-add-to-cart">Add to cart</button>
+          <button type="button" class="btn-action js-chili-addtocart">Add to cart</button>
         </div>
       </div>
     </div>
@@ -52,4 +52,11 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function OnEditEvent(type) {
+      if (type !== 'DocumentSaved') return;
+      window.addToCart(false);
+    }
+  </script>
 {% endblock %}
