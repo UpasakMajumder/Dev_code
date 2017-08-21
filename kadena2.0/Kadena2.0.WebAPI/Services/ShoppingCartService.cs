@@ -8,6 +8,7 @@ using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -309,12 +310,31 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public async Task<CartItemsPreview> AddToCart(NewCartItem item)
+        public async Task<AddToCartResult> AddToCart(NewCartItem item)
         {
             var mailingList = await mailingService.GetMailingList(item.ContainerId);
             var addedItem = kenticoProvider.AddCartItem(item, mailingList);
-            var result = ItemsPreview();
-            result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
+            var result = new AddToCartResult
+            {
+                CartPreview = ItemsPreview(),
+                Confirmation = new RequestResult
+                {
+                    AlertMessage = resources.GetResourceString("Kadena.Product.ItemsAddedToCart"),
+                    Btns = new RequestButtons
+                    {
+                        Cancel = new Button
+                        {
+                            Text = resources.GetResourceString("Kadena.Checkout.ContinueShopping"),
+                            Url = "/products"
+                        },
+                        Checkout = new Button
+                        {
+                            Text = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
+                            Url = "/checkout"
+                        }
+                    }
+                }
+            };
             return result;
         }
     }
