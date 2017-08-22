@@ -177,11 +177,11 @@
         buttons: {
           checkout: {
             text: 'Proceed To Checkout',
-            url: '#'
+            url: '/shopping-cart.html'
           },
           products: {
             text: 'Continue Shopping',
-            url: '#'
+            url: '/products.html'
           }
         },
         modifyMailingList: {

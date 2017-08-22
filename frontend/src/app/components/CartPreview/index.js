@@ -45,8 +45,10 @@ class CartPreview extends Component {
             </div>
             <div className="cart-preview__footer">
               <span className="cart-preview__total-price">{summaryPrice.pricePrefix} {summaryPrice.price}</span>
-              <a className="btn-action btn-action--secondary cart-preview__proceed" href={BUTTONS_UI.products.url}>{BUTTONS_UI.products.text}</a>
-              <a className="btn-action cart-preview__proceed" href={BUTTONS_UI.checkout.url}>{BUTTONS_UI.checkout.text}</a>
+              <div>
+                <a className="btn-action btn-action--secondary" href={BUTTONS_UI.products.url}>{BUTTONS_UI.products.text}</a>
+                <a className="btn-action cart-preview__proceed" href={BUTTONS_UI.checkout.url}>{BUTTONS_UI.checkout.text}</a>
+              </div>
             </div>
           </div>
         );
