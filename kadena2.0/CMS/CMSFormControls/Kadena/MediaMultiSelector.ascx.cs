@@ -10,6 +10,27 @@ namespace Kadena.CMSFormControls.Kadena
 {
     public partial class MediaMultiSelector : FormEngineUserControl
     {
+        public string AllowedExtensions
+        {
+            get { return GetValue<string>("AllowedExtensions", null); }
+            set { SetValue("AllowedExtensions", value); }
+        }
+
+        public override bool IsValid()
+        {
+            if (!string.IsNullOrWhiteSpace(AllowedExtensions))
+            {
+                var isValid = ValidateExtensions();
+                if (!isValid)
+                {
+                    ValidationError = "You can only select files of these types - " + AllowedExtensions;
+                }
+                return isValid;
+            }
+
+            return base.IsValid();
+        }
+
         public override object Value
         {
             get
@@ -74,6 +95,24 @@ namespace Kadena.CMSFormControls.Kadena
 
             ItemsRepeater.DataSource = MediaMultiField.GetValues(value.ToString());
             ItemsRepeater.DataBind();
+        }
+
+        private bool ValidateExtensions()
+        {
+            var extensions = AllowedExtensions.Split(',');
+            Predicate<string> hasValidExtension = 
+                (file) => extensions.Any(ext => file.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase));
+
+            var files = ExtractValuesFromControl();
+            foreach (var file in files)
+            {
+                if (!hasValidExtension(file))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
