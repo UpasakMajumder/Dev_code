@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, MODIFY_SHIPPING_ADDRESS,
   APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
@@ -81,7 +82,7 @@ export const modifyAddress = (data) => {
 
         dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
-        window.toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
+        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       })
         .catch((error) => {
           dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
@@ -98,7 +99,7 @@ export const modifyAddress = (data) => {
         });
         dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
-        window.toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
+        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       }, 2000);
     };
 

@@ -8,8 +8,8 @@ import { init, render } from './init';
 
 const app = {
   run() {
-    this.static();
     this.react();
+    this.static();
   },
 
   /* Static JavaScript classes */

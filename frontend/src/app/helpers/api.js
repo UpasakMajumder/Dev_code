@@ -7,6 +7,7 @@ import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment, FAILURE 
 import { ADD_TO_CART_URL, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
+import { toastr } from 'react-redux-toastr';
 
 export const addToCartRequest = (body) => {
   const dispatch = window.store.dispatch;
@@ -27,7 +28,7 @@ export const addToCartRequest = (body) => {
         }
       });
 
-      window.toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
+      toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
 
       const confirmBtn = [
         {
@@ -65,7 +66,7 @@ export const addToCartRequest = (body) => {
           }
         });
 
-        window.toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
+        toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
 
         const confirmBtn = [
           {

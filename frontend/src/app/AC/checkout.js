@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
@@ -115,7 +116,7 @@ export const removeProduct = (id) => {
 
       getTotalPriceDev(dispatch);
 
-      window.toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
+      toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
     };
 
     const prod = () => {
@@ -139,7 +140,7 @@ export const removeProduct = (id) => {
             }
           });
 
-          window.toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
+          toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert

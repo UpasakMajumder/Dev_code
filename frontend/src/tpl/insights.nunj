@@ -15,8 +15,6 @@
 ] %}
 
 {% block content %}
-  <script async src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
-
   <div class="spotfire js-spotfire">
     {#<div class="css-tabs__container js-tabs spotfire__controllers" data-tab=".js-filter-spotfire" data-tab-active="active" data-tab-active-default=".js-filter-content-1">#}
       {#<ul class="css-tabs__list">#}
@@ -55,4 +53,5 @@
       {% endfor %}
     </div>
   </div>
+
 {% endblock %}

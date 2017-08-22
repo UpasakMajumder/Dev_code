@@ -90,6 +90,10 @@
         serverNotAvailable: {
           title: 'Error',
           text: 'The addresses with errors have been removed'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
         }
       },
       login: {

@@ -147,6 +147,10 @@
         serverNotAvailable: {
           title: 'Error',
           text: 'The server is not available'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
         }
       },
       login: {

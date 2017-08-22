@@ -1,5 +1,6 @@
 /* libraries */
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING,
   START, FINISH, MODIFY_MAILING_LIST_REPROCESS, MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS } from 'app.consts';
@@ -58,7 +59,7 @@ export const useCorrect = (id, url) => {
         } else {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
           dispatch({ type: APP_LOADING + FINISH });
-          window.toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
+          toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
         }
       })
         .catch((error) => {
@@ -70,7 +71,7 @@ export const useCorrect = (id, url) => {
     const dev = () => setTimeout(() => {
       dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
       dispatch({ type: APP_LOADING + FINISH });
-      window.toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
+      toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
     }, 2000);
 
     callAC(dev, prod);

@@ -1,3 +1,4 @@
+import { toastr } from 'react-redux-toastr';
 /* consts */
 import { FAILURE } from 'app.consts';
 /* globals */
@@ -13,7 +14,7 @@ export default store => next => action => { // eslint-disable-line arrow-parens
       text = '';
     }
 
-    window.toastr.error(title, text);
+    toastr.error(title, text);
   }
 
   next(action);
