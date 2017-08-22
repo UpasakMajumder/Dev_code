@@ -66,12 +66,12 @@ export const addToCartRequest = (body) => {
 
         const confirmBtn = [
           {
-            label: confirmation.btns.cancel.text,
-            func: () => window.location.assign(confirmation.btns.cancel.url)
+            label: BUTTONS_UI.products.text,
+            func: () => window.location.assign(BUTTONS_UI.products.url)
           },
           {
-            label: confirmation.btns.checkout.text,
-            func: () => window.location.assign(confirmation.btns.checkout.url)
+            label: BUTTONS_UI.checkout.text,
+            func: () => window.location.assign(BUTTONS_UI.checkout.url)
           }
         ];
 
