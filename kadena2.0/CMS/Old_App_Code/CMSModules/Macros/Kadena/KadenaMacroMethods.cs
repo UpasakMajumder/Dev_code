@@ -11,6 +11,7 @@ using CMS.DataEngine;
 using CMS.CustomTables;
 using System.Collections.Generic;
 using Kadena.Models;
+using Kadena.Old_App_Code.Kadena.Forms;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -233,6 +234,19 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
 
             return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+        }
+
+        [MacroMethod(typeof(MediaMultiField[]), "Returns array of parsed MediaMultiField items.", 1)]
+        [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
+        public static object GetItemsFromMediaMultiField(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var fieldValue = parameters[0] as string;
+            var items = MediaMultiField.ParseMultipleFrom(fieldValue);
+            return items;
         }
 
         #endregion
