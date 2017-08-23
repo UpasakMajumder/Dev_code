@@ -125,6 +125,7 @@
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
+    <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\SiteDataController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\SiteDataService.cs" />
+    <Compile Include="Services\TemplateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

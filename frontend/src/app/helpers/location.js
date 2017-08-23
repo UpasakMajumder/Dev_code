@@ -8,6 +8,7 @@ export const getSecondLevelDomain = () => {
   const { domain } = document;
   const array = domain.split('.');
   const index = array.indexOf(DOMAIN);
+  if (index === -1) return false;
   return [array[index - 1], array[index]].join('.');
 };
 

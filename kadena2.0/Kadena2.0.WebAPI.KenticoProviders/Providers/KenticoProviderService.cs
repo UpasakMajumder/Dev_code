@@ -278,7 +278,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.CartItems.Count;
         }
 
-        public CartItem[] GetShoppingCartItems()
+        public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
 
@@ -296,14 +296,14 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUName = i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 TotalTax = 0.0d,
-                UnitPrice = i.UnitPrice,
+                UnitPrice = showPrices ? i.UnitPrice : 0.0d,
                 UnitOfMeasure = "EA",
                 Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = i.UnitPrice * i.CartItemUnits,
-                PriceText = string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits),
-                PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
+                TotalPrice = showPrices ? i.UnitPrice * i.CartItemUnits : 0.0d,
+                PriceText = showPrices ? string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits) : string.Empty,
+                PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 MailingListName = i.GetValue("MailingListName", string.Empty),
                 Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
