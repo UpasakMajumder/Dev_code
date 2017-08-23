@@ -3,6 +3,7 @@
  * If you do not use SVG <use xlink:href="…"> elements, remove svgxuse module
  */
 import 'svgxuse';
+import { toastr } from 'react-redux-toastr';
 import configureStore from './store';
 import { init, render } from './init';
 
@@ -62,6 +63,7 @@ const app = {
 
 /* Global scope reference */
 window.app = app;
+window.toastr = toastr;
 
 /* Run */
 app.run();
