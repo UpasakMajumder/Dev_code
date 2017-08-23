@@ -4,7 +4,31 @@ import PropTypes from 'prop-types';
 import SVG from 'app.dump/SVG';
 
 const AddressCard = (props) => {
-  const { editButtonText, removeButtonText, address, openDialog } = props;
+  const { editButton, removeButton, address, openDialog } = props;
+
+  let editElement = null;
+  if (editButton.exists) {
+    const data = address || {
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: ''
+    };
+
+    editElement = (
+      <button onClick={() => openDialog(data)} type="button" className="in-card-btn">
+        <SVG name="edit"/>
+        {editButton.text}
+      </button>
+    );
+  }
+
+  if (!address) {
+    return (
+      <div className="adress-card">{editElement}</div>
+    );
+  }
 
   const createAddressElement = (content) => {
     if (content) return <span>{content}</span>;
@@ -17,32 +41,30 @@ const AddressCard = (props) => {
   const state = createAddressElement(address.state);
   const zip = createAddressElement(address.zip);
 
-  const editButton = address.isEditButton
-    ? <button onClick={() => openDialog(address)} type="button" className="in-card-btn">
-      <SVG name="edit"/>
-      {editButtonText}
-    </button>
-    : null;
-
-
-  const removeButton = address.isRemoveButton
+  const removeElement = removeButton.exists
     ? <button type="button" className="in-card-btn">
         <SVG name="cross--dark"/>
-        {removeButtonText}
+        {removeButton.text}
       </button>
+    : null;
+
+  const buttonBlock = editElement || removeElement
+    ?
+    (
+      <div className="adress-card__btn-block">
+        {editElement}
+        {removeElement}
+      </div>
+    )
     : null;
 
   return (
     <div className="adress-card">
-      {street1}
-      {street2}
-      {city}
-      <span>{state} {zip}</span>
-
-      <div className="adress-card__btn-block">
-        {editButton}
-        {removeButton}
-      </div>
+      <div>{street1}</div>
+      <div>{street2}</div>
+      <div>{city}</div>
+      <div>{state} {zip}</div>
+      {buttonBlock}
     </div>
   );
 };
@@ -57,10 +79,16 @@ AddressCard.propTypes = {
     street1: PropTypes.string,
     street2: PropTypes.string,
     zip: PropTypes.string
+  }),
+  editButton: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    exists: PropTypes.bool.isRequired
   }).isRequired,
-  editButtonText: PropTypes.string.isRequired,
-  openDialog: PropTypes.func.isRequired,
-  removeButtonText: PropTypes.string
+  removeButton: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    exists: PropTypes.bool.isRequired
+  }).isRequired,
+  openDialog: PropTypes.func.isRequired
 };
 
 export default AddressCard;

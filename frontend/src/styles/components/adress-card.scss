@@ -5,16 +5,11 @@
   border-radius: $border-radius-xl;
   border: 3px solid $brand-grey;
   background-color: rgba($brand-grey, .3);
-
-  span {
-    display: block;
-
-    &:last-child {
-      @include rem(padding-bottom, 12px);
-    }
-  }
+  vertical-align: top;
 
   &__btn-block {
+    @include rem(margin-top, 12px);
+
     a:not(:first-child) {
       @include rem(margin-left, 5px);
     }
