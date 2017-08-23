@@ -1,0 +1,14 @@
+{% from "macro/svg.nunj" import svg %}
+{% extends "layouts/default-noheader.nunj" %}
+
+{% set title = "Spotfire Report" %}
+
+{% block content %}
+
+  <div id="spotfire-report" data-report="true" class="spotfire-report js-spotfire">
+    <div class="spinner">
+      {{ svg('spinner') }}
+    </div>
+  </div>
+  <script async src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
+{% endblock %}

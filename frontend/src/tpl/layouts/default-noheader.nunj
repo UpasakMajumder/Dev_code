@@ -78,7 +78,12 @@
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in'
       },
-      ui: {}
+      ui: {},
+      spotfire: {
+        serverUrl: 'http://10.83.71.208/spotfire/wp/',
+        url: '/Kadena/Standard Reports/Inventory and Sales order Report',
+        customerId: '40000240'
+      }
     }
   };
 </script>

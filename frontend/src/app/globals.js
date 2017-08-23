@@ -28,3 +28,4 @@ export const ADD_TO_CART_URL = addToCartUrl;
 
 /* UI */
 export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
+export const BUTTONS_UI = ui ? ui.buttons : {};

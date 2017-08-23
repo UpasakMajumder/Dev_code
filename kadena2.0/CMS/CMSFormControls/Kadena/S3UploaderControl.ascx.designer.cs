@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kadena.CMSWebParts.Kadena.Chili {
+namespace Kadena.CMSFormControls.Kadena {
     
     
-    public partial class AddToCartExtended {
+    public partial class S3Uploader {
         
         /// <summary>
-        /// inpNumberOfItems control.
+        /// fldFileUrl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inpNumberOfItems;
+        protected global::System.Web.UI.WebControls.HiddenField fldFileUrl;
     }
 }

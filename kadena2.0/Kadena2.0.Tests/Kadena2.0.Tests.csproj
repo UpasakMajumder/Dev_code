@@ -454,7 +454,6 @@
     <Compile Include="CreateContainerTest.cs" />
     <Compile Include="RemoveAddressesTest.cs" />
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
-    <Compile Include="UploadFileTest.cs" />
     <Compile Include="UploadMappingTest.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="ValidateAddressesTest.cs" />

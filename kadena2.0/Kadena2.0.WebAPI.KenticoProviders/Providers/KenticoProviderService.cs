@@ -12,9 +12,11 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using Newtonsoft.Json;
 using Kadena.Models.Checkout;
+using Kadena.Models.Product;
 using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
+using CMS.CustomTables;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -383,12 +385,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var productType = item.GetStringValue("ProductType", string.Empty);
 
-            if (!productType.Contains("KDA.InventoryProduct") && !productType.Contains("KDA.POD") && !productType.Contains("KDA.StaticProduct"))
+            if (!productType.Contains(ProductTypes.InventoryProduct) && !productType.Contains(ProductTypes.POD) && !productType.Contains(ProductTypes.StaticProduct))
             {
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
-            if (productType.Contains("KDA.InventoryProduct") && quantity > item.SKU.SKUAvailableItems)
+            if (productType.Contains(ProductTypes.InventoryProduct) && quantity > item.SKU.SKUAvailableItems)
             {
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
@@ -505,7 +507,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             foreach (var i in items)
             {
-                if (i.GetValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                if (i.GetValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
                 {
                     int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
                     i.SKU.SKUAvailableItems -= toRemove;
@@ -626,84 +628,171 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
         {
-            int actualQuantity = newItem?.Quantity ?? 0;
+            int addedAmount = newItem?.Quantity ?? 0;
 
-            if (actualQuantity < 1)
+            if (addedAmount < 1)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var doc = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            if (doc.GetValue("ProductType", string.Empty).Contains("KDA.MailingProduct")
-                && !actualQuantity.Equals(mailingList?.AddressCount ?? 0))
+            var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var productType = productDocument.GetValue("ProductType", string.Empty);
+            var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == productDocument.NodeSKUID);
+            var existingAmountInCart = 0;
+            if (cartItem == null)
             {
-                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+                cartItem = CreateCartItem(productDocument);
+            }
+            else
+            {
+                existingAmountInCart = cartItem.CartItemUnits;
             }
 
-            return AddItemToShoppingCart(doc, newItem.TemplateId, actualQuantity, newItem.CustomProductName, mailingList);
+            if (productType.Contains(ProductTypes.InventoryProduct))
+            {
+                EnsureInventoryAmount(productDocument, addedAmount, existingAmountInCart);
+            }
+
+            if (productType.Contains(ProductTypes.MailingProduct)
+                || productType.Contains(ProductTypes.TemplatedProduct))
+            {
+                if (productType.Contains(ProductTypes.MailingProduct))
+                {
+                    if (!addedAmount.Equals(mailingList?.AddressCount ?? 0))
+                    {
+                        throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+                    }
+                    SetMailingList(cartItem, mailingList);
+                }
+                SetAmount(cartItem, addedAmount);
+            }
+            else
+            {
+                SetAmount(cartItem, addedAmount + existingAmountInCart);
+            }
+
+            if (productType.Contains(ProductTypes.POD))
+            {
+                SetArtwork(cartItem, productDocument.GetStringValue("ProductDigitalPrinting", string.Empty));
+            }
+            else
+            {
+                SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
+            }
+
+            RefreshPrice(cartItem, productDocument);
+            SetCustomName(cartItem, newItem.CustomProductName);
+            SetTemplateId(cartItem, newItem.TemplateId);
+
+            ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
+
+            return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
         }
 
-        private CartItem AddItemToShoppingCart(TreeNode document, Guid templateId, int ammount, string customName, MailingList mailingList = null)
+        private void SetArtwork(ShoppingCartItemInfo cartItem, string artworkUrl)
         {
-            var sku = SKUInfoProvider.GetSKUInfo(document.NodeSKUID);
+            cartItem.SetValue("ArtworkLocation", artworkUrl);
+        }
 
-            if (document != null && sku != null)
+        private void EnsureInventoryAmount(TreeNode productDocument, int addedAmount, int existingAmount)
+        {
+            var availableAmount = productDocument.GetIntegerValue("SKUAvailableItems", 0);
+            if (addedAmount > availableAmount)
             {
-                var dynamicUnitPrice = GetDynamicPrice(document, ammount);
-                if (dynamicUnitPrice == decimal.MinusOne)
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+            }
+            else
+            {
+                if (addedAmount + existingAmount > availableAmount)
                 {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+                    throw new ArgumentException(string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
+                        existingAmount, availableAmount - existingAmount));
                 }
+            }
+        }
+
+        private static void SetMailingList(ShoppingCartItemInfo cartItem, MailingList mailingList)
+        {
+            if (mailingList != null)
+            {
+                cartItem.SetValue("MailingListName", mailingList.Name);
+                cartItem.SetValue("MailingListGuid", mailingList.Id);
+            }
+        }
+
+        private static void SetCustomName(ShoppingCartItemInfo cartItem, string customName)
+        {
+            if (!string.IsNullOrEmpty(customName))
+            {
+                cartItem.CartItemText = customName;
+            }
+        }
+
+        private void RefreshPrice(ShoppingCartItemInfo cartItem, TreeNode document)
+        {
+            var dynamicUnitPrice = GetDynamicPrice(document, cartItem.CartItemUnits);
+            if (dynamicUnitPrice == decimal.MinusOne)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+            }
+
+            if (dynamicUnitPrice > decimal.Zero)
+            {
+                cartItem.CartItemPrice = decimal.ToDouble(dynamicUnitPrice);
+            }
+        }
+
+        private ShoppingCartItemInfo CreateCartItem(TreeNode document)
+        {
+            if (document != null)
+            {
+                var sku = SKUInfoProvider.GetSKUInfo(document.NodeSKUID);
 
                 var cart = ECommerceContext.CurrentShoppingCart;
                 AssignCartShippingAddress(cart);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
-                var cartItem = ECommerceContext.CurrentShoppingCart.CartItems.FirstOrDefault(i => i.SKUID == document.NodeSKUID);
-                if (cartItem != null)
-                {
-                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItem, ammount);
-                }
-                else
-                {
-                    var parameters = new ShoppingCartItemParameters(sku.SKUID, ammount);
-                    cartItem = cart.SetShoppingCartItem(parameters);
-                }
+                var parameters = new ShoppingCartItemParameters(sku.SKUID, 1);
+                var cartItem = cart.SetShoppingCartItem(parameters);
 
+                cartItem.CartItemText = sku.SKUName;
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
-                cartItem.SetValue("ArtworkLocation", document.GetStringValue("ProductArtworkLocation", string.Empty));
                 cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
                 cartItem.SetValue("ProductPageID", document.DocumentID);
-                cartItem.SetValue("ChilliEditorTemplateID", templateId);
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
                 cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
                 cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
 
-                if (dynamicUnitPrice > decimal.Zero)
-                {
-                    cartItem.CartItemPrice = decimal.ToDouble(dynamicUnitPrice);
-                }
-
-                if (!string.IsNullOrEmpty(customName) && customName != cartItem.CartItemText)
-                {
-                    cartItem.CartItemText = customName;
-                }
-                if (mailingList != null)
-                {
-                    cartItem.SetValue("MailingListName", mailingList.Name);
-                    cartItem.SetValue("MailingListGuid", mailingList.Id);
-                }
-
-                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-                return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
+                return cartItem;
             }
             return null;
         }
 
-        private void AssignCartShippingAddress(ShoppingCartInfo cart)
+        private static void SetTemplateId(ShoppingCartItemInfo cartItem, Guid templateId)
+        {
+            cartItem.SetValue("ChilliEditorTemplateID", templateId);
+        }
+
+        private static void SetAmount(ShoppingCartItemInfo cartItem, int amount)
+        {
+            cartItem.CartItemUnits = amount;
+        }
+
+        private static void AssignCartShippingAddress(ShoppingCartInfo cart)
         {
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
             cart.ShoppingCartShippingAddress = customerAddress;
+        }
+
+
+        public string MapOrderStatus(string microserviceStatus)
+        {
+            var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")
+                .FirstOrDefault(i => i["MicroserviceStatus"].ToString().ToLower() == microserviceStatus.ToLower());
+
+            var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
+
+            return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
         }
     }
 }

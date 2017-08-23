@@ -1,5 +1,4 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.Chili;
@@ -53,17 +52,18 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     templatesData
                     .Select(d => new
                     {
-                        EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}&containerId={4}&quantity={5}",
+                        EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}{4}&quantity={5}",
                             ProductEditorUrl,
                             DocumentContext.CurrentDocument.DocumentID,
                             d.templateId,
                             DocumentContext.CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty),
-                            d.MailingList?.ContainerID ?? string.Empty,
+                            string.IsNullOrWhiteSpace(d.MailingList?.ContainerID) ? string.Empty : $"&containerId={d.MailingList.ContainerID}",
                             (d.MailingList?.RowCount ?? 0).ToString()),
                         TemplateID = d.templateId,
-                        Date = DateTime.Parse(d.created).ToString()
+                        DateCreated = DateTime.Parse(d.created),
+                        DateUpdated = DateTime.Parse(d.updated)
                     })
-                    .OrderByDescending(t => t.Date);
+                    .OrderByDescending(t => t.DateCreated);
                 repTemplates.DataBind();
             }
             else

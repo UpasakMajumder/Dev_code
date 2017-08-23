@@ -50,7 +50,7 @@ namespace Kadena.Tests.WebApi
             {
                 Id = id,
                 CartItemText = $"Item{id}",
-                ProductType = "KDA.StaticProduct",
+                ProductType = ProductTypes.StaticProduct,
                 TotalPrice = 10,
                 UnitPrice = 2,
                 Quantity = 5
@@ -153,8 +153,8 @@ namespace Kadena.Tests.WebApi
             var result = await service.AddToCart(new NewCartItem());
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Items);
-            Assert.Equal(1, result.Items.Count);
+            Assert.NotNull(result.CartPreview.Items);
+            Assert.Equal(1, result.CartPreview.Items.Count);
         }
     }
 }

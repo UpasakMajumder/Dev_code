@@ -15,7 +15,9 @@ namespace AutomatedTests.Tests
         public void When_Searching_Expect_ResultsAreFound()
         {
             //login
-            var dashboard = InitializeTest();
+            InitializeTest();
+            var dashboard = new Dashboard();
+            dashboard.Open();
             dashboard.WaitForRecentOrders();
 
             //type into search input and verify search suggestions

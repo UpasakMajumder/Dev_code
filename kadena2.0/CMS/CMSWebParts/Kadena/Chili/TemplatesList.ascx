@@ -12,14 +12,16 @@
                 <tbody>
                     <tr>
                         <th>ID</th>
-                        <th>Date changed</th>
+                        <th>Date created</th>
+                        <th>Date updated</th>
                         <th>&nbsp;</th>
                     </tr>
         </HeaderTemplate>
         <ItemTemplate>
             <tr class="product-list__row js-redirection" data-url="<%# Eval("EditorUrl") %>">
                 <td><a class="link weight--normal" href="<%# Eval("EditorUrl") %>"><%# Eval("TemplateID") %></a></td>
-                <td><%# Eval("Date") %></td>
+                <td><%# Eval("DateCreated") %></td>
+                <td><%# ((DateTime)Eval("DateUpdated")).Year == 1 ? string.Empty : Eval("DateUpdated") %></td>
                 <td>
                     <div class="product-list__btn-group">
                         <a href="<%# Eval("EditorUrl") %>" class="btn-action product-list__btn--primary">

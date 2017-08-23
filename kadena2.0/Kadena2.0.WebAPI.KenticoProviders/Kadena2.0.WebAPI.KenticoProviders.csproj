@@ -40,6 +40,9 @@
     <Reference Include="CMS.Core">
       <HintPath>..\Lib\CMS.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.CustomTables">
+      <HintPath>..\Lib\CMS.CustomTables.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.DataEngine">
       <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
     </Reference>

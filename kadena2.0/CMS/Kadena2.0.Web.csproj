@@ -700,6 +700,20 @@
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.cs">
+      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.designer.cs">
+      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.cs">
+      <DependentUpon>S3Uploader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.designer.cs">
+      <DependentUpon>S3Uploader.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.cs">
       <DependentUpon>OrdersList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -736,13 +750,6 @@
     </Compile>
     <Compile Include="CMSPages\Kadena\SubmitContactUsForm.ashx.cs">
       <DependentUpon>SubmitContactUsForm.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx.designer.cs">
-      <DependentUpon>AddToCartEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
@@ -897,6 +904,7 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
+    <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaModuleState.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
@@ -921,6 +929,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
+    <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
+    <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
@@ -934,13 +944,16 @@
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
+      <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
       <Name>CMSApp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CMSWebParts\Kadena\Chili\AddToCartEdit.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
