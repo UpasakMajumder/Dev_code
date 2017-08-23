@@ -57,8 +57,8 @@ class ChiliEditor extends AddToCart {
         } else {
           toastr.error(errorMessage);
         }
-      } else {
-        if (isAddToCart) this.addToCartRequest();
+      } else if (isAddToCart) {
+        this.addToCartRequest();
       }
     } catch (e) {
       toastr.error(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
