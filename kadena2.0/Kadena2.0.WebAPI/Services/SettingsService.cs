@@ -23,11 +23,12 @@ namespace Kadena.WebAPI.Services
             var billingAddresses = _kentico.GetCustomerAddresses("Billing");
             var shippingAddresses = _kentico.GetCustomerAddresses("Shipping");
             var states = _kentico.GetStates();
+            var canEdit = _kentico.UserCanModifyShippingAddress();
 
             return new SettingsAddresses
             {
                 Billing = new object(),
-                //////Uncomment when billing addresses will be developed
+                ////// TODO Uncomment when billing addresses will be developed
                 ////new Addresses
                 ////{
                 ////    Title = _resources.GetResourceString("Kadena.Settings.Addresses.BillingAddress"),
@@ -48,7 +49,7 @@ namespace Kadena.WebAPI.Services
                     },
                     EditButton = new PageButton
                     {
-                        Exists = true,
+                        Exists = canEdit,
                         Text = _resources.GetResourceString("Kadena.Settings.Addresses.Edit")
                     },
                     RemoveButton = new PageButton
