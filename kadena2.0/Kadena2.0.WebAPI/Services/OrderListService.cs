@@ -5,7 +5,6 @@ using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.Models;
-using System;
 using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
@@ -58,6 +57,7 @@ namespace Kadena.WebAPI.Services
         public async Task<OrderHead> GetHeaders()
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
             if (EnablePaging && _pageCapacity > 0)
             {
@@ -92,6 +92,7 @@ namespace Kadena.WebAPI.Services
         public async Task<OrderBody> GetBody(int pageNumber)
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             return new OrderBody
             {
                 Rows = orderList.Orders.Select(o =>
@@ -101,6 +102,18 @@ namespace Kadena.WebAPI.Services
                 })
             };
         }
+
+        private void MapOrdersStatusToGeneric(IEnumerable<Order> orders)
+        {
+            if (orders == null)
+                return;
+
+            foreach (var o in orders)
+            {
+                o.Status = _kentico.MapOrderStatus(o.Status);
+            }
+        }
+
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {

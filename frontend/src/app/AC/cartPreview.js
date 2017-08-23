@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { CART_PREVIEW, INIT_UI, FETCH, SUCCESS, FAILURE, TOGGLE, SHOW, HEADER_SHADOW, HIDE, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { CART_PREVIEW as CART_PREVIEW_GLOBAL } from 'app.globals';
 /* web service */
@@ -51,8 +53,7 @@ export const getUI = () => {
       }, 0);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 

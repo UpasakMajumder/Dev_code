@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
+using Kadena.Dto.Product;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -109,7 +110,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var addItem = mapper.Map<NewCartItem>(item);
             var result = await service.AddToCart(addItem);
-            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
+            var resultDto = mapper.Map<AddToCartResultDto>(result);
             return ResponseJson(resultDto);
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Kadena.Models
+﻿namespace Kadena.Models.Product
 {
     public class Product
     {
