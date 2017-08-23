@@ -177,6 +177,16 @@
         getPageItems: ''
       },
       ui: {
+        buttons: {
+          checkout: {
+            text: 'Proceed To Checkout',
+            url: '/shopping-cart.html'
+          },
+          products: {
+            text: 'Continue Shopping',
+            url: '/products.html'
+          }
+        },
         modifyMailingList: {
           errorList: {
             header: "We have found 8 errors in your file",

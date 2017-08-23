@@ -1,11 +1,11 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* wc */
 import { newState } from 'app.ws/cartPreviewUI';
 /* constants */
 import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment } from 'app.consts';
 /* globals */
-import { ADD_TO_CART_URL } from 'app.globals';
-import { toastr } from 'react-redux-toastr';
+import { ADD_TO_CART_URL, BUTTONS_UI } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
 
@@ -30,12 +30,12 @@ export const addToCartRequest = (body) => {
 
       const confirmBtn = [
         {
-          label: confirmation.btns.cancel.text,
-          func: () => window.location.assign(confirmation.btns.cancel.url)
+          label: BUTTONS_UI.products.text,
+          func: () => window.location.assign(BUTTONS_UI.products.url)
         },
         {
-          label: confirmation.btns.checkout.text,
-          func: () => window.location.assign(confirmation.btns.checkout.url)
+          label: BUTTONS_UI.checkout.text,
+          func: () => window.location.assign(BUTTONS_UI.checkout.url)
         }
       ];
 
@@ -66,12 +66,12 @@ export const addToCartRequest = (body) => {
 
         const confirmBtn = [
           {
-            label: confirmation.btns.cancel.text,
-            func: () => window.location.assign(confirmation.btns.cancel.url)
+            label: BUTTONS_UI.products.text,
+            func: () => window.location.assign(BUTTONS_UI.products.url)
           },
           {
-            label: confirmation.btns.checkout.text,
-            func: () => window.location.assign(confirmation.btns.checkout.url)
+            label: BUTTONS_UI.checkout.text,
+            func: () => window.location.assign(BUTTONS_UI.checkout.url)
           }
         ];
 

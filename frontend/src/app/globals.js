@@ -30,3 +30,4 @@ export const CHILI_SAVE = chiliSave;
 
 /* UI */
 export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
+export const BUTTONS_UI = ui ? ui.buttons : {};

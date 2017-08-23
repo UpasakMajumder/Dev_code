@@ -24,6 +24,10 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
   }
 
+  &__proceed {
+    @extend .ml-4;
+  }
+
   &__products {
     margin-bottom: $big-margin;
     max-height: $max-size-products;
