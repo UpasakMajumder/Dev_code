@@ -36,7 +36,7 @@ const pluginsCollection = {
     new WriteFilePlugin({
       log: false
     }),
-    // new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
