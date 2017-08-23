@@ -8,8 +8,7 @@ namespace Kadena.WebAPI
         public static JsonSerializerSettings CamelCaseSerializer { get; private set; } = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "MMM dd yyyy"
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
     }
 }

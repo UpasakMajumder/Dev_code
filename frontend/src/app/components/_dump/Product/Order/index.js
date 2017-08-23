@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
+/* helpers */
+import { divideBySlash } from 'app.helpers/time';
 
 const Order = (props) => {
   const { image, template, mailingList, shippingDate, trackingId,
@@ -35,7 +37,7 @@ const Order = (props) => {
     ? <div className="cart-product__tracking">
       <p>
         <SVG name="courier"/>
-        <span>Shipping data: <strong>{shippingDate}</strong></span>
+        <span>Shipping date: <strong>{divideBySlash(shippingDate)}</strong></span>
       </p>
     </div>
     : null;
