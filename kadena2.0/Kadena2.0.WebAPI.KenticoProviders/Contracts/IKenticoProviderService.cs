@@ -78,6 +78,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         bool UserCanSeeAllOrders();
 
+        bool UserCanModifyShippingAddress();
+
         Site GetSite(int siteId);
 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
