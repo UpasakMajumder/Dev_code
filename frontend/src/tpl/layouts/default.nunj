@@ -151,6 +151,14 @@
         spotfireError: {
           title: 'Error',
           text: 'The Spotfire is not available'
+        },
+        chiliNotAvailable: {
+          title: 'Error',
+          text: 'The Chili is not available'
+        },
+        chiliSaved: {
+          title: 'Success',
+          text: 'The template has been saved'
         }
       },
       login: {
