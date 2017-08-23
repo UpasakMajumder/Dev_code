@@ -40,19 +40,76 @@ namespace Kadena.CMSFormControls.Kadena
 
             set
             {
-                SetValueToControl(value);
+                OldValue = value as string ?? "";
+            }
+        }
+
+        protected string OldValue;
+
+        protected string CurrentValue
+        {
+            get
+            {
+                return ViewState[ClientID] as string ?? "";
+            }
+            set
+            {
+                ViewState[ClientID] = value;
+            }
+        }
+
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                InitRepeaterItems(OldValue);
+            }
+        }
+
+        protected override void LoadViewState(object savedState)
+        {
+            base.LoadViewState(savedState);
+
+            InitRepeaterItems(CurrentValue);
+        }
+
+        private void InitRepeaterItems(string fieldValue)
+        {
+            var oldValues = MediaMultiField.GetValues(fieldValue);
+            ItemsRepeater.DataSource = oldValues;
+            ItemsRepeater.DataBind();
+        }
+
+        protected override void OnDataBinding(EventArgs e)
+        {
+            base.OnDataBinding(e);
+        }
+
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (IsPostBack)
+            {
+                // hoping posted data has been databound
+                var newValues = ExtractValuesFromControl();
+                CurrentValue = MediaMultiField.CreateFieldValue(newValues);
+            }
+            else
+            {
+                CurrentValue = OldValue;
             }
         }
 
         protected void AddButton_Click(object sender, EventArgs e)
         {
-            var values = ExtractValuesFromControl();
-            values.Add("");
-            ItemsRepeater.DataSource = values.ToArray();
+            CurrentValue = MediaMultiField.AddValueToField(CurrentValue, "");
+
+            var values = MediaMultiField.GetValues(CurrentValue);
+            ItemsRepeater.DataSource = values;
             ItemsRepeater.DataBind();
         }
 
-        private List<string> ExtractValuesFromControl()
+        private string[] ExtractValuesFromControl(bool skipEmpty = false)
         {
             var values = new List<string>();
             foreach (var item in ItemsRepeater.Items.Cast<RepeaterItem>())
@@ -67,46 +124,32 @@ namespace Kadena.CMSFormControls.Kadena
                     var ms = ctrl as MediaSelector;
                     if (ms != null)
                     {
-                        if (!string.IsNullOrWhiteSpace(ms.Value))
-                        {
-                            values.Add(ms.Value);
-                        }
+                        values.Add(ms.Value);
                     }
                 }
             }
 
-            return values;
+            if (skipEmpty)
+            {
+                values = values.Where(v => !string.IsNullOrWhiteSpace(v)).ToList();
+            }
+
+            return values.ToArray();
         }
 
         private object GetValueFromControl()
         {
-            var values = ExtractValuesFromControl();
-            var fieldValue = MediaMultiField.CreateFieldValue(values.ToArray());
+            var values = ExtractValuesFromControl(skipEmpty: true).ToArray();
+            var fieldValue = MediaMultiField.CreateFieldValue(values);
             return fieldValue;
-        }
-
-        private void SetValueToControl(object value)
-        {
-            if (value == null)
-            {
-                ItemsRepeater.DataSource = new string[0];
-                return;
-            }
-
-            ItemsRepeater.DataSource = MediaMultiField.GetValues(value.ToString());
-            ItemsRepeater.DataBind();
         }
 
         private bool ValidateExtensions()
         {
-            var extensions = AllowedExtensions.Split(',');
-            Predicate<string> hasValidExtension = 
-                (file) => extensions.Any(ext => file.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase));
-
-            var files = ExtractValuesFromControl();
+            var files = ExtractValuesFromControl(skipEmpty: true);
             foreach (var file in files)
             {
-                if (!hasValidExtension(file))
+                if (!MediaMultiField.ValidateExtension(AllowedExtensions, file))
                 {
                     return false;
                 }

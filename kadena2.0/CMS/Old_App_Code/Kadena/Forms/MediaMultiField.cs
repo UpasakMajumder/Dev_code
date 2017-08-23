@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Forms
 {
@@ -47,6 +48,23 @@ namespace Kadena.Old_App_Code.Kadena.Forms
             var values = GetValues(value);
             var items = values.Select(v => ParseFrom(v)).ToArray();
             return items;
+        }
+
+        public static string AddValueToField(string oldFieldValue, string newItem)
+        {
+            if (string.IsNullOrWhiteSpace(oldFieldValue))
+            {
+                return newItem;
+            }
+
+            return oldFieldValue + Separator + newItem;
+        }
+
+        public static bool ValidateExtension(string allowedExtensions, string fieldItem)
+        {
+            var extensions = allowedExtensions.Split(',');
+            var hasValidExtension = extensions.Any(ext => fieldItem.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase));
+            return hasValidExtension;
         }
     }
 }
