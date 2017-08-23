@@ -44,10 +44,18 @@ namespace Kadena.WebAPI.Services
                     AddButton = new PageButton
                     {
                         Exists = false,
-                        Tooltip = _resources.GetResourceString("Kadena.Settings.Addresses.AddShipping")
+                        Text = _resources.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
-                    EditButtonText = _resources.GetResourceString("Kadena.Settings.Addresses.Edit"),
-                    RemoveButtonText = _resources.GetResourceString("Kadena.Settings.Addresses.Remove"),
+                    EditButton = new PageButton
+                    {
+                        Exists = true,
+                        Text = _resources.GetResourceString("Kadena.Settings.Addresses.Edit")
+                    },
+                    RemoveButton = new PageButton
+                    {
+                        Exists = false,
+                        Text = _resources.GetResourceString("Kadena.Settings.Addresses.Remove")
+                    },
                     Addresses = shippingAddresses.ToList()
                 },
                 Dialog = new AddressDialog

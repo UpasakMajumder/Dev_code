@@ -6,8 +6,8 @@ namespace Kadena.Models.Settings
     {
         public string Title { get; set; }
         public PageButton AddButton { get; set; }
-        public string EditButtonText { get; set; }
-        public string RemoveButtonText { get; set; }
+        public PageButton EditButton { get; set; }
+        public PageButton RemoveButton { get; set; }
         public List<DeliveryAddress> Addresses { get; set; }
     }
 }
