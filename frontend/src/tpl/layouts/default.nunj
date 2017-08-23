@@ -58,6 +58,7 @@
   {# Main content of the page #}
   <div class="main-container">
     <div class="r-spinner"></div>
+    <div class="r-toastr"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
       <div class="r-header-shadow"></div>
@@ -164,6 +165,9 @@
       searchPage: {
         searchPageUrl: ''
       },
+      chiliSave: {
+        url: ''
+      },
       addToCartUrl: '',
       search: {
         queryUrl: ""
@@ -173,6 +177,16 @@
         getPageItems: ''
       },
       ui: {
+        buttons: {
+          checkout: {
+            text: 'Proceed To Checkout',
+            url: '/shopping-cart.html'
+          },
+          products: {
+            text: 'Continue Shopping',
+            url: '/products.html'
+          }
+        },
         modifyMailingList: {
           errorList: {
             header: "We have found 8 errors in your file",

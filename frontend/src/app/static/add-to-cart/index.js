@@ -5,39 +5,39 @@ import { consoleException } from 'app.helpers/io';
 
 class AddToCart {
   constructor(button) {
-    const showMessageClass = 'input--error';
-    const nameElement = document.querySelector('.js-add-to-cart-name');
-    const quantityElement = document.querySelector('.js-add-to-cart-quantity');
+    this.showMessageClass = 'input--error';
+    this.nameElement = document.querySelector('.js-add-to-cart-name');
+    this.quantityElement = document.querySelector('.js-add-to-cart-quantity');
+    this.wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
+    this.properyFields = Array.from(document.querySelectorAll('.js-add-to-cart-property'));
 
-    button.addEventListener('click', () => {
-      const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
-      wrappers.forEach(wrapper => wrapper.classList.remove(showMessageClass));
-
-      let customProductName = '';
-      if (nameElement) {
-        customProductName = nameElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-name');
-      }
-
-      let quantity = 0;
-      if (quantityElement) {
-        quantity = quantityElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-quantity');
-      }
-
-      const { documentId, templateId, containerId } = getSearchObj();
-      const body = { customProductName, documentId, quantity, templateId, containerId };
-
-      addToCartRequest(body)
-        .then((message) => { // show if bad response
-          wrappers.forEach(wrapper => wrapper.classList.add(showMessageClass));
-          const messageElement = document.querySelector('.js-add-to-cart-message');
-          messageElement.innerHTML = message;
-        });
-    });
+    if (button) button.addEventListener('click', this.addToCartRequest);
   }
+
+  getBody = () => {
+    const customProductName = this.nameElement && this.nameElement.value;
+    const quantity = this.quantityElement ? this.quantityElement.value : 0;
+
+    const body = { customProductName, quantity };
+
+    this.properyFields.forEach((field) => {
+      const name = field.getAttribute('name');
+      body[name] = field.value;
+    });
+
+    return body;
+  };
+
+  addToCartRequest = () => {
+    this.wrappers.forEach(wrapper => wrapper.classList.remove(this.showMessageClass));
+
+    addToCartRequest(this.getBody())
+      .then((message) => { // show if bad response
+        this.wrappers.forEach(wrapper => wrapper.classList.add(this.showMessageClass));
+        const messageElement = document.querySelector('.js-add-to-cart-message');
+        messageElement.innerHTML = message;
+      });
+  };
 }
 
 export default AddToCart;

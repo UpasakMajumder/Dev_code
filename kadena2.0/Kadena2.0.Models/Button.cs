@@ -1,4 +1,4 @@
-﻿namespace Kadena.Models.RecentOrders
+﻿namespace Kadena.Models
 {
     public class Button
     {

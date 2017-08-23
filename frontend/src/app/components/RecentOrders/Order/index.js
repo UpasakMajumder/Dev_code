@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* helpers */
+import { convertToWords } from 'app.helpers/time';
 
 function Order(props) {
   const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn } = props;
@@ -29,10 +31,10 @@ function Order(props) {
   return (
     <tr>
       <td>{orderNumber}</td>
-      <td>{orderDate}</td>
+      <td>{convertToWords(orderDate)}</td>
       {getItemsTd()}
       <td className="show-table__will-hide">{orderStatus}</td>
-      <td className="show-table__will-hide">{shippingDate}</td>
+      <td className="show-table__will-hide">{convertToWords(shippingDate)}</td>
       <td className="show-table__will-appear">
         <a href={url} className="btn-action">{text}</a>
       </td>
@@ -45,7 +47,7 @@ Order.PropTypes = {
   orderDate: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.string),
   orderStatus: PropTypes.string.isRequired,
-  deliveryDate: PropTypes.string.isRequired,
+  shippingDate: PropTypes.string.isRequired,
   viewBtn: PropTypes.objectOf(PropTypes.string)
 };
 
