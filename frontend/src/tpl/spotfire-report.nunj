@@ -10,5 +10,5 @@
       {{ svg('spinner') }}
     </div>
   </div>
-  <script async src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
+  <script src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
 {% endblock %}

@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { LOGIN } from 'app.globals';
 /* helpers */
@@ -58,7 +60,8 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
           dispatch({
             type: LOG_IN + FAILURE,
             isLoading: false,
-            data
+            data,
+            alert: false
           });
         }
       })
@@ -67,7 +70,6 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
           type: LOG_IN + FAILURE,
           isLoading: false
         });
-        alert(error); // eslint-disable-line no-alert
       });
   };
 };

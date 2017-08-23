@@ -217,16 +217,21 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        window.location.href = window.location.href;
+                        //window.location.href = window.location.href;
+
+                        toastr.success(config.localization.ContactPersonDetailsChange.SuccessTitle, config.localization.ContactPersonDetailsChange.Success);
                     } else {
-                        base.find(settings.errorMassage).html(data.d.errorMessage);
-                        base.find(settings.errorMassage).show();
+                        //base.find(settings.errorMassage).html(data.d.errorMessage);
+                        //base.find(settings.errorMassage).show();
+
+                        toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, data.d.errorMessage);
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
-                    base.find(settings.errorMassage).show();
+                    //base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
+                    //base.find(settings.errorMassage).show();
+                    toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, config.localization.ContactPersonDetailsChange.Error);
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
@@ -294,10 +299,6 @@ if (!String.prototype.format) {
             base.find(settings.passwordsDontMatchErrorLabel).hide();
             base.find(settings.generalErrorLabel).hide();
 
-            //var oldPassword = base.find(settings.oldPasswordInput).val().replace(/ /g, '');
-            //var newPassword = base.find(settings.newPasswordInput).val().replace(/ /g, '');
-            //var confirmPassword = base.find(settings.confirmPasswordInput).val().replace(/ /g, '');
-
             if (base.find(settings.oldPasswordInput).val().length == 0) {
                 base.find(settings.oldPasswordInput).addClass("input--error");
                 base.find(settings.oldPasswordEmptyErrorLabel).show();
@@ -352,16 +353,19 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        alert(config.localization.PasswordChange.Success);
+                        //alert(config.localization.PasswordChange.Success);
+                        toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
-                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
-                        base.find(settings.generalErrorLabel).show();
+                        //base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        //base.find(settings.generalErrorLabel).show();
+                        toastr.error(config.localization.PasswordChange.ErrorTitle, data.d.errorMessage);
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
-                    base.find(settings.generalErrorLabel).show();
+                    //base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
+                    //base.find(settings.generalErrorLabel).show();
+                    toastr.error(config.localization.PasswordChange.ErrorTitle, config.localization.PasswordChange.Error);
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
@@ -883,7 +887,7 @@ if (!String.prototype.format) {
         var base = this;
 
         if ($('.j-mailing-list-uploader-error').val() != '') {
-            toastr.error(config.localization.newKList.generalErrorTitle, $('.j-mailing-list-uploader-error').val());
+            setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, $('.j-mailing-list-uploader-error').val()); }, 0);
         }
 
         base.click(function (e) {
@@ -910,7 +914,23 @@ if (!String.prototype.format) {
         }, options);
 
         if (base.find(settings.errorMessage).val() != '') {
-            toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val());
+            setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 0);
+        }
+    }
+}(jQuery));
+
+// BID LIST
+
+(function ($) {
+    $.fn.BidList = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorMessage: ".j-error-message"
+        }, options);
+
+        if (base.find(settings.errorMessage).val() != '') {
+            setTimeout(function () { toastr.error(config.localization.BidList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 500);
         }
     }
 }(jQuery));
@@ -924,46 +944,51 @@ var customScripts = {
     createPasswordInit: function () {
         if ($(".j-initial-password-setting-form").length > 0) {
             $(".j-initial-password-setting-form").createPassword();
-        }        
+        }
     },
     setPersonContactInformationInit: function () {
         if ($(".j-contant-person-form").length > 0) {
             $(".j-contant-person-form").setPersonContactInformation();
-        }        
+        }
     },
     changePasswordInit: function () {
         if ($(".j-password-change-form").length > 0) {
             $(".j-password-change-form").changePassword();
-        }        
+        }
     },
     contactUsFormInit: function () {
         if ($(".j-contact-us-form").length > 0) {
             $(".j-contact-us-form").contactUsForm();
-        }        
+        }
     },
     submitBidInit: function () {
         if ($(".j-bid-form").length > 0) {
             $(".j-bid-form").submitBid();
-        }        
+        }
     },
     requestNewProductInit: function () {
         if ($(".j-new-product-form").length > 0) {
             $(".j-new-product-form").requestNewProduct();
-        }        
+        }
     },
     requestNewKitInit: function () {
         if ($(".j-new-kit-request-form").length > 0) {
             $(".j-new-kit-request-form").requestNewKitForm();
-        }        
+        }
     },
     newKListInit: function () {
         if ($(".j-submit-mailing-list-button").length > 0) {
             $(".j-submit-mailing-list-button").setNewKListPage();
-        }        
+        }
     },
     kListInit: function () {
         if ($(".j-klist").length > 0) {
             $(".j-klist").KListPage();
+        }
+    },
+    bidListInit: function () {
+        if ($(".j-bid-list").length > 0) {
+            $(".j-bid-list").BidList();
         }
     },
     init: function () {
@@ -979,6 +1004,7 @@ var customScripts = {
         base.requestNewKitInit();
         base.newKListInit();
         base.kListInit();
+        base.bidListInit();
     }
 }
 

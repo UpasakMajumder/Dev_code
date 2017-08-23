@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { CART_PREVIEW, INIT_UI, FETCH, SUCCESS, FAILURE, TOGGLE, SHOW, HEADER_SHADOW, HIDE, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { CART_PREVIEW as CART_PREVIEW_GLOBAL } from 'app.globals';
 /* web service */
@@ -18,8 +20,10 @@ export const getUI = () => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: CART_PREVIEW + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: CART_PREVIEW + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: CART_PREVIEW + INIT_UI + SUCCESS,
@@ -33,7 +37,6 @@ export const getUI = () => {
         }
       }).catch((error) => {
         dispatch({ type: CART_PREVIEW + INIT_UI + FAILURE });
-        alert(error); // eslint-disable-line no-alert
       });
     };
 
@@ -51,8 +54,7 @@ export const getUI = () => {
       }, 0);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 

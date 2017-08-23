@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { SHOW, HIDE, FETCH, SUCCESS, FAILURE, SEARCH_RESULTS, HEADER_SHADOW, CHANGE_SEARCH_QUERY } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { SEARCH } from 'app.globals';
 /* web service */
@@ -39,8 +41,10 @@ export const sendQuery = (query, pressedEnter) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: SEARCH_RESULTS + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: SEARCH_RESULTS + SUCCESS,
@@ -55,7 +59,6 @@ export const sendQuery = (query, pressedEnter) => {
       })
         .catch((error) => {
           dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 
@@ -74,7 +77,6 @@ export const sendQuery = (query, pressedEnter) => {
       }, 200);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };

@@ -8,31 +8,25 @@ class AddToCart {
     const showMessageClass = 'input--error';
     const nameElement = document.querySelector('.js-add-to-cart-name');
     const quantityElement = document.querySelector('.js-add-to-cart-quantity');
+    const properyFields = Array.from(document.querySelectorAll('.js-add-to-cart-property'));
 
     button.addEventListener('click', () => {
-      const wrappers = Array.from(document.querySelectorAll('.js-add-to-cart-error'));
-      wrappers.forEach(wrapper => wrapper.classList.remove(showMessageClass));
+      const wrapper = document.querySelector('.js-add-to-cart-error');
+      wrapper.classList.remove(showMessageClass);
 
-      let customProductName = '';
-      if (nameElement) {
-        customProductName = nameElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-name');
-      }
+      const customProductName = nameElement && nameElement.value;
+      const quantity = quantityElement ? quantityElement.value : 0;
 
-      let quantity = 0;
-      if (quantityElement) {
-        quantity = quantityElement.value;
-      } else {
-        consoleException('Not found element .js-add-to-cart-quantity');
-      }
+      const body = { customProductName, quantity };
 
-      const { documentId, templateId, containerId } = getSearchObj();
-      const body = { customProductName, documentId, quantity, templateId, containerId };
+      properyFields.forEach((field) => {
+        const name = field.getAttribute('name');
+        body[name] = field.value;
+      });
 
       addToCartRequest(body)
         .then((message) => { // show if bad response
-          wrappers.forEach(wrapper => wrapper.classList.add(showMessageClass));
+          wrapper.classList.add(showMessageClass);
           const messageElement = document.querySelector('.js-add-to-cart-message');
           messageElement.innerHTML = message;
         });
