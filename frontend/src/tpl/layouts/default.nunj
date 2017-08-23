@@ -363,5 +363,11 @@
   <script src="js/app.min.js"></script>
 {% endif %}
 
+<script>
+  $(document).ready(function () {
+    toastr.error("sds", "sdsd");
+  });
+</script>
+
 </body>
 </html>
