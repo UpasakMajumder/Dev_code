@@ -9,12 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 {
-    public interface IDeleteExpiredMailingListsService
-    {
-        Task Delete();
-    }
-
-    public class DeleteExpiredMailingListsService : IDeleteExpiredMailingListsService
+    public class DeleteExpiredMailingListsService
     {
         private IConfigurationProvider configurationProvider;
         private IKenticoProvider kenticoProvider;
@@ -58,7 +53,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
                 }
             }
 
-            var results = await Task.WhenAll(tasks);
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             if (results.Any(r => !r.Success))
             {
                 throw new Exception(CreateErrorMessageFromResponses(results, customers));

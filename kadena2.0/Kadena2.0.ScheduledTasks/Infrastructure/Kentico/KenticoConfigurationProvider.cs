@@ -29,7 +29,7 @@
 
         private void LoadSection(MailingListConfiguration section, string siteName)
         {
-            section.DeleteMailingListsByValidToDateURL = kenticoResources.GetSettingsByKey(siteName, ""); // TODO truc
+            section.DeleteMailingListsByValidToDateURL = kenticoResources.GetSettingsByKey(siteName, "KDA_MailingList_DeleteListByFilterURL");
             section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsByKey(siteName, "KDA_MailingList_DeleteExpiredAfter"));
         }
     }

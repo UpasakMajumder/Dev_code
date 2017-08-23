@@ -70,10 +70,19 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             using (var httpClient = new HttpClient())
             {
-                var encodedCustomerName = HttpUtility.UrlEncode(customerName);
+                var filter = CreateRequestContent(new
+                {
+                    customerName = customerName,
+                    validTo = olderThan
+                });
 
-                // TODO truc
-                return await Task.FromResult(new BaseResponseDto<object>());
+                using (var request = new HttpRequestMessage(HttpMethod.Delete, serviceEndpoint) { Content = filter })
+                {
+                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<object>(response);
+                    }
+                }
             }
         }
 

@@ -42,7 +42,7 @@ namespace Kadena.ScheduledTasks
             container.Register<IMailingListClient, MailingListClient>();
 
             // task services
-            container.Register<IDeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
+            container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
         }
     }
 }
