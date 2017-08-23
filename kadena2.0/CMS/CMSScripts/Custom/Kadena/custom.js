@@ -876,6 +876,45 @@ if (!String.prototype.format) {
     }
 }(jQuery));
 
+// K-List init
+
+(function ($) {
+    $.fn.setNewKListPage = function (options) {
+        var base = this;
+
+        if ($('.j-mailing-list-uploader-error').val() != '') {
+            toastr.error(config.localization.newKList.generalErrorTitle, $('.j-mailing-list-uploader-error').val());
+        }
+
+        base.click(function (e) {
+            if (!$('.js-drop-zone').hasClass('isDropped')) {
+                toastr.error(config.localization.newKList.fileNotUploadedTitle, config.localization.newKList.fileNotUploadedText);
+                e.preventDefault();
+                return;
+            };
+            if (!$.trim($('input.js-drop-zone-name-input').val()).length) {
+                toastr.error(config.localization.newKList.enterValidValueTitle, config.localization.newKList.enterValidValue);
+                e.preventDefault();
+                return;
+            };
+        });
+    }
+}(jQuery));
+
+(function ($) {
+    $.fn.KListPage = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorMessage: ".j-error-message"
+        }, options);
+
+        if (base.find(settings.errorMessage).val() != '') {
+            toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val());
+        }
+    }
+}(jQuery));
+
 // custom script initialization
 
 var customScripts = {
@@ -883,25 +922,49 @@ var customScripts = {
         $("#js-logout").logout();
     },
     createPasswordInit: function () {
-        $(".j-initial-password-setting-form").createPassword();
+        if ($(".j-initial-password-setting-form").length > 0) {
+            $(".j-initial-password-setting-form").createPassword();
+        }        
     },
     setPersonContactInformationInit: function () {
-        $(".j-contant-person-form").setPersonContactInformation();
+        if ($(".j-contant-person-form").length > 0) {
+            $(".j-contant-person-form").setPersonContactInformation();
+        }        
     },
     changePasswordInit: function () {
-        $(".j-password-change-form").changePassword();
+        if ($(".j-password-change-form").length > 0) {
+            $(".j-password-change-form").changePassword();
+        }        
     },
     contactUsFormInit: function () {
-        $(".j-contact-us-form").contactUsForm();
+        if ($(".j-contact-us-form").length > 0) {
+            $(".j-contact-us-form").contactUsForm();
+        }        
     },
     submitBidInit: function () {
-        $(".j-bid-form").submitBid();
+        if ($(".j-bid-form").length > 0) {
+            $(".j-bid-form").submitBid();
+        }        
     },
     requestNewProductInit: function () {
-        $(".j-new-product-form").requestNewProduct();
+        if ($(".j-new-product-form").length > 0) {
+            $(".j-new-product-form").requestNewProduct();
+        }        
     },
     requestNewKitInit: function () {
-        $(".j-new-kit-request-form").requestNewKitForm();
+        if ($(".j-new-kit-request-form").length > 0) {
+            $(".j-new-kit-request-form").requestNewKitForm();
+        }        
+    },
+    newKListInit: function () {
+        if ($(".j-submit-mailing-list-button").length > 0) {
+            $(".j-submit-mailing-list-button").setNewKListPage();
+        }        
+    },
+    kListInit: function () {
+        if ($(".j-klist").length > 0) {
+            $(".j-klist").KListPage();
+        }
     },
     init: function () {
         var base = this;
@@ -914,6 +977,8 @@ var customScripts = {
         base.contactUsFormInit();
         base.requestNewProductInit();
         base.requestNewKitInit();
+        base.newKListInit();
+        base.kListInit();
     }
 }
 
