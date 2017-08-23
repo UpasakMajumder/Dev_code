@@ -319,20 +319,7 @@ namespace Kadena.WebAPI.Services
                 CartPreview = ItemsPreview(),
                 Confirmation = new RequestResult
                 {
-                    AlertMessage = resources.GetResourceString("Kadena.Product.ItemsAddedToCart"),
-                    Btns = new RequestButtons
-                    {
-                        Cancel = new Button
-                        {
-                            Text = resources.GetResourceString("Kadena.Checkout.ContinueShopping"),
-                            Url = "/products"
-                        },
-                        Checkout = new Button
-                        {
-                            Text = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
-                            Url = "/checkout"
-                        }
-                    }
+                    AlertMessage = resources.GetResourceString("Kadena.Product.ItemsAddedToCart")
                 }
             };
             return result;

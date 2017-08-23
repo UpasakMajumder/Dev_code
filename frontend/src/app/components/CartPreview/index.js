@@ -6,6 +6,8 @@ import { getUI } from 'app.ac/cartPreview';
 /* components */
 import CartPreviewProduct from 'app.dump/Product/CartPreview';
 import Spinner from 'app.dump/Spinner';
+/* globals */
+import { BUTTONS_UI } from 'app.globals';
 
 class CartPreview extends Component {
   static propTypes = {
@@ -13,10 +15,6 @@ class CartPreview extends Component {
       items: PropTypes.arrayOf(PropTypes.object).isRequired,
       emptyCartMessage: PropTypes.string.isRequired,
       isVisible: PropTypes.bool.isRequired,
-      cart: PropTypes.shape({
-        label: PropTypes.string,
-        url: PropTypes.string
-      }).isRequired,
       isLoaded: PropTypes.bool.isRequired,
       summaryPrice: PropTypes.shape({
         pricePrefix: PropTypes.string,
@@ -32,7 +30,7 @@ class CartPreview extends Component {
 
   render() {
     const { cartPreview } = this.props;
-    const { emptyCartMessage, cart, items, isVisible, isLoaded, summaryPrice } = cartPreview;
+    const { emptyCartMessage, items, isVisible, isLoaded, summaryPrice } = cartPreview;
 
     let content = <Spinner/>;
 
@@ -47,7 +45,10 @@ class CartPreview extends Component {
             </div>
             <div className="cart-preview__footer">
               <span className="cart-preview__total-price">{summaryPrice.pricePrefix} {summaryPrice.price}</span>
-              <a className="btn-action cart-preview__proceed" href={cart.url}>{cart.label}</a>
+              <div>
+                <a className="btn-action btn-action--secondary" href={BUTTONS_UI.products.url}>{BUTTONS_UI.products.text}</a>
+                <a className="btn-action cart-preview__proceed" href={BUTTONS_UI.checkout.url}>{BUTTONS_UI.checkout.text}</a>
+              </div>
             </div>
           </div>
         );
