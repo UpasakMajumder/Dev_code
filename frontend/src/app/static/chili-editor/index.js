@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* helpers */
 import { consoleException } from 'app.helpers/io';
 import { getSecondLevelDomain } from 'app.helpers/location';
 /* globals */
-import { CHILI_SAVE } from 'app.globals';
+import { CHILI_SAVE, NOTIFICATION } from 'app.globals';
 /* classes */
 import AddToCart from '../add-to-cart';
 
@@ -44,12 +45,13 @@ class ChiliEditor extends AddToCart {
     try {
       const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
       if (success) {
+        toastr.success(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
         if (isAddToCart) this.addToCartRequest();
       } else {
-        alert(errorMessage); // eslint-disable-line no-alert
+        toastr.error(errorMessage);
       }
     } catch (e) {
-      alert(e); // eslint-disable-line no-alert
+      toastr.error(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
     }
   }
 

@@ -8,7 +8,6 @@ import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment, FAILURE 
 import { ADD_TO_CART_URL, NOTIFICATION, BUTTONS_UI } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
-import { toastr } from 'react-redux-toastr';
 
 export const addToCartRequest = (body) => {
   const dispatch = window.store.dispatch;
