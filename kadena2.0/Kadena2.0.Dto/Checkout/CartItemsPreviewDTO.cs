@@ -6,8 +6,6 @@ namespace Kadena.Dto.Checkout
     {
         public string EmptyCartMessage { get; set; }
 
-        public string AlertMessage { get; set; }
-
         public CartButtonDTO Cart { get; set; }
 
         public CartPriceDTO SummaryPrice { get; set; }
