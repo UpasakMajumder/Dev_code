@@ -26,7 +26,7 @@ const AddressCard = (props) => {
 
   if (!address) {
     return (
-      <div className="adress-card">{editElement}</div>
+      <div className="address-card address-card--empty">{editElement}</div>
     );
   }
 
@@ -51,7 +51,7 @@ const AddressCard = (props) => {
   const buttonBlock = editElement || removeElement
     ?
     (
-      <div className="adress-card__btn-block">
+      <div className="address-card__btn-block">
         {editElement}
         {removeElement}
       </div>
@@ -59,7 +59,7 @@ const AddressCard = (props) => {
     : null;
 
   return (
-    <div className="adress-card">
+    <div className="address-card">
       <div>{street1}</div>
       <div>{street2}</div>
       <div>{city}</div>
