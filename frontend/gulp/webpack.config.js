@@ -36,7 +36,7 @@ const pluginsCollection = {
     new WriteFilePlugin({
       log: false
     }),
-    // new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
@@ -48,12 +48,12 @@ const pluginsCollection = {
       comments: false
     }),
     new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 10
+      maxChunks: 1
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       filename: '[name].min.js',
-      minChunks: Infinity
+      minChunks: 0
     }),
     new webpack.NoEmitOnErrorsPlugin()
   ]

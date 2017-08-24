@@ -25,7 +25,7 @@ export const rows1 = {
     "rows": [
       {
         "orderNumber": "0010-00162-17-фывто123",
-        "orderDate": "2017-06-23 13:36:36",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Product 3",
@@ -33,8 +33,8 @@ export const rows1 = {
           }
         ],
         "orderStatus": "Rejected",
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
@@ -42,7 +42,7 @@ export const rows1 = {
       },
       {
         "orderNumber": "0001-00091-17-324фыв",
-        "orderDate": "2017-06-21 13:17:36",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Chilli product",
@@ -58,8 +58,8 @@ export const rows1 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
@@ -87,8 +87,8 @@ export const rows1 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
@@ -96,7 +96,7 @@ export const rows1 = {
       },
       {
         "orderNumber": "0001-00174-17-фывт123",
-        "orderDate": "2017-06-21 14:16:24",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Inventory",
@@ -104,8 +104,8 @@ export const rows1 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
@@ -113,7 +113,7 @@ export const rows1 = {
       },
       {
         "orderNumber": "0001-00174-17-121",
-        "orderDate": "2017-06-23 13:26:16",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Inventory",
@@ -121,8 +121,8 @@ export const rows1 = {
           }
         ],
         "orderStatus": "Rejected",
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"
@@ -139,7 +139,7 @@ export const rows2 = {
     "rows": [
       {
         "orderNumber": "0010-00162-17-00004",
-        "orderDate": "2017-06-23 13:36:36",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Product 3",
@@ -147,8 +147,8 @@ export const rows2 = {
           }
         ],
         "orderStatus": "Rejected",
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
@@ -156,7 +156,7 @@ export const rows2 = {
       },
       {
         "orderNumber": "0001-00091-17-00002",
-        "orderDate": "2017-06-21 13:17:36",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "Chilli product",
@@ -172,8 +172,8 @@ export const rows2 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00091-17-00002"
@@ -181,7 +181,7 @@ export const rows2 = {
       },
       {
         "orderNumber": "0010-00184-17-00009",
-        "orderDate": "2017-06-22 12:05:49",
+        "orderDate": "2017-08-07T09:12:08.108892Z",
         "items": [
           {
             "name": "POD",
@@ -201,8 +201,8 @@ export const rows2 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0010-00184-17-00009"
@@ -218,8 +218,8 @@ export const rows2 = {
           }
         ],
         "orderStatus": null,
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00001"
@@ -235,8 +235,8 @@ export const rows2 = {
           }
         ],
         "orderStatus": "Rejected",
-        "deliveryDate": "0001-01-01 00:00:00",
-        "shippingDate": "Jan 010203",
+        "deliveryDate": "2017-08-07T09:12:08.108892Z",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "viewBtn": {
           "text": "View",
           "url": "~/recent-orders/order-detail?orderID=0001-00174-17-00012"

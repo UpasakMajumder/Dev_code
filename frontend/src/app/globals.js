@@ -12,7 +12,8 @@ const {
   ui,
   cartPreview,
   addToCartUrl,
-  notification
+  notification,
+  chiliSave
 } = localization;
 
 
@@ -27,6 +28,8 @@ export const RECENT_ORDERS = recentOrders;
 export const CART_PREVIEW = cartPreview;
 export const ADD_TO_CART_URL = addToCartUrl;
 export const NOTIFICATION = notification;
+export const CHILI_SAVE = chiliSave;
 
 /* UI */
 export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
+export const BUTTONS_UI = ui ? ui.buttons : {};

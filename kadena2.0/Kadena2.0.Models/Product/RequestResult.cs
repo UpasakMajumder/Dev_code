@@ -3,7 +3,5 @@
     public class RequestResult
     {
         public string AlertMessage { get; set; }
-
-        public RequestButtons Btns { get; set; }
     }
 }
