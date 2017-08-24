@@ -176,149 +176,147 @@
         getHeaders: '',
         getPageItems: ''
       },
-      ui: {
-        buttons: {
-          checkout: {
-            text: 'Proceed To Checkout',
-            url: '/shopping-cart.html'
-          },
-          products: {
-            text: 'Continue Shopping',
-            url: '/products.html'
-          }
-        },
-        modifyMailingList: {
-          errorList: {
-            header: "We have found 8 errors in your file",
-            tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
-            btns: {
-              reupload: {
-                text: "Reupload .csv",
-                url: "#"
-              },
-              correct: "Correct errors"
-            },
-            items: [
-              {
-                id: "1",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116",
-                errorMessage: "Error"
-              },
-              {
-                id: "2",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116",
-                errorMessage: "Error"
-              }
-            ]
-          },
-          successList: {
-            header: "332 addresses have been processed successfuly",
-            btns: {
-              use: {
-                text: "Use only correct",
-                url: "#"
-              }
-            },
-            items: [
-              {
-                id: "1",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116"
-              },
-              {
-                id: "2",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116"
-              },
-              {
-                id: "3",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116"
-              },
-              {
-                id: "4",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116"
-              },
-              {
-                id: "5",
-                fullName: "Jane Doe",
-                firstAddressLine: "2167 255th Ave",
-                secondAddressLine: "",
-                city: "San Francisco",
-                state: "CA",
-                postalCode: "94116"
-              }
-            ]
-          },
-          formInfo: {
-            title: "We have found errors in the following entries:",
-            downloadErrorFile: {
-              text: "Download error file",
+      modifyMailingList: {
+        errorList: {
+          header: "We have found 8 errors in your file",
+          tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
+          btns: {
+            reupload: {
+              text: "Reupload .csv",
               url: "#"
             },
-            discardChanges: "Discard changes",
-            confirmChanges: {
-              text: "Confirm & reprocess addresses",
-              redirect: "https://google.com",
-              request: "#"
+            correct: "Correct errors"
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116",
+              errorMessage: "Error"
             },
-            message: {
-              required: "The field is required"
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116",
+              errorMessage: "Error"
+            }
+          ]
+        },
+        successList: {
+          header: "332 addresses have been processed successfuly",
+          btns: {
+            use: {
+              text: "Use only correct",
+              url: "#"
+            }
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
             },
-            fields: {
-              fullName: {
-                header: "Full Name",
-                required: true
-              },
-              firstAddressLine: {
-                header: "First Address Line",
-                required: true
-              },
-              secondAddressLine: {
-                header: "Second Address",
-              },
-              city: {
-                header: "City",
-                required: true
-              },
-              state: {
-                header: "State",
-                required: true,
-                value: ['AA', 'BB']
-              },
-              postalCode: {
-                header: "Postal Code",
-                required: true
-              }
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "3",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "4",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "5",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            }
+          ]
+        },
+        formInfo: {
+          title: "We have found errors in the following entries:",
+          downloadErrorFile: {
+            text: "Download error file",
+            url: "#"
+          },
+          discardChanges: "Discard changes",
+          confirmChanges: {
+            text: "Confirm & reprocess addresses",
+            redirect: "https://google.com",
+            request: "#"
+          },
+          message: {
+            required: "The field is required"
+          },
+          fields: {
+            fullName: {
+              header: "Full Name",
+              required: true
+            },
+            firstAddressLine: {
+              header: "First Address Line",
+              required: true
+            },
+            secondAddressLine: {
+              header: "Second Address",
+            },
+            city: {
+              header: "City",
+              required: true
+            },
+            state: {
+              header: "State",
+              required: true,
+              value: ['AA', 'BB']
+            },
+            postalCode: {
+              header: "Postal Code",
+              required: true
             }
           }
+        }
+      },
+      checkoutButtons: {
+        checkout: {
+          text: 'Proceed To Checkout',
+            url: '/shopping-cart.html'
+        },
+        products: {
+          text: 'Continue Shopping',
+            url: '/products.html'
         }
       }
     }
