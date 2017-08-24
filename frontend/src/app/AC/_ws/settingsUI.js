@@ -4,11 +4,17 @@ export default {
   "shipping": {
     "title": "Shipping addresses",
     "addButton": {
-      "exists": false,
-      "tooltip": "Add new shipping address"
+      "text": "Add new shipping address",
+      "exists": false
     },
-    "editButtonText": "Edit",
-    "removeButtonText": "Remove",
+    "editButton": {
+      "text": "Edit",
+      "exists": true,
+    },
+    "removeButton": {
+      "text": "Remove",
+      "exists": false,
+    },
     "addresses": [
       {
         "id": 1,
@@ -16,9 +22,7 @@ export default {
         "street2": "",
         "city": "Shakopee",
         "state": "MN",
-        "zip": "55379",
-        "isEditButton": true,
-        "isRemoveButton": false
+        "zip": "55379"
       },
       {
         "id": 2,
@@ -26,9 +30,7 @@ export default {
         "street2": "",
         "city": "Shakopee",
         "state": "MN",
-        "zip": "55379",
-        "isEditButton": true,
-        "isRemoveButton": false
+        "zip": "55379"
       }
     ]
   },
