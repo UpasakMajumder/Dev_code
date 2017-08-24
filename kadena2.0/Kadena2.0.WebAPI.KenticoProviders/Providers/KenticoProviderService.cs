@@ -581,6 +581,12 @@ namespace Kadena.WebAPI.KenticoProviders
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
+        public bool UserCanModifyShippingAddress()
+        {
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
+                SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
