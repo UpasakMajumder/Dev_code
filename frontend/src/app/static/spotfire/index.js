@@ -1,6 +1,5 @@
 // @flow
-import { SPOTFIRE, NOTIFICATION } from 'app.globals';
-import { toastr } from 'react-redux-toastr';
+import { SPOTFIRE } from '../../globals';
 
 export default class Spotfire {
   customisation: any;
@@ -12,33 +11,14 @@ export default class Spotfire {
 
     // $FlowIgnore
 
-    try {
-      this.customisation = new window.spotfire.webPlayer.Customization();
-    } catch (e) {
-      console.error(e);  // eslint-disable-line no-console
-      toastr.error(NOTIFICATION.spotfireError.title, NOTIFICATION.spotfireError.text);
-    }
+    this.customisation = new window.spotfire.webPlayer.Customization();
 
     const app = new window.spotfire.webPlayer.Application(
-        serverUrl,
-        this.customisation,
-        url,
-        parameters,
-        reloadAnalysisInstance);
-
-    // prefilter
-    const filteringSchemeName = 'Filtering scheme';
-    const dataTableName = 'CDH_Inventory_Extract_VW_IL';
-    const dataColumnName = 'Client_ID';
-    const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
-
-    const filterColumn = {
-      filteringSchemeName,
-      dataTableName,
-      dataColumnName,
-      filteringOperation,
-      filterSettings: { values: [customerId] }
-    };
+      serverUrl,
+      this.customisation,
+      url,
+      parameters,
+      reloadAnalysisInstance);
 
     if (container.dataset.report) {
       const { id } = container;
@@ -56,11 +36,41 @@ export default class Spotfire {
         app.openDocument(id, doc, this.customisation);
       });
     }
-    app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
 
-    app.onError((errorCode, description) => {
-      console.error(errorCode, description); // eslint-disable-line no-console
-      toastr.error(NOTIFICATION.spotfireError.title, NOTIFICATION.spotfireError.text);
+    const filterData = [
+      {
+        dataTableName: 'CDH_Inventory_Extract_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'CDH_Sales_Order_Extract_VW_IL',
+        dataColumnName: 'ClientID'
+      },
+      {
+        dataTableName: 'CDH_Material_Usage_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'Material_Receipt_Adjustment_Destruction_IL',
+        dataColumnName: 'Client ID'
+      }
+    ];
+
+    // prefilters
+    filterData.forEach((data) => {
+      const filteringSchemeName = 'Filtering scheme';
+      const { dataTableName, dataColumnName } = data;
+      const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
+
+      const filterColumn = {
+        filteringSchemeName,
+        dataTableName,
+        dataColumnName,
+        filteringOperation,
+        filterSettings: { values: [customerId] }
+      };
+
+      app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
     });
   }
 
