@@ -75,19 +75,19 @@ namespace Kadena.AWSLogging
 
             var sb = new StringBuilder();
 
-            sb.AppendLine($"Time: {record.EventTime}");
-            sb.AppendLine($"Source: {record.Source}");
-            sb.AppendLine($"Type: {record.EventType}");
-            sb.AppendLine($"Code: {record.EventCode}");
-            sb.AppendLine($"ID: {record.EventID}");
-            sb.AppendLine($"User ID: {record.UserID}");
-            sb.AppendLine($"User name: {record.UserName}");
-            sb.AppendLine($"IP address: {record.IPAddress}");
-            sb.AppendLine($"Description: {record.EventDescription}");
-            sb.AppendLine($"Machine name: {record.EventMachineName}");
-            sb.AppendLine($"Event URL: {record.EventUrl}");
-            sb.AppendLine($"URL referrer: {record.EventUrlReferrer}");
-            sb.AppendLine($"User agent: {record.EventUserAgent}");
+            sb.AppendLine($"Time: {record.EventTime}")
+              .AppendLine($"Source: {record.Source}")
+              .AppendLine($"Type: {record.EventType}")
+              .AppendLine($"Code: {record.EventCode}")
+              .AppendLine($"ID: {record.EventID}")
+              .AppendLine($"User ID: {record.UserID}")
+              .AppendLine($"User name: {record.UserName}")
+              .AppendLine($"IP address: {record.IPAddress}")
+              .AppendLine($"Description: {record.EventDescription}")
+              .AppendLine($"Machine name: {record.EventMachineName}")
+              .AppendLine($"Event URL: {record.EventUrl}")
+              .AppendLine($"URL referrer: {record.EventUrlReferrer}")
+              .AppendLine($"User agent: {record.EventUserAgent}");
 
             return sb.ToString();
         }
