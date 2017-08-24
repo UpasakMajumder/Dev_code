@@ -56,8 +56,8 @@ const CommonInfo = ({ ui }) => {
 CommonInfo.propTypes = {
   ui: PropTypes.shape({
     status: PropTypes.string.isRequired,
-    orderDate: PropTypes.string.isRequired,
-    shippingDate: PropTypes.string.isRequired,
+    orderDate: PropTypes.string,
+    shippingDate: PropTypes.string,
     totalCost: PropTypes.string.isRequired
   })
 };
