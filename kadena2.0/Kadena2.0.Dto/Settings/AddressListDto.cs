@@ -6,8 +6,8 @@ namespace Kadena.Dto.Settings
     {
         public string Title { get; set; }
         public PageButtonDto AddButton { get; set; }
-        public string EditButtonText { get; set; }
-        public string RemoveButtonText { get; set; }
+        public PageButtonDto EditButton { get; set; }
+        public PageButtonDto RemoveButton { get; set; }
         public List<AddressDto> Addresses { get; set; }
     }
 }
