@@ -48,3 +48,4 @@ export const MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS = 'MODIFY_MAILING_LIST_S
 
 /* config */
 export const isDevelopment = process.env.NODE_ENV === 'development';
+export const DOMAIN = 'com';
