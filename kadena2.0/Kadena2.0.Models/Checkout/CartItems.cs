@@ -15,6 +15,12 @@ namespace Kadena.Models.Checkout
                item.PriceText = string.Empty;
                item.PricePrefix = string.Empty;
            });
+
+            if (SummaryPrice != null)
+            {
+                SummaryPrice.Price = string.Empty;
+                SummaryPrice.PricePrefix = string.Empty;
+            }
         }
     }
 }
