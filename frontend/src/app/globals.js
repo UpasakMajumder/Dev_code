@@ -9,9 +9,11 @@ const {
   search,
   orderDetail,
   recentOrders,
-  ui,
+  checkoutButtons,
+  modifyMailingList,
   cartPreview,
-  addToCartUrl
+  addToCartUrl,
+  chiliSave
 } = localization;
 
 
@@ -25,6 +27,6 @@ export const SEARCH = search;
 export const RECENT_ORDERS = recentOrders;
 export const CART_PREVIEW = cartPreview;
 export const ADD_TO_CART_URL = addToCartUrl;
-
-/* UI */
-export const MODIFY_MAILING_LIST_UI = ui ? ui.modifyMailingList : {};
+export const CHILI_SAVE = chiliSave;
+export const MODIFY_MAILING_LIST_UI = modifyMailingList;
+export const BUTTONS_UI = checkoutButtons;

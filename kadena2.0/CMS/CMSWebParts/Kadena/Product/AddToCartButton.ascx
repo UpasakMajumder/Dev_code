@@ -10,6 +10,6 @@
 
 <asp:Label ID="lblNumberOfItemsInPackageInfo" runat="server" EnableViewState="false" CssClass="add-to-cart__right-label" />
 
-<button type="button" class="btn-action js-chili-addtocart js-add-to-cart">
+<button runat="server" id="btnAddToCart" type="button" class="btn-action js-chili-addtocart js-add-to-cart">
     <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.AddToCart" EnableViewState="false" />
 </button>
