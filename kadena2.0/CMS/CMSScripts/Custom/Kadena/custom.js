@@ -217,20 +217,13 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        //window.location.href = window.location.href;
-
                         toastr.success(config.localization.ContactPersonDetailsChange.SuccessTitle, config.localization.ContactPersonDetailsChange.Success);
                     } else {
-                        //base.find(settings.errorMassage).html(data.d.errorMessage);
-                        //base.find(settings.errorMassage).show();
-
                         toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, data.d.errorMessage);
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    //base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
-                    //base.find(settings.errorMassage).show();
                     toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, config.localization.ContactPersonDetailsChange.Error);
 
                     base.find(settings.submitButton).removeAttr("disabled");
@@ -353,18 +346,13 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        //alert(config.localization.PasswordChange.Success);
                         toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
-                        //base.find(settings.generalErrorLabel).html(data.d.errorMessage);
-                        //base.find(settings.generalErrorLabel).show();
                         toastr.error(config.localization.PasswordChange.ErrorTitle, data.d.errorMessage);
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    //base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
-                    //base.find(settings.generalErrorLabel).show();
                     toastr.error(config.localization.PasswordChange.ErrorTitle, config.localization.PasswordChange.Error);
 
                     base.find(settings.submitButton).removeAttr("disabled");
