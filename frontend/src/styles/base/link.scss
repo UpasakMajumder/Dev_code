@@ -25,4 +25,15 @@ a:focus {
       text-decoration: none;
     }
   }
+
+  &--attachment {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    font-weight: 400;
+
+    svg {
+      @include rem(margin-right, 7px);
+    }
+  }
 }
