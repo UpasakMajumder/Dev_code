@@ -1,5 +1,7 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Models;
 using Kadena.ScheduledTasks.Infrastructure;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
@@ -12,12 +14,12 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     public class DeleteExpiredMailingListsService
     {
         private IConfigurationProvider configurationProvider;
-        private IKenticoProvider kenticoProvider;
+        private IKenticoProviderService kenticoProvider;
         private IMailingListClient mailingService;
 
         public Func<DateTime> GetCurrentTime { get; set; } = () => DateTime.Now;
 
-        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoProvider kenticoProvider, IMailingListClient mailingService)
+        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoProviderService kenticoProvider, IMailingListClient mailingService)
         {
             if (configurationProvider == null)
             {
@@ -45,11 +47,11 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             var tasks = new List<Task<BaseResponseDto<object>>>();
             foreach (var customer in customers)
             {
-                var config = configurationProvider.Get<MailingListConfiguration>(customer);
+                var config = configurationProvider.Get<MailingListConfiguration>(customer.Name);
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    tasks.Add(mailingService.RemoveMailingList(config.DeleteMailingListsByValidToDateURL, customer, deleteOlderThan));
+                    tasks.Add(mailingService.RemoveMailingList(config.DeleteMailingListsByValidToDateURL, customer.Name, deleteOlderThan));
                 }
             }
 
@@ -60,7 +62,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             }
         }
 
-        private string CreateErrorMessageFromResponses(BaseResponseDto<object>[] responses, string[] customers)
+        private string CreateErrorMessageFromResponses(BaseResponseDto<object>[] responses, Site[] customers)
         {
             var error = new StringBuilder();
             for (int i = 0; i < responses.Length; i++)
