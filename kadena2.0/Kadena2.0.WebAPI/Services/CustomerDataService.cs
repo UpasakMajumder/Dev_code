@@ -1,8 +1,8 @@
 ﻿using Kadena.WebAPI.Contracts;
 using Kadena.Models.CustomerData;
 using System.Linq;
-using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {
@@ -29,6 +29,8 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
+            var claims = GetCustomerClaims(customer.UserID);
+
             return new CustomerData()
             {
                 FirstName = customer.FirstName,
@@ -42,8 +44,19 @@ namespace Kadena.WebAPI.Services
                     Country = address.Country,
                     State = address.State,
                     Zip = address.Zip
-                }
+                },
+                Claims = claims
             };
+        }
+
+        private Dictionary<string, string> GetCustomerClaims(int userId)
+        {
+            var claims = new Dictionary<string, string>();
+
+            bool canSeePrices = kenticoProvider.UserCanSeePrices(userId);
+            claims.Add("UserCanSeePrices", canSeePrices.ToString().ToLower());
+
+            return claims;
         }
     }
 }
