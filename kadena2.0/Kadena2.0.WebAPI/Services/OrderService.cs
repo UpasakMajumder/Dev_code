@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.Services
                 PricingInfo = new PricingInfo()
                 {
                     Title = "Pricing",
-                    Items = new PricingInfoItem[]
+                    Items = new List<PricingInfoItem>()
                     {
                         new PricingInfoItem()
                         {
@@ -144,6 +144,12 @@ namespace Kadena.WebAPI.Services
                     }*/
                 };
             }
+
+            if (!kenticoProvider.UserCanSeePrices())
+            {
+                orderDetail.HidePrices();
+            }
+
 
             return orderDetail;
         }
