@@ -574,6 +574,16 @@ namespace Kadena.WebAPI.KenticoProviders
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
+        public bool UserCanSeePrices(int userId)
+        {
+            var userinfo = UserInfoProvider.GetUserInfo(userId);
+
+            if (userinfo == null)
+                return false;
+
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, userinfo);
+        }
+
         public bool UserCanSeeAllOrders()
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
