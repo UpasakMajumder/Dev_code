@@ -6,5 +6,16 @@ namespace Kadena.Models.OrderDetail
     {
         public string Title { get; set; }
         public IList<OrderedItem> Items { get; set; }
+
+        public void HidePrices()
+        {
+            if (Items != null)
+            {
+                foreach (var i in Items)
+                {
+                    i.Price = string.Empty;
+                }
+            }
+        }
     }
 }
