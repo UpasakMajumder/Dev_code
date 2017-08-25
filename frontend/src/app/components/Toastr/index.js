@@ -5,7 +5,6 @@ import DialogAlert from 'app.smart/DialogAlert';
 import ReduxToastr from 'react-redux-toastr';
 
 const Toastr = () => {
-
   return (
     <div>
       <ReduxToastr

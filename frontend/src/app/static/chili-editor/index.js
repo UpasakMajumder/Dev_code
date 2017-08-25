@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* helpers */
 import { consoleException } from 'app.helpers/io';
 import { getSecondLevelDomain } from 'app.helpers/location';
 /* globals */
-import { CHILI_SAVE } from 'app.globals';
+import { CHILI_SAVE, NOTIFICATION } from 'app.globals';
 /* classes */
 import AddToCart from '../add-to-cart';
 
@@ -12,6 +13,7 @@ class ChiliEditor extends AddToCart {
     super();
     this.editor = null;
     this.frameWindow = null;
+    this.chiliWorks = true;
 
     const newDomain = getSecondLevelDomain();
     if (newDomain) document.domain = newDomain;
@@ -26,8 +28,8 @@ class ChiliEditor extends AddToCart {
     window.addToCart = this.addToCart;
 
     frame.addEventListener('load', () => {
-      this.initActions();
       this.initEditor(frame);
+      this.initActions();
     });
   }
 
@@ -36,26 +38,36 @@ class ChiliEditor extends AddToCart {
   }
 
   initEditor(frame) {
-    this.frameWindow = frame.contentWindow;
-    this.frameWindow.GetEditor(this.editorLoaded);
+    try {
+      this.frameWindow = frame.contentWindow;
+      this.frameWindow.GetEditor(this.editorLoaded);
+    } catch (e) {
+      toastr.error(NOTIFICATION.chiliNotAvailable.title, NOTIFICATION.chiliNotAvailable.text);
+      this.chiliWorks = false;
+    }
   }
 
   async addToCart(isAddToCart) {
     try {
-      const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
-      if (success) {
-        if (isAddToCart) this.addToCartRequest();
-      } else {
-        alert(errorMessage); // eslint-disable-line no-alert
+      if (this.chiliWorks) {
+        const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
+        if (success) {
+          toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
+          if (isAddToCart) this.addToCartRequest();
+        } else {
+          toastr.error(errorMessage);
+        }
+      } else if (isAddToCart) {
+        this.addToCartRequest();
       }
     } catch (e) {
-      alert(e); // eslint-disable-line no-alert
+      toastr.error(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
     }
   }
 
   initActions() {
     const saveBtn = document.querySelector('.js-chili-save');
-    if (saveBtn) {
+    if (saveBtn && this.chiliWorks) {
       saveBtn.disabled = false;
       saveBtn.addEventListener('click', () => this.saveTemplate(false));
     }
@@ -72,11 +84,11 @@ class ChiliEditor extends AddToCart {
 
   saveTemplate(isAddToCart) {
     this.addToCart(isAddToCart);
-    this.editor.ExecuteFunction('document', 'Save');
+    if (this.chiliWorks) this.editor.ExecuteFunction('document', 'Save');
   }
 
   revertTemplate() {
-    this.editor.ExecuteFunction('document', 'Revert');
+    if (this.chiliWorks) this.editor.ExecuteFunction('document', 'Revert');
   }
 }
 

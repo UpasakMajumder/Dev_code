@@ -20,8 +20,10 @@ export const getUI = () => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: CART_PREVIEW + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: CART_PREVIEW + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: CART_PREVIEW + INIT_UI + SUCCESS,
@@ -35,7 +37,6 @@ export const getUI = () => {
         }
       }).catch((error) => {
         dispatch({ type: CART_PREVIEW + INIT_UI + FAILURE });
-        alert(error); // eslint-disable-line no-alert
       });
     };
 

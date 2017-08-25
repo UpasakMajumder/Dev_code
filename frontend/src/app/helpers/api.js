@@ -3,9 +3,9 @@ import { toastr } from 'react-redux-toastr';
 /* wc */
 import { newState } from 'app.ws/cartPreviewUI';
 /* constants */
-import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment } from 'app.consts';
+import { CART_PREVIEW_CHANGE_ITEMS, HEADER_SHADOW, HIDE, isDevelopment, FAILURE } from 'app.consts';
 /* globals */
-import { ADD_TO_CART_URL, BUTTONS_UI } from 'app.globals';
+import { ADD_TO_CART_URL, NOTIFICATION, BUTTONS_UI } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
 
@@ -27,6 +27,8 @@ export const addToCartRequest = (body) => {
           summaryPrice: cartPreview.summaryPrice
         }
       });
+
+      toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
 
       const confirmBtn = [
         {
@@ -64,6 +66,8 @@ export const addToCartRequest = (body) => {
           }
         });
 
+        toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
+
         const confirmBtn = [
           {
             label: BUTTONS_UI.products.text,
@@ -78,7 +82,7 @@ export const addToCartRequest = (body) => {
         toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
       })
       .catch((error) => {
-        alert(error); // eslint-disable-line no-alert
+        dispatch({ type: CART_PREVIEW_CHANGE_ITEMS + FAILURE });
       });
   });
 };

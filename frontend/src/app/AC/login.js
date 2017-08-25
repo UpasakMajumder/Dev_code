@@ -60,7 +60,8 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
           dispatch({
             type: LOG_IN + FAILURE,
             isLoading: false,
-            data
+            data,
+            alert: false
           });
         }
       })
@@ -69,7 +70,6 @@ export default (loginEmail, password, isKeepMeLoggedIn) => {
           type: LOG_IN + FAILURE,
           isLoading: false
         });
-        alert(error); // eslint-disable-line no-alert
       });
   };
 };

@@ -2,12 +2,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
+import alertMiddleware from '../middleware/alert';
 
 export default function configureStore(initialState) {
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  let middlewares = [thunkMiddleware];
+  let middlewares = [thunkMiddleware, alertMiddleware];
 
   if (process.env.NODE_ENV === 'development') {
     const loggerMiddleware = createLogger({ collapsed: true, duration: true });

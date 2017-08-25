@@ -123,6 +123,44 @@
 <script>
   var config = {
     localization: {
+      notification: {
+        removeProduct: {
+          title: 'Success',
+          text: 'The product has been removed'
+        },
+        addProduct: {
+          title: 'Success',
+          text: 'The product has been added'
+        },
+        recentOrdersError: {
+          title: 'Recent orders could not be loaded',
+          // title is also from errorMessage
+        },
+        modifyAddress: {
+          title: 'Success',
+          text: 'The address has been changed'
+        },
+        wrongAddressesRemoved: {
+          title: 'Success',
+          text: 'The addresses with errors have been removed'
+        },
+        serverNotAvailable: {
+          title: 'Error',
+          text: 'The server is not available'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
+        },
+        chiliNotAvailable: {
+          title: 'Error',
+          text: 'The Chili is not available'
+        },
+        chiliSaved: {
+          title: 'Success',
+          text: 'The template has been saved'
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
@@ -325,10 +363,17 @@
 
 {% if _dev %}
   <script src="js/common.js"></script>
-  <script src="js/app.js" async></script>
+  <script src="js/app.js"></script>
 {% else %}
   <script src="js/common.min.js"></script>
-  <script src="js/app.min.js" async></script>
+  <script src="js/app.min.js"></script>
 {% endif %}
+
+<script>
+  $(document).ready(function () {
+    toastr.error("sds", "sdsd");
+  });
+</script>
+
 </body>
 </html>

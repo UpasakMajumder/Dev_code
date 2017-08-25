@@ -41,8 +41,10 @@ export const sendQuery = (query, pressedEnter) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: SEARCH_RESULTS + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: SEARCH_RESULTS + SUCCESS,
@@ -57,7 +59,6 @@ export const sendQuery = (query, pressedEnter) => {
       })
         .catch((error) => {
           dispatch({ type: SEARCH_RESULTS + FAILURE });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 

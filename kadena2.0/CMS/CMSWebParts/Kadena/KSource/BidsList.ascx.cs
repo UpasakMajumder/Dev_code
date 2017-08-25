@@ -34,12 +34,14 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 pnlOpenProject.Visible = false;
                 pnlCompletedProjects.Visible = false;
-                pnlMicroserviceError.Visible = true;
+                
+                inpError.Value = ResHelper.GetString("Kadena.Error.MicroserviceFailed");
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
                 return;
             }
             catch (Exception exc)
             {
+                inpError.Value = exc.Message;
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
             }
 
@@ -61,7 +63,6 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
             pnlOpenProject.Visible = true;
             pnlCompletedProjects.Visible = true;
-            pnlMicroserviceError.Visible = false;
         }
 
         private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data, int recordsPerPage)

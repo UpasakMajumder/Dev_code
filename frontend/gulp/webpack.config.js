@@ -48,12 +48,12 @@ const pluginsCollection = {
       comments: false
     }),
     new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 10
+      maxChunks: 1
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       filename: '[name].min.js',
-      minChunks: Infinity
+      minChunks: 0
     }),
     new webpack.NoEmitOnErrorsPlugin()
   ]
@@ -68,7 +68,7 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 module.exports = {
     entry: {
         [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual', 'moment']
+        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual', 'react-redux-toastr']
     },
     output: {
         path: path.resolve(process.cwd(), config.JS_BUILD),
