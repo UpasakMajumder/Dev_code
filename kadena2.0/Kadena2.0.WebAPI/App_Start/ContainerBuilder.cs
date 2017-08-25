@@ -29,6 +29,7 @@ namespace Kadena.WebAPI
         public static Container RegisterKentico(this Container container)
         {
             container.Register<IKenticoProviderService, KenticoProviderService>();
+            container.Register<IKenticoUserProvider, KenticoUserProvider>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoSearchService, KenticoSearchService>();
             container.Register<IKenticoLogger, KenticoLogger>();

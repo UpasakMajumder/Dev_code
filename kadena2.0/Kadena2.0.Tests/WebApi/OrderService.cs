@@ -52,9 +52,10 @@ namespace Kadena.Tests.WebApi
             var mapper = Mapper.Instance;
 
             var kenticoProvider = new Mock<IKenticoProviderService>();
-            kenticoProvider.Setup(p => p.UserCanSeeAllOrders())
+            var kenticoUsers = new Mock<IKenticoUserProvider>();
+            kenticoUsers.Setup(p => p.UserCanSeeAllOrders())
                 .Returns(false);
-            kenticoProvider.Setup(p => p.GetCurrentCustomer())
+            kenticoUsers.Setup(p => p.GetCurrentCustomer())
                .Returns(new Customer() { Id = 10, UserID = 16 });
 
             var kenticoResource = new Mock<IKenticoResourceService>();
@@ -71,6 +72,7 @@ namespace Kadena.Tests.WebApi
                 orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
                 mailingListClient.Object,
                 kenticoProvider.Object,
+                kenticoUsers.Object,
                 kenticoResource.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,

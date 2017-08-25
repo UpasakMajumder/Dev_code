@@ -16,6 +16,7 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
+        private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoLogger _logger;
@@ -42,12 +43,13 @@ namespace Kadena.WebAPI.Services
 
         public bool EnablePaging { get; set; }
 
-        public OrderListService(IMapper mapper, IOrderViewClient orderClient,
+        public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
             IKenticoResourceService kenticoResources, IKenticoProviderService kentico,
             IKenticoLogger logger)
         {
             _mapper = mapper;
             _orderClient = orderClient;
+            _kenticoUsers = kenticoUsers;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
             _logger = logger;
@@ -126,7 +128,7 @@ namespace Kadena.WebAPI.Services
             }
             else
             {
-                var customer = _kentico.GetCurrentCustomer();
+                var customer = _kenticoUsers.GetCurrentCustomer();
                 var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
                 response = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
             }

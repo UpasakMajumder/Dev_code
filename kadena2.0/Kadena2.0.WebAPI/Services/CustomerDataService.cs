@@ -8,23 +8,25 @@ namespace Kadena.WebAPI.Services
 {
     public class CustomerDataService : ICustomerDataService
     {
-        IKenticoProviderService kenticoProvider;
-        IKenticoResourceService kenticoResource;
+        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoResourceService kenticoResource;
 
-        public CustomerDataService(IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResource)
+        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResource)
         {
+            this.kenticoUsers = kenticoUsers;
             this.kenticoProvider = kenticoProvider;
             this.kenticoResource = kenticoResource;
         }
 
         public CustomerData GetCustomerData(int customerId)
         {
-            var customer = kenticoProvider.GetCustomer(customerId);
+            var customer = kenticoUsers.GetCustomer(customerId);
 
             if (customer == null)
                 return null;
 
-            var address = kenticoProvider.GetCustomerShippingAddresses(customerId).FirstOrDefault();
+            var address = kenticoUsers.GetCustomerShippingAddresses(customerId).FirstOrDefault();
 
             if (address == null)
                 return null;
@@ -53,7 +55,7 @@ namespace Kadena.WebAPI.Services
         {
             var claims = new Dictionary<string, string>();
 
-            bool canSeePrices = kenticoProvider.UserCanSeePrices(userId);
+            bool canSeePrices = kenticoUsers.UserCanSeePrices(userId);
             claims.Add("UserCanSeePrices", canSeePrices.ToString().ToLower());
 
             return claims;
