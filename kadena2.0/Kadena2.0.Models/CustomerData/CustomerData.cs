@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.CustomerData
+﻿using System.Collections.Generic;
+
+namespace Kadena.Models.CustomerData
 {
     public class CustomerData
     {
@@ -7,5 +9,6 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public CustomerAddress Address { get; set; }
+        public Dictionary<string, string> Claims { get; set; }
     }
 }
