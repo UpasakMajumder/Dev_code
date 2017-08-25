@@ -10,20 +10,22 @@ namespace Kadena.WebAPI.Services
     public class SettingsService : ISettingsService
     {
         private readonly IKenticoProviderService _kentico;
+        private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _resources;
 
-        public SettingsService(IKenticoProviderService kentico, IKenticoResourceService resources)
+        public SettingsService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources)
         {
             _kentico = kentico;
+            _kenticoUsers = kenticoUsers;
             _resources = resources;
         }
 
         public SettingsAddresses GetAddresses()
         {
-            var billingAddresses = _kentico.GetCustomerAddresses("Billing");
-            var shippingAddresses = _kentico.GetCustomerAddresses("Shipping");
+            var billingAddresses = _kenticoUsers.GetCustomerAddresses("Billing");
+            var shippingAddresses = _kenticoUsers.GetCustomerAddresses("Shipping");
             var states = _kentico.GetStates();
-            var canEdit = _kentico.UserCanModifyShippingAddress();
+            var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
 
             return new SettingsAddresses
             {

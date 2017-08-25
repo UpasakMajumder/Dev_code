@@ -31,27 +31,6 @@ namespace Kadena.WebAPI.KenticoProviders
             this.resources = resources;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
-            if (!string.IsNullOrWhiteSpace(addressType))
-            {
-                query = query.Where($"AddressType ='{addressType}'");
-            }
-            var addresses = query.ToArray();
-            return AddressFactory.CreateDeliveryAddresses(addresses);
-        }
-
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
-                .ToArray();
-
-            return AddressFactory.CreateDeliveryAddresses(addresses);
-        }
-
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
@@ -232,46 +211,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
-        public Customer GetCurrentCustomer()
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-
-            if (customer == null)
-                return null;
-
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
-            };
-        }
-
-        public Customer GetCustomer(int customerId)
-        {
-            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
-
-            if (customer == null)
-                return null;
-
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany,
-                SiteId = customer.CustomerSiteID
-            };
-        }
 
         public int GetShoppingCartItemsCount()
         {
@@ -569,22 +508,6 @@ namespace Kadena.WebAPI.KenticoProviders
         public double GetCurrentCartShippingCost()
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
-        }
-
-        public bool UserCanSeePrices()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanSeeAllOrders()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanModifyShippingAddress()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
-                SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
