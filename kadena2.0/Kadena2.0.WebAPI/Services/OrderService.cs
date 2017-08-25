@@ -148,7 +148,7 @@ namespace Kadena.WebAPI.Services
                 };
             }
 
-            if (!kenticoProvider.UserCanSeePrices())
+            if (!kenticoUsers.UserCanSeePrices())
             {
                 orderDetail.HidePrices();
             }
