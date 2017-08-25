@@ -75,6 +75,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
 		
         bool UserCanSeePrices();
+        bool UserCanSeePrices(int userId);
 
         bool UserCanSeeAllOrders();
 
