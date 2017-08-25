@@ -1,6 +1,6 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
-using System;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -38,7 +38,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         DeliveryOption GetShippingOption(int id);
 
-        CartItem[] GetShoppingCartItems();
+        CartItem[] GetShoppingCartItems(bool showPrices = true);
 
         void RemoveCartItem(int id);
 
@@ -82,5 +82,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Site GetSite(int siteId);
 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
+
+        string MapOrderStatus(string microserviceStatus);
     }
 }

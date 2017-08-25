@@ -13,6 +13,8 @@ namespace Kadena.Old_App_Code.Kadena.Chili
         public string user { get; set; }
         [DataMember(Name = "created")]
         public string created { get; set; }
+        [DataMember(Name = "updated")]
+        public string updated { get; set; }
         [DataMember(Name = "mailingList")]
         public TemplateServiceDocumentMailingList MailingList { get; set; }
     }

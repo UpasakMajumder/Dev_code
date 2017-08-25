@@ -22,6 +22,7 @@ namespace Kadena.WebAPI
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<IOrderService, OrderService>();
             container.Register<IKListService, KListService>();
+            container.Register<ITemplateService, TemplateService>();
             return container;
         }
 

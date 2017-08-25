@@ -76,6 +76,8 @@
     <Compile Include="General\BaseErrorDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
+    <Compile Include="Product\AddToCartResultDto.cs" />
+    <Compile Include="Product\RequestResultDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
     <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
     <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />

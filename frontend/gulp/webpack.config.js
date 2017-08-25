@@ -36,7 +36,7 @@ const pluginsCollection = {
     new WriteFilePlugin({
       log: false
     }),
-    // new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
@@ -68,7 +68,7 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 module.exports = {
     entry: {
         [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual']
+        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual', 'moment']
     },
     output: {
         path: path.resolve(process.cwd(), config.JS_BUILD),
@@ -150,6 +150,7 @@ module.exports = {
     resolve: {
         alias: {
             'app.dump': path.resolve(process.cwd(), `${config.JS_BASE}/components/_dump`),
+            'app.smart': path.resolve(process.cwd(), `${config.JS_BASE}/components`),
             'app.ac': path.resolve(process.cwd(), `${config.JS_BASE}/AC`),
             'app.globals': path.resolve(process.cwd(), `${config.JS_BASE}/globals.js`),
             'app.consts': path.resolve(process.cwd(), `${config.JS_BASE}/constants.js`),

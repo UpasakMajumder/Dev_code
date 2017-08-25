@@ -87,7 +87,7 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreateDeliveryCarrier() });
             kenticoProvider.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
-            kenticoProvider.Setup(p => p.GetShoppingCartItems())
+            kenticoProvider.Setup(p => p.GetShoppingCartItems(true))
                 .Returns(() => GetItems().ToArray());
             kenticoProvider.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals());
@@ -153,8 +153,8 @@ namespace Kadena.Tests.WebApi
             var result = await service.AddToCart(new NewCartItem());
 
             Assert.NotNull(result);
-            Assert.NotNull(result.Items);
-            Assert.Equal(1, result.Items.Count);
+            Assert.NotNull(result.CartPreview.Items);
+            Assert.Equal(1, result.CartPreview.Items.Count);
         }
     }
 }

@@ -8,6 +8,7 @@ using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -289,10 +290,10 @@ namespace Kadena.WebAPI.Services
 
         public CartItemsPreview ItemsPreview()
         {
-            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
-            var cartItems = kenticoProvider.GetShoppingCartItems();
+            bool userCanSeePrices = kenticoProvider.UserCanSeePrices();
+            var cartItems = kenticoProvider.GetShoppingCartItems(userCanSeePrices);
 
-            return new CartItemsPreview
+            var preview = new CartItemsPreview
             {
                 EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
                 Cart = new CartButton
@@ -300,21 +301,36 @@ namespace Kadena.WebAPI.Services
                     Label = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
                     Url = "/checkout"
                 },
-                SummaryPrice = new CartPrice
+                SummaryPrice = new CartPrice(),
+                
+                Items = cartItems.ToList()
+            };
+
+            if (userCanSeePrices)
+            {
+                var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
+                preview.SummaryPrice = new CartPrice()
                 {
                     PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
                     Price = string.Format("{0:#,0.00}", cartItemsTotals.TotalItemsPrice)
-                },
-                Items = cartItems.ToList()
-            };
+                };
+            }
+
+            return preview;
         }
 
-        public async Task<CartItemsPreview> AddToCart(NewCartItem item)
+        public async Task<AddToCartResult> AddToCart(NewCartItem item)
         {
             var mailingList = await mailingService.GetMailingList(item.ContainerId);
             var addedItem = kenticoProvider.AddCartItem(item, mailingList);
-            var result = ItemsPreview();
-            result.AlertMessage += resources.GetResourceString("Kadena.Product.ItemsAddedToCart");
+            var result = new AddToCartResult
+            {
+                CartPreview = ItemsPreview(),
+                Confirmation = new RequestResult
+                {
+                    AlertMessage = resources.GetResourceString("Kadena.Product.ItemsAddedToCart")
+                }
+            };
             return result;
         }
     }

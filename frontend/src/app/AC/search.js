@@ -1,6 +1,8 @@
 import axios from 'axios';
 /* constants */
 import { SHOW, HIDE, FETCH, SUCCESS, FAILURE, SEARCH_RESULTS, HEADER_SHADOW, CHANGE_SEARCH_QUERY } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
 import { SEARCH } from 'app.globals';
 /* web service */
@@ -74,7 +76,6 @@ export const sendQuery = (query, pressedEnter) => {
       }, 200);
     };
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
