@@ -24,7 +24,6 @@ const pluginsCollection = {
 
   /* Environment-specific plugins */
   development: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),
