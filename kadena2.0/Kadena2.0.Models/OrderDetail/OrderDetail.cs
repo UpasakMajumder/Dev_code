@@ -15,7 +15,7 @@
                 CommonInfo.TotalCost = string.Empty;
             }
 
-            PricingInfo = null;
+            PricingInfo.Items = null;
             OrderedItems.HidePrices();
         }
     }
