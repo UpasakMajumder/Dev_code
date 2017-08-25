@@ -7,9 +7,10 @@ import AddressCard from '../AddressCard';
 
 const AddressBlock = (props) => {
   const { ui, openDialog } = props;
+
   if (!Object.keys(ui).length) return null;
 
-  const { title, addButton, editButtonText, removeButtonText, addresses } = ui;
+  const { title, addButton, editButton, removeButton, addresses } = ui;
 
   const addButtonElement = addButton.exists
   ? <buttn className="plus-btn">
@@ -18,18 +19,18 @@ const AddressBlock = (props) => {
   : null;
 
   const commonProps = {
-    editButtonText,
+    editButton,
+    removeButton,
     openDialog
   };
 
   const addressCards = addresses.length
     ? addresses.map((address) => {
       return <AddressCard key={address.id}
-                          removeButtonText={removeButtonText}
                           address={address}
                           {...commonProps} />;
     })
-    : <AddressCard address={{ isEditButton: true }} {...commonProps} />;
+    : <AddressCard {...commonProps} />;
 
   return (
     <div className="settings__item">
@@ -52,7 +53,8 @@ AddressBlock.propTypes = {
       tooltip: PropTypes.string
     }),
     addresses: PropTypes.arrayOf(PropTypes.object.isRequired),
-    editButtonText: PropTypes.string,
+    editButton: PropTypes.object,
+    removeButton: PropTypes.object,
     title: PropTypes.string
   }).isRequired,
   openDialog: PropTypes.func.isRequired

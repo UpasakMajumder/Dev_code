@@ -89,7 +89,6 @@ namespace Kadena.WebAPI
                     {
                         a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
                         a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
-                        a.IsRemoveButton = false;
                     });
                 config.CreateMap<AddressDto, DeliveryAddress>()
                     .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });

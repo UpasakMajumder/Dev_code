@@ -26,7 +26,7 @@ PaymentInfo.propTypes = {
     paymentIcon: PropTypes.string.isRequired,
     paidBy: PropTypes.string.isRequired,
     paymentDetail: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired
+    date: PropTypes.string
   })
 };
 
