@@ -11,6 +11,14 @@ namespace Kadena2.MicroserviceClients.Contracts
         Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId);
         Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId);
         Task<BaseResponseDto<bool?>> SetName(string endpoint, Guid templateId, string name);
-        Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, string masterTemplateId);
+
+        /// <summary>
+        /// Returns all copies for master templete for given user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="masterTemplateId"></param>
+        /// <returns>List of template data</returns>
+
+        Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, Guid masterTemplateId);
     }
 }

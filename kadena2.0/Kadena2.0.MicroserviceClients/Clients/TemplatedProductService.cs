@@ -51,7 +51,7 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
-        public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, string masterTemplateId)
+        public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, Guid masterTemplateId)
         {
             using (var httpClient = new HttpClient())
             {
