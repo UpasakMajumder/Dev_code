@@ -10,7 +10,19 @@
   &__attachments {
     @extend .list--unstyled;
     width: 100%;
-    text-align: center;
+    overflow: hidden;
+
+    a {
+      width: 100%;
+    }
+  }
+
+  &__attachment {
+    span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   &__zoom {
