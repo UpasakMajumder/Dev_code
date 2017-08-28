@@ -1,9 +1,11 @@
-﻿namespace Kadena.Dto.TemplatedProduct.MicroserviceResponses
+﻿using System;
+
+namespace Kadena.Dto.TemplatedProduct.MicroserviceResponses
 {
     public class TemplateServiceDocumentResponse
     {
-        public string TemplateId { get; set; }
-        public string MasterTemplateId { get; set; }
+        public Guid TemplateId { get; set; }
+        public Guid MasterTemplateId { get; set; }
         public string Name { get; set; }
         public string User { get; set; }
         public string Created { get; set; }
