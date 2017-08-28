@@ -9,6 +9,7 @@ using Kadena.Dto.Product;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.Settings;
+using Kadena.Dto.Site.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
@@ -21,6 +22,7 @@ using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
 using Kadena.Models.Settings;
+using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
@@ -157,6 +159,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<NewCartItemDto, NewCartItem>();
                 config.CreateMap<AddToCartResult, AddToCartResultDto>();
                 config.CreateMap<RequestResult, RequestResultDto>();
+                config.CreateMap<ArtworkFtpSettings, ArtworkFtpResponseDto>();
+                config.CreateMap<FtpCredentials, FtpCredentialsDto>();
             });
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -11,6 +12,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetSettingsKey(string siteName, string key);
 
         KenticoSite GetKenticoSite();
+
+        KenticoSite GetKenticoSite(int siteId);
 
         Currency GetSiteCurrency();
 

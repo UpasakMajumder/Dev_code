@@ -1,4 +1,4 @@
-﻿namespace Kadena.Models
+﻿namespace Kadena.Models.Site
 {
     public class Site
     {

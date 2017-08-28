@@ -65,7 +65,9 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
-    <Compile Include="KenticoSite.cs" />
+    <Compile Include="Site\FtpCredentials.cs" />
+    <Compile Include="Site\ArtworkFtpSettings.cs" />
+    <Compile Include="Site\KenticoSite.cs" />
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />
     <Compile Include="Order.cs" />
@@ -106,7 +108,7 @@
     <Compile Include="Settings\DialogType.cs" />
     <Compile Include="Settings\PageButton.cs" />
     <Compile Include="Settings\SettingsAddresses.cs" />
-    <Compile Include="Site.cs" />
+    <Compile Include="Site\Site.cs" />
     <Compile Include="State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />
     <Compile Include="SubmitOrder\SubmitOrderError.cs" />
