@@ -236,17 +236,30 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
         }
 
-        [MacroMethod(typeof(MediaMultiField[]), "Returns array of parsed MediaMultiField items.", 1)]
+        [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
         [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
-        public static object GetItemsFromMediaMultiField(EvaluationContext context, params object[] parameters)
+        public static object GetUrlsFromMediaMultiField(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 1)
             {
                 throw new NotSupportedException();
             }
             var fieldValue = parameters[0] as string;
-            var items = MediaMultiField.ParseMultipleFrom(fieldValue);
-            return items;
+            var urls = MediaMultiField.GetValues(fieldValue);
+            return urls;
+        }
+
+        [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
+        [MacroMethodParam(0, "url", typeof(string), "Url")]
+        public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var url = parameters[0] as string;
+            var filename = MediaMultiField.ParseFrom(url).Name;
+            return filename;
         }
 
         #endregion
