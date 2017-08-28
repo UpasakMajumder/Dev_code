@@ -1,5 +1,6 @@
 ﻿using CMS.DataEngine;
 using CMS.DocumentEngine;
+using CMS.EventLog;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
@@ -53,6 +54,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                     MembershipContext.AuthenticatedUser.UserID,
                     DocumentContext.CurrentDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty))
                 .Result;
+
             if (requestResult.Success)
             {
                 var templatesData = requestResult.Payload;
@@ -63,13 +65,15 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         templatesData
                         .Select(d => new
                         {
-                            EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}{4}&quantity={5}",
+                            EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}{4}&quantity={5}{6}",
                                 ProductEditorUrl,
                                 DocumentContext.CurrentDocument.DocumentID,
                                 d.TemplateId,
                                 DocumentContext.CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty),
                                 string.IsNullOrWhiteSpace(d.MailingList?.ContainerId) ? string.Empty : $"&containerId={d.MailingList.ContainerId}",
-                                (d.MailingList?.RowCount ?? 0).ToString()),
+                                (d.MailingList?.RowCount ?? 0).ToString(),
+                                string.IsNullOrWhiteSpace(d.Name) ? string.Empty : $"&customName={d.Name}"
+                                ),
                             TemplateID = d.TemplateId,
                             DateCreated = DateTime.Parse(d.Created),
                             DateUpdated = DateTime.Parse(d.Updated),
@@ -82,6 +86,11 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 {
                     this.Visible = false;
                 }
+            }
+            else
+            {
+                this.Visible = false;
+                EventLogProvider.LogEvent("E", "GET TEMPLATE LIST", "EXCEPTION", requestResult.ErrorMessages);
             }
         }
 
