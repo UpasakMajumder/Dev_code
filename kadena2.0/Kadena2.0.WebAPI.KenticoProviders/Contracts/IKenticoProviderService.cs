@@ -68,6 +68,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
 
+        Site[] GetSites();
+
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);

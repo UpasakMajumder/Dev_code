@@ -948,6 +948,10 @@
       <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
       <Name>Kadena2.0.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj">
+      <Project>{43388b1f-8597-46eb-8346-e9c6544c5306}</Project>
+      <Name>Kadena2.0.ScheduledTasks</Name>
+    </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
       <Name>CMSApp</Name>
