@@ -2,7 +2,7 @@
 
 <div class="product-template__item">
     <h3>
-        <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.Product.ManageTemplates" />
+        <cms:localizedliteral runat="server" enableviewstate="false" resourcestring="Kadena.Product.ManageTemplates" />
     </h3>
 </div>
 <div class="product-template__item">
@@ -11,9 +11,15 @@
             <table class="table table--opposite table--inside-border table--hover product-list">
                 <tbody>
                     <tr>
-                        <th>ID</th>
-                        <th>Date created</th>
-                        <th>Date updated</th>
+                        <th>
+                            <cms:localizedliteral runat="server" enableviewstate="false" resourcestring="Kadena.Product.Name" />
+                        </th>
+                        <th>
+                            <cms:localizedliteral runat="server" enableviewstate="false" resourcestring="Kadena.Product.DateCreated" />
+                        </th>
+                        <th>
+                            <cms:localizedliteral runat="server" enableviewstate="false" resourcestring="Kadena.Product.DateUpdated" />
+                        </th>
                         <th>&nbsp;</th>
                     </tr>
         </HeaderTemplate>
@@ -25,7 +31,7 @@
                 <td>
                     <div class="product-list__btn-group">
                         <a href="<%# Eval("EditorUrl") %>" class="btn-action product-list__btn--primary">
-                            <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.Product.OpenInDesign" />
+                            <cms:localizedlabel runat="server" enableviewstate="false" resourcestring="Kadena.Product.OpenInDesign" />
                         </a>
                     </div>
                 </td>
