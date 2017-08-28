@@ -19,7 +19,7 @@
         </HeaderTemplate>
         <ItemTemplate>
             <tr class="product-list__row js-redirection" data-url="<%# Eval("EditorUrl") %>">
-                <td><a class="link weight--normal" href="<%# Eval("EditorUrl") %>"><%# Eval("TemplateID") %></a></td>
+                <td><a class="link weight--normal" href="<%# Eval("EditorUrl") %>"><%# Eval("Name") %></a></td>
                 <td><%# Eval("DateCreated") %></td>
                 <td><%# ((DateTime)Eval("DateUpdated")).Year == 1 ? string.Empty : Eval("DateUpdated") %></td>
                 <td>

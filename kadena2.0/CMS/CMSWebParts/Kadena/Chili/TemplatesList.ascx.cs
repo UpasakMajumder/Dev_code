@@ -55,13 +55,14 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                         EditorUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}{4}&quantity={5}",
                             ProductEditorUrl,
                             DocumentContext.CurrentDocument.DocumentID,
-                            d.templateId,
+                            d.TemplateId,
                             DocumentContext.CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty),
-                            string.IsNullOrWhiteSpace(d.MailingList?.ContainerID) ? string.Empty : $"&containerId={d.MailingList.ContainerID}",
+                            string.IsNullOrWhiteSpace(d.MailingList?.ContainerId) ? string.Empty : $"&containerId={d.MailingList.ContainerId}",
                             (d.MailingList?.RowCount ?? 0).ToString()),
-                        TemplateID = d.templateId,
-                        DateCreated = DateTime.Parse(d.created),
-                        DateUpdated = DateTime.Parse(d.updated)
+                        TemplateID = d.TemplateId,
+                        DateCreated = DateTime.Parse(d.Created),
+                        DateUpdated = DateTime.Parse(d.Updated),
+                        Name = d.Name
                     })
                     .OrderByDescending(t => t.DateCreated);
                 repTemplates.DataBind();
