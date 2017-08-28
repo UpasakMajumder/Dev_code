@@ -53,6 +53,39 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
+        public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, Guid mailingListId)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var encodedCustomerName = HttpUtility.UrlEncode(customerName);
+                var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}/{mailingListId}";
+                using (var response = await httpClient.DeleteAsync(url).ConfigureAwait(false))
+                {
+                    return await ReadResponseJson<object>(response);
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, DateTime olderThan)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var filter = CreateRequestContent(new
+                {
+                    customerName = customerName,
+                    validTo = olderThan
+                });
+
+                using (var request = new HttpRequestMessage(HttpMethod.Delete, serviceEndpoint) { Content = filter })
+                {
+                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<object>(response);
+                    }
+                }
+            }
+        }
+
         public async Task<BaseResponseDto<object>> RemoveAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<Guid> addressIds = null)
         {
             using (var client = new HttpClient())

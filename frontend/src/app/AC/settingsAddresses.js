@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, MODIFY_SHIPPING_ADDRESS,
   APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { USER_SETTINGS } from 'app.globals';
+import { USER_SETTINGS, NOTIFICATION } from 'app.globals';
 /* web service */
 import ui from 'app.ws/settingsUI';
 
@@ -81,6 +82,7 @@ export const modifyAddress = (data) => {
 
         dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
+        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       })
         .catch((error) => {
           dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
@@ -97,6 +99,7 @@ export const modifyAddress = (data) => {
         });
         dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
+        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       }, 2000);
     };
 

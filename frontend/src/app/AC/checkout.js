@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
@@ -6,7 +7,7 @@ import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { CHECKOUT as CHECKOUT_URL } from 'app.globals';
+import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 /* web service */
 import { staticUI, staticUI2, priceUI, completeUI } from 'app.ws/checkoutUI';
 import { newState } from 'app.ws/cartPreviewUI';
@@ -112,6 +113,10 @@ export const removeProduct = (id) => {
           ui: staticUI2.payload
         }
       });
+
+      getTotalPriceDev(dispatch);
+
+      toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
     };
 
     const prod = () => {
@@ -134,6 +139,8 @@ export const removeProduct = (id) => {
               ui: payload
             }
           });
+
+          toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert

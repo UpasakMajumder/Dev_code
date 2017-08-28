@@ -19,6 +19,7 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly IOrderSubmitClient orderSubmitClient;
@@ -32,6 +33,7 @@ namespace Kadena.WebAPI.Services
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
             IKenticoProviderService kenticoProvider,
+            IKenticoUserProvider kenticoUsers,
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
@@ -39,6 +41,7 @@ namespace Kadena.WebAPI.Services
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
+            this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.orderSubmitClient = orderSubmitClient;
             this.orderViewClient = orderViewClient;
@@ -50,10 +53,10 @@ namespace Kadena.WebAPI.Services
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
-            CheckOrderDetailPermisson(orderId, kenticoProvider.GetCurrentCustomer());
+            CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
             var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);            
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
@@ -83,7 +86,7 @@ namespace Kadena.WebAPI.Services
                 PricingInfo = new PricingInfo()
                 {
                     Title = "Pricing",
-                    Items = new PricingInfoItem[]
+                    Items = new List<PricingInfoItem>()
                     {
                         new PricingInfoItem()
                         {
@@ -144,6 +147,12 @@ namespace Kadena.WebAPI.Services
                     }*/
                 };
             }
+
+            if (!kenticoUsers.UserCanSeePrices())
+            {
+                orderDetail.HidePrices();
+            }
+
 
             return orderDetail;
         }
@@ -217,7 +226,7 @@ namespace Kadena.WebAPI.Services
 
             // Allow admin who has set permission to see all orders in Kentico
             // or Allow orders belonging to currently logged User and Customer
-            bool isAdmin = kenticoProvider.UserCanSeeAllOrders();
+            bool isAdmin = kenticoUsers.UserCanSeeAllOrders();
             bool isOrderOwner = (orderUserId == customer.UserID && orderCustomerId == customer.Id);
             if (isAdmin || isOrderOwner)
             {
@@ -277,7 +286,7 @@ namespace Kadena.WebAPI.Services
         {
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
-            var customer = kenticoProvider.GetCurrentCustomer();
+            var customer = kenticoUsers.GetCurrentCustomer();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();

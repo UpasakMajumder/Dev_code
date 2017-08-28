@@ -42,23 +42,20 @@ class OrderDetail extends Component {
     if (!Object.keys(ui).length) return <Spinner />;
 
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
+
+    const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
+    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} /></div> : null;
+    const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
+
     return (
       <div>
         <CommonInfo ui={commonInfo} />
 
         <div className="order-block">
           <div className="row">
-            <div className="col-lg-4 mb-4">
-              <ShippingInfo ui={shippingInfo} />
-            </div>
-
-            <div className="col-lg-4 mb-4">
-              <PaymentInfo ui={paymentInfo} />
-            </div>
-
-            <div className="col-lg-4 mb-4">
-              <PricingInfo ui={pricingInfo} />
-            </div>
+            {shippingInfoEl}
+            {paymentInfoEl}
+            {pricingInfoEl}
           </div>
         </div>
 

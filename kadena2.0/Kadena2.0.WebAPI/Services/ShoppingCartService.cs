@@ -16,6 +16,7 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
@@ -23,6 +24,7 @@ namespace Kadena.WebAPI.Services
 
         public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
+                                   IKenticoUserProvider kenticoUsers,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
@@ -30,6 +32,7 @@ namespace Kadena.WebAPI.Services
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
+            this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
@@ -38,7 +41,7 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage GetCheckoutPage()
         {
-            var addresses = kenticoProvider.GetCustomerAddresses("Shipping");
+            var addresses = kenticoUsers.GetCustomerAddresses("Shipping");
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
@@ -115,7 +118,7 @@ namespace Kadena.WebAPI.Services
                 }
             };
 
-            if (kenticoProvider.UserCanSeePrices())
+            if (kenticoUsers.UserCanSeePrices())
             {
                 await UpdateTotals(result);
             }
@@ -236,7 +239,7 @@ namespace Kadena.WebAPI.Services
 
         private void SetPricesVisibility(CheckoutPage page)
         {
-            if (!kenticoProvider.UserCanSeePrices())
+            if (!kenticoUsers.UserCanSeePrices())
             {
                 page.Products.HidePrices();
             }
@@ -244,7 +247,7 @@ namespace Kadena.WebAPI.Services
 
         private void SetPricesVisibility(CheckoutPageDeliveryTotals page)
         {
-            if (!kenticoProvider.UserCanSeePrices())
+            if (!kenticoUsers.UserCanSeePrices())
             {
                 page.DeliveryMethods.HidePrices();
             }
@@ -290,7 +293,7 @@ namespace Kadena.WebAPI.Services
 
         public CartItemsPreview ItemsPreview()
         {
-            bool userCanSeePrices = kenticoProvider.UserCanSeePrices();
+            bool userCanSeePrices = kenticoUsers.UserCanSeePrices();
             var cartItems = kenticoProvider.GetShoppingCartItems(userCanSeePrices);
 
             var preview = new CartItemsPreview

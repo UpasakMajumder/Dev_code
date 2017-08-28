@@ -80,9 +80,11 @@ namespace Kadena.Tests.WebApi
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
 
-            var kenticoProvider = new Mock<IKenticoProviderService>();
-            kenticoProvider.Setup(p => p.GetCustomerAddresses("Shipping"))
+            var kenticoUser = new Mock<IKenticoUserProvider>();
+            kenticoUser.Setup(p => p.GetCustomerAddresses("Shipping"))
                 .Returns(new[] { CreateDeliveryAddress() });
+
+            var kenticoProvider = new Mock<IKenticoProviderService>();            
             kenticoProvider.Setup(p => p.GetShippingCarriers())
                 .Returns(new[] { CreateDeliveryCarrier() });
             kenticoProvider.Setup(p => p.GetPaymentMethods())
@@ -101,6 +103,7 @@ namespace Kadena.Tests.WebApi
 
             return new ShoppingCartService(mapper,
                 kenticoProvider.Object,
+                kenticoUser.Object,
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,

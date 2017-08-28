@@ -22,34 +22,11 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources)
         {
-            this.mapper = mapper;
             this.resources = resources;
-        }
-
-        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
-            if (!string.IsNullOrWhiteSpace(addressType))
-            {
-                query = query.Where($"AddressType ='{addressType}'");
-            }
-            var addresses = query.ToArray();
-            return AddressFactory.CreateDeliveryAddresses(addresses);
-        }
-
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
-                .ToArray();
-
-            return AddressFactory.CreateDeliveryAddresses(addresses);
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -232,46 +209,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
-        public Customer GetCurrentCustomer()
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-
-            if (customer == null)
-                return null;
-
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
-            };
-        }
-
-        public Customer GetCustomer(int customerId)
-        {
-            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
-
-            if (customer == null)
-                return null;
-
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany,
-                SiteId = customer.CustomerSiteID
-            };
-        }
 
         public int GetShoppingCartItemsCount()
         {
@@ -571,16 +508,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
 
-        public bool UserCanSeePrices()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanSeeAllOrders()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
@@ -613,21 +540,12 @@ namespace Kadena.WebAPI.KenticoProviders
             return result;
         }
 
-        public Site GetSite(int siteId)
+        public Site[] GetSites()
         {
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-            if (site == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new Site
-                {
-                    Id = site.SiteID,
-                    Name = site.SiteName
-                };
-            }
+            var sites = SiteInfoProvider.GetSites()
+                .Select(s => SiteFactory.CreateSite(s))
+                .ToArray();
+            return sites;
         }
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)

@@ -26,6 +26,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            btnSubmit.Text = ResHelper.GetString("Kadena.MailingList.Create");
+
             var containerId = Request.QueryString["containerid"];
             if (!string.IsNullOrWhiteSpace(containerId))
             {
@@ -72,7 +74,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 inpFileName.Value = _container.Name;
                 inpFileName.Disabled = true;
             }
-        }
+        }        
 
         /// <summary>
         /// Creates radio button group for specified set with list of options.
@@ -173,11 +175,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             Stream fileStream = null;
-            for(int i = 0; i < Request.Files.Count; i++)
+            for (int i = 0; i < Request.Files.Count; i++)
             {
                 var file = Request.Files[i];
-                if (file.ContentLength > 0 
-                    && (file.ContentType == "application/vnd.ms-excel" 
+                if (file.ContentLength > 0
+                    && (file.ContentType == "application/vnd.ms-excel"
                     || file.ContentType == "text/csv"))
                 {
                     fileStream = file.InputStream;
@@ -225,9 +227,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 }
                 catch (Exception exc)
                 {
-                    txtError.InnerText = exc.Message;
+                    inpError.Value = exc.Message;
                     EventLogProvider.LogException(GetType().Name, "EXCEPTION", exc, CurrentSite.SiteID);
                 }
+            }
+            else
+            {
+                inpError.Value = ResHelper.GetString("Kadena.MailingList.FileNotUploadedOrInvalid");
             }
         }
     }

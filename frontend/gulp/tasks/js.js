@@ -7,6 +7,7 @@ const webpack = require('webpack');
 const notify = require("gulp-notify");
 const webpackStream = require('webpack-stream');
 const webpackConfig = require('../webpack.config.js');
+const browserSync = require('browser-sync');
 
 gulp.task('js', () => {
   return gulp.src(config.JS_ENTRY)
@@ -14,6 +15,7 @@ gulp.task('js', () => {
     .pipe(webpackStream(webpackConfig, webpack))
     .pipe(gulp.dest(config.JS_BUILD))
     .pipe(gulpif(DEVELOPMENT, notify({ message:"JS's been built", onLast: true })))
+    .pipe(browserSync.stream({ once: true }))
     .pipe(plumber.stop());
 });
 

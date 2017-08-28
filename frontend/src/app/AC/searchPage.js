@@ -20,8 +20,10 @@ export const getUI = (query) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SEARCH_PAGE + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: SEARCH_PAGE + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: SEARCH_PAGE + INIT_UI + SUCCESS,

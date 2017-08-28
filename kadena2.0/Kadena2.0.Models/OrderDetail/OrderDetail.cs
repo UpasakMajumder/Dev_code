@@ -7,5 +7,16 @@
         public PaymentInfo PaymentInfo { get; set; }
         public PricingInfo PricingInfo { get; set; }
         public OrderedItems OrderedItems { get; set; }
+
+        public void HidePrices()
+        {
+            if (CommonInfo != null)
+            {
+                CommonInfo.TotalCost = string.Empty;
+            }
+
+            PricingInfo = null;
+            OrderedItems.HidePrices();
+        }
     }
 }
