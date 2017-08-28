@@ -3,7 +3,7 @@ export default {
   "commonInfo": {
     "status": "In progress",
     "orderDate": "2017-08-07T09:12:08.108892Z",
-    "shippingDate": "2017-08-07T09:12:08.108892Z",
+    "shippingDate": "N/A",
     "totalCost": "$ 1,383.68"
   },
   "shippingInfo": {

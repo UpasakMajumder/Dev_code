@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IKenticoLogger.cs" />
+    <Compile Include="Contracts\IKenticoUserProvider.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\KenticoLogger.cs" />
+    <Compile Include="Providers\KenticoUserProvider.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />
     <Compile Include="Providers\KenticoSearchService.cs" />

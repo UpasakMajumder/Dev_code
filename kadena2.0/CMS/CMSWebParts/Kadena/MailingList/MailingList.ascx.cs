@@ -4,6 +4,7 @@ using Kadena2.MicroserviceClients.Clients;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.SiteProvider;
 using CMS.DataEngine;
+using CMS.EventLog;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -42,8 +43,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
 
             var client = new MailingListClient();
-            var mailingListData = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result.Payload;
-            repMailingLists.DataSource = mailingListData
+            var serviceCallResult = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result;
+
+            if (serviceCallResult.Success)
+            {
+                repMailingLists.DataSource = serviceCallResult.Payload
                       .OrderByDescending(x => x.CreateDate)
                       .Select(l => new
                       {
@@ -54,7 +58,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                           ErrorCount = (l.State.Equals(MailingListState.AddressesNeedToBeVerified)
                           || l.State.Equals(MailingListState.AddressesOnVerification)) ? "N/A" : l.ErrorCount.ToString()
                       });
-            repMailingLists.DataBind();
+                repMailingLists.DataBind();
+            }
+            else
+            {
+                EventLogProvider.LogException("Mailing List", "GET DATA", new System.Exception(serviceCallResult.Error?.Message ?? string.Empty));
+                inpError.Value = serviceCallResult.ErrorMessages;
+            }            
         }
 
         #endregion
