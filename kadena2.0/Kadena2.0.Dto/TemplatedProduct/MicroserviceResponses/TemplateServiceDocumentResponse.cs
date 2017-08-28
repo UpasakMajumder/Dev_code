@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Kadena.Chili
+namespace Kadena.Dto.TemplatedProduct.MicroserviceResponses
 {
     [DataContract]
     public class TemplateServiceDocumentResponse

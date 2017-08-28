@@ -2,7 +2,7 @@
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
-using Kadena.Old_App_Code.Helpers;
+using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
