@@ -108,47 +108,6 @@ namespace Kadena.Old_App_Code.Kadena.Chili
         }
 
         /// <summary>
-        /// Returns all copies for master templete for given user
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <param name="masterTemplateID"></param>
-        /// <returns>List of template data</returns>
-        public List<TemplateServiceDocumentResponse> GetMasterTemplateCopies(int userID, string masterTemplateID)
-        {
-            var requestUrl = string.Format("{0}api/template/{1}/users/{2}", ServiceBaseUrl, masterTemplateID, userID);
-            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
-            request.ContentType = "application/json";
-            request.Method = "GET";
-
-            try
-            {
-                var response = (HttpWebResponse)request.GetResponse();
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    var result = (BaseResponseDto<List<TemplateServiceDocumentResponse>>)response;
-
-                    if (result?.Success ?? false)
-                    {
-                        return result.Payload;
-                    }
-                    else
-                    {
-                        EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", result?.Error?.Message ?? string.Empty);
-                    }
-                }
-                else
-                {
-                    EventLogProvider.LogEvent("E", "TEMPLATE SERVICE HELPER - GET MASTER TEMPLATE COPIES", "ERROR", response.StatusCode.ToString());
-                }
-            }
-            catch (WebException ex)
-            {
-                EventLogProvider.LogException("TEMPLATE SERVICE HELPER", "GET MASTER TEMPLATE COPIES", ex);
-            }
-            return new List<TemplateServiceDocumentResponse>();
-        }
-
-        /// <summary>
         /// Assign specified container to specified template.
         /// </summary>
         /// <param name="containerId">Id of container.</param>
