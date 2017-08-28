@@ -22,12 +22,10 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources)
         {
-            this.mapper = mapper;
             this.resources = resources;
         }
 
@@ -542,21 +540,12 @@ namespace Kadena.WebAPI.KenticoProviders
             return result;
         }
 
-        public Site GetSite(int siteId)
+        public Site[] GetSites()
         {
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-            if (site == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new Site
-                {
-                    Id = site.SiteID,
-                    Name = site.SiteName
-                };
-            }
+            var sites = SiteInfoProvider.GetSites()
+                .Select(s => SiteFactory.CreateSite(s))
+                .ToArray();
+            return sites;
         }
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
