@@ -543,23 +543,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return result;
         }
 
-        public Site GetSite(int siteId)
-        {
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-            if (site == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new Site
-                {
-                    Id = site.SiteID,
-                    Name = site.SiteName
-                };
-            }
-        }
-
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
         {
             int addedAmount = newItem?.Quantity ?? 0;
