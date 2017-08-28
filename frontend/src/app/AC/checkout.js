@@ -3,13 +3,13 @@ import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
   CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS } from 'app.consts';
+  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS, ADD_NEW_ADDRESS } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 /* web service */
-import { staticUI, staticUI2, priceUI, completeUI } from 'app.ws/checkoutUI';
+import { staticUI, staticUI2, priceUI, completeUI, newAddress } from 'app.ws/checkoutUI';
 import { newState } from 'app.ws/cartPreviewUI';
 
 const getTotalPrice = (dispatch) => {
@@ -18,8 +18,10 @@ const getTotalPrice = (dispatch) => {
       const { payload, success, errorMessage } = response.data;
 
       if (!success) {
-        dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
+        dispatch({
+          type: CHECKOUT_PRICING + INIT_UI + FAILURE,
+          alert: errorMessage
+        });
         return;
       }
 
@@ -31,7 +33,6 @@ const getTotalPrice = (dispatch) => {
       });
     })
     .catch((error) => {
-      alert(error); // eslint-disable-line no-alert
       dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
     });
 };
@@ -57,8 +58,10 @@ export const getUI = () => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
+            dispatch({
+              type: CHECKOUT_STATIC + INIT_UI + FAILURE,
+              alert: errorMessage
+            });
             return;
           }
 
@@ -72,7 +75,6 @@ export const getUI = () => {
           });
         })
         .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
         });
     };
@@ -126,8 +128,10 @@ export const removeProduct = (id) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: REMOVE_PRODUCT + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
+            dispatch({
+              type: REMOVE_PRODUCT + FAILURE,
+              alert: errorMessage
+            });
             return;
           }
 
@@ -143,7 +147,6 @@ export const removeProduct = (id) => {
           toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
         })
         .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: REMOVE_PRODUCT + FAILURE });
         });
     };
@@ -161,8 +164,10 @@ export const changeProductQuantity = (id, quantity) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
+            dispatch({
+              type: CHANGE_PRODUCT_QUANTITY + FAILURE,
+              alert: errorMessage
+            });
             return;
           }
 
@@ -176,7 +181,6 @@ export const changeProductQuantity = (id, quantity) => {
           });
         })
         .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
         });
     };
@@ -217,8 +221,10 @@ export const changeShoppingData = (field, id, invoice) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
+            dispatch({
+              type: RECALCULATE_CHECKOUT_PRICE + FAILURE,
+              alert: errorMessage
+            });
             return;
           }
 
@@ -232,7 +238,6 @@ export const changeShoppingData = (field, id, invoice) => {
           });
         })
         .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
         });
     };
@@ -267,8 +272,10 @@ export const sendData = (data) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
+            dispatch({
+              type: SUBMIT_CHECKOUT + FAILURE,
+              alert: errorMessage
+            });
             return;
           }
 
@@ -281,7 +288,6 @@ export const sendData = (data) => {
           });
         })
         .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: APP_LOADING + FINISH });
           dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
         });
@@ -291,6 +297,61 @@ export const sendData = (data) => {
       setTimeout(() => {
         dispatch({ type: APP_LOADING + FINISH });
       }, 2000);
+    };
+
+    callAC(dev, prod);
+  };
+};
+
+export const addNewAddress = (data, oldId) => {
+  return (dispatch) => {
+    dispatch({ type: ADD_NEW_ADDRESS + FETCH });
+    dispatch({ type: APP_LOADING + START });
+
+    const dev = () => {
+      setTimeout(() => {
+        dispatch({
+          type: ADD_NEW_ADDRESS + SUCCESS,
+          payload: {
+            data: newAddress,
+            oldId: newAddress.id
+          }
+        });
+
+        dispatch({ type: APP_LOADING + FINISH });
+        getTotalPrice(dispatch);
+      }, 1000);
+    };
+
+    const prod = () => {
+      axios.post(CHECKOUT_URL.addNewAddressURL, data)
+        .then((response) => {
+          dispatch({ type: APP_LOADING + FINISH });
+
+          const { payload, success, errorMessage } = response.data;
+
+          if (!success) {
+            dispatch({
+              type: ADD_NEW_ADDRESS + FAILURE,
+              alert: errorMessage
+            });
+            return;
+          }
+
+          dispatch({
+            type: ADD_NEW_ADDRESS + SUCCESS,
+            payload: {
+              data: payload,
+              oldId
+            }
+          });
+
+          getTotalPriceDev(dispatch);
+        })
+        .catch((error) => {
+          dispatch({ type: ADD_NEW_ADDRESS + FAILURE });
+          dispatch({ type: APP_LOADING + FINISH });
+        });
     };
 
     callAC(dev, prod);

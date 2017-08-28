@@ -6,7 +6,7 @@ import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity, getUI } from 'app.ac/checkout';
+  changeProductQuantity, getUI, addNewAddress } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -131,8 +131,8 @@ class Checkout extends Component {
   }
 
   render() {
-    const { checkout, changeShoppingData, changeProductQuantity, removeProduct } = this.props;
-    const { ui, checkedData, isSending } = checkout;
+    const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
+    const { ui, checkedData, isSending, addedDataId } = checkout;
 
     let content = <Spinner />;
 
@@ -164,6 +164,8 @@ class Checkout extends Component {
               changeShoppingData={changeShoppingData}
               checkedId={deliveryAddress}
               disableInteractivity={disableInteractivity}
+              addNewAddress={addNewAddress}
+              addedDataId={addedDataId}
               ui={deliveryAddresses}/>
           </div>
 
@@ -228,5 +230,6 @@ export default connect((state) => {
   sendData,
   removeProduct,
   changeProductQuantity,
-  changeProducts
+  changeProducts,
+  addNewAddress
 })(Checkout);
