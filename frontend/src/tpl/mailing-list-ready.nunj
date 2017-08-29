@@ -1,5 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/svg.nunj" import svg %}
+{% from "macro/attachment.nunj" import linkAttachment %}
 
 {% set title = 'List is ready' %}
 {% set sidebarActive = 'K-List' %}
@@ -241,19 +242,9 @@
     <div class="mailing-ready__block">
       <h2 class="mailing-ready__header">Download your materials</h2>
       <div class="mailing-ready__links">
-        <a href="#" class="link">
-          {{ svg('download--blue', 'icon-download') }}
-          Download processed file
-        </a>
-        <span>or</span>
-        <a href="#" class="link">
-          {{ svg('download--green', 'icon-download') }}
-          Good addresses only
-        </a>
-        <a href="#" class="link">
-          {{ svg('download--orange', 'icon-download') }}
-          Bad addresses only
-        </a>
+        {{ linkAttachment('blue') }}
+        {{ linkAttachment('green') }}
+        {{ linkAttachment('orange') }}
       </div>
     </div>
   </div>
