@@ -17,6 +17,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".dialog-alert__btns button")]
         private IWebElement ContinueShoppingBtn { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".product-view__img img")]
+        private IWebElement ProductImage { get; set; }
+
         public ProductDetail()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -40,6 +43,15 @@ namespace AutomatedTests.PageObjects
             Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/products/{categoryName}/{productName}");
         }
 
+        /// <summary>
+        /// Navigates to the product you specify by its name
+        /// </summary>
+        /// <param name="productName">name of existing product</param>
+        public void Open(string productName)
+        {
+            Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/products/{productName}");
+        }
+
         public void ClickContinueShopping()
         {
             ContinueShoppingBtn.ClickElement();
@@ -61,6 +73,16 @@ namespace AutomatedTests.PageObjects
                 AddToCart.WaitTillVisible();
                 return AddToCart.GetText().Contains("Add to");
             }
+        }
+
+        /// <summary>
+        /// Returns true if image is displayed
+        /// </summary>
+        /// <returns></returns>
+        public bool IsProductImageThumbnailDisplayed()
+        {
+            ProductImage.WaitTillVisible();
+            return ProductImage.IsDisplayed();
         }
     }
 }

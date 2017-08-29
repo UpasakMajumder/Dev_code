@@ -65,7 +65,18 @@ namespace AutomatedTests.Tests
             string productName = "automation" + StringHelper.RandomString(5);
             newProductForm.FillOutFields(productName);
             newProductForm.SaveForm();
+            newProductForm.LogoutFromKentico();
             EndAdminTest();
+
+            //Verify if product is published on the website
+            var login = new Login();
+            login.Open();
+            dashboard = login.LoginAndSubmit(TestCustomer.Name, TestCustomer.Password);
+            dashboard.WaitForRecentOrders();
+            ProductDetail productDetail = new ProductDetail();
+            productDetail.Open(productName);
+            Assert.IsTrue(productDetail.IsProductImageThumbnailDisplayed());
+
             //Delete the product
             var deleteResponse = Api.DeleteDocument<Product>("/Products/" + productName);
         }
