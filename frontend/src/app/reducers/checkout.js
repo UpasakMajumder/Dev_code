@@ -3,7 +3,7 @@ import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CH
 
 const defaultState = {
   ui: {},
-  addedDataId: null,
+  addedDate: {},
   checkedData: {
     deliveryAddress: 0,
     deliveryMethod: 0,
@@ -36,7 +36,7 @@ export default (state = defaultState, action) => {
 
   case ADD_NEW_ADDRESS + SUCCESS:
     state.ui.deliveryAddresses.items.forEach((item) => {
-      if (item.id !== payload.oldId) {
+      if (item.id !== payload.id) {
         items.push({
           ...item,
           checked: false
@@ -45,13 +45,13 @@ export default (state = defaultState, action) => {
     });
 
     items.push({
-      ...payload.data,
+      ...payload,
       checked: true
     });
 
     return {
       ...state,
-      addedAddressId: payload.data.id,
+      addedDate: payload,
       ui: {
         ...state.ui,
         deliveryAddresses: {

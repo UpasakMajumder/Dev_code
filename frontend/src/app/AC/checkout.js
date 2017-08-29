@@ -303,53 +303,57 @@ export const sendData = (data) => {
   };
 };
 
-export const addNewAddress = (data, oldId) => {
+export const addNewAddress = (data) => {
   return (dispatch) => {
     dispatch({ type: ADD_NEW_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
     const dev = () => {
+      dispatch({
+        type: ADD_NEW_ADDRESS + SUCCESS,
+        payload: data
+      });
+
       setTimeout(() => {
         dispatch({
-          type: ADD_NEW_ADDRESS + SUCCESS,
+          type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
           payload: {
-            data: newAddress,
-            oldId: newAddress.id
+            ui: priceUI.payload
           }
         });
-
         dispatch({ type: APP_LOADING + FINISH });
-        getTotalPrice(dispatch);
-      }, 1000);
+      }, 3000);
     };
 
     const prod = () => {
-      axios.post(CHECKOUT_URL.addNewAddressURL, data)
-        .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
+      dispatch({
+        type: ADD_NEW_ADDRESS + SUCCESS,
+        payload: data
+      });
 
+      axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, data)
+        .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
             dispatch({
-              type: ADD_NEW_ADDRESS + FAILURE,
+              type: CHECKOUT_PRICING + INIT_UI + FAILURE,
               alert: errorMessage
             });
+            dispatch({ type: APP_LOADING + FINISH });
             return;
           }
 
           dispatch({
-            type: ADD_NEW_ADDRESS + SUCCESS,
+            type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
             payload: {
-              data: payload,
-              oldId
+              ui: payload
             }
           });
-
-          getTotalPriceDev(dispatch);
+          dispatch({ type: APP_LOADING + FINISH });
         })
         .catch((error) => {
-          dispatch({ type: ADD_NEW_ADDRESS + FAILURE });
+          dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
           dispatch({ type: APP_LOADING + FINISH });
         });
     };

@@ -130,93 +130,19 @@ class NewAddressDialog extends Component {
   };
 
   getBodyData = () => {
-    const { customerName, address1, address2, city, state, zip, country, phone, email } = this.props.ui.fields;
-
-    return [
-      {
-        id: customerName.id,
-        label: customerName.label,
-        value: this.props.address.customerName,
-        placeholder: customerName.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, customerName.id); },
-        error: this.getValidationError(customerName.id),
-        isOptional: customerName.isOptional
-      },
-      {
-        id: address1.id,
-        label: address1.label,
-        value: this.props.address.address1,
-        placeholder: address1.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, address1.id); },
-        error: this.getValidationError(address1.id),
-        isOptional: address1.isOptional
-      },
-      {
-        id: address2.id,
-        label: address2.label,
-        value: this.props.address.address2,
-        placeholder: 'Address 2',
-        onChange: (e) => { this.changeInput(e.target.value, address2.id); },
-        error: this.getValidationError(address2.id),
-        isOptional: address2.isOptional
-      },
-      {
-        id: city.id,
-        label: city.label,
-        value: this.props.address.city,
-        placeholder: city.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, city.id); },
-        error: this.getValidationError(city.id),
-        isOptional: city.isOptional
-      },
-      {
-        id: state.id,
-        label: state.label,
-        value: this.props.address.state,
-        placeholder: state.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, state.id); },
-        error: this.getValidationError(state.id),
-        isOptional: state.isOptional
-      },
-      {
-        id: zip.id,
-        label: zip.label,
-        value: this.props.address.zip,
-        placeholder: zip.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, zip.id); },
-        error: this.getValidationError(zip.id),
-        isOptional: zip.isOptional
-      },
-      {
-        id: country.id,
-        label: country.label,
-        value: this.props.address.country || 'Country',
-        placeholder: country.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, country.id); },
-        error: this.getValidationError(country.id),
-        isOptional: country.isOptional,
-        isSelect: true,
-        options: country.values
-      },
-      {
-        id: phone.id,
-        label: phone.label,
-        value: this.props.address.phone,
-        placeholder: phone.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, phone.id); },
-        error: this.getValidationError(phone.id),
-        isOptional: phone.isOptional
-      },
-      {
-        id: email.id,
-        label: email.label,
-        value: this.props.address.email,
-        placeholder: email.placeholder,
-        onChange: (e) => { this.changeInput(e.target.value, email.id); },
-        error: this.getValidationError(email.id),
-        isOptional: email.isOptional
-      }
-    ];
+    return this.props.ui.fields.map((field) => {
+      return {
+        id: field.id,
+        label: field.label,
+        value: field.values ? field.label : this.props.address[field.id],
+        placeholder: field.label,
+        onChange: (e) => { this.changeInput(e.target.value, field.id); },
+        error: this.getValidationError(field.id),
+        isOptional: field.isOptional,
+        isSelect: !!field.values,
+        options: field.values
+      };
+    });
   }
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
@@ -44,7 +45,7 @@ class Checkout extends Component {
       }
     });
 
-    alert(message); // eslint-disable-line no-alert
+    toastr.error(message);
   }
 
   componentDidMount() {
@@ -53,7 +54,7 @@ class Checkout extends Component {
   }
 
   sendData = (checkedData) => {
-    const { sendData } = this.props;
+    const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
@@ -70,6 +71,8 @@ class Checkout extends Component {
       const data = { ...checkedData };
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
+      if (checkedData.deliveryAddress === -1) data.deliveryAddress = checkout.addedDate;
+
       sendData(data);
     }
   };

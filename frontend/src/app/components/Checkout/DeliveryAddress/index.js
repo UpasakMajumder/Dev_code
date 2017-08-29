@@ -10,28 +10,49 @@ import Address from './Address';
 class DeliveryAddress extends Component {
   state = {
     isDialogOpen: false,
-    address: {}
+    address: {
+      customerName: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
+      phone: '',
+      email: ''
+    }
   };
 
   toggleDialog = () => {
     this.setState((prevState) => {
       return {
         isDialogOpen: !prevState.isDialogOpen,
-        address: {}
+        address: {
+          customerName: '',
+          street: '',
+          city: '',
+          state: '',
+          zip: '',
+          country: '',
+          phone: '',
+          email: ''
+        }
       };
     });
   };
 
   submit = () => {
+    const { address } = this.state;
+
     const data = {
-      customerName: this.state.customerName,
-      street: [this.state.address1, this.state.address2],
-      city: this.state.city,
-      state: this.state.state,
-      zip: this.state.zip,
-      country: this.state.country,
-      phone: this.state.phone,
-      email: this.state.email
+      id: -1,
+      customerName: address.customerName,
+      street: [address.address1, address.address2],
+      city: address.city,
+      state: address.state,
+      zip: address.zip,
+      country: address.country,
+      phone: address.phone,
+      email: address.email
     };
 
     this.props.addNewAddress(data, this.props.addedDataId);

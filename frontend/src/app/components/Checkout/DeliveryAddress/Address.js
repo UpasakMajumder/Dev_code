@@ -36,7 +36,7 @@ const Address = (props) => {
 };
 
 Address.propTypes = {
-  street: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  street: PropTypes.arrayOf(PropTypes.string).isRequired,
   changeShoppingData: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   zip: PropTypes.string.isRequired,

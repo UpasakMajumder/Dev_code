@@ -66,57 +66,48 @@ export const staticUI = {
         "discardBtnLabel": "Discard changes",
         "submitBtnLabel": "Confirm & use address",
         "requiredErrorMessage": "The field is required",
-        "fields": {
-          "customerName": {
+        "fields": [
+          {
             "id": "customerName",
             "label": "Name",
-            "placeholder": "Customer Name"
           },
-          "address1": {
+          {
             "id": "address1",
             "label": "Address 1",
-            "placeholder": "Address 1"
           },
-          "address2": {
+          {
             "id": "address2",
             "label": "Address 2",
-            "placeholder": "Address 2",
             "isOptional": true
           },
-          "city": {
+          {
             "id": "city",
             "label": "City",
-            "placeholder": "City"
           },
-          "state": {
+          {
             "id": "state",
             "label": "State",
-            "placeholder": "State",
             "isOptional": true
           },
-          "zip": {
+          {
             "id": "zip",
             "label": "Postal Code",
-            "placeholder": "Postal Code"
           },
-          "country": {
+          {
             "id": "country",
             "label": "Country",
-            "placeholder": "Country",
             "values": ['hip', 'hop']
           },
-          "phone": {
+          {
             "id": "phone",
             "label": "Phone",
-            "placeholder": "Phone Number",
             "isOptional": true
           },
-          "email": {
+          {
             "id": "email",
             "label": "Email",
-            "placeholder": "Email"
           }
-        }
+        ]
       },
       "unDeliverableText": "Text",
       "title": "Delivery address",
