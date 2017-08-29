@@ -5,7 +5,7 @@ export default {
     "title": "Shipping addresses",
     "addButton": {
       "text": "Add new shipping address",
-      "exists": false
+      "exists": true,
     },
     "editButton": {
       "text": "Edit",

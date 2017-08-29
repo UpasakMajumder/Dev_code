@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, modifyAddress } from 'app.ac/settingsAddresses';
+import { getUI, addAddress, modifyAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import AddressBlock from './AddressBlock';
 import AddressDialog from './AddressDialog';
@@ -12,6 +12,7 @@ import AddressDialog from './AddressDialog';
 class SettingAddresses extends Component {
   state = {
     isDialogOpen: false,
+    isModifyingDialog: true,
     address: {}
   };
 
@@ -27,9 +28,10 @@ class SettingAddresses extends Component {
     this.props.getUI();
   }
 
-  openDialog = (address) => {
+  openDialog = (address, isModifying = true) => {
     this.setState({
       isDialogOpen: true,
+      isModifyingDialog: isModifying,
       address
     });
   };
@@ -44,9 +46,15 @@ class SettingAddresses extends Component {
     this.closeDialog();
   };
 
+  addDataAddress = (data) => {
+    const { addAddress } = this.props;
+    addAddress(data);
+    this.closeDialog();
+  };
+
   render() {
     const { ui } = this.props;
-    const { isDialogOpen, address } = this.state;
+    const { isDialogOpen, isModifyingDialog, address } = this.state;
     const { dialog, billing, shipping } = ui;
 
     const commonProps = {
@@ -56,7 +64,9 @@ class SettingAddresses extends Component {
     return Object.keys(ui).length
     ? <div className="settings__block">
         <AddressDialog isDialogOpen={isDialogOpen}
+                       isModifyingDialog={isModifyingDialog}
                        closeDialog={this.closeDialog}
+                       addDataAddress={this.addDataAddress}
                        changeDataAddress={this.changeDataAddress}
                        dialog={dialog}
                        address={address}
@@ -74,6 +84,7 @@ export default connect((state) => {
   return { ui: settingsAddresses };
 }, {
   getUI,
+  addAddress,
   modifyAddress
 })(SettingAddresses);
 

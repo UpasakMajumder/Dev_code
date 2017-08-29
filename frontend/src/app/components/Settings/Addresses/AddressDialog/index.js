@@ -19,9 +19,11 @@ class AddressDialog extends Component {
   };
 
   static propTypes = {
+    addDataAddress: PropTypes.func.isRequired,
     changeDataAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
     isDialogOpen: PropTypes.bool.isRequired,
+    isModifyingDialog: PropTypes.bool.isRequired,
     address: PropTypes.shape({
       city: PropTypes.string,
       id: PropTypes.number,
@@ -83,13 +85,15 @@ class AddressDialog extends Component {
     });
   };
 
-  changeDataAddress = (data) => {
-    const { changeDataAddress } = this.props;
+  submitForm = (data) => {
+    const { addDataAddress, changeDataAddress, isModifyingDialog } = this.props;
     const { fieldValues } = this.state;
     const requiredFields = ['street1', 'city', 'state', 'zip'];
     const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
 
-    if (!inValidFields.length) changeDataAddress(data);
+    if (!inValidFields.length) {
+      isModifyingDialog ? changeDataAddress(data) : addDataAddress(data);
+    }
     this.setState({ inValidFields });
   };
 
@@ -111,7 +115,7 @@ class AddressDialog extends Component {
         {dialog.buttons.discard}
       </button>
 
-      <button onClick={() => { this.changeDataAddress(fieldValues); }}
+      <button onClick={() => { this.submitForm(fieldValues); }}
               type="button"
               className="btn-action"
       >

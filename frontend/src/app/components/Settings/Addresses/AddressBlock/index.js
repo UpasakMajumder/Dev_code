@@ -12,10 +12,18 @@ const AddressBlock = (props) => {
 
   const { title, addButton, editButton, removeButton, addresses } = ui;
 
+  const emptyAddress = {
+    street1: '',
+    street2: '',
+    city: '',
+    state: '',
+    zip: ''
+  };
+
   const addButtonElement = addButton.exists
-  ? <buttn className="plus-btn">
+  ? <button type="button" className="plus-btn" onClick={() => { openDialog(emptyAddress, false); }}>
       <SVG name="plus" className="icon-modal" />
-    </buttn>
+    </button>
   : null;
 
   const commonProps = {

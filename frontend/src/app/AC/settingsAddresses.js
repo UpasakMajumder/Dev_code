@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, MODIFY_SHIPPING_ADDRESS,
-  APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, ADD_SHIPPING_ADDRESS,
+  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
@@ -77,7 +77,7 @@ export const modifyAddress = (data) => {
 
         dispatch({
           type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
-          payload: { data }
+          payload: data
         });
 
         dispatch({ type: DIALOG + HIDE });
@@ -95,11 +95,69 @@ export const modifyAddress = (data) => {
       setTimeout(() => {
         dispatch({
           type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
-          payload: { data }
+          payload: data
         });
         dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
         toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
+      }, 2000);
+    };
+
+    callAC(dev, prod);
+  };
+};
+
+
+export const addAddress = (data) => {
+  return (dispatch) => {
+    dispatch({ type: ADD_SHIPPING_ADDRESS + FETCH });
+    dispatch({ type: APP_LOADING + START });
+
+    const prod = () => {
+      axios({
+        method: 'post',
+        url: USER_SETTINGS.addresses.addAddressURL,
+        data
+      }).then((response) => {
+        const { success, errorMessage, payload } = response.data;
+
+        if (!success) {
+          dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
+          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({ type: APP_LOADING + FINISH });
+          return;
+        }
+
+        const { id } = payload;
+        data.id = id;
+
+        dispatch({
+          type: ADD_SHIPPING_ADDRESS + SUCCESS,
+          payload: data
+        });
+
+        dispatch({ type: DIALOG + HIDE });
+        dispatch({ type: APP_LOADING + FINISH });
+        toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
+      })
+        .catch((error) => {
+          dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: APP_LOADING + FINISH });
+        });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
+        data.id = Date.now();
+
+        dispatch({
+          type: ADD_SHIPPING_ADDRESS + SUCCESS,
+          payload: data
+        });
+        dispatch({ type: DIALOG + HIDE });
+        dispatch({ type: APP_LOADING + FINISH });
+        toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
       }, 2000);
     };
 
