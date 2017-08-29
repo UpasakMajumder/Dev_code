@@ -1,5 +1,6 @@
 ﻿using Kadena.Dto.General;
 using Kadena.Models;
+using Kadena.Models.Site;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;

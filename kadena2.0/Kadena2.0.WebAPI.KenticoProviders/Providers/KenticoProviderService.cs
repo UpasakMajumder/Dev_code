@@ -23,12 +23,10 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources)
         {
-            this.mapper = mapper;
             this.resources = resources;
         }
 
