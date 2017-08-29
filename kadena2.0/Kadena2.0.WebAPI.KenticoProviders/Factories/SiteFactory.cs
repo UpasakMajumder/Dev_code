@@ -1,5 +1,4 @@
 ﻿using CMS.SiteProvider;
-using Kadena.Models;
 using Kadena.Models.Site;
 
 namespace Kadena2.WebAPI.KenticoProviders.Factories

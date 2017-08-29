@@ -1,6 +1,5 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
-using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
