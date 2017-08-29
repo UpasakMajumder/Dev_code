@@ -22,8 +22,10 @@ export const getUI = () => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          dispatch({ type: SETTINGS_ADDRESSES + INIT_UI + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: SETTINGS_ADDRESSES + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
         } else {
           dispatch({
             type: SETTINGS_ADDRESSES + INIT_UI + SUCCESS,
@@ -35,7 +37,6 @@ export const getUI = () => {
       })
         .catch((error) => {
           dispatch({ type: SETTINGS_ADDRESSES + INIT_UI + FAILURE });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 
@@ -66,8 +67,10 @@ export const modifyAddress = (data) => {
         const { success, errorMessage, payload } = response.data;
 
         if (!success) {
-          dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: MODIFY_SHIPPING_ADDRESS + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
           return;
         }
@@ -80,13 +83,11 @@ export const modifyAddress = (data) => {
           payload: data
         });
 
-        dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
         toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       })
         .catch((error) => {
           dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: APP_LOADING + FINISH });
         });
     };
@@ -97,7 +98,6 @@ export const modifyAddress = (data) => {
           type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
           payload: data
         });
-        dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
         toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
       }, 2000);
@@ -116,14 +116,16 @@ export const addAddress = (data) => {
     const prod = () => {
       axios({
         method: 'post',
-        url: USER_SETTINGS.addresses.addAddressURL,
+        url: USER_SETTINGS.addresses.editAddressURL,
         data
       }).then((response) => {
         const { success, errorMessage, payload } = response.data;
 
         if (!success) {
-          dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: ADD_SHIPPING_ADDRESS + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
           return;
         }
@@ -136,13 +138,11 @@ export const addAddress = (data) => {
           payload: data
         });
 
-        dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
         toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
       })
         .catch((error) => {
           dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
-          alert(error); // eslint-disable-line no-alert
           dispatch({ type: APP_LOADING + FINISH });
         });
     };
@@ -155,7 +155,6 @@ export const addAddress = (data) => {
           type: ADD_SHIPPING_ADDRESS + SUCCESS,
           payload: data
         });
-        dispatch({ type: DIALOG + HIDE });
         dispatch({ type: APP_LOADING + FINISH });
         toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
       }, 2000);

@@ -6,23 +6,29 @@ import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
 
 class AddressDialog extends Component {
-  state = {
-    fieldValues: {
-      id: -1,
-      street1: '',
-      street2: '',
-      city: '',
-      state: '',
-      zip: ''
-    },
-    inValidFields: []
-  };
+  constructor(props) {
+    super(props);
+
+    const { address } = props;
+    const fieldValues = (address && typeof address === 'object') ? address : {};
+
+    this.state = {
+      fieldValues: {
+        id: fieldValues.id || -1,
+        street1: fieldValues.street1 || '',
+        street2: fieldValues.street2 || '',
+        city: fieldValues.city || '',
+        state: fieldValues.state || '',
+        zip: fieldValues.zip || ''
+      },
+      inValidFields: []
+    };
+  }
 
   static propTypes = {
     addDataAddress: PropTypes.func.isRequired,
     changeDataAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    isDialogOpen: PropTypes.bool.isRequired,
     isModifyingDialog: PropTypes.bool.isRequired,
     address: PropTypes.shape({
       city: PropTypes.string,
@@ -33,7 +39,7 @@ class AddressDialog extends Component {
       street1: PropTypes.string,
       street2: PropTypes.string,
       zip: PropTypes.string
-    }).isRequired,
+    }),
     dialog: PropTypes.shape({
       buttons: PropTypes.shape({
         discard: PropTypes.string.isRequired,
@@ -51,11 +57,6 @@ class AddressDialog extends Component {
       }).isRequired
     })
   };
-
-  componentWillReceiveProps(nextProps) {
-    const { address } = nextProps;
-    if (Object.keys(address).length > 1) this.setState({ fieldValues: address });
-  }
 
   handleChange = (value, id) => {
     const { inValidFields, fieldValues } = this.state;
@@ -93,6 +94,7 @@ class AddressDialog extends Component {
 
     if (!inValidFields.length) {
       isModifyingDialog ? changeDataAddress(data) : addDataAddress(data);
+      this.closeDialog();
     }
     this.setState({ inValidFields });
   };
@@ -104,7 +106,7 @@ class AddressDialog extends Component {
   };
 
   render() {
-    const { isDialogOpen, dialog, address } = this.props;
+    const { dialog, isModifyingDialog } = this.props;
     const { fieldValues } = this.state;
 
     const footer = <div className="btn-group btn-group--right">
@@ -158,17 +160,13 @@ class AddressDialog extends Component {
       </tbody>
     </table>;
 
-    let title = dialog.types.edit;
-    if (Object.keys(address).length === 1) title = dialog.types.add;
+    const title = isModifyingDialog ? dialog.types.edit : dialog.types.add;
 
-    return isDialogOpen
-      ? <Dialog closeDialog={this.closeDialog}
-                hasCloseBtn={true}
-                title={title}
-                body={body}
-                footer={footer}
-      />
-      : null;
+    return <Dialog closeDialog={this.closeDialog}
+                   hasCloseBtn={true}
+                   title={title}
+                   body={body}
+                   footer={footer}/>;
   }
 }
 

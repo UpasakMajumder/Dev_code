@@ -3,6 +3,7 @@ export default {
   "billing": {},
   "shipping": {
     "title": "Shipping addresses",
+    "allowAddresses": 3,
     "addButton": {
       "text": "Add new shipping address",
       "exists": true,
@@ -16,22 +17,22 @@ export default {
       "exists": false,
     },
     "addresses": [
-      {
-        "id": 1,
-        "street1": "4001 Valley Industrial Blvd",
-        "street2": "",
-        "city": "Shakopee",
-        "state": "MN",
-        "zip": "55379"
-      },
-      {
-        "id": 2,
-        "street1": "4001 Valley Industrial Blvd",
-        "street2": "",
-        "city": "Shakopee",
-        "state": "MN",
-        "zip": "55379"
-      }
+      // {
+      //   "id": 1,
+      //   "street1": "4001 Valley Industrial Blvd",
+      //   "street2": "",
+      //   "city": "Shakopee",
+      //   "state": "MN",
+      //   "zip": "55379"
+      // },
+      // {
+      //   "id": 2,
+      //   "street1": "4001 Valley Industrial Blvd",
+      //   "street2": "",
+      //   "city": "Shakopee",
+      //   "state": "MN",
+      //   "zip": "55379"
+      // }
     ]
   },
   "dialog": {
