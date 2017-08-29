@@ -14,6 +14,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".add-to-cart .btn-action")]
         private IWebElement AddToCart { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".dialog-alert__btns button")]
+        private IWebElement ContinueShoppingBtn { get; set; }
+
         public ProductDetail()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -37,9 +40,9 @@ namespace AutomatedTests.PageObjects
             Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/products/{categoryName}/{productName}");
         }
 
-        public void AcceptItemIsAddedAlert()
+        public void ClickContinueShopping()
         {
-            Browser.AcceptAlert();
+            ContinueShoppingBtn.ClickElement();
         }
 
         /// <summary>
