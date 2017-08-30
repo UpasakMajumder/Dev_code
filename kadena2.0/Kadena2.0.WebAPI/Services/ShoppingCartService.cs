@@ -9,6 +9,7 @@ using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Models.Product;
+using Kadena.Models.Settings;
 
 namespace Kadena.WebAPI.Services
 {
@@ -62,6 +63,7 @@ namespace Kadena.WebAPI.Services
                 DeliveryAddresses = new DeliveryAddresses()
                 {
                     IsDeliverable = true,
+                    AvailableToAdd = true,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
                     NewAddress = new NewAddressButton()
                     {
@@ -71,7 +73,8 @@ namespace Kadena.WebAPI.Services
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
                     EmptyMessage = resources.GetResourceString("Kadena.Checkout.NoAddressesMessage"),
-                    items = addresses.ToList()
+                    items = addresses.ToList(),
+                    DialogUI = GetOtherAddressDialog()
                 },
                 PaymentMethods = new PaymentMethods()
                 {
@@ -97,6 +100,77 @@ namespace Kadena.WebAPI.Services
             checkoutPage.SetDisplayType();
             SetPricesVisibility(checkoutPage);
             return checkoutPage;
+        }
+
+        private Models.Checkout.AddressDialog GetOtherAddressDialog()
+        {
+            return new Models.Checkout.AddressDialog
+            {
+                Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),
+                DiscardBtnLabel = resources.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
+                SubmitBtnLabel = resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress"),
+                RequiredErrorMessage = resources.GetResourceString("Kadena.Settings.RequiredField"),
+                Fields = new[] {
+                    new DialogField
+                    {
+                        Id = "customerName",
+                        Label = resources.GetResourceString("Kadena.Settings.CustomerName"),
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "address1",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "address2",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
+                        IsOptional = true,
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "city",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.City"),
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "state",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.State"),
+                        IsOptional = true,
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "zip",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.Zip"),
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "country",
+                        Label = resources.GetResourceString("Kadena.Settings.Addresses.Country"),
+                        Type = "select",
+                        Values = kenticoProvider.GetCountries().Select(c => (object)c.Name).ToList()
+                    },
+                    new DialogField
+                    {
+                        Id = "phone",
+                        Label = resources.GetResourceString("Kadena.ContactForm.Phone"),
+                        IsOptional = true,
+                        Type = "text"
+                    },
+                    new DialogField
+                    {
+                        Id = "email",
+                        Label = resources.GetResourceString("Kadena.ContactForm.Email"),
+                        Type = "text"
+                    }
+                }
+            };
         }
 
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
@@ -305,7 +379,7 @@ namespace Kadena.WebAPI.Services
                     Url = "/checkout"
                 },
                 SummaryPrice = new CartPrice(),
-                
+
                 Items = cartItems.ToList()
             };
 
