@@ -124,7 +124,6 @@ class Checkout extends Component {
     const { ui: uiCurr } = this.props.checkout;
 
     const { products } = uiNext;
-    if (!products.items.length) location.reload();
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
@@ -137,8 +136,24 @@ class Checkout extends Component {
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
-      const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
+      const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
+
+      // cart is empty
+      if (!ui.products.items.length) {
+        content = <div>
+          <div className="alert alert--full alert--info isOpen js-collapse">
+            <p className="p-info weight--normal">{emptyCart.text}</p>
+          </div>
+
+          <div className="btn-group btn-group--center">
+            <a href={emptyCart.dashboardButtonUrl} type="type" className="btn-action btn-action--secondary">{emptyCart.dashboardButtonText}</a>
+            <a href={emptyCart.productsButtonUrl} type="type" className="btn-action">{emptyCart.productsButtonText}</a>
+          </div>
+        </div>;
+
+        return content;
+      }
 
       const disableInteractivity = !totals;
 
