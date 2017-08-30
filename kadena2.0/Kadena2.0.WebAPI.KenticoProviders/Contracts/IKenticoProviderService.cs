@@ -49,6 +49,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         IEnumerable<State> GetStates();
 
+        IEnumerable<Country> GetCountries();
+
         void SaveShippingAddress(DeliveryAddress address);
 
         void SetCartItemDesignFilePath(int id, string path);

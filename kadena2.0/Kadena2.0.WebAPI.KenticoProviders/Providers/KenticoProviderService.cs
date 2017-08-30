@@ -1,6 +1,5 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
-using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
@@ -715,6 +714,17 @@ namespace Kadena.WebAPI.KenticoProviders
             var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
 
             return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
+        }
+
+        public IEnumerable<Country> GetCountries()
+        {
+            return CountryInfoProvider
+                .GetCountries()
+                .Column("CountryName")
+                .Select(s => new Country
+                {
+                    Name = s["CountryName"].ToString()
+                });
         }
     }
 }
