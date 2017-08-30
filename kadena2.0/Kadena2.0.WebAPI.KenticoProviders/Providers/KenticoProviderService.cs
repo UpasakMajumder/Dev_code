@@ -282,19 +282,6 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
-        public void SetCartItemDesignFilePath(int id, string path)
-        {
-            var cart = ECommerceContext.CurrentShoppingCart;
-            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-
-            if (item != null)
-            {
-                item.SetValue("DesignFilePathObtained", true);
-                item.SetValue("DesignFilePath", path);
-                item.Update();
-            }
-        }
-
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
