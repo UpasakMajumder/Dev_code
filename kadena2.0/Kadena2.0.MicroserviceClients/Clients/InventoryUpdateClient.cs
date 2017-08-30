@@ -13,7 +13,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             using (var httpClient = new HttpClient())
             {
-                var url = $"{serviceEndpoint.TrimEnd('/')}/api/Inventory?{clientId}";
+                var url = $"{serviceEndpoint.TrimEnd('/')}/api/Inventory?erpClientId={clientId}";
                 using (var response = await httpClient.GetAsync(url))
                 {
                     return await ReadResponseJson<InventoryDataItemDto[]>(response).ConfigureAwait(false);
