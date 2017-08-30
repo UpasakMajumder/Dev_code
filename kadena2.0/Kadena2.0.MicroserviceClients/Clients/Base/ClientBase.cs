@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,19 +33,13 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             BaseErrorDto innerError = null;
             string responseContent = string.Empty;
 
-            if (!response.IsSuccessStatusCode)
-            {
-                result = new BaseResponseDto<TResult>
-                {
-                    Success = false,
-                    Payload = default(TResult),
-                    Error = new BaseErrorDto
-                    {
-                        Message = $"HttpClient received status {response.StatusCode}, reason {response.ReasonPhrase}"
-                    }
-                };
-            }
-            else
+            // In these cases, there may be JSON with standard structure and proper error message from microservice
+            if (response.StatusCode == HttpStatusCode.OK || 
+                response.StatusCode == HttpStatusCode.BadRequest || 
+                response.StatusCode == HttpStatusCode.Unauthorized || 
+                response.StatusCode == HttpStatusCode.BadGateway ||
+                response.StatusCode == HttpStatusCode.NotImplemented ||
+                response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 responseContent = await response.Content.ReadAsStringAsync();
                 if (!string.IsNullOrWhiteSpace(responseContent))
@@ -58,6 +53,18 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                         innerError = new BaseErrorDto { Message = e.Message + $" response content: '{responseContent}'" };
                     }
                 }
+            }
+            else // some severe network error
+            {
+                result = new BaseResponseDto<TResult>
+                {
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new BaseErrorDto
+                    {
+                        Message = $"HttpClient received status {response.StatusCode}, reason {response.ReasonPhrase}"
+                    }
+                };
             }
 
             return result ?? new BaseResponseDto<TResult>
