@@ -51,8 +51,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SaveShippingAddress(DeliveryAddress address);
 
-        void SetCartItemDesignFilePath(int id, string path);
-
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
