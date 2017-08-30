@@ -290,6 +290,7 @@ namespace AutomatedTests
         /// <param name="element">Any HTML element</param>
         public static void MoveToMyElement(this IWebElement element)
         {
+            element.WaitTillClickable();
             Browser.ActionsBuilder.MoveToElement(element).Perform();
         }
 

@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MailingListUploader.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.MailingList.MailingListUploader" %>
 
+
 <div class="upload-mail__drop-zone">
     <div class="drop-zone js-drop-zone" data-max-items="1" data-accepted="csv">
         <input class="js-drop-zone-files-count" type="hidden" value="0" name="file-count">
@@ -20,7 +21,7 @@
                 <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.ClickToUpload" />
             </p>
         </div>
-        
+
         <div class="js-drop-zone-droppped drop-zone__dropped">
             <div class="js-drop-zone-item drop-zone__item">
                 <div>
@@ -53,11 +54,6 @@
             </p>
         </div>
     </div>
-    <div class="input__wrapper j-submit-mailing-list-error" style="display: none;">
-        <span class="input__error">
-            <cms:LocalizedLiteral runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileNotUploaded" />
-        </span>
-    </div>
 </div>
 <div class="upload-mail__row upload-mail__offer" style="display: none;">
     <span>
@@ -84,31 +80,11 @@
                     <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.FileName" />
                 </span>
                 <input runat="server" id="inpFileName" type="text" name="name" class="input__text js-drop-zone-name-input" placeholder="">
-                <span class="input__error input__error--noborder" style="display: none;">
-                    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.EnterValidValue" />
-                </span>
             </asp:Panel>
         </div>
     </div>
 </div>
-<button type="submit" class="btn-action j-submit-mailing-list-button" runat="server" id="btnSubmit" onserverclick="btnSubmit_Click"
-    onclick="javascript: 
-        if($('.js-drop-zone').hasClass('isNotDropped')) 
-        { 
-            $('.j-submit-mailing-list-error').hide();
-            return false; 
-        }; 
-        if(!$('.js-drop-zone').hasClass('isDropped')) 
-        { 
-            $('.j-submit-mailing-list-error').show();
-            return false; 
-        }; 
-        if (!$.trim($('input.js-drop-zone-name-input').val()).length)
-        {
-            $('input.js-drop-zone-name-input').addClass('input--error');
-            $('span.input__error').show();
-            return false;
-        };">
-    <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.Create" />
-</button>
-<span runat="server" id="txtError" class="input__error input__error--noborder"></span>
+<asp:Button ID="btnSubmit" runat="server" CssClass="btn-action j-submit-mailing-list-button" OnClick="btnSubmit_Click" />
+
+<input id="inpError" runat="server" type="hidden" enableviewstate="false" class="j-mailing-list-uploader-error" />
+

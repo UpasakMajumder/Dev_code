@@ -1,5 +1,4 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.Chili;
@@ -61,9 +60,10 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                             string.IsNullOrWhiteSpace(d.MailingList?.ContainerID) ? string.Empty : $"&containerId={d.MailingList.ContainerID}",
                             (d.MailingList?.RowCount ?? 0).ToString()),
                         TemplateID = d.templateId,
-                        Date = DateTime.Parse(d.created)
+                        DateCreated = DateTime.Parse(d.created),
+                        DateUpdated = DateTime.Parse(d.updated)
                     })
-                    .OrderByDescending(t => t.Date);
+                    .OrderByDescending(t => t.DateCreated);
                 repTemplates.DataBind();
             }
             else

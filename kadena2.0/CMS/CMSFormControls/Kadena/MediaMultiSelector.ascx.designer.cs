@@ -7,18 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kadena.CMSWebParts.Kadena.Chili {
+namespace Kadena.CMSFormControls.Kadena {
     
     
-    public partial class AddToCartExtended {
+    public partial class MediaMultiSelector {
         
         /// <summary>
-        /// inpNumberOfItems control.
+        /// ItemsRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inpNumberOfItems;
+        protected global::System.Web.UI.WebControls.Repeater ItemsRepeater;
+        
+        /// <summary>
+        /// AddButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddButton;
     }
 }

@@ -1,10 +1,13 @@
 /* libraries */
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, INIT_UI, MODIFY_MAILING_LIST, MODIFY_MAILING_LIST_USE_CORRECT, APP_LOADING,
   START, FINISH, MODIFY_MAILING_LIST_REPROCESS, MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
 /* globals */
-import { MODIFY_MAILING_LIST_UI } from 'app.globals';
+import { MODIFY_MAILING_LIST_UI, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { removeProps } from 'app.helpers/object';
 
@@ -48,28 +51,30 @@ export const useCorrect = (id, url) => {
       }).then((response) => {
         const { success, errorMessage } = response.data;
         if (!success) {
-          dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
           dispatch({ type: APP_LOADING + FINISH });
+          toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
         }
       })
         .catch((error) => {
           dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
           dispatch({ type: APP_LOADING + FINISH });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 
     const dev = () => setTimeout(() => {
       dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
       dispatch({ type: APP_LOADING + FINISH });
+      toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
     }, 2000);
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 
@@ -86,8 +91,10 @@ export const reprocessAddresses = (id, url, data) => {
       }).then((response) => {
         const { success, errorMessage } = response.data;
         if (!success) {
-          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
-          alert(errorMessage); // eslint-disable-line no-alert
+          dispatch({
+            type: MODIFY_MAILING_LIST_REPROCESS + FAILURE,
+            alert: errorMessage
+          });
           dispatch({ type: APP_LOADING + FINISH });
         } else {
           dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
@@ -97,7 +104,6 @@ export const reprocessAddresses = (id, url, data) => {
         .catch((error) => {
           dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
           dispatch({ type: APP_LOADING + FINISH });
-          alert(error); // eslint-disable-line no-alert
         });
     };
 
@@ -106,8 +112,7 @@ export const reprocessAddresses = (id, url, data) => {
       dispatch({ type: APP_LOADING + FINISH });
     }, 2000);
 
-    // dev();
-    prod();
+    callAC(dev, prod);
   };
 };
 

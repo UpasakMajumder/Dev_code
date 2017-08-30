@@ -46,5 +46,6 @@ export const MODIFY_MAILING_LIST_REPROCESS = 'MODIFY_MAILING_LIST_REPROCESS';
 export const MODIFY_MAILING_LIST_USE_CORRECT = 'MODIFY_MAILING_LIST_USE_CORRECT';
 export const MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS = 'MODIFY_MAILING_LIST_SHOW_VALIDATION_ERRORS';
 
-/* env */
+/* config */
+export const isDevelopment = process.env.NODE_ENV === 'development';
 export const DOMAIN = 'com';

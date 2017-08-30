@@ -85,12 +85,12 @@ namespace Kadena.CMSWebParts.Kadena.KSource {
         protected global::System.Web.UI.WebControls.PlaceHolder phCompletedPagination;
         
         /// <summary>
-        /// pnlMicroserviceError control.
+        /// inpError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlMicroserviceError;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden inpError;
     }
 }

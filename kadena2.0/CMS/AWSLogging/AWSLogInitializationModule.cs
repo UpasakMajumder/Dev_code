@@ -6,6 +6,7 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using Kadena.AWSLogging;
 using System;
+using System.Text;
 
 [assembly: RegisterModule(typeof(AWSLogInitializationModule))]
 
@@ -57,8 +58,38 @@ namespace Kadena.AWSLogging
             var record = e.Event;
             if (record.EventType.EqualsCSafe("E"))
             {
-                logger.AddMessage($"{record.EventCode} | {record.EventDescription} | {record.EventUrl} | {record.Exception?.ToString() ?? "<no exception>"}");
+                var message = GetLogEventDetails(record);
+                logger.AddMessage(message);
             }
+        }
+
+        private string GetLogEventBrief(EventLogInfo record)
+        {
+            return $"{record.EventCode} | {record.EventDescription} | {record.EventUrl} | {record.Exception?.ToString() ?? "<no exception>"}";
+        }
+
+        private string GetLogEventDetails(EventLogInfo record)
+        {
+            if (record == null)
+                return "<null>";
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"Time: {record.EventTime}")
+              .AppendLine($"Source: {record.Source}")
+              .AppendLine($"Type: {record.EventType}")
+              .AppendLine($"Code: {record.EventCode}")
+              .AppendLine($"ID: {record.EventID}")
+              .AppendLine($"User ID: {record.UserID}")
+              .AppendLine($"User name: {record.UserName}")
+              .AppendLine($"IP address: {record.IPAddress}")
+              .AppendLine($"Description: {record.EventDescription}")
+              .AppendLine($"Machine name: {record.EventMachineName}")
+              .AppendLine($"Event URL: {record.EventUrl}")
+              .AppendLine($"URL referrer: {record.EventUrlReferrer}")
+              .AppendLine($"User agent: {record.EventUserAgent}");
+
+            return sb.ToString();
         }
     }
 }

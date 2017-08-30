@@ -3,13 +3,14 @@
  * If you do not use SVG <use xlink:href="…"> elements, remove svgxuse module
  */
 import 'svgxuse';
+import { toastr } from 'react-redux-toastr';
 import configureStore from './store';
 import { init, render } from './init';
 
 const app = {
   run() {
-    this.static();
     this.react();
+    this.static();
   },
 
   /* Static JavaScript classes */
@@ -55,11 +56,14 @@ const app = {
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
     render('CartPreview', document.querySelectorAll('.r-cart-preview'));
     render('CartItems', document.querySelectorAll('.r-cart-items'));
+    render('Toastr', document.querySelectorAll('.r-toastr'));
+    render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
   }
 };
 
 /* Global scope reference */
 window.app = app;
+window.toastr = toastr;
 
 /* Run */
 app.run();

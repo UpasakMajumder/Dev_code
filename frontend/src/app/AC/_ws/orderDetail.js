@@ -2,8 +2,8 @@
 export default {
   "commonInfo": {
     "status": "In progress",
-    "orderDate": "9/12/2017",
-    "shippingDate": "10/27/2017",
+    "orderDate": "2017-08-07T09:12:08.108892Z",
+    "shippingDate": "N/A",
     "totalCost": "$ 1,383.68"
   },
   "shippingInfo": {
@@ -21,7 +21,7 @@ export default {
     "paymentIcon": "order-payment",
     "paidBy": "Paid by credit card",
     "paymentDetail": "Mastercard •••• 4062",
-    "date": "10/27/2017"
+    "date": "2017-08-07T09:12:08.108892Z"
   },
   "pricingInfo": {
     "title": "Pricing",
@@ -57,7 +57,7 @@ export default {
         "image": "http://satyr.io/200-500x300-700",
         "template": "Information letter lamp post Mar 30 3017",
         "mailingList": "Mailing",
-        "shippingDate": "10/27/2017",
+        "shippingDate": "2017-08-07T09:12:08.108892Z",
         "trackingId": "",
         "price": "$ 112.2",
         "quantityPrefix": "Quantity:", // Addresses/Quantity,

@@ -49,12 +49,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
                 var config = new
                 {
-                    ModifyMailingList = new
-                    {
-                        ErrorList = CreateErrorList(badAddresses),
-                        SuccessList = CreateSuccessList(goodAddresses),
-                        FormInfo = CreateFormInfo()
-                    }
+                    ErrorList = CreateErrorList(badAddresses),
+                    SuccessList = CreateSuccessList(goodAddresses),
+                    FormInfo = CreateFormInfo()
                 };
 
                 var setting = new JsonSerializerSettings
@@ -63,7 +60,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 };
 
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(),
-                    "ui", $"<script>config.localization.ui = {JsonConvert.SerializeObject(config, setting)}</script>");
+                    "ui", $"<script>config.localization.modifyMailingList = {JsonConvert.SerializeObject(config, setting)}</script>");
             }
         }
 

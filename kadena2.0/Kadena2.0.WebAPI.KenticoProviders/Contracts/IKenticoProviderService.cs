@@ -1,15 +1,12 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
-using System;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoProviderService
     {
-        DeliveryAddress[] GetCustomerAddresses(string addressType = null);
-
-        DeliveryAddress[] GetCustomerShippingAddresses(int customerId);
         DeliveryAddress GetCurrentCartShippingAddress();
 
         BillingAddress GetDefaultBillingAddress();
@@ -31,10 +28,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         int GetCurrentCartAddresId();
 
         int GetCurrentCartShippingOptionId();
-
-        Customer GetCurrentCustomer();
-
-        Customer GetCustomer(int customerId);
 
         DeliveryOption GetShippingOption(int id);
 
@@ -73,14 +66,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetProductTeaserImageUrl(int documentId);
 
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
-		
-        bool UserCanSeePrices();
-        bool UserCanSeePrices(int userId);
 
-        bool UserCanSeeAllOrders();
-
-        Site GetSite(int siteId);
+        Site[] GetSites();
 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
+
+        string MapOrderStatus(string microserviceStatus);
     }
 }

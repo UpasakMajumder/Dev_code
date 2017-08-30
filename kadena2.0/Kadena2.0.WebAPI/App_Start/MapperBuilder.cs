@@ -5,6 +5,7 @@ using Kadena.Dto.General;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.Order;
+using Kadena.Dto.Product;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.Settings;
@@ -16,6 +17,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
 using Kadena.Models.Settings;
@@ -87,7 +89,6 @@ namespace Kadena.WebAPI
                     {
                         a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
                         a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
-                        a.IsRemoveButton = false;
                     });
                 config.CreateMap<AddressDto, DeliveryAddress>()
                     .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
@@ -154,6 +155,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CartPrice, CartPriceDTO>();
                 config.CreateMap<MailingListDataDTO, MailingList>();
                 config.CreateMap<NewCartItemDto, NewCartItem>();
+                config.CreateMap<AddToCartResult, AddToCartResultDto>();
+                config.CreateMap<RequestResult, RequestResultDto>();
             });
         }
     }

@@ -24,7 +24,6 @@ const pluginsCollection = {
 
   /* Environment-specific plugins */
   development: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),
@@ -36,7 +35,7 @@ const pluginsCollection = {
     new WriteFilePlugin({
       log: false
     }),
-    // new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
@@ -48,12 +47,12 @@ const pluginsCollection = {
       comments: false
     }),
     new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 10
+      maxChunks: 1
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       filename: '[name].min.js',
-      minChunks: Infinity
+      minChunks: 0
     }),
     new webpack.NoEmitOnErrorsPlugin()
   ]
@@ -68,7 +67,7 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 module.exports = {
     entry: {
         [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual']
+        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual', 'react-redux-toastr']
     },
     output: {
         path: path.resolve(process.cwd(), config.JS_BUILD),
@@ -150,6 +149,7 @@ module.exports = {
     resolve: {
         alias: {
             'app.dump': path.resolve(process.cwd(), `${config.JS_BASE}/components/_dump`),
+            'app.smart': path.resolve(process.cwd(), `${config.JS_BASE}/components`),
             'app.ac': path.resolve(process.cwd(), `${config.JS_BASE}/AC`),
             'app.globals': path.resolve(process.cwd(), `${config.JS_BASE}/globals.js`),
             'app.consts': path.resolve(process.cwd(), `${config.JS_BASE}/constants.js`),

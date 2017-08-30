@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
+/* helpers */
+import { divideBySlash } from 'app.helpers/time';
 
 const CommonInfo = ({ ui }) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
@@ -36,7 +38,7 @@ const CommonInfo = ({ ui }) => {
         <SVG name={icon} className="icon-tile"/>
         <div>
           <p className="tile-bar__title">{title}</p>
-          <p className="tile-bar__description">{value}</p>
+          <p className="tile-bar__description">{title.includes('date') ? divideBySlash(value) : value}</p>
         </div>
       </div>
     );
@@ -54,8 +56,8 @@ const CommonInfo = ({ ui }) => {
 CommonInfo.propTypes = {
   ui: PropTypes.shape({
     status: PropTypes.string.isRequired,
-    orderDate: PropTypes.string.isRequired,
-    shippingDate: PropTypes.string.isRequired,
+    orderDate: PropTypes.string,
+    shippingDate: PropTypes.string,
     totalCost: PropTypes.string.isRequired
   })
 };
