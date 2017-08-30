@@ -30,18 +30,33 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;
+            string responseContent = string.Empty;
 
-            string responseContent = await response.Content.ReadAsStringAsync();
-
-            if (!string.IsNullOrWhiteSpace(responseContent))
+            if (!response.IsSuccessStatusCode)
             {
-                try
+                result = new BaseResponseDto<TResult>
                 {
-                    result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
-                }
-                catch (Exception e)
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new BaseErrorDto
+                    {
+                        Message = $"HttpClient received status {response.StatusCode}, reason {response.ReasonPhrase}"
+                    }
+                };
+            }
+            else
+            {
+                responseContent = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrWhiteSpace(responseContent))
                 {
-                    innerError = new BaseErrorDto { Message = e.Message + $" response content: '{responseContent}'" };
+                    try
+                    {
+                        result = JsonConvert.DeserializeObject<BaseResponseDto<TResult>>(responseContent);
+                    }
+                    catch (Exception e)
+                    {
+                        innerError = new BaseErrorDto { Message = e.Message + $" response content: '{responseContent}'" };
+                    }
                 }
             }
 
