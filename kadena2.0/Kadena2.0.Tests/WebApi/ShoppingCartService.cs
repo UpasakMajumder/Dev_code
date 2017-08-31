@@ -11,6 +11,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.WebAPI.Factories.Checkout;
 
 namespace Kadena.Tests.WebApi
 {
@@ -100,6 +101,7 @@ namespace Kadena.Tests.WebApi
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingService = new Mock<IKListService>();
+            var checkoutFactory = new Mock<ICheckoutPageFactory>();
 
             return new ShoppingCartService(mapper,
                 kenticoProvider.Object,
@@ -107,7 +109,8 @@ namespace Kadena.Tests.WebApi
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object);
+                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
+                checkoutFactory.Object);
         }
 
         [Fact]
