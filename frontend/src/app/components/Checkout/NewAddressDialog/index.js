@@ -134,7 +134,6 @@ class NewAddressDialog extends Component {
       return {
         id: field.id,
         label: field.label,
-        value: field.values ? field.label : this.props.address[field.id],
         placeholder: field.label,
         onChange: (e) => { this.changeInput(e.target.value, field.id); },
         error: this.getValidationError(field.id),
