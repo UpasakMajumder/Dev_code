@@ -58,7 +58,7 @@ namespace AutomatedTests.PageObjects
                 if (productDetail.IsAddToCartButtonDisplayed())
                 {
                     productDetail.ClickAddToCart();
-                    productDetail.AcceptItemIsAddedAlert();
+                    productDetail.ClickContinueShopping();
                     return productDetail;
                 }
                 else

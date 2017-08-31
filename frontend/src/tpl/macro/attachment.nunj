@@ -1,0 +1,9 @@
+{% from "macro/svg.nunj" import svg %}
+
+{% macro linkAttachment(type, class) %}
+  {% set icon = 'download--' + type %}
+  <a href="#" class="link link--attachment {% if (class) %}{{ class }}{% endif %}">
+    {{ svg(icon, 'icon-download') }}
+    <span>Download processed file</span>
+  </a>
+{% endmacro %}

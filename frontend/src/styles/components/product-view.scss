@@ -1,23 +1,43 @@
 .product-view {
-  $product-img-size: 250px;
+  @extend %flex--default--between;
+  $product-img-size: 300px;
   $product-blocks-gap: 15px;
 
-  &__img {
-    @include rem(margin-right, $product-blocks-gap);
+  &__actions {
+    @extend %flex--start--between;
+  }
 
-    @extend .inline-bg;
-    position: relative;
-    float: left;
-    width: $product-img-size;
-    height: $product-img-size;
+  &__attachments {
+    @extend .list--unstyled;
+    width: 100%;
+    overflow: hidden;
+
+    a {
+      width: 100%;
+    }
+  }
+
+  &__attachment {
+    span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   &__zoom {
     @extend .btn--off;
-    position: absolute;
-    bottom: 0;
-    right: 10px;
-    transform: translateY(calc(100% + 10px));
+    @extend .ml-2;
+  }
+
+  &__img {
+    @include rem(margin-right, $product-blocks-gap);
+    width: $product-img-size;
+
+    img {
+      @extend .mb-3;
+      width: 100%;
+    }
   }
 
   &__preview {
@@ -55,8 +75,7 @@
 
   &__block {
     overflow: hidden;
-    width: calc(100% - #{$product-img-size} - #{$product-blocks-gap});
-    margin-left: calc(#{$product-img-size} + #{$product-blocks-gap});
+    flex: 1;
 
     & > div {
       @include rem(margin-bottom, 30px);
