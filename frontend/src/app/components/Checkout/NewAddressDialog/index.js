@@ -139,7 +139,7 @@ class NewAddressDialog extends Component {
         onChange: (e) => { this.changeInput(e.target.value, field.id); },
         error: this.getValidationError(field.id),
         isOptional: field.isOptional,
-        isSelect: !!field.values,
+        isSelect: field.type === 'select',
         options: field.values
       };
     });
