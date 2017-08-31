@@ -70,42 +70,59 @@ export const staticUI = {
           {
             "id": "customerName",
             "label": "Name",
+            "values": [],
+            "type": "text"
           },
           {
             "id": "address1",
             "label": "Address 1",
+            "values": [],
+            "type": "text"
           },
           {
             "id": "address2",
             "label": "Address 2",
+            "values": [],
+            "type": "text",
             "isOptional": true
           },
           {
             "id": "city",
             "label": "City",
+            "values": [],
+            "type": "text"
           },
           {
             "id": "state",
             "label": "State",
+            "values": [],
+            "type": "text",
             "isOptional": true
           },
           {
             "id": "zip",
             "label": "Postal Code",
+            "values": [],
+            "type": "text"
           },
           {
             "id": "country",
             "label": "Country",
-            "values": ['hip', 'hop']
+            "values": ['hip', 'hop'],
+            "type": "select"
           },
           {
             "id": "phone",
             "label": "Phone",
+            "values": [],
+            "type": "text",
             "isOptional": true
           },
           {
             "id": "email",
             "label": "Email",
+            "values": [],
+            "type": "text"
           }
         ]
       },
