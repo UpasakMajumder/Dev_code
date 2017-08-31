@@ -22,12 +22,10 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
 
-        public KenticoProviderService(IMapper mapper, IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources)
         {
-            this.mapper = mapper;
             this.resources = resources;
         }
 
@@ -225,7 +223,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
-                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                 ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
@@ -282,19 +280,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             // Recalculate shopping cart
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
-        }
-
-        public void SetCartItemDesignFilePath(int id, string path)
-        {
-            var cart = ECommerceContext.CurrentShoppingCart;
-            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-
-            if (item != null)
-            {
-                item.SetValue("DesignFilePathObtained", true);
-                item.SetValue("DesignFilePath", path);
-                item.Update();
-            }
         }
 
         public void SetCartItemQuantity(int id, int quantity)
@@ -542,21 +527,12 @@ namespace Kadena.WebAPI.KenticoProviders
             return result;
         }
 
-        public Site GetSite(int siteId)
+        public Site[] GetSites()
         {
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-            if (site == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new Site
-                {
-                    Id = site.SiteID,
-                    Name = site.SiteName
-                };
-            }
+            var sites = SiteInfoProvider.GetSites()
+                .Select(s => SiteFactory.CreateSite(s))
+                .ToArray();
+            return sites;
         }
 
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)

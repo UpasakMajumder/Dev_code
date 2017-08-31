@@ -700,6 +700,13 @@
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.designer.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.cs">
+      <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.designer.cs">
+      <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.cs">
       <DependentUpon>S3UploaderControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -915,6 +922,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Helpers\ServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Forms\MediaMultiField.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
@@ -928,6 +936,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
+    <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
@@ -946,6 +955,10 @@
     <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
       <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
       <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj">
+      <Project>{43388b1f-8597-46eb-8346-e9c6544c5306}</Project>
+      <Name>Kadena2.0.ScheduledTasks</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>

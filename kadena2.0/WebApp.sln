@@ -332,6 +332,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI.KenticoPro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Models", "Kadena2.0.Models\Kadena2.0.Models.csproj", "{918EBDFB-D345-4BE2-97A2-9D71513E0617}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.ScheduledTasks", "Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj", "{43388B1F-8597-46EB-8346-E9C6544C5306}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -381,6 +383,10 @@ Global
 		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
