@@ -19,11 +19,11 @@ namespace Kadena.WebAPI.Factories.Checkout
 
             return new CartEmptyInfo
             {
-                Text = resources.GetResourceString("xxxx"),
-                DashboardButtonText = resources.GetResourceString("xxxx"),
-                DashboardButtonUrl = resources.GetSettingsKey("yyyy"),
-                ProductsButtonText = resources.GetResourceString("xxxx"),
-                ProductsButtonUrl = resources.GetSettingsKey("yyyy")
+                Text = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
+                DashboardButtonText = resources.GetResourceString("Kadena.Checkout.ButtonDashboard"),
+                DashboardButtonUrl = resources.GetSettingsKey("KDA_EmptyCart_DashboardUrl"),
+                ProductsButtonText = resources.GetResourceString("Kadena.Checkout.ButtonProducts"),
+                ProductsButtonUrl = resources.GetSettingsKey("KDA_EmptyCart_ProductsUrl")
             };
         }
     }
