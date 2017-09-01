@@ -56,7 +56,7 @@ namespace Kadena.WebAPI.Services
             CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
             var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);            
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
@@ -239,7 +239,7 @@ namespace Kadena.WebAPI.Services
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            var orderData = await GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+            var orderData = await GetSubmitOrderData(request.DeliveryAddress, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -287,9 +287,17 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(DeliveryAddress deliveryAddress, int deliveryMethodId, int paymentMethodId, string invoice)
         {
-            var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            DeliveryAddress shippingAddress;
+            if (deliveryAddress.Id > 0)
+            {
+                shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            }
+            else
+            {
+                shippingAddress = deliveryAddress;
+            }
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var customer = kenticoUsers.GetCurrentCustomer();
             var site = resources.GetKenticoSite();
@@ -413,7 +421,7 @@ namespace Kadena.WebAPI.Services
         {
             var cartItemFlags = productType.Split('|');
 
-            var standardTypes = new[] 
+            var standardTypes = new[]
             {
                 ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.InventoryProduct, ProductTypes.ProductWithAddOns
             };
