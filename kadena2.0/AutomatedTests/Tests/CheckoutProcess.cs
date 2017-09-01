@@ -63,13 +63,37 @@ namespace AutomatedTests.Tests
             var productDetail = dashboard.SelectProductYouCanAddToCart();
 
             //Go to checkout and place the order
-            checkout.Open();            
+            checkout.Open();
             checkout.FillOutPurchaseOrderNumber();
             checkout.PlaceOrder();
 
             //check if the order was successfully placed
             var successPage = new SuccessPage();
             Assert.IsTrue(successPage.IsSuccessPictureDisplayed());
+        }
+
+        [Test]
+        public void When_ProductAddedToCart_Expect_ProductsInCartPreviewShown()
+        {
+            InitializeTest();
+
+            //make sure there is nothing in cart
+            Checkout checkout = new Checkout();
+            checkout.Open();
+            checkout.EmptyTheCart();
+
+            Dashboard dashboard = new Dashboard();
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+
+            //find a product you can add to cart and add it           
+            var productDetail = dashboard.SelectProductYouCanAddToCart();
+
+            //see if the preview is not empty
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+            dashboard.MoveToShoppingCartBtn();
+            Assert.IsTrue(dashboard.IsThereProductInCartPreview());
         }
     }
 }

@@ -19,7 +19,10 @@ const pluginsCollection = {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'isDevelopment': JSON.stringify(DEVELOPMENT)
       }
-    })
+    }),
+
+    // ignore moment.js Locale modules
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
 
   /* Environment-specific plugins */
@@ -35,7 +38,9 @@ const pluginsCollection = {
     new WriteFilePlugin({
       log: false
     }),
-    new BundleAnalyzerPlugin()
+
+    // NOTE: enable to analyze JS bundles after build
+    // new BundleAnalyzerPlugin()
   ],
   production: [
     new webpack.optimize.OccurrenceOrderPlugin(true),
@@ -66,8 +71,8 @@ const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 
 module.exports = {
     entry: {
-        [APP_ENTRY_NAME]: ['babel-polyfill', 'whatwg-fetch', config.JS_ENTRY],
-        common: ['react', 'react-dom', 'redux', 'popper.js', 'react-tippy', 'lodash/isEqual', 'react-redux-toastr']
+        [APP_ENTRY_NAME]: [config.JS_ENTRY],
+        common: ['react', 'react-dom', 'react-router', 'react-transition-group', 'react-router-redux', 'redux', 'react-tippy', 'popper.js', 'lodash/isEqual', 'react-redux-toastr', 'moment', 'core-js', 'axios', 'babel-polyfill', 'whatwg-fetch']
     },
     output: {
         path: path.resolve(process.cwd(), config.JS_BUILD),

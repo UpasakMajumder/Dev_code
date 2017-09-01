@@ -2,6 +2,13 @@
 export const staticUI = {
   "success": true,
   "payload": {
+    "emptyCart":{
+      "text": "Your shopping cart is empty.",
+      "dashboardButtonText": "Go to dashboard",
+      "dashboardButtonUrl": "/dashboard",
+      "productsButtonText" : "See products",
+      "productsButtonUrl": "/products"
+    },
     "products": {
       "summaryPrice": {
         "pricePrefix": "$",

@@ -157,6 +157,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<NewCartItemDto, NewCartItem>();
                 config.CreateMap<AddToCartResult, AddToCartResultDto>();
                 config.CreateMap<RequestResult, RequestResultDto>();
+                config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
             });
         }
     }

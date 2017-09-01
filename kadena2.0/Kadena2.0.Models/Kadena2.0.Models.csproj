@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Checkout\CartButton.cs" />
+    <Compile Include="Checkout\CartEmptyInfo.cs" />
     <Compile Include="Checkout\CartItem.cs" />
     <Compile Include="Checkout\CartItems.cs" />
     <Compile Include="Checkout\CartItemsPreview.cs" />

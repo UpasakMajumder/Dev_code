@@ -1,7 +1,22 @@
 {% from "macro/svg.nunj" import svg %}
+{% from "macro/attachment.nunj" import linkAttachment %}
 
-<div class="product-view__img js-collapse" data-target=".js-product-preview" style="background-image: url(http://satyr.io/500-1000x700-1500)">
-  <button type="button" class="product-view__zoom js-product-view js-toggle" data-target=".js-product-preview-image">
-    {{ svg('zoom', 'icon-zoom') }}
-  </button>
+<div class="js-collapse product-view__img" data-target=".js-product-preview">
+  <img src="http://satyr.io/500x300">
+
+  <div class="product-view__actions">
+    <ul class="product-view__attachments">
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+      <li>{{ linkAttachment('blue', 'product-view__attachment') }}</li>
+    </ul>
+
+    <button type="button" class="product-view__zoom js-product-view js-toggle" data-target=".js-product-preview-image">
+      {{ svg('zoom', 'icon-zoom') }}
+    </button>
+  </div>
 </div>

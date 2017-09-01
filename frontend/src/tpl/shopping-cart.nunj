@@ -3,7 +3,7 @@
 {% from "macro/svg.nunj" import svg %}
 {% import "macro/dialog.nunj" as dialog %}
 
-{% set title='Shopping cart' %}
+{% set title = 'Shopping cart' %}
 {% set headerActive = title %}
 {% set breadcrumbs = [title] %}
 {% set headerTitle = title %}
