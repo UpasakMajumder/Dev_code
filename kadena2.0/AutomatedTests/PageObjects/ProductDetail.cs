@@ -17,6 +17,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".dialog-alert__btns button")]
         private IWebElement ContinueShoppingBtn { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".dialog-alert__btns button:nth-child(2)")]
+        private IWebElement ProceedToCheckoutBtn { get; set; }
+
         [FindsBy(How = How.CssSelector, Using = ".product-view__img img")]
         private IWebElement ProductImage { get; set; }
 
@@ -57,6 +60,11 @@ namespace AutomatedTests.PageObjects
             ContinueShoppingBtn.ClickElement();
         }
 
+        public void ClickProceedToCheckout()
+        {
+            ProceedToCheckoutBtn.ClickElement();
+        }
+
         /// <summary>
         /// Checks if add to cart button is displayed
         /// </summary>
@@ -83,6 +91,16 @@ namespace AutomatedTests.PageObjects
         {
             ProductImage.WaitTillVisible();
             return ProductImage.IsDisplayed();
+        }
+
+        /// <summary>
+        /// Adds product to cart and proceeds to checkout
+        /// </summary>
+        public Checkout AddProductToCart()
+        {
+            ClickAddToCart();
+            ClickProceedToCheckout();
+            return new Checkout();
         }
     }
 }

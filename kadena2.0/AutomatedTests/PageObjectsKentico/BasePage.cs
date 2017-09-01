@@ -36,6 +36,9 @@ namespace AutomatedTests.PageObjectsKentico
             ApplistIcon.ClickElement();
         }
 
+        /// <summary>
+        /// Logs out from Kentico
+        /// </summary>
         public void LogoutFromKentico()
         {
             Browser.Driver.SwitchTo().DefaultContent();
