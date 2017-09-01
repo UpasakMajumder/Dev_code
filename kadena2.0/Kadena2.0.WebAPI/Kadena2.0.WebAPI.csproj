@@ -135,6 +135,8 @@
     <Compile Include="Controllers\SiteDataController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
+    <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
+    <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
