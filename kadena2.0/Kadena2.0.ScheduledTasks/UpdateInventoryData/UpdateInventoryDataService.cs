@@ -4,7 +4,6 @@ using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Kadena.ScheduledTasks.UpdateInventoryData
@@ -15,8 +14,9 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IInventoryUpdateClient microserviceInventory;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoResourceService kenticoResources;
+        private readonly IKenticoLogger kenticoLog;
 
-        public UpdateInventoryDataService(IConfigurationProvider configurationProvider, IInventoryUpdateClient microserviceInventory, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResources)
+        public UpdateInventoryDataService(IConfigurationProvider configurationProvider, IInventoryUpdateClient microserviceInventory, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResources, IKenticoLogger kenticoLog)
         {
             if (configurationProvider == null)
             {
@@ -38,10 +38,17 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
                 throw new ArgumentOutOfRangeException(nameof(kenticoResources));
             }
 
+            if (kenticoLog == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(kenticoLog));
+            }
+
+
             this.configurationProvider = configurationProvider;
             this.microserviceInventory = microserviceInventory;
             this.kenticoProvider = kenticoProvider;
             this.kenticoResources = kenticoResources;
+            this.kenticoLog = kenticoLog;
         }
 
         public async Task<string> UpdateInventoryData()
@@ -65,7 +72,32 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private async Task<string> UpdateSiteProducts(string serviceEndpoint, string customerErpId)
         {
             var products = await microserviceInventory.GetInventoryItems(serviceEndpoint, customerErpId).ConfigureAwait(false);
-            return $"{customerErpId} done";
+
+            if(!products.Success)
+            {
+                kenticoLog.LogError("UpdateInventory", products.ErrorMessages);
+                return products.ErrorMessages;
+            }
+
+            if (products.Payload == null || products.Payload.Length == 0)
+            {
+                return $"Customer with ErpId {customerErpId} done, but no products data were received from microservice and updated";
+            }
+
+            foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
+            {
+                UpdateItemAvailability(product.Id, product.TotalQty, product.AvailableQty);
+            }
+
+            return $"Customer with ErpId {customerErpId} done successfully";
         }
+
+
+        private void UpdateItemAvailability(string id, decimal totalQty, decimal availableQty)
+        {
+            // TODO
+        }
+
+
     }
 }

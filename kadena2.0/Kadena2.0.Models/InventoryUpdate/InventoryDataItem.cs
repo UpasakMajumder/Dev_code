@@ -5,7 +5,7 @@
         public string ClientId { get; set; }
         public string Id { get; set; }
         public string ErpName { get; set; }
-        public int AvailableQty { get; set; }
-        public int TotalQty { get; set; }
+        public decimal AvailableQty { get; set; }
+        public decimal TotalQty { get; set; }
     }
 }

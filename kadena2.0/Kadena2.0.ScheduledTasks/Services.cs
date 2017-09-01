@@ -40,6 +40,7 @@ namespace Kadena.ScheduledTasks
             container.Register<IConfigurationProvider, KenticoConfigurationProvider>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
+            container.Register<IKenticoLogger, KenticoLogger>();
 
             // microservices
             container.Register<IMailingListClient, MailingListClient>();
