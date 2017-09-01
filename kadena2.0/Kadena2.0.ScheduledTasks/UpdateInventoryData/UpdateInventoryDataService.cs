@@ -13,13 +13,11 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
         private readonly IKenticoProviderService kenticoProvider;
-        private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoLogger kenticoLog;
 
         public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
                                           IInventoryUpdateClient microserviceInventory, 
                                           IKenticoProviderService kenticoProvider, 
-                                          IKenticoResourceService kenticoResources, 
                                           IKenticoLogger kenticoLog)
         {
             if (configurationProvider == null)
@@ -36,34 +34,27 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             {
                 throw new ArgumentOutOfRangeException(nameof(kenticoProvider));
             }
-
-            if (kenticoResources == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(kenticoResources));
-            }
-
             if (kenticoLog == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(kenticoLog));
             }
 
-
             this.configurationProvider = configurationProvider;
             this.microserviceInventory = microserviceInventory;
             this.kenticoProvider = kenticoProvider;
-            this.kenticoResources = kenticoResources;
             this.kenticoLog = kenticoLog;
         }
 
         public async Task<string> UpdateInventoryData()
         {
-            var serviceEndpoint = configurationProvider.Get<UpdateInventoryConfiguration>(string.Empty).InventoryUpdateServiceEndpoint;
             var sites = kenticoProvider.GetSites();
             var tasks = new List<Task<string>>();
 
             foreach (var site in sites)
             {
-                var erpId = kenticoResources.GetSettingsKey(site.Name, "KDA_ErpCustomerId");
+                var configuration = configurationProvider.Get<UpdateInventoryConfiguration>(site.Name);
+                var serviceEndpoint = configuration.InventoryUpdateServiceEndpoint;
+                var erpId = configuration.ErpClientId;
                 var task = UpdateSiteProducts(serviceEndpoint, erpId);
                 tasks.Add(task);
             }
