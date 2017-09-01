@@ -50,7 +50,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     {
                         this.Visible = false;
                     }
-                    SetupNumberOfItemsInPackageInformation();
                 }
 
                 if (IsProductTemplatedType())
@@ -134,23 +133,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
 
             return false;
-        }
-
-        private void SetupNumberOfItemsInPackageInformation()
-        {
-            if (_productDocument.GetIntegerValue("ProductNumberOfItemsInPackage", 0) == 0 ||
-              _productDocument.GetIntegerValue("ProductNumberOfItemsInPackage", 0) == 1)
-            {
-                lblNumberOfItemsInPackageInfo.Visible = false;
-                txtQuantity.Visible = true;
-            }
-            else
-            {
-                lblNumberOfItemsInPackageInfo.Text = string.Format(
-                    ResHelper.GetString("Kadena.Product.NumberOfItemsInPackagesFormatString2", LocalizationContext.CurrentCulture.CultureCode),
-                    _productDocument.GetIntegerValue("ProductNumberOfItemsInPackage", 0));
-                txtQuantity.Visible = false;
-            }
         }
 
         private void SetupDocument()
