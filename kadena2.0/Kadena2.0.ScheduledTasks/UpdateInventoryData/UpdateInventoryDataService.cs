@@ -16,7 +16,11 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoLogger kenticoLog;
 
-        public UpdateInventoryDataService(IConfigurationProvider configurationProvider, IInventoryUpdateClient microserviceInventory, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResources, IKenticoLogger kenticoLog)
+        public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
+                                          IInventoryUpdateClient microserviceInventory, 
+                                          IKenticoProviderService kenticoProvider, 
+                                          IKenticoResourceService kenticoResources, 
+                                          IKenticoLogger kenticoLog)
         {
             if (configurationProvider == null)
             {
@@ -86,18 +90,10 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
             {
-                UpdateItemAvailability(product.Id, product.TotalQty, product.AvailableQty);
+                kenticoProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
             }
 
             return $"Customer with ErpId {customerErpId} done successfully";
         }
-
-
-        private void UpdateItemAvailability(string id, decimal totalQty, decimal availableQty)
-        {
-            // TODO
-        }
-
-
     }
 }

@@ -70,5 +70,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
+
+        void SetSkuAvailableQty(string skunumber, int availableItems);
     }
 }
