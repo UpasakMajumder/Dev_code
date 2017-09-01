@@ -50,7 +50,7 @@ namespace AutomatedTests
         /// </summary>
         /// <param name="browser"></param>
         /// <param name="waitsec"></param>
-        public static void CreateDriver(int waitsec = 30)
+        public static void CreateDriver(int waitsec = 40)
         {
             ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
             ChromeOptions chromeOptions = new ChromeOptions();
