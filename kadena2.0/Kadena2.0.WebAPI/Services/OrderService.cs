@@ -290,7 +290,7 @@ namespace Kadena.WebAPI.Services
         private async Task<OrderDTO> GetSubmitOrderData(DeliveryAddress deliveryAddress, int deliveryMethodId, int paymentMethodId, string invoice)
         {
             DeliveryAddress shippingAddress;
-            if (deliveryAddress.Id > 0)
+            if (deliveryAddress == null || deliveryAddress.Id > 0)
             {
                 shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             }
