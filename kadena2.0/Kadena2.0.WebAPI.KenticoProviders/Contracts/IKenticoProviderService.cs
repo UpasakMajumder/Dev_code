@@ -51,8 +51,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SaveShippingAddress(DeliveryAddress address);
 
-        void SetCartItemDesignFilePath(int id, string path);
-
         string GetShippingProviderIcon(string title);
 
         string GetSkuImageUrl(int skuid);
@@ -72,5 +70,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
+
+        void SetSkuAvailableQty(string skunumber, int availableItems);
     }
 }

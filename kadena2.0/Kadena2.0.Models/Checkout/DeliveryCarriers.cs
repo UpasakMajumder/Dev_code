@@ -11,6 +11,11 @@ namespace Kadena.Models.Checkout
 
         public List<DeliveryCarrier> items { get; set; }
 
+        public DeliveryCarriers()
+        {
+            items = new List<DeliveryCarrier>();
+        }
+
         public void CheckMethod(int id)
         {
             items.ForEach(i => i.CheckMethod(id));

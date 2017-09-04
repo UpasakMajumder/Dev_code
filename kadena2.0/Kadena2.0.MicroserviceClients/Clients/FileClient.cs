@@ -1,5 +1,4 @@
 ﻿using Kadena2.MicroserviceClients.Contracts;
-using System;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
 using System.IO;

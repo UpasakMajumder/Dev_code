@@ -1,6 +1,5 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
-using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
@@ -223,7 +222,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
-                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                 ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
@@ -280,19 +279,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             // Recalculate shopping cart
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
-        }
-
-        public void SetCartItemDesignFilePath(int id, string path)
-        {
-            var cart = ECommerceContext.CurrentShoppingCart;
-            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-
-            if (item != null)
-            {
-                item.SetValue("DesignFilePathObtained", true);
-                item.SetValue("DesignFilePath", path);
-                item.Update();
-            }
         }
 
         public void SetCartItemQuantity(int id, int quantity)
@@ -715,6 +701,19 @@ namespace Kadena.WebAPI.KenticoProviders
             var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
 
             return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
+        }
+
+        public void SetSkuAvailableQty(string skunumber, int availableItems)
+        {
+            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = availableItems;
+                sku.SubmitChanges(false);
+                sku.MakeComplete(true);
+                sku.Update();
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena2.WebAPI.KenticoProviders.Factories
@@ -13,6 +14,12 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 return null;
             }
 
+            var addressLines = new List<string> { ai.AddressLine1 };
+            if (!string.IsNullOrWhiteSpace(ai.AddressLine2))
+            {
+                addressLines.Add(ai.AddressLine2);
+            }
+
             return new DeliveryAddress()
             { 
                 Id = ai.AddressID,
@@ -22,7 +29,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 Country = ai.GetCountryTwoLetterCode(),
                 StateId = ai.AddressStateID,
                 CountryId = ai.AddressCountryID,
-                Street = new[] { ai.AddressLine1 }.ToList(),
+                Street = addressLines,
                 Zip = ai.AddressZip
             };
         }
