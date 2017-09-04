@@ -3,7 +3,7 @@ import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CH
 
 const defaultState = {
   ui: {},
-  addedDate: {},
+  newAddress: {},
   checkedData: {
     deliveryAddress: 0,
     deliveryMethod: 0,
@@ -51,7 +51,7 @@ export default (state = defaultState, action) => {
 
     return {
       ...state,
-      addedDate: payload,
+      newAddress: payload,
       ui: {
         ...state.ui,
         deliveryAddresses: {

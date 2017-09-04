@@ -105,14 +105,14 @@ class DeliveryAddress extends Component {
 
     return (
       <div>
-        <NewAddressDialog
-          isDialogOpen={this.state.isDialogOpen}
+        {this.state.isDialogOpen && <NewAddressDialog
           address={this.state.address}
           submit={this.submit}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
           changeInput={this.changeInput}
-        />
+        />}
+
         <div>
           <h2>{title}</h2>
           <div className="cart-fill__block">
