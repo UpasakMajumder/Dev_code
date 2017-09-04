@@ -53,7 +53,7 @@ class Checkout extends Component {
     getUI();
   }
 
-  sendData = (checkedData) => {
+  placeOrder = (checkedData) => {
     const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
@@ -71,7 +71,7 @@ class Checkout extends Component {
       const data = { ...checkedData };
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
-      if (checkedData.deliveryAddress === -1) data.deliveryAddress = checkout.addedDate;
+      if (checkedData.deliveryAddress === -1) data.deliveryAddress = checkout.newAddress;
 
       sendData(data);
     }
@@ -125,8 +125,6 @@ class Checkout extends Component {
   componentWillReceiveProps(nextProps) {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
-
-    const { products } = uiNext;
 
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
@@ -184,7 +182,8 @@ class Checkout extends Component {
               disableInteractivity={disableInteractivity}
               addNewAddress={addNewAddress}
               addedDataId={addedDataId}
-              ui={deliveryAddresses}/>
+              ui={deliveryAddresses}
+            />
           </div>
 
           <div className="shopping-cart__block">
@@ -213,7 +212,8 @@ class Checkout extends Component {
             validationMessage={validationMessage}
             changeShoppingData={changeShoppingData}
             checkedObj={paymentMethod}
-            ui={paymentMethods}/>
+            ui={paymentMethods}
+          />
         </div>
 
         <div className="shopping-cart__block">
@@ -221,10 +221,11 @@ class Checkout extends Component {
         </div>
 
         <div className="shopping-cart__block text--right">
-          <Button text={submit.btnLabel}
-                  type="action"
-                  isLoading={disableInteractivity}
-                  onClick={() => this.sendData(checkedData)}
+          <Button
+            text={submit.btnLabel}
+            type="action"
+            isLoading={disableInteractivity}
+            onClick={() => this.placeOrder(checkedData)}
           />
         </div>
       </div>;

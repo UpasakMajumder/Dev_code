@@ -32,7 +32,7 @@ class NewAddressDialog extends Component {
   };
 
   render () {
-    const { isDialogOpen, closeDialog, ui } = this.props;
+    const { closeDialog, ui } = this.props;
 
     const footer = (
       <div className="btn-group btn-group--right">
@@ -83,22 +83,18 @@ class NewAddressDialog extends Component {
       </table>
     );
 
-    return isDialogOpen
-      ?
-      (
-        <Dialog
-          closeDialog={closeDialog}
-          hasCloseBtn={true}
-          title={ui.title}
-          body={body}
-          footer={footer}
-        />
-      )
-      : null;
+    return (
+      <Dialog
+        closeDialog={closeDialog}
+        hasCloseBtn={true}
+        title={ui.title}
+        body={body}
+        footer={footer}
+      />
+    );
   }
 
   static propTypes = {
-    isDialogOpen: PropTypes.bool.isRequired,
     address: PropTypes.shape({
       customerName: PropTypes.string,
       address1: PropTypes.string,

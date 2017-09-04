@@ -294,6 +294,9 @@ export const sendData = (data) => {
     };
 
     const dev = () => {
+      //TODO
+      console.log('Sending data...', { ...data });
+
       setTimeout(() => {
         dispatch({ type: APP_LOADING + FINISH });
       }, 2000);
