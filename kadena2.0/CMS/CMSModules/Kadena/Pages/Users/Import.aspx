@@ -5,7 +5,7 @@
     <div class="form-horizontal">
         <div class="form-group" style="margin-bottom: 2rem">
             <h4>Download template</h4>
-            <asp:HyperLink Text="Download" CssClass="btn btn-default" ID="btnDownloadTemplate" Target="_blank" runat="server" style="color: black" />
+            <asp:Button Text="Upload" CssClass="btn btn-default" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
         </div>
         <div class="form-group">
             <h4>Upload file</h4>
@@ -26,6 +26,12 @@
         </div>
     </div>
     <script>
+        window.document.getElementById('btnDownloadTemplate').addEventListener('click', function () {
+            // hide loader
+            window.setTimeout(function () { window.Loader.hide(); }, 2000);
+        }, false);
+
+        // display name of selected file in textbox and enable upload
         function onImportFileSelected(e) {
             var files = e.target.files;
             if (files) {

@@ -19,7 +19,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink btnDownloadTemplate;
+        protected global::System.Web.UI.WebControls.Button btnDownloadTemplate;
         
         /// <summary>
         /// importFile control.

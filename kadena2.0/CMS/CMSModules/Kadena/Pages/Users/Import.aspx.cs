@@ -1,4 +1,5 @@
 ﻿using CMS.UIControls;
+using Kadena.Old_App_Code.Kadena.Imports.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,29 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class Import : CMSPage
     {
-        private readonly string importTemplateFile = "~/Resources/UserImportTemplate.xlsx";
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            Setup();
-        }
-
-        private void Setup()
-        {
-            btnDownloadTemplate.NavigateUrl = importTemplateFile;
-        }
-
         protected void btnUploadUserList_Click(object sender, EventArgs e)
         {
             var file = importFile.PostedFile;
 
             // TODO: invoke processing of import file
+        }
+
+        protected void btnDownloadTemplate_Click(object sender, EventArgs e)
+        {
+            var bytes = new UserImportService().GetTemplateFile();
+            var templateFileName = "users-upload-template.xlsx";
+
+            WriteFileToResponse(templateFileName, bytes);
+        }
+
+        private void WriteFileToResponse(string filename, byte[] data)
+        {
+            Response.Clear();
+            Response.ContentType = "application/octet-stream";
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + filename);
+            Response.OutputStream.Write(data, 0, data.Length);
+            Response.Flush();
+            Response.Close();
         }
     }
 }
