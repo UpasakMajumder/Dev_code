@@ -9,6 +9,7 @@ using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
 using Kadena.Dto.Product;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -48,7 +49,18 @@ namespace Kadena.WebAPI.Controllers
         [AuthorizationFilter]
         public async Task<IHttpActionResult> GetDeliveryTotals()
         {
-            var deliveryTotals = await service.GetDeliveryAndTotals();
+            var deliveryTotals = await service.GetDeliveryAndTotals(null);
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotalsDto);
+        }
+
+        [HttpPost]
+        [Route("api/deliverytotals")]
+        [AuthorizationFilter]
+        public async Task<IHttpActionResult> GetDeliveryTotals([FromBody] DeliveryAddressDTO postedAddress)
+        {
+            var address = mapper.Map<DeliveryAddress>(postedAddress);
+            var deliveryTotals = await service.GetDeliveryAndTotals(address);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }

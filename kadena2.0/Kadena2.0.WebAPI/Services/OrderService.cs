@@ -305,7 +305,7 @@ namespace Kadena.WebAPI.Services
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
-            totals.TotalTax = await taxService.EstimateTotalTax();
+            totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             if (string.IsNullOrWhiteSpace(customer.Company))
             {

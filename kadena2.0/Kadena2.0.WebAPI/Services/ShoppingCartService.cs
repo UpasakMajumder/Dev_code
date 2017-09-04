@@ -173,7 +173,7 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
+        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress)
         {
             var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
@@ -194,7 +194,7 @@ namespace Kadena.WebAPI.Services
 
             if (kenticoUsers.UserCanSeePrices())
             {
-                await UpdateTotals(result);
+                await UpdateTotals(result, deliveryAddress);
             }
 
             SetPricesVisibility(result);
@@ -231,12 +231,12 @@ namespace Kadena.WebAPI.Services
             return deliveryMethods;
         }
 
-        private async Task UpdateTotals(CheckoutPageDeliveryTotals page)
+        private async Task UpdateTotals(CheckoutPageDeliveryTotals page, DeliveryAddress deliveryAddress)
         {
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
             var shoppingCartTotals = kenticoProvider.GetShoppingCartTotals();
-            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax();
+            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
             totals.Items = new Total[]
             {
                 new Total()
