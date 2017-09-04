@@ -287,19 +287,25 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(DeliveryAddress deliveryAddress, int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(DeliveryAddress deliveryInfo, int deliveryMethodId, int paymentMethodId, string invoice)
         {
             DeliveryAddress shippingAddress;
-            if (deliveryAddress == null || deliveryAddress.Id > 0)
+            var customer = kenticoUsers.GetCurrentCustomer(); ;
+            if (deliveryInfo == null || deliveryInfo.Id > 0)
             {
                 shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             }
             else
             {
-                shippingAddress = deliveryAddress;
+                shippingAddress = deliveryInfo;
+                customer.FirstName = deliveryInfo.CustomerName;
+                customer.LastName = string.Empty;
+                customer.Email = deliveryInfo.Email;
+                customer.Phone = deliveryInfo.Phone;
+                customer.CustomerNumber = string.Empty;
+                customer.Company = string.Empty;
             }
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
-            var customer = kenticoUsers.GetCurrentCustomer();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();
