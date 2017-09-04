@@ -51,6 +51,11 @@ namespace Kadena.WebAPI.Services
             var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
             var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
 
+            var otherAddressSettingValue = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
+
+            bool otherAddressAvailable = false;
+            bool.TryParse(otherAddressSettingValue, out otherAddressAvailable);
+
             var checkoutPage = new CheckoutPage()
             {
                 EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
@@ -67,7 +72,7 @@ namespace Kadena.WebAPI.Services
                 DeliveryAddresses = new DeliveryAddresses()
                 {
                     IsDeliverable = true,
-                    AvailableToAdd = true,
+                    AvailableToAdd = otherAddressAvailable,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
                     NewAddress = new NewAddressButton()
                     {
