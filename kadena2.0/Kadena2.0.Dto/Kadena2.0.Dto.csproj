@@ -75,6 +75,7 @@
     <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPriceResponseDto.cs" />
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
+    <Compile Include="InventoryUpdate\MicroserviceResponses\InventoryDataItemDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
