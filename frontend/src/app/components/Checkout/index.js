@@ -71,7 +71,11 @@ class Checkout extends Component {
       const data = { ...checkedData };
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
-      if (checkedData.deliveryAddress === -1) data.deliveryAddress = checkout.newAddress;
+      if (checkedData.deliveryAddress === -1) {
+        data.deliveryAddress = checkout.newAddress;
+      } else {
+        data.deliveryAddress = { id: data.deliveryAddress };
+      }
 
       sendData(data);
     }
