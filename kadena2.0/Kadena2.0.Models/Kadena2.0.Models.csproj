@@ -43,6 +43,7 @@
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\CartButton.cs" />
+    <Compile Include="Checkout\CartEmptyInfo.cs" />
     <Compile Include="Checkout\CartItem.cs" />
     <Compile Include="Checkout\CartItems.cs" />
     <Compile Include="Checkout\CartItemsPreview.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
+    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="KenticoSite.cs" />
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />

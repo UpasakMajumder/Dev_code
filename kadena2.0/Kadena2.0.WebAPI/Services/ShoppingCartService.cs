@@ -7,8 +7,8 @@ using Kadena.WebAPI.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Models.Product;
+using Kadena.WebAPI.Factories.Checkout;
 using Kadena.Models.Settings;
 
 namespace Kadena.WebAPI.Services
@@ -22,6 +22,7 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
+        private readonly ICheckoutPageFactory checkoutfactory;
 
         public ShoppingCartService(IMapper mapper,
                                    IKenticoProviderService kenticoProvider,
@@ -29,7 +30,8 @@ namespace Kadena.WebAPI.Services
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
-                                   IKenticoLogger kenticoLog)
+                                   IKenticoLogger kenticoLog,
+                                   ICheckoutPageFactory checkoutfactory)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -38,6 +40,7 @@ namespace Kadena.WebAPI.Services
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
             this.kenticoLog = kenticoLog;
+            this.checkoutfactory = checkoutfactory;
         }
 
         public CheckoutPage GetCheckoutPage()
@@ -50,6 +53,7 @@ namespace Kadena.WebAPI.Services
 
             var checkoutPage = new CheckoutPage()
             {
+                EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
                 Products = new CartItems()
                 {
                     Number = $"You have {cartItems.Length} {items} in your shopping cart",
@@ -94,7 +98,6 @@ namespace Kadena.WebAPI.Services
             };
 
             CheckCurrentOrDefaultAddress(checkoutPage);
-
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.SetDisplayType();
