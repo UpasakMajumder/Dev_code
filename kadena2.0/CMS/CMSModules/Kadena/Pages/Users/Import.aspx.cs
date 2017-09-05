@@ -11,16 +11,19 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class Import : CMSPage
     {
+        private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
+
         protected void btnUploadUserList_Click(object sender, EventArgs e)
         {
             var file = importFile.PostedFile;
 
-            // TODO: invoke processing of import file
+            // TODO:
+            // new UserImportService().ProcessImportFile()
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserImportService().GetTemplateFile();
+            var bytes = new UserImportService().GetTemplateFile(SelectedSiteID);
             var templateFileName = "users-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
@@ -31,8 +34,10 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             Response.Clear();
             Response.ContentType = "application/octet-stream";
             Response.AddHeader("Content-Disposition", "attachment; filename=" + filename);
+
             Response.OutputStream.Write(data, 0, data.Length);
             Response.Flush();
+
             Response.Close();
         }
     }

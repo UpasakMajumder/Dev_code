@@ -1,11 +1,16 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Import.aspx.cs" Inherits="Kadena.CMSModules.Kadena.Pages.Users.Import"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Users - Send E-mail" Theme="Default" %>
-
+<%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
+    TagPrefix="cms" %>
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
         <div class="form-group" style="margin-bottom: 2rem">
+            <label class="control-label" for="siteSelector" style="text-align:left">site:</label>
+            <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
+        </div>
+        <div class="form-group" style="margin-bottom: 2rem">
             <h4>Download template</h4>
-            <asp:Button Text="Upload" CssClass="btn btn-default" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
+            <asp:Button Text="Download" CssClass="btn btn-default" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
         </div>
         <div class="form-group">
             <h4>Upload file</h4>
