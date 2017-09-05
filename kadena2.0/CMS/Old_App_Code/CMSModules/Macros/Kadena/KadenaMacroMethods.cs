@@ -214,7 +214,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 for (int i = 1; i <= kitList.Count; i++)
                 {
                     var node = kitList[i - 1];
-                    if (node.NodeID != originalNodeID && !node.IsLink)
+                    if (node.NodeID != originalNodeID && !node.IsLink && node.NodeSiteID == SiteContext.CurrentSiteID)
                     {
                         result += string.Format(itemTemplate, i, node.DocumentName, node.NodeID);
                     }
