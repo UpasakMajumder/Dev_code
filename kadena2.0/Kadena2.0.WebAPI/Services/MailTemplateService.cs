@@ -1,5 +1,4 @@
 ﻿using Kadena.WebAPI.Contracts;
-using AutoMapper;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models;
 
@@ -7,22 +6,16 @@ namespace Kadena.WebAPI.Services
 {
     public class MailTemplateService : IMailTemplateService
     {
-        private readonly IMapper mapper;
-        private readonly IKenticoResourceService resources;
-        private readonly IKenticoSearchService kenticoSearch;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoMailProvider kenticoMail;
 
-        public MailTemplateService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, IKenticoProviderService kenticoProvider)
+        public MailTemplateService(IKenticoMailProvider kenticoMail)
         {
-            this.mapper = mapper;
-            this.resources = resources;
-            this.kenticoSearch = kenticoSearch;
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoMail = kenticoMail;
         }
 
         public MailTemplate GetMailTemplate(string templateId)
         {
-            return null;
+            return kenticoMail.GetMailTemplate(templateId);
         }
     }
 }

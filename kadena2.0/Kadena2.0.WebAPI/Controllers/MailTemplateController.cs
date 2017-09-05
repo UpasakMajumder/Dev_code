@@ -3,7 +3,8 @@ using System.Web.Http;
 using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.Dto.MailTemplate;
+using Kadena.Dto.MailTemplate.Requests;
+using Kadena.Dto.MailTemplate.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -30,11 +31,11 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/mailtemplate")]
-        public IHttpActionResult GetMailTemplate([FromBody] string templateId)
+        public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
         {
-            var result = service.GetMailTemplate(templateId);
+            var result = service.GetMailTemplate(request.TemplateId);
             var resultDto = mapper.Map<MailTemplateDto>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {templateId}");
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateId}");
         }
     }
 }

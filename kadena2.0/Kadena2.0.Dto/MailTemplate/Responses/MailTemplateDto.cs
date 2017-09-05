@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.MailTemplate
+﻿namespace Kadena.Dto.MailTemplate.Responses
 {
     public class MailTemplateDto
     {

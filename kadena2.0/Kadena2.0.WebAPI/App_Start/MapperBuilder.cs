@@ -4,7 +4,7 @@ using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Dto.MailTemplate;
+using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Product;
 using Kadena.Dto.RecentOrders;
