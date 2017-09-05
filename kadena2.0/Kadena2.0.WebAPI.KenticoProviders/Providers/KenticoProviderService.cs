@@ -1,6 +1,5 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
-using AutoMapper;
 using System.Linq;
 using CMS.SiteProvider;
 using CMS.Helpers;
@@ -702,6 +701,19 @@ namespace Kadena.WebAPI.KenticoProviders
             var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
 
             return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
+        }
+
+        public void SetSkuAvailableQty(string skunumber, int availableItems)
+        {
+            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = availableItems;
+                sku.SubmitChanges(false);
+                sku.MakeComplete(true);
+                sku.Update();
+            }
         }
     }
 }
