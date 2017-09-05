@@ -1,6 +1,8 @@
 ﻿using CMS.EmailEngine;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
+using System.Text;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -13,7 +15,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return template == null ? null : new MailTemplate()
             {
                 From = template.TemplateFrom,
-                BodyHtml = template.TemplateText,
+                BodyHtml = Convert.ToBase64String( Encoding.UTF8.GetBytes(template.TemplateText ?? string.Empty)),
                 BodyPlain = template.TemplatePlainText,
                 Subject = template.TemplateSubject
             };
