@@ -715,5 +715,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 sku.Update();
             }
         }
+
+        public IEnumerable<Country> GetCountries()
+        {
+            return CountryInfoProvider
+                .GetCountries()
+                .Column("CountryName")
+                .Select(s => new Country
+                {
+                    Name = s["CountryName"].ToString()
+                });
+        }
     }
 }

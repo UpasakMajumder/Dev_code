@@ -6,6 +6,7 @@ namespace Kadena.Models.Checkout
     public class DeliveryAddresses
     {
         public bool IsDeliverable { get; set; }
+        public bool AvailableToAdd { get; set; }
         public string UnDeliverableText { get; set; }
 
         public string Title { get; set; }
@@ -16,6 +17,8 @@ namespace Kadena.Models.Checkout
         public List<DeliveryAddress> items { get; set; }
 
         public string EmptyMessage { get; set; }
+
+        public AddressDialog DialogUI { get; set; }
 
         public void CheckAddress(int id)
         {

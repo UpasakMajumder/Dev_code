@@ -1,8 +1,9 @@
 import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, CHECKOUT_STATIC,
-  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING } from 'app.consts';
+  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING, ADD_NEW_ADDRESS } from 'app.consts';
 
 const defaultState = {
   ui: {},
+  newAddress: {},
   checkedData: {
     deliveryAddress: 0,
     deliveryMethod: 0,
@@ -20,6 +21,7 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
+  const items = []; // for ADD_NEW_ADDRESS + SUCCESS
 
   switch (type) {
   case CHECKOUT_STATIC + INIT_UI + SUCCESS:
@@ -32,6 +34,32 @@ export default (state = defaultState, action) => {
       }
     };
 
+  case ADD_NEW_ADDRESS + SUCCESS:
+    state.ui.deliveryAddresses.items.forEach((item) => {
+      if (item.id !== payload.id) {
+        items.push({
+          ...item,
+          checked: false
+        });
+      }
+    });
+
+    items.push({
+      ...payload,
+      checked: true
+    });
+
+    return {
+      ...state,
+      newAddress: payload,
+      ui: {
+        ...state.ui,
+        deliveryAddresses: {
+          ...state.ui.deliveryAddresses,
+          items
+        }
+      }
+    };
 
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {

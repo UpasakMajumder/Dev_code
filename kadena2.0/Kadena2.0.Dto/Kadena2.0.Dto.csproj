@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\CartButtonDTO.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
