@@ -33,9 +33,9 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/mailtemplate")]
         public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
         {
-            var result = service.GetMailTemplate(request.TemplateId);
+            var result = service.GetMailTemplate(request.TemplateName);
             var resultDto = mapper.Map<MailTemplateDto>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateId}");
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateName}");
         }
     }
 }

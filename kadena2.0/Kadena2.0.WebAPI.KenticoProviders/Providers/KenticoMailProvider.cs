@@ -8,9 +8,9 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoMailProvider : IKenticoMailProvider
     {
-        public MailTemplate GetMailTemplate(string templateId)
+        public MailTemplate GetMailTemplate(string templateName)
         {
-            var template = EmailTemplateProvider.GetEmailTemplates().WhereEquals("EmailTemplateName", templateId).FirstObject;
+            var template = EmailTemplateProvider.GetEmailTemplates().WhereEquals("EmailTemplateName", templateName).FirstObject;
 
             return template == null ? null : new MailTemplate()
             {
