@@ -24,16 +24,32 @@ namespace AutomatedTests.PageObjectsKentico
         private IWebElement Price { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "#m_c_productEditElem_f_ProductType_list>label")]
-        private IList<IWebElement> ProductTypes { get; set; }
+        private IList<IWebElement> ProductTypesCheckboxes { get; set; }
 
         [FindsBy(How = How.CssSelector, Using = "[value=Save]")]
         private IWebElement SaveButton { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#field_SKUImagePath input")]
+        private IWebElement UploadImageBtn { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = "#field_SKUWeight input")]
+        private IWebElement Weight { get; set; }
 
         public NewProductForm()
         {
             PageFactory.InitElements(Browser.Driver, this);
         }
 
+        public enum ProductTypes
+        {
+            Static,
+            Inventory,
+            POD,
+            Mailing,
+            Templated,
+            WithAddons
+        }
+        
         public void SwitchToContentViewFrame()
         {
             ContentViewFrame.SwitchToIframe();
@@ -43,12 +59,14 @@ namespace AutomatedTests.PageObjectsKentico
         /// Fills out fields in the product form
         /// </summary>
         /// <param name="productName"></param>
-        public void FillOutFields(string productName)
+        public void FillOutFieldsForStatic(string productName)
         {
             ProductName.EnterText(productName);
             SkuNumber.EnterText(Lorem.RandomNumber(10000,99999).ToString());
-            Price.EnterText(Lorem.RandomNumber(100, 999).ToString());
-            ProductTypes[2].ClickElement();            
+            Price.EnterText(Lorem.RandomNumber(100, 999).ToString());            
+            ProductTypesCheckboxes[(int)ProductTypes.Static].ClickElement();
+            SelectImage();
+            Weight.EnterText("0.1");
         }
 
         /// <summary>
@@ -57,6 +75,15 @@ namespace AutomatedTests.PageObjectsKentico
         public void SaveForm()
         {
             SaveButton.ClickElement();
+        }
+
+        /// <summary>
+        /// Sends path to image to the image input field
+        /// </summary>
+        public void SelectImage()
+        {
+            string path = TestEnvironment.TestPath + "\\TestFiles\\testpicture.jpg";
+            UploadImageBtn.SendText(path);
         }
     }
 }
