@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.Controllers
         [AuthorizationFilter]
         public async Task<IHttpActionResult> GetDeliveryTotals()
         {
-            var deliveryTotals = await service.GetDeliveryAndTotals(null);
+            var deliveryTotals = await service.GetDeliveryAndTotals();
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }

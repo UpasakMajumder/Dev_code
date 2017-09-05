@@ -181,7 +181,7 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress)
+        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null)
         {
             var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
