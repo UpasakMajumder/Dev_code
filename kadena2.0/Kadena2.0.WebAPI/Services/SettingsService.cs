@@ -44,6 +44,7 @@ namespace Kadena.WebAPI.Services
                 Shipping = new AddressList
                 {
                     Title = _resources.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
+                    AllowAddresses = 3,
                     AddButton = new PageButton
                     {
                         Exists = true,
