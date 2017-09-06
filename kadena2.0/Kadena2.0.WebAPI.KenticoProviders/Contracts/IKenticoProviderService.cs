@@ -21,7 +21,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         PaymentMethod GetPaymentMethod(int id);
 
-        void SetShoppingCartAddres(int addressId);
+        void SetShoppingCartAddress(int addressId);
+
+        void SetShoppingCartAddress(DeliveryAddress address);
 
         void SelectShipping(int shippingOptionsId);
 
