@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Services
                     Title = _resources.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
                     AddButton = new PageButton
                     {
-                        Exists = false,
+                        Exists = true,
                         Text = _resources.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
                     EditButton = new PageButton
