@@ -11,7 +11,7 @@ const Select = (props) => {
   const errorClass = error ? 'input--error' : '';
   const optionalLabel = isOptional ? <span className="input__right-label">optional</span> : null;
   const optionList = options.map(option => <option key={option} value={option}>{option}</option>);
-  const placeholer = label ? <option disabled={true} selected={value ? false : true}>{label}</option> : null;
+  const placeholer = label ? <option disabled={true} selected={!value}>{label}</option> : null;
 
   return (
     <div className={className}>
