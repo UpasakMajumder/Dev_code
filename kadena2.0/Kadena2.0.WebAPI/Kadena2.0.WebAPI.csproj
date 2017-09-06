@@ -117,6 +117,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
+    <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
+    <Compile Include="Controllers\FavoritesController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\FavoritesService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />
