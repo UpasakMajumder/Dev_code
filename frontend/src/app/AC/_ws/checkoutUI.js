@@ -76,7 +76,7 @@ export const staticUI = {
         "fields": [
           {
             "id": "customerName",
-            "label": "Name",
+            "label": "Customer Name",
             "values": [],
             "type": "text"
           },

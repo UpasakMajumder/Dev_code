@@ -88,8 +88,7 @@ class Checkout extends Component {
     let deliveryAddress = 0;
     let deliveryMethod = 0;
     let paymentMethod = {
-      id: 0,
-      invoice: ''
+      id: 0
     };
 
     if (deliveryAddresses.isDeliverable) {
@@ -111,7 +110,7 @@ class Checkout extends Component {
     }
 
     paymentMethods.items.forEach((method) => {
-      if (method.checked) paymentMethod = { id: method.id, invoice: '' };
+      if (method.checked) paymentMethod = { id: method.id };
     });
 
     initCheckedShoppingData({
@@ -136,13 +135,18 @@ class Checkout extends Component {
 
   render() {
     const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
-    const { ui, checkedData, isSending, addedDataId } = checkout;
+    const { ui, checkedData, isSending, addedDataId, newAddress } = checkout;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
       const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
+
+      // add newly created address into list of addresses from Kentico with
+      if (Object.keys(newAddress).length > 0 && !deliveryAddresses.items.find(addr => addr.id === -1)) {
+        deliveryAddresses.items = [...deliveryAddresses.items, newAddress];
+      }
 
       // cart is empty
       if (!ui.products.items.length) {
