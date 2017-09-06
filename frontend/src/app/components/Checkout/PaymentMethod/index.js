@@ -35,6 +35,7 @@ class PaymentMethod extends Component {
     const methods = items.map((item) => {
       let className = 'input__wrapper input__wrapper--icon-label';
       if (item.hasInput) className += ' cart-fill__block-input-wrapper';
+
       return (
         <Method changeShoppingData={changeShoppingData}
                 checkedObj={checkedObj}

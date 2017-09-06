@@ -21,7 +21,6 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
-  const items = []; // for ADD_NEW_ADDRESS + SUCCESS
 
   switch (type) {
   case CHECKOUT_STATIC + INIT_UI + SUCCESS:
@@ -34,32 +33,12 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case ADD_NEW_ADDRESS + SUCCESS:
-    state.ui.deliveryAddresses.items.forEach((item) => {
-      if (item.id !== payload.id) {
-        items.push({
-          ...item,
-          checked: false
-        });
-      }
-    });
-
-    items.push({
-      ...payload,
-      checked: true
-    });
-
+  case ADD_NEW_ADDRESS + SUCCESS: {
     return {
       ...state,
-      newAddress: payload,
-      ui: {
-        ...state.ui,
-        deliveryAddresses: {
-          ...state.ui.deliveryAddresses,
-          items
-        }
-      }
+      newAddress: payload
     };
+  }
 
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
@@ -84,7 +63,8 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       checkedData: {
-        deliveryAddress: payload.deliveryAddress,
+        // don't override New Address selection with Kentico state
+        deliveryAddress: state.checkedData.deliveryAddress === -1 ? state.checkedData.deliveryAddress : payload.deliveryAddress,
         deliveryMethod: payload.deliveryMethod,
         paymentMethod: payload.paymentMethod
       }
