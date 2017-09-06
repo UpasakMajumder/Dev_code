@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BillingAddress.cs" />
+    <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\CartButton.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />
     <Compile Include="Checkout\CartItem.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Country.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />

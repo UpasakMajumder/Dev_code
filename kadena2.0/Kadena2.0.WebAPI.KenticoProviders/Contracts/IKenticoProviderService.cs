@@ -49,6 +49,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         IEnumerable<State> GetStates();
 
+        IEnumerable<Country> GetCountries();
+
         void SaveShippingAddress(DeliveryAddress address);
 
         string GetShippingProviderIcon(string title);

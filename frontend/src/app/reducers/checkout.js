@@ -1,8 +1,9 @@
 import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, CHECKOUT_STATIC,
-  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING } from 'app.consts';
+  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING, ADD_NEW_ADDRESS } from 'app.consts';
 
 const defaultState = {
   ui: {},
+  newAddress: {},
   checkedData: {
     deliveryAddress: 0,
     deliveryMethod: 0,
@@ -32,6 +33,12 @@ export default (state = defaultState, action) => {
       }
     };
 
+  case ADD_NEW_ADDRESS + SUCCESS: {
+    return {
+      ...state,
+      newAddress: payload
+    };
+  }
 
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
@@ -56,7 +63,8 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       checkedData: {
-        deliveryAddress: payload.deliveryAddress,
+        // don't override New Address selection with Kentico state
+        deliveryAddress: state.checkedData.deliveryAddress === -1 ? state.checkedData.deliveryAddress : payload.deliveryAddress,
         deliveryMethod: payload.deliveryMethod,
         paymentMethod: payload.paymentMethod
       }
