@@ -27,6 +27,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             // TODO: process data
         }
 
+        public ExcelType GetExcelTypeFromFileName(string fileName)
+        {
+            if (fileName.EndsWith(".xlsx", System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                return ExcelType.Xlsx;
+            }
+            else
+            {
+                return ExcelType.Xls;
+            }
+        }
+
         private string[] GetColumns()
         {
             return new[]

@@ -1,24 +1,38 @@
-﻿using CMS.UIControls;
+﻿using CMS.EventLog;
+using CMS.UIControls;
 using Kadena.Old_App_Code.Kadena.Imports.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class Import : CMSPage
     {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            HideErrorMessage();
+        }
+
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
 
         protected void btnUploadUserList_Click(object sender, EventArgs e)
         {
-            var file = importFile.PostedFile;
+            var importService = new UserImportService();
 
-            // TODO:
-            // new UserImportService().ProcessImportFile()
+            var file = importFile.PostedFile;
+            var fileData = ReadFileFromRequest(file);
+            var excelType = importService.GetExcelTypeFromFileName(file.FileName);
+
+            try
+            {
+                importService.ProcessImportFile(fileData, excelType, SelectedSiteID);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
+            }
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
@@ -27,6 +41,14 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             var templateFileName = "users-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
+        }
+
+        private byte[] ReadFileFromRequest(HttpPostedFile fileRequest)
+        {
+            using (var binaryReader = new BinaryReader(fileRequest.InputStream))
+            {
+                return binaryReader.ReadBytes(fileRequest.ContentLength);
+            }
         }
 
         private void WriteFileToResponse(string filename, byte[] data)
@@ -39,6 +61,17 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             Response.Flush();
 
             Response.Close();
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            errorMessageContainer.Visible = true;
+            errorMessage.Text = message;
+        }
+
+        private void HideErrorMessage()
+        {
+            errorMessageContainer.Visible = false;
         }
     }
 }

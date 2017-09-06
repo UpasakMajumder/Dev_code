@@ -29,6 +29,17 @@
                 <asp:Button Text="Upload" CssClass="btn btn-default" ClientIDMode="Static" Enabled="false" ID="btnUploadUserList" OnClick="btnUploadUserList_Click" runat="server" />
             </div>
         </div>
+        
+        <asp:PlaceHolder runat="server" ID="errorMessageContainer" Visible="false">
+            <div class="alert-dismissable alert-error alert">
+            <span class="alert-icon">
+                <i class="icon-times-circle"></i>
+                <span class="sr-only">Error</span>
+            </span>
+            <div class="alert-label"><asp:Literal runat="server" ID="errorMessage"></asp:Literal></div>
+        </div>
+        </asp:PlaceHolder>
+
     </div>
     <script>
         window.document.getElementById('btnDownloadTemplate').addEventListener('click', function () {
