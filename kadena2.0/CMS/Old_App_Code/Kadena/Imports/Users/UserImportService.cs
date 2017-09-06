@@ -7,11 +7,14 @@ using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserImportService
     {
+        private static readonly int MaxRowsPerSheet = 1024 * 1024;
+
         public byte[] GetTemplateFile(int siteID)
         {
             var columns = GetColumns();
@@ -67,13 +70,46 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         {
             // create workbook
             IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("User");
-            var row = sheet.CreateRow(0);
+            var sheet = workbook.CreateSheet("Users");
+            CreateSheetHeader(columns, sheet);
 
-            var font = workbook.CreateFont();
-            font.IsBold = true;
-            var style = workbook.CreateCellStyle();
-            style.SetFont(font);
+            // add validation for roles
+            var rolesColumnIndex = columns.Length - 1;
+            AddRolesValidation(rolesColumnIndex, roles, sheet);
+
+            using (var ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                var bytes = ms.ToArray();
+                return bytes;
+            }
+        }
+
+        private void AddRolesValidation(int rolesColumnIndex, string[] roles, ISheet sheet)
+        {
+            var workbook = sheet.Workbook;
+            var rolesSheet = workbook.CreateSheet("Roles");
+            workbook.SetSheetHidden(1, SheetState.VeryHidden);
+            for (int i = 0; i < roles.Length; i++)
+            {
+                rolesSheet.CreateRow(i)
+                    .CreateCell(0)
+                    .SetCellValue(roles[i]);
+            }
+
+            var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
+            var validationHelper = sheet.GetDataValidationHelper();
+            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A1:$A" + roles.Length);
+            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
+            validation.ShowErrorBox = true;
+            validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
+            sheet.AddValidationData(validation);
+        }
+
+        private static void CreateSheetHeader(string[] columns, ISheet sheet)
+        {
+            var row = sheet.CreateRow(0);
+            var style = CreateHeaderStyle(sheet.Workbook);
             var charWidth = 256;
             var minimalColumnWidth = charWidth * 18;
 
@@ -89,33 +125,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                     sheet.SetColumnWidth(i, minimalColumnWidth);
                 }
             }
+        }
 
-            // add validation for roles
-            var rolesSheet = workbook.CreateSheet("Roles");
-            workbook.SetSheetHidden(1, SheetState.VeryHidden);
-            for (int i = 0; i < roles.Length; i++)
-            {
-                rolesSheet.CreateRow(i)
-                    .CreateCell(0)
-                    .SetCellValue(roles[i]);
-            }
-
-            var rolesColumnIndex = columns.Length - 1;
-            var maxRowsPerSheet = 1024 * 1024;
-            var addressList = new CellRangeAddressList(1, maxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
-            var validationHelper = sheet.GetDataValidationHelper();
-            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A1:$A" + roles.Length);
-            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
-            validation.ShowErrorBox = true;
-            validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
-            sheet.AddValidationData(validation);
-
-            using (var ms = new MemoryStream())
-            {
-                workbook.Write(ms);
-                var bytes = ms.ToArray();
-                return bytes;
-            }
+        private static ICellStyle CreateHeaderStyle(IWorkbook workbook)
+        {
+            var font = workbook.CreateFont();
+            font.IsBold = true;
+            var style = workbook.CreateCellStyle();
+            style.SetFont(font);
+            return style;
         }
 
         /// <summary>
