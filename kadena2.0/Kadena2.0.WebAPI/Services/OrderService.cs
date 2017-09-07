@@ -239,7 +239,19 @@ namespace Kadena.WebAPI.Services
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            var orderData = await GetSubmitOrderData(request.DeliveryAddress, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+            Customer customer = null;
+            if ((request?.DeliveryAddress?.Id ?? 0) < 0)
+            {
+                kenticoProvider.SetShoppingCartAddress(request.DeliveryAddress);
+                customer = new Customer
+                {
+                    FirstName = request.DeliveryAddress.CustomerName,
+                    Email = request.DeliveryAddress.Email,
+                    Phone = request.DeliveryAddress.Phone
+                };
+            }
+
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -287,24 +299,10 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(DeliveryAddress deliveryInfo, int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice)
         {
-            DeliveryAddress shippingAddress;
-            var customer = kenticoUsers.GetCurrentCustomer();
-            if (deliveryInfo == null || deliveryInfo.Id > 0)
-            {
-                shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
-            }
-            else
-            {
-                shippingAddress = deliveryInfo;
-                customer.FirstName = deliveryInfo.CustomerName;
-                customer.LastName = string.Empty;
-                customer.Email = deliveryInfo.Email;
-                customer.Phone = deliveryInfo.Phone;
-                customer.CustomerNumber = string.Empty;
-                customer.Company = string.Empty;
-            }
+            var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
+            var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
