@@ -1,21 +1,32 @@
 ﻿using CMS.CustomTables;
 using CMS.Membership;
-using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
-using Kadena.Models.Favorites;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System;
-using System.Linq;
+
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoFavoritesProvider : IKenticoFavoritesProvider
     {
+        private readonly string CustomTableName = "KDA.FavoriteProducts";
+
         public void SetFavoriteProduct(int productDocumentId)
         {
             var existingRecord = GetFavoriteRecord(SiteContext.CurrentSiteID, MembershipContext.AuthenticatedUser.UserID, productDocumentId );
 
-            CustomTableItemProvider.SetItem
+            if (existingRecord != null)
+            {
+                existingRecord.Update();
+            }
+            else
+            {
+                var newItem = CustomTableItem.New(CustomTableName);
+                newItem.SetValue("ItemSiteID", SiteContext.CurrentSiteID);
+                newItem.SetValue("ItemUserID", MembershipContext.AuthenticatedUser.UserID);
+                newItem.SetValue("ItemDocumentID", productDocumentId);
+                newItem.SetValue("ItemOrder", 1);
+                newItem.Insert();
+            }
         }
 
         public void UnsetFavoriteProduct(int productDocumentId)
@@ -30,7 +41,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CustomTableItem GetFavoriteRecord(int siteId, int userId, int productDocumentId)
         {
-            return CustomTableItemProvider.GetItems("KDA.FavoriteProducts")
+            return CustomTableItemProvider.GetItems(CustomTableName)
                 .WhereEquals("ItemSiteID", siteId)
                 .WhereEquals("ItemUserID", userId)
                 .WhereEquals("ItemDocumentID", productDocumentId)
