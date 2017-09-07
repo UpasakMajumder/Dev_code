@@ -184,6 +184,8 @@ namespace Kadena.WebAPI.Services
 
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null)
         {
+            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+
             var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
@@ -288,7 +290,7 @@ namespace Kadena.WebAPI.Services
                 int defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
                 if (defaultAddressId != 0)
                 {
-                    kenticoProvider.SetShoppingCartAddres(defaultAddressId);
+                    kenticoProvider.SetShoppingCartAddress(defaultAddressId);
                     page.DeliveryAddresses.CheckAddress(defaultAddressId);
                 }
             }
@@ -356,7 +358,7 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage SelectAddress(int id)
         {
-            kenticoProvider.SetShoppingCartAddres(id);
+            kenticoProvider.SetShoppingCartAddress(id);
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
