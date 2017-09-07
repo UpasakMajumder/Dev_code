@@ -198,7 +198,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     var cart = ECommerceContext.CurrentShoppingCart;
                     var state = StateInfoProvider.GetStateInfoByCode(address.State);
-                    var country = GetCountries().FirstOrDefault(c => c.Name.Equals(address.Country));//.GetCountryInfo(address.Country);
+                    var country = GetCountries().FirstOrDefault(c => c.Name.Equals(address.Country));
 
                     var info = new AddressInfo
                     {
