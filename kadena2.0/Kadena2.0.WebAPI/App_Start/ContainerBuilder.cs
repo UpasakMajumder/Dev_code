@@ -25,6 +25,7 @@ namespace Kadena.WebAPI
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IFavoritesService, FavoritesService>();
+            container.Register<IProductsService, ProductsService>();
             return container;
         }
 
@@ -36,6 +37,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoSearchService, KenticoSearchService>();
             container.Register<IKenticoLogger, KenticoLogger>();
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
+            container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             return container;
         }
 

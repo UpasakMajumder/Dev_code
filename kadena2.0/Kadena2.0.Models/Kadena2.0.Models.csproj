@@ -83,8 +83,11 @@
     <Compile Include="OrderDetail\Tracking.cs" />
     <Compile Include="OrderList.cs" />
     <Compile Include="PaymentMethod.cs" />
+    <Compile Include="Product\ProductCategoryLink.cs" />
+    <Compile Include="Product\ProductLink.cs" />
     <Compile Include="Product\Product.cs" />
     <Compile Include="Product\AddToCartResult.cs" />
+    <Compile Include="Product\ProductsPage.cs" />
     <Compile Include="Product\RequestResult.cs" />
     <Compile Include="ProductTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
