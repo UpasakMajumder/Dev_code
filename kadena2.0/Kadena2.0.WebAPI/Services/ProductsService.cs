@@ -1,5 +1,4 @@
 ﻿using Kadena.WebAPI.Contracts;
-using AutoMapper;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
@@ -7,13 +6,10 @@ namespace Kadena.WebAPI.Services
 {
     public class ProductsService : IProductsService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoProductsProvider productsProvider;
-        
 
-        public ProductsService(IMapper mapper, IKenticoProductsProvider products)
+        public ProductsService(IKenticoProductsProvider products)
         {
-            this.mapper = mapper;
             this.productsProvider = products;
         }
 

@@ -6,6 +6,7 @@ using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Product;
+using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.Settings;
@@ -158,6 +159,9 @@ namespace Kadena.WebAPI
                 config.CreateMap<AddToCartResult, AddToCartResultDto>();
                 config.CreateMap<RequestResult, RequestResultDto>();
                 config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
+                config.CreateMap<ProductsPage, GetProductsDto>();
+                config.CreateMap<ProductCategoryLink, ProductCategoryDto>();
+                config.CreateMap<ProductLink, ProductDTO>();
             });
         }
     }

@@ -33,9 +33,10 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/products")]
         [AuthorizationFilter]
-        public IHttpActionResult GetProducts()
+        [QuerystringParameterRequired("url")]
+        public IHttpActionResult GetProducts([FromUri]string url)
         {
-            var result = products.GetProducts("/");
+            var result = products.GetProducts(url);
             var resultDto = mapper.Map<GetProductsDto>(result);
             return ResponseJson(resultDto);
         }
