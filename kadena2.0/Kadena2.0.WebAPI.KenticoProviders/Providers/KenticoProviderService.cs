@@ -720,10 +720,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CountryInfoProvider
                 .GetCountries()
-                .Column("CountryName")
+                .Column("CountryDisplayName")
                 .Select(s => new Country
                 {
-                    Name = s["CountryName"].ToString()
+                    Name = s["CountryDisplayName"].ToString()
                 });
         }
     }
