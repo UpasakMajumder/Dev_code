@@ -33,12 +33,15 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case ADD_NEW_ADDRESS + SUCCESS: {
+  case ADD_NEW_ADDRESS + SUCCESS:
     return {
       ...state,
-      newAddress: payload
+      newAddress: payload,
+      checkedData: {
+        ...state.checkedData,
+        deliveryAddress: -1
+      }
     };
-  }
 
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
@@ -76,10 +79,8 @@ export default (state = defaultState, action) => {
       checkedData: {
         ...state.checkedData,
         [payload.field]: payload.field === 'paymentMethod'
-                          ? { id: payload.id,
-                            invoice: payload.invoice
-                          }
-                          : payload.id
+          ? { id: payload.id, invoice: payload.invoice }
+          : payload.id
       }
     };
 
