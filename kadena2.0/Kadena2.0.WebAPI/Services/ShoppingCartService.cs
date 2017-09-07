@@ -149,7 +149,8 @@ namespace Kadena.WebAPI.Services
                         Id = "state",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.State"),
                         IsOptional = true,
-                        Type = "text"
+                        Type = "select",
+                        Values = kenticoProvider.GetStates().Select(s => (object)s.StateCode).ToList()
                     },
                     new DialogField
                     {
