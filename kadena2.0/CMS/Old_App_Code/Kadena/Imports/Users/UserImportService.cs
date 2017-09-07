@@ -122,8 +122,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             {
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
+            if (!ValidateCountry(userDto.Country))
+            {
+                validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Country), "Not a valid country name or code"));
+            }
 
             return isValid;
+        }
+
+        private bool ValidateCountry(string country)
+        {
+            return FindCountry(country) != null;
         }
 
         private bool ValidateEmail(string email)
@@ -144,12 +153,24 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return roles.Any(r => r.Description == role);
         }
 
+        private CountryInfo FindCountry(string country)
+        {
+            var code = country.ToUpper();
+            return CountryInfoProvider.GetCountries()
+                .WhereStartsWith("CountryDisplayName", country)
+                .Or()
+                .WhereEquals("CountryTwoLetterCode", code)
+                .Or()
+                .WhereEquals("CountryThreeLetterCode", code)
+                .FirstOrDefault();
+        }
+
         private void CreateCustomerAddress(int customerID, UserDto userDto)
         {
-            var country = CountryInfoProvider.GetCountryInfo(userDto.Country);
+            var country = FindCountry(userDto.Country);
             if (country == null)
             {
-                throw new Exception("Invalid country name");
+                throw new Exception("Invalid country");
             }
 
             var newAddress = new AddressInfo
