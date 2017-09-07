@@ -9,40 +9,14 @@ import Address from './Address';
 
 class DeliveryAddress extends Component {
   state = {
-    isDialogOpen: false,
-    address: {
-      customerName: '',
-      street: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      phone: '',
-      email: ''
-    }
+    isDialogOpen: false
   };
 
   toggleDialog = () => {
-    this.setState((prevState) => {
-      return {
-        isDialogOpen: !prevState.isDialogOpen,
-        address: {
-          customerName: '',
-          street: '',
-          city: '',
-          state: '',
-          zip: '',
-          country: '',
-          phone: '',
-          email: ''
-        }
-      };
-    });
+    this.setState(prevState => ({ isDialogOpen: !prevState.isDialogOpen }));
   };
 
-  submit = () => {
-    const { address } = this.state;
-
+  submitNewAddress = (address) => {
     const data = {
       id: -1,
       customerName: address.customerName,
@@ -58,32 +32,27 @@ class DeliveryAddress extends Component {
     this.props.addNewAddress(data, this.props.addedDataId);
   };
 
-  changeInput = (value, field) => {
-    this.setState({
-      address: {
-        ...this.state.address,
-        [field]: value
-      }
-    });
-  };
-
   render() {
-    const { ui, checkedId, changeShoppingData, disableInteractivity } = this.props;
+    const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI } = ui;
 
     const renderAddresses = (item) => {
       return (
         <div key={`da-${item.id}`} className="input__wrapper">
-          <Address disableInteractivity={disableInteractivity}
-                   changeShoppingData={changeShoppingData}
-                   checkedId={checkedId}
-                   {...item}
+          <Address
+            disableInteractivity={disableInteractivity}
+            changeShoppingData={changeShoppingData}
+            checkedId={checkedId}
+            {...item}
           />
         </div>
       );
     };
 
-    const addresses = items.map(renderAddresses);
+    let addresses = items.map(renderAddresses);
+    if (Object.keys(newAddressObject).length > 0) {
+      addresses = [...items, newAddressObject].map(renderAddresses);
+    }
 
     const alert = items.length ? null : <Alert type="grey" text={emptyMessage} />;
 
@@ -97,7 +66,8 @@ class DeliveryAddress extends Component {
         <a
           href={newAddress.url}
           data-dialog="#cart-add-adress"
-          className="btn-action btn-action--secondary js-dialog">
+          className="btn-action btn-action--secondary js-dialog"
+        >
           {newAddress.label}
         </a>
       );
@@ -106,11 +76,9 @@ class DeliveryAddress extends Component {
     return (
       <div>
         {this.state.isDialogOpen && <NewAddressDialog
-          address={this.state.address}
-          submit={this.submit}
+          submit={this.submitNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
-          changeInput={this.changeInput}
         />}
 
         <div>
@@ -150,7 +118,8 @@ DeliveryAddress.propTypes = {
     title: PropTypes.string.isRequired,
     unDeliverableText: PropTypes.string,
     emptyMessage: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  newAddressObject: PropTypes.object
 };
 
 export default DeliveryAddress;
