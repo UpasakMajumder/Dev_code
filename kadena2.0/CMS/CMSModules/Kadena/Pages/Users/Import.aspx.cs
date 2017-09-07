@@ -4,6 +4,7 @@ using Kadena.Old_App_Code.Kadena.Imports.Users;
 using System;
 using System.IO;
 using System.Web;
+using Kadena.Old_App_Code.Kadena.Imports;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
@@ -26,13 +27,23 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                importService.ProcessImportFile(fileData, excelType, SelectedSiteID);
+                var result = importService.ProcessImportFile(fileData, excelType, SelectedSiteID);
+                if (result.ErrorMessages.Length > 0)
+                {
+                    ShowErrorMessage(FormatImportResult(result));
+                }
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("Import users", "EXCEPTION", ex);
                 ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
             }
+        }
+
+        private string FormatImportResult(ImportResult result)
+        {
+            var headline = "There was an error while processing the request. <br /><br />";
+            return headline + string.Join("<br />", result.ErrorMessages);
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)

@@ -1,13 +1,18 @@
-﻿using CMS.Membership;
+﻿using CMS.Ecommerce;
+using CMS.EventLog;
+using CMS.Globalization;
+using CMS.Membership;
 using CMS.SiteProvider;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System;
+using System.Reflection;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
@@ -23,11 +28,227 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return file;
         }
 
-        public void ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             var rows = ReadDataFromExcelFile(importFileData, type);
+            if (rows.Count <= 1)
+            {
+                throw new Exception("The file contains no data");
+            }
 
-            // TODO: process data
+            var site = SiteInfoProvider.GetSiteInfo(siteID);
+            if (site == null)
+            {
+                throw new Exception("Invalid site id " + siteID);
+            }
+
+            var header = rows.First();
+            var mapRowToUser = GetMapper(header);
+            var users = rows.Skip(1)
+                .Select(row => mapRowToUser(row))
+                .ToList();
+
+            var statusMessages = new List<string>();
+
+            var currentItemNumber = 1;
+            foreach (var userDto in users)
+            {
+                if (IsExistingUser(userDto.Email))
+                {
+                    statusMessages.Add("Skipped duplicate email address " + userDto.Email);
+                    continue;
+                }
+
+                try
+                {
+                    List<string> validationResults;
+                    if (!ValidateImportItem(userDto, GetAllRoles(site.SiteID), out validationResults))
+                    {
+                        // sort errors by field
+                        validationResults.Sort();
+
+                        statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                        continue;
+                    }
+
+                    var newUser = CreateUser(userDto, site.SiteName);
+                    var newCustomer = CreateCustomer(newUser.UserID, siteID, userDto);
+                    CreateCustomerAddress(newCustomer.CustomerID, userDto);
+
+                    SendRegistrationEmail(newUser);
+                }
+                catch (Exception ex)
+                {
+                    statusMessages.Add("There was an error when processing item number " + currentItemNumber);
+                    EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                }
+
+                currentItemNumber++;
+            }
+
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
+        {
+            var errorMessageFormat = "field {0} - {1}";
+
+            // validate annotations
+            var context = new ValidationContext(userDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(
+                userDto, context, validationResults,
+                validateAllProperties: true
+            );
+
+            validationErrors = new List<string>();
+            if (!isValid)
+            {
+                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
+                {
+                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
+                }
+            }
+
+            // validate special rules
+            if (!ValidateEmail(userDto.Email))
+            {
+                validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Email), "Not a valid email address"));
+            }
+            if (!ValidateRole(userDto.Role, roles))
+            {
+                validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
+            }
+
+            return isValid;
+        }
+
+        private bool ValidateEmail(string email)
+        {
+            var parts = email.Split(new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 2)
+            {
+                return parts[1]
+                    .Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Length >= 2;
+            }
+
+            return false;
+        }
+
+        private bool ValidateRole(string role, Role[] roles)
+        {
+            return roles.Any(r => r.Description == role);
+        }
+
+        private void CreateCustomerAddress(int customerID, UserDto userDto)
+        {
+            var country = CountryInfoProvider.GetCountryInfo(userDto.Country);
+            if (country == null)
+            {
+                throw new Exception("Invalid country name");
+            }
+
+            var newAddress = new AddressInfo
+            {
+                //AddressName = "New address",
+                AddressLine1 = userDto.AddressLine,
+                AddressLine2 = userDto.AddressLine2,
+                AddressCity = userDto.City,
+                AddressZip = userDto.PostalCode,
+                AddressPersonalName = userDto.ContactName,
+                AddressPhone = userDto.PhoneNumber,
+                AddressCustomerID = customerID,
+                AddressCountryID = country.CountryID
+            };
+
+            AddressInfoProvider.SetAddressInfo(newAddress);
+        }
+
+        private CustomerInfo CreateCustomer(int userID, int siteID, UserDto userDto)
+        {
+            var newCustomer = new CustomerInfo
+            {
+                CustomerFirstName = userDto.FirstName,
+                CustomerLastName = userDto.LastName,
+                CustomerEmail = userDto.Email,
+                CustomerSiteID = siteID,
+                CustomerUserID = userID,
+                CustomerCompany = userDto.Company,
+                CustomerOrganizationID = userDto.OrganizationID,
+                CustomerPhone = userDto.PhoneNumber,
+                CustomerTaxRegistrationID = userDto.TaxRegistrationID
+            };
+
+            CustomerInfoProvider.SetCustomerInfo(newCustomer);
+            return newCustomer;
+        }
+
+        private UserInfo CreateUser(UserDto userDto, string siteName)
+        {
+            var newUser = new UserInfo
+            {
+                UserName = userDto.Email,
+                UserEnabled = true,
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                FullName = userDto.FirstName + " " + userDto.LastName,
+                SiteIndependentPrivilegeLevel = CMS.Base.UserPrivilegeLevelEnum.None
+            };
+            var newUserSettings = newUser.UserSettings ?? new UserSettingsInfo();
+            newUserSettings.UserPhone = userDto.PhoneNumber;
+
+            UserInfoProvider.SetUserInfo(newUser);
+            UserInfoProvider.AddUserToSite(newUser.UserName, siteName);
+
+            return newUser;
+        }
+
+        private bool IsExistingUser(string emailAddress)
+        {
+            return UserInfoProvider.GetUsers()
+                .WhereEquals("Email", emailAddress)
+                .Any();
+        }
+
+        private void SendRegistrationEmail(UserInfo newUser)
+        {
+            // TODO: 
+        }
+
+        private Func<string[], UserDto> GetMapper(string[] header)
+        {
+            var properties = GetNamedProperties();
+            var columnIndexToPropertyMap = new Dictionary<int, PropertyInfo>();
+            for (int colIndex = 0; colIndex < header.Length; colIndex++)
+            {
+                for (int propIndex = 0; propIndex < properties.Count; propIndex++)
+                {
+                    if (properties[propIndex].Key == header[colIndex])
+                    {
+                        columnIndexToPropertyMap[colIndex] = properties[propIndex].Value;
+                        break;
+                    }
+                }
+            }
+
+            return (row) =>
+            {
+                var user = new UserDto();
+                for (int i = 0; i < row.Length; i++)
+                {
+                    PropertyInfo property;
+                    if (columnIndexToPropertyMap.TryGetValue(i, out property))
+                    {
+                        property.SetValue(user, row[i]);
+                    }
+                }
+
+                return user;
+            };
         }
 
         public ExcelType GetExcelTypeFromFileName(string fileName)
@@ -42,14 +263,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             }
         }
 
+        private List<KeyValuePair<string, PropertyInfo>> GetNamedProperties()
+        {
+            var properties = typeof(UserDto).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute })
+                .Where(p => p.HeaderInfo != null)
+                .OrderBy(p => p.HeaderInfo.Order)
+                .Select(p => new KeyValuePair<string, PropertyInfo>(p.HeaderInfo.Title, p.Property))
+                .ToList();
+            return namedProperties;
+        }
+
         private string[] GetColumns()
         {
-            return new[]
-            {
-                "Company", "Organization ID", "Tax registration ID", "First name", "Last name", "Email",
-                "Contact name", "Address line", "Address line 2", "City", "Postal code", "Country", "Phone number",
-                "Role"
-            };
+            var names = GetNamedProperties()
+                .Select(p => p.Key)
+                .ToArray();
+            return names;
         }
 
         private Role[] GetAllRoles(int siteID)
@@ -74,7 +304,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             CreateSheetHeader(columns, sheet);
 
             // add validation for roles
-            var rolesColumnIndex = columns.Length - 1;
+            var rolesColumnIndex = columns.Length - 1; // role column should be last
             AddRolesValidation(rolesColumnIndex, roles, sheet);
 
             using (var ms = new MemoryStream())
