@@ -67,6 +67,9 @@
     <Reference Include="CMS.Membership">
       <HintPath>..\Lib\CMS.Membership.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.PortalEngine.Web.UI">
+      <HintPath>..\Lib\CMS.PortalEngine.Web.UI.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Search">
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
     </Reference>
