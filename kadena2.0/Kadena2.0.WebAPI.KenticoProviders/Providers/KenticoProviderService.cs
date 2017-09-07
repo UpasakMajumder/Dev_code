@@ -751,9 +751,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CountryInfoProvider
                 .GetCountries()
-                .Column("CountryDisplayName")
+                .Columns(new[] { "CountryDisplayName", "CountryID" })
                 .Select(s => new Country
                 {
+                    Id = int.Parse(s["CountryID"].ToString()),
                     Name = s["CountryDisplayName"].ToString()
                 });
         }
