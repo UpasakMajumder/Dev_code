@@ -143,11 +143,6 @@ class Checkout extends Component {
       const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
 
-      // add newly created address into list of addresses from Kentico with
-      if (Object.keys(newAddress).length > 0 && !deliveryAddresses.items.find(addr => addr.id === -1)) {
-        deliveryAddresses.items = [...deliveryAddresses.items, newAddress];
-      }
-
       // cart is empty
       if (!ui.products.items.length) {
         content = <div>
@@ -191,6 +186,7 @@ class Checkout extends Component {
               addNewAddress={addNewAddress}
               addedDataId={addedDataId}
               ui={deliveryAddresses}
+              newAddressObject={newAddress}
             />
           </div>
 

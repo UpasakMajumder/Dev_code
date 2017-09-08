@@ -174,7 +174,7 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public void SetShoppingCartAddres(int addressId)
+        public void SetShoppingCartAddress(int addressId)
         {
             var cart = ECommerceContext.CurrentShoppingCart;
 
@@ -183,6 +183,37 @@ namespace Kadena.WebAPI.KenticoProviders
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
                 cart.SubmitChanges(true);
+            }
+        }
+
+        public void SetShoppingCartAddress(DeliveryAddress address)
+        {
+            if (address != null)
+            {
+                if (address.Id > 0)
+                {
+                    SetShoppingCartAddress(address.Id);
+                }
+                else
+                {
+                    var cart = ECommerceContext.CurrentShoppingCart;
+                    var state = StateInfoProvider.GetStateInfoByCode(address.State);
+                    var country = CountryInfoProvider.GetCountryInfo(address.Country);
+
+                    var info = new AddressInfo
+                    {
+                        AddressID = address.Id,
+                        AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                        AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                        AddressCity = address.City,
+                        AddressStateID = state?.StateID ?? 0,
+                        AddressCountryID = country?.CountryID ?? 0,
+                        AddressZip = address.Zip,
+                    };
+
+                    cart.ShoppingCartShippingAddress = info;
+                    cart.SubmitChanges(true);
+                }
             }
         }
 
@@ -720,10 +751,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CountryInfoProvider
                 .GetCountries()
-                .Column("CountryName")
+                .Column("CountryDisplayName")
                 .Select(s => new Country
                 {
-                    Name = s["CountryName"].ToString()
+                    Name = s["CountryDisplayName"].ToString()
                 });
         }
     }

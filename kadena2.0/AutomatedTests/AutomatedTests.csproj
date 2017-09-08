@@ -82,6 +82,7 @@
     <Compile Include="PageObjectsKentico\SelectNewPageType.cs" />
     <Compile Include="PageObjects\BasePageComponents\SearchSuggestionBox.cs" />
     <Compile Include="PageObjects\Checkout.cs" />
+    <Compile Include="PageObjects\OrderDetail.cs" />
     <Compile Include="PageObjects\SuccessPage.cs" />
     <Compile Include="PageObjects\Dashboard.cs" />
     <Compile Include="PageObjects\Help.cs" />
