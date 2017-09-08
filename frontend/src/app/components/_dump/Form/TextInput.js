@@ -21,7 +21,9 @@ const TextInput = (props) => {
       <input
         type="text"
         className={`input__text ${errorClass}`}
-        {...inputProps} />
+        maxLength="50"
+        {...inputProps}
+      />
       {errorElement}
     </div>
   );

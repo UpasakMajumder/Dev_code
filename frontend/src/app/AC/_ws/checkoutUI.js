@@ -102,8 +102,8 @@ export const staticUI = {
           {
             "id": "state",
             "label": "State",
-            "values": [],
-            "type": "text",
+            "values": ['CA', 'NV', 'NY'],
+            "type": "select",
             "isOptional": true
           },
           {
@@ -115,7 +115,7 @@ export const staticUI = {
           {
             "id": "country",
             "label": "Country",
-            "values": ['hip', 'hop'],
+            "values": ['Czech republic', 'Russia', 'USA'],
             "type": "select"
           },
           {

@@ -7,13 +7,26 @@ import Select from 'app.dump/Form/Select';
 
 class NewAddressDialog extends Component {
   state = {
-    invalids: []
+    invalids: [],
+    address: {
+      customerName: '',
+      street: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: 'USA',
+      phone: '',
+      email: ''
+    }
   };
 
   submit = () => {
-    const { address, submit, closeDialog } = this.props;
+    const { address } = this.state;
+    const { submit, closeDialog } = this.props;
+
     const invalids = [];
     const bodyData = this.getBodyData();
+
     bodyData.forEach((data) => {
       if (!data.isOptional) {
         if (!address[data.id]) invalids.push(data.id);
@@ -22,7 +35,8 @@ class NewAddressDialog extends Component {
 
     this.setState({ invalids });
     if (invalids.length) return;
-    submit();
+
+    submit(this.state.address);
     closeDialog();
   };
 
@@ -32,20 +46,23 @@ class NewAddressDialog extends Component {
   };
 
   render () {
+    const { address } = this.state;
     const { closeDialog, ui } = this.props;
 
     const footer = (
       <div className="btn-group btn-group--right">
-        <button onClick={closeDialog}
-                type="button"
-                className="btn-action btn-action--secondary"
+        <button
+          onClick={closeDialog}
+          type="button"
+          className="btn-action btn-action--secondary"
         >
           {ui.discardBtnLabel}
         </button>
 
-        <button onClick={this.submit}
-                type="button"
-                className="btn-action"
+        <button
+          onClick={this.submit}
+          type="button"
+          className="btn-action"
         >
           {ui.submitBtnLabel}
         </button>
@@ -58,8 +75,16 @@ class NewAddressDialog extends Component {
     const bodyData = this.getBodyData();
 
     bodyData.map((data, i) => {
+      // show State selector only for USA
+      if (data.id === 'state' && address.country !== 'USA') {
+        return null;
+      }
+
       let element = <TextInput {...data} />;
-      if (data.isSelect) element = <Select {...data} />;
+
+      if (data.isSelect) {
+        element = <Select {...data} />;
+      }
 
       if (i + 1 <= Math.ceil(bodyData.length / 2)) {
         bodyContent1Part.push(<td key={i}>{element}</td>);
@@ -95,17 +120,6 @@ class NewAddressDialog extends Component {
   }
 
   static propTypes = {
-    address: PropTypes.shape({
-      customerName: PropTypes.string,
-      address1: PropTypes.string,
-      address2: PropTypes.string,
-      city: PropTypes.string,
-      state: PropTypes.string,
-      zip: PropTypes.string,
-      country: PropTypes.string,
-      phone: PropTypes.string,
-      email: PropTypes.string
-    }).isRequired,
     submit: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
     ui: PropTypes.shape({
@@ -122,7 +136,12 @@ class NewAddressDialog extends Component {
 
   changeInput = (value, field) => {
     this.removeFromInvalids(field);
-    this.props.changeInput(value, field);
+    this.setState({
+      address: {
+        ...this.state.address,
+        [field]: value
+      }
+    });
   };
 
   getBodyData = () => {
@@ -135,7 +154,8 @@ class NewAddressDialog extends Component {
         error: this.getValidationError(field.id),
         isOptional: field.isOptional,
         isSelect: field.type === 'select',
-        options: field.values
+        options: field.values,
+        value: this.state.address[field.id]
       };
     });
   }
