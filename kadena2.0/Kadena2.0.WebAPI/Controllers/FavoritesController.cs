@@ -3,6 +3,9 @@ using System.Web.Http;
 using System;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
+using System.Collections.Generic;
+using System.Linq;
+using Kadena.Dto.Favorites.Requests;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -37,5 +40,14 @@ namespace Kadena.WebAPI.Controllers
             favorites.UnsetFavoriteProduct(productDocumentId);
             return ResponseJson<string>("OK");
         }
-    }
+
+        [HttpPost]
+        [Route("api/favorites/check")]
+        [AuthorizationFilter]
+        public IHttpActionResult CheckFavorite([FromBody] CheckFavoritesRequestDto par)
+        {
+            var ids = favorites.CheckFavoriteProductIds(par.ProductIds.ToList());
+            return ResponseJson<List<int>>(ids);
+        }
+    }    
 }

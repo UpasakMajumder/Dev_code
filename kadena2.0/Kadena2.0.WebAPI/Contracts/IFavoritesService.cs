@@ -1,8 +1,11 @@
-﻿namespace Kadena.WebAPI.Contracts
+﻿using System.Collections.Generic;
+
+namespace Kadena.WebAPI.Contracts
 {
     public interface IFavoritesService
     {
         void SetFavoriteProduct(int productDocumentId);
         void UnsetFavoriteProduct(int productDocumentId);
+        List<int> CheckFavoriteProductIds(List<int> productIds);
     }
 }

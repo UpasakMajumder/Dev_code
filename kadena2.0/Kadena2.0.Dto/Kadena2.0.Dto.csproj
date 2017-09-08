@@ -73,6 +73,7 @@
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\WeightDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPricePayloadDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPriceResponseDto.cs" />
+    <Compile Include="Favorites\Requests\CheckFavoritesRequestDto.cs" />
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
     <Compile Include="InventoryUpdate\MicroserviceResponses\InventoryDataItemDto.cs" />
