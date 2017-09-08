@@ -115,7 +115,7 @@ export const staticUI = {
           {
             "id": "country",
             "label": "Country",
-            "values": ['CZ', 'RU', 'US', 'GB'],
+            "values": ['Czech republic', 'Russia', 'USA'],
             "type": "select"
           },
           {
