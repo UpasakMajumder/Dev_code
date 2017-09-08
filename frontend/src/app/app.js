@@ -58,6 +58,7 @@ const app = {
     render('CartItems', document.querySelectorAll('.r-cart-items'));
     render('Toastr', document.querySelectorAll('.r-toastr'));
     render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
+    render('Products', document.querySelectorAll('.r-products'));
   }
 };
 
