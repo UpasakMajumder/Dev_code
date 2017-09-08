@@ -8,10 +8,10 @@ namespace Kadena.Dto.Checkout
         [Required]
         public List<string> Street { get; set; }
 
-        [Required, MaxLength(5)]
+        [Required, MaxLength(50)]
         public string City { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(2)]
         public string State { get; set; }
 
         [Required, MaxLength(50)]
