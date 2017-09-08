@@ -14,7 +14,7 @@ class NewAddressDialog extends Component {
       city: '',
       state: '',
       zip: '',
-      country: 'US',
+      country: 'USA',
       phone: '',
       email: ''
     }
@@ -75,8 +75,8 @@ class NewAddressDialog extends Component {
     const bodyData = this.getBodyData();
 
     bodyData.map((data, i) => {
-      // show State selector only for US
-      if (data.id === 'state' && address.country === 'US') {
+      // show State selector only for USA
+      if (data.id === 'state' && address.country === 'USA') {
         return null;
       }
 
