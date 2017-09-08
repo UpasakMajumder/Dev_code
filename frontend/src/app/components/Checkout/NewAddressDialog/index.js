@@ -76,7 +76,7 @@ class NewAddressDialog extends Component {
 
     bodyData.map((data, i) => {
       // show State selector only for USA
-      if (data.id === 'state' && address.country === 'USA') {
+      if (data.id === 'state' && address.country !== 'USA') {
         return null;
       }
 
