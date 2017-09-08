@@ -135,7 +135,7 @@ class Checkout extends Component {
 
   render() {
     const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
-    const { ui, checkedData, isSending, addedDataId, newAddress } = checkout;
+    const { ui, checkedData, isSending, newAddress } = checkout;
 
     let content = <Spinner />;
 
@@ -184,7 +184,6 @@ class Checkout extends Component {
               checkedId={deliveryAddress}
               disableInteractivity={disableInteractivity}
               addNewAddress={addNewAddress}
-              addedDataId={addedDataId}
               ui={deliveryAddresses}
               newAddressObject={newAddress}
             />
