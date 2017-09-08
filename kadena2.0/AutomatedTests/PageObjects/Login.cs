@@ -47,6 +47,12 @@ namespace AutomatedTests.PageObjects
             Log.WriteLine("User '{0}' filled into login", name);
         }
 
+        public Dashboard LoginAndSubmit(string name, string pass)
+        {
+            FillLogin(name, pass);
+            return Submit();
+        }
+
         /// <summary>
         /// Submits valid credentials
         /// </summary>

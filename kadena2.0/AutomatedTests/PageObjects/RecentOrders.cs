@@ -46,5 +46,14 @@ namespace AutomatedTests.PageObjects
             RecentOrdersTable.WaitTillVisible();
         }
 
+        /// <summary>
+        /// Returns true if there is specific order in the table
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <returns></returns>
+        public bool IsTheOrderDisplayedInTable(string orderID)
+        {
+            return Orders.Any(o => o.GetText().Contains(orderID));
+        }
     }
 }
