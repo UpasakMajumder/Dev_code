@@ -1,7 +1,9 @@
-﻿namespace Kadena.Dto.Favorites.Requests
+﻿using System.Collections.Generic;
+
+namespace Kadena.Dto.Favorites.Requests
 {
     public class CheckFavoritesRequestDto
     {
-        public int[] ProductIds { get; set; }
+        public List<int> ProductIds { get; set; }
     }
 }

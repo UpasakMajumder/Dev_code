@@ -32,7 +32,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson<string>("OK");
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("api/favorites/unset/{productDocumentId}")]
         [AuthorizationFilter]
         public IHttpActionResult UnsetFavorite(int productDocumentId)
@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Controllers
         [AuthorizationFilter]
         public IHttpActionResult CheckFavorite([FromBody] CheckFavoritesRequestDto par)
         {
-            var ids = favorites.CheckFavoriteProductIds(par.ProductIds.ToList());
+            var ids = favorites.CheckFavoriteProductIds(par.ProductIds);
             return ResponseJson<List<int>>(ids);
         }
     }    
