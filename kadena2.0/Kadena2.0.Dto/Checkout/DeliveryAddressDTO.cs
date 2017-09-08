@@ -5,16 +5,16 @@ namespace Kadena.Dto.Checkout
 {
     public class DeliveryAddressDTO
     {
-        [Required, StringLength(100), MaxLength(2)]
+        [Required]
         public List<string> Street { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required, MaxLength(5)]
         public string City { get; set; }
 
         [MaxLength(50)]
         public string State { get; set; }
 
-        [Required, MaxLength(20)]
+        [Required, MaxLength(50)]
         public string Zip { get; set; }
 
         public int Id { get; set; }
