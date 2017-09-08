@@ -12,6 +12,7 @@ import isShownHeaderShadow from './headerShadow';
 import recentOrders from './recentOrders';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
+import products from './products';
 import dialogAlert from './dialogAlert';
 
 const rootReducer = combineReducers({
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   recentOrders,
   modifyMailingList,
   cartPreview,
+  products,
   toastr,
   dialogAlert
 });
