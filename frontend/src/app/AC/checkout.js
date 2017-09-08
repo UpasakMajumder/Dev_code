@@ -13,7 +13,17 @@ import { staticUI, staticUI2, priceUI, completeUI, newAddress } from 'app.ws/che
 import { newState } from 'app.ws/cartPreviewUI';
 
 const getTotalPrice = (dispatch) => {
-  axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
+  const state = window.store.getState();
+  let promise;
+
+  if (state.checkout.checkedData.deliveryAddress === -1) {
+    // for new custom address we have to pass newAddress data
+    promise = axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, state.checkout.newAddress);
+  } else {
+    promise = axios.get(CHECKOUT_URL.initTotalDeliveryUIURL);
+  }
+
+  promise
     .then((response) => {
       const { payload, success, errorMessage } = response.data;
 
