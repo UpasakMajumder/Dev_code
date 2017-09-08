@@ -243,12 +243,11 @@ namespace Kadena.WebAPI.Services
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
                 kenticoProvider.SetShoppingCartAddress(request.DeliveryAddress);
-                customer = new Customer
-                {
-                    FirstName = request.DeliveryAddress.CustomerName,
-                    Email = request.DeliveryAddress.Email,
-                    Phone = request.DeliveryAddress.Phone
-                };
+                customer = kenticoUsers.GetCurrentCustomer();
+                customer.FirstName = request.DeliveryAddress.CustomerName;
+                customer.LastName = string.Empty;
+                customer.Email = request.DeliveryAddress.Email;
+                customer.Phone = request.DeliveryAddress.Phone;
             }
 
             var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
