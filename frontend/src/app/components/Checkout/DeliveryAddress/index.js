@@ -29,7 +29,7 @@ class DeliveryAddress extends Component {
       email: address.email
     };
 
-    this.props.addNewAddress(data, this.props.addedDataId);
+    this.props.addNewAddress(data);
   };
 
   render() {
@@ -103,7 +103,6 @@ DeliveryAddress.propTypes = {
   changeShoppingData: PropTypes.func.isRequired,
   addNewAddress: PropTypes.func.isRequired,
   checkedId: PropTypes.number,
-  addedDataId: PropTypes.number,
   disableInteractivity: PropTypes.bool.isRequired,
   ui: PropTypes.shape({
     items: PropTypes.arrayOf(PropTypes.object.isRequired),

@@ -198,7 +198,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     var cart = ECommerceContext.CurrentShoppingCart;
                     var state = StateInfoProvider.GetStateInfoByCode(address.State);
-                    var country = CountryInfoProvider.GetCountryInfo(address.Country);
+                    var country = GetCountries().FirstOrDefault(c => c.Name.Equals(address.Country));
 
                     var info = new AddressInfo
                     {
@@ -207,7 +207,7 @@ namespace Kadena.WebAPI.KenticoProviders
                         AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
                         AddressCity = address.City,
                         AddressStateID = state?.StateID ?? 0,
-                        AddressCountryID = country?.CountryID ?? 0,
+                        AddressCountryID = country?.Id ?? 0,
                         AddressZip = address.Zip,
                     };
 
@@ -751,9 +751,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CountryInfoProvider
                 .GetCountries()
-                .Column("CountryDisplayName")
+                .Columns(new[] { "CountryDisplayName", "CountryID" })
                 .Select(s => new Country
                 {
+                    Id = int.Parse(s["CountryID"].ToString()),
                     Name = s["CountryDisplayName"].ToString()
                 });
         }
