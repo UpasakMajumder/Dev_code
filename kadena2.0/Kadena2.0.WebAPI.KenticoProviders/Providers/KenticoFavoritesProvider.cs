@@ -2,7 +2,9 @@
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -39,13 +41,23 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public CustomTableItem GetFavoriteRecord(int siteId, int userId, int productDocumentId)
+        private CustomTableItem GetFavoriteRecord(int siteId, int userId, int productDocumentId)
         {
             return CustomTableItemProvider.GetItems(CustomTableName)
                 .WhereEquals("ItemSiteID", siteId)
                 .WhereEquals("ItemUserID", userId)
                 .WhereEquals("ItemDocumentID", productDocumentId)
                 .FirstObject;
+        }
+
+        public List<int> CheckFavoriteProductIds(List<int> productIds)
+        {
+            var favorites = CustomTableItemProvider.GetItems(CustomTableName)
+                .WhereEquals("ItemSiteID", SiteContext.CurrentSiteID)
+                .WhereEquals("ItemUserID", MembershipContext.AuthenticatedUser.UserID)
+                .WhereIn("ItemDocumentID", productIds);
+
+            return favorites.Select(f => Convert.ToInt32(f["ItemDocumentID"])).ToList();
         }
     }
 }
