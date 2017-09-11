@@ -3,6 +3,7 @@ using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Email;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
@@ -28,7 +29,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return file;
         }
 
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
             var rows = ReadDataFromExcelFile(importFileData, type);
             if (rows.Count <= 1)
@@ -49,6 +50,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .ToList();
 
             var statusMessages = new List<string>();
+            var emailService = new EmailService();
 
             var currentItemNumber = 1;
             foreach (var userDto in users)
@@ -75,7 +77,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                     var newCustomer = CreateCustomer(newUser.UserID, siteID, userDto);
                     CreateCustomerAddress(newCustomer.CustomerID, userDto);
 
-                    SendRegistrationEmail(newUser);
+                    emailService.SendResetPasswordEmail(newUser, passwordEmailTemplateName, site.SiteName);
                 }
                 catch (Exception ex)
                 {
@@ -233,11 +235,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return UserInfoProvider.GetUsers()
                 .WhereEquals("Email", emailAddress)
                 .Any();
-        }
-
-        private void SendRegistrationEmail(UserInfo newUser)
-        {
-            // TODO: 
         }
 
         private Func<string[], UserDto> GetMapper(string[] header)
