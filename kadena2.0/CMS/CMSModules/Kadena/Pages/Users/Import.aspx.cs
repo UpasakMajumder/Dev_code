@@ -50,10 +50,15 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 return;
             }
 
-            var importService = new UserImportService();
-
             var file = importFile.PostedFile;
+            if (string.IsNullOrWhiteSpace(file.FileName))
+            {
+                ShowErrorMessage("You need to choose the import file.");
+                return;
+            }
+
             var fileData = ReadFileFromRequest(file);
+            var importService = new UserImportService();
             var excelType = importService.GetExcelTypeFromFileName(file.FileName);
 
             try
