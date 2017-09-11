@@ -3,10 +3,13 @@ using Kadena.Dto.Site.Requests;
 using Kadena.Dto.Site.Responses;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [IdentityBasicAuthentication] // Enable Basic authentication for this controller.
+    //[Authorize]
     public class SiteDataController : ApiControllerBase
     {
         private readonly ISiteDataService _service;
@@ -28,6 +31,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/sitedata/artworkftp")]
+
         public IHttpActionResult GetArtworkFtpSettings([FromBody]ArtworkFtpRequestDto request)
         {
             var result = _service.GetArtworkFtpSettings(request.SiteId);

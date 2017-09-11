@@ -35,7 +35,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/shoppingcart")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult Get()
         {
             var checkoutPage = service.GetCheckoutPage();
@@ -45,7 +45,7 @@ namespace Kadena.WebAPI.Controllers
         
         [HttpGet]
         [Route("api/deliverytotals")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> GetDeliveryTotals()
         {
             var deliveryTotals = await service.GetDeliveryAndTotals();
@@ -55,7 +55,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/selectshipping")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectShipipng(request.Id);
@@ -65,7 +65,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/selectaddress")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectAddress(request.Id);
@@ -75,7 +75,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/removeitem")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
             var result = service.RemoveItem(request.Id);
@@ -85,7 +85,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/changequantity")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
             var result = service.ChangeItemQuantity(request.Id, request.Quantity);
@@ -95,7 +95,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/shoppingcart/itemspreview")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult ItemsPreview()
         {
             var result = service.ItemsPreview();
@@ -105,7 +105,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/addtocart")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
         {
             var addItem = mapper.Map<NewCartItem>(item);
