@@ -13,9 +13,9 @@ const AddressBlock = (props) => {
   const { title, addButton, editButton, removeButton, addresses } = ui;
 
   const addButtonElement = addButton.exists
-  ? <buttn className="plus-btn">
+  ? <button className="plus-btn">
       <SVG name="plus" className="icon-modal" />
-    </buttn>
+    </button>
   : null;
 
   const commonProps = {
