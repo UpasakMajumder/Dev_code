@@ -40,6 +40,33 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::System.Web.UI.WebControls.FileUpload importFile;
         
         /// <summary>
+        /// pnlTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlTemplate;
+        
+        /// <summary>
+        /// lblEmailTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblEmailTemplate;
+        
+        /// <summary>
+        /// selEmailTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSAdminControls_UI_UniSelector_UniSelector selEmailTemplate;
+        
+        /// <summary>
         /// btnUploadUserList control.
         /// </summary>
         /// <remarks>

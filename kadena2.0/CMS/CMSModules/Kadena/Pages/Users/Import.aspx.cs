@@ -5,20 +5,51 @@ using System;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
+using CMS.DataEngine;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class Import : CMSPage
     {
+        private readonly string _templateType = "membershipchangepassword";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             HideErrorMessage();
+
+            siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
+            siteSelector.DropDownSingleSelect.AutoPostBack = true;
+
+            SetUpEmailTemplateSelector();
+        }
+
+        private void SetUpEmailTemplateSelector()
+        {
+            var where = selEmailTemplate.WhereCondition;
+            where = SqlHelper.AddWhereCondition(where, "EmailTemplateSiteId = " + SelectedSiteID);
+            where = SqlHelper.AddWhereCondition(where, $"EmailTemplateType = '{_templateType}'");
+            selEmailTemplate.WhereCondition = where;
+        }
+
+        private void Site_Changed(object sender, EventArgs e)
+        {
+            selEmailTemplate.Value = null;
+            selEmailTemplate.Reload(true);
+            SetUpEmailTemplateSelector();
+            pnlTemplate.Update();
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
 
         protected void btnUploadUserList_Click(object sender, EventArgs e)
         {
+            var emailTemplateName = selEmailTemplate.Value.ToString();
+            if (string.IsNullOrWhiteSpace(emailTemplateName))
+            {
+                ShowErrorMessage(GetString("Kadena.Email.TemplateNotSelected"));
+                return;
+            }
+
             var importService = new UserImportService();
 
             var file = importFile.PostedFile;
@@ -27,7 +58,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                var result = importService.ProcessImportFile(fileData, excelType, SelectedSiteID);
+                var result = importService.ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
