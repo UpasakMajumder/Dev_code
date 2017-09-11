@@ -48,9 +48,13 @@ namespace Kadena.Old_App_Code.Kadena.Email
             var macroResolver = resolver ?? MacroResolver.GetInstance();
             macroResolver.SetNamedSourceData(_setUpPasswordUrlMacro, GetSetUpPasswordUrl(user.UserGUID, siteName));
 
+            var fromAddress = !string.IsNullOrWhiteSpace(template.TemplateFrom) 
+                ? template.TemplateFrom 
+                : SettingsKeyInfoProvider.GetValue("CMSNoreplyEmailAddress", siteName);
+
             var message = new EmailMessage();
             message.EmailFormat = EmailFormatEnum.Both;
-            message.From = template.TemplateFrom;
+            message.From = fromAddress;
             message.Recipients = user.Email;
             message.Subject = macroResolver.ResolveMacros(template.TemplateSubject);
             message.Body = macroResolver.ResolveMacros(template.TemplateText);
