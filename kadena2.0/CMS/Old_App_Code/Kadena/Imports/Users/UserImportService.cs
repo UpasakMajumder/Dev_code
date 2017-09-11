@@ -3,6 +3,7 @@ using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Email;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -73,7 +74,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                         continue;
                     }
 
-                    var newUser = CreateUser(userDto, site.SiteName);
+                    var newUser = CreateUser(userDto, site);
                     var newCustomer = CreateCustomer(newUser.UserID, siteID, userDto);
                     CreateCustomerAddress(newCustomer.CustomerID, userDto);
 
@@ -124,17 +125,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             {
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
-            if (!ValidateCountry(userDto.Country))
-            {
-                validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Country), "Not a valid country name or code"));
-            }
 
             return isValid;
-        }
-
-        private bool ValidateCountry(string country)
-        {
-            return FindCountry(country) != null;
         }
 
         private bool ValidateEmail(string email)
@@ -172,12 +164,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             var country = FindCountry(userDto.Country);
             if (country == null)
             {
-                throw new Exception("Invalid country");
+                EventLogProvider.LogInformation("Import users", "INFO", $"Skipping creation of address of user { userDto.Email }. Reason - invalid country.");
+                return;
             }
 
+            var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
+                .Where(af => !string.IsNullOrWhiteSpace(af));
             var newAddress = new AddressInfo
             {
-                //AddressName = "New address",
+                AddressName = string.Join(", ", addressNameFields),
                 AddressLine1 = userDto.AddressLine,
                 AddressLine2 = userDto.AddressLine2,
                 AddressCity = userDto.City,
@@ -187,6 +182,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 AddressCustomerID = customerID,
                 AddressCountryID = country.CountryID
             };
+            newAddress.SetValue("AddressType", AddressType.Shipping.Code);
 
             AddressInfoProvider.SetAddressInfo(newAddress);
         }
@@ -203,14 +199,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 CustomerCompany = userDto.Company,
                 CustomerOrganizationID = userDto.OrganizationID,
                 CustomerPhone = userDto.PhoneNumber,
-                CustomerTaxRegistrationID = userDto.TaxRegistrationID
+                CustomerTaxRegistrationID = userDto.TaxRegistrationID,
+                CustomerCountryID = FindCountry(userDto.Country)?.CountryID ?? 0
             };
 
             CustomerInfoProvider.SetCustomerInfo(newCustomer);
             return newCustomer;
         }
 
-        private UserInfo CreateUser(UserDto userDto, string siteName)
+        private UserInfo CreateUser(UserDto userDto, SiteInfo site)
         {
             var newUser = new UserInfo
             {
@@ -219,13 +216,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 FullName = userDto.FirstName + " " + userDto.LastName,
+                Email = userDto.Email,
                 SiteIndependentPrivilegeLevel = CMS.Base.UserPrivilegeLevelEnum.None
             };
             var newUserSettings = newUser.UserSettings ?? new UserSettingsInfo();
             newUserSettings.UserPhone = userDto.PhoneNumber;
 
             UserInfoProvider.SetUserInfo(newUser);
-            UserInfoProvider.AddUserToSite(newUser.UserName, siteName);
+
+            UserInfoProvider.AddUserToSite(newUser.UserName, site.SiteName);
+
+            var role = GetAllRoles(site.SiteID)
+                .FirstOrDefault(r => r.Description == userDto.Role);
+            if (role == null)
+            {
+                throw new Exception("Invalid user role");
+            }
+            UserInfoProvider.AddUserToRole(newUser.UserID, role.ID);
 
             return newUser;
         }
@@ -245,7 +252,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             {
                 for (int propIndex = 0; propIndex < properties.Count; propIndex++)
                 {
-                    if (properties[propIndex].Key == header[colIndex])
+                    if (string.Compare(properties[propIndex].Key, header[colIndex], ignoreCase: true) == 0)
                     {
                         columnIndexToPropertyMap[colIndex] = properties[propIndex].Value;
                         break;

@@ -8,7 +8,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         [MaxLength(30)]
         public string Company { get; set; }
 
-        [Header(1, "OrganizationID")]
+        [Header(1, "Organization ID")]
         [MaxLength(30)]
         public string OrganizationID { get; set; }
 
