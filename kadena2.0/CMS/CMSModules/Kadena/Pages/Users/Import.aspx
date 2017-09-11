@@ -8,14 +8,14 @@
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
-        <div class="form-group" style="margin-bottom: 2rem">
-            <label class="control-label" for="siteSelector" style="text-align: left">site:</label>
+        <div class="form-group" style="margin-bottom: 3rem">
+            <label class="control-label" for="siteSelector" style="text-align: left">Site:</label>
             <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
         </div>
 
         <h4>Download template</h4>
-        <div class="form-group" style="margin-bottom: 2rem">
-            <asp:Button Text="Download" CssClass="btn btn-default" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
+        <div class="form-group" style="margin-bottom: 3rem">
+            <asp:Button Text="Download" CssClass="btn btn-primary" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
         </div>
 
         <h4>Upload template with user data</h4>
@@ -23,9 +23,10 @@
             <div class="editing-form-value-cell">
                 <div class="editing-form-control-nested-control">
                     <div class="control-group-inline">
-                        <input type="text" id="importFileName" class="form-control" />
+                        <label class="control-label" style="text-align: left">File:</label>
+                        <input type="text" id="importFileName" class="form-control" readonly="readonly" />
                         <label for="importFile" class="btn btn-default">Select file (XLS, XLSX)</label>
-                        <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" onchange="onImportFileSelected(event)" runat="server" />
+                        <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" runat="server" />
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@
 
         <div class="form-group">
             <div class="editing-form-value-cell">
-                <asp:Button Text="Upload" CssClass="btn btn-default" ClientIDMode="Static" Enabled="false" ID="btnUploadUserList" OnClick="btnUploadUserList_Click" runat="server" />
+                <asp:Button Text="Upload" CssClass="btn btn-primary" ClientIDMode="Static" ID="btnUploadUserList" OnClick="btnUploadUserList_Click" runat="server" />
             </div>
         </div>
 
@@ -69,14 +70,5 @@
             // hide loader
             window.setTimeout(function () { window.Loader.hide(); }, 2000);
         }, false);
-
-        // display name of selected file in textbox and enable upload
-        function onImportFileSelected(e) {
-            var files = e.target.files;
-            if (files) {
-                window.document.getElementById('importFileName').value = files[0].name;
-                window.document.getElementById('btnUploadUserList').removeAttribute('disabled');
-            }
-        }
     </script>
 </asp:Content>
