@@ -13,8 +13,8 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case PRODUCTS_LOAD + FETCH:
-    case PRODUCTS_FAVORITE_LOAD + FETCH:
+  case PRODUCTS_LOAD + FETCH:
+  case PRODUCTS_FAVORITE_LOAD + FETCH:
     return {
       ...state,
       isLoading: true
@@ -31,7 +31,7 @@ export default (state = defaultState, action) => {
 
   case PRODUCTS_LOAD + FAILURE:
   case PRODUCTS_FAVORITE_LOAD + SUCCESS:
-      return {
+    return {
       ...state,
       isLoading: false
     };

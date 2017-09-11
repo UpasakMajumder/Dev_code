@@ -94,7 +94,7 @@ export const loadProducts = () => {
 };
 
 
-export const loadFavoriteProducts = () => {
+export const loadFavoritesProducts = () => {
   return (dispatch) => {
     dispatch({ type: PRODUCTS_FAVORITE_LOAD + FETCH });
 

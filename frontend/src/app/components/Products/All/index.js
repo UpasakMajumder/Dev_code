@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SVG from 'app.dump/SVG';
-import { markProductFavourite, unmarkProductFavourite, loadProducts } from 'app.ac/products';
+import { loadProducts, markProductFavourite, unmarkProductFavourite } from 'app.ac/products';
 
 
 class Products extends Component {
   static propTypes = {
-    products: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
+    loadProducts: PropTypes.func.isRequired,
     markProductFavourite: PropTypes.func.isRequired,
-    unmarkProductFavourite: PropTypes.func.isRequired,
-    loadProducts: PropTypes.func.isRequired
+    products: PropTypes.array.isRequired,
+    unmarkProductFavourite: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -21,20 +21,25 @@ class Products extends Component {
   }
 
   render() {
-    const {products, categories, isLoading} = this.props;
+    const { categories, isLoading, products } = this.props;
+
+    if (isLoading) {
+      return (
+        <div className="row">
+          {/* TODO add loading spinner */}
+          <div>isLoading...</div>
+        </div>
+      );
+    }
 
     return (
       <div className="row">
-        {/* TODO add loading spinner */}
-        {isLoading && <div>isLoading...</div>}
-
-
         { categories.map(category => (
           <div key={category.id} className="col-lg-4 col-xl-3">
             <a href={category.url} className="category">
               <div
                 className="category__picture"
-                style={{backgroundImage: `url(${category.imageUrl})`}}>
+                style={{ backgroundImage: `url(${category.imageUrl})` }}>
               </div>
               <div className="category__title">
                 <h2>{category.title}</h2>
@@ -63,7 +68,7 @@ class Products extends Component {
             <a href={product.url} className="category">
               <div
                 className="category__picture"
-                style={{backgroundImage: `url(${product.imageUrl})`}}>
+                style={{ backgroundImage: `url(${product.imageUrl})` }}>
               </div>
               <div className="category__title">
                 <h2>{product.title}</h2>
@@ -78,11 +83,10 @@ class Products extends Component {
 
 
 export default connect((state) => {
-  //TODO is better ES6 syntax possible?
   const { categories, isLoading, products } = state.products;
-  return { products, categories, isLoading };
+  return { categories, isLoading, products };
 }, {
+  loadProducts,
   markProductFavourite,
-  unmarkProductFavourite,
-  loadProducts
+  unmarkProductFavourite
 })(Products);
