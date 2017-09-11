@@ -26,7 +26,7 @@
                         <label class="control-label" style="text-align: left">File:</label>
                         <input type="text" id="importFileName" class="form-control" readonly="readonly" />
                         <label for="importFile" class="btn btn-default">Select file (XLS, XLSX)</label>
-                        <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" runat="server" />
+                        <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" onchange="onImportFileSelected(event)" runat="server" />
                     </div>
                 </div>
             </div>
@@ -61,7 +61,8 @@
                     <span class="sr-only">Error</span>
                 </span>
                 <div class="alert-label">
-                    <asp:Literal runat="server" ID="errorMessage"></asp:Literal></div>
+                    <asp:Literal runat="server" ID="errorMessage"></asp:Literal>
+                </div>
             </div>
         </asp:PlaceHolder>
     </div>
@@ -70,5 +71,14 @@
             // hide loader
             window.setTimeout(function () { window.Loader.hide(); }, 2000);
         }, false);
+
+        // display name of selected file in textbox
+        function onImportFileSelected(e) {
+            var files = e.target.files;
+            if (files) {
+                window.document.getElementById('importFileName').value = files[0].name;
+            }
+        }
+
     </script>
 </asp:Content>
