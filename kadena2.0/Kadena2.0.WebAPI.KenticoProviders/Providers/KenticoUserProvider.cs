@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
         {
             var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
+                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
                 .ToArray();
 
             return AddressFactory.CreateDeliveryAddresses(addresses);

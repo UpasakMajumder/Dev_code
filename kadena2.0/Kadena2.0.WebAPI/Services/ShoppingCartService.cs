@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.Services
 
         public CheckoutPage GetCheckoutPage()
         {
-            var addresses = kenticoUsers.GetCustomerAddresses("Shipping");
+            var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();

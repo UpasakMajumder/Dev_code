@@ -22,8 +22,8 @@ namespace Kadena.WebAPI.Services
 
         public SettingsAddresses GetAddresses()
         {
-            var billingAddresses = _kenticoUsers.GetCustomerAddresses("Billing");
-            var shippingAddresses = _kenticoUsers.GetCustomerAddresses("Shipping");
+            var billingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Billing);
+            var shippingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var states = _kentico.GetStates();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
 
