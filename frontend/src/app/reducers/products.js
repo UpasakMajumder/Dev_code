@@ -36,38 +36,33 @@ export default (state = defaultState, action) => {
     };
 
   case PRODUCTS_LOAD + FAILURE:
-  case PRODUCTS_FAVORITE_LOAD + SUCCESS:
+  case PRODUCTS_FAVORITE_LOAD + FAILURE:
     return {
       ...state,
       isLoading: false
     };
 
-
-
-  case PRODUCT_MARK_AS_FAVOURITE: {
-    const newState = { ...state };
-
-    newState.products.map((product) => {
-      if (product.id === action.id) {
-        product.isFavourite = true;
-      }
-      return product;
-    });
-
-    return newState;
-  }
+  case PRODUCT_MARK_AS_FAVOURITE:
+    return {
+      ...state,
+      products: state.products.map((product) => {
+        if (product.id === action.id) {
+          product.isFavourite = true;
+        }
+        return product;
+      })
+    };
 
   case PRODUCT_UNMARK_AS_FAVOURITE:
-    const newState = { ...state };
-
-    newState.products.map((product) => {
-      if (product.id === action.id) {
-        product.isFavourite = false;
-      }
-      return product;
-    });
-
-    return newState;
+    return {
+      ...state,
+      products: state.products.map((product) => {
+        if (product.id === action.id) {
+          product.isFavourite = false;
+        }
+        return product;
+      })
+    };
 
   default:
     return state;

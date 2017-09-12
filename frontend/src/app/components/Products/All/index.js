@@ -5,6 +5,7 @@ import Spinner from 'app.dump/Spinner';
 import SVG from 'app.dump/SVG';
 import { Tooltip } from 'react-tippy';
 import { loadProducts, markProductFavourite, unmarkProductFavourite } from 'app.ac/products';
+import { PRODUCTS as PRODUCTS_GLOBAL } from 'app.globals';
 
 
 class Products extends Component {
@@ -47,14 +48,11 @@ class Products extends Component {
 
         { products.map(product => (
           <div key={product.id} className="col-lg-4 col-xl-3">
-            {/*TODO favourite */}
-            {/*TODO dataTooltipPlacement vs data-tooltip-placement */}
-            {/*TODO "Set product as favorite" from config.localization.product.xxx */}
             <div onClick={() => {
               product.isFavourite ? unmarkProductFavourite(product.id) : markProductFavourite(product.id);
             }}>
               <Tooltip
-                title="Set product as favorite"
+                title={PRODUCTS_GLOBAL.addToFavorites}
                 position="right"
                 animation="fade"
                 arrow={true}
@@ -82,7 +80,6 @@ class Products extends Component {
     );
   }
 }
-
 
 export default connect((state) => {
   const { categories, isLoading, products } = state.products;

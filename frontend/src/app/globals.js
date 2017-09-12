@@ -29,8 +29,7 @@ export const SEARCH = search;
 export const RECENT_ORDERS = recentOrders;
 export const CART_PREVIEW = cartPreview;
 export const ADD_TO_CART_URL = addToCartUrl;
-
-
+export const PRODUCTS = products;
 export const NOTIFICATION = notification;
 export const CHILI_SAVE = chiliSave;
 export const MODIFY_MAILING_LIST_UI = modifyMailingList;

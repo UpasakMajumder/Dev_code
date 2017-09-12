@@ -1,24 +1,12 @@
 import axios from 'axios';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, START, FINISH,
-  PRODUCTS_LOAD, PRODUCTS_FAVORITE_LOAD, PRODUCT_MARK_AS_FAVOURITE, PRODUCT_UNMARK_AS_FAVOURITE,
+  PRODUCTS_LOAD, PRODUCTS_FAVORITE_LOAD, PRODUCT_MARK_AS_FAVOURITE, PRODUCT_UNMARK_AS_FAVOURITE
 } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
 import { PRODUCTS as PRODUCTS_GLOBAL } from 'app.globals';
-
-
-//TODO enhance config, where in templates?
-/*config.localization.products = {
-  addToFavorites: "Set product as favorite" //TODO into component
-  loadProductsUrl: "/api/products",
-  loadFavoritesProductsUrl: "/api/products/favorites",
-  markProductFavouriteUrl: "/api/favorites/set"
-  unmarkProductFavouriteUrl: "/api/favorites/unset"
-};
-
-
 /* web service */
 import loadProductsResponse from 'app.ws/products';
 import loadFavoriteProductsResponse from 'app.ws/productsFavorite';
@@ -32,7 +20,7 @@ export const markProductFavourite = (productId) => {
     });
 
     axios.post(PRODUCTS_GLOBAL.markProductFavouriteUrl, { id: productId })
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line no-console
   };
 };
 
@@ -45,7 +33,7 @@ export const unmarkProductFavourite = (productId) => {
     });
 
     axios.post(PRODUCTS_GLOBAL.unmarkProductFavouriteUrl, { id: productId })
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line no-console
   };
 };
 
