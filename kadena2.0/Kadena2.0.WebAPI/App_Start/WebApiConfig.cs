@@ -2,6 +2,7 @@
 using DryIoc;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI
 {

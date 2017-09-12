@@ -5,6 +5,7 @@ using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.Checkout.Requests;
+using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -31,6 +32,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/customerdata")]
+        [IdentityBasicAuthentication]
         public IHttpActionResult CustomerData([FromBody]CustomerDataRequestDto request)
         {
             var result = service.GetCustomerData(request.CustomerId);

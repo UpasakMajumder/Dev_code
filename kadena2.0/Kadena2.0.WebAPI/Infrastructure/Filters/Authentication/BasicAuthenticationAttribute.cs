@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
 
-namespace Kadena.WebAPI.Infrastructure.Filters
+namespace Kadena.WebAPI.Infrastructure.Filters.Authentication
 {
     public abstract class BasicAuthenticationAttribute : Attribute, IAuthenticationFilter
     {

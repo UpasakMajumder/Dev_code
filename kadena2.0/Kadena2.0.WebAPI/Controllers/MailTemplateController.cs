@@ -5,6 +5,7 @@ using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.MailTemplate.Requests;
 using Kadena.Dto.MailTemplate.Responses;
+using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -31,6 +32,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/mailtemplate")]
+        [IdentityBasicAuthentication]
         public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
         {
             var result = service.GetMailTemplate(request.TemplateName);
