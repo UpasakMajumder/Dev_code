@@ -16,7 +16,7 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".js-drop-zone-file")]
         private IWebElement DropZone { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = ".upload-mail>button")]
+        [FindsBy(How = How.CssSelector, Using = ".j-submit-mailing-list-button")]
         private IWebElement CreateMailingListBtn { get; set; }
 
         [FindsBy(How = How.ClassName, Using = "js-drop-zone-name-input")]

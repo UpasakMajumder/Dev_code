@@ -41,7 +41,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                 response.StatusCode == HttpStatusCode.NotImplemented ||
                 response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                responseContent = await response.Content.ReadAsStringAsync();
+                responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (!string.IsNullOrWhiteSpace(responseContent))
                 {
                     try

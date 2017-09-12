@@ -16,6 +16,9 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".submitted svg use")]
         private IWebElement InformationPicture { get; set; }
 
+        [FindsBy(How = How.TagName, Using = "h1")]
+        private IWebElement H1OrderConfirmation { get; set; }
+                
         public SuccessPage()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -35,6 +38,16 @@ namespace AutomatedTests.PageObjects
         {
             SubmitConfirmation.WaitTillVisible();
             return InformationPicture.GetAttribute("xlink:href") == "/gfx/svg/sprites/icons.svg#order-ready";
+        }
+
+        /// <summary>
+        /// Gets order ID from confirmation text
+        /// </summary>
+        /// <returns></returns>
+        public string GetOrderID()
+        {
+            string OrderWasSubmittedText = H1OrderConfirmation.GetText();
+            return OrderWasSubmittedText.Substring(6, 19);
         }
     }
 }

@@ -67,6 +67,7 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
+    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="KenticoSite.cs" />
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />

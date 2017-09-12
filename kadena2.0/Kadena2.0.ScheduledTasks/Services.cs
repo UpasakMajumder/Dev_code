@@ -2,6 +2,7 @@
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
+using Kadena.ScheduledTasks.UpdateInventoryData;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;
@@ -39,12 +40,15 @@ namespace Kadena.ScheduledTasks
             container.Register<IConfigurationProvider, KenticoConfigurationProvider>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
+            container.Register<IKenticoLogger, KenticoLogger>();
 
             // microservices
             container.Register<IMailingListClient, MailingListClient>();
+            container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
 
             // task services
             container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
+            container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
         }
     }
 }
