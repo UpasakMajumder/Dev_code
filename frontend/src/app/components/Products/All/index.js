@@ -48,32 +48,37 @@ class Products extends Component {
 
         { products.map(product => (
           <div key={product.id} className="col-lg-4 col-xl-3">
-            <div onClick={() => {
-              product.isFavourite ? unmarkProductFavourite(product.id) : markProductFavourite(product.id);
-            }}>
-              <Tooltip
-                title={PRODUCTS_GLOBAL.addToFavorites}
-                position="right"
-                animation="fade"
-                arrow={true}
-                theme="dark"
+            <div className="template">
+              <div
+                className="template__favourite"
+                onClick={() => {
+                  product.isFavourite ? unmarkProductFavourite(product.id) : markProductFavourite(product.id);
+                }}
               >
                 {product.isFavourite ?
                   <SVG name="star--filled" className="icon-star" />
-                  : <SVG name="star--unfilled" className="icon-star" />
+                  : <Tooltip
+                    title={PRODUCTS_GLOBAL.addToFavorites}
+                    position="right"
+                    animation="fade"
+                    arrow={true}
+                    theme="dark"
+                  >
+                    <SVG name="star--unfilled" className="icon-star" />
+                  </Tooltip>
                 }
-              </Tooltip>
-            </div>
+              </div>
 
-            <a href={product.url} className="category">
-              <div
-                className="category__picture"
-                style={{ backgroundImage: `url(${product.imageUrl})` }}>
-              </div>
-              <div className="category__title">
-                <h2>{product.title}</h2>
-              </div>
-            </a>
+              <a href={product.url} className="category">
+                <div
+                  className="category__picture"
+                  style={{ backgroundImage: `url(${product.imageUrl})` }}>
+                </div>
+                <div className="category__title">
+                  <h2>{product.title}</h2>
+                </div>
+              </a>
+            </div>
           </div>
         )) }
       </div>

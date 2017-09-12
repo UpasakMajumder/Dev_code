@@ -18,7 +18,7 @@ export const markProductFavourite = (productId) => {
       id: productId
     });
 
-    axios.post(PRODUCTS_GLOBAL.markProductFavouriteUrl, { id: productId })
+    axios.put(`${PRODUCTS_GLOBAL.markProductFavouriteUrl}${productId}`)
       .catch(console.error); // eslint-disable-line no-console
   };
 };
@@ -30,7 +30,7 @@ export const unmarkProductFavourite = (productId) => {
       id: productId
     });
 
-    axios.post(PRODUCTS_GLOBAL.unmarkProductFavouriteUrl, { id: productId })
+    axios.put(`${PRODUCTS_GLOBAL.unmarkProductFavouriteUrl}${productId}`)
       .catch(console.error); // eslint-disable-line no-console
   };
 };
