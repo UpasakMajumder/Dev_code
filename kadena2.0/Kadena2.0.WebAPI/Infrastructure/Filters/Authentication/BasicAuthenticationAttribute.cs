@@ -14,26 +14,16 @@ namespace Kadena.WebAPI.Infrastructure.Filters.Authentication
     {
         public string Realm { get; set; }
 
+        private readonly string invalidCredentials = "Invalid credentials";
+
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
             HttpRequestMessage request = context.Request;
             AuthenticationHeaderValue authorization = request.Headers.Authorization;
 
-            if (authorization == null)
+            if (authorization == null || authorization.Scheme != "Basic" || string.IsNullOrEmpty(authorization.Parameter))
             {
-                context.ErrorResult = new AuthenticationFailureResult("Invalid credentials", request);
-                return;
-            }
-
-            if (authorization.Scheme != "Basic")
-            {
-                context.ErrorResult = new AuthenticationFailureResult("Invalid credentials", request);
-                return;
-            }
-
-            if (String.IsNullOrEmpty(authorization.Parameter))
-            {
-                context.ErrorResult = new AuthenticationFailureResult("Missing credentials", request);
+                context.ErrorResult = new AuthenticationFailureResult(invalidCredentials, request);
                 return;
             }
 
@@ -41,7 +31,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters.Authentication
 
             if (userNameAndPasword == null)
             {
-                context.ErrorResult = new AuthenticationFailureResult("Invalid credentials", request);
+                context.ErrorResult = new AuthenticationFailureResult(invalidCredentials, request);
                 return;
             }
 
@@ -52,7 +42,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters.Authentication
 
             if (principal == null)
             {
-                context.ErrorResult = new AuthenticationFailureResult("Invalid username or password", request);
+                context.ErrorResult = new AuthenticationFailureResult(invalidCredentials, request);
             }
             else
             {
