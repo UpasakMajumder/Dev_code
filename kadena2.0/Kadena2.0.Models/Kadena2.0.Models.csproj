@@ -73,6 +73,7 @@
     <Compile Include="KenticoSite.cs" />
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />
+    <Compile Include="MailTemplate.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />
