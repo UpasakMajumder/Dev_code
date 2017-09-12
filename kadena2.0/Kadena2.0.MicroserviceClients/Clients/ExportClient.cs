@@ -22,10 +22,13 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     if (message.IsSuccessStatusCode)
                     {
+                        var contentStream = await message.Content.ReadAsStreamAsync();
+                        var resultStream = new MemoryStream();
+                        await contentStream.CopyToAsync(resultStream);
                         return new BaseResponseDto<Stream>
                         {
                             Success = true,
-                            Payload = await message.Content.ReadAsStreamAsync()
+                            Payload = resultStream
                         };
                     }
                     else
