@@ -3,23 +3,29 @@ using System.Web.Http;
 using System;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
-using System.Collections.Generic;
-using System.Linq;
-using Kadena.Dto.Favorites.Requests;
+using Kadena.Dto.Product;
+using AutoMapper;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class FavoritesController : ApiControllerBase
     {
         private readonly IFavoritesService favorites;
-        
-        public FavoritesController(IFavoritesService favorites)
+        private readonly IMapper mapper;
+
+        public FavoritesController(IFavoritesService favorites, IMapper mapper)
         {
             if (favorites == null)
             {
                 throw new ArgumentNullException(nameof(favorites));
             }
 
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
             this.favorites = favorites;
         }
 
@@ -41,13 +47,14 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson<string>("OK");
         }
 
-        [HttpPost]
-        [Route("api/favorites/check")]
+        [HttpGet]
+        [Route("api/favorites/{count}")]
         [AuthorizationFilter]
-        public IHttpActionResult CheckFavorite([FromBody] CheckFavoritesRequestDto par)
+        public IHttpActionResult GetFavorites(int count = 5)
         {
-            var ids = favorites.CheckFavoriteProductIds(par.ProductIds);
-            return ResponseJson<List<int>>(ids);
+            var products = favorites.GetFavorites(count);
+            var productsDto = mapper.Map<ProductDto[]>(products);
+            return ResponseJson<ProductDto[]>(productsDto);
         }
     }    
 }

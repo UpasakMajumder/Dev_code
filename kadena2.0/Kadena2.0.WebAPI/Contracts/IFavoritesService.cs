@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kadena.Models.Product;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Contracts
 {
@@ -7,5 +8,6 @@ namespace Kadena.WebAPI.Contracts
         void SetFavoriteProduct(int productDocumentId);
         void UnsetFavoriteProduct(int productDocumentId);
         List<int> CheckFavoriteProductIds(List<int> productIds);
+        List<ProductLink> GetFavorites(int count);
     }
 }

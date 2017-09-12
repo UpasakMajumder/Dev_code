@@ -1,6 +1,9 @@
 ﻿using CMS.CustomTables;
+using CMS.DocumentEngine;
+using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -58,6 +61,35 @@ namespace Kadena.WebAPI.KenticoProviders
                 .WhereIn("ItemDocumentID", productIds);
 
             return favorites.Select(f => Convert.ToInt32(f["ItemDocumentID"])).ToList();
+        }
+
+        public List<ProductLink> GetFavorites(int count)
+        {
+            var favorites = CustomTableItemProvider.GetItems(CustomTableName)
+                 .WhereEquals("ItemSiteID", SiteContext.CurrentSiteID)
+                 .WhereEquals("ItemUserID", MembershipContext.AuthenticatedUser.UserID)
+                 .OrderByDescending("ItemModifiedWhen")
+                 .TopN(count);
+
+            return favorites.Select(f => CreateProcuct(f.GetIntegerValue("ItemDocumentID", 0)))
+                .Where(f => f!=null)
+                .ToList();
+        }
+
+        private ProductLink CreateProcuct(int documentId)
+        {
+            var product = DocumentHelper.GetDocuments("KDA.Product").Where(d => d.DocumentID == documentId).FirstOrDefault();
+
+            if (product == null)
+                return null;
+
+            return new ProductLink
+            {
+                Id = documentId,
+                ImageUrl = URLHelper.GetAbsoluteUrl(product.GetValue("ProductThumbnail", string.Empty) == string.Empty ? product.GetValue("SKUImagePath", string.Empty) : "/CMSPages/GetFile.aspx?guid=" + product.GetValue("ProductThumbnail")),
+                Title = product.DocumentName,
+                Url = product.DocumentUrlPath
+            };
         }
     }
 }

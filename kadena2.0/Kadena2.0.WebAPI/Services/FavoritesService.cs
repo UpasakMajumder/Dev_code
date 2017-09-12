@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.Models.Product;
+using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 
@@ -26,6 +27,11 @@ namespace Kadena.WebAPI.Services
         public List<int> CheckFavoriteProductIds(List<int> productIds)
         {
             return kenticofavorites.CheckFavoriteProductIds(productIds);
+        }
+
+        public List<ProductLink> GetFavorites(int count)
+        {
+            return kenticofavorites.GetFavorites(count);
         }
     }
 }
