@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -25,10 +27,15 @@ namespace Kadena.WebAPI.Infrastructure.Communication
 
         private HttpResponseMessage Execute()
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            response.RequestMessage = Request;
-            response.ReasonPhrase = ReasonPhrase;
-            return response;
+            var errorDto = new ErrorResponse(ReasonPhrase);
+            var requestBody = JsonConvert.SerializeObject(errorDto, SerializerConfig.CamelCaseSerializer);
+            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+            return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+            {
+                RequestMessage = Request,
+                Content = content
+            };
         }
     }
 }
