@@ -1,4 +1,5 @@
 ﻿using CMS.DataEngine;
+using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
@@ -44,6 +45,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         exportedStream.CopyTo(Response.OutputStream);
                         Response.End();
                     }
+                    else
+                    {
+                        EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "ExportClient", exportResponse.ErrorMessages);
+                    }
+                }
+                else
+                {
+                    EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", mailingListResponse.ErrorMessages);
                 }
             }
         }
