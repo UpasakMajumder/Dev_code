@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{endpoint}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
             using (var client = new HttpClient())
             {
-                using (var message = await client.GetAsync(url))
+                using (var message = await client.GetAsync(url).ConfigureAwait(false))
                 {
                     if (message.IsSuccessStatusCode)
                     {
