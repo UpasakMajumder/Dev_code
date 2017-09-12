@@ -15,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<Stream>> ExportMailingList(string endpoint, Guid containerId, string siteName)
         {
-            var url = $"{endpoint}?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
+            var url = $"{endpoint}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
             using (var client = new HttpClient())
             {
                 using (var message = await client.GetAsync(url))
