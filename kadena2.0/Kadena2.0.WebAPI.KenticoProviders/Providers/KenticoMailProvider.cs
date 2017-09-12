@@ -2,7 +2,6 @@
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Linq;
 using System.Text;
 
 namespace Kadena.WebAPI.KenticoProviders
@@ -11,8 +10,7 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         public MailTemplate GetMailTemplate(int siteId, string templateName)
         {
-            var templates = EmailTemplateProvider.GetEmailTemplates().WhereEquals("EmailTemplateName", templateName).ToArray();
-            var template = templates.Where(t => t.TemplateSiteID == siteId || t.TemplateSiteID == 0).FirstOrDefault();
+            var template = EmailTemplateProvider.GetEmailTemplate(templateName, siteId);
 
             return template == null ? null : new MailTemplate()
             {
