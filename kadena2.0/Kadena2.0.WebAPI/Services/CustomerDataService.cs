@@ -21,7 +21,7 @@ namespace Kadena.WebAPI.Services
 
         public CustomerData GetCustomerData(int siteId, int customerId)
         {
-            var customer = kenticoUsers.GetCustomer(siteId, customerId);
+            var customer = kenticoUsers.GetCustomer(customerId);
 
             if (customer == null)
                 return null;
@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
-            var claims = GetCustomerClaims(customer.UserID);
+            var claims = GetCustomerClaims(siteId, customer.UserID);
 
             return new CustomerData()
             {
@@ -52,11 +52,11 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        private Dictionary<string, string> GetCustomerClaims(int userId)
+        private Dictionary<string, string> GetCustomerClaims(int siteId, int userId)
         {
             var claims = new Dictionary<string, string>();
 
-            bool canSeePrices = kenticoUsers.UserCanSeePrices(userId);
+            bool canSeePrices = kenticoUsers.UserCanSeePrices(siteId, userId);
             claims.Add("UserCanSeePrices", canSeePrices.ToString().ToLower());
 
             return claims;

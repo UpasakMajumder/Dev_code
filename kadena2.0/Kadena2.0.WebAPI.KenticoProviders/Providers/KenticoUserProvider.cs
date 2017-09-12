@@ -57,10 +57,9 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public Customer GetCustomer(int siteId, int customerId)
+        public Customer GetCustomer(int customerId)
         {
-            var customers = CustomerInfoProvider.GetCustomers().Where(c => c.CustomerID == customerId).ToArray();
-            var customer = customers.Where(c => c.CustomerSiteID == siteId || c.CustomerSiteID == 0).FirstOrDefault();
+            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
 
             if (customer == null)
                 return null;
@@ -84,14 +83,15 @@ namespace Kadena.WebAPI.KenticoProviders
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
-        public bool UserCanSeePrices(int userId)
+        public bool UserCanSeePrices(int siteId, int userId)
         {
             var userinfo = UserInfoProvider.GetUserInfo(userId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
 
-            if (userinfo == null)
+            if (userinfo == null || site == null)
                 return false;
 
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, userinfo);
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", site.SiteName, userinfo);
         }
 
         public bool UserCanSeeAllOrders()
