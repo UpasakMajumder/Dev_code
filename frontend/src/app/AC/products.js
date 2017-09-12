@@ -13,7 +13,6 @@ import loadFavoriteProductsResponse from 'app.ws/productsFavorite';
 
 export const markProductFavourite = (productId) => {
   return (dispatch) => {
-
     dispatch({
       type: PRODUCT_MARK_AS_FAVOURITE,
       id: productId
@@ -26,7 +25,6 @@ export const markProductFavourite = (productId) => {
 
 export const unmarkProductFavourite = (productId) => {
   return (dispatch) => {
-
     dispatch({
       type: PRODUCT_UNMARK_AS_FAVOURITE,
       id: productId
@@ -42,7 +40,7 @@ export const loadProducts = () => {
     dispatch({ type: PRODUCTS_LOAD + FETCH });
 
     const prod = () => {
-      axios.get(PRODUCTS_GLOBAL.loadProductsUrl)
+      axios.get(`${PRODUCTS_GLOBAL.loadProductsUrl}?url=${window.location.pathname}`)
         .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
