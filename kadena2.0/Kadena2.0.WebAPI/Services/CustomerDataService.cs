@@ -19,9 +19,9 @@ namespace Kadena.WebAPI.Services
             this.kenticoResource = kenticoResource;
         }
 
-        public CustomerData GetCustomerData(int customerId)
+        public CustomerData GetCustomerData(int siteId, int customerId)
         {
-            var customer = kenticoUsers.GetCustomer(customerId);
+            var customer = kenticoUsers.GetCustomer(siteId, customerId);
 
             if (customer == null)
                 return null;
@@ -47,7 +47,8 @@ namespace Kadena.WebAPI.Services
                     State = address.State,
                     Zip = address.Zip
                 },
-                Claims = claims
+                Claims = claims,
+                SiteDomain = customer.SiteDomain
             };
         }
 

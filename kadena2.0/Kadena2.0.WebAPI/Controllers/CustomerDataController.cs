@@ -35,7 +35,7 @@ namespace Kadena.WebAPI.Controllers
         [IdentityBasicAuthentication]
         public IHttpActionResult CustomerData([FromBody]CustomerDataRequestDto request)
         {
-            var result = service.GetCustomerData(request.CustomerId);
+            var result = service.GetCustomerData(request.SiteId, request.CustomerId);
             var resultDto = mapper.Map<CustomerDataDTO>(result);
             return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {request.CustomerId}"); 
         }

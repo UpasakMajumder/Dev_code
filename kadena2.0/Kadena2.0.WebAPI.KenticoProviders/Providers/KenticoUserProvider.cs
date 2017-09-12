@@ -56,9 +56,12 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public Customer GetCustomer(int customerId)
+        public Customer GetCustomer(int siteId, int customerId)
         {
-            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
+            var customer = CustomerInfoProvider.GetCustomers()
+                .Where(c => c.CustomerID == customerId)
+                .Where(c => c.CustomerSiteID == siteId)
+                .FirstOrDefault();
 
             if (customer == null)
                 return null;

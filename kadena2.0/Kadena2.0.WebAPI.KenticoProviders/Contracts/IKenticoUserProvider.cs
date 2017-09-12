@@ -10,7 +10,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         
         Customer GetCurrentCustomer();
 
-        Customer GetCustomer(int customerId);
+        Customer GetCustomer(int siteId, int customerId);
         bool UserCanSeePrices();
         bool UserCanSeePrices(int userId);
 
