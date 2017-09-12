@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
-  changeProductQuantity, getUI } from 'app.ac/checkout';
+  changeProductQuantity, getUI, addNewAddress } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -44,7 +45,7 @@ class Checkout extends Component {
       }
     });
 
-    alert(message); // eslint-disable-line no-alert
+    toastr.error(message);
   }
 
   componentDidMount() {
@@ -52,8 +53,8 @@ class Checkout extends Component {
     getUI();
   }
 
-  sendData = (checkedData) => {
-    const { sendData } = this.props;
+  placeOrder = (checkedData) => {
+    const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
@@ -70,6 +71,12 @@ class Checkout extends Component {
       const data = { ...checkedData };
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
+      if (checkedData.deliveryAddress === -1) {
+        data.deliveryAddress = checkout.newAddress;
+      } else {
+        data.deliveryAddress = { id: data.deliveryAddress };
+      }
+
       sendData(data);
     }
   };
@@ -81,8 +88,7 @@ class Checkout extends Component {
     let deliveryAddress = 0;
     let deliveryMethod = 0;
     let paymentMethod = {
-      id: 0,
-      invoice: ''
+      id: 0
     };
 
     if (deliveryAddresses.isDeliverable) {
@@ -104,7 +110,7 @@ class Checkout extends Component {
     }
 
     paymentMethods.items.forEach((method) => {
-      if (method.checked) paymentMethod = { id: method.id, invoice: '' };
+      if (method.checked) paymentMethod = { id: method.id };
     });
 
     initCheckedShoppingData({
@@ -123,22 +129,35 @@ class Checkout extends Component {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
 
-    const { products } = uiNext;
-    if (!products.items.length) location.reload();
-
     if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
 
   render() {
-    const { checkout, changeShoppingData, changeProductQuantity, removeProduct } = this.props;
-    const { ui, checkedData, isSending } = checkout;
+    const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
+    const { ui, checkedData, isSending, newAddress } = checkout;
 
     let content = <Spinner />;
 
     if (Object.keys(ui).length) {
-      const { submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
+      const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
+
+      // cart is empty
+      if (!ui.products.items.length) {
+        content = <div>
+          <div className="alert alert--full alert--info isOpen js-collapse">
+            <p className="p-info weight--normal">{emptyCart.text}</p>
+          </div>
+
+          <div className="btn-group btn-group--center">
+            <a href={emptyCart.dashboardButtonUrl} type="type" className="btn-action btn-action--secondary">{emptyCart.dashboardButtonText}</a>
+            <a href={emptyCart.productsButtonUrl} type="type" className="btn-action">{emptyCart.productsButtonText}</a>
+          </div>
+        </div>;
+
+        return content;
+      }
 
       const disableInteractivity = !totals;
 
@@ -164,7 +183,10 @@ class Checkout extends Component {
               changeShoppingData={changeShoppingData}
               checkedId={deliveryAddress}
               disableInteractivity={disableInteractivity}
-              ui={deliveryAddresses}/>
+              addNewAddress={addNewAddress}
+              ui={deliveryAddresses}
+              newAddressObject={newAddress}
+            />
           </div>
 
           <div className="shopping-cart__block">
@@ -193,7 +215,8 @@ class Checkout extends Component {
             validationMessage={validationMessage}
             changeShoppingData={changeShoppingData}
             checkedObj={paymentMethod}
-            ui={paymentMethods}/>
+            ui={paymentMethods}
+          />
         </div>
 
         <div className="shopping-cart__block">
@@ -201,10 +224,11 @@ class Checkout extends Component {
         </div>
 
         <div className="shopping-cart__block text--right">
-          <Button text={submit.btnLabel}
-                  type="action"
-                  isLoading={disableInteractivity}
-                  onClick={() => this.sendData(checkedData)}
+          <Button
+            text={submit.btnLabel}
+            type="action"
+            isLoading={disableInteractivity}
+            onClick={() => this.placeOrder(checkedData)}
           />
         </div>
       </div>;
@@ -228,5 +252,6 @@ export default connect((state) => {
   sendData,
   removeProduct,
   changeProductQuantity,
-  changeProducts
+  changeProducts,
+  addNewAddress
 })(Checkout);

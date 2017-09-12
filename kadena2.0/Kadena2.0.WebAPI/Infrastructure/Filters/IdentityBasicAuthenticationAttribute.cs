@@ -18,7 +18,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters
             if (userName == storedUser && password == storedPassword)
             {
                 ClaimsIdentity identity = new ClaimsIdentity("Basic");
-                return new ClaimsPrincipal(identity);
+                return await Task.FromResult(new ClaimsPrincipal(identity));
             }
 
             return null;

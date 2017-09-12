@@ -6,6 +6,7 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena.Dto.General;
 using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -46,6 +47,18 @@ namespace Kadena2.MicroserviceClients.Clients
                     {
                         return await ReadResponseJson<bool?>(response);
                     }
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, Guid masterTemplateId)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = $"{endpoint.TrimEnd('/')}/api/template/{masterTemplateId}/users/{userId}";
+                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
+                {
+                    return await ReadResponseJson<List<TemplateServiceDocumentResponse>>(response);
                 }
             }
         }

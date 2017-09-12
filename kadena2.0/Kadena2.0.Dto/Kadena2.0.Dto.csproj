@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\CartButtonDTO.cs" />
+    <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
     <Compile Include="Checkout\CartItemsDTO.cs" />
     <Compile Include="Checkout\CartItemDTO.cs" />
@@ -74,8 +76,11 @@
     <Compile Include="EstimateDeliveryPrice\MicroserviceResponses\EstimateDeliveryPriceResponseDto.cs" />
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
+    <Compile Include="InventoryUpdate\MicroserviceResponses\InventoryDataItemDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
+    <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
+    <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
     <Compile Include="Product\RequestResultDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
@@ -109,6 +114,8 @@
     <Compile Include="Site\Requests\ArtworkFtpRequestDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />    
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />

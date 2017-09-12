@@ -4,7 +4,7 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Kadena.Dto.Order;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -14,6 +14,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             using (var httpClient = new HttpClient())
             {
+                httpClient.Timeout = TimeSpan.FromSeconds(60);
                 var content = CreateRequestContent(orderData);
                 using (var response = await httpClient.PostAsync(serviceEndpoint, content))
                 {

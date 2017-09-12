@@ -175,7 +175,7 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public void SetShoppingCartAddres(int addressId)
+        public void SetShoppingCartAddress(int addressId)
         {
             var cart = ECommerceContext.CurrentShoppingCart;
 
@@ -184,6 +184,37 @@ namespace Kadena.WebAPI.KenticoProviders
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
                 cart.SubmitChanges(true);
+            }
+        }
+
+        public void SetShoppingCartAddress(DeliveryAddress address)
+        {
+            if (address != null)
+            {
+                if (address.Id > 0)
+                {
+                    SetShoppingCartAddress(address.Id);
+                }
+                else
+                {
+                    var cart = ECommerceContext.CurrentShoppingCart;
+                    var state = StateInfoProvider.GetStateInfoByCode(address.State);
+                    var country = GetCountries().FirstOrDefault(c => c.Name.Equals(address.Country));
+
+                    var info = new AddressInfo
+                    {
+                        AddressID = address.Id,
+                        AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                        AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                        AddressCity = address.City,
+                        AddressStateID = state?.StateID ?? 0,
+                        AddressCountryID = country?.Id ?? 0,
+                        AddressZip = address.Zip,
+                    };
+
+                    cart.ShoppingCartShippingAddress = info;
+                    cart.SubmitChanges(true);
+                }
             }
         }
 
@@ -223,14 +254,14 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
-                DesignFilePath = i.GetValue("DesignFilePath", string.Empty),
+                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                 ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                 ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
-                SKUName = i.SKU?.SKUName,
+                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 TotalTax = 0.0d,
                 UnitPrice = showPrices ? i.UnitPrice : 0.0d,
@@ -280,19 +311,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             // Recalculate shopping cart
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
-        }
-
-        public void SetCartItemDesignFilePath(int id, string path)
-        {
-            var cart = ECommerceContext.CurrentShoppingCart;
-            var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
-
-            if (item != null)
-            {
-                item.SetValue("DesignFilePathObtained", true);
-                item.SetValue("DesignFilePath", path);
-                item.Update();
-            }
         }
 
         public void SetCartItemQuantity(int id, int quantity)
@@ -715,6 +733,31 @@ namespace Kadena.WebAPI.KenticoProviders
             var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
 
             return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
+        }
+
+        public void SetSkuAvailableQty(string skunumber, int availableItems)
+        {
+            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = availableItems;
+                sku.SubmitChanges(false);
+                sku.MakeComplete(true);
+                sku.Update();
+            }
+        }
+
+        public IEnumerable<Country> GetCountries()
+        {
+            return CountryInfoProvider
+                .GetCountries()
+                .Columns(new[] { "CountryDisplayName", "CountryID" })
+                .Select(s => new Country
+                {
+                    Id = int.Parse(s["CountryID"].ToString()),
+                    Name = s["CountryDisplayName"].ToString()
+                });
         }
     }
 }

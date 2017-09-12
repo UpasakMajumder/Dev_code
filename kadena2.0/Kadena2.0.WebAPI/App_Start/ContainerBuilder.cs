@@ -2,6 +2,7 @@
 using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
+using Kadena.WebAPI.Factories.Checkout;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
@@ -23,6 +24,7 @@ namespace Kadena.WebAPI
             container.Register<IOrderService, OrderService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
+            container.Register<IMailTemplateService, MailTemplateService>();
             return container;
         }
 
@@ -33,6 +35,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoSearchService, KenticoSearchService>();
             container.Register<IKenticoLogger, KenticoLogger>();
+            container.Register<IKenticoMailProvider, KenticoMailProvider>();
             return container;
         }
 
@@ -49,6 +52,7 @@ namespace Kadena.WebAPI
         public static Container RegisterFactories(this Container container)
         {
             container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
+            container.Register<ICheckoutPageFactory, CheckoutPageFactory>();
             return container;
         }
 

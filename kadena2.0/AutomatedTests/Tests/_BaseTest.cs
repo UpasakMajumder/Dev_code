@@ -98,7 +98,7 @@ namespace AutomatedTests.Tests
         {
             Browser.Driver.SwitchTo().DefaultContent();
         }
-
+       
         /// <summary>
         /// Read the file with authentication cookies and add them with webdriver
         /// </summary>

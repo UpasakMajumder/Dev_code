@@ -4,6 +4,7 @@ using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
+using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Product;
 using Kadena.Dto.RecentOrders;
@@ -76,6 +77,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryCarrier, DeliveryMethodDTO>();
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
+                config.CreateMap<DeliveryAddressDTO, DeliveryAddress>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<SubmitButton, SubmitButtonDTO>();
@@ -100,7 +102,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogButton, DialogButtonDto>();
                 config.CreateMap<DialogType, DialogTypeDto>();
                 config.CreateMap<DialogField, DialogFieldDto>();
-                config.CreateMap<AddressDialog, AddressDialogDto>();
+                config.CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
+                config.CreateMap<Models.Checkout.AddressDialog, Dto.Checkout.AddressDialogDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
                 config.CreateMap<OrderedItem, OrderedItemDTO>();
                 config.CreateMap<OrderedItems, OrderedItemsDTO>();
@@ -161,6 +164,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<RequestResult, RequestResultDto>();
                 config.CreateMap<ArtworkFtpSettings, ArtworkFtpResponseDto>();
                 config.CreateMap<FtpCredentials, FtpCredentialsDto>();
+                config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
+                config.CreateMap<MailTemplate, MailTemplateDto>();				
             });
         }
     }

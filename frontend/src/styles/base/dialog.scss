@@ -1,0 +1,10 @@
+@mixin dialog-table($fields) {
+  td {
+    width: calc(100% / #{$fields});
+    vertical-align: top;
+
+    &:not(:first-child) {
+      @include rem(padding-left, 10px);
+    }
+  }
+}
