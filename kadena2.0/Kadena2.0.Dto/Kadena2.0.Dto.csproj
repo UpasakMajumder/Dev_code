@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\CartButtonDTO.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
@@ -78,6 +79,8 @@
     <Compile Include="InventoryUpdate\MicroserviceResponses\InventoryDataItemDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
+    <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
+    <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
     <Compile Include="Product\RequestResultDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
