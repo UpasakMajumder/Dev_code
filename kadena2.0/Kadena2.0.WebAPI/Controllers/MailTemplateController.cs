@@ -35,7 +35,7 @@ namespace Kadena.WebAPI.Controllers
         [IdentityBasicAuthentication]
         public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
         {
-            var result = service.GetMailTemplate(request.TemplateName);
+            var result = service.GetMailTemplate(request.SiteId, request.TemplateName);
             var resultDto = mapper.Map<MailTemplateDto>(result);
             return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateName}");
         }

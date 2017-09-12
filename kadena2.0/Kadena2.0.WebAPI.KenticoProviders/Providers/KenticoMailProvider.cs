@@ -2,15 +2,17 @@
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Linq;
 using System.Text;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoMailProvider : IKenticoMailProvider
     {
-        public MailTemplate GetMailTemplate(string templateName)
+        public MailTemplate GetMailTemplate(int siteId, string templateName)
         {
-            var template = EmailTemplateProvider.GetEmailTemplates().WhereEquals("EmailTemplateName", templateName).FirstObject;
+            var templates = EmailTemplateProvider.GetEmailTemplates().WhereEquals("EmailTemplateName", templateName).ToArray();
+            var template = templates.Where(t => t.TemplateSiteID == siteId || t.TemplateSiteID == 0).FirstOrDefault();
 
             return template == null ? null : new MailTemplate()
             {
