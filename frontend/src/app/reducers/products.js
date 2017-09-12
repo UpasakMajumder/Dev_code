@@ -21,11 +21,17 @@ export default (state = defaultState, action) => {
     };
 
   case PRODUCTS_LOAD + SUCCESS:
-  case PRODUCTS_FAVORITE_LOAD + SUCCESS:
     return {
       ...state,
       products: payload.ui.products,
       categories: payload.ui.categories,
+      isLoading: false
+    };
+
+  case PRODUCTS_FAVORITE_LOAD + SUCCESS:
+    return {
+      ...state,
+      products: payload.ui,
       isLoading: false
     };
 
@@ -36,9 +42,32 @@ export default (state = defaultState, action) => {
       isLoading: false
     };
 
-  //TODO
-  //case PRODUCT_MARK_AS_FAVOURITE + FETCH:
-  //case PRODUCT_UNMARK_AS_FAVOURITE + FETCH:
+
+
+  case PRODUCT_MARK_AS_FAVOURITE: {
+    const newState = { ...state };
+
+    newState.products.map((product) => {
+      if (product.id === action.id) {
+        product.isFavourite = true;
+      }
+      return product;
+    });
+
+    return newState;
+  }
+
+  case PRODUCT_UNMARK_AS_FAVOURITE:
+    const newState = { ...state };
+
+    newState.products.map((product) => {
+      if (product.id === action.id) {
+        product.isFavourite = false;
+      }
+      return product;
+    });
+
+    return newState;
 
   default:
     return state;

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Spinner from 'app.dump/Spinner';
 import SVG from 'app.dump/SVG';
+import { Tooltip } from 'react-tippy';
 import { loadProducts, markProductFavourite, unmarkProductFavourite } from 'app.ac/products';
 
 
@@ -21,15 +23,10 @@ class Products extends Component {
   }
 
   render() {
-    const { categories, isLoading, products } = this.props;
+    const { categories, isLoading, markProductFavourite, products, unmarkProductFavourite } = this.props;
 
     if (isLoading) {
-      return (
-        <div className="row">
-          {/* TODO add loading spinner */}
-          <div>isLoading...</div>
-        </div>
-      );
+      return (<Spinner />);
     }
 
     return (
@@ -52,17 +49,22 @@ class Products extends Component {
           <div key={product.id} className="col-lg-4 col-xl-3">
             {/*TODO favourite */}
             {/*TODO dataTooltipPlacement vs data-tooltip-placement */}
-            <div
-              className="template__favourite js-collapse js-tooltip"
-              dataTooltipPlacement="right"
-              title="Set product as favorite"
-            >
-              <div className="js-toggle">
+            {/*TODO "Set product as favorite" from config.localization.product.xxx */}
+            <div onClick={() => {
+              product.isFavourite ? unmarkProductFavourite(product.id) : markProductFavourite(product.id);
+            }}>
+              <Tooltip
+                title="Set product as favorite"
+                position="right"
+                animation="fade"
+                arrow={true}
+                theme="dark"
+              >
                 {product.isFavourite ?
-                  <SVG name="star--filled" className="icon-star"/>
-                  : <SVG name="star--unfilled" className="icon-star"/>
+                  <SVG name="star--filled" className="icon-star" />
+                  : <SVG name="star--unfilled" className="icon-star" />
                 }
-              </div>
+              </Tooltip>
             </div>
 
             <a href={product.url} className="category">

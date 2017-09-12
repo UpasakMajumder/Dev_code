@@ -5,67 +5,67 @@ import { FETCH, SUCCESS, FAILURE, START, FINISH,
 } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
-
 /* globals */
-//TODO URLs from config
-//import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
+import { PRODUCTS as PRODUCTS_GLOBAL } from 'app.globals';
 
 
-
-//TODO enhance config
+//TODO enhance config, where in templates?
 /*config.localization.products = {
-  addToFavorites: "asdasdasdasdasdas"
+  addToFavorites: "Set product as favorite" //TODO into component
+  loadProductsUrl: "/api/products",
+  loadFavoritesProductsUrl: "/api/products/favorites",
+  markProductFavouriteUrl: "/api/favorites/set"
+  unmarkProductFavouriteUrl: "/api/favorites/unset"
 };
-
-config.products = {
-  loadProducts: "/api/products",
-  markProductFavourite: "/api/favorites/set"
-  unmarkProductFavourite: "/api/favorites/unset"
-};*/
-
 
 
 /* web service */
 import loadProductsResponse from 'app.ws/products';
 import loadFavoriteProductsResponse from 'app.ws/productsFavorite';
 
-
-
-//TODO
 export const markProductFavourite = (productId) => {
-  //TODO
-  console.log('markProductFavourite', productId);
+  return (dispatch) => {
+
+    dispatch({
+      type: PRODUCT_MARK_AS_FAVOURITE,
+      id: productId
+    });
+
+    axios.post(PRODUCTS_GLOBAL.markProductFavouriteUrl, { id: productId })
+      .catch(console.error);
+  };
 };
 
-
-//TODO
 export const unmarkProductFavourite = (productId) => {
-  //TODO
-  console.log('unmarkProductFavourite', productId);
-};
+  return (dispatch) => {
 
+    dispatch({
+      type: PRODUCT_UNMARK_AS_FAVOURITE,
+      id: productId
+    });
+
+    axios.post(PRODUCTS_GLOBAL.unmarkProductFavouriteUrl, { id: productId })
+      .catch(console.error);
+  };
+};
 
 export const loadProducts = () => {
   return (dispatch) => {
     dispatch({ type: PRODUCTS_LOAD + FETCH });
 
     const prod = () => {
-      //TODO
-      /*
-      axios.post(url, { id })
+      axios.get(PRODUCTS_GLOBAL.loadProductsUrl)
         .then((response) => {
           const { payload, success, errorMessage } = response.data;
 
           if (!success) {
-            dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+            dispatch({ type: PRODUCTS_LOAD + FAILURE });
             alert(errorMessage); // eslint-disable-line no-alert
             return;
           }
 
-          getTotalPrice(dispatch);
-
           dispatch({
-            type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
+            type: PRODUCTS_LOAD + SUCCESS,
             payload: {
               ui: payload
             }
@@ -73,9 +73,8 @@ export const loadProducts = () => {
         })
         .catch((error) => {
           alert(error); // eslint-disable-line no-alert
-          dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+          dispatch({ type: PRODUCTS_LOAD + FAILURE });
         });
-      */
     };
 
     const dev = () => {
@@ -99,32 +98,27 @@ export const loadFavoritesProducts = () => {
     dispatch({ type: PRODUCTS_FAVORITE_LOAD + FETCH });
 
     const prod = () => {
-      //TODO
-      /*
-       axios.post(url, { id })
-       .then((response) => {
-       const { payload, success, errorMessage } = response.data;
+      axios.get(PRODUCTS_GLOBAL.loadFavoritesProductsUrl)
+        .then((response) => {
+          const { payload, success, errorMessage } = response.data;
 
-       if (!success) {
-       dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-       alert(errorMessage); // eslint-disable-line no-alert
-       return;
-       }
+          if (!success) {
+            dispatch({ type: PRODUCTS_FAVORITE_LOAD + FAILURE });
+            alert(errorMessage); // eslint-disable-line no-alert
+            return;
+          }
 
-       getTotalPrice(dispatch);
-
-       dispatch({
-       type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
-       payload: {
-       ui: payload
-       }
-       });
-       })
-       .catch((error) => {
-       alert(error); // eslint-disable-line no-alert
-       dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-       });
-       */
+          dispatch({
+            type: PRODUCTS_FAVORITE_LOAD + SUCCESS,
+            payload: {
+              ui: payload
+            }
+          });
+        })
+        .catch((error) => {
+          alert(error); // eslint-disable-line no-alert
+          dispatch({ type: PRODUCTS_FAVORITE_LOAD + FAILURE });
+        });
     };
 
     const dev = () => {

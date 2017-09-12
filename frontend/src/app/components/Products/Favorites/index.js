@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import SVG from 'app.dump/SVG';
+import Spinner from 'app.dump/Spinner';
 import { loadFavoritesProducts } from 'app.ac/products';
 
 
@@ -21,12 +21,7 @@ class ProductsFavorites extends Component {
     const { isLoading, products } = this.props;
 
     if (isLoading) {
-      return (
-        <div className="row">
-          {/* TODO add loading spinner */}
-          <div>isLoading...</div>
-        </div>
-      );
+      return (<Spinner />);
     }
 
     return (
