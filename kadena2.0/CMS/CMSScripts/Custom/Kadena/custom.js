@@ -348,12 +348,14 @@ if (!String.prototype.format) {
                     if (data.d.success) {
                         toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
-                        toastr.error(config.localization.PasswordChange.ErrorTitle, data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    toastr.error(config.localization.PasswordChange.ErrorTitle, config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).show();
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
