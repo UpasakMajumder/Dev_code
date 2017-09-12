@@ -6,6 +6,6 @@
         public string ImageUrl { get; set; }
         public string Title { get; set; }
         public string Url { get; set; }
-        public bool IsFavorite { get; set; }
+        public bool IsFavourite { get; set; }
     }
 }

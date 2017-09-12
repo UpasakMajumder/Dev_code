@@ -37,7 +37,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ? 
                                                     p.GetValue("SKUImagePath", string.Empty) : 
                                                     "/CMSPages/GetFile.aspx?guid=" + p.GetValue("ProductThumbnail")),
-                IsFavorite = false
+                IsFavourite = false
             }
             ).ToList();
         }
