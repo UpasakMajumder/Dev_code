@@ -902,6 +902,11 @@ if (!String.prototype.format) {
             errorMessage: ".j-error-message"
         }, options);
 
+        var isSaved = getParameterByName("saved");
+
+        if (isSaved != null && isSaved == '1') {
+            setTimeout(function () { toastr.success(config.localization.newKList.listSavedTitle, config.localization.newKList.listSavedText); }, 0);
+        }
         if (base.find(settings.errorMessage).val() != '') {
             setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 0);
         }
