@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BillingAddress.cs" />
+    <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\CartButton.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />
     <Compile Include="Checkout\CartItem.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Country.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="KenticoSite.cs" />
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />
+    <Compile Include="MailTemplate.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />

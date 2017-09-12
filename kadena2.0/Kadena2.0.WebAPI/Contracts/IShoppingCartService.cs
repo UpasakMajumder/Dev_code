@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Checkout;
+﻿using Kadena.Models;
+using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Kadena.WebAPI.Contracts
     public interface IShoppingCartService
     {
         CheckoutPage GetCheckoutPage();
-        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
+        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null);
         CheckoutPage SelectShipipng(int id);
         CheckoutPage SelectAddress(int id);
         CheckoutPage ChangeItemQuantity(int id, int quantity);
