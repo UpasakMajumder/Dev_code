@@ -29,7 +29,7 @@ namespace Kadena.WebAPI.Controllers
             this.favorites = favorites;
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/favorites/set/{productDocumentId}")]
         [AuthorizationFilter]
         public IHttpActionResult SetFavorite(int productDocumentId)
@@ -38,7 +38,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson<string>("OK");
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/favorites/unset/{productDocumentId}")]
         [AuthorizationFilter]
         public IHttpActionResult UnsetFavorite(int productDocumentId)
