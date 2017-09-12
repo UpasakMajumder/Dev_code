@@ -20,16 +20,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserImportService
     {
-        private static readonly int MaxRowsPerSheet = 1024 * 1024;
-
-        public byte[] GetTemplateFile(int siteID)
-        {
-            var columns = GetColumns();
-            var roles = GetAllRoles(siteID).Select(r => r.Description).ToArray();
-            var file = CreateTemplateFile(columns, roles);
-            return file;
-        }
-
         public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
             var rows = ReadDataFromExcelFile(importFileData, type);
@@ -45,7 +35,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             }
 
             var header = rows.First();
-            var mapRowToUser = GetMapper(header);
+            var mapRowToUser = ImportHelper.GetImportMapper<UserDto>(header);
             var users = rows.Skip(1)
                 .Select(row => mapRowToUser(row))
                 .ToList();
@@ -64,8 +54,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
                 try
                 {
+                    var roles = new RoleProvider().GetAllRoles(site.SiteID);
                     List<string> validationResults;
-                    if (!ValidateImportItem(userDto, GetAllRoles(site.SiteID), out validationResults))
+                    if (!ValidateImportItem(userDto, roles, out validationResults))
                     {
                         // sort errors by field
                         validationResults.Sort();
@@ -226,7 +217,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             UserInfoProvider.AddUserToSite(newUser.UserName, site.SiteName);
 
-            var role = GetAllRoles(site.SiteID)
+            var role = new RoleProvider().GetAllRoles(site.SiteID)
                 .FirstOrDefault(r => r.Description == userDto.Role);
             if (role == null)
             {
@@ -244,157 +235,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .Any();
         }
 
-        private Func<string[], UserDto> GetMapper(string[] header)
-        {
-            var properties = GetNamedProperties();
-            var columnIndexToPropertyMap = new Dictionary<int, PropertyInfo>();
-            for (int colIndex = 0; colIndex < header.Length; colIndex++)
-            {
-                for (int propIndex = 0; propIndex < properties.Count; propIndex++)
-                {
-                    if (string.Compare(properties[propIndex].Key, header[colIndex], ignoreCase: true) == 0)
-                    {
-                        columnIndexToPropertyMap[colIndex] = properties[propIndex].Value;
-                        break;
-                    }
-                }
-            }
-
-            return (row) =>
-            {
-                var user = new UserDto();
-                for (int i = 0; i < row.Length; i++)
-                {
-                    PropertyInfo property;
-                    if (columnIndexToPropertyMap.TryGetValue(i, out property))
-                    {
-                        property.SetValue(user, row[i]);
-                    }
-                }
-
-                return user;
-            };
-        }
-
-        public ExcelType GetExcelTypeFromFileName(string fileName)
-        {
-            if (fileName.EndsWith(".xlsx", System.StringComparison.InvariantCultureIgnoreCase))
-            {
-                return ExcelType.Xlsx;
-            }
-            else
-            {
-                return ExcelType.Xls;
-            }
-        }
-
-        private List<KeyValuePair<string, PropertyInfo>> GetNamedProperties()
-        {
-            var properties = typeof(UserDto).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute })
-                .Where(p => p.HeaderInfo != null)
-                .OrderBy(p => p.HeaderInfo.Order)
-                .Select(p => new KeyValuePair<string, PropertyInfo>(p.HeaderInfo.Title, p.Property))
-                .ToList();
-            return namedProperties;
-        }
-
-        private string[] GetColumns()
-        {
-            var names = GetNamedProperties()
-                .Select(p => p.Key)
-                .ToArray();
-            return names;
-        }
-
-        private Role[] GetAllRoles(int siteID)
-        {
-            var roles = RoleInfoProvider.GetAllRoles(siteID)
-                .Select(s => new Role { ID = s.RoleID, Description = s.RoleDisplayName })
-                .ToArray();
-            return roles;
-        }
-
-        /// <summary>
-        /// Creates xlsx file.
-        /// </summary>
-        /// <param name="columns">Columns to create. Expects last column to be role.</param>
-        /// <param name="roles">Roles to add to role select box for last column.</param>
-        /// <returns></returns>
-        private byte[] CreateTemplateFile(string[] columns, string[] roles)
-        {
-            // create workbook
-            IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("Users");
-            CreateSheetHeader(columns, sheet);
-
-            // add validation for roles
-            var rolesColumnIndex = columns.Length - 1; // role column should be last
-            AddRolesValidation(rolesColumnIndex, roles, sheet);
-
-            using (var ms = new MemoryStream())
-            {
-                workbook.Write(ms);
-                var bytes = ms.ToArray();
-                return bytes;
-            }
-        }
-
-        private void AddRolesValidation(int rolesColumnIndex, string[] roles, ISheet sheet)
-        {
-            var workbook = sheet.Workbook;
-            var rolesSheet = workbook.CreateSheet("Roles");
-            workbook.SetSheetHidden(1, SheetState.VeryHidden);
-            for (int i = 0; i < roles.Length; i++)
-            {
-                rolesSheet.CreateRow(i)
-                    .CreateCell(0)
-                    .SetCellValue(roles[i]);
-            }
-
-            var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
-            var validationHelper = sheet.GetDataValidationHelper();
-            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A1:$A" + roles.Length);
-            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
-            validation.ShowErrorBox = true;
-            validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
-            sheet.AddValidationData(validation);
-        }
-
-        private static void CreateSheetHeader(string[] columns, ISheet sheet)
-        {
-            var row = sheet.CreateRow(0);
-            var style = CreateHeaderStyle(sheet.Workbook);
-            var charWidth = 256;
-            var minimalColumnWidth = charWidth * 18;
-
-            for (int i = 0; i < columns.Length; i++)
-            {
-                var cell = row.CreateCell(i);
-                cell.SetCellValue(columns[i]);
-                cell.CellStyle = style;
-                sheet.AutoSizeColumn(i);
-
-                if (sheet.GetColumnWidth(i) < minimalColumnWidth)
-                {
-                    sheet.SetColumnWidth(i, minimalColumnWidth);
-                }
-            }
-        }
-
-        private static ICellStyle CreateHeaderStyle(IWorkbook workbook)
-        {
-            var font = workbook.CreateFont();
-            font.IsBold = true;
-            var style = workbook.CreateCellStyle();
-            style.SetFont(font);
-            return style;
-        }
-
         /// <summary>
         /// Reads first sheet from the file.
         /// </summary>
-        private static List<string[]> ReadDataFromExcelFile(byte[] fileData, ExcelType type)
+        private List<string[]> ReadDataFromExcelFile(byte[] fileData, ExcelType type)
         {
             using (var file = new MemoryStream(fileData))
             {
@@ -429,7 +273,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             }
         }
 
-        private static IWorkbook OpenWorkBook(Stream file, ExcelType type)
+        private IWorkbook OpenWorkBook(Stream file, ExcelType type)
         {
             if (type == ExcelType.Xlsx)
             {
@@ -441,7 +285,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             }
         }
 
-        private static string[] GetHeader(ISheet sheet)
+        private string[] GetHeader(ISheet sheet)
         {
             var columnNames = new List<string>();
 

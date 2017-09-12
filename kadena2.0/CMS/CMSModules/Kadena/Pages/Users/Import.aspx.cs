@@ -58,12 +58,11 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             }
 
             var fileData = ReadFileFromRequest(file);
-            var importService = new UserImportService();
-            var excelType = importService.GetExcelTypeFromFileName(file.FileName);
+            var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 
             try
             {
-                var result = importService.ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new UserImportService().ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -84,7 +83,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserImportService().GetTemplateFile(SelectedSiteID);
+            var bytes = new UserTemplateService().GetTemplateFile(SelectedSiteID);
             var templateFileName = "users-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
