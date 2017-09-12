@@ -1,6 +1,7 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -13,9 +14,29 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         public byte[] GetTemplateFile(int siteID)
         {
             var columns = GetImportColumns();
-            var roles = new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray();
+            var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
             var file = CreateTemplateFile(columns, roles);
             return file;
+        }
+
+        private string[] OrderRolesByPriority(string[] roles)
+        {
+            var kadenaRoles = new List<string>();
+            var sortedRoles = new List<string>();
+            foreach (var role in roles.OrderBy(r => r))
+            {
+                if (role.StartsWith("Kadena", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    kadenaRoles.Add(role);
+                }
+                else
+                {
+                    sortedRoles.Add(role);
+                }
+            }
+            sortedRoles.InsertRange(0, kadenaRoles);
+
+            return sortedRoles.ToArray();
         }
 
         /// <summary>
@@ -57,7 +78,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
             var validationHelper = sheet.GetDataValidationHelper();
-            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A1:$A" + roles.Length);
+            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A$1:$A$" + roles.Length);
             var validation = validationHelper.CreateValidation(validationConstraint, addressList);
             validation.ShowErrorBox = true;
             validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
