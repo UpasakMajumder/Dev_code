@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Kadena.Dto.Site
+namespace Kadena.Dto.Site.Requests
 {
     public class SiteDataRequestDto
     {
