@@ -5,6 +5,7 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -58,10 +59,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Customer GetCustomer(int siteId, int customerId)
         {
-            var customer = CustomerInfoProvider.GetCustomers()
-                .Where(c => c.CustomerID == customerId)
-                .Where(c => c.CustomerSiteID == siteId)
-                .FirstOrDefault();
+            var customers = CustomerInfoProvider.GetCustomers().Where(c => c.CustomerID == customerId).ToArray();
+            var customer = customers.Where(c => c.CustomerSiteID == siteId || c.CustomerSiteID == 0).FirstOrDefault();
 
             if (customer == null)
                 return null;
