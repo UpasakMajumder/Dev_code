@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using CMS.DataEngine;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,10 +12,13 @@ namespace Kadena.WebAPI.Infrastructure.Filters
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (userName == "root" && password == "r")
+            string storedUser = SettingsKeyInfoProvider.GetValue("KDA_WebApiUser");
+            string storedPassword = SettingsKeyInfoProvider.GetValue("KDA_WebApiPassword");
+
+            if (userName == storedUser && password == storedPassword)
             {
                 ClaimsIdentity identity = new ClaimsIdentity("Basic");
-                await Task.FromResult(new ClaimsPrincipal(identity));
+                return new ClaimsPrincipal(identity);
             }
 
             return null;
