@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Controllers
         [IdentityBasicAuthentication]
         public IHttpActionResult GetOrderManagerEmail([FromBody]SiteDataRequestDto request)
         {
-            var result = _service.GetOrderInfoRecepients(request.SiteName);
+            var result = _service.GetOrderInfoRecepients(request.SiteId);
             return ResponseJson(result);
         }
 

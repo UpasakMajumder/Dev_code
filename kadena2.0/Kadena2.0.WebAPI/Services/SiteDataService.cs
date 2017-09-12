@@ -14,9 +14,9 @@ namespace Kadena.WebAPI.Services
             _kentico = kentico;
         }
 
-        public string GetOrderInfoRecepients(string siteName)
+        public string GetOrderInfoRecepients(int siteId)
         {
-            return _kentico.GetSettingsKey(siteName ?? string.Empty, "KDA_OrderNotificationEmail");
+            return _kentico.GetSettingsKey(siteId, "KDA_OrderNotificationEmail");
         }
 
         public ArtworkFtpSettings GetArtworkFtpSettings(int siteId)
