@@ -54,9 +54,12 @@
   </div>
 
   <script>
-    function OnEditEvent(type) {
-      if (type !== 'DocumentSaved') return;
-      window.addToCart(false);
+    function OnEditorEvent(type) {
+      switch (type) {
+        case 'DocumentSaved':
+          window.saveChiliTemplate();
+          break;
+      }
     }
   </script>
 {% endblock %}
