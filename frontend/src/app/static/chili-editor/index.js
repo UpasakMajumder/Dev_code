@@ -24,6 +24,7 @@ class ChiliEditor extends AddToCart {
     this.editorLoaded = this.editorLoaded.bind(this);
     this.saveChiliTemplate = this.saveChiliTemplate.bind(this);
     this.revertTemplate = this.revertTemplate.bind(this);
+    this.triggerChiliSave = this.triggerChiliSave.bind(this);
 
     window.saveChiliTemplate = this.saveChiliTemplate;
 
@@ -48,16 +49,11 @@ class ChiliEditor extends AddToCart {
     }
   }
 
-  async addToCart() {
-    this.saveChiliTemplate();
-    this.addToCartRequest();
-  }
-
   initActions() {
     const saveBtn = document.querySelector('.js-chili-save');
     if (saveBtn && this.chiliWorks) {
       saveBtn.disabled = false;
-      saveBtn.addEventListener('click', () => this.saveChiliTemplate());
+      saveBtn.addEventListener('click', () => this.triggerChiliSave());
     }
 
     const addToCartBtn = document.querySelector('.js-chili-addtocart');
@@ -70,12 +66,19 @@ class ChiliEditor extends AddToCart {
     if (revertBtn) revertBtn.addEventListener('click', this.revertTemplate);
   }
 
+  addToCart() {
+    this.triggerChiliSave();
+    this.addToCartRequest();
+  }
+
+  triggerChiliSave() {
+    this.editor.ExecuteFunction('document', 'Save');
+  }
+
+  // callback method for Chili editor save action
   async saveChiliTemplate() {
     try {
       if (this.chiliWorks) {
-        // manually trigger save for Chili iframe
-        // this.editor.ExecuteFunction('document', 'Save');
-
         const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
         if (success) {
           toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
