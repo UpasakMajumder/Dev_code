@@ -136,6 +136,10 @@
           title: 'Recent orders could not be loaded',
           // title is also from errorMessage
         },
+        addAddress: {
+          title: 'Success',
+          text: 'The new address has been added'
+        },
         modifyAddress: {
           title: 'Success',
           text: 'The address has been changed'
