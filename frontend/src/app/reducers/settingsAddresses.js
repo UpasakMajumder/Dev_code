@@ -36,11 +36,7 @@ export default (state = {}, action) => {
 
     addresses = state.shipping.addresses.length
       ? mappedAddresses
-      : [{
-        ...payload,
-        isEditButton: true,
-        isRemoveButton: false
-      }];
+      : [payload];
 
     return {
       ...state,
