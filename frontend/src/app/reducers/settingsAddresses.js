@@ -10,7 +10,7 @@ export default (state = {}, action) => {
   case SETTINGS_ADDRESSES + INIT_UI + SUCCESS:
     return payload.ui;
 
-    case ADD_SHIPPING_ADDRESS + SUCCESS:
+  case ADD_SHIPPING_ADDRESS + SUCCESS:
     return {
       ...state,
       shipping: {
@@ -21,8 +21,6 @@ export default (state = {}, action) => {
         ]
       }
     };
-
-
 
   case MODIFY_SHIPPING_ADDRESS + SUCCESS:
     mappedAddresses = state.shipping.addresses.map((address) => {
