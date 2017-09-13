@@ -2,6 +2,7 @@
 using Kadena.Dto.General;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
+using Kadena.Models.Site;
 using Kadena.WebAPI;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;

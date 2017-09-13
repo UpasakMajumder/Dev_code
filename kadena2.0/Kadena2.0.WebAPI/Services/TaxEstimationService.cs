@@ -25,10 +25,20 @@ namespace Kadena.WebAPI.Services
             this.kenticoLog = kenticoLog;
         }
 
-        public async Task<double> EstimateTotalTax()
+        public async Task<double> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
+            DeliveryAddress addressTo = null;
+
+            if (deliveryAddress != null)
+            {
+                addressTo = deliveryAddress;
+            }
+            else
+            {
+                addressTo = kenticoProvider.GetCurrentCartShippingAddress();
+            }
+
             var addressFrom = kenticoProvider.GetDefaultBillingAddress();
-            var addressTo = kenticoProvider.GetCurrentCartShippingAddress();
             var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
             double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
             double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();

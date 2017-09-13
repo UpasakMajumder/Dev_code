@@ -32,7 +32,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/products")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         [QuerystringParameterRequired("url")]
         public IHttpActionResult GetProducts([FromUri]string url)
         {

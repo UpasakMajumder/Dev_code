@@ -56,7 +56,7 @@ namespace Kadena.WebAPI.Services
             CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
             var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);            
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
@@ -239,7 +239,18 @@ namespace Kadena.WebAPI.Services
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            var orderData = await GetSubmitOrderData(request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+            Customer customer = null;
+            if ((request?.DeliveryAddress?.Id ?? 0) < 0)
+            {
+                kenticoProvider.SetShoppingCartAddress(request.DeliveryAddress);
+                customer = kenticoUsers.GetCurrentCustomer();
+                customer.FirstName = request.DeliveryAddress.CustomerName;
+                customer.LastName = string.Empty;
+                customer.Email = request.DeliveryAddress.Email;
+                customer.Phone = request.DeliveryAddress.Phone;
+            }
+
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -287,17 +298,17 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice)
         {
+            var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
-            var customer = kenticoUsers.GetCurrentCustomer();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
-            totals.TotalTax = await taxService.EstimateTotalTax();
+            totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
@@ -336,7 +347,7 @@ namespace Kadena.WebAPI.Services
                     KenticoStateID = shippingAddress.StateId,
                     KenticoCountryID = shippingAddress.CountryId,
                     AddressCompanyName = customer.Company,
-                    isoCountryCode = shippingAddress.Country,
+                    isoCountryCode = shippingAddress.CountryCode,
                     AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                     Zip = shippingAddress.Zip,
                     Country = shippingAddress.Country,
@@ -413,7 +424,7 @@ namespace Kadena.WebAPI.Services
         {
             var cartItemFlags = productType.Split('|');
 
-            var standardTypes = new[] 
+            var standardTypes = new[]
             {
                 ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.InventoryProduct, ProductTypes.ProductWithAddOns
             };

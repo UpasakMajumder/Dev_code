@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPut]
         [Route("api/favorites/set/{productDocumentId}")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult SetFavorite(int productDocumentId)
         {
             favorites.SetFavoriteProduct(productDocumentId);
@@ -40,7 +40,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPut]
         [Route("api/favorites/unset/{productDocumentId}")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult UnsetFavorite(int productDocumentId)
         {
             favorites.UnsetFavoriteProduct(productDocumentId);
@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/favorites/{count}")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult GetFavorites(int count = 5)
         {
             var products = favorites.GetFavorites(count);

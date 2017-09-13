@@ -16,6 +16,7 @@ export const TOGGLE = '_TOGGLE';
 export const VALIDATION_ERROR = '_VALIDATION_ERROR';
 
 /* main part */
+export const ADD_NEW_ADDRESS = 'ADD_NEW_ADDRESS';
 export const LOG_IN = 'LOG_IN';
 export const DIALOG = 'DIALOG';
 export const APP_LOADING = 'APP_LOADING';
