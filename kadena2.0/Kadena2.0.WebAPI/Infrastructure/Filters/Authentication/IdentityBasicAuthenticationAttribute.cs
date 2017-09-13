@@ -4,7 +4,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kadena.WebAPI.Infrastructure.Filters
+namespace Kadena.WebAPI.Infrastructure.Filters.Authentication
 {
     public class IdentityBasicAuthenticationAttribute : BasicAuthenticationAttribute
     {

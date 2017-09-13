@@ -5,6 +5,7 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -82,14 +83,15 @@ namespace Kadena.WebAPI.KenticoProviders
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
-        public bool UserCanSeePrices(int userId)
+        public bool UserCanSeePrices(int siteId, int userId)
         {
             var userinfo = UserInfoProvider.GetUserInfo(userId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
 
-            if (userinfo == null)
+            if (userinfo == null || site == null)
                 return false;
 
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, userinfo);
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", site.SiteName, userinfo);
         }
 
         public bool UserCanSeeAllOrders()

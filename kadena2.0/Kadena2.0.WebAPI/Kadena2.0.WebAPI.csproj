@@ -143,8 +143,8 @@
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
-    <Compile Include="Infrastructure\Filters\BasicAuthenticationAttribute.cs" />
-    <Compile Include="Infrastructure\Filters\IdentityBasicAuthenticationAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Authentication\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Authentication\IdentityBasicAuthenticationAttribute.cs" />
     <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />

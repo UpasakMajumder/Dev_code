@@ -5,6 +5,6 @@ namespace Kadena.Dto.Site.Requests
     public class SiteDataRequestDto
     {
         [Required]
-        public string SiteName { get; set; }
+        public int SiteId { get; set; }
     }
 }

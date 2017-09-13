@@ -4,6 +4,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoMailProvider
     {
-        MailTemplate GetMailTemplate(string templateId);
+        MailTemplate GetMailTemplate(int siteId, string templateId);
     }
 }

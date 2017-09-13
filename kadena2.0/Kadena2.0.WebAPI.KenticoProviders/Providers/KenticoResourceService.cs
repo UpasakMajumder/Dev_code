@@ -85,5 +85,10 @@ namespace Kadena.WebAPI.KenticoProviders
             string resourceKey = $"{siteName}.{key}";
             return SettingsKeyInfoProvider.GetValue(resourceKey);
         }
+
+        public string GetSettingsKey(int siteId, string key)
+        {
+            return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
+        }
     }
 }
