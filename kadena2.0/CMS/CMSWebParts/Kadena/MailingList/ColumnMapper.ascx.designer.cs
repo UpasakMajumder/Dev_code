@@ -238,6 +238,24 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanZip;
         
         /// <summary>
+        /// inpErrorTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden inpErrorTitle;
+        
+        /// <summary>
+        /// inpErrorText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden inpErrorText;
+        
+        /// <summary>
         /// btnReupload control.
         /// </summary>
         /// <remarks>
