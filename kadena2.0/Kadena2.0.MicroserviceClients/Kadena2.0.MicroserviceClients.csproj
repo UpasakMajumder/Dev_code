@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\Base\ClientBase.cs" />
+    <Compile Include="Clients\ExportClient.cs" />
     <Compile Include="Clients\FileClient.cs" />
     <Compile Include="Clients\MailingListClient.cs" />
     <Compile Include="Clients\InventoryUpdateClient.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Clients\ShippingCostServiceClient.cs" />
     <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Contracts\IExportClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
     <Compile Include="Contracts\InventoryUpdateClient.cs" />
