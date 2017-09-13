@@ -13,7 +13,7 @@ class ChiliEditor extends AddToCart {
     super();
     this.editor = null;
     this.frameWindow = null;
-    this.chiliWorks = true;
+    this.chiliWorks = false;
 
     const newDomain = getSecondLevelDomain();
     if (newDomain) document.domain = newDomain;
@@ -29,7 +29,6 @@ class ChiliEditor extends AddToCart {
 
     frame.addEventListener('load', () => {
       this.initEditor(frame);
-      this.initActions();
     });
   }
 
@@ -41,6 +40,8 @@ class ChiliEditor extends AddToCart {
     try {
       this.frameWindow = frame.contentWindow;
       this.frameWindow.GetEditor(this.editorLoaded);
+      this.chiliWorks = true;
+      this.initActions();
     } catch (e) {
       toastr.error(NOTIFICATION.chiliNotAvailable.title, NOTIFICATION.chiliNotAvailable.text);
       this.chiliWorks = false;
