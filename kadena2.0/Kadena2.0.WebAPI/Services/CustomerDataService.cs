@@ -48,7 +48,6 @@ namespace Kadena.WebAPI.Services
                     Zip = address.Zip
                 },
                 Claims = claims,
-                SiteDomain = customer.SiteDomain
             };
         }
 

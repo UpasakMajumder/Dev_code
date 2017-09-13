@@ -11,6 +11,5 @@
         public string CustomerNumber { get; set; }
         public string Company { get; set; }
         public int SiteId { get; set; }
-        public string SiteDomain { get; set; }
     }
 }

@@ -166,7 +166,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<ArtworkFtpSettings, ArtworkFtpResponseDto>();
                 config.CreateMap<FtpCredentials, FtpCredentialsDto>();
                 config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
-                config.CreateMap<MailTemplate, MailTemplateDto>();								
+                config.CreateMap<MailTemplate, MailTemplateDto>();	
+                config.CreateMap<KenticoSite, SiteDataResponseDto>();											
                 config.CreateMap<ProductsPage, GetProductsDto>();
                 config.CreateMap<ProductCategoryLink, ProductCategoryDto>();
                 config.CreateMap<ProductLink, ProductDto>();
