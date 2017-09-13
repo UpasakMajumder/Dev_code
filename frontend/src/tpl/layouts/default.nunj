@@ -185,7 +185,8 @@
         changeQuantityURL: '',
         removeProductURL: '',
         submitURL: '',
-        submittableURL: ''
+        submittableURL: '',
+        addNewAddressURL: ''
       },
       spotfire: {
         serverUrl: 'http://10.83.71.208/spotfire/wp/',

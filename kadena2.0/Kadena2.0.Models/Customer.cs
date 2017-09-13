@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Kadena.Models
+﻿namespace Kadena.Models
 {
     public class Customer
     {
@@ -16,5 +11,6 @@ namespace Kadena.Models
         public string CustomerNumber { get; set; }
         public string Company { get; set; }
         public int SiteId { get; set; }
+        public string SiteDomain { get; set; }
     }
 }

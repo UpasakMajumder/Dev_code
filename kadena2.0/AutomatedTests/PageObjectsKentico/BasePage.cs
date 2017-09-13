@@ -14,6 +14,12 @@ namespace AutomatedTests.PageObjectsKentico
         [FindsBy(How=How.Id, Using = "cms-applist-toggle")]
         private IWebElement ApplistIcon { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".icon-user")]
+        private IWebElement UserMenuIcon { get; set; }
+
+        [FindsBy(How = How.Id, Using = "m_c_layoutElem_h_Header_userMenu_lnkSignOut")]
+        private IWebElement SignOutBtn { get; set; }
+
         public ApplicationsMenu applicationsMenu;
 
         public BasePage()
@@ -21,7 +27,7 @@ namespace AutomatedTests.PageObjectsKentico
             this.applicationsMenu = new ApplicationsMenu();
             PageFactory.InitElements(Browser.Driver, this);
         }
-
+        
         /// <summary>
         /// Clicks applist icon to display list of applications
         /// </summary>
@@ -29,5 +35,16 @@ namespace AutomatedTests.PageObjectsKentico
         {
             ApplistIcon.ClickElement();
         }
+
+        /// <summary>
+        /// Logs out from Kentico
+        /// </summary>
+        public void LogoutFromKentico()
+        {
+            Browser.Driver.SwitchTo().DefaultContent();
+            UserMenuIcon.ClickElement();
+            SignOutBtn.ClickElement();
+        }
+
     }
 }

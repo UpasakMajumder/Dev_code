@@ -348,12 +348,14 @@ if (!String.prototype.format) {
                     if (data.d.success) {
                         toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
-                        toastr.error(config.localization.PasswordChange.ErrorTitle, data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    toastr.error(config.localization.PasswordChange.ErrorTitle, config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).show();
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
@@ -382,6 +384,7 @@ if (!String.prototype.format) {
             attachments: ".js-drop-zone",
             attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
             attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
+            generalErrorTitle: ".j-general-error-title"
         }, options);
 
         base.find(settings.fullNameInput).keyup(function (e) {
@@ -487,14 +490,12 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorLabel).html(data.errorMessage);
-                    base.find(settings.generalErrorLabel).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
-                base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
-                base.find(settings.generalErrorLabel).show();
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
 
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
@@ -528,6 +529,7 @@ if (!String.prototype.format) {
             selectionDateInput: ".j-selection-date",
             selectionDateInvalidMessage: ".j-selection-date-invalid-error-message",
             generalErrorMessage: ".j-general-error-message",
+            generalErrorTitle: ".j-general-error-message-title",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -649,13 +651,13 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorMessage).html(data.errorMessage);
-                    base.find(settings.generalErrorMessage).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
             }, false);
 
             xhr.send(formData);
@@ -679,6 +681,7 @@ if (!String.prototype.format) {
             attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
             attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
             generalErrorMessage: ".j-general-error-message",
+            generalErrorTitle: ".j-general-error-title",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -755,13 +758,13 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorMessage).html(data.errorMessage);
-                    base.find(settings.generalErrorMessage).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
             }, false);
 
             xhr.send(formData);
@@ -901,6 +904,11 @@ if (!String.prototype.format) {
             errorMessage: ".j-error-message"
         }, options);
 
+        var isSaved = getParameterByName("saved");
+
+        if (isSaved != null && isSaved == '1') {
+            setTimeout(function () { toastr.success(config.localization.newKList.listSavedTitle, config.localization.newKList.listSavedText); }, 0);
+        }
         if (base.find(settings.errorMessage).val() != '') {
             setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 0);
         }

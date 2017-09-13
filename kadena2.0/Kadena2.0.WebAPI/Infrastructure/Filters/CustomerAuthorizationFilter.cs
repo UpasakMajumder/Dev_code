@@ -4,7 +4,7 @@ using System.Web.Http.Filters;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {
-    public class AuthorizationFilter : AuthorizationFilterAttribute
+    public class CustomerAuthorizationFilter : AuthorizationFilterAttribute
     {
         public override void OnAuthorization(HttpActionContext context)
         {

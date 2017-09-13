@@ -34,7 +34,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/search")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         [QuerystringParameterRequired("phrase")]
         public IHttpActionResult Search()
         {
@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/autocomplete")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         [QuerystringParameterRequired("phrase")]
         public IHttpActionResult Autocomplete()
         {

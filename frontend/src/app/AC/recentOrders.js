@@ -38,7 +38,8 @@ export const initUI = () => {
       }).catch((error) => {
         dispatch({
           type: RECENT_ORDERS + INIT_UI + FAILURE,
-          alert: NOTIFICATION.recentOrdersError.title
+          // alert: NOTIFICATION.recentOrdersError.title
+          alert: false
         });
       });
     };

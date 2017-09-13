@@ -1,6 +1,7 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
+using Kadena.Models.Site;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -21,7 +22,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         PaymentMethod GetPaymentMethod(int id);
 
-        void SetShoppingCartAddres(int addressId);
+        void SetShoppingCartAddress(int addressId);
+
+        void SetShoppingCartAddress(DeliveryAddress address);
 
         void SelectShipping(int shippingOptionsId);
 
@@ -49,9 +52,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         IEnumerable<State> GetStates();
 
-        void SaveShippingAddress(DeliveryAddress address);
+        IEnumerable<Country> GetCountries();
 
-        void SetCartItemDesignFilePath(int id, string path);
+        void SaveShippingAddress(DeliveryAddress address);
 
         string GetShippingProviderIcon(string title);
 
@@ -72,5 +75,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
+
+        void SetSkuAvailableQty(string skunumber, int availableItems);
     }
 }
