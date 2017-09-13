@@ -22,6 +22,21 @@ if (!String.prototype.format) {
     };
 }
 
+function getDate(datePicker) {
+    try {
+        datePicker = $(datePicker);
+
+        var format = datePicker.datepicker("option", "dateFormat"),
+            text = datePicker.val(),
+            settings = datePicker.datepicker("option", "settings");
+
+        return $.datepicker.parseDate(format, text, settings);
+    }
+    catch (err) {
+        return null;
+    }    
+}
+
 // LOGOUT
 
 (function ($) {
@@ -610,17 +625,23 @@ if (!String.prototype.format) {
                 return;
             }
             // production date format validation
-            if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
-                base.find(settings.productionDateInput).addClass("input--error");
-                base.find(settings.productionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.productionDateInput).addClass("input--error");
+            //    base.find(settings.productionDateInvalidMessage).show();
+            //    return;
+            //}
             // selection date format validation
-            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
-                base.find(settings.selectionDateInput).addClass("input--error");
-                base.find(settings.selectionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.selectionDateInput).addClass("input--error");
+            //    base.find(settings.selectionDateInvalidMessage).show();
+            //    return;
+            //}
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 
@@ -630,9 +651,11 @@ if (!String.prototype.format) {
             formData.append('requestType', base.find(settings.requestTypeGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWay', base.find(settings.biddingWayGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWayNumber', base.find(settings.biddingWayGroup).find("input:checked").attr("data-number"));
-            formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            //formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            formData.append('productionDateText', base.find(settings.productionDateInput).val());
             if (base.find(settings.selectionDateInput).val() != '') {
-                formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                //formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                formData.append('selectionDateText', base.find(settings.selectionDateInput).val());
             }
 
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
