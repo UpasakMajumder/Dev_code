@@ -22,10 +22,10 @@ class ChiliEditor extends AddToCart {
     this.addToCart = this.addToCart.bind(this);
     this.initActions = this.initActions.bind(this);
     this.editorLoaded = this.editorLoaded.bind(this);
-    this.saveTemplate = this.saveTemplate.bind(this);
+    this.saveChiliTemplate = this.saveChiliTemplate.bind(this);
     this.revertTemplate = this.revertTemplate.bind(this);
 
-    window.addToCart = this.addToCart;
+    window.saveChiliTemplate = this.saveChiliTemplate;
 
     frame.addEventListener('load', () => {
       this.initEditor(frame);
@@ -48,44 +48,44 @@ class ChiliEditor extends AddToCart {
     }
   }
 
-  async addToCart(isAddToCart) {
-    try {
-      if (this.chiliWorks) {
-        const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
-        if (success) {
-          toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
-          if (isAddToCart) this.addToCartRequest();
-        } else {
-          toastr.error(errorMessage);
-        }
-      } else if (isAddToCart) {
-        this.addToCartRequest();
-      }
-    } catch (e) {
-      toastr.error(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
-    }
+  async addToCart() {
+    this.saveChiliTemplate();
+    this.addToCartRequest();
   }
 
   initActions() {
     const saveBtn = document.querySelector('.js-chili-save');
     if (saveBtn && this.chiliWorks) {
       saveBtn.disabled = false;
-      saveBtn.addEventListener('click', () => this.saveTemplate(false));
+      saveBtn.addEventListener('click', () => this.saveChiliTemplate());
     }
 
     const addToCartBtn = document.querySelector('.js-chili-addtocart');
     if (addToCartBtn) {
       addToCartBtn.disabled = false;
-      addToCartBtn.addEventListener('click', () => this.saveTemplate(true));
+      addToCartBtn.addEventListener('click', () => this.addToCart());
     }
 
     const revertBtn = document.querySelector('.js-chili-revert');
     if (revertBtn) revertBtn.addEventListener('click', this.revertTemplate);
   }
 
-  saveTemplate(isAddToCart) {
-    this.addToCart(isAddToCart);
-    if (this.chiliWorks) this.editor.ExecuteFunction('document', 'Save');
+  async saveChiliTemplate() {
+    try {
+      if (this.chiliWorks) {
+        // manually trigger save for Chili iframe
+        // this.editor.ExecuteFunction('document', 'Save');
+
+        const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
+        if (success) {
+          toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
+        } else {
+          toastr.error(errorMessage);
+        }
+      }
+    } catch (e) {
+      toastr.error(NOTIFICATION.serverNotAvailable.title, NOTIFICATION.serverNotAvailable.text);
+    }
   }
 
   revertTemplate() {
