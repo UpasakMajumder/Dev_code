@@ -4,7 +4,7 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface ISiteDataService
     {
-        string GetOrderInfoRecepients(int siteId);
+        KenticoSite GetKenticoSite(int siteId);
         ArtworkFtpSettings GetArtworkFtpSettings(int siteId);
     }
 }
