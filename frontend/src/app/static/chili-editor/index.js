@@ -73,7 +73,8 @@ class ChiliEditor extends AddToCart {
   async saveChiliTemplate() {
     try {
       if (this.chiliWorks) {
-        this.editor.ExecuteFunction('document', 'Save');
+        // manually trigger save for Chili iframe
+        // this.editor.ExecuteFunction('document', 'Save');
 
         const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
         if (success) {
