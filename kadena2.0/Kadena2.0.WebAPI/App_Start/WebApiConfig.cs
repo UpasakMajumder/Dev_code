@@ -2,6 +2,7 @@
 using DryIoc;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI
 {
@@ -23,6 +24,7 @@ namespace Kadena.WebAPI
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
+            GlobalConfiguration.Configuration.Filters.Add(new IdentityBasicAuthenticationAttribute());
         }
         
 

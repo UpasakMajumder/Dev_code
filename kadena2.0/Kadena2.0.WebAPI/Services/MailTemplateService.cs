@@ -13,9 +13,9 @@ namespace Kadena.WebAPI.Services
             this.kenticoMail = kenticoMail;
         }
 
-        public MailTemplate GetMailTemplate(string templateName)
+        public MailTemplate GetMailTemplate(int siteId, string templateName)
         {
-            return kenticoMail.GetMailTemplate(templateName);
+            return kenticoMail.GetMailTemplate(siteId, templateName);
         }
     }
 }

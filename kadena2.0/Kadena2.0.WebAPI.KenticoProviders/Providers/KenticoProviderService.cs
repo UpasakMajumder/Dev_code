@@ -16,6 +16,7 @@ using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using CMS.CustomTables;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders
 {

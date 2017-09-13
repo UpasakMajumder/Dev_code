@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/orderdetail/{orderId}")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> Get([FromUri]string orderId)
         {
             var detailPage = await _orderSubmitService.GetOrderDetail(orderId);
@@ -57,7 +57,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/shoppingcart/submit")]
-        [AuthorizationFilter]
+        [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
         {
             var submitRequest = _mapper.Map<SubmitOrderRequest>(request);

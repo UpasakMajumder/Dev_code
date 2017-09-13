@@ -10,5 +10,6 @@ namespace Kadena.Models.CustomerData
         public string Phone { get; set; }
         public CustomerAddress Address { get; set; }
         public Dictionary<string, string> Claims { get; set; }
+        public string SiteDomain { get; set; }
     }
 }

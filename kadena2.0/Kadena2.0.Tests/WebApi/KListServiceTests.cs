@@ -12,6 +12,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models;
 using Kadena.Dto.General;
+using Kadena.Models.Site;
 
 namespace Kadena.Tests.WebApi
 {
