@@ -24,7 +24,6 @@ namespace Kadena.WebAPI
         {
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
-            GlobalConfiguration.Configuration.Filters.Add(new IdentityBasicAuthenticationAttribute());
         }
         
 

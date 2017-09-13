@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Controllers
         [IdentityBasicAuthentication]
         public IHttpActionResult GetSiteData([FromBody]SiteDataRequestDto request)
         {
-            var result = _service.GetKenticoSite(request.SiteId);
+            var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
             var resultDto = _mapper.Map<SiteDataResponseDto>(result);
             return ResponseJsonCheckingNull(resultDto,$"Unable to find site with id={request.SiteId}");
         }
