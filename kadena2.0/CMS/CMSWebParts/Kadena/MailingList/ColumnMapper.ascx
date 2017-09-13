@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ColumnMapper.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.MailingList.ColumnMapper" %>
 
-<div class="map-columns__form map-columns-form">
+<div class="map-columns__form map-columns-form j-klist-column-mapper">
     <div class="map-columns-form__group-wrapper">
         <asp:PlaceHolder runat="server" ID="phTitle" />
 
@@ -84,8 +84,11 @@
             <span runat="server" id="spanZip" class="input__error input__error--noborder" visible="false">Error</span>
         </div>
     </div>
+    <input id="inpErrorTitle" runat="server" type="hidden" class="j-error-title" enableviewstate="false" />
+    <input id="inpErrorText" runat="server" type="hidden" class="j-error-text" enableviewstate="false" />
 </div>
 <div class="btn-group btn-group--left">
     <button type="button" class="btn-action btn-action--secondary" runat="server" id="btnReupload" onserverclick="btnReupload_ServerClick"></button>
     <button type="button" class="btn-action" runat="server" id="btnProcess" onserverclick="btnProcess_Click"></button>
 </div>
+

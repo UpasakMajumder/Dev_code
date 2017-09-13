@@ -915,6 +915,21 @@ if (!String.prototype.format) {
     }
 }(jQuery));
 
+(function ($) {
+    $.fn.KListColumnMappingPage = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorTitle: ".j-error-title",
+            errorMessage: ".j-error-text"
+        }, options);
+
+        if (base.find(settings.errorTitle).val() != '') {
+            setTimeout(function () { toastr.error(base.find(settings.errorTitle).val(), base.find(settings.errorMessage).val()); }, 0);
+        }
+    }
+}(jQuery));
+
 // BID LIST
 
 (function ($) {
@@ -987,6 +1002,11 @@ var customScripts = {
             $(".j-bid-list").BidList();
         }
     },
+    kListColumnMappingInit: function () {
+        if ($(".j-klist-column-mapper").length > 0) {
+            $(".j-klist-column-mapper").KListColumnMappingPage();
+        }
+    },
     init: function () {
         var base = this;
 
@@ -1001,6 +1021,7 @@ var customScripts = {
         base.newKListInit();
         base.kListInit();
         base.bidListInit();
+        base.kListColumnMappingInit();
     }
 }
 
