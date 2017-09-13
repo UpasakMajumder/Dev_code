@@ -1,4 +1,19 @@
 /* eslint-disable */
+export const newAddress = {
+  "street": [
+    "Test Address line 1",
+    "Test Address line 2"
+  ],
+  "city": "COLLIERVILLE",
+  "state": "TN",
+  "zip": "38017",
+  "id": 12312414,
+  "customerName": "Andrew",
+  "country": "USA",
+  "phone": "+1251512125",
+  "email": "fake@user.com"
+};
+
 export const staticUI = {
   "success": true,
   "payload": {
@@ -52,6 +67,72 @@ export const staticUI = {
     },
     "deliveryAddresses": {
       "isDeliverable": true,
+      "availableToAdd": true,
+      "dialogUI": {
+        "title": "New address",
+        "discardBtnLabel": "Discard changes",
+        "submitBtnLabel": "Confirm & use address",
+        "requiredErrorMessage": "The field is required",
+        "fields": [
+          {
+            "id": "customerName",
+            "label": "Customer Name",
+            "values": [],
+            "type": "text"
+          },
+          {
+            "id": "address1",
+            "label": "Address 1",
+            "values": [],
+            "type": "text"
+          },
+          {
+            "id": "address2",
+            "label": "Address 2",
+            "values": [],
+            "type": "text",
+            "isOptional": true
+          },
+          {
+            "id": "city",
+            "label": "City",
+            "values": [],
+            "type": "text"
+          },
+          {
+            "id": "state",
+            "label": "State",
+            "values": ['CA', 'NV', 'NY'],
+            "type": "select",
+            "isOptional": true
+          },
+          {
+            "id": "zip",
+            "label": "Postal Code",
+            "values": [],
+            "type": "text"
+          },
+          {
+            "id": "country",
+            "label": "Country",
+            "values": ['Czech republic', 'Russia', 'USA'],
+            "type": "select"
+          },
+          {
+            "id": "phone",
+            "label": "Phone",
+            "values": [],
+            "type": "text",
+            "isOptional": true
+          },
+          {
+            "id": "email",
+            "label": "Email",
+            "values": [],
+            "type": "text"
+          }
+        ]
+      },
       "unDeliverableText": "Text",
       "title": "Delivery address",
       "description": "Products will be delivered to selected address by",

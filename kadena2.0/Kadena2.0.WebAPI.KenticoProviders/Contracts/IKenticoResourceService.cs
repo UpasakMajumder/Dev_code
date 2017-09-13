@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -12,6 +13,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         KenticoSite GetKenticoSite();
 
+        KenticoSite GetKenticoSite(int siteId);
+
         Currency GetSiteCurrency();
 
         string GetDefaultSiteCompanyName();
@@ -21,5 +24,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetDefaultCustomerCompanyName();
 
         int GetOrderStatusId(string name);
+
+        string GetSettingsKey(int siteId, string key);
     }
 }

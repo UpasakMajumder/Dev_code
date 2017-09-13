@@ -8,25 +8,11 @@ const AddressCard = (props) => {
 
   let editElement = null;
   if (editButton.exists) {
-    const data = address || {
-      street1: '',
-      street2: '',
-      city: '',
-      state: '',
-      zip: ''
-    };
-
     editElement = (
-      <button onClick={() => openDialog(data)} type="button" className="in-card-btn">
+      <button onClick={() => openDialog(address)} type="button" className="in-card-btn">
         <SVG name="edit"/>
         {editButton.text}
       </button>
-    );
-  }
-
-  if (!address) {
-    return (
-      <div className="address-card address-card--empty">{editElement}</div>
     );
   }
 

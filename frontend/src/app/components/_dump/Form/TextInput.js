@@ -6,7 +6,7 @@ import { removeProps } from 'app.helpers/object';
 const TextInput = (props) => {
   const { label, error, disabled, isOptional } = props;
 
-  const inputProps = removeProps(props, ['label', 'error', 'isOptional']);
+  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options']);
 
   const labelElement = label ? <span className="input__label">{label}</span> : null;
   const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
@@ -21,7 +21,9 @@ const TextInput = (props) => {
       <input
         type="text"
         className={`input__text ${errorClass}`}
-        {...inputProps} />
+        maxLength="50"
+        {...inputProps}
+      />
       {errorElement}
     </div>
   );

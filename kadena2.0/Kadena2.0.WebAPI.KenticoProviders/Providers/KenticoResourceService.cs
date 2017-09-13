@@ -5,6 +5,7 @@ using Kadena.Models;
 using CMS.Ecommerce;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -28,6 +29,22 @@ namespace Kadena.WebAPI.KenticoProviders
                 Name = SiteContext.CurrentSiteName,                
                 DisplayName = SiteContext.CurrentSite.DisplayName,
                 ErpCustomerId = GetSettingsKey("KDA_ErpCustomerId")
+            };
+        }
+
+        public KenticoSite GetKenticoSite(int siteId)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+
+            if (site == null)
+                return null;
+
+            return new KenticoSite()
+            {
+                Id = site.SiteID,
+                Name = site.SiteName,
+                DisplayName = site.DisplayName,
+                ErpCustomerId = GetSettingsKey(site.SiteName, "KDA_ErpCustomerId")
             };
         }
 
@@ -67,6 +84,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             string resourceKey = $"{siteName}.{key}";
             return SettingsKeyInfoProvider.GetValue(resourceKey);
+        }
+
+        public string GetSettingsKey(int siteId, string key)
+        {
+            return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
         }
     }
 }

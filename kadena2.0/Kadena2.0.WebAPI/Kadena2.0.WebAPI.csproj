@@ -117,6 +117,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
+    <Compile Include="Contracts\IMailTemplateService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
+    <Compile Include="Controllers\MailTemplateController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -139,11 +141,14 @@
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
+    <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
+    <Compile Include="Infrastructure\Filters\Authentication\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Authentication\IdentityBasicAuthenticationAttribute.cs" />
     <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
-    <Compile Include="Infrastructure\Filters\AuthorizationFilter.cs" />
+    <Compile Include="Infrastructure\Filters\CustomerAuthorizationFilter.cs" />
     <Compile Include="Infrastructure\Filters\ExceptionFilter.cs" />
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
@@ -152,6 +157,7 @@
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\MailTemplateService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />

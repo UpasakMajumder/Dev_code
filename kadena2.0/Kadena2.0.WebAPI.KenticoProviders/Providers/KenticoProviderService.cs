@@ -16,6 +16,7 @@ using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using CMS.CustomTables;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -174,7 +175,7 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public void SetShoppingCartAddres(int addressId)
+        public void SetShoppingCartAddress(int addressId)
         {
             var cart = ECommerceContext.CurrentShoppingCart;
 
@@ -183,6 +184,37 @@ namespace Kadena.WebAPI.KenticoProviders
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
                 cart.SubmitChanges(true);
+            }
+        }
+
+        public void SetShoppingCartAddress(DeliveryAddress address)
+        {
+            if (address != null)
+            {
+                if (address.Id > 0)
+                {
+                    SetShoppingCartAddress(address.Id);
+                }
+                else
+                {
+                    var cart = ECommerceContext.CurrentShoppingCart;
+                    var state = StateInfoProvider.GetStateInfoByCode(address.State);
+                    var country = GetCountries().FirstOrDefault(c => c.Name.Equals(address.Country));
+
+                    var info = new AddressInfo
+                    {
+                        AddressID = address.Id,
+                        AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
+                        AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                        AddressCity = address.City,
+                        AddressStateID = state?.StateID ?? 0,
+                        AddressCountryID = country?.Id ?? 0,
+                        AddressZip = address.Zip,
+                    };
+
+                    cart.ShoppingCartShippingAddress = info;
+                    cart.SubmitChanges(true);
+                }
             }
         }
 
@@ -229,7 +261,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                 ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
-                SKUName = i.SKU?.SKUName,
+                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
                 TotalTax = 0.0d,
                 UnitPrice = showPrices ? i.UnitPrice : 0.0d,
@@ -714,6 +746,18 @@ namespace Kadena.WebAPI.KenticoProviders
                 sku.MakeComplete(true);
                 sku.Update();
             }
+        }
+
+        public IEnumerable<Country> GetCountries()
+        {
+            return CountryInfoProvider
+                .GetCountries()
+                .Columns(new[] { "CountryDisplayName", "CountryID" })
+                .Select(s => new Country
+                {
+                    Id = int.Parse(s["CountryID"].ToString()),
+                    Name = s["CountryDisplayName"].ToString()
+                });
         }
     }
 }

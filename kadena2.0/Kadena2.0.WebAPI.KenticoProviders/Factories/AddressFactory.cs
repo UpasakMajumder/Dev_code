@@ -1,4 +1,5 @@
 ﻿using CMS.Ecommerce;
+using CMS.Globalization;
 using Kadena.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,16 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 addressLines.Add(ai.AddressLine2);
             }
 
+            var countryInfo = CountryInfoProvider.GetCountryInfo(ai.AddressCountryID);
+
             return new DeliveryAddress()
             { 
                 Id = ai.AddressID,
                 Checked = false,
                 City = ai.AddressCity,
                 State = ai.GetStateCode(),
-                Country = ai.GetCountryTwoLetterCode(),
+                Country = countryInfo?.CountryDisplayName,
+                CountryCode = ai.GetCountryTwoLetterCode(),
                 StateId = ai.AddressStateID,
                 CountryId = ai.AddressCountryID,
                 Street = addressLines,

@@ -800,6 +800,13 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx.designer.cs">
       <DependentUpon>ColumnMapper.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\Downloader.ascx.cs">
+      <DependentUpon>Downloader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\MailingList\Downloader.ascx.designer.cs">
+      <DependentUpon>Downloader.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\MailingList.ascx.cs">
       <DependentUpon>MailingList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -972,6 +979,7 @@
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\AddressViewer.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\ColumnMapper.ascx" />
+    <Content Include="CMSWebParts\Kadena\MailingList\Downloader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
