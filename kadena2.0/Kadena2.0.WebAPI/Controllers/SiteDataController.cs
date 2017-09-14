@@ -10,7 +10,7 @@ namespace Kadena.WebAPI.Controllers
 {
     public class SiteDataController : ApiControllerBase
     {
-        private readonly ISiteDataService _service;
+        private readonly ISiteDataService _service;        
         private readonly IMapper _mapper;
 
         public SiteDataController(ISiteDataService service, IMapper mapper)
@@ -20,12 +20,13 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/sitedata/ordermanageremail")]
+        [Route("api/sitedata")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetOrderManagerEmail([FromBody]SiteDataRequestDto request)
+        public IHttpActionResult GetSiteData([FromBody]SiteDataRequestDto request)
         {
-            var result = _service.GetOrderInfoRecepients(request.SiteId);
-            return ResponseJson(result);
+            var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
+            var resultDto = _mapper.Map<SiteDataResponseDto>(result);
+            return ResponseJsonCheckingNull(resultDto,$"Unable to find site with id={request.SiteId}");
         }
 
         [HttpPost]
