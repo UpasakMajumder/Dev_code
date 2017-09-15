@@ -10,6 +10,7 @@ import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
 import recentOrders from './recentOrders';
+import manageProducts from './manageProducts';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
 import dialogAlert from './dialogAlert';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   isShownHeaderShadow,
   orderDetail,
   recentOrders,
+  manageProducts,
   modifyMailingList,
   cartPreview,
   toastr,
