@@ -5,17 +5,12 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
-using CMS.DataEngine;
+using System;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoUserProvider : IKenticoUserProvider
     {
-        public KenticoUserProvider()
-        {
-        
-        }
-
         public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -103,6 +98,17 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+
+        public void SetDefaultShippingAddress(int addressId)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+
+            if (customer != null)
+            {
+                customer.SetValue("CustomerDefaultShippingAddresID", addressId);
+                CustomerInfoProvider.SetCustomerInfo(customer);
+            }
         }
     }
 }
