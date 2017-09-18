@@ -1,6 +1,6 @@
-﻿namespace Kadena.Models.Site
+﻿namespace Kadena.Dto.Site.Responses
 {
-    public class KenticoSite
+    public class SiteDataResponseDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

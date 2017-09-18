@@ -12,12 +12,7 @@ namespace Kadena.WebAPI.Services
         public SiteDataService(IKenticoResourceService kentico)
         {
             _kentico = kentico;
-        }
-
-        public string GetOrderInfoRecepients(int siteId)
-        {
-            return _kentico.GetSettingsKey(siteId, "KDA_OrderNotificationEmail");
-        }
+        }  
 
         public ArtworkFtpSettings GetArtworkFtpSettings(int siteId)
         {
@@ -44,6 +39,18 @@ namespace Kadena.WebAPI.Services
             }
 
             return result;
+        }
+
+        public KenticoSite GetKenticoSite(int siteId, string siteName)
+        {
+            var site = _kentico.GetKenticoSite(siteId);
+
+            if (site == null)
+            {
+                site = _kentico.GetKenticoSite(siteName);
+            }
+
+            return site;
         }
     }
 }

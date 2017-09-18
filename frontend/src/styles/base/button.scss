@@ -128,6 +128,7 @@ $colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, suc
     @extend .outline--off;
 
     @include rem(padding, 5px);
+    border: none;
     border-radius: 100%;
     display: block;
   }
