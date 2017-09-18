@@ -5,6 +5,8 @@
 .spinner {
   $spinner-size: 70px;
   text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
 
   & svg {
     width: $spinner-size;

@@ -7,6 +7,7 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Product;
+using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.Settings;
@@ -167,8 +168,11 @@ namespace Kadena.WebAPI
                 config.CreateMap<ArtworkFtpSettings, ArtworkFtpResponseDto>();
                 config.CreateMap<FtpCredentials, FtpCredentialsDto>();
                 config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
-                config.CreateMap<MailTemplate, MailTemplateDto>();
-                config.CreateMap<KenticoSite, SiteDataResponseDto>();
+                config.CreateMap<MailTemplate, MailTemplateDto>();	
+                config.CreateMap<KenticoSite, SiteDataResponseDto>();											
+                config.CreateMap<ProductsPage, GetProductsDto>();
+                config.CreateMap<ProductCategoryLink, ProductCategoryDto>();
+                config.CreateMap<ProductLink, ProductDto>();
                 config.CreateMap<ProductTemplates, ProductTemplatesDTO>();
                 config.CreateMap<ProductTemplate, ProductTemplateDTO>();
                 config.CreateMap<ProductTemplatesHeader, ProductTemplatesHeaderDTO>()

@@ -9,7 +9,7 @@ const Tooler = ({ text, position = 'right', type = 'default', symbol = 'question
   return (
     <Tooltip title={text}
              position={position}
-             animation="fade"te
+             animation="fade"
              arrow={true}
              theme="dark">
       <div className={`tooler tooler--${type}`}>

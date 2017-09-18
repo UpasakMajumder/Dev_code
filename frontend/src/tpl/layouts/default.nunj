@@ -361,6 +361,16 @@
           text: 'Continue Shopping',
             url: '/products.html'
         }
+      },
+      manageProducts: {
+        templatesUrl: '/api/products/123/templates'
+      },
+      products: {
+        addToFavorites: "Set product as favorite",
+        loadProductsUrl: "/api/products",
+        loadFavoritesProductsUrl: "/api/products/favorites",
+        markProductFavouriteUrl: "/api/favorites/set",
+        unmarkProductFavouriteUrl: "/api/favorites/unset"
       }
     }
   };
