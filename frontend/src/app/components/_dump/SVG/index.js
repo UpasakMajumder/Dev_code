@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SVG = (props) => {
-  const { name, className } = props;
+  const { name, className, style } = props;
 
   let Icon = null;
 
@@ -12,7 +12,7 @@ const SVG = (props) => {
     console.warn(e); // eslint-disable-line
   }
 
-  return Icon ? <Icon.default className={`icon ${className || ''}`} /> : null;
+  return Icon ? <Icon.default className={`icon ${className || ''}`} style={style} /> : null;
 };
 
 SVG.propTypes = {

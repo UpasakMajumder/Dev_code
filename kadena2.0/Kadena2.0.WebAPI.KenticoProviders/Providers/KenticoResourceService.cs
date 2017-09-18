@@ -26,10 +26,20 @@ namespace Kadena.WebAPI.KenticoProviders
             return GetKenticoSite(SiteContext.CurrentSiteID);
         }
 
+        public KenticoSite GetKenticoSite(string siteName)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteName);
+            return CreateKenticoSite(site);
+        }
+
         public KenticoSite GetKenticoSite(int siteId)
         {
             var site = SiteInfoProvider.GetSiteInfo(siteId);
+            return CreateKenticoSite(site);
+        }
 
+        private KenticoSite CreateKenticoSite(SiteInfo site)
+        {
             if (site == null)
                 return null;
 
@@ -40,7 +50,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 DisplayName = site.DisplayName,
                 ErpCustomerId = GetSettingsKey(site.SiteName, "KDA_ErpCustomerId"),
                 SiteDomain = site.DomainName,
-                OrderManagerEmail = GetSettingsKey(siteId, "KDA_OrderNotificationEmail")
+                OrderManagerEmail = GetSettingsKey(site.SiteID, "KDA_OrderNotificationEmail")
             };
         }
 

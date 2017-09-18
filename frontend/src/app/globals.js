@@ -10,6 +10,7 @@ const {
   orderDetail,
   recentOrders,
   checkoutButtons,
+  manageProducts,
   modifyMailingList,
   cartPreview,
   addToCartUrl,
@@ -32,5 +33,6 @@ export const ADD_TO_CART_URL = addToCartUrl;
 export const PRODUCTS = products;
 export const NOTIFICATION = notification;
 export const CHILI_SAVE = chiliSave;
+export const MANAGE_PRODUCTS = manageProducts;
 export const MODIFY_MAILING_LIST_UI = modifyMailingList;
 export const BUTTONS_UI = checkoutButtons;

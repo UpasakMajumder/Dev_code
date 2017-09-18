@@ -362,6 +362,9 @@
             url: '/products.html'
         }
       },
+      manageProducts: {
+        templatesUrl: '/api/products/123/templates'
+      },
       products: {
         addToFavorites: "Set product as favorite",
         loadProductsUrl: "/api/products",
