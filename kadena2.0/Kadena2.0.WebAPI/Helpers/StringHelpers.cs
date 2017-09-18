@@ -1,4 +1,4 @@
-﻿namespace Kadena.Models
+﻿namespace Kadena.WebAPI.Helpers
 {
     public static class StringHelpers
     {

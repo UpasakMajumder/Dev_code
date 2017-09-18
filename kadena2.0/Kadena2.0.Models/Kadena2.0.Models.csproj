@@ -69,13 +69,11 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
-    <Compile Include="StringHelpers.cs" />
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />
     <Compile Include="Site\KenticoSite.cs" />
-
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />
     <Compile Include="MailTemplate.cs" />

@@ -7,6 +7,7 @@ using Kadena.Models.TemplatedProduct;
 using Kadena.Models;
 using System.Linq;
 using System.Text;
+using Kadena.WebAPI.Helpers;
 
 namespace Kadena.WebAPI.Services
 {
