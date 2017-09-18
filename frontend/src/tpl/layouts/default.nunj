@@ -361,6 +361,9 @@
           text: 'Continue Shopping',
             url: '/products.html'
         }
+      },
+      manageProducts: {
+        templatesUrl: '/api/products/123/templates'
       }
     }
   };

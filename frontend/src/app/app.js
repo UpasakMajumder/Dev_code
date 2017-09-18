@@ -51,6 +51,7 @@ const app = {
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
     render('Search', document.querySelectorAll('.r-search'));
+    render('ManageProducts', document.querySelectorAll('.r-manage-products'));
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
