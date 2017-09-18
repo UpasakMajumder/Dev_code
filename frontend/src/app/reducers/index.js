@@ -13,6 +13,7 @@ import recentOrders from './recentOrders';
 import manageProducts from './manageProducts';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
+import products from './products';
 import dialogAlert from './dialogAlert';
 
 const rootReducer = combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   manageProducts,
   modifyMailingList,
   cartPreview,
+  products,
   toastr,
   dialogAlert
 });

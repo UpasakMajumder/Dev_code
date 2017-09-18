@@ -82,7 +82,10 @@
     <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
+    <Compile Include="Product\ProductCategoryDto.cs" />
+    <Compile Include="Product\ProductDto.cs" />
     <Compile Include="Product\RequestResultDto.cs" />
+    <Compile Include="Product\Responses\GetProductsDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
     <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
     <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />

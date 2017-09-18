@@ -90,18 +90,7 @@
               <h2>Favorites</h2>
             </div>
 
-            <div class="row">
-
-              {% for item in range(0, 8) %}
-
-                <div class="col-lg-6 col-xl-3">
-                  {% include "components/product/product-item.nunj" %}
-                </div>
-
-              {% endfor %}
-
-            </div>
-
+            <div class="r-products-favorites"></div>
           </div>
 
         </div>

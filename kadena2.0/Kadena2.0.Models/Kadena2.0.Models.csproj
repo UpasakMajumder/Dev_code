@@ -69,10 +69,12 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
-    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />    
+    <Compile Include="Favorites\FavoriteProduct.cs" />
+    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />
     <Compile Include="Site\KenticoSite.cs" />
+
     <Compile Include="MailingAddress.cs" />
     <Compile Include="MailingList.cs" />
     <Compile Include="MailTemplate.cs" />
@@ -88,8 +90,11 @@
     <Compile Include="OrderDetail\Tracking.cs" />
     <Compile Include="OrderList.cs" />
     <Compile Include="PaymentMethod.cs" />
+    <Compile Include="Product\ProductCategoryLink.cs" />
+    <Compile Include="Product\ProductLink.cs" />
     <Compile Include="Product\Product.cs" />
     <Compile Include="Product\AddToCartResult.cs" />
+    <Compile Include="Product\ProductsPage.cs" />
     <Compile Include="Product\RequestResult.cs" />
     <Compile Include="ProductTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
