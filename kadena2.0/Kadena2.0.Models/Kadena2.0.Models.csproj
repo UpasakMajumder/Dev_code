@@ -69,7 +69,8 @@
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />
     <Compile Include="DynamicPricingRange.cs" />
-    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />    
+    <Compile Include="StringHelpers.cs" />
+    <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />
     <Compile Include="Site\KenticoSite.cs" />
@@ -120,7 +121,13 @@
     <Compile Include="SubmitOrder\SubmitOrderError.cs" />
     <Compile Include="SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="SubmitOrder\SubmitOrderResult.cs" />
+    <Compile Include="TemplatedProduct\ProductTemplate.cs" />
+    <Compile Include="TemplatedProduct\ProductTemplates.cs" />
+    <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
+    <Compile Include="TemplatedProduct\SortingType.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
