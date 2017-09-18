@@ -26,6 +26,14 @@ namespace Kadena.WebAPI.Services
             var shippingAddresses = _kenticoUsers.GetCustomerAddresses("Shipping");
             var states = _kentico.GetStates();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
+            var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
+
+            var maxShippingAddresses = 3;
+            if (!string.IsNullOrWhiteSpace(maxShippingAddressesSetting))
+            {
+                maxShippingAddresses = int.Parse(maxShippingAddressesSetting);
+            }
+
 
             return new SettingsAddresses
             {
@@ -44,9 +52,10 @@ namespace Kadena.WebAPI.Services
                 Shipping = new AddressList
                 {
                     Title = _resources.GetResourceString("Kadena.Settings.Addresses.ShippingAddresses"),
+                    AllowAddresses = maxShippingAddresses,
                     AddButton = new PageButton
                     {
-                        Exists = false,
+                        Exists = true,
                         Text = _resources.GetResourceString("Kadena.Settings.Addresses.AddShipping")
                     },
                     EditButton = new PageButton
