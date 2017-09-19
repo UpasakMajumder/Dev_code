@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressType.cs" />
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\CartButton.cs" />

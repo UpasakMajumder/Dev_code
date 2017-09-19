@@ -517,7 +517,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"
             };
             info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", "Shipping");
+            info.SetValue("AddressType", AddressType.Shipping.Code);
 
             AddressInfoProvider.SetAddressInfo(info);
             address.Id = info.AddressID;
