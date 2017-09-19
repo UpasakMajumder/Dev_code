@@ -10,7 +10,7 @@
                 <cms:LocalizedLabel ID="lblSite" runat="server" CssClass="control-label" EnableViewState="false" Text="Code" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
-                <asp:TextBox CssClass="form-control" runat="server" ID="tbCode" />
+                <asp:TextBox CssClass="form-control" runat="server" ID="tbCode" ReadOnly="true" />
                 <asp:Button runat="server" CssClass="btn btn-default" Text="Submit" ID="btnSubmit" OnClick="btnSubmit_Click" />
                 <div>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
@@ -19,6 +19,9 @@
                     ForeColor="Red">
                 </asp:RequiredFieldValidator>
                 </div>
+            </div>
+            <div>
+                <cms:LocalizedLabel ID="LocalizedLabelResult" runat="server" CssClass="control-label" EnableViewState="false" Text="Code" DisplayColon="true" />
             </div>
         </div>
     </div>

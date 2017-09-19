@@ -1,5 +1,9 @@
-﻿using CMS.SiteProvider;
+﻿using CMS.DataEngine;
+using CMS.EventLog;
+using CMS.SiteProvider;
 using CMS.UIControls;
+using Kadena.Dto.Payment.CreditCard.MicroserviceRequests;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.Payment
@@ -8,13 +12,48 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            this.tbCode.Text = GetSettingsKey("KDA_CreditCard_Code");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            var site = SiteContext.CurrentSiteName;
-            var code = tbCode.Text;
+            var url = GetSettingsKey("KDA_CreditCardManagerEndpoint");
+            var requestData = CreateRequestData();
+            var client = new CreditCardManagerClient();
+            var result = client.CreateCustomerContainer(url, requestData).Result;
+
+            if (result == null || !result.Success)
+            {
+                var message = string.IsNullOrEmpty(result?.ErrorMessages) ? "Error calling Credit card manager microservice" : result.ErrorMessages;
+                EventLogProvider.LogInformation("Create 3DSi Container", "ERROR", eventDescription: message);
+                LocalizedLabelResult.Text = $"Error - {message}";
+                return;
+            }
+
+            LocalizedLabelResult.Text = "Succesfully submitted";
+        }
+
+        private CreateCustomerContainerRequestDto CreateRequestData()
+        {
+            return new CreateCustomerContainerRequestDto()
+            {
+                Code = GetSettingsKey("KDA_CreditCard_Code"),
+                Name = GetSettingsKey("KDA_CustomerFullName"),
+                BillingAddress = new AddressDto()
+                {
+                    AddressLine1 = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                    AddressLine2 = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine2"),
+                    City = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
+                    PostalCode = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal")
+                },
+                AdditionalData = "{\"MerchantCode\":\"Kadena2.0\",\"LocationCode\":\"Kadena2.0\"}"
+            };
+        }
+
+        private string GetSettingsKey(string key)
+        {
+            var site = new SiteInfoIdentifier(SiteContext.CurrentSiteName);
+            return SettingsKeyInfoProvider.GetValue(key, site);
         }
     }
 }
