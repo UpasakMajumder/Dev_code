@@ -8,6 +8,7 @@ const webpack = require('webpack');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const eslintConfig = require('eslint-config-actum').getConfig({ environment: false });
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HappyPack = require('happypack');
 
 /* Plugins for Webpack */
 const pluginsCollection = {
@@ -22,7 +23,48 @@ const pluginsCollection = {
     }),
 
     // ignore moment.js Locale modules
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new HappyPack({
+      id: 'js',
+      loaders: [
+        {
+          loader: 'babel-loader',
+          query: { cacheDirectory: true }
+        },
+        {
+          loader: 'eslint-loader',
+          options: {
+            configFile: eslintConfig,
+            rules: {
+              "indent": ["error", 2],
+              "no-shadow": 0,
+              "new-cap": 0, // immutable.js
+              "import/no-unresolved": 0, // webpack aliases
+              "import/extensions": 0  // webpack aliases
+            }
+          }
+        }
+      ]
+    }),
+    new HappyPack({
+      id: 'svg',
+      loaders: [
+        {
+          loader: 'babel-loader'
+        },
+        {
+          loader: 'react-svg-loader',
+          query: { jsx: true }
+        }
+      ]
+    }),
+    new HappyPack({
+      id: 'styles',
+      loaders: [
+        { loader: "style-loader" },
+        { loader: "css-loader" },
+      ]
+    })
   ],
 
   /* Environment-specific plugins */
@@ -70,7 +112,7 @@ const plugins = pluginsCollection.common.concat(pluginsCollection[process.env.NO
 const APP_ENTRY_NAME = path.parse(config.JS_ENTRY).name;
 
 module.exports = {
-    entry: {
+  entry: {
         [APP_ENTRY_NAME]: [config.JS_ENTRY],
         common: ['react', 'react-dom', 'react-router', 'react-transition-group', 'react-router-redux', 'redux', 'react-tippy', 'popper.js', 'lodash/isEqual', 'react-redux-toastr', 'moment', 'core-js', 'axios', 'babel-polyfill', 'whatwg-fetch']
     },
@@ -89,44 +131,15 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 include: [path.resolve(process.cwd(), config.JS_BASE)],
-                loaders: [
-                    {
-                        loader: 'babel-loader',
-                        query: { cacheDirectory: true }
-                    },
-                    {
-                        loader: 'eslint-loader',
-                        options: {
-                          configFile: eslintConfig,
-                          rules: {
-                            "indent": ["error", 2],
-                            "no-shadow": 0,
-                            "new-cap": 0, // immutable.js
-                            "import/no-unresolved": 0, // webpack aliases
-                            "import/extensions": 0  // webpack aliases
-                          }
-                        }
-                    }
-                ]
+                loaders: ['happypack/loader?id=js']
             },
             {
                 test: /\.svg$/,
-                loaders: [
-                    {
-                        loader: 'babel-loader'
-                    },
-                    {
-                        loader: 'react-svg-loader',
-                        query: { jsx: true }
-                    }
-                ]
+                loaders: ['happypack/loader?id=svg']
             },
             {
               test: /\.css$/,
-              use: [
-                { loader: "style-loader" },
-                { loader: "css-loader" },
-              ],
+              loaders: ['happypack/loader?id=styles']
             },
             {
               test: /\.(jpe?g|png|gif)$/i,
