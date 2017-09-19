@@ -89,17 +89,18 @@ class ManageProducts extends Component {
 
             <tr>
               {tableHeaders.map(column => (
-                <th key={column.name} onClick={() => this.sortByColumn(column.name)}>
-                  {column.name === sortBy &&
-                    (sortOrderAsc ? (
-                      <span>
-                        <SVG name="arrow" className="icon-modal" style={{ transform: 'rotate(180deg)' }} />
-                      </span>
-                    ) : (
-                      <span>
-                        <SVG name="arrow" className="icon-modal" />
-                      </span>
-                    ))
+                <th key={column.name} onClick={() => this.sortByColumn(column.name)} style={{ cursor: 'pointer' }}>
+                  {
+                    <span>
+                      <SVG style={{ transform: 'rotate(180deg)', opacity: sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                           name="arrowTop"
+                           className="icon-modal"
+                      />
+                      <SVG style={{ opacity: !sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                           name="arrowTop"
+                           className="icon-modal"
+                      />
+                    </span>
                   }
                   {column.title}
                 </th>
