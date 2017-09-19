@@ -27,10 +27,12 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
                 var message = string.IsNullOrEmpty(result?.ErrorMessages) ? "Error calling Credit card manager microservice" : result.ErrorMessages;
                 EventLogProvider.LogInformation("Create 3DSi Container", "ERROR", eventDescription: message);
                 LocalizedLabelResult.Text = $"Error - {message}";
-                return;
             }
-
-            LocalizedLabelResult.Text = "Succesfully submitted";
+            else
+            {
+                EventLogProvider.LogInformation("Create 3DSi Container", "Success", "Credit card manager microservice call to create container was successful");
+                LocalizedLabelResult.Text = "Succesfully submitted";
+            }
         }
 
         private CreateCustomerContainerRequestDto CreateRequestData()
@@ -39,6 +41,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
             {
                 Code = GetSettingsKey("KDA_CreditCard_Code"),
                 Name = GetSettingsKey("KDA_CustomerFullName"),
+                Url = SiteContext.CurrentSite.DomainName,
                 BillingAddress = new AddressDto()
                 {
                     AddressLine1 = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
