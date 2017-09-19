@@ -16,10 +16,8 @@ class ManageProducts extends Component {
     templates: PropTypes.array.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.sortByColumn = this.sortByColumn.bind(this);
+  constructor() {
+    super();
 
     this.state = {
       sortBy: '',
@@ -28,7 +26,7 @@ class ManageProducts extends Component {
     };
   }
 
-  sortByColumn(name) {
+  sortByColumn = (name) => {
     this.setState({
       sortBy: name,
       sortOrderAsc: !this.state.sortOrderAsc,
@@ -46,7 +44,7 @@ class ManageProducts extends Component {
         return template1[name] > template2[name];
       })
     });
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     // set initial sort values from tableHeaders
