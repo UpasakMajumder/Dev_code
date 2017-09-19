@@ -6,6 +6,7 @@ using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using CMS.DataEngine;
+using System;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -13,7 +14,6 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         public KenticoUserProvider()
         {
-        
         }
 
         public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
@@ -103,6 +103,15 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+
+        public User GetCurrentUser()
+        {
+            var user = MembershipContext.AuthenticatedUser;
+            return new User
+            {
+                UserId = user.UserID
+            };
         }
     }
 }
