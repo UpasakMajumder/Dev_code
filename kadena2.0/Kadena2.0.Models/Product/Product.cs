@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.Product
+﻿using System;
+
+namespace Kadena.Models.Product
 {
     public class Product
     {
@@ -10,5 +12,12 @@
         public string DocumentUrl { get; set; }
         public string SkuImageUrl { get; set; }
         public string ProductType { get; set; }
+        public Guid ProductChiliTemplateID { get; set; }
+        public Guid ProductChiliWorkgroupID { get; set; }
+
+        public bool HasProductTypeFlag(string productTypeflag)
+        {
+            return ProductType.Contains(productTypeflag);
+        }
     }
 }
