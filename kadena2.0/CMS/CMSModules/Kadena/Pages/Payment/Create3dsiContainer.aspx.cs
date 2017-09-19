@@ -1,4 +1,5 @@
-﻿using CMS.UIControls;
+﻿using CMS.SiteProvider;
+using CMS.UIControls;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.Payment
@@ -12,7 +13,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            throw new FieldAccessException("Dont access this fields");
+            var site = SiteContext.CurrentSiteName;
+            var code = tbCode.Text;
         }
     }
 }
