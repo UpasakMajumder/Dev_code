@@ -12,6 +12,7 @@ using System.Security;
 using System.Threading.Tasks;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
+using Kadena.WebAPI.Infrastructure;
 
 namespace Kadena.WebAPI.Services
 {
@@ -27,6 +28,7 @@ namespace Kadena.WebAPI.Services
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedProductService templateService;
+        private readonly IBackgroundTaskScheduler backgroundWorker;
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -37,7 +39,8 @@ namespace Kadena.WebAPI.Services
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
-            ITemplatedProductService templateService)
+            ITemplatedProductService templateService,
+            IBackgroundTaskScheduler backgroundWorker)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -49,6 +52,7 @@ namespace Kadena.WebAPI.Services
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
             this.templateService = templateService;
+            this.backgroundWorker = backgroundWorker;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -259,12 +263,12 @@ namespace Kadena.WebAPI.Services
 
             var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
+
             var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
             if (serviceResult.Success)
             {
                 redirectUrl += "&order_id=" + serviceResult.Payload;
             }
-
             serviceResult.RedirectURL = redirectUrl;
 
             if (serviceResult.Success)
@@ -272,6 +276,10 @@ namespace Kadena.WebAPI.Services
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 kenticoProvider.RemoveCurrentItemsFromStock();
                 kenticoProvider.RemoveCurrentItemsFromCart();
+
+                // Temporary solution before microservices will implement better strategy for handling cold starts. 
+                var orderNumber = serviceResult.Payload;
+                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(serviceEndpoint, orderNumber));
             }
             else
             {
@@ -279,6 +287,19 @@ namespace Kadena.WebAPI.Services
             }
 
             return serviceResult;
+        }
+
+        private async Task FinishOrder(string serviceEndpoint, string orderNumber)
+        {
+            var finishOrderResult = await orderSubmitClient.FinishOrder(serviceEndpoint, orderNumber);
+            if (finishOrderResult.Success)
+            {
+                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order # {orderNumber} successfully finished");
+            }
+            else
+            {
+                kenticoLog.LogError("Submit order", $"Order # {orderNumber} error. {finishOrderResult?.Error?.Message}");
+            }
         }
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
