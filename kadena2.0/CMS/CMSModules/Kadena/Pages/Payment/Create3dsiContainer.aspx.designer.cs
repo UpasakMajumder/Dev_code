@@ -13,13 +13,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
     public partial class Create3dsiContainer {
         
         /// <summary>
-        /// form1 control.
+        /// lblSite control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblSite;
         
         /// <summary>
         /// tbCode control.
@@ -31,15 +31,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
         protected global::System.Web.UI.WebControls.TextBox tbCode;
         
         /// <summary>
-        /// RequiredFieldValidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-        
-        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>
@@ -47,5 +38,14 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// RequiredFieldValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
     }
 }
