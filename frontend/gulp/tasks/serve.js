@@ -8,11 +8,8 @@ const copyToClipboard = require('copy-paste').copy;
 const runSequence = require('run-sequence');
 const port = config.PORT;
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('../webpack.config.js');
 const webpack = require('webpack');
-
-webpackConfig.entry.app.unshift('webpack-hot-middleware/client');
 const compiler = webpack(webpackConfig);
 
 gulp.task('serve', ['prepare'], () => {
@@ -45,8 +42,7 @@ gulp.task('serve', ['prepare'], () => {
           chunks: false,
           chunkModules: false
         }
-      }),
-      webpackHotMiddleware(compiler)
+      })
     ]
   }, (unknown, bs) => {
     const finalPort = bs.options.get('port');
