@@ -16,6 +16,7 @@ using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using CMS.CustomTables;
+using Kadena.Models.Site;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -387,13 +388,20 @@ namespace Kadena.WebAPI.KenticoProviders
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
+            if (doc == null)
+            {
+                return null;
+            }
+
             var product = new Product()
             {
                 Id = documentId,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
-                ProductType = doc.GetValue("ProductType", string.Empty)
+                ProductType = doc.GetValue("ProductType", string.Empty),
+                ProductChiliTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
+                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)
             };
 
             if (sku != null)

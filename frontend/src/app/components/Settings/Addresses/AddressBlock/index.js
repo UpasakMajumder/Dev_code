@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Tooltip } from 'react-tippy';
 /* components */
 import SVG from 'app.dump/SVG';
 /* local components */
@@ -10,13 +11,25 @@ const AddressBlock = (props) => {
 
   if (!Object.keys(ui).length) return null;
 
-  const { title, addButton, editButton, removeButton, addresses } = ui;
+  const { title, addButton, editButton, removeButton, addresses, allowAddresses } = ui;
+  const allowAddressesNumber = typeof allowAddresses === 'number' ? allowAddresses : 0;
 
-  const addButtonElement = addButton.exists
-  ? <buttn className="plus-btn">
-      <SVG name="plus" className="icon-modal" />
-    </buttn>
-  : null;
+  const addButtonElement = addButton.exists && addresses.length < allowAddressesNumber
+    ?
+    (
+      <Tooltip
+        title={addButton.text}
+        position="right"
+        animation="fade"
+        arrow={true}
+        theme="dark"
+      >
+        <button type="button" className="btn--off plus-btn" onClick={() => { openDialog(null, false); }}>
+          <SVG name="plus" className="icon-modal" />
+        </button>
+      </Tooltip>
+    )
+    : null;
 
   const commonProps = {
     editButton,
@@ -30,7 +43,7 @@ const AddressBlock = (props) => {
                           address={address}
                           {...commonProps} />;
     })
-    : <AddressCard {...commonProps} />;
+    : null;
 
   return (
     <div className="settings__item">
@@ -48,6 +61,7 @@ const AddressBlock = (props) => {
 
 AddressBlock.propTypes = {
   ui: PropTypes.shape({
+    allowAddresses: PropTypes.number,
     addButton: PropTypes.shape({
       exists: PropTypes.bool.isRequired,
       tooltip: PropTypes.string

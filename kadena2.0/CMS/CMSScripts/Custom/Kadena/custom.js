@@ -22,6 +22,21 @@ if (!String.prototype.format) {
     };
 }
 
+function getDate(datePicker) {
+    try {
+        datePicker = $(datePicker);
+
+        var format = datePicker.datepicker("option", "dateFormat"),
+            text = datePicker.val(),
+            settings = datePicker.datepicker("option", "settings");
+
+        return $.datepicker.parseDate(format, text, settings);
+    }
+    catch (err) {
+        return null;
+    }    
+}
+
 // LOGOUT
 
 (function ($) {
@@ -348,12 +363,14 @@ if (!String.prototype.format) {
                     if (data.d.success) {
                         toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
-                        toastr.error(config.localization.PasswordChange.ErrorTitle, data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).html(data.d.errorMessage);
+                        base.find(settings.generalErrorLabel).show();
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    toastr.error(config.localization.PasswordChange.ErrorTitle, config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).html(config.localization.PasswordChange.Error);
+                    base.find(settings.generalErrorLabel).show();
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
@@ -608,17 +625,23 @@ if (!String.prototype.format) {
                 return;
             }
             // production date format validation
-            if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
-                base.find(settings.productionDateInput).addClass("input--error");
-                base.find(settings.productionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.productionDateInput).addClass("input--error");
+            //    base.find(settings.productionDateInvalidMessage).show();
+            //    return;
+            //}
             // selection date format validation
-            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
-                base.find(settings.selectionDateInput).addClass("input--error");
-                base.find(settings.selectionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.selectionDateInput).addClass("input--error");
+            //    base.find(settings.selectionDateInvalidMessage).show();
+            //    return;
+            //}
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 
@@ -628,9 +651,11 @@ if (!String.prototype.format) {
             formData.append('requestType', base.find(settings.requestTypeGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWay', base.find(settings.biddingWayGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWayNumber', base.find(settings.biddingWayGroup).find("input:checked").attr("data-number"));
-            formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            //formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            formData.append('productionDateText', base.find(settings.productionDateInput).val());
             if (base.find(settings.selectionDateInput).val() != '') {
-                formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                //formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                formData.append('selectionDateText', base.find(settings.selectionDateInput).val());
             }
 
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
@@ -913,6 +938,21 @@ if (!String.prototype.format) {
     }
 }(jQuery));
 
+(function ($) {
+    $.fn.KListColumnMappingPage = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorTitle: ".j-error-title",
+            errorMessage: ".j-error-text"
+        }, options);
+
+        if (base.find(settings.errorTitle).val() != '') {
+            setTimeout(function () { toastr.error(base.find(settings.errorTitle).val(), base.find(settings.errorMessage).val()); }, 0);
+        }
+    }
+}(jQuery));
+
 // BID LIST
 
 (function ($) {
@@ -985,6 +1025,11 @@ var customScripts = {
             $(".j-bid-list").BidList();
         }
     },
+    kListColumnMappingInit: function () {
+        if ($(".j-klist-column-mapper").length > 0) {
+            $(".j-klist-column-mapper").KListColumnMappingPage();
+        }
+    },
     init: function () {
         var base = this;
 
@@ -999,6 +1044,7 @@ var customScripts = {
         base.newKListInit();
         base.kListInit();
         base.bidListInit();
+        base.kListColumnMappingInit();
     }
 }
 

@@ -347,7 +347,7 @@ namespace Kadena.WebAPI.Services
                     KenticoStateID = shippingAddress.StateId,
                     KenticoCountryID = shippingAddress.CountryId,
                     AddressCompanyName = customer.Company,
-                    isoCountryCode = shippingAddress.Country,
+                    isoCountryCode = shippingAddress.CountryCode,
                     AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                     Zip = shippingAddress.Zip,
                     Country = shippingAddress.Country,

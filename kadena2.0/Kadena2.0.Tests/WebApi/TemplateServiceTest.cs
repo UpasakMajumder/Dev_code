@@ -6,6 +6,10 @@ using Moq;
 using Xunit;
 using System.Threading.Tasks;
 using System;
+using Kadena.Models;
+using Kadena.Models.Product;
+using System.Collections.Generic;
+using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 
 namespace Kadena.Tests.WebApi
 {
@@ -13,13 +17,15 @@ namespace Kadena.Tests.WebApi
     {
         private string _currentName = "currentName";
 
-        private TemplateService Create(Mock<ITemplatedProductService> templateClient = null)
+        private TemplateService Create(Mock<ITemplatedProductService> templateClient)
         {
-            var kenticoLogger = new Mock<IKenticoLogger>();
-            var kenticoClient = new Mock<IKenticoResourceService>();
-
-            return new TemplateService(kenticoClient.Object, kenticoLogger.Object,
-                templateClient?.Object ?? new Mock<ITemplatedProductService>().Object);
+            return new TemplateService(
+                Mock.Of<IKenticoResourceService>(), 
+                Mock.Of<IKenticoLogger>(),
+                templateClient.Object,
+                Mock.Of<IKenticoProviderService>(),
+                Mock.Of<IKenticoUserProvider>()
+                );
         }
 
         private BaseResponseDto<bool?> SetNameSuccess(string name)
@@ -70,6 +76,57 @@ namespace Kadena.Tests.WebApi
             var result = await service.SetName(Guid.Empty, newName);
 
             Assert.False(result);
+        }
+
+        [Fact]
+        public async Task GetTemplatesByProduct_ReturnsEmptyModel_WhenDocumentIsNotTemplatedProduct()
+        {
+            var invalidDocumentId = 0;
+
+            var sut = new TemplateService(
+                Mock.Of<IKenticoResourceService>(),
+                Mock.Of<IKenticoLogger>(),
+                Mock.Of<ITemplatedProductService>(),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(invalidDocumentId) == new Product { ProductType = ProductTypes.StaticProduct }),
+                Mock.Of<IKenticoUserProvider>()
+            );
+
+            var templates = await sut.GetTemplatesByProduct(invalidDocumentId);
+
+            Assert.NotNull(templates);
+            Assert.NotNull(templates.Data);
+            Assert.NotNull(templates.Header);
+            Assert.True(templates.Data.Length == 0);
+            Assert.True(templates.Header.Length > 0);
+        }
+
+        [Fact]
+        public async Task GetTemplatesByProduct_ReturnsData_WhenDocumentHasTemplates()
+        {
+            var documentId = 10;
+            var fakeDatetime = new DateTime().ToString();
+
+            var templatesResponse = new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
+            {
+                Success = true,
+                Payload = new List<TemplateServiceDocumentResponse>
+                {
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime },
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime }
+                }
+            };
+
+            var sut = new TemplateService(
+                Mock.Of<IKenticoResourceService>(),
+                Mock.Of<IKenticoLogger>(),
+                Mock.Of<ITemplatedProductService>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(documentId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
+                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
+            );
+
+            var templates = await sut.GetTemplatesByProduct(documentId);
+
+            Assert.True(templates.Data.Length == 2);
         }
     }
 }

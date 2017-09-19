@@ -34,12 +34,37 @@ namespace Kadena.CMSPages.Kadena
             string requestType = context.Request.Form["requestType"];
             string biddingWay = context.Request.Form["biddingWay"];
             int biddingWayNumber = ValidationHelper.GetInteger(context.Request.Form["biddingWayNumber"], 0);
-            DateTime productionDate = ValidationHelper.GetDate(context.Request.Form["productionDate"], DateTime.MinValue);
-            DateTime? selectionDate = null;
-            if (context.Request.Form["selectionDate"] != null)
+
+            DateTime productionDate;
+            if (!DateTime.TryParseExact(context.Request.Form["productionDateText"],
+                                   "MM/dd/yyyy",
+                                   System.Globalization.CultureInfo.InvariantCulture,
+                                   System.Globalization.DateTimeStyles.None,
+                                   out productionDate))
             {
-                selectionDate = new DateTime?(ValidationHelper.GetDate(context.Request.Form["selectionDate"], DateTime.MinValue));
-            }            
+                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
+                context.Response.Write(JsonConvert.SerializeObject(result));
+                return;
+            }
+            DateTime? selectionDate = null;
+            if (context.Request.Form["selectionDateText"] != null)
+            {
+                DateTime selectionDateTemp;
+                if (!DateTime.TryParseExact(context.Request.Form["selectionDateText"],
+                                  "MM/dd/yyyy",
+                                  System.Globalization.CultureInfo.InvariantCulture,
+                                  System.Globalization.DateTimeStyles.None,
+                                  out selectionDateTemp))
+                {
+                    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.SelectionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
+                    context.Response.Write(JsonConvert.SerializeObject(result));
+                    return;
+                }
+                else
+                {
+                    selectionDate = new DateTime?(selectionDateTemp);
+                }
+            }                                               
             var files = new List<HttpPostedFile>();
             if (context.Request.Files.Count > 0)
             {
@@ -90,12 +115,12 @@ namespace Kadena.CMSPages.Kadena
                     return;
                 }
             }
-            if (productionDate == DateTime.MinValue)
-            {
-                result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
-                context.Response.Write(JsonConvert.SerializeObject(result));
-                return;
-            }
+            //if (productionDate == DateTime.MinValue)
+            //{
+            //    result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewBidRequest.ProductionDateInvalidMessage", LocalizationContext.CurrentCulture.CultureCode) };
+            //    context.Response.Write(JsonConvert.SerializeObject(result));
+            //    return;
+            //}
 
             #endregion
 

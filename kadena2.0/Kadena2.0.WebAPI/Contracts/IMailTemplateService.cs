@@ -4,6 +4,6 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IMailTemplateService
     {
-        MailTemplate GetMailTemplate(string templateName);
+        MailTemplate GetMailTemplate(int siteid ,string templateName);
     }
 }
