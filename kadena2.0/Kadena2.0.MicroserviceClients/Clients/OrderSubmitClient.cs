@@ -15,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 httpClient.Timeout = TimeSpan.FromSeconds(60);
-                var content = new StringContent(orderNumber);
+                var content = CreateRequestContent(orderNumber);
                 var request = new HttpRequestMessage(new HttpMethod("PATCH"), serviceEndpoint) { Content = content };
                 using (var response = await httpClient.SendAsync(request))
                 {
