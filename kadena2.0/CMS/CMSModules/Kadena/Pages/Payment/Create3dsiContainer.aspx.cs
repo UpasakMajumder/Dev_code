@@ -37,6 +37,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
 
         private CreateCustomerContainerRequestDto CreateRequestData()
         {
+            var merchantCode = GetSettingsKey("KDA_CreditCard_MerchantCode");
+            var locationCode = GetSettingsKey("KDA_CreditCard_LocationCode");
+
             return new CreateCustomerContainerRequestDto()
             {
                 Code = GetSettingsKey("KDA_CreditCard_Code"),
@@ -49,7 +52,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
                     City = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
                     PostalCode = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal")
                 },
-                AdditionalData = "{\"MerchantCode\":\"Kadena2.0\",\"LocationCode\":\"Kadena2.0\"}"
+                AdditionalData = "{\"MerchantCode\":\""+merchantCode+"\",\"LocationCode\":\""+locationCode+"\"}"
             };
         }
 
