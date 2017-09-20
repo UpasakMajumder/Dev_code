@@ -100,7 +100,6 @@
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoMailProvider.cs" />
     <Compile Include="Factories\AddressFactory.cs" />
-    <Compile Include="Factories\AddressSettingsFactory.cs" />
     <Compile Include="Factories\DeliveryFactory.cs" />
     <Compile Include="Factories\PaymentOptionFactory.cs" />
     <Compile Include="Factories\SiteFactory.cs" />
