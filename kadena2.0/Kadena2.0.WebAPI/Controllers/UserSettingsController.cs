@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult SetDefaultShippingAddress([FromBody] int addressId)
         {
             _service.SetDefaultShippingAddress(addressId);
-            return ResponseJson();
+            return SuccessJson();
         }
     }
 }

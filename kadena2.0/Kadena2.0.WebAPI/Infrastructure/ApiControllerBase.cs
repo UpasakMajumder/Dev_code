@@ -13,7 +13,7 @@ namespace Kadena.WebAPI.Infrastructure
             return Json(new ErrorResponse(errorMessage), CamelCaseSerializer);
         }
 
-        protected JsonResult<BaseResponse<object>> ResponseJson()
+        protected JsonResult<BaseResponse<object>> SuccessJson()
         {
             return ResponseJson((object)null);
         }
