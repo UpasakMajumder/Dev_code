@@ -31,7 +31,7 @@ class AddToCart {
   addToCartRequest = (event) => {
     this.wrappers.forEach(wrapper => wrapper.classList.remove(this.showMessageClass));
 
-    addToCartRequest(this.getBody(), event.currentTarget)
+    addToCartRequest(this.getBody(), event)
       .then((message) => { // show if bad response
         this.wrappers.forEach(wrapper => wrapper.classList.add(this.showMessageClass));
         const messageElement = document.querySelector('.js-add-to-cart-message');
