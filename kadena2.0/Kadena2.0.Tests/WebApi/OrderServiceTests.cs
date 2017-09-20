@@ -5,6 +5,7 @@ using Kadena.Models;
 using Kadena.Models.Site;
 using Kadena.WebAPI;
 using Kadena.WebAPI.Contracts;
+using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
 using Kadena2.MicroserviceClients.Contracts;
@@ -77,7 +78,8 @@ namespace Kadena.Tests.WebApi
                 kenticoResource.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
-                templateProductService.Object);
+                templateProductService.Object,
+                new FakeBackgroundTaskScheduler());
         }
 
         [Fact]
