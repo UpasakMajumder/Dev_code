@@ -4,7 +4,7 @@ const PRODUCTION = !environment.isDevelopment;
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
 const eslint = require('gulp-eslint');
-const eslintConfig = require('eslint-config-actum').getConfig({ environment });
+const eslintConfig = require('eslint-config-actum').getConfig({environment: false});
 
 const lint = (globs) => {
   const options = {
@@ -17,8 +17,7 @@ const lint = (globs) => {
 
   return gulp.src(globs)
     .pipe(eslint(options))
-    .pipe(eslint.format())
-    .pipe(gulpif(PRODUCTION, eslint.failOnError()));
+    .pipe(eslint.format());
 };
 
 gulp.task('eslint:app', () => lint(config.JS_ALL));

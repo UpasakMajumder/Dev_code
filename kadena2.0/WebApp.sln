@@ -322,6 +322,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carriers", "Carriers\Carrie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarriersCustomers", "carriers\CarriersCustomers\CarriersCustomers.csproj", "{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI", "Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj", "{FB19606B-D327-4F43-AB3F-825000079B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Dto", "Kadena2.0.Dto\Kadena2.0.Dto.csproj", "{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.MicroserviceClients", "Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj", "{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI.KenticoProviders", "Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj", "{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Models", "Kadena2.0.Models\Kadena2.0.Models.csproj", "{918EBDFB-D345-4BE2-97A2-9D71513E0617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.ScheduledTasks", "Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj", "{43388B1F-8597-46EB-8346-E9C6544C5306}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -351,6 +363,30 @@ Global
 		{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB19606B-D327-4F43-AB3F-825000079B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB19606B-D327-4F43-AB3F-825000079B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB19606B-D327-4F43-AB3F-825000079B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB19606B-D327-4F43-AB3F-825000079B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918EBDFB-D345-4BE2-97A2-9D71513E0617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

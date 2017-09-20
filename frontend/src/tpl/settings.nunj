@@ -9,22 +9,22 @@
 {% set headerTitle = title %}
 
 {% block content %}
-  {% call dialog.wrapper(id='edit-address') %}
-  {{ dialog.header(header='New adress:') }}
+  {% call dialog.wrapper(id='new-address') %}
+  {{ dialog.header(header='New address:') }}
   {% call dialog.content() %}
   <table class="cart__dialog-table">
     <tbody>
     <tr>
       <td>
         <div class="input__wrapper">
-          <span class="input__label">Adderess Line 1</span>
-          <input type="text" class="input__text" placeholder="Adderess Line 1" name='adress-1'>
+          <span class="input__label">Address Line 1</span>
+          <input type="text" class="input__text" placeholder="Address Line 1" name='address-1'>
         </div>
       </td>
       <td>
         <div class="input__wrapper">
-          <span class="input__label">Adderess Line 2</span>
-          <input type="text" class="input__text" placeholder="Adderess Line 2" name='adress1-1'>
+          <span class="input__label">Address Line 2</span>
+          <input type="text" class="input__text" placeholder="Address Line 2" name='address1-1'>
         </div>
       </td>
       <td>
@@ -48,7 +48,52 @@
   {% endcall %}
   {% call dialog.footer() %}
   <div class="btn-group btn-group--right">
-    <button type="button" class="btn-action btn-action--secondary">Discard changes</button>
+    <button type="button" class="btn-action btn-action--secondary dialog__closer">Discard changes</button>
+    <button type="button" class="btn-action">Confirm & use address</button>
+  </div>
+  {% endcall %}
+  {% endcall %}
+
+  {% call dialog.wrapper(id='edit-address') %}
+  {{ dialog.header(header='Edit address:') }}
+  {% call dialog.content() %}
+  <table class="cart__dialog-table">
+    <tbody>
+    <tr>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Address Line 1</span>
+          <input type="text" class="input__text js-replace-value-to" data-replace-id="street" placeholder="Address Line 1" name='address-2'>
+        </div>
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Address Line 2</span>
+          <input type="text" class="input__text js-replace-value-to" data-replace-id="street1" placeholder="Address Line 2" name='address2-1'>
+        </div>
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">City</span>
+          <input type="text" class="input__text js-replace-value-to" data-replace-id="city" placeholder="City" name='city-2'>
+        </div>
+      </td>
+      <td>
+        {{select(optHolder="State", selectClassName="js-replace-value-to", options=['CA', 'MN', 'option_3'],name='select-2', label="State", data={ "replace-id": "state" })}}
+      </td>
+      <td>
+        <div class="input__wrapper">
+          <span class="input__label">Zip Code</span>
+          <input type="text" class="input__text js-replace-value-to" data-replace-id="zip" placeholder="Zip Code" name="zip-2">
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  {% endcall %}
+  {% call dialog.footer() %}
+  <div class="btn-group btn-group--right">
+    <button type="button" class="btn-action btn-action--secondary dialog__closer">Discard changes</button>
     <button type="button" class="btn-action">Confirm & use address</button>
   </div>
   {% endcall %}
@@ -57,10 +102,10 @@
   <div class="settings">
     <div class="css-tabs__container js-tabs" data-tab=".js-tab-settings" data-tab-active="active" data-tab-active-default=".js-tab-settings-my-account">
       <ul class="css-tabs__list">
-        <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-my-account">My account</li>
-        <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-password">Password</li>
-        <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
-        <li class="css-tabs__tab js-tab-settings" data-tab-content=".js-tab-settings-addresses">Addresses</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t1" data-tab-content=".js-tab-settings-my-account">My account</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t2" data-tab-content=".js-tab-settings-password">Password</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t3" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t4" data-tab-content=".js-tab-settings-addresses">Addresses</li>
       </ul>
 
       <div>
@@ -113,28 +158,7 @@
         </div>
 
         <div class="css-tabs__content js-tab-settings-addresses">
-          <div class="settings__block">
-            <div class="settings__item">
-              <h2>Billing address</h2>
-              <div>
-                {% include 'components/settings/address-card.nunj' %}
-              </div>
-            </div>
-
-            <div class="settings__item">
-              <div class="action-heading">
-                <h2>Shipping Address</h2>
-                <a href="#" class="plus-btn js-tooltip js-dialog" data-tooltip-placement="right" data-dialog="#edit-address" title="Add new shipping address">
-                  {{ svg('plus', 'icon-modal') }}
-                </a>
-              </div>
-              <div>
-                {% for x in range(0, 3) %}
-                  {% include 'components/settings/address-card.nunj' %}
-                {% endfor %}
-              </div>
-            </div>
-          </div>
+          <div class="r-settings-addresses"></div>
         </div>
       </div>
     </div>

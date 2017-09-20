@@ -1,0 +1,26 @@
+.address-card {
+  @include rem(padding, 10px);
+  @include rem(margin, 0 0 20px 20px);
+  display: inline-block;
+  border-radius: $border-radius-xl;
+  border: 3px solid $brand-grey;
+  background-color: rgba($brand-grey, .3);
+  vertical-align: top;
+
+  &--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    $size: 138px;
+    height: $size;
+    width: $size;
+  }
+
+  &__btn-block {
+    @include rem(margin-top, 12px);
+
+    a:not(:first-child) {
+      @include rem(margin-left, 5px);
+    }
+  }
+}

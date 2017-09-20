@@ -1,0 +1,11 @@
+.bids-list {
+  &__block {
+    &:not(:last-child) {
+      @include rem(margin-bottom, 30px);
+    }
+  }
+
+  &__block-header {
+    @include rem(margin-bottom, 25px);
+  }
+}

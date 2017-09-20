@@ -1,14 +1,18 @@
 import axios from 'axios';
-import validator from 'validator';
-import * as constants from '../constants';
-import { LOGIN } from '../globals';
+/* constants */
+import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
+/* globals */
+import { LOGIN } from 'app.globals';
+/* helpers */
+import { emailRegExp } from 'app.helpers/regexp';
 
-export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
+export default (loginEmail, password, isKeepMeLoggedIn) => {
   return (dispatch) => {
-
-    if (!validator.isEmail(loginEmail)) {
+    if (!loginEmail.match(emailRegExp)) {
       dispatch({
-        type: constants.LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOG_IN + VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -24,7 +28,7 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
 
     if (password.length === 0) {
       dispatch({
-        type: constants.LOGIN_CLIENT_VALIDATION_ERROR,
+        type: LOG_IN + VALIDATION_ERROR,
         data: {
           isLoading: false,
           response: {
@@ -39,27 +43,33 @@ export default function requestLogin(loginEmail, password, isKeepMeLoggedIn) {
     }
 
     dispatch({
-      type: constants.FETCH_SERVERS,
+      type: LOG_IN + FETCH,
       isLoading: true
     });
 
     // ToDo: Change to POST and URL
     axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
       .then((response) => {
-        dispatch({
-          type: constants.FETCH_SERVERS_SUCCESS
-        });
-
         const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
-        dispatch({
-          type: constants.LOGIN_RESPONSE_SUCCESS,
-          data
-        });
+        if (data.success) {
+          dispatch({
+            type: LOG_IN + SUCCESS,
+            data
+          });
+        } else {
+          dispatch({
+            type: LOG_IN + FAILURE,
+            isLoading: false,
+            data,
+            alert: false
+          });
+        }
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
-          type: constants.FETCH_SERVERS_FAILURE
+          type: LOG_IN + FAILURE,
+          isLoading: false
         });
       });
   };
-}
+};

@@ -1,0 +1,42 @@
+.stock {
+  @extend %flex--center--default;
+  flex-wrap: nowrap;
+  font-weight: 400;
+  font-size: $font-size-default;
+
+  svg {
+    @include rem(margin-right, 5px);
+  }
+
+  .icon-stock {
+    &--available,
+    &--unavailable,
+    &--out {
+      display: none;
+    }
+  }
+
+  &--available {
+    color: $font-success;
+
+    .icon-stock--available {
+      display: block;
+    }
+  }
+
+  &--unavailable {
+    color: $brand-dark;
+
+    .icon-stock--unavailable {
+      display: block;
+    }
+  }
+
+  &--out {
+    color: $error-mark;
+
+    .icon-stock--out {
+      display: block;
+    }
+  }
+}

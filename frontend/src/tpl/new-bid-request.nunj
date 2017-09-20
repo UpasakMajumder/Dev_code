@@ -1,0 +1,124 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+{% from "macro/select.nunj" import select %}
+
+{% set title = 'K-Source' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title, 'New request'] %}
+{% set headerTitle = 'New request' %}
+
+{% set btns = [
+  {
+    type: 'button',
+    name: 'Submit a request',
+    class: 'btn-action'
+  }
+] %}
+
+{% block content %}
+
+  <div class="block">
+    <h2 class="block__heading">Main informations</h2>
+
+    <div class="form-block form-block--fixed">
+      <div class="input__wrapper">
+        <span class="input__label">Name</span>
+        <input type="text" class="input__text" placeholder="Name">
+      </div>
+      <div class="input__wrapper">
+        <span class="input__label">Description</span>
+        <textarea class="input__textarea" placeholder="Describe your request"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Request type</h2>
+
+    <div class="form-block">
+      <div class="form-block__checkbox-group">
+        <div class="input__wrapper">
+          <input checked id="dom-7" name="type-request" type="radio" class="input__radio">
+          <label for="dom-7" class="input__label input__label--radio">Envelope</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-8" name="type-request" type="radio" class="input__radio">
+          <label for="dom-8" class="input__label input__label--radio">Print</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-9" name="type-request" type="radio" class="input__radio">
+          <label for="dom-9" class="input__label input__label--radio">Label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block__heading">
+      <h2>Attachment</h2>
+      <span class="block__right-label">Optional (maximum 4 files)</span>
+    </div>
+    {% set description = 'Drag & drop your file here or click anywhere to upload' %}
+    {% set descriptionIE = 'Click anywhere to upload your file' %}
+    {% set maxItems = 4 %}
+    {% include "components/drop-zone.nunj" %}
+  </div>
+
+  <div class="block">
+    <h2 class="block__heading">Bidding</h2>
+    <p>Specify how many parties do you want to receive a bid from</p>
+
+    <div class="form-block">
+      <div class="form-block__checkbox-group">
+        <div class="input__wrapper">
+          <input checked id="dom-4" name="bid" type="radio" class="input__radio">
+          <label for="dom-4" class="input__label input__label--radio">2-way</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-5" name="bid" type="radio" class="input__radio">
+          <label for="dom-5" class="input__label input__label--radio">3-way</label>
+        </div>
+        <div class="input__wrapper">
+          <input id="dom-6" name="bid" type="radio" class="input__radio">
+          <label for="dom-6" class="input__label input__label--radio">4-way</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="block">
+        <h2 class="block_heading">Bid deadline</h2>
+        <p>When do you want to receive proposals?</p>
+        <div class="form-block">
+          <div class="input__wrapper input__wrapper--with-icon">
+            <span class="input__label">Production date</span>
+            <input type="text" readonly class="input__text js-datepicker">
+            {{ svg('calendar_1', 'icon-input') }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="block">
+        <h2 class="block_heading">Date of selection</h2>
+        <p>When will you make a selection?</p>
+        <div class="form-block">
+          <div class="input__wrapper input__wrapper--with-icon">
+            <span class="input__label">Production date</span>
+            <span class="input__right-label">Optional</span>
+            <input type="text" readonly class="input__text js-datepicker">
+            {{ svg('calendar_1', 'icon-input') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <button class="btn-action js-drop-zone-submit">Submit a request</button>
+  </div>
+
+{% endblock %}

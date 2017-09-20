@@ -1,0 +1,1 @@
+webpackJsonp([89],{377:function(t,n,e){try{(function(){"use strict";Object.defineProperty(n,"__esModule",{value:!0});n.cutWords=function(t,n){var e=t.split(" "),i=e.filter(function(t,e){return e<n-1}),r=i.join(" ");return e.length>n?r+"...":r},n.bla=1}).call(this)}finally{}}});

@@ -1,28 +1,81 @@
 .product-view {
-  $product-img-size: 250px;
+  @extend %flex--default--between;
+  $product-img-size: 300px;
   $product-blocks-gap: 15px;
 
-  &__img {
-    @include rem(margin-right, $product-blocks-gap);
+  &__actions {
+    @extend %flex--start--between;
+  }
 
-    @extend .inline-bg;
-    position: relative;
-    float: left;
-    width: $product-img-size;
-    height: $product-img-size;
+  &__attachments {
+    @extend .list--unstyled;
+    width: 100%;
+    overflow: hidden;
+
+    a {
+      width: 100%;
+    }
+  }
+
+  &__attachment {
+    span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   &__zoom {
+    @extend .btn--off;
+    @extend .ml-2;
+  }
+
+  &__img {
+    @include rem(margin-right, $product-blocks-gap);
+    width: $product-img-size;
+
+    img {
+      @extend .mb-3;
+      width: 100%;
+    }
+  }
+
+  &__preview {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background: rgba($brand-lightblue, .5);
+
+    img {
+      max-width: 1024px;
+      max-height: 800px;
+      z-index: 1;
+    }
+
+    &.isOpen {
+      @extend %flex--center--center;
+    }
+  }
+
+  &__preview-wrapper {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    display: none; // TODO: FIX IN THE SPECIAL STORY OF ZOOMING
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 
   &__block {
     overflow: hidden;
-    width: calc(100% - #{$product-img-size} - #{$product-blocks-gap});
-    margin-left: calc(#{$product-img-size} + #{$product-blocks-gap});
+    flex: 1;
 
     & > div {
       @include rem(margin-bottom, 30px);
@@ -32,7 +85,7 @@
   &__info {
     @extend %flex--center--between;
 
-    @include rem(padding, 10px);
+    @include rem(padding, 17px 10px);
     flex-wrap: nowrap;
     border: 1px solid $brand-grey;
 
@@ -76,7 +129,7 @@
     .table {
       width: calc(50% - #{$product-blocks-gap*2});
       margin: 0 $product-blocks-gap;
-      font-size: $font-xs;
+      font-size: $font-size-default;
 
       tr > th:first-child {
         @include rem(padding-left, 35px);
@@ -89,6 +142,14 @@
           transform: translate(-50%, -50%);
         }
       }
+    }
+  }
+
+  &__footer {
+    @extend %flex--center--between;
+
+    .stock {
+      @include rem(font-size, 16px);
     }
   }
 }

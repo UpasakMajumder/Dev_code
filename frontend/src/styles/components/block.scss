@@ -1,0 +1,15 @@
+.block {
+  @include rem(margin, 16px 0 32px);
+
+  &__heading {
+    @include rem(margin, 8px 0 8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__right-label {
+    font-size: $font-xxs;
+    font-weight: 400;
+  }
+}

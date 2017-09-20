@@ -1,6 +1,11 @@
 .template {
-  @extend .mb-5;
+  $height: 340px;
+
+  @extend .pb-5;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: $height;
 
   & > *:not(:last-child, :first-child) {
     @include rem(margin-bottom, 10px);
@@ -8,6 +13,7 @@
 
   &__img {
     @extend .inline-bg;
+    @extend .inline-bg--left;
     height: 150px;
 
     img {
@@ -16,6 +22,11 @@
   }
 
   &__breadcrumbs {
+    @include create-hidden-shadow(100px);
+    $height: 24px;
+    height: $height;
+    overflow: hidden;
+
     span {
       @include rem(margin-right, 5px);
       display: inline-block;
@@ -40,8 +51,9 @@
       color: $font-black;
       font-weight: bold;
       margin: 0;
-      height: $font-size-default * 2 * $line-height;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -72,29 +84,6 @@
     }
   }
 
-  &__stock {
-    @extend %flex--center--default;
-    flex-wrap: nowrap;
-    font-weight: 400;
-    font-size: $font-xs;
-
-    svg {
-      @include rem(margin-right, 5px);
-    }
-
-    &--available {
-      color: $font-success;
-    }
-
-    &--unavailable {
-      color: $brand-dark;
-    }
-
-    &--out {
-      color: $error-mark;
-    }
-  }
-
   &__use {
     @extend %flex--default--between;
     flex-wrap: nowrap;
@@ -108,6 +97,15 @@
       min-width: 0;
       padding-left: 4px;
       padding-right: 4px;
+    }
+
+    &--only-btn {
+      margin-top: auto;
+
+      a,
+      button {
+        margin: 0;
+      }
     }
   }
 }

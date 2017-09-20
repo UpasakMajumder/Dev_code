@@ -1,10 +1,12 @@
 .drop-zone {
+  @extend %flex--center--center;
   background: radial-gradient(circle, $brand-white 0%, rgba(229, 232, 235, 0.3) 100%);
   border-radius: 2px;
   text-align: center;
   border: dashed 2px $brand-darkgrey;
   border-image: url('#{$img-path}dropzone-border.png') 2 round;
   position: relative;
+  min-height: 230px;
 
   &.isDropped {
     .drop-zone__dropping {
@@ -14,23 +16,32 @@
     .drop-zone__dropped {
       display: block;
     }
+
+    .drop-zone__dropped--not {
+      display: none;
+    }
+  }
+
+  &.isNotDropped {
+    .drop-zone__dropping {
+      display: none;
+    }
+
+    .drop-zone__dropped {
+      display: none;
+    }
+
+    .drop-zone__dropped--not {
+      display: block;
+    }
   }
 
   &__btn {
-    @extend .bg-darker;
-    @extend .badge;
-    @extend .badge--m;
-    @extend .badge--hover;
-    position: absolute;
-    cursor: pointer;
-    z-index: 3;
-    border: 0;
-
-    svg {
-      width: 10px;
-    }
+    @extend .tooler;
+    @extend .tooler--hover;
 
     &.question {
+      position: absolute;
       right: 10px;
       top: 10px;
 
@@ -41,6 +52,7 @@
     }
 
     &.close {
+      position: absolute;
       right: -8px;
       top: -8px;
 
@@ -62,6 +74,28 @@
     cursor: pointer;
   }
 
+  &__ext {
+    color: white;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+  }
+
+  &__item {
+    max-width: 125px;
+
+    p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:not(:last-child) {
+      @extend .mr-3;
+    }
+  }
+
   &__dropping {
     margin: 51px;
 
@@ -73,9 +107,10 @@
 
   &__dropped {
     display: none;
-    margin: 39px;
+    margin: 48px;
 
     div {
+      @include rem(margin-bottom, 5px);
       display: inline-block;
       position: relative;
     }
@@ -84,6 +119,10 @@
       @extend .font-dark;
       margin: 0;
       font-size: $font-xxs;
+    }
+
+    &--not {
+      margin: 42px;
     }
   }
 
@@ -97,5 +136,33 @@
   .icon-csv {
     width: 73px;
     height: 100px;
+  }
+
+  .default-text {
+    display: block;
+  }
+
+  .reserved-text {
+    display: none;
+  }
+
+  @supports (-ms-ime-align:auto) {
+    .default-text {
+      display: none;
+    }
+
+    .reserved-text {
+      display: block;
+    }
+  }
+
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .default-text {
+      display: none;
+    }
+
+    .reserved-text {
+      display: block;
+    }
   }
 }

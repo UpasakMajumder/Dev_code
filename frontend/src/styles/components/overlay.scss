@@ -1,0 +1,11 @@
+.header-overlay {
+  width: 100%;
+  height: calc(100% - #{$header-size});
+  border-bottom-left-radius: $border-radius-xl;
+  border-bottom-right-radius: $border-radius-xl;
+  position: absolute;
+  left: 0;
+  background: rgba($brand-lightblue, .5);
+  z-index: 1;
+  top: $header-size;
+}

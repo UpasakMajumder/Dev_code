@@ -1,3 +1,4 @@
+{% from "macro/svg.nunj" import svg %}
 {% extends "layouts/default.nunj" %}
 
 {% set title = "K-Insight" %}
@@ -5,6 +6,49 @@
 {% set breadcrumbs = [title] %}
 {% set headerTitle = title %}
 
-{% block content %}
+{% set btns = [
+  {
+    type: 'a',
+    name: 'See Detailed Data',
+    class: 'btn-action'
+  }
+] %}
 
+{% block content %}
+  <div class="spotfire js-spotfire">
+    {#<div class="css-tabs__container js-tabs spotfire__controllers" data-tab=".js-filter-spotfire" data-tab-active="active" data-tab-active-default=".js-filter-content-1">#}
+      {#<ul class="css-tabs__list">#}
+        {#<li class="css-tabs__tab js-filter-spotfire" data-filter-time="all" data-tab-content=".js-filter-content-1">All period</li>#}
+        {#<li class="css-tabs__tab js-filter-spotfire" data-filter-time="30" data-tab-content=".js-filter-content-2">30 days</li>#}
+        {#<li class="css-tabs__tab js-filter-spotfire" data-filter-time="60" data-tab-content=".js-filter-content-3">60 days</li>#}
+        {#<li class="css-tabs__tab js-filter-spotfire" data-filter-time="90" data-tab-content=".js-filter-content-4">90 days</li>#}
+      {#</ul>#}
+    {#</div>#}
+
+    <div class="row">
+      {% set spotfires = {
+        '1': 'Total Inventory',
+        '2': 'Low Stock',
+        '3': 'Materials Consumption',
+        '4': 'Back Orders',
+        '5': 'Shipped Orders & Qty by Material',
+        '6': 'Open Orders & Qty by Material',
+        '7': 'Open Quantity by Material',
+        '8': 'Overdue Materials',
+        '9': 'Top Requested Items by Orders',
+        '10': 'POD vs Inventory'
+      } %}
+      {% for index, doc in spotfires %}
+      <div class="col-lg-6">
+        <div id="spotfire-{{ index }}" data-doc="{{ doc }}" class="spotfire__item js-spotfire-tab">
+          <div class="spinner">
+            {{ svg('spinner') }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="http://10.83.71.208/spotfire/wp/GetJavaScriptApi.ashx?Version=7.5"></script>
 {% endblock %}

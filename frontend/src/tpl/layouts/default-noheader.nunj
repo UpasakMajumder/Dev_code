@@ -11,6 +11,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ _imgPath + 'favicon/apple-touch-icon.png' }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ _imgPath + 'favicon/favicon-32x32.png' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ _imgPath + 'favicon/favicon-16x16.png' }}">
+  <link rel="manifest" href="{{ _imgPath + 'favicon/manifest.json' }}">
+  <link rel="mask-icon" href="{{ _imgPath + 'favicon/safari-pinned-tab.svg' }}" color="#5bbad5 ">
+  <meta name="theme-color" content="#ffffff ">
+
   <title>{{ title }}</title>
   {% if firstVisit %}
     <style>
@@ -58,6 +66,36 @@
 <script>
   var config = {
     localization: {
+      notification: {
+        removeProduct: {
+          title: 'Success',
+          text: 'The product has been removed'
+        },
+        addProduct: {
+          title: 'Success',
+          text: 'The product has been added'
+        },
+        recentOrdersError: {
+          title: 'Recent orders could not be loaded',
+          // title is also from errorMessage
+        },
+        modifyAddress: {
+          title: 'Success',
+          text: 'The address has been changed'
+        },
+        wrongAddressesRemoved: {
+          title: 'Success',
+          text: 'The addresses with errors have been removed'
+        },
+        serverNotAvailable: {
+          title: 'Error',
+          text: 'The addresses with errors have been removed'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
@@ -104,14 +142,22 @@
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
         TerminalIdentifier_MerchantCode: 'Kadena2.0'
+      },
+      ui: {},
+      spotfire: {
+        serverUrl: 'http://10.83.71.208/spotfire/wp/',
+        url: '/Kadena/Standard Reports/Inventory and Sales order Report',
+        customerId: '40000240'
       }
     }
   };
 </script>
-<script src="js/common.js"></script>
+
 {% if _dev %}
+  <script src="js/common.js"></script>
   <script src="js/app.js" async></script>
 {% else %}
+  <script src="js/common.min.js"></script>
   <script src="js/app.min.js" async></script>
 {% endif %}
 </body>

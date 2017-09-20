@@ -6,5 +6,8 @@
 {% set headerTitle = title %}
 
 {% block content %}
-
+  <div class="recent-orders">
+    {% include 'components/statistics.nunj' %}
+    <div class="r-recent-orders"></div>
+  </div>
 {% endblock %}

@@ -1,0 +1,50 @@
+.order-block {
+  @include rem(margin, 25px 0 40px);
+
+  &:last-child {
+    @include rem(margin, 25px 0 0);
+  }
+
+  &--tile,
+  &--tile:last-child {
+    @include rem(padding, 20px 10px);
+    margin: 0;
+    background-color: #f6f6f6;
+    border-radius: $border-radius-xl;
+    height: 100%;
+
+    .check-table {
+      margin: 0;
+
+      &__info,
+      &__amount {
+        background-color: $form-bg;
+      }
+    }
+  }
+
+  &__header {
+    @include rem(margin-bottom, 20px);
+  }
+
+  &__detail {
+    @extend %flex--start--default;
+    flex-direction: column;
+    width: 100%;
+
+    svg {
+      @include rem(margin-bottom, 24px);
+      @include rem(width, 70px);
+      @include rem(height, 50px);
+    }
+  }
+}
+
+.order-block--animation-enter {
+  opacity: 0.01;
+}
+
+.order-block--animation-enter.order-block--animation-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}

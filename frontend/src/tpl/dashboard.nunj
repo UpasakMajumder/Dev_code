@@ -1,4 +1,5 @@
 {% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
 
 {% set title = 'K-Center' %}
 {% set sidebarActive = title %}
@@ -6,5 +7,97 @@
 {% set headerTitle = title %}
 
 {% block content %}
+  <div class="dashboard">
+
+    {% include "components/notification.nunj" %}
+
+    <div class="js-tabs" data-tab=".js-tab-example" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
+      <ul class="css-tabs__list">
+        <li class="css-tabs__tab js-tab-example active" data-tab-content=".js-tab-content-1">This month</li>
+        <li class="css-tabs__tab js-tab-example" data-tab-content=".js-tab-content-2">90 days</li>
+        <li class="css-tabs__tab js-tab-example" data-tab-content=".js-tab-content-3">This year</li>
+        <li>
+          <a href="#">View K-Insights</a>
+        </li>
+      </ul>
+
+      <div>
+        <div class="css-tabs__content js-tab-content-1 active show">
+
+          <div class="dashboard__block">
+
+          {% include "components/statistics.nunj" %}
+
+          </div>
+
+          <div class="dashboard__block">
+            <div class="dashboard__block-heading">
+              <h2>Recent orders</h2>
+              <a href="#">View recent orders</a>
+            </div>
+            <table class="show-table">
+              <tbody>
+                <tr>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order date</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Ordered</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
+                  <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon') }}Order status</th>
+                  <th></th>
+                </tr>
+                {% for i in range(0, 5) -%}
+
+                  <tr>
+                    <td>Mar 3 2017</td>
+                    <td class="show-table__text-appear">
+                      <span class="badge badge--s badge--empty badge--bold">3</span>
+                      1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74 / 1,300 x Business cards / 350 x Monthly magazine / 12 x User manual HF746H74
+                    </td>
+                    <td class="show-table__will-hide">In progress</td>
+                    <td class="show-table__will-hide">May 24 2017</td>
+                    <td class="show-table__will-appear">
+                      <button type="button" class="btn-action">View</button>
+                    </td>
+                  </tr>
+
+                {%- endfor %}
+
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dashboard__block pb-0">
+            <div class="dashboard__block-heading">
+              <h2>New products</h2>
+              <a href="#">View all new products</a>
+            </div>
+
+            <div class="row">
+
+              {% for item in range(0, 4) %}
+
+                <div class="col-lg-6 col-xl-3">
+                  {% include "components/product/product-item.nunj" %}
+                </div>
+
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+          <div class="dashboard__block pb-0">
+            <div class="dashboard__block-heading">
+              <h2>Favorites</h2>
+            </div>
+
+            <div class="r-products-favorites"></div>
+          </div>
+
+        </div>
+        <div class="css-tabs__content js-tab-content-2">Content 2</div>
+        <div class="css-tabs__content js-tab-content-3">Content 3</div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

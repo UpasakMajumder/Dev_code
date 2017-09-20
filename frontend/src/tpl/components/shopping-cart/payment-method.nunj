@@ -1,0 +1,26 @@
+<div class="input__wrapper input__wrapper--icon-label">
+  <input id="dom-6" name="pay-method" type="radio" class="input__radio">
+  <label for="dom-6" class="input__label input__label--radio">
+    {{ svg('credit-card', 'icon-shipping') }}
+    <span>Credit card</span>
+  </label>
+</div>
+
+<div class="input__wrapper input__wrapper--icon-label">
+  <input id="dom-7" name="pay-method" type="radio" class="input__radio">
+  <label for="dom-7" class="input__label input__label--radio">
+    {{ svg('paypal-payment', 'icon-shipping') }}
+    <span>Pay Pal</span>
+  </label>
+</div>
+
+<div class="input__wrapper cart-fill__block-input-wrapper input__wrapper--icon-label">
+  <input id="dom-8" name="pay-method" type="radio" class="input__radio">
+  <label for="dom-8" class="input__label input__label--radio">
+    {{ svg('order-payment', 'icon-shipping') }}
+    <span>Purchase order</span>
+  </label>
+  <div class="input__wrapper">
+    <input type="text" class="input__text" placeholder="Insert your PO number">
+  </div>
+</div>

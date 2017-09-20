@@ -4,7 +4,15 @@
   bottom: 25px;
   left: $sidebar-width-small/2;
   transform: translate(-50%, 0);
-  transition: position .3s ease-in;
+  transition: all .4s ease-in-out;
+
+  .icon-sidebar-logo {
+    display: none;
+  }
+
+  .icon-sidebar-logo-small {
+    display: block;
+  }
 
   &__text {
     color: $font-grey;
@@ -18,12 +26,12 @@
   .isOpen & {
     left: $sidebar-width-large/2;
 
-    &__text {
-      @include rem(padding-left, 10px);
-      visibility: visible;
-      width: auto;
-      height: auto;
-      transition: visibility .3s ease-in .5s;
+    .icon-sidebar-logo-small {
+      display: none;
+    }
+
+    .icon-sidebar-logo {
+      display: block;
     }
   }
 }

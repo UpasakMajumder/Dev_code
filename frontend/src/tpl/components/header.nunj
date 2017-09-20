@@ -1,28 +1,47 @@
 {% from "macro/svg.nunj" import svg %}
 
-{% set headers = [
-{'title': 'Activity', 'icon': 'activity', 'badge': 'true'},
-{'title': 'Drafts', 'icon': 'newspaper'},
-{'title': 'Shopping cart', 'icon': 'cart'},
-{'title': 'Log Out', 'icon': 'sign-out'}
-] %}
-
 <nav class="css-header navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <a class="navbar-brand" href="index.html">
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
 
-  <div class="navbar-user">Welcome, <span>Oliver</span></div>
+  <div class="search r-search"></div>
 
   <ul class="navbar-nav mr-auto">
-    {% for header in headers %}
-      <li class="nav-item {% if(headerActive === header.title) %} active {% endif %}">
-        <a class="nav-link" href="#">
-          {{ svg(header.icon, 'icon-navigation icon-dashboard') }}
-          {{ header.title }}
-          {% if(header.badge === 'true') %}<span class="badge badge-pill badge-custom-color">3</span>{% endif %}
-        </a>
-      </li>
-    {% endfor %}
+    <li class="nav-item {% if(headerActive === 'Activity') %} active {% endif %}">
+      <a class="nav-link" href="#">
+        {{ svg('activity', 'icon-navigation icon-dashboard') }}
+        Activity
+        <div class="nav-badge">
+          <span class="nav-badge__text">10</span>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item {% if(headerActive === 'Drafts') %} active {% endif %}">
+      <a class="nav-link" href="#">
+        {{ svg('newspaper', 'icon-navigation icon-dashboard') }}
+        Drafts
+        <div class="nav-badge">
+          <span class="nav-badge__text">10</span>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item {% if(headerActive === 'Shopping cart') %} active {% endif %} js-cart-preview">
+      <a class="nav-link" href="#">
+        {{ svg('cart', 'icon-navigation icon-dashboard') }}
+        Shopping cart
+        <div class="r-cart-items"></div>
+      </a>
+      <div class="r-cart-preview"></div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        {{ svg('sign-out', 'icon-navigation icon-dashboard') }}
+        Log Out
+      </a>
+    </li>
   </ul>
 </nav>

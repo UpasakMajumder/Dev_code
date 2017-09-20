@@ -3,6 +3,7 @@
   $translate-label-y: 30px;
   $color-label-dark: $brand-dark;
   $color-label-light: $brand-darkgrey;
+  $input-height: 41px;
 
   @extend .line-height--one;
 
@@ -23,6 +24,24 @@
 
     &--disabled {
       opacity: .5;
+    }
+
+    &--with-unit {
+      input {
+        @include rem(padding-right, 30px);
+      }
+    }
+
+    &--with-icon {
+      input {
+        @include rem(padding-right, 30px);
+      }
+
+      svg {
+        @include rem(right, 8px);
+        @include rem(bottom, 10px);
+        position: absolute;
+      }
     }
   }
 
@@ -72,6 +91,34 @@
       @include rem(padding-left, 10px);
       @include rem(padding-right, 10px);
     }
+  }
+
+  &__textarea {
+    @extend .input;
+
+    @include rem(padding-left, 16px);
+    @include rem(padding-right, 16px);
+    width: 100%;
+    min-height: 95px;
+  }
+
+  &__select-area {
+    @extend .input;
+
+    @include rem(padding, 12px 20px 12px 12px);
+    max-height: 250px;
+    background: $brand-white;
+    overflow-y: auto;
+
+    .input__wrapper {
+      line-height: 1.5;
+    }
+  }
+
+  &__unit {
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
   }
 
   &__password {
@@ -128,13 +175,17 @@
         border-radius: 100%;
       }
     }
+
+    svg {
+      vertical-align: middle;
+    }
   }
 
   &__right-label {
     position: absolute;
     right: 0;
     top: 2px;
-    font-size: $font-xxs;
+    font-size: $font-xs;
     font-weight: 400;
     color: $color-label-dark;
   }
@@ -183,32 +234,43 @@
     @extend .bg-white;
     border: 1px solid $brand-darkgrey;
     border-radius: $border-radius;
-    height: 42px;
     width: 100%;
 
     select {
       background: transparent;
       border: none;
-      height: 42px;
+      height: $input-height;
       font-weight: 400;
       width: 100%;
     }
   }
 
+  &__select,
+  &__text {
+    height: $input-height;
+  }
+
   &--error {
     border-bottom: 1px solid $brand-dangerous;
+
+    & ~ .input__error {
+      display: block;
+    }
   }
 
   &__error {
     @extend .font-dangerous;
+    @extend .hidden;
     border-top: 1px solid $brand-dangerous;
-    display: block;
     font-size: $font-xxs;
-    position: absolute;
     width: 100%;
 
     &--noborder {
       border-top: none;
+    }
+
+    .input__wrapper--with-icon & {
+      position: absolute;
     }
   }
 }

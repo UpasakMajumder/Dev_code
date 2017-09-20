@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from '../constants';
-import { cardPaymentSymbols } from '../helpers/validationRules';
-import { CARD_PAYMENT } from '../globals';
+import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from 'app.consts';
+import { cardPaymentSymbols } from 'app.helpers/validationRules';
+import { CARD_PAYMENT } from 'app.globals';
 
-export default function submitCard(fields, cardType) {
+export default (fields, cardType) => {
   const { name, cvc, number, expiry } = fields;
 
   return (dispatch) => {
@@ -105,4 +105,4 @@ export default function submitCard(fields, cardType) {
       data
     });
   };
-}
+};

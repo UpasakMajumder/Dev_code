@@ -1,0 +1,3 @@
+{{ svg('stock--available', 'icon-stock icon-stock--available') }}
+{{ svg('stock--unavailable', 'icon-stock icon-stock--unavailable') }}
+{{ svg('stock--out', 'icon-stock icon-stock--out') }}

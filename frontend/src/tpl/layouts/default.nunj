@@ -11,6 +11,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ _imgPath + 'favicon/apple-touch-icon.png' }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ _imgPath + 'favicon/favicon-32x32.png' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ _imgPath + 'favicon/favicon-16x16.png' }}">
+  <link rel="manifest" href="{{ _imgPath + 'favicon/manifest.json' }}">
+  <link rel="mask-icon" href="{{ _imgPath + 'favicon/safari-pinned-tab.svg' }}" color="#5bbad5 ">
+  <meta name="theme-color" content="#ffffff ">
+
   <title>{{ title }}</title>
   {% if firstVisit %}
     <style>
@@ -49,9 +57,12 @@
 <form>
   {# Main content of the page #}
   <div class="main-container">
+    <div class="r-spinner"></div>
+    <div class="r-toastr"></div>
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
-
+      <div class="r-header-shadow"></div>
+      {% include "components/product/preview.nunj" %}
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
@@ -66,10 +77,26 @@
           <div class="content__inner">
             <div class="content-header">
               <div class="content-header__inner">
-                <h1 class="content-header__page-name">{{ headerTitle }}</h1>
-                {% if(headerAdd) %}
-                  {% include 'components/header-button.nunj' %}
+                <h1 class="content-header__page-name">{{ headerTitle }}
+                  {% if(headerAdd) %}
+                    {% include 'components/header-button.nunj' %}
+                  {% endif %}
+                </h1>
+                <div class="btn-group btn-group--right">
+                {% if (btns) %}
+
+                  {% for btn in btns %}
+
+                  {% if (btn.type === "button") %}
+                    <button type="button" class="{{ btn.class }}">{{ btn.name }}</button>
+                  {% elif (btn.type === "a")  %}
+                    <a href="#" class="{{ btn.class }}">{{ btn.name }}</a>
+                  {% endif %}
+
+                  {% endfor %}
+
                 {% endif %}
+                </div>
               </div>
               {% include 'components/breadcrumbs.nunj' %}
             </div>
@@ -84,14 +111,60 @@
 
     </div>
   </div>
+
+  {% include 'components/snack-notification.nunj' %}
+
 </form>
 
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
   var config = {
     localization: {
+      notification: {
+        removeProduct: {
+          title: 'Success',
+          text: 'The product has been removed'
+        },
+        addProduct: {
+          title: 'Success',
+          text: 'The product has been added'
+        },
+        recentOrdersError: {
+          title: 'Recent orders could not be loaded',
+          // title is also from errorMessage
+        },
+        addAddress: {
+          title: 'Success',
+          text: 'The new address has been added'
+        },
+        modifyAddress: {
+          title: 'Success',
+          text: 'The address has been changed'
+        },
+        wrongAddressesRemoved: {
+          title: 'Success',
+          text: 'The addresses with errors have been removed'
+        },
+        serverNotAvailable: {
+          title: 'Error',
+          text: 'The server is not available'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
+        },
+        chiliNotAvailable: {
+          title: 'Error',
+          text: 'The Chili is not available'
+        },
+        chiliSaved: {
+          title: 'Success',
+          text: 'The template has been saved'
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
@@ -137,6 +210,201 @@
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
         TerminalIdentifier_MerchantCode: 'Kadena2.0'
+      },
+      checkout: {
+        initRenderUIURL: '',
+        initTotalDeliveryUIURL: '',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: '',
+        submittableURL: '',
+        addNewAddressURL: ''
+      },
+      spotfire: {
+        serverUrl: 'http://10.83.71.208/spotfire/wp/',
+        url: '/Kadena/Standard Reports/Inventory and Sales order Report_Single graph',
+        customerId: '40000240'
+      },
+      userSettings: {
+        addresses: {
+          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
+          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+        }
+      },
+      cartPreview: {
+        cartPreviewUrl: '#'
+      },
+      orderDetail: {
+        orderDetailUrl: ""
+      },
+      searchPage: {
+        searchPageUrl: ''
+      },
+      chiliSave: {
+        url: ''
+      },
+      addToCartUrl: '',
+      search: {
+        queryUrl: ""
+      },
+      recentOrders: {
+        getHeaders: '',
+        getPageItems: ''
+      },
+      modifyMailingList: {
+        errorList: {
+          header: "We have found 8 errors in your file",
+          tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
+          btns: {
+            reupload: {
+              text: "Reupload .csv",
+              url: "#"
+            },
+            correct: "Correct errors"
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116",
+              errorMessage: "Error"
+            },
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116",
+              errorMessage: "Error"
+            }
+          ]
+        },
+        successList: {
+          header: "332 addresses have been processed successfuly",
+          btns: {
+            use: {
+              text: "Use only correct",
+              url: "#"
+            }
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "3",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "4",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "5",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            }
+          ]
+        },
+        formInfo: {
+          title: "We have found errors in the following entries:",
+          downloadErrorFile: {
+            text: "Download error file",
+            url: "#"
+          },
+          discardChanges: "Discard changes",
+          confirmChanges: {
+            text: "Confirm & reprocess addresses",
+            redirect: "https://google.com",
+            request: "#"
+          },
+          message: {
+            required: "The field is required"
+          },
+          fields: {
+            fullName: {
+              header: "Full Name",
+              required: true
+            },
+            firstAddressLine: {
+              header: "First Address Line",
+              required: true
+            },
+            secondAddressLine: {
+              header: "Second Address",
+            },
+            city: {
+              header: "City",
+              required: true
+            },
+            state: {
+              header: "State",
+              required: true,
+              value: ['AA', 'BB']
+            },
+            postalCode: {
+              header: "Postal Code",
+              required: true
+            }
+          }
+        }
+      },
+      checkoutButtons: {
+        checkout: {
+          text: 'Proceed To Checkout',
+            url: '/shopping-cart.html'
+        },
+        products: {
+          text: 'Continue Shopping',
+            url: '/products.html'
+        }
+      },
+      manageProducts: {
+        templatesUrl: '/api/products/123/templates'
+      },
+      products: {
+        addToFavorites: "Set product as favorite",
+        loadProductsUrl: "/api/products",
+        loadFavoritesProductsUrl: "/api/products/favorites",
+        markProductFavouriteUrl: "/api/favorites/set",
+        unmarkProductFavouriteUrl: "/api/favorites/unset"
       }
     }
   };
@@ -144,10 +412,11 @@
 
 {% if _dev %}
   <script src="js/common.js"></script>
-  <script src="js/app.js" async></script>
+  <script src="js/app.js"></script>
 {% else %}
   <script src="js/common.min.js"></script>
-  <script src="js/app.min.js" async></script>
+  <script src="js/app.min.js"></script>
 {% endif %}
+
 </body>
 </html>

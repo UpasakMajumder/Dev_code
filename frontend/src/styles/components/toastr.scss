@@ -1,0 +1,19 @@
+.redux-toastr {
+  .toastr.rrt- {
+    &success {
+      background-color: $brand-success;
+    }
+
+    &info {
+      background-color: $brand-info;
+    }
+
+    &warning {
+      background-color: $brand-secondary;
+    }
+
+    &error {
+      background-color: $brand-warning;
+    }
+  }
+}

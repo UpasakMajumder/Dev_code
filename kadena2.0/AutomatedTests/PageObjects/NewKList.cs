@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using AutomatedTests.Utilities;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,15 @@ namespace AutomatedTests.PageObjects
 {
     class NewKList : BasePage
     {
-        [FindsBy(How = How.CssSelector, Using = ".drop-zone input")]
+        [FindsBy(How = How.CssSelector, Using = ".js-drop-zone-file")]
         private IWebElement DropZone { get; set; }
 
-        [FindsBy(How = How.Id, Using = "p_lt_WebPartZone3_zoneContent_pageplaceholder_p_lt_WebPartZone2_zoneContent_MailingListUploader_btnSubmit")]
+        [FindsBy(How = How.CssSelector, Using = ".j-submit-mailing-list-button")]
         private IWebElement CreateMailingListBtn { get; set; }
+
+        [FindsBy(How = How.ClassName, Using = "js-drop-zone-name-input")]
+        private IWebElement NameField { get; set; }
+
         public NewKList()
         {
             PageFactory.InitElements(Browser.Driver, this);
@@ -27,14 +32,23 @@ namespace AutomatedTests.PageObjects
         /// </summary>
         public void SelectMailingList()
         {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            DropZone.SendKeys(path.Substring(6) + "\\TestFiles\\testcsv.csv");
+            string path = TestEnvironment.TestPath + "\\TestFiles\\testcsv.csv";
+            DropZone.SendKeys(path);
         }
 
         public MapColumns SubmitMailingList()
         {
             CreateMailingListBtn.ClickElement();
             return new MapColumns();
+        }
+
+        /// <summary>
+        /// Enters name from argument
+        /// </summary>
+        /// <param name="name"></param>
+        public void FillOutMailingListName(string name)
+        {
+            NameField.EnterText(name);
         }
     }
 }

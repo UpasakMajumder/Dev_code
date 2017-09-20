@@ -1,5 +1,4 @@
 {% extends "layouts/default.nunj" %}
-{% from "macro/steps.nunj" import steps %}
 {% from "macro/svg.nunj" import svg %}
 
 {% set title = 'Card payment' %}

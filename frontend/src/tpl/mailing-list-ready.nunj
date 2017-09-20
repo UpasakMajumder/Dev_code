@@ -1,5 +1,6 @@
 {% extends "layouts/default.nunj" %}
 {% from "macro/svg.nunj" import svg %}
+{% from "macro/attachment.nunj" import linkAttachment %}
 
 {% set title = 'List is ready' %}
 {% set sidebarActive = 'K-List' %}
@@ -36,8 +37,8 @@
           <div class="template__title">
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -67,8 +68,8 @@
               quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
               hic molestiae repellendus!</h3>
           </div>
-          <div class="template__stock template__stock--unavailable">
-            {{ svg('stock--unavailable', 'icon-stock') }}
+          <div class="stock stock--unavailable">
+            {% include 'components/stock.nunj' %}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -93,8 +94,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--out">
-            {{ svg('stock--out', 'icon-stock') }}
+          <div class="stock stock--out">
+            {% include 'components/stock.nunj' %}
             Out of stock
           </div>
           <div class="template__use">
@@ -119,8 +120,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -144,8 +145,8 @@
           <div class="template__title">
             <h3 title="Technical news 2017">Technical news 2017</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -175,8 +176,8 @@
               quibusdam tempora tempore. Ad animi architecto blanditiis debitis dolore, dolorem ex fugiat fugit harum illo inventore modi natus placeat, quas reprehenderit? Dolore dolorem explicabo pariatur possimus provident quasi sit. Adipisci eaque earum fugiat
               hic molestiae repellendus!</h3>
           </div>
-          <div class="template__stock template__stock--unavailable">
-            {{ svg('stock--unavailable', 'icon-stock') }}
+          <div class="stock stock--unavailable">
+            {% include 'components/stock.nunj' %}
             Available in 2 days
           </div>
           <div class="template__use">
@@ -201,8 +202,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--out">
-            {{ svg('stock--out', 'icon-stock') }}
+          <div class="stock stock--out">
+            {% include 'components/stock.nunj' %}
             Out of stock
           </div>
           <div class="template__use">
@@ -227,8 +228,8 @@
           <div class="template__title">
             <h3 title="Engine cleaning manual 2017 new revised 2 FINAL">Engine cleaning manual 2017 new revised 2 FINAL</h3>
           </div>
-          <div class="template__stock template__stock--available">
-            {{ svg('stock--available', 'icon-stock') }}
+          <div class="stock stock--available">
+            {% include 'components/stock.nunj' %}
             150 pcs in stock
           </div>
           <div class="template__use">
@@ -241,19 +242,9 @@
     <div class="mailing-ready__block">
       <h2 class="mailing-ready__header">Download your materials</h2>
       <div class="mailing-ready__links">
-        <a href="#" class="link">
-          {{ svg('download--blue', 'icon-download') }}
-          Download processed file
-        </a>
-        <span>or</span>
-        <a href="#" class="link">
-          {{ svg('download--green', 'icon-download') }}
-          Good addresses only
-        </a>
-        <a href="#" class="link">
-          {{ svg('download--orange', 'icon-download') }}
-          Bad addresses only
-        </a>
+        {{ linkAttachment('blue') }}
+        {{ linkAttachment('green') }}
+        {{ linkAttachment('orange') }}
       </div>
     </div>
   </div>

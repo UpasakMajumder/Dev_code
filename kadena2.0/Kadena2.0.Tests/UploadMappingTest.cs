@@ -5,21 +5,26 @@ using Kadena.Old_App_Code.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using CMS.SiteProvider;
 
 namespace Kadena.Tests
 {
-    class UploadMappingTest : UnitTests
+    class UploadMappingTest : IntegrationTests
     {
-        private const string _customerNameSettingKey = "KDA_CustomerName";
         private const string _urlSetting = "KDA_UploadMappingUrl";
+
+        [SetUp]
+        public void Init()
+        {
+            SiteContext.CurrentSite = SiteInfoProvider.GetSiteInfo(1);
+        }
 
         [TestCase("5b602141-33fa-4754-9eb4-af275b80087a",
             "399c95a3-ce5d-46d9-ad1f-1f195ce95596",
-            "actum",
-            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/Api/DeliveryAddress",
             TestName = "UploadMappingFail",
             Description = "Testing incorrect parameters passed to microservice.")]
-        public void IncorrectMappingExceptionCase(string fileId, string containerId, string customerName, string url)
+        public void IncorrectMappingExceptionCase(string fileId, string containerId, string url)
         {
             var mapping = new Dictionary<string, int>()
             {
@@ -33,16 +38,15 @@ namespace Kadena.Tests
             };
 
             Assert.Catch(typeof(HttpRequestException)
-                , () => CallService(new Guid(fileId), new Guid(containerId), customerName, url, mapping));
+                , () => CallService(fileId, new Guid(containerId), url, mapping));
         }
 
-        [TestCase("5b602141-33fa-4754-9eb4-af275b80087a",
+        [TestCase("original-mailing/KDA/6dc57861-f089-400e-b905-c10525823700",
             "399c95a3-ce5d-46d9-ad1f-1f195ce95596",
-            "actum",
-            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Prod/Api/DeliveryAddress",
+            "https://wejgpnn03e.execute-api.us-east-1.amazonaws.com/Qa/Api/DeliveryAddress",
             TestName = "UploadMappingCorrectMapping",
             Description = "Testing for successful call of service.")]
-        public void CorrectMappingCase(string fileId, string containerId, string customerName, string url)
+        public void CorrectMappingCase(string fileId, string containerId, string url)
         {
             var mapping = new Dictionary<string, int>()
             {
@@ -56,14 +60,13 @@ namespace Kadena.Tests
                 { "Zip", 7}
             };
 
-            CallService(new Guid(fileId), new Guid(containerId), customerName, url, mapping);
+            CallService(fileId, new Guid(containerId), url, mapping);
         }
 
-        private void CallService(Guid fileId, Guid containerId, string customerName, string url, Dictionary<string, int> mapping)
+        private void CallService(string fileId, Guid containerId, string url, Dictionary<string, int> mapping)
         {
             Fake<SettingsKeyInfo, SettingsKeyInfoProvider>()
             .WithData(
-                new SettingsKeyInfo { KeyName = $"{_customerNameSettingKey}", KeyValue = customerName },
                 new SettingsKeyInfo
                 {
                     KeyName = $"{_urlSetting}",

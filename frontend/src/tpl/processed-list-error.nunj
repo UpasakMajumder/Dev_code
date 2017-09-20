@@ -411,7 +411,6 @@
   {% endcall %}
 
   <div class="processed-list">
-
     <div class="processed-list__table-block">
       <div class="processed-list__table-heading processed-list__table-heading--error">
         <h3>We have found 8 errors in your file</h3>
