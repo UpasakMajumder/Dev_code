@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PaymentForm from 'app.dump/Form/PaymentForm';
+/* AC */
 import submitCard from 'app.ac/card-payment';
+/* helpers */
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
+/* globals */
 import { CARD_PAYMENT } from 'app.globals';
+/* components */
+import PaymentForm from 'app.dump/Form/PaymentForm';
 import Cards from 'app.dump/CreditCards';
+import Button from 'app.dump/Button';
+/* styles */
 import 'react-credit-cards/lib/styles-compiled.css';
 
 class Payment extends Component {
@@ -97,13 +102,12 @@ class Payment extends Component {
           </div>
         </div>
         <div className="card-payment__submit">
-          <button disabled={isProceeded}
-                  onClick={this.submit}
-                  type='button'
-                  className='btn-action'
-          >
-            {CARD_PAYMENT.submitButtonText}
-          </button>
+          <Button
+            text={CARD_PAYMENT.submitButtonText}
+            type="action"
+            isLoading={isProceeded}
+            onClick={this.submit}
+          />
         </div>
       </div>
     );

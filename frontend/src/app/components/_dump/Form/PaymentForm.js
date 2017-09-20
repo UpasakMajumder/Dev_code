@@ -28,44 +28,41 @@ class PaymentForm extends Component {
         <div className="card-payment__field">
           <TextInput
             onChange={(e) => { changeFieldValue('number', e.target.value); }}
-            changeFocusedField={() => { changeFocus('number'); }}
+            onFocus={() => { changeFocus('number'); }}
             label={CARD_PAYMENT.fields.number.label}
             value={number}
-            labelAnimation={true}
             error={this.getErrorMessage('number')}
-            innerElement={cardNumbersSvgs}/>
-
+          />
         </div>
 
         <div className="card-payment__field">
           <TextInput
             onChange={(e) => { changeFieldValue('name', e.target.value); }}
-            changeFocusedField={() => { changeFocus('name'); }}
+            onFocus={() => { changeFocus('name'); }}
             label={CARD_PAYMENT.fields.name.label}
-            labelAnimation={true}
             error={this.getErrorMessage('name')}
-            value={name} />
+            value={name}
+          />
         </div>
 
         <div className="card-payment__field card-payment__field--half">
           <TextInput
             onChange={(e) => { changeFieldValue('cvc', e.target.value); }}
-            changeFocusedField={() => { changeFocus('cvc'); }}
+            onFocus={() => { changeFocus('cvc'); }}
             label={CARD_PAYMENT.fields.cvc.label}
             value={cvc}
-            labelAnimation={true}
             error={this.getErrorMessage('cvc')}
-            innerElement={cvcSvgs} />
+          />
         </div>
 
         <div className="card-payment__field card-payment__field--half">
           <TextInput
             onChange={(e) => { changeFieldValue('expiry', e.target.value); }}
-            changeFocusedField={() => { changeFocus('expiry'); }}
+            onFocus={() => { changeFocus('expiry'); }}
             label={CARD_PAYMENT.fields.expiry.label}
-            labelAnimation={true}
             error={this.getErrorMessage('expiry')}
-            value={expiry} />
+            value={expiry}
+          />
         </div>
       </div>
     );
