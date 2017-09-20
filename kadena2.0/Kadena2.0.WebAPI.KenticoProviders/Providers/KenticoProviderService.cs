@@ -388,13 +388,20 @@ namespace Kadena.WebAPI.KenticoProviders
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
+            if (doc == null)
+            {
+                return null;
+            }
+
             var product = new Product()
             {
                 Id = documentId,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
-                ProductType = doc.GetValue("ProductType", string.Empty)
+                ProductType = doc.GetValue("ProductType", string.Empty),
+                ProductChiliTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
+                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)
             };
 
             if (sku != null)
@@ -510,7 +517,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"
             };
             info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", "Shipping");
+            info.SetValue("AddressType", AddressType.Shipping.Code);
 
             AddressInfoProvider.SetAddressInfo(info);
             address.Id = info.AddressID;

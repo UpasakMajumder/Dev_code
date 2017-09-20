@@ -27,22 +27,27 @@ class ManageProducts extends Component {
   }
 
   sortByColumn = (name) => {
+    const sortedTemplates = [...this.state.sortedTemplates].sort((template1, template2) => {
+      if (template1[name] === null) {
+        return Number.NEGATIVE_INFINITY;
+      }
+      if (template2[name] === null) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      if (this.state.sortOrderAsc) {
+        if (template1[name] < template2[name]) return 1;
+        return -1;
+      }
+
+      if (template1[name] > template2[name]) return 1;
+      return -1;
+    });
+
     this.setState({
       sortBy: name,
       sortOrderAsc: !this.state.sortOrderAsc,
-      sortedTemplates: [...this.state.sortedTemplates].sort((template1, template2) => {
-        if (template1[name] === null) {
-          return Number.POSITIVE_INFINITY;
-        }
-        if (template2[name] === null) {
-          return Number.NEGATIVE_INFINITY;
-        }
-
-        if (this.state.sortOrderAsc) {
-          return template1[name] < template2[name];
-        }
-        return template1[name] > template2[name];
-      })
+      sortedTemplates
     });
   };
 

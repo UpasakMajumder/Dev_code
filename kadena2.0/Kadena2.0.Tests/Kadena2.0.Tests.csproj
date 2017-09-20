@@ -459,7 +459,7 @@
     <Compile Include="ValidateAddressesTest.cs" />
     <Compile Include="WebApi\KListServiceTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
-    <Compile Include="WebApi\OrderService.cs" />
+    <Compile Include="WebApi\OrderServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
     <Compile Include="WebApi\TemplateServiceTest.cs" />
   </ItemGroup>

@@ -15,6 +15,7 @@ using Kadena.Dto.Site.Responses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models;
 using Kadena.Models.Checkout;
@@ -26,6 +27,7 @@ using Kadena.Models.Search;
 using Kadena.Models.Settings;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
+using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Collections.Generic;
 
@@ -171,6 +173,10 @@ namespace Kadena.WebAPI
                 config.CreateMap<ProductsPage, GetProductsDto>();
                 config.CreateMap<ProductCategoryLink, ProductCategoryDto>();
                 config.CreateMap<ProductLink, ProductDto>();
+                config.CreateMap<ProductTemplates, ProductTemplatesDTO>();
+                config.CreateMap<ProductTemplate, ProductTemplateDTO>();
+                config.CreateMap<ProductTemplatesHeader, ProductTemplatesHeaderDTO>()
+                    .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
             });
         }
     }
