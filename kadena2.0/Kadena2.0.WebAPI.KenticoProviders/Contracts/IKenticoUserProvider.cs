@@ -13,5 +13,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
         void SetDefaultShippingAddress(int addressId);
+        User GetCurrentUser();
     }
 }

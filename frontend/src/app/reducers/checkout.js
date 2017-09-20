@@ -69,7 +69,10 @@ export default (state = defaultState, action) => {
         // don't override New Address selection with Kentico state
         deliveryAddress: state.checkedData.deliveryAddress === -1 ? state.checkedData.deliveryAddress : payload.deliveryAddress,
         deliveryMethod: payload.deliveryMethod,
-        paymentMethod: payload.paymentMethod
+        paymentMethod: {
+          ...state.checkedData.paymentMethod,
+          ...payload.paymentMethod
+        }
       }
     };
 

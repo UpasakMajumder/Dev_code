@@ -1,4 +1,5 @@
-﻿using CMS.Helpers;
+﻿using CMS.EventLog;
+using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Helpers;
@@ -98,10 +99,24 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 }
                 if (isValid)
                 {
-                    ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
-                    ServiceHelper.ValidateAddresses(_containerId);
-                    Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
+                    try
+                    {
+                        ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
+                        ServiceHelper.ValidateAddresses(_containerId);
+                        Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
+                    }
+                    catch (Exception ex)
+                    {
+                        EventLogProvider.LogException("Mailing List - Column mapping", "PROCESS", ex);
+                        inpErrorTitle.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorTitle");
+                        inpErrorText.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorText");
+                    }                    
                 }
+            }
+            else
+            {
+                inpErrorTitle.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorTitle");
+                inpErrorText.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorText");
             }
         }
 

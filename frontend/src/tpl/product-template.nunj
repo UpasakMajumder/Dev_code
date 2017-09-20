@@ -16,11 +16,14 @@
           {{ svg('cross--darker', 'icon-modal') }}
         </button>
         <ul>
-          <li>This product is not intended to be sent to any mail list. Only signle address is possible.</li>
+          <li>This product is not intended to be sent to any mail list. Only single address is possible.</li>
         </ul>
       </div>
     </div>
-    <div class="product-template__block">
+
+    <div class="r-manage-products"></div>
+
+    {# <div class="product-template__block">
       <div class="product-template__item">
         <h3>Manage products</h3>
       </div>
@@ -71,9 +74,9 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </div> #}
 
-    <div class="product-template__item">
+    {# <div class="product-template__item">
       <div class="row flex-align--center">
         <div class="col-6">
           <span>Showing 11 to 20 of 103 entries</span>
@@ -82,13 +85,13 @@
           {% include "components/pagination.nunj" %}
         </div>
       </div>
-    </div>
+    </div> #}
   </div>
 
   <div class="product-template__item">
 
     {% include "components/product/related-products.nunj" %}
-    
+
   </div>
 
 

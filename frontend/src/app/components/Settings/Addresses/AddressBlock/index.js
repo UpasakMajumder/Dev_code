@@ -17,14 +17,16 @@ const AddressBlock = (props) => {
   const addButtonElement = addButton.exists && addresses.length < allowAddressesNumber
     ?
     (
-      <Tooltip title={addButton.text}
-               position="right"
-               animation="fade"
-               arrow={true}
-               theme="dark">
-          <button type="button" className="btn--off plus-btn" onClick={() => { openDialog(null, false); }}>
-            <SVG name="plus" className="icon-modal" />
-          </button>
+      <Tooltip
+        title={addButton.text}
+        position="right"
+        animation="fade"
+        arrow={true}
+        theme="dark"
+      >
+        <button type="button" className="btn--off plus-btn" onClick={() => { openDialog(null, false); }}>
+          <SVG name="plus" className="icon-modal" />
+        </button>
       </Tooltip>
     )
     : null;

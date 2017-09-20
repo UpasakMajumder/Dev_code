@@ -51,6 +51,7 @@ const app = {
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
     render('Search', document.querySelectorAll('.r-search'));
+    render('ManageProducts', document.querySelectorAll('.r-manage-products'));
     render('HeaderShadow', document.querySelectorAll('.r-header-shadow'));
     render('RecentOrders', document.querySelectorAll('.r-recent-orders'));
     render('ModifyMailingList', document.querySelectorAll('.r-modify-mlist'));
@@ -58,6 +59,8 @@ const app = {
     render('CartItems', document.querySelectorAll('.r-cart-items'));
     render('Toastr', document.querySelectorAll('.r-toastr'));
     render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
+    render('Products/All', document.querySelectorAll('.r-products'));
+    render('Products/Favorites', document.querySelectorAll('.r-products-favorites'));
   }
 };
 

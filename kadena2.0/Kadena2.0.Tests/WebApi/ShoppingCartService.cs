@@ -82,7 +82,7 @@ namespace Kadena.Tests.WebApi
             var mapper = Mapper.Instance;
 
             var kenticoUser = new Mock<IKenticoUserProvider>();
-            kenticoUser.Setup(p => p.GetCustomerAddresses("Shipping"))
+            kenticoUser.Setup(p => p.GetCustomerAddresses(AddressType.Shipping))
                 .Returns(new[] { CreateDeliveryAddress() });
 
             var kenticoProvider = new Mock<IKenticoProviderService>();            

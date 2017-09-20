@@ -26,7 +26,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
         {
             var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == "Shipping")
+                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
                 .ToArray();
 
             return AddressFactory.CreateDeliveryAddresses(addresses);
@@ -98,6 +98,15 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
+        }
+		
+		public User GetCurrentUser()
+        {
+            var user = MembershipContext.AuthenticatedUser;
+            return new User
+            {
+                UserId = user.UserID
+            };
         }
 
         public void SetDefaultShippingAddress(int addressId)

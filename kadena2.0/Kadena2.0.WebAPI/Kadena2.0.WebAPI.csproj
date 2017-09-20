@@ -118,6 +118,8 @@
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
+    <Compile Include="Contracts\IFavoritesService.cs" />
+    <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
@@ -130,6 +132,8 @@
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\MailTemplateController.cs" />
+    <Compile Include="Controllers\FavoritesController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
+    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
@@ -158,6 +163,8 @@
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
+    <Compile Include="Services\FavoritesService.cs" />
+    <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\SettingsService.cs" />

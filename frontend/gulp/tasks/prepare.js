@@ -4,9 +4,13 @@ const gulp = require('gulp');
 const runSequence = require('run-sequence');
 
 // TODO run browserSync after all tasks finished
-const devSequence = ['clean', ['images', 'svg', 'styles', 'js'], 'tpl', 'styleguide', 'copySgAssets'];
+
+const codeTasks = ['images', 'svg', 'styles'];
+if (!DEVELOPMENT) codeTasks.push('js');
+
+const devSequence = ['clean', codeTasks, 'tpl', 'styleguide', 'copySgAssets'];
 if (config.environment.isApi) {
-    devSequence.push('api');
+  devSequence.push('api');
 }
 const buildSequence = devSequence;
 const sequence = DEVELOPMENT ? devSequence : buildSequence;
@@ -14,5 +18,5 @@ const sequence = DEVELOPMENT ? devSequence : buildSequence;
 gulp.task('prepare', () => runSequence(...sequence));
 
 module.exports = {
-    buildSequence
+  buildSequence
 };

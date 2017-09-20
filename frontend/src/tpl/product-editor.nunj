@@ -27,7 +27,7 @@
         <div>
           <div class="input__wrapper">
             <span class="input__label">Product name</span>
-            <input value="1" type="text" class="input__text js-add-to-cart-name" placeholder="March 2017 Events">
+            <input value="1" type="text" class="input__text js-add-to-cart-name" placeholder="March 2017 Events" maxlength="40">
           </div>
         </div>
         <div>
@@ -54,9 +54,12 @@
   </div>
 
   <script>
-    function OnEditEvent(type) {
-      if (type !== 'DocumentSaved') return;
-      window.addToCart(false);
+    function OnEditorEvent(type) {
+      switch (type) {
+        case 'DocumentSaved':
+          window.saveChiliTemplate();
+          break;
+      }
     }
   </script>
 {% endblock %}
