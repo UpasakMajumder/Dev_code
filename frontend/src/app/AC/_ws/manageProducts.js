@@ -29,6 +29,27 @@ export default {
         "editorUrl": "/products/product-tools/product-editor?documentId=558&templateId=d38b1fc7-73d0-48c2-916f-28f1645e5f4a&workspaceid=4bdfd67c-44c1-4eff-8d44-ffa3780fdc1e&quantity=0&customName=d38b1fc7-73d0-48c2-916f-28f1645e5f4a"
       },
       {
+        "templateId": "D38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "productName": "D38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "createdDate": "2017-08-28T13:01:51.193+00:00",
+        "updatedDate": "2017-08-28T13:01:51.193+00:00",
+        "editorUrl": "/products/product-tools/product-editor?documentId=558&templateId=d38b1fc7-73d0-48c2-916f-28f1645e5f4a&workspaceid=4bdfd67c-44c1-4eff-8d44-ffa3780fdc1e&quantity=0&customName=d38b1fc7-73d0-48c2-916f-28f1645e5f4a"
+      },
+      {
+        "templateId": "A38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "productName": "A38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "createdDate": "2017-08-28T13:01:51.193+00:00",
+        "updatedDate": "2017-08-28T13:01:51.193+00:00",
+        "editorUrl": "/products/product-tools/product-editor?documentId=558&templateId=d38b1fc7-73d0-48c2-916f-28f1645e5f4a&workspaceid=4bdfd67c-44c1-4eff-8d44-ffa3780fdc1e&quantity=0&customName=d38b1fc7-73d0-48c2-916f-28f1645e5f4a"
+      },
+      {
+        "templateId": "B38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "productName": "B38b1fc7-73d0-48c2-916f-28f1645e5f4a",
+        "createdDate": "2017-08-28T13:01:51.193+00:00",
+        "updatedDate": "2017-08-28T13:01:51.193+00:00",
+        "editorUrl": "/products/product-tools/product-editor?documentId=558&templateId=d38b1fc7-73d0-48c2-916f-28f1645e5f4a&workspaceid=4bdfd67c-44c1-4eff-8d44-ffa3780fdc1e&quantity=0&customName=d38b1fc7-73d0-48c2-916f-28f1645e5f4a"
+      },
+      {
         "templateId": "410503ce-9815-4b41-bbd6-d7b4eb8bf149",
         "productName": "410503ce-9815-4b41-bbd6-d7b4eb8bf149",
         "createdDate": "2017-08-26T13:40:22.513+00:00",
