@@ -35,12 +35,15 @@ class ManageProducts extends Component {
         return Number.POSITIVE_INFINITY;
       }
 
+      const name1 = template1[name].toUpperCase();
+      const name2 = template2[name].toUpperCase();
+
       if (this.state.sortOrderAsc) {
-        if (template1[name] < template2[name]) return 1;
+        if (name1 < name2) return 1;
         return -1;
       }
 
-      if (template1[name] > template2[name]) return 1;
+      if (name1 > name2) return 1;
       return -1;
     });
 
