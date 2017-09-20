@@ -9,7 +9,7 @@ import { ADD_TO_CART_URL, NOTIFICATION, BUTTONS_UI } from 'app.globals';
 /* helpers */
 import { toggleDialogAlert } from 'app.helpers/ac';
 
-export const addToCartRequest = (body) => {
+export const addToCartRequest = (body, button) => {
   const dispatch = window.store.dispatch;
   const closeDialog = () => {
     toggleDialogAlert(false);
@@ -20,36 +20,41 @@ export const addToCartRequest = (body) => {
     const { confirmation, cartPreview } = newState;
 
     return new Promise((resolve) => {
-      dispatch({
-        type: CART_PREVIEW_CHANGE_ITEMS,
-        payload: {
-          items: cartPreview.items,
-          summaryPrice: cartPreview.summaryPrice
-        }
-      });
+      button.disabled = true;
+      setTimeout(() => {
+        button.disabled = false;
+        dispatch({
+          type: CART_PREVIEW_CHANGE_ITEMS,
+          payload: {
+            items: cartPreview.items,
+            summaryPrice: cartPreview.summaryPrice
+          }
+        });
 
-      toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
+        const confirmBtn = [
+          {
+            label: BUTTONS_UI.products.text,
+            func: () => window.location.assign(BUTTONS_UI.products.url)
+          },
+          {
+            label: BUTTONS_UI.checkout.text,
+            func: () => window.location.assign(BUTTONS_UI.checkout.url)
+          }
+        ];
 
-      const confirmBtn = [
-        {
-          label: BUTTONS_UI.products.text,
-          func: () => window.location.assign(BUTTONS_UI.products.url)
-        },
-        {
-          label: BUTTONS_UI.checkout.text,
-          func: () => window.location.assign(BUTTONS_UI.checkout.url)
-        }
-      ];
-
-      toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
-      // resolve('hi');
+        toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
+        // resolve('hi');
+      }, 1000);
     });
   }
 
   return new Promise((resolve) => {
+    button.disabled = true;
+
     axios.post(ADD_TO_CART_URL, body)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
+        button.disabled = false;
 
         if (!success) {
           resolve(errorMessage);
@@ -65,8 +70,6 @@ export const addToCartRequest = (body) => {
             summaryPrice: cartPreview.summaryPrice
           }
         });
-
-        toastr.success(NOTIFICATION.addProduct.title, NOTIFICATION.addProduct.text);
 
         const confirmBtn = [
           {

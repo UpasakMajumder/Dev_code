@@ -16,10 +16,8 @@ class ManageProducts extends Component {
     templates: PropTypes.array.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.sortByColumn = this.sortByColumn.bind(this);
+  constructor() {
+    super();
 
     this.state = {
       sortBy: '',
@@ -28,25 +26,30 @@ class ManageProducts extends Component {
     };
   }
 
-  sortByColumn(name) {
+  sortByColumn = (name) => {
+    const sortedTemplates = [...this.state.sortedTemplates].sort((template1, template2) => {
+      if (template1[name] === null) {
+        return Number.NEGATIVE_INFINITY;
+      }
+      if (template2[name] === null) {
+        return Number.POSITIVE_INFINITY;
+      }
+
+      if (this.state.sortOrderAsc) {
+        if (template1[name] < template2[name]) return 1;
+        return -1;
+      }
+
+      if (template1[name] > template2[name]) return 1;
+      return -1;
+    });
+
     this.setState({
       sortBy: name,
       sortOrderAsc: !this.state.sortOrderAsc,
-      sortedTemplates: [...this.state.sortedTemplates].sort((template1, template2) => {
-        if (template1[name] === null) {
-          return Number.POSITIVE_INFINITY;
-        }
-        if (template2[name] === null) {
-          return Number.NEGATIVE_INFINITY;
-        }
-
-        if (this.state.sortOrderAsc) {
-          return template1[name] < template2[name];
-        }
-        return template1[name] > template2[name];
-      })
+      sortedTemplates
     });
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     // set initial sort values from tableHeaders
@@ -89,17 +92,18 @@ class ManageProducts extends Component {
 
             <tr>
               {tableHeaders.map(column => (
-                <th key={column.name} onClick={() => this.sortByColumn(column.name)}>
-                  {column.name === sortBy &&
-                    (sortOrderAsc ? (
-                      <span>
-                        <SVG name="arrow" className="icon-modal" style={{ transform: 'rotate(180deg)' }} />
-                      </span>
-                    ) : (
-                      <span>
-                        <SVG name="arrow" className="icon-modal" />
-                      </span>
-                    ))
+                <th key={column.name} onClick={() => this.sortByColumn(column.name)} style={{ cursor: 'pointer' }}>
+                  {
+                    <span>
+                      <SVG style={{ transform: 'rotate(180deg)', opacity: sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                           name="arrowTop"
+                           className="icon-modal"
+                      />
+                      <SVG style={{ opacity: !sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                           name="arrowTop"
+                           className="icon-modal"
+                      />
+                    </span>
                   }
                   {column.title}
                 </th>

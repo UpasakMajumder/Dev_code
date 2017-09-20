@@ -77,7 +77,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = "There was an error while processing the request. <br /><br />";
+            var headline = "There was an error while processing the request. Error details:<br /><br />";
             return headline + string.Join("<br />", result.ErrorMessages);
         }
 
