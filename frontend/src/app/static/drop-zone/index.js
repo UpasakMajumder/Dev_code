@@ -66,7 +66,7 @@ class Dropzone {
     const id = event.target.dataset.id;
 
     Dropzone.setNameToItem(name, ext, this.data[id].item);
-    this.changeNameInput(name);
+    this.changeNameInput(name.replace(`.${ext}`, ''));
 
     this.container.classList.remove(this.reverseSelector);
     this.container.classList.add(this.selector);
@@ -167,7 +167,7 @@ class Dropzone {
   }
 
   static setNameToItem(name, ext, item) {
-    item.querySelector('.js-drop-zone-name').innerHTML = name;
+    item.querySelector('.js-drop-zone-name').innerHTML = name.replace(`.${ext}`, '');
     item.querySelector('.js-drop-zone-ext').innerHTML = `.${ext.toUpperCase()}`;
   }
 }

@@ -59,16 +59,16 @@ class ChiliEditor extends AddToCart {
     const addToCartBtn = document.querySelector('.js-chili-addtocart');
     if (addToCartBtn) {
       addToCartBtn.disabled = false;
-      addToCartBtn.addEventListener('click', () => this.addToCart());
+      addToCartBtn.addEventListener('click', event => this.addToCart(event));
     }
 
     const revertBtn = document.querySelector('.js-chili-revert');
     if (revertBtn) revertBtn.addEventListener('click', this.revertTemplate);
   }
 
-  addToCart() {
+  addToCart(event) {
     this.triggerChiliSave();
-    this.addToCartRequest();
+    this.addToCartRequest(event);
   }
 
   triggerChiliSave() {
