@@ -159,6 +159,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .FirstOrDefault();
         }
 
+        private StateInfo FindState(string state)
+        {
+            if (string.IsNullOrWhiteSpace(state))
+            {
+                return null;
+            }
+
+            var code = state.ToUpper();
+            return StateInfoProvider.GetStates()
+                .WhereStartsWith("StateDisplayName", state)
+                .Or()
+                .WhereEquals("StateTwoLetterCode", code)
+                .Or()
+                .WhereEquals("StateThreeLetterCode", code)
+                .FirstOrDefault();
+        }
+
         private void CreateCustomerAddress(int customerID, UserDto userDto)
         {
             var country = FindCountry(userDto.Country);
@@ -167,6 +184,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 EventLogProvider.LogInformation("Import users", "INFO", $"Skipping creation of address of user { userDto.Email }. Reason - invalid country.");
                 return;
             }
+
+            var state = FindState(userDto.State);
 
             var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
                 .Where(af => !string.IsNullOrWhiteSpace(af));
@@ -180,7 +199,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 AddressPersonalName = userDto.ContactName,
                 AddressPhone = userDto.PhoneNumber,
                 AddressCustomerID = customerID,
-                AddressCountryID = country.CountryID
+                AddressCountryID = country.CountryID,
+                AddressStateID = state?.StateID
             };
             newAddress.SetValue("AddressType", AddressType.Shipping.Code);
 
