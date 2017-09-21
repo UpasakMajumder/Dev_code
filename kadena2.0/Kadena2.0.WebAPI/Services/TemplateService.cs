@@ -55,13 +55,13 @@ namespace Kadena.WebAPI.Services
                     {
                         Name = nameof(ProductTemplate.CreatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATECREATED"),
-                        Sorting = SortingType.Desc
+                        Sorting = SortingType.None
                     },
                     new ProductTemplatesHeader
                     {
                         Name = nameof(ProductTemplate.UpdatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATEUPDATED"),
-                        Sorting = SortingType.None
+                        Sorting = SortingType.Desc
                     },
                 },
                 Data = new ProductTemplate[0]
