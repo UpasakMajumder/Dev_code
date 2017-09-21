@@ -2,10 +2,10 @@
 {
     public class ShoppingCartTotals
     {
-        public double TotalItemsPrice { get; set; }
-        public double TotalShipping { get; set; }
-        public double TotalTax { get; set; }
-        public double TotalPrice
+        public decimal TotalItemsPrice { get; set; }
+        public decimal TotalShipping { get; set; }
+        public decimal TotalTax { get; set; }
+        public decimal TotalPrice
         {
             get
             {
@@ -13,7 +13,7 @@
             }
         }
 
-        public double Subtotal
+        public decimal Subtotal
         {
             get
             {

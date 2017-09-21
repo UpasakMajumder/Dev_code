@@ -5,6 +5,6 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface ITaxEstimationService
     {
-        Task<double> EstimateTotalTax(DeliveryAddress deliveryAddress);
+        Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress);
     }
 }
