@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.CreditCard.MicroserviceRequests
+﻿namespace Kadena.Dto.CreditCard
 {
     public class AdditionalAmountsDto
     {

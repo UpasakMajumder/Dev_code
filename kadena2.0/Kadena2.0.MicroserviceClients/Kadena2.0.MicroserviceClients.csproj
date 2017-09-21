@@ -48,6 +48,8 @@
     <Compile Include="Clients\Base\ClientBase.cs" />
     <Compile Include="Clients\ExportClient.cs" />
     <Compile Include="Clients\FileClient.cs" />
+    <Compile Include="Clients\UserDataServiceClient.cs" />
+    <Compile Include="Clients\PaymentServiceClient.cs" />
     <Compile Include="Clients\MailingListClient.cs" />
     <Compile Include="Clients\InventoryUpdateClient.cs" />
     <Compile Include="Clients\OrderViewClient.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\IExportClient.cs" />
+    <Compile Include="Contracts\IPaymentServiceClient.cs" />
+    <Compile Include="Contracts\IUserDataServiceClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
     <Compile Include="Contracts\InventoryUpdateClient.cs" />

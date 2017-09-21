@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.CreditCard
+﻿namespace Kadena.Dto.CreditCard.MicroserviceRequests
 {
     public class SaveCardTokenRequestDto
     {

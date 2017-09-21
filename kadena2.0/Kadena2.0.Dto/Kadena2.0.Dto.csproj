@@ -69,11 +69,11 @@
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
     <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
-    <Compile Include="CreditCard\MicroserviceRequests\AdditionalAmountsDto.cs" />
+    <Compile Include="CreditCard\AdditionalAmountsDto.cs" />
     <Compile Include="CreditCard\MicroserviceRequests\AuthorizeAmountRequestDto.cs" />
     <Compile Include="CreditCard\PaymentDataDto.cs" />
     <Compile Include="CreditCard\SapDetailsDto.cs" />
-    <Compile Include="CreditCard\SaveCardTokenRequestDto.cs" />
+    <Compile Include="CreditCard\MicroserviceRequests\SaveCardTokenRequestDto.cs" />
     <Compile Include="CreditCard\UserDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\AuthorizeAmountResponseDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\SaveCardTokenResponseDto.cs" />
