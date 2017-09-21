@@ -30,11 +30,7 @@ class OrderDetail extends Component {
     const { getUI } = this.props;
     const { orderID } = getSearchObj();
 
-    if (orderID) {
-      getUI(orderID);
-    } else {
-      getUI('');
-    }
+    getUI(orderID);
   }
 
   render() {
