@@ -7,5 +7,6 @@ namespace Kadena.Dto.SubmitOrder.Requests
         public DeliveryAddressDTO DeliveryAddress { get; set; }
         public int DeliveryMethod { get; set; }
         public PaymentMethodDto PaymentMethod { get; set; }
+        public bool AgreeWithTandC { get; set; }
     }
 }

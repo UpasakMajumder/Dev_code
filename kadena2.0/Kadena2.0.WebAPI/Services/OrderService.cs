@@ -254,7 +254,7 @@ namespace Kadena.WebAPI.Services
                 customer.Phone = request.DeliveryAddress.Phone;
             }
 
-            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice, request.AgreeWithTandC);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -319,8 +319,10 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice, bool termsAndConditionsExplicitlyAccepted)
         {
+            // TODO: add to order request. need confirmation on the name of the property from microservice side.
+
             var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
