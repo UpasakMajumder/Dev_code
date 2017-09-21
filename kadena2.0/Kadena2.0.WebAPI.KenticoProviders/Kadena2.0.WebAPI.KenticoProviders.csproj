@@ -75,7 +75,7 @@
     </Reference>
     <Reference Include="CMS.Newsletters">
       <HintPath>..\Lib\CMS.Newsletters.dll</HintPath>
-    </Reference>    
+    </Reference>
     <Reference Include="CMS.Search">
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
     </Reference>
@@ -104,6 +104,7 @@
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoMailProvider.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
+    <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="Factories\AddressFactory.cs" />
     <Compile Include="Factories\DeliveryFactory.cs" />
     <Compile Include="Factories\PaymentOptionFactory.cs" />
@@ -112,11 +113,12 @@
     <Compile Include="Providers\KenticoLogger.cs" />
     <Compile Include="Providers\KenticoFavoritesProvider.cs" />
     <Compile Include="Providers\KenticoProductsProvider.cs" />
-    <Compile Include="Providers\KenticoMailProvider.cs" />    
+    <Compile Include="Providers\KenticoMailProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />
     <Compile Include="Providers\KenticoSearchService.cs" />
+    <Compile Include="Providers\SubmissionIdProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
