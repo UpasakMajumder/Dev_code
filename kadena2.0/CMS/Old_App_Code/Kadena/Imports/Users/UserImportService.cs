@@ -172,9 +172,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return StateInfoProvider.GetStates()
                 .WhereStartsWith("StateDisplayName", state)
                 .Or()
-                .WhereEquals("StateTwoLetterCode", code)
-                .Or()
-                .WhereEquals("StateThreeLetterCode", code)
+                .WhereEquals("StateCode", code)
                 .FirstOrDefault();
         }
 
