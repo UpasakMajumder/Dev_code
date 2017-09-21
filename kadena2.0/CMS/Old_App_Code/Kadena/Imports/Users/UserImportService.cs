@@ -104,10 +104,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             // validate special rules
             if (!ValidateEmail(userDto.Email))
             {
+                isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Email), "Not a valid email address"));
             }
             if (!ValidateRole(userDto.Role, roles))
             {
+                isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
 
@@ -159,6 +161,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .FirstOrDefault();
         }
 
+        private StateInfo FindState(string state)
+        {
+            if (string.IsNullOrWhiteSpace(state))
+            {
+                return null;
+            }
+
+            var code = state.ToUpper();
+            return StateInfoProvider.GetStates()
+                .WhereStartsWith("StateDisplayName", state)
+                .Or()
+                .WhereEquals("StateTwoLetterCode", code)
+                .Or()
+                .WhereEquals("StateThreeLetterCode", code)
+                .FirstOrDefault();
+        }
+
         private void CreateCustomerAddress(int customerID, UserDto userDto)
         {
             var country = FindCountry(userDto.Country);
@@ -168,19 +187,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 return;
             }
 
+            var state = FindState(userDto.State);
+
             var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
                 .Where(af => !string.IsNullOrWhiteSpace(af));
             var newAddress = new AddressInfo
             {
                 AddressName = string.Join(", ", addressNameFields),
-                AddressLine1 = userDto.AddressLine,
+                AddressLine1 = userDto.AddressLine ?? "",
                 AddressLine2 = userDto.AddressLine2,
-                AddressCity = userDto.City,
-                AddressZip = userDto.PostalCode,
-                AddressPersonalName = userDto.ContactName,
-                AddressPhone = userDto.PhoneNumber,
+                AddressCity = userDto.City ?? "",
+                AddressZip = userDto.PostalCode ?? "",
+                AddressPersonalName = userDto.ContactName ?? $"{userDto.FirstName} {userDto.LastName}",
+                AddressPhone = userDto.PhoneNumber ?? "",
                 AddressCustomerID = customerID,
-                AddressCountryID = country.CountryID
+                AddressCountryID = country.CountryID,
+                AddressStateID = state?.StateID ?? 0
             };
             newAddress.SetValue("AddressType", AddressType.Shipping.Code);
 
@@ -196,10 +218,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 CustomerEmail = userDto.Email,
                 CustomerSiteID = siteID,
                 CustomerUserID = userID,
-                CustomerCompany = userDto.Company,
+                CustomerCompany = userDto.Company ?? "",
                 CustomerOrganizationID = userDto.OrganizationID,
-                CustomerPhone = userDto.PhoneNumber,
-                CustomerTaxRegistrationID = userDto.TaxRegistrationID,
+                CustomerPhone = userDto.PhoneNumber ?? "",
+                CustomerTaxRegistrationID = userDto.TaxRegistrationID ?? "",
                 CustomerCountryID = FindCountry(userDto.Country)?.CountryID ?? 0
             };
 
