@@ -43,52 +43,35 @@ export const modifyAddress = (data) => {
     dispatch({ type: MODIFY_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    const prod = () => {
-      axios({
-        method: 'post',
-        url: USER_SETTINGS.addresses.editAddressURL,
-        data
-      }).then((response) => {
-        const { success, errorMessage, payload } = response.data;
+    axios({
+      method: 'post',
+      url: USER_SETTINGS.addresses.editAddressURL,
+      headers: { 'Content-Type': 'application/json' },
+      data
+    }).then((response) => {
+      const { success, errorMessage, payload } = response.data;
 
-        if (!success) {
-          dispatch({
-            type: MODIFY_SHIPPING_ADDRESS + FAILURE,
-            alert: errorMessage
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-          return;
-        }
-
-        const { id } = payload;
-        data.id = id;
-
+      if (!success) {
         dispatch({
-          type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
-          payload: data
-        });
-
-        dispatch({ type: APP_LOADING + FINISH });
-        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
-      })
-        .catch((error) => {
-          dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
-        dispatch({
-          type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
-          payload: data
+          type: MODIFY_SHIPPING_ADDRESS + FAILURE,
+          alert: errorMessage
         });
         dispatch({ type: APP_LOADING + FINISH });
-        toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
-      }, 2000);
-    };
+        return;
+      }
 
-    callAC(dev, prod);
+      dispatch({
+        type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
+        payload: data
+      });
+
+      dispatch({ type: APP_LOADING + FINISH });
+      toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
+    }).catch((error) => {
+      dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
+      dispatch({ type: APP_LOADING + FINISH });
+    });
+
   };
 };
 

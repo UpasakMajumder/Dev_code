@@ -29,7 +29,6 @@ module.exports = () => {
       loginError,
       mailingSuccess,
       cartPreviewUI,
-      orderDetail,
       searchPageUI,
       manageProductsUI,
       settingsUI,

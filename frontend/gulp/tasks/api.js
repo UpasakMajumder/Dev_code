@@ -3,11 +3,12 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const enableDestroy = require('server-destroy');
 const jsonServer = require('json-server');
-const getPageItemsMiddleware = require('../../src/api/middlewares/getPageItems');
+const getPageItemsController = require('../../src/api/controllers/getPageItems');
+const modifyAddressController = require('../../src/api/controllers/settingsAddresses/modifyAddress');
 var server;
 
 function requireUncached(module) {
-  delete require.cache[require.resolve(module)]
+  delete require.cache[require.resolve(module)];
   return require(module)
 }
 
@@ -17,8 +18,11 @@ function start(cb) {
   const router = jsonServer.router(api());
   const middleware = jsonServer.defaults();
 
-  /* custom middlewares */
-  app.use(...getPageItemsMiddleware);
+  app.use(jsonServer.bodyParser);
+
+  /* custom routes */
+  app.get(...getPageItemsController);
+  app.post(...modifyAddressController);
 
   app.use(middleware);
   app.use(router);

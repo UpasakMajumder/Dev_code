@@ -121,7 +121,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
-  var PATH = 'http://localhost:3000/';
+  var PATH = 'http://localhost:{{ _mockPort }}/api/';
 
   var config = {
     localization: {
@@ -198,11 +198,11 @@
       userSettings: {
         addresses: {
           initUIURL: PATH + 'settingsUI',
-          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+          editAddressURL: PATH + 'settings/address/modify'
         }
       },
       cartPreview: {
-        cartPreviewUrl: PATH + 'cartPreviewUI'
+        cartPreviewUrl: PATH + 'cartPreview'
       },
       orderDetail: {
         orderDetailUrl: PATH + 'orderDetail'
