@@ -7,49 +7,34 @@ import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_A
 import { callAC } from 'app.helpers/ac';
 /* globals */
 import { USER_SETTINGS, NOTIFICATION } from 'app.globals';
-/* web service */
-import ui from 'app.ws/settingsUI';
 
 export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: SETTINGS_ADDRESSES + INIT_UI + FETCH });
 
-    const prod = () => {
-      axios({
-        method: 'get',
-        url: USER_SETTINGS.addresses.initUIURL
-      }).then((response) => {
-        const { payload, success, errorMessage } = response.data;
+    axios({
+      method: 'get',
+      url: USER_SETTINGS.addresses.initUIURL
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
-          dispatch({
-            type: SETTINGS_ADDRESSES + INIT_UI + FAILURE,
-            alert: errorMessage
-          });
-        } else {
-          dispatch({
-            type: SETTINGS_ADDRESSES + INIT_UI + SUCCESS,
-            payload: {
-              ui: payload
-            }
-          });
-        }
-      })
-        .catch((error) => {
-          dispatch({ type: SETTINGS_ADDRESSES + INIT_UI + FAILURE });
+      if (!success) {
+        dispatch({
+          type: SETTINGS_ADDRESSES + INIT_UI + FAILURE,
+          alert: errorMessage
         });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
+      } else {
         dispatch({
           type: SETTINGS_ADDRESSES + INIT_UI + SUCCESS,
-          payload: { ui }
+          payload: {
+            ui: payload
+          }
         });
-      }, 2000);
-    };
-
-    callAC(dev, prod);
+      }
+    })
+      .catch((error) => {
+        dispatch({ type: SETTINGS_ADDRESSES + INIT_UI + FAILURE });
+      });
   };
 };
 
