@@ -188,7 +188,7 @@
         submittableURL: '',
         addNewAddressURL: '',
         tAndC: {
-          exists: true,
+          exists: false,
           text: 'I have reviewed both the storefront Terms and Conditions and the order and certify that it is acceptable.'
         }
       },
