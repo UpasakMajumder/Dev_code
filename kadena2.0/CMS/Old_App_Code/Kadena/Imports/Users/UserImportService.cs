@@ -5,16 +5,10 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Email;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.SS.Util;
-using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
@@ -22,7 +16,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
     {
         public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
-            var rows = ReadDataFromExcelFile(importFileData, type);
+            var rows = new ExcelReader().ReadDataFromExcelFile(importFileData, type);
             if (rows.Count <= 1)
             {
                 throw new Exception("The file contains no data");
@@ -33,6 +27,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             {
                 throw new Exception("Invalid site id " + siteID);
             }
+            var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
 
             var header = rows.First();
             var mapRowToUser = ImportHelper.GetImportMapper<UserDto>(header);
@@ -54,9 +49,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
                 try
                 {
-                    var roles = new RoleProvider().GetAllRoles(site.SiteID);
                     List<string> validationResults;
-                    if (!ValidateImportItem(userDto, roles, out validationResults))
+                    if (!ValidateImportItem(userDto, siteRoles, out validationResults))
                     {
                         // sort errors by field
                         validationResults.Sort();
@@ -110,10 +104,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             // validate special rules
             if (!ValidateEmail(userDto.Email))
             {
+                isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Email), "Not a valid email address"));
             }
             if (!ValidateRole(userDto.Role, roles))
             {
+                isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
 
@@ -122,7 +118,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
         private bool ValidateEmail(string email)
         {
-            var parts = email.Split(new [] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
+
+            var parts = email.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 2)
             {
                 return parts[1]
@@ -135,11 +136,21 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
         private bool ValidateRole(string role, Role[] roles)
         {
+            if (string.IsNullOrWhiteSpace(role))
+            {
+                return false;
+            }
+
             return roles.Any(r => r.Description == role);
         }
 
         private CountryInfo FindCountry(string country)
         {
+            if (string.IsNullOrWhiteSpace(country))
+            {
+                return null;
+            }
+
             var code = country.ToUpper();
             return CountryInfoProvider.GetCountries()
                 .WhereStartsWith("CountryDisplayName", country)
@@ -147,6 +158,21 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .WhereEquals("CountryTwoLetterCode", code)
                 .Or()
                 .WhereEquals("CountryThreeLetterCode", code)
+                .FirstOrDefault();
+        }
+
+        private StateInfo FindState(string state)
+        {
+            if (string.IsNullOrWhiteSpace(state))
+            {
+                return null;
+            }
+
+            var code = state.ToUpper();
+            return StateInfoProvider.GetStates()
+                .WhereStartsWith("StateDisplayName", state)
+                .Or()
+                .WhereEquals("StateCode", code)
                 .FirstOrDefault();
         }
 
@@ -159,19 +185,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 return;
             }
 
+            var state = FindState(userDto.State);
+
             var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
                 .Where(af => !string.IsNullOrWhiteSpace(af));
             var newAddress = new AddressInfo
             {
                 AddressName = string.Join(", ", addressNameFields),
-                AddressLine1 = userDto.AddressLine,
+                AddressLine1 = userDto.AddressLine ?? "",
                 AddressLine2 = userDto.AddressLine2,
-                AddressCity = userDto.City,
-                AddressZip = userDto.PostalCode,
-                AddressPersonalName = userDto.ContactName,
-                AddressPhone = userDto.PhoneNumber,
+                AddressCity = userDto.City ?? "",
+                AddressZip = userDto.PostalCode ?? "",
+                AddressPersonalName = userDto.ContactName ?? $"{userDto.FirstName} {userDto.LastName}",
+                AddressPhone = userDto.PhoneNumber ?? "",
                 AddressCustomerID = customerID,
-                AddressCountryID = country.CountryID
+                AddressCountryID = country.CountryID,
+                AddressStateID = state?.StateID ?? 0
             };
             newAddress.SetValue("AddressType", AddressType.Shipping.Code);
 
@@ -187,10 +216,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 CustomerEmail = userDto.Email,
                 CustomerSiteID = siteID,
                 CustomerUserID = userID,
-                CustomerCompany = userDto.Company,
+                CustomerCompany = userDto.Company ?? "",
                 CustomerOrganizationID = userDto.OrganizationID,
-                CustomerPhone = userDto.PhoneNumber,
-                CustomerTaxRegistrationID = userDto.TaxRegistrationID,
+                CustomerPhone = userDto.PhoneNumber ?? "",
+                CustomerTaxRegistrationID = userDto.TaxRegistrationID ?? "",
                 CustomerCountryID = FindCountry(userDto.Country)?.CountryID ?? 0
             };
 
@@ -233,74 +262,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return UserInfoProvider.GetUsers()
                 .WhereEquals("Email", emailAddress)
                 .Any();
-        }
-
-        /// <summary>
-        /// Reads first sheet from the file.
-        /// </summary>
-        private List<string[]> ReadDataFromExcelFile(byte[] fileData, ExcelType type)
-        {
-            using (var file = new MemoryStream(fileData))
-            {
-                var workBook = OpenWorkBook(file, type);
-                var sheet = workBook.GetSheetAt(0);
-
-                var header = GetHeader(sheet);
-                if (header.Length == 0)
-                {
-                    return new List<string[]>();
-                }
-
-                var data = new List<string[]> { header };
-                var rowsEnumarator = sheet.GetRowEnumerator();
-
-                // skip header
-                rowsEnumarator.MoveNext();
-
-                while (rowsEnumarator.MoveNext())
-                {
-                    var row = (IRow)rowsEnumarator.Current;
-                    var rowData = new string[header.Length];
-                    for (int i = 0; i < header.Length; i++)
-                    {
-                        rowData[i] = row.GetCell(i)?.ToString();
-                    }
-
-                    data.Add(rowData);
-                }
-
-                return data;
-            }
-        }
-
-        private IWorkbook OpenWorkBook(Stream file, ExcelType type)
-        {
-            if (type == ExcelType.Xlsx)
-            {
-                return new XSSFWorkbook(file);
-            }
-            else
-            {
-                return new HSSFWorkbook(file);
-            }
-        }
-
-        private string[] GetHeader(ISheet sheet)
-        {
-            var columnNames = new List<string>();
-
-            var headerRow = sheet.GetRow(0);
-            if (headerRow == null)
-            {
-                return new string[0];
-            }
-
-            foreach (var cell in headerRow)
-            {
-                columnNames.Add(cell.StringCellValue);
-            }
-
-            return columnNames.ToArray();
         }
     }
 }

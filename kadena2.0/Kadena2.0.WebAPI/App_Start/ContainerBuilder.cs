@@ -3,6 +3,7 @@ using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Factories.Checkout;
+using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
@@ -63,6 +64,7 @@ namespace Kadena.WebAPI
         public static Container RegisterInfrastructure(this Container container)
         {
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
             return container;
         }
     }
