@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const enableDestroy = require('server-destroy');
 const jsonServer = require('json-server');
+const getPageItemsMiddleware = require('../../src/api/middlewares/getPageItems');
 var server;
 
 function requireUncached(module) {
@@ -15,8 +16,13 @@ function start(cb) {
   const app = jsonServer.create();
   const router = jsonServer.router(api());
   const middleware = jsonServer.defaults();
+
+  /* custom middlewares */
+  app.use(...getPageItemsMiddleware);
+
   app.use(middleware);
   app.use(router);
+
   server = app.listen(config.API_PORT, () => {
     gutil.log(
       gutil.colors.green(`JSON Server is running…`),
