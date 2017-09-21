@@ -261,7 +261,7 @@ class Checkout extends Component {
             type="action"
             disabled={!this.state.agreeWithTandC}
             isLoading={disableInteractivity}
-            onClick={() => this.placeOrder({ ...checkedData, agreeWithTandC: this.state.agreeWithTandC })}
+            onClick={() => this.placeOrder({ ...checkedData, agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC })}
           />
         </div>
       </div>;
