@@ -6,7 +6,7 @@ import { callAC } from 'app.helpers/ac';
 /* globals */
 import { CART_PREVIEW as CART_PREVIEW_GLOBAL } from 'app.globals';
 
-export default () => {
+export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: CART_PREVIEW + INIT_UI + FETCH });
 
@@ -34,6 +34,18 @@ export default () => {
       }
     }).catch((error) => {
       dispatch({ type: CART_PREVIEW + INIT_UI + FAILURE });
+    });
+  };
+};
+
+export const changeProducts = (items, summaryPrice) => {
+  return (dispatch) => {
+    dispatch({
+      type: CART_PREVIEW_CHANGE_ITEMS,
+      payload: {
+        items,
+        summaryPrice
+      }
     });
   };
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 /* ac */
-import getUI from 'app.ac/cartPreview';
+import { getUI } from 'app.ac/cartPreview';
 /* components */
 import CartPreviewProduct from 'app.dump/Product/CartPreview';
 import Spinner from 'app.dump/Spinner';
