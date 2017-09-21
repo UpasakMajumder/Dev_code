@@ -121,6 +121,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
+  var PATH = 'http://localhost:3000/';
+
   var config = {
     localization: {
       notification: {
@@ -178,8 +180,8 @@
         login: 'Log in'
       },
       checkout: {
-        initRenderUIURL: '',
-        initTotalDeliveryUIURL: '',
+        initRenderUIURL: PATH + 'checkoutUI',
+        initTotalDeliveryUIURL: PATH + 'checkoutPriceUI',
         changeAddressURL: '',
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',
@@ -195,18 +197,18 @@
       },
       userSettings: {
         addresses: {
-          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
+          initUIURL: PATH + 'settingsUI',
           editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
         }
       },
       cartPreview: {
-        cartPreviewUrl: '#'
+        cartPreviewUrl: PATH + 'cartPreviewUI'
       },
       orderDetail: {
-        orderDetailUrl: ""
+        orderDetailUrl: PATH + 'orderDetail'
       },
       searchPage: {
-        searchPageUrl: ''
+        searchPageUrl: PATH + 'searchPageUI'
       },
       chiliSave: {
         url: ''
@@ -216,8 +218,8 @@
         queryUrl: ""
       },
       recentOrders: {
-        getHeaders: '',
-        getPageItems: ''
+        getHeaders: PATH + 'getHeaders',
+        getPageItems: PATH + 'getPageItems'
       },
       modifyMailingList: {
         errorList: {
@@ -363,12 +365,12 @@
         }
       },
       manageProducts: {
-        templatesUrl: '/api/products/123/templates'
+        templatesUrl: PATH + 'manageProductsUI'
       },
       products: {
         addToFavorites: "Set product as favorite",
-        loadProductsUrl: "/api/products",
-        loadFavoritesProductsUrl: "/api/products/favorites",
+        loadProductsUrl: PATH + 'products',
+        loadFavoritesProductsUrl: PATH + 'productsFavorite',
         markProductFavouriteUrl: "/api/favorites/set",
         unmarkProductFavouriteUrl: "/api/favorites/unset"
       }
