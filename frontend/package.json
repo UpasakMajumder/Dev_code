@@ -13,8 +13,8 @@
   "scripts": {
     "lint": "gulp eslint stylelint",
     "prepush-msg": "echo 'Running lint task...' && exit 0",
-    "build": "gulp build",
-    "start": "gulp --dev",
+    "build": "gulp kentico",
+    "start": "concurrently \"gulp --dev\" \"gulp api\"",
     "test": "jest",
     "flow": "flow"
   },
@@ -116,6 +116,7 @@
     "babel-eslint": "^7.2.1",
     "babel-loader": "^6.4.1",
     "babel-polyfill": "^6.9.1",
+    "concurrently": "^3.5.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "fg-loadcss": "^1.2.0",
