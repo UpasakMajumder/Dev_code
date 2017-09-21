@@ -130,6 +130,7 @@
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Contracts\ITemplateService.cs" />
+    <Compile Include="Controllers\CreditCard3dsiController.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\MailTemplateController.cs" />

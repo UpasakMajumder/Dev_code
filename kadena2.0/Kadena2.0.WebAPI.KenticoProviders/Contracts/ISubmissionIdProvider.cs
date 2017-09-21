@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kadena2.WebAPI.KenticoProviders.Contracts
+namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface ISubmissionIdProvider
     {

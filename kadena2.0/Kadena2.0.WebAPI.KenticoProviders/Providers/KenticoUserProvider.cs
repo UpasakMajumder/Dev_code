@@ -5,8 +5,6 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
-using CMS.DataEngine;
-using System;
 
 namespace Kadena.WebAPI.KenticoProviders
 {

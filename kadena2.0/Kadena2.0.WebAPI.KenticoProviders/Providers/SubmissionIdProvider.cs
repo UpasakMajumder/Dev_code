@@ -1,11 +1,11 @@
 ﻿using System;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.CustomTables;
 using System.Linq;
 
-namespace Kadena2.WebAPI.KenticoProviders.Providers
+namespace Kadena.WebAPI.KenticoProviders
 {
-    class SubmissionIdProvider : ISubmissionIdProvider
+    public class SubmissionIdProvider : ISubmissionIdProvider
     {
         private readonly string SubmissionsTable = "KDA.Neco";
 

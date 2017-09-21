@@ -1,6 +1,6 @@
 ﻿using System;
 using Kadena.WebAPI.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
