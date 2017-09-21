@@ -202,7 +202,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 AddressPhone = userDto.PhoneNumber ?? "",
                 AddressCustomerID = customerID,
                 AddressCountryID = country.CountryID,
-                AddressStateID = state?.StateID
+                AddressStateID = state?.StateID ?? 0
             };
             newAddress.SetValue("AddressType", AddressType.Shipping.Code);
 
