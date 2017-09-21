@@ -7,9 +7,6 @@ import { FETCH, SUCCESS, FAILURE, START, FINISH,
 import { callAC } from 'app.helpers/ac';
 /* globals */
 import { PRODUCTS as PRODUCTS_GLOBAL } from 'app.globals';
-/* web service */
-import loadProductsResponse from 'app.ws/products';
-import loadFavoriteProductsResponse from 'app.ws/productsFavorite';
 
 export const markProductFavourite = (productId) => {
   return (dispatch) => {
@@ -39,42 +36,29 @@ export const loadProducts = () => {
   return (dispatch) => {
     dispatch({ type: PRODUCTS_LOAD + FETCH });
 
-    const prod = () => {
-      axios.get(`${PRODUCTS_GLOBAL.loadProductsUrl}?url=${window.location.pathname}`)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
+    axios.get(`${PRODUCTS_GLOBAL.loadProductsUrl}?url=${window.location.pathname}`)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-          if (!success) {
-            dispatch({ type: PRODUCTS_LOAD + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
-            return;
-          }
-
+        if (!success) {
           dispatch({
-            type: PRODUCTS_LOAD + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: PRODUCTS_LOAD + FAILURE,
+            alert: errorMessage
           });
-        })
-        .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
-          dispatch({ type: PRODUCTS_LOAD + FAILURE });
-        });
-    };
+          alert(errorMessage); // eslint-disable-line no-alert
+          return;
+        }
 
-    const dev = () => {
-      setTimeout(() => {
         dispatch({
           type: PRODUCTS_LOAD + SUCCESS,
           payload: {
-            ui: loadProductsResponse.payload
+            ui: payload
           }
         });
-      }, 2000);
-    };
-
-    callAC(dev, prod);
+      })
+      .catch((error) => {
+        dispatch({ type: PRODUCTS_LOAD + FAILURE });
+      });
   };
 };
 
@@ -83,41 +67,27 @@ export const loadFavoritesProducts = () => {
   return (dispatch) => {
     dispatch({ type: PRODUCTS_FAVORITE_LOAD + FETCH });
 
-    const prod = () => {
-      axios.get(PRODUCTS_GLOBAL.loadFavoritesProductsUrl)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
+    axios.get(PRODUCTS_GLOBAL.loadFavoritesProductsUrl)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-          if (!success) {
-            dispatch({ type: PRODUCTS_FAVORITE_LOAD + FAILURE });
-            alert(errorMessage); // eslint-disable-line no-alert
-            return;
-          }
-
+        if (!success) {
           dispatch({
-            type: PRODUCTS_FAVORITE_LOAD + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: PRODUCTS_FAVORITE_LOAD + FAILURE,
+            alert: errorMessage
           });
-        })
-        .catch((error) => {
-          alert(error); // eslint-disable-line no-alert
-          dispatch({ type: PRODUCTS_FAVORITE_LOAD + FAILURE });
-        });
-    };
+          return;
+        }
 
-    const dev = () => {
-      setTimeout(() => {
         dispatch({
           type: PRODUCTS_FAVORITE_LOAD + SUCCESS,
           payload: {
-            ui: loadFavoriteProductsResponse.payload
+            ui: payload
           }
         });
-      }, 2000);
-    };
-
-    callAC(dev, prod);
+      })
+      .catch((error) => {
+        dispatch({ type: PRODUCTS_FAVORITE_LOAD + FAILURE });
+      });
   };
 };
