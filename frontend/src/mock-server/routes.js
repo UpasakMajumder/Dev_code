@@ -4,6 +4,7 @@ const Checkout = require('./controllers/checkout');
 const Settings = require('./controllers/settings');
 const Products = require('./controllers/products');
 const Orders = require('./controllers/order');
+const MailingList = require('./controllers/mailingList');
 
 const apiRouter = require('express').Router();
 
@@ -34,5 +35,8 @@ apiRouter.put('/products/unfavourite/:id', Products.favourite);
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/detail', Orders.detail);
+
+apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
+apiRouter.post('/mailing-list/reprocess/:containerId', MailingList.reprocess);
 
 module.exports = apiRouter;

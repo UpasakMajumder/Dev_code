@@ -30,7 +30,7 @@ export const initUI = (containerId) => {
           errorList,
           successList,
           formInfo,
-          containerId
+          containerId: containerId || 'containerId'
         }
       });
     } else {
@@ -44,37 +44,27 @@ export const useCorrect = (id, url) => {
     dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    const prod = () => {
-      axios({
-        method: 'post',
-        url: `${url}/${id}`
-      }).then((response) => {
-        const { success, errorMessage } = response.data;
-        if (!success) {
-          dispatch({
-            type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE,
-            alert: errorMessage
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-        } else {
-          dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
-          dispatch({ type: APP_LOADING + FINISH });
-          toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
-        }
-      })
-        .catch((error) => {
-          dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
+    axios({
+      method: 'post',
+      url: `${url}/${id}`
+    }).then((response) => {
+      const { success, errorMessage } = response.data;
+      if (!success) {
+        dispatch({
+          type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE,
+          alert: errorMessage
         });
-    };
-
-    const dev = () => setTimeout(() => {
-      dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
-      dispatch({ type: APP_LOADING + FINISH });
-      toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
-    }, 2000);
-
-    callAC(dev, prod);
+        dispatch({ type: APP_LOADING + FINISH });
+      } else {
+        dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + SUCCESS });
+        dispatch({ type: APP_LOADING + FINISH });
+        toastr.success(NOTIFICATION.wrongAddressesRemoved.title, NOTIFICATION.wrongAddressesRemoved.text);
+      }
+    })
+      .catch((error) => {
+        dispatch({ type: MODIFY_MAILING_LIST_USE_CORRECT + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
+      });
   };
 };
 
@@ -83,36 +73,27 @@ export const reprocessAddresses = (id, url, data) => {
     dispatch({ type: APP_LOADING + START });
     dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FETCH });
 
-    const prod = () => {
-      axios({
-        method: 'post',
-        url: `${url}/${id}`,
-        data
-      }).then((response) => {
-        const { success, errorMessage } = response.data;
-        if (!success) {
-          dispatch({
-            type: MODIFY_MAILING_LIST_REPROCESS + FAILURE,
-            alert: errorMessage
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-        } else {
-          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
-          dispatch({ type: APP_LOADING + FINISH });
-        }
-      })
-        .catch((error) => {
-          dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
+    axios({
+      method: 'post',
+      url: `${url}/${id}`,
+      data
+    }).then((response) => {
+      const { success, errorMessage } = response.data;
+      if (!success) {
+        dispatch({
+          type: MODIFY_MAILING_LIST_REPROCESS + FAILURE,
+          alert: errorMessage
         });
-    };
-
-    const dev = () => setTimeout(() => {
-      dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
-      dispatch({ type: APP_LOADING + FINISH });
-    }, 2000);
-
-    callAC(dev, prod);
+        dispatch({ type: APP_LOADING + FINISH });
+      } else {
+        dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + SUCCESS });
+        dispatch({ type: APP_LOADING + FINISH });
+      }
+    })
+      .catch((error) => {
+        dispatch({ type: MODIFY_MAILING_LIST_REPROCESS + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
+      });
   };
 };
 

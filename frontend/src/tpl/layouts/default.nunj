@@ -260,7 +260,7 @@
           btns: {
             use: {
               text: "Use only correct",
-              url: "#"
+              url: PATH + 'mailing-list/use-correct'
             }
           },
           items: [
@@ -321,7 +321,7 @@
           confirmChanges: {
             text: "Confirm & reprocess addresses",
             redirect: "https://google.com",
-            request: "#"
+            request: PATH + 'mailing-list/reprocess'
           },
           message: {
             required: "The field is required"
