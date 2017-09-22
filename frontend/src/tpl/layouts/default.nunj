@@ -180,8 +180,8 @@
         login: 'Log in'
       },
       checkout: {
-        initRenderUIURL: PATH + 'checkoutUI',
-        initTotalDeliveryUIURL: PATH + 'checkoutPriceUI',
+        initRenderUIURL: PATH + 'checkout/ui',
+        initTotalDeliveryUIURL: PATH + 'checkout/total-price',
         changeAddressURL: '',
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',
@@ -197,7 +197,7 @@
       },
       userSettings: {
         addresses: {
-          initUIURL: PATH + 'settingsUI',
+          initUIURL: PATH + 'settings/address/ui',
           editAddressURL: PATH + 'settings/address/modify'
         }
       },
@@ -205,10 +205,10 @@
         cartPreviewUrl: PATH + 'cartPreview'
       },
       orderDetail: {
-        orderDetailUrl: PATH + 'orderDetail'
+        orderDetailUrl: PATH + 'order/detail'
       },
       searchPage: {
-        searchPageUrl: PATH + 'searchPageUI'
+        searchPageUrl: PATH + 'search/page'
       },
       chiliSave: {
         url: ''
@@ -218,7 +218,7 @@
         queryUrl: ""
       },
       recentOrders: {
-        getHeaders: PATH + 'getHeaders',
+        getHeaders: PATH + 'order/recent/header',
         getPageItems: PATH + 'getPageItems'
       },
       modifyMailingList: {
@@ -365,12 +365,12 @@
         }
       },
       manageProducts: {
-        templatesUrl: PATH + 'manageProductsUI'
+        templatesUrl: PATH + 'products/managed'
       },
       products: {
         addToFavorites: "Set product as favorite",
-        loadProductsUrl: PATH + 'products',
-        loadFavoritesProductsUrl: PATH + 'productsFavorite',
+        loadProductsUrl: PATH + 'products/all',
+        loadFavoritesProductsUrl: PATH + 'products/favourites',
         markProductFavouriteUrl: "/api/favorites/set",
         unmarkProductFavouriteUrl: "/api/favorites/unset"
       }

@@ -1,5 +1,9 @@
-const OrderDetail = require('./controllers/orderDetail');
 const CartPreview = require('./controllers/cartPreview');
+const Search = require('./controllers/search');
+const Checkout = require('./controllers/checkout');
+const Settings = require('./controllers/settings');
+const Products = require('./controllers/products');
+const Orders = require('./controllers/order');
 
 const apiRouter = require('express').Router();
 
@@ -10,7 +14,20 @@ apiRouter.use((req, res, next) => {
 });
 
 
-apiRouter.get('/orderDetail', OrderDetail);
 apiRouter.get('/cartPreview', CartPreview);
+
+apiRouter.get('/search/page', Search.searchPage);
+
+apiRouter.get('/checkout/ui', Checkout.ui);
+apiRouter.get('/checkout/total-price', Checkout.totalPrice);
+
+apiRouter.get('/settings/address/ui', Settings.address.ui);
+
+apiRouter.get('/products/all', Products.all);
+apiRouter.get('/products/favourites', Products.favourites);
+apiRouter.get('/products/managed', Products.managed);
+
+apiRouter.get('/order/recent/header', Orders.recent.header);
+apiRouter.get('/order/detail', Orders.detail);
 
 module.exports = apiRouter;
