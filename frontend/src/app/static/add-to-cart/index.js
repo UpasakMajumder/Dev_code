@@ -28,10 +28,10 @@ class AddToCart {
     return body;
   };
 
-  addToCartRequest = () => {
+  addToCartRequest = (event) => {
     this.wrappers.forEach(wrapper => wrapper.classList.remove(this.showMessageClass));
 
-    addToCartRequest(this.getBody())
+    addToCartRequest(this.getBody(), event)
       .then((message) => { // show if bad response
         this.wrappers.forEach(wrapper => wrapper.classList.add(this.showMessageClass));
         const messageElement = document.querySelector('.js-add-to-cart-message');

@@ -4,7 +4,7 @@ const PRODUCTION = !environment.isDevelopment;
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
 const eslint = require('gulp-eslint');
-const eslintConfig = require('eslint-config-actum').getConfig({ environment: false });
+const eslintConfig = require('eslint-config-actum').getConfig({environment: false});
 
 const lint = (globs) => {
   const options = {
