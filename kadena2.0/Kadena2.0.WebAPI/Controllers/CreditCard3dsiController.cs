@@ -3,6 +3,7 @@ using System.Web.Http;
 using System;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.CreditCard._3DSi.Requests;
+using Kadena.Dto.CreditCard._3DSi.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -22,16 +23,16 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
-        public IHttpActionResult ApproveSubmission([FromBody]ApproveRequestDto request)
+        public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
         {
-            return null;
+           return Ok(ApproveResponseDto.SubmissionApproved);
         }
 
         [HttpPost]
         [Route("api/3dsi/saveToken")]
-        public IHttpActionResult SaveToken([FromBody]SaveTokenRequestDto request)
+        public IHttpActionResult SaveToken(SaveTokenRequestDto request)
         {
-            return null;
+            return Ok(SaveTokenResponseDto.SubmissionApproved);
         }
     }
 }
