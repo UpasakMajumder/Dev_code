@@ -81,6 +81,8 @@
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
+    <Compile Include="Payment\CreditCard\MicroserviceRequests\AddressDto.cs" />
+    <Compile Include="Payment\CreditCard\MicroserviceRequests\CreateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
     <Compile Include="Product\ProductCategoryDto.cs" />
     <Compile Include="Product\ProductDto.cs" />
