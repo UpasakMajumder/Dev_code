@@ -1,3 +1,4 @@
-const searchPageUI = require('../ws/search');
+const search = require('../ws/search');
 
-module.exports.searchPage = (req, res) => res.json(searchPageUI);
+module.exports.result = (req, res) => res.json(search.result);
+module.exports.query = (req, res) => res.json(search.query);

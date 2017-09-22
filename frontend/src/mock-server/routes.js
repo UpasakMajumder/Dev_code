@@ -16,7 +16,8 @@ apiRouter.use((req, res, next) => {
 
 apiRouter.get('/cartPreview', CartPreview);
 
-apiRouter.get('/search/page', Search.searchPage);
+apiRouter.get('/search/result', Search.result);
+apiRouter.post('/search/query', Search.query);
 
 apiRouter.get('/checkout/ui', Checkout.ui);
 apiRouter.get('/checkout/total-price', Checkout.totalPrice);

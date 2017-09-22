@@ -208,14 +208,14 @@
         orderDetailUrl: PATH + 'order/detail'
       },
       searchPage: {
-        searchPageUrl: PATH + 'search/page'
+        searchPageUrl: PATH + 'search/result'
       },
       chiliSave: {
         url: ''
       },
       addToCartUrl: '',
       search: {
-        queryUrl: ""
+        queryUrl: PATH + 'search/query'
       },
       recentOrders: {
         getHeaders: PATH + 'order/recent/ui',

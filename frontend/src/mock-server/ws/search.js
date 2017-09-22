@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.result = {
   "success": true,
   "errorMessage": null,
   "payload": {
@@ -849,5 +849,36 @@ module.exports = {
       //   "text": "ASDasd ajkksfk ajkf ajf jkasbgk sakg sakfhk asfjsaghjfk agsdf iuadshgfi sadfy audjf 472 ga`idbf isgfil8y4 oudjksafo74giadfbwhafga iq29 9sfbiwagf7o8g98hvbzlsdfoa;84y g7f"
       // }
     ]
+  }
+};
+
+module.exports.query = {
+  success: true,
+  errorMessage: null,
+  payload: {
+    "products": {
+      "url": "#",
+      "items": [
+        {
+          "id": 1,
+          "image": "https://satyr.io/500-700x600-800",
+          "category": "Category Name",
+          "title": "Apr 16 17 Lamp post 2nd",
+          "url": "#",
+          "stock": null
+        }
+      ]
+    },
+    "pages": {
+      "url": "#",
+      "items": [
+        {
+          "id": 1,
+          "title": "The Emerald Buddha",
+          "url": "#"
+        }
+      ]
+    },
+    "message": ""
   }
 };
