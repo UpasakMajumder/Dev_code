@@ -49,7 +49,7 @@ export const modifyAddress = (data) => {
       headers: { 'Content-Type': 'application/json' },
       data
     }).then((response) => {
-      const { success, errorMessage, payload } = response.data;
+      const { success, errorMessage } = response.data;
 
       if (!success) {
         dispatch({
@@ -81,53 +81,36 @@ export const addAddress = (data) => {
     dispatch({ type: ADD_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    const prod = () => {
-      axios({
-        method: 'post',
-        url: USER_SETTINGS.addresses.editAddressURL,
-        data
-      }).then((response) => {
-        const { success, errorMessage, payload } = response.data;
+    axios({
+      method: 'post',
+      url: USER_SETTINGS.addresses.editAddressURL,
+      data
+    }).then((response) => {
+      const { success, errorMessage, payload } = response.data;
 
-        if (!success) {
-          dispatch({
-            type: ADD_SHIPPING_ADDRESS + FAILURE,
-            alert: errorMessage
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-          return;
-        }
-
-        const { id } = payload;
-        data.id = id;
-
+      if (!success) {
         dispatch({
-          type: ADD_SHIPPING_ADDRESS + SUCCESS,
-          payload: data
-        });
-
-        dispatch({ type: APP_LOADING + FINISH });
-        toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
-      })
-        .catch((error) => {
-          dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
-        data.id = Date.now();
-
-        dispatch({
-          type: ADD_SHIPPING_ADDRESS + SUCCESS,
-          payload: data
+          type: ADD_SHIPPING_ADDRESS + FAILURE,
+          alert: errorMessage
         });
         dispatch({ type: APP_LOADING + FINISH });
-        toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
-      }, 2000);
-    };
+        return;
+      }
 
-    callAC(dev, prod);
+      const { id } = payload;
+      data.id = id;
+
+      dispatch({
+        type: ADD_SHIPPING_ADDRESS + SUCCESS,
+        payload: data
+      });
+
+      dispatch({ type: APP_LOADING + FINISH });
+      toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
+    })
+      .catch((error) => {
+        dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
+      });
   };
 };
