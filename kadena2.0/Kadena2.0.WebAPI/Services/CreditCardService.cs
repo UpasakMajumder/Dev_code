@@ -1,6 +1,7 @@
 ﻿using System;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.CreditCard;
 
 namespace Kadena.WebAPI.Services
 {
@@ -20,21 +21,28 @@ namespace Kadena.WebAPI.Services
 
         public Guid GenerateSubmissionId()
         {
-            var submissionid = Guid.NewGuid();
-            submissionProvider.StoreSubmissionId(submissionid);
-            return submissionid;
+            var submission = new Submission()
+            {
+                SubmissionId = Guid.NewGuid(),
+                AlreadyUsed = false
+            };
+
+            submissionProvider.SaveSubmission(submission);
+            return submission.SubmissionId;
         }
 
         public bool VerifySubmissionId(Guid submissionId)
         {
-            var exists = submissionProvider.VerifySubmissionId(submissionId);
+            var submission = submissionProvider.GetSubmission(submissionId);
 
-            if (exists)
+            if (submission != null && !submission.AlreadyUsed)
             {
-                submissionProvider.DeleteSubmissionId(submissionId);
+                submission.AlreadyUsed = true;
+                submissionProvider.SaveSubmission(submission);
+                return true;
             }
 
-            return exists;
+            return false;
         }
     }
 }

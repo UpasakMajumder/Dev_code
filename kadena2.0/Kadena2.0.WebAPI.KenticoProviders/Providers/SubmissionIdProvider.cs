@@ -2,6 +2,7 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.CustomTables;
 using System.Linq;
+using Kadena.Models.CreditCard;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -9,23 +10,45 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly string SubmissionsTable = "KDA.Neco";
 
-        public void StoreSubmissionId(Guid submissionId)
+        public void SaveSubmission(Submission submission)
         {
-            var newSubmission = CustomTableItem.New(SubmissionsTable);
-            newSubmission.SetValue("SubmissionId", submissionId);
-            newSubmission.Insert();
+            if (submission == null || submission.SubmissionId == Guid.Empty)
+            {
+                return;
+            }
+
+            var submissionItem = CustomTableItemProvider.GetItems(SubmissionsTable)
+                .WhereEquals("SubmissionId", submission.SubmissionId)
+                .FirstOrDefault();
+
+            if (submissionItem == null)
+            {
+                submissionItem = CustomTableItem.New(SubmissionsTable);
+                submissionItem.SetValue("SubmissionId", submission.SubmissionId);
+                
+            }
+
+            submissionItem.SetValue("AlreadyUsed", submission.AlreadyUsed);
+            submissionItem.Insert();
         }
 
-        public bool VerifySubmissionId(Guid submissionId)
+        public Submission GetSubmission(Guid submissionId)
         {
             var submission = CustomTableItemProvider.GetItems(SubmissionsTable)
                 .WhereEquals("SubmissionId", submissionId)
                 .FirstOrDefault();
 
-            return submission != null;
+            if (submission == null)
+                return null;
+
+            return new Submission()
+            {
+                SubmissionId = submission.GetGuidValue("SubmissionId", Guid.Empty),
+                AlreadyUsed = submission.GetBooleanValue("AlreadyUsed", true),
+            };            
         }
 
-        public void DeleteSubmissionId(Guid submissionId)
+        public void DeleteSubmission(Guid submissionId)
         {
             var submission = CustomTableItemProvider.GetItems(SubmissionsTable)
                 .WhereEquals("SubmissionId", submissionId)

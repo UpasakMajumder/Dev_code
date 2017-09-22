@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Kadena.Models.CreditCard;
+using System;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface ISubmissionIdProvider
     {
-        void StoreSubmissionId(Guid submissionId);
-        bool VerifySubmissionId(Guid submissionId);
-        void DeleteSubmissionId(Guid submissionId);
+        void SaveSubmission(Submission submission);
+        Submission GetSubmission(Guid submissionId);
+        void DeleteSubmission(Guid submissionId);
     }
 }

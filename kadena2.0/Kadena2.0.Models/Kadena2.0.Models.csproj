@@ -62,6 +62,7 @@
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="CreditCard\Submission.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
