@@ -22,12 +22,14 @@ apiRouter.get('/checkout/ui', Checkout.ui);
 apiRouter.get('/checkout/total-price', Checkout.totalPrice);
 
 apiRouter.get('/settings/address/ui', Settings.address.ui);
+apiRouter.post('/settings/address/modify', Settings.address.modify);
 
 apiRouter.get('/products/all', Products.all);
 apiRouter.get('/products/favourites', Products.favourites);
 apiRouter.get('/products/managed', Products.managed);
 
-apiRouter.get('/order/recent/header', Orders.recent.header);
+apiRouter.get('/order/recent/ui', Orders.recent.ui);
+apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/detail', Orders.detail);
 
 module.exports = apiRouter;

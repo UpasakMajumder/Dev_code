@@ -218,8 +218,8 @@
         queryUrl: ""
       },
       recentOrders: {
-        getHeaders: PATH + 'order/recent/header',
-        getPageItems: PATH + 'getPageItems'
+        getHeaders: PATH + 'order/recent/ui',
+        getPageItems: PATH + 'order/recent/page'
       },
       modifyMailingList: {
         errorList: {
