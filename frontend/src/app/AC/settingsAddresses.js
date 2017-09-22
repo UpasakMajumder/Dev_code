@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, ADD_SHIPPING_ADDRESS,
-  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment } from 'app.consts';
+  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment, SET_ADDRESS_DEFAULT, UNSET_ADDRESS_DEFAULT } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
@@ -71,7 +71,6 @@ export const modifyAddress = (data) => {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
       dispatch({ type: APP_LOADING + FINISH });
     });
-
   };
 };
 
@@ -112,5 +111,53 @@ export const addAddress = (data) => {
         dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
         dispatch({ type: APP_LOADING + FINISH });
       });
+  };
+};
+
+export const setDefault = (type, id, url) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_ADDRESS_DEFAULT + FETCH,
+      payload: {
+        type, id
+      }
+    });
+
+    axios.put(url, { id }).then((response) => {
+      const { success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({
+          type: SET_ADDRESS_DEFAULT + FAILURE,
+          alert: errorMessage
+        });
+      }
+    }).catch((error) => {
+      dispatch({ type: SET_ADDRESS_DEFAULT + FAILURE });
+    });
+  };
+};
+
+export const unsetDefault = (type, id, url) => {
+  return (dispatch) => {
+    dispatch({
+      type: UNSET_ADDRESS_DEFAULT + FETCH,
+      payload: {
+        type, id
+      }
+    });
+
+    axios.put(url, { id }).then((response) => {
+      const { success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({
+          type: UNSET_ADDRESS_DEFAULT + FAILURE,
+          alert: errorMessage
+        });
+      }
+    }).catch((error) => {
+      dispatch({ type: UNSET_ADDRESS_DEFAULT + FAILURE });
+    });
   };
 };

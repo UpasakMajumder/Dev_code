@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, addAddress, modifyAddress } from 'app.ac/settingsAddresses';
+import { getUI, addAddress, modifyAddress, setDefault, unsetDefault } from 'app.ac/settingsAddresses';
 /* local components */
 import AddressBlock from './AddressBlock';
 import AddressDialog from './AddressDialog';
@@ -53,7 +53,7 @@ class SettingAddresses extends Component {
   };
 
   render() {
-    const { ui } = this.props;
+    const { ui, setDefault, unsetDefault } = this.props;
     const { isDialogOpen, isModifyingDialog, address } = this.state;
     const { dialog, billing, shipping } = ui;
 
@@ -77,8 +77,18 @@ class SettingAddresses extends Component {
     return Object.keys(ui).length
     ? <div className="settings__block">
         {dialogEl}
-        <AddressBlock ui={billing} {...commonProps} />
-        <AddressBlock ui={shipping} {...commonProps} />
+        <AddressBlock
+          ui={billing}
+          setDefault={(id, url) => setDefault('billing', id, url)}
+          unsetDefault={(id, url) => unsetDefault('billing', id, url)}
+          {...commonProps}
+        />
+        <AddressBlock
+          ui={shipping}
+          setDefault={(id, url) => setDefault('shipping', id, url)}
+          unsetDefault={(id, url) => unsetDefault('shipping', id, url)}
+          {...commonProps}
+        />
       </div>
     : <Spinner />;
   }
@@ -90,6 +100,7 @@ export default connect((state) => {
 }, {
   getUI,
   addAddress,
-  modifyAddress
+  modifyAddress,
+  setDefault,
+  unsetDefault
 })(SettingAddresses);
-

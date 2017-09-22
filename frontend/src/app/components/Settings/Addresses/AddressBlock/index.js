@@ -7,11 +7,11 @@ import SVG from 'app.dump/SVG';
 import AddressCard from '../AddressCard';
 
 const AddressBlock = (props) => {
-  const { ui, openDialog } = props;
+  const { ui, openDialog, setDefault, unsetDefault } = props;
 
   if (!Object.keys(ui).length) return null;
 
-  const { title, addButton, editButton, removeButton, addresses, allowAddresses } = ui;
+  const { title, addButton, editButton, removeButton, addresses, allowAddresses, defaultAddress } = ui;
   const allowAddressesNumber = typeof allowAddresses === 'number' ? allowAddresses : 0;
 
   const addButtonElement = addButton.exists && addresses.length < allowAddressesNumber
@@ -34,14 +34,18 @@ const AddressBlock = (props) => {
   const commonProps = {
     editButton,
     removeButton,
-    openDialog
+    openDialog,
+    defaultAddress,
+    setDefault,
+    unsetDefault
   };
 
   const addressCards = addresses.length
     ? addresses.map((address) => {
       return <AddressCard key={address.id}
                           address={address}
-                          {...commonProps} />;
+                          {...commonProps}
+      />;
     })
     : null;
 
@@ -68,10 +72,13 @@ AddressBlock.propTypes = {
     }),
     addresses: PropTypes.arrayOf(PropTypes.object.isRequired),
     editButton: PropTypes.object,
+    defaultAddress: PropTypes.object,
     removeButton: PropTypes.object,
     title: PropTypes.string
   }).isRequired,
-  openDialog: PropTypes.func.isRequired
+  openDialog: PropTypes.func.isRequired,
+  setDefault: PropTypes.func.isRequired,
+  unsetDefault: PropTypes.func.isRequired
 };
 
 export default AddressBlock;

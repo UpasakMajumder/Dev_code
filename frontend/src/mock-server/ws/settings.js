@@ -17,7 +17,15 @@ const address = {
         },
         "removeButton": {
           "text": "Remove",
-          "exists": false,
+          "exists": true,
+        },
+        "defaultAddress": {
+          "id": 2,
+          "labelDefault": "Default",
+          "labelNonDefault": "Set as default",
+          "tooltip": "Default address is pre-selected on checkout",
+          "setUrl": 'http://localhost:3000/api/settings/address/default/set',
+          "unsetUrl": 'http://localhost:3000/api/settings/address/default/unset'
         },
         "addresses": [
           {

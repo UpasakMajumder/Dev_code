@@ -25,6 +25,8 @@ apiRouter.get('/checkout/total-price', Checkout.totalPrice);
 
 apiRouter.get('/settings/address/ui', Settings.address.ui);
 apiRouter.post('/settings/address/modify', Settings.address.modify);
+apiRouter.put('/settings/address/default/set', Settings.address.defaultSet);
+apiRouter.put('/settings/address/default/unset', Settings.address.defaultSet);
 
 apiRouter.get('/products/all', Products.all);
 apiRouter.get('/products/favourites', Products.favourites);

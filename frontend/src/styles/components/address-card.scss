@@ -19,7 +19,7 @@
   &__btn-block {
     @include rem(margin-top, 12px);
 
-    a:not(:first-child) {
+    *:not(:first-child) {
       @include rem(margin-left, 5px);
     }
   }

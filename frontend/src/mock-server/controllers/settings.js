@@ -15,4 +15,6 @@ address.modify = (req, res) => {
   });
 };
 
+address.defaultSet = (req, res) => res.json({ success: true });
+
 module.exports.address = address;
