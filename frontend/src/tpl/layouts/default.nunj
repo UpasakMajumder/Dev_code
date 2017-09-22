@@ -357,11 +357,11 @@
       checkoutButtons: {
         checkout: {
           text: 'Proceed To Checkout',
-            url: '/shopping-cart.html'
+          url: '/shopping-cart.html'
         },
         products: {
           text: 'Continue Shopping',
-            url: '/products.html'
+          url: '/products.html'
         }
       },
       manageProducts: {
@@ -371,8 +371,8 @@
         addToFavorites: "Set product as favorite",
         loadProductsUrl: PATH + 'products/all',
         loadFavoritesProductsUrl: PATH + 'products/favourites',
-        markProductFavouriteUrl: "/api/favorites/set",
-        unmarkProductFavouriteUrl: "/api/favorites/unset"
+        markProductFavouriteUrl: PATH + 'products/favourite',
+        unmarkProductFavouriteUrl: PATH + 'products/unfavourite'
       }
     }
   };

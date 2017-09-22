@@ -28,6 +28,8 @@ apiRouter.post('/settings/address/modify', Settings.address.modify);
 apiRouter.get('/products/all', Products.all);
 apiRouter.get('/products/favourites', Products.favourites);
 apiRouter.get('/products/managed', Products.managed);
+apiRouter.put('/products/favourite/:id', Products.favourite);
+apiRouter.put('/products/unfavourite/:id', Products.favourite);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
