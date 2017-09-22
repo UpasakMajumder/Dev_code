@@ -213,7 +213,7 @@
       chiliSave: {
         url: ''
       },
-      addToCartUrl: '',
+      addToCartUrl: PATH + 'products/add-to-cart',
       search: {
         queryUrl: PATH + 'search/query'
       },
