@@ -96,7 +96,7 @@ AddressCard.propTypes = {
     zip: PropTypes.string
   }),
   defaultAddress: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     labelDefault: PropTypes.string.isRequired,
     labelNonDefault: PropTypes.string.isRequired,
     tooltip: PropTypes.string.isRequired

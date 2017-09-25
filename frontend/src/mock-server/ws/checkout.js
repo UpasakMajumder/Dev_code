@@ -52,6 +52,11 @@ module.exports.ui = {
     "deliveryAddresses": {
       "isDeliverable": true,
       "availableToAdd": true,
+      "bounds": {
+        "showMoreText": "Show more",
+        "showMoreLess": "Show less",
+        "limit": 3
+      },
       "dialogUI": {
         "title": "New address",
         "discardBtnLabel": "Discard changes",

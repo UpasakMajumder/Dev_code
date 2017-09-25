@@ -13,7 +13,7 @@ class DeliveryAddress extends Component {
 
     this.state = {
       isDialogOpen: false,
-      addressesNumber: 2
+      addressesNumber: props.ui.bounds.limit
     };
   }
 
@@ -37,15 +37,15 @@ class DeliveryAddress extends Component {
     this.props.addNewAddress(data);
   };
 
-  toggleaddressesNumber = () => {
+  toggleAddressesNumber = () => {
     this.setState((prevState) => {
-      if (prevState.addressesNumber === Infinity) {
+      if (prevState.addressesNumber === Math.POSITIVE_INFINITY) {
         return {
-          addressesNumber: 2
+          addressesNumber: this.props.ui.bounds.limit
         };
       }
       return {
-        addressesNumber: Infinity
+        addressesNumber: Math.POSITIVE_INFINITY
       };
     });
   };
@@ -53,10 +53,10 @@ class DeliveryAddress extends Component {
   render() {
     const { addressesNumber } = this.state;
     const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
-    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI } = ui;
+    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, bounds } = ui;
 
     const renderAddresses = (item, i) => {
-      if (i > addressesNumber) return false;
+      if (i + 1 > addressesNumber) return false;
       return (
         <div key={`da-${item.id}`} className="input__wrapper">
           <Address
@@ -76,12 +76,12 @@ class DeliveryAddress extends Component {
 
     const alert = items.length ? null : <Alert type="grey" text={emptyMessage} />;
 
-    const showMoreButton = items.length > 2
+    const showMoreButton = items.length + 1 > bounds.limit
       ?
       (
         <Button
-          text={addressesNumber === Infinity ? 'Show less' : 'Show more'}
-          onClick={this.toggleaddressesNumber}
+          text={addressesNumber === Math.POSITIVE_INFINITY ? bounds.showMoreLess : bounds.showMoreText}
+          onClick={this.toggleAddressesNumber}
           type="action"
           btnClass="btn-action--secondary"
         />
@@ -120,7 +120,7 @@ class DeliveryAddress extends Component {
             {alert}
             <div className="cart-fill__block-inner cart-fill__block--flex">
               {addresses}
-              <div className="btn-group btn-grout--left">
+              <div className="cart-fill__btns">
                 {newAddressBtn}
                 {showMoreButton}
               </div>
@@ -149,7 +149,12 @@ DeliveryAddress.propTypes = {
     description: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     unDeliverableText: PropTypes.string,
-    emptyMessage: PropTypes.string
+    emptyMessage: PropTypes.string,
+    bounds: PropTypes.shape({
+      showMoreText: PropTypes.string.isRequired,
+      showMoreLess: PropTypes.string.isRequired,
+      limit: PropTypes.number.isRequired
+    }).isRequired
   }).isRequired,
   newAddressObject: PropTypes.object
 };
