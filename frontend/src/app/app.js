@@ -61,6 +61,7 @@ const app = {
     render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
     render('Products/All', document.querySelectorAll('.r-products'));
     render('Products/Favorites', document.querySelectorAll('.r-products-favorites'));
+    render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
   }
 };
 

@@ -1,0 +1,32 @@
+.language-selector {
+  position: relative;
+
+  &__list {
+    @extend .list--unstyled;
+    background: white;
+
+    &--absolute {
+      transform: translateY(100%);
+      bottom: 0;
+      position: absolute;
+      left: 0;
+      z-index: 3;
+    }
+  }
+
+  &__item {
+    &:not(:last-child) {
+      border-bottom: 1px solid $brand-grey;
+    }
+
+    &:hover {
+      background-color: $main-gutter-color;
+    }
+
+    a {
+      display: inline-block;
+      padding: 5px 25px;
+      color: $brand-dark;
+    }
+  }
+}

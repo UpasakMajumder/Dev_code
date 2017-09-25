@@ -165,6 +165,26 @@
           text: 'The template has been saved'
         }
       },
+      languages: {
+        selectedId: 0,
+        languages: [
+          {
+            id: 0,
+            language: 'English',
+            url: '#'
+          },
+          {
+            id: 1,
+            language: 'French',
+            url: '#'
+          },
+          {
+            id: 2,
+            language: 'German',
+            url: '#'
+          }
+        ]
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
