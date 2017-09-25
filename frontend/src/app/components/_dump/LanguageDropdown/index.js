@@ -1,0 +1,36 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const LanguageDropdown = (props) => {
+  const { languages, changeLanguage, shadow } = props;
+
+  const languagesList = languages.map((item) => {
+    return (
+      <li
+        className='language-selector__item'
+        key={item.id}
+        onClick={() => changeLanguage(item)}
+      >
+        {item.language}
+      </li>
+    );
+  });
+
+  return (
+    <ul
+      className={`language-selector__list language-selector__list--absolute ${shadow && 'language-selector__list--shadow'}`}>
+      {languagesList}
+    </ul>
+  );
+};
+
+LanguageDropdown.propTypes = {
+  languages: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    language: PropTypes.string.isRequired
+  }).isRequired).isRequired,
+  shadow: PropTypes.bool,
+  changeLanguage: PropTypes.func.isRequired
+};
+
+export default LanguageDropdown;

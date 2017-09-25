@@ -4,23 +4,24 @@ import PropTypes from 'prop-types';
 import { removeProps } from 'app.helpers/object';
 
 const TextInput = (props) => {
-  const { label, error, disabled, isOptional } = props;
+  const { label, error, disabled, isOptional, className } = props;
 
-  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options']);
+  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className']);
 
   const labelElement = label ? <span className="input__label">{label}</span> : null;
-  const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
+  const selector = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
   const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
   const errorClass = error ? 'input--error' : '';
   const optionalLabel = isOptional ? <span className="input__right-label">optional</span> : null;
+  const inputSelector = `input__text ${errorClass} ${className}`;
 
   return (
-    <div className={className}>
+    <div className={selector}>
       {labelElement}
       {optionalLabel}
       <input
         type="text"
-        className={`input__text ${errorClass}`}
+        className={inputSelector}
         maxLength="50"
         {...inputProps}
       />

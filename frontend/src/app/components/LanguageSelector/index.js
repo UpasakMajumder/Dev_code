@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
 import SVG from 'app.dump/SVG';
+import LanguageDropdown from 'app.dump/LanguageDropdown';
 /* ac */
 import { showLanguages, hideLanguages } from 'app.ac/languageSelector';
 /* globals */
@@ -14,24 +16,15 @@ class LanguageSelector extends Component {
     hideLanguages: PropTypes.func.isRequired
   };
 
+  changeLanguage = (item) => {
+    location.assign(item.url);
+  };
+
   render() {
     const selectedLanguage = LANGUAGES.languages.filter(item => item.id === LANGUAGES.selectedId);
 
-    const languages = LANGUAGES.languages.map((item) => {
-      return (
-        <li className="language-selector__item" key={item.id}>
-          <a href={item.url}>{item.language}</a>
-        </li>
-      );
-    });
-
     const languagesComponent = this.props.languageSelector
-      ?
-      (
-        <ul className="language-selector__list language-selector__list--absolute">
-          {languages}
-        </ul>
-      )
+      ? <LanguageDropdown languages={LANGUAGES.languages} changeLanguage={this.changeLanguage}/>
       : null;
 
     return (
@@ -43,7 +36,12 @@ class LanguageSelector extends Component {
         <div className="nav-link">
           <SVG name="grid-world"/>
           <span>{selectedLanguage[0].language}</span>
-          <SVG name="small-arrow" className="icon-chevron ml-1"/>
+          <SVG name="small-arrow" className="nav-item--secondary" style={{
+            width: '10px',
+            height: '10px',
+            marginLeft: '5px',
+            rotate: this.props.languageSelector ? '180deg' : '0deg'
+          }}/>
         </div>
         {languagesComponent}
       </div>

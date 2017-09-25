@@ -1,9 +1,16 @@
 .language-selector {
+  $width: 250px;
   position: relative;
+
+  &--short {
+    width: $width;
+  }
 
   &__list {
     @extend .list--unstyled;
     background: white;
+    min-width: $width;
+    margin: 0;
 
     &--absolute {
       transform: translateY(100%);
@@ -12,21 +19,35 @@
       left: 0;
       z-index: 3;
     }
+
+    &--shadow {
+      box-shadow: 0 0 15px $brand-darkgrey;
+    }
+  }
+
+  &__input {
+    padding-right: 41px;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    right: 11px;
+    top: 11px;
+    position: absolute;
   }
 
   &__item {
+    padding: 5px 25px;
+    color: $brand-dark;
+    cursor: pointer;
+
     &:not(:last-child) {
-      border-bottom: 1px solid $brand-grey;
+      border-bottom: 1px solid $brand-darkgrey;
     }
 
     &:hover {
       background-color: $main-gutter-color;
-    }
-
-    a {
-      display: inline-block;
-      padding: 5px 25px;
-      color: $brand-dark;
     }
   }
 }
