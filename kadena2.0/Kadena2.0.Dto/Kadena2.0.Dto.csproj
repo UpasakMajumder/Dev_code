@@ -68,7 +68,6 @@
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
-    <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\WeightDto.cs" />
