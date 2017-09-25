@@ -31,9 +31,15 @@ namespace Kadena.WebAPI.Services
             return submission.SubmissionId;
         }
 
-        public bool VerifySubmissionId(Guid submissionId)
+        public bool VerifySubmissionId(string submissionId)
         {
-            var submission = submissionProvider.GetSubmission(submissionId);
+            var submissionGuid = Guid.Empty;
+            if (!Guid.TryParse(submissionId, out submissionGuid))
+            {
+                return false;
+            }
+
+            var submission = submissionProvider.GetSubmission(submissionGuid);
 
             if (submission != null && !submission.AlreadyUsed)
             {

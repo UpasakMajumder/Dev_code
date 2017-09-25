@@ -25,14 +25,16 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/3dsi/approveSubmission")]
         public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
         {
-           return Ok(ApproveResponseDto.SubmissionApproved);
+           var success = service.VerifySubmissionId(request.SubmissionID);
+           return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
         }
 
         [HttpPost]
         [Route("api/3dsi/saveToken")]
         public IHttpActionResult SaveToken(SaveTokenRequestDto request)
         {
-            return Ok(SaveTokenResponseDto.SubmissionApproved);
+            var success = true; // TODO service.SaveToken(request);
+            return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
         }
     }
 }

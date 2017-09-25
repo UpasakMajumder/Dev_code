@@ -1,16 +1,20 @@
-﻿namespace Kadena.Dto.CreditCard._3DSi.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kadena.Dto.CreditCard._3DSi.Requests
 {
     /// <summary>
     /// Request from 3DSi to Kadena to approve submissionId
     /// </summary>
     public class ApproveRequestDto
-    {
+    {       
         /// <summary>
         /// A constant value sent from 3DSI
         /// 
         /// AddStoredCreditCard
         /// VerifyAndAddStoredCreditCard
         /// </summary>
+        [Required]
+        [RegularExpression("^AddStoredCreditCard$|^VerifyAndAddStoredCreditCard$", ErrorMessage = "Invalid SilentPostType")]
         public string SilentPostType { get; set; }
 
         /// <summary>
@@ -18,6 +22,7 @@
         /// The client should use this value during the approval stage to look up approval data 
         /// values provided to the user.
         /// </summary>
+        [Required]
         public string SubmissionID { get; set; }
 
         /// <summary>

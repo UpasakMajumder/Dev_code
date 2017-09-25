@@ -27,7 +27,7 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         };
             
 
-        public static ApproveResponseDto SubmisstionDenied => new ApproveResponseDto
+        public static ApproveResponseDto SubmissionDenied => new ApproveResponseDto
         {
             Succeeded = 0,
             ResponseStatus = "000",

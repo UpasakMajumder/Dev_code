@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.CreditCard._3DSi.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kadena.Dto.CreditCard._3DSi.Requests
 {
     /// <summary>
     /// Request from 3DSi to Kadena to save the token
@@ -11,11 +13,14 @@
         /// AddStoredCreditCard 
         /// VerifyAndAddStoredCreditCard
         /// </summary>
+        [Required]
+        [RegularExpression("^AddStoredCreditCard$|^VerifyAndAddStoredCreditCard$", ErrorMessage = "Invalid SilentPostType")]
         public string SilentPostType { get; set; }
 
         /// <summary>
         /// A unique identifier associated with the current attempt to submit data to CardVault.
         /// </summary>
+        [Required]
         public string SubmissionID { get; set; }
 
         /// <summary>
@@ -47,6 +52,7 @@
         /// <summary>
         /// The value of the token representing the stored card.
         /// </summary>
+        [Required]
         public string Token { get; set; }
     } 
 }
