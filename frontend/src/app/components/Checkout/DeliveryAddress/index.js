@@ -8,9 +8,14 @@ import NewAddressDialog from '../NewAddressDialog';
 import Address from './Address';
 
 class DeliveryAddress extends Component {
-  state = {
-    isDialogOpen: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isDialogOpen: false,
+      addressesNumber: 2
+    };
+  }
 
   toggleDialog = () => {
     this.setState(prevState => ({ isDialogOpen: !prevState.isDialogOpen }));
@@ -32,11 +37,26 @@ class DeliveryAddress extends Component {
     this.props.addNewAddress(data);
   };
 
+  toggleaddressesNumber = () => {
+    this.setState((prevState) => {
+      if (prevState.addressesNumber === Infinity) {
+        return {
+          addressesNumber: 2
+        };
+      }
+      return {
+        addressesNumber: Infinity
+      };
+    });
+  };
+
   render() {
+    const { addressesNumber } = this.state;
     const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI } = ui;
 
-    const renderAddresses = (item) => {
+    const renderAddresses = (item, i) => {
+      if (i > addressesNumber) return false;
       return (
         <div key={`da-${item.id}`} className="input__wrapper">
           <Address
@@ -55,6 +75,18 @@ class DeliveryAddress extends Component {
     }
 
     const alert = items.length ? null : <Alert type="grey" text={emptyMessage} />;
+
+    const showMoreButton = items.length > 2
+      ?
+      (
+        <Button
+          text={addressesNumber === Infinity ? 'Show less' : 'Show more'}
+          onClick={this.toggleaddressesNumber}
+          type="action"
+          btnClass="btn-action--secondary"
+        />
+      )
+      : null;
 
     const newAddressBtn = availableToAdd
       ?
@@ -90,6 +122,7 @@ class DeliveryAddress extends Component {
               {addresses}
               <div className="btn-group btn-grout--left">
                 {newAddressBtn}
+                {showMoreButton}
               </div>
             </div>
           </div>
