@@ -124,7 +124,7 @@ namespace Kadena.WebAPI.Services
 
         private async Task<string> CallSaveToken(string userId, string token)
         {
-            var url = resources.GetSettingsKey("URL_TO_SAVETOKEN");
+            var url = resources.GetSettingsKey("KDA_UserdataMicroserviceEndpoint");
 
             var saveTokenRequest = new SaveCardTokenRequestDto
             {
@@ -150,7 +150,7 @@ namespace Kadena.WebAPI.Services
 
         private async Task CallAuthorizeAmount(string userId, string tokenId, string token)
         {
-            var url = resources.GetSettingsKey("URL_TO_AUTHORIZE_AMOUNT");
+            var url = resources.GetSettingsKey("KDA_PaymentMicroserviceEndpoint");
 
             var authorizeAmountRequest = new AuthorizeAmountRequestDto
             {
