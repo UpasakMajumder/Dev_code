@@ -30,14 +30,14 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/customerdata")]
+        [HttpGet]
+        [Route("api/customer/{customerId}/site/{siteId}")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult CustomerData([FromBody]CustomerDataRequestDto request)
+        public IHttpActionResult CustomerData(int siteId, int customerId)
         {
-            var result = service.GetCustomerData(request.SiteId, request.CustomerId);
+            var result = service.GetCustomerData( siteId, customerId);
             var resultDto = mapper.Map<CustomerDataDTO>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {request.CustomerId}"); 
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {customerId}"); 
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Kadena.Dto.Site.Requests;
 using Kadena.Dto.Site.Responses;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
@@ -19,23 +18,23 @@ namespace Kadena.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/sitedata")]
+        [HttpGet]
+        [Route("api/site")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetSiteData([FromBody]SiteDataRequestDto request)
+        public IHttpActionResult GetSiteData(int siteId = 0, string siteName = "")
         {
-            var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
+            var result = _service.GetKenticoSite(siteId, siteName);
             var resultDto = _mapper.Map<SiteDataResponseDto>(result);
-            return ResponseJsonCheckingNull(resultDto,$"Unable to find site with id={request.SiteId}");
+            return ResponseJsonCheckingNull(resultDto, "Unable to find site");
         }
 
-        [HttpPost]
-        [Route("api/sitedata/artworkftp")]
+        [HttpGet]
+        [Route("api/site/{siteId}/artworkftp")]
         [IdentityBasicAuthentication]
 
-        public IHttpActionResult GetArtworkFtpSettings([FromBody]ArtworkFtpRequestDto request)
+        public IHttpActionResult GetArtworkFtpSettings(int siteId)
         {
-            var result = _service.GetArtworkFtpSettings(request.SiteId);
+            var result = _service.GetArtworkFtpSettings(siteId);
             var resultDto = _mapper.Map<ArtworkFtpResponseDto>(result);
             return ResponseJson(result);
         }

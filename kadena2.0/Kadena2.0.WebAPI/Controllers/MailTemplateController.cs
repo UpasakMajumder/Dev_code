@@ -3,7 +3,6 @@ using System.Web.Http;
 using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.Dto.MailTemplate.Requests;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
@@ -30,14 +29,14 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/mailtemplate")]
+        [HttpGet]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
+        public IHttpActionResult GetMailTemplate(int siteId, string templateName)
         {
-            var result = service.GetMailTemplate(request.SiteId, request.TemplateName);
+            var result = service.GetMailTemplate(siteId, templateName);
             var resultDto = mapper.Map<MailTemplateDto>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateName}");
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with name : {templateName}");
         }
     }
 }
