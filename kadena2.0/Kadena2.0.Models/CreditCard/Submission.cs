@@ -11,5 +11,10 @@ namespace Kadena.Models.CreditCard
         /// Default is set to true to ensure proper intended initialization in the code
         /// </summary>
         public bool AlreadyUsed { get; set; } = true;
+
+        /// <summary>
+        /// ID of user who requested to create this submission
+        /// </summary>
+        public int UserId { get; set; }
     }
 }

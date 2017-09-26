@@ -28,6 +28,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 
             }
 
+            submissionItem.SetValue("UserId", submission.UserId);
             submissionItem.SetValue("AlreadyUsed", submission.AlreadyUsed);
             submissionItem.Insert();
         }
@@ -45,6 +46,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 SubmissionId = submission.GetGuidValue("SubmissionId", Guid.Empty),
                 AlreadyUsed = submission.GetBooleanValue("AlreadyUsed", true),
+                UserId = submission.GetIntegerValue("UserId", 0)
             };            
         }
 

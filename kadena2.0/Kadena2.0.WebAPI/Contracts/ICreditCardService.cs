@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kadena.Models.CreditCard;
+using System;
+using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts
 {
@@ -6,7 +8,6 @@ namespace Kadena.WebAPI.Contracts
     {
         Guid GenerateSubmissionId();
         bool VerifySubmissionId(string submissionId);
-
-        // TODO bool SaveToken(string submissionId, string token);
+        Task<bool> SaveToken(SaveTokenData tokenData);
     }
 }

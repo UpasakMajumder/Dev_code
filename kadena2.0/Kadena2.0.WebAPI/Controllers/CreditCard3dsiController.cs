@@ -4,21 +4,30 @@ using System;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard._3DSi.Responses;
+using System.Threading.Tasks;
+using AutoMapper;
+using Kadena.Models.CreditCard;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class CreditCard3dsiController : ApiControllerBase
     {
         private readonly ICreditCardService service;
+        private readonly IMapper mapper;
 
-        public CreditCard3dsiController(ICreditCardService service)
+        public CreditCard3dsiController(ICreditCardService service, IMapper mapper)
         {
             if (service == null)
             {
                 throw new ArgumentNullException(nameof(service));
             }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
 
             this.service = service;
+            this.mapper = mapper;
         }
 
         [HttpPost]
@@ -31,9 +40,10 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/3dsi/saveToken")]
-        public IHttpActionResult SaveToken(SaveTokenRequestDto request)
+        public async Task<IHttpActionResult> SaveToken(SaveTokenRequestDto request)
         {
-            var success = true; // TODO service.SaveToken(request);
+            var saveTokenData = mapper.Map<SaveTokenData>(request);
+            var success = await service.SaveToken(saveTokenData);
             return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
         }
     }
