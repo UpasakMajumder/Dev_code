@@ -41,11 +41,16 @@ namespace Kadena.WebAPI.Services
             return result;
         }
 
-        public KenticoSite GetKenticoSite(int siteId, string siteName)
+        public KenticoSite GetKenticoSite(int? siteId, string siteName)
         {
-            var site = _kentico.GetKenticoSite(siteId);
+            KenticoSite site = null;
 
-            if (site == null)
+            if (siteId.HasValue)
+            {
+                site = _kentico.GetKenticoSite(siteId.Value);
+            }
+
+            if (site == null && !string.IsNullOrEmpty(siteName))
             {
                 site = _kentico.GetKenticoSite(siteName);
             }

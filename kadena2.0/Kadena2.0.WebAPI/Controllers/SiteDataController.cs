@@ -19,23 +19,24 @@ namespace Kadena.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/sitedata")]
+        
+        [HttpGet]
+        [Route("api/site")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetSiteData([FromBody]SiteDataRequestDto request)
+        public IHttpActionResult GetSiteData( [FromUri]SiteDataRequestDto request)
         {
             var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
             var resultDto = _mapper.Map<SiteDataResponseDto>(result);
-            return ResponseJsonCheckingNull(resultDto,$"Unable to find site with id={request.SiteId}");
+            return ResponseJsonCheckingNull(resultDto, "Unable to find site");
         }
 
-        [HttpPost]
-        [Route("api/sitedata/artworkftp")]
+        [HttpGet]
+        [Route("api/site/{siteId}/artworkftp")]
         [IdentityBasicAuthentication]
 
-        public IHttpActionResult GetArtworkFtpSettings([FromBody]ArtworkFtpRequestDto request)
+        public IHttpActionResult GetArtworkFtpSettings(int siteId)
         {
-            var result = _service.GetArtworkFtpSettings(request.SiteId);
+            var result = _service.GetArtworkFtpSettings(siteId);
             var resultDto = _mapper.Map<ArtworkFtpResponseDto>(result);
             return ResponseJson(result);
         }
