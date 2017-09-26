@@ -202,7 +202,7 @@
           },
         },
         ResultURL: '',
-        SubmissionID: '1',
+        SubmissionIDURL: '#',
         APCount: '0',
         PTCount: '0',
         CustomerIdentifier_MerchantCode: 'Kadena2.0',

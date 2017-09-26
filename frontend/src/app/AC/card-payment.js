@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CARD_VALIDATION_ERROR, SUBMIT_CARD, FETCH, FAILURE } from 'app.consts';
+import { CARD_VALIDATION_ERROR, SUBMIT_CARD, GET_SUBMISSIONID, FETCH, FAILURE, SUCCESS } from 'app.consts';
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
 import { CARD_PAYMENT, NOTIFICATION } from 'app.globals';
 
@@ -63,60 +63,82 @@ export default (fields, cardType) => {
       return;
     }
 
-    dispatch({ type: SUBMIT_CARD + FETCH });
-
     // AJAX REQUEST
-    const { URL3DSi, ResultURL, RedirectURL, SubmissionID,
-            CustomerIdentifier_MerchantCode,
-            CustomerIdentifier_LocationCode,
-            CustomerIdentifier_CustomerCode,
-            TerminalIdentifier_LocationCode,
-            TerminalIdentifier_TerminalCode,
-            TerminalIdentifier_MerchantCode,
-            APCount, PTCount
-    } = CARD_PAYMENT;
 
-    const data = {
-      CreditCard_CSCValue: cvc,
-      CreditCard_ExpirationMonth: expiry.substr(0, 2),
-      CreditCard_ExpirationYear: expiry.substr(2),
-      CreditCard_CardType: cardType,
-      CreditCard_NameOnCard: name,
-      CreditCard_CardAccountNumber: number,
-      APCount,
-      PTCount,
-      ResultURL,
-      SubmissionID,
-      CustomerIdentifier_MerchantCode,
-      CustomerIdentifier_LocationCode,
-      CustomerIdentifier_CustomerCode,
-      TerminalIdentifier_LocationCode,
-      TerminalIdentifier_TerminalCode,
-      TerminalIdentifier_MerchantCode
-    };
+    const submit = async () => {
+      dispatch({ type: GET_SUBMISSIONID + FETCH });
 
-    axios({
-      method: 'post',
-      url: URL3DSi,
-      headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-      data
-    });
+      const { URL3DSi, ResultURL, RedirectURL, SubmissionIDURL,
+        CustomerIdentifier_MerchantCode,
+        CustomerIdentifier_LocationCode,
+        CustomerIdentifier_CustomerCode,
+        TerminalIdentifier_LocationCode,
+        TerminalIdentifier_TerminalCode,
+        TerminalIdentifier_MerchantCode,
+        APCount, PTCount
+      } = CARD_PAYMENT;
 
-    axios({
-      method: 'get',
-      url: `${RedirectURL}/${SubmissionID}`
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+      const { data: { success, errorMessage, payload } } = await axios({ method: 'get', url: SubmissionIDURL });
 
       if (!success) {
         dispatch({
-          type: SUBMIT_CARD + FAILURE,
+          type: GET_SUBMISSIONID + FAILURE,
           alert: errorMessage
         });
       } else {
-        location.assign(payload);
+        dispatch({ type: GET_SUBMISSIONID + SUCCESS });
+
+        const { SubmissionID } = payload;
+        const data = {
+          CreditCard_CSCValue: cvc,
+          CreditCard_ExpirationMonth: expiry.substr(0, 2),
+          CreditCard_ExpirationYear: expiry.substr(2),
+          CreditCard_CardType: cardType,
+          CreditCard_NameOnCard: name,
+          CreditCard_CardAccountNumber: number,
+          APCount,
+          PTCount,
+          ResultURL,
+          SubmissionID,
+          CustomerIdentifier_MerchantCode,
+          CustomerIdentifier_LocationCode,
+          CustomerIdentifier_CustomerCode,
+          TerminalIdentifier_LocationCode,
+          TerminalIdentifier_TerminalCode,
+          TerminalIdentifier_MerchantCode
+        };
+
+        dispatch({ type: SUBMIT_CARD + FETCH });
+
+        axios({
+          method: 'post',
+          url: URL3DSi,
+          headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+          data
+        });
+
+        axios({
+          method: 'get',
+          url: `${RedirectURL}/${SubmissionID}`
+        }).then((response) => {
+          const { payload, success, errorMessage } = response.data;
+
+          if (!success) {
+            dispatch({
+              type: SUBMIT_CARD + FAILURE,
+              alert: errorMessage
+            });
+          } else {
+            dispatch({ type: SUBMIT_CARD + SUCCESS });
+            location.assign(payload);
+          }
+        }).catch(() => {
+          dispatch({ type: SUBMIT_CARD + FAILURE });
+        });
       }
-    }).catch(() => {
+    };
+
+    submit().catch(() => {
       dispatch({ type: SUBMIT_CARD + FAILURE });
     });
   };
