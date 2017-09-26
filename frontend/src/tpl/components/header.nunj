@@ -8,6 +8,8 @@
   <div class="search r-search"></div>
 
   <ul class="navbar-nav mr-auto">
+    <li class="nav-item r-language-selector"></li>
+
     <li class="nav-item {% if(headerActive === 'Activity') %} active {% endif %}">
       <a class="nav-link" href="#">
         {{ svg('activity', 'icon-navigation icon-dashboard') }}
