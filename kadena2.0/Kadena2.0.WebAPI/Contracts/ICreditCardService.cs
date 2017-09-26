@@ -9,5 +9,6 @@ namespace Kadena.WebAPI.Contracts
         Guid GenerateSubmissionId();
         bool VerifySubmissionId(string submissionId);
         Task<bool> SaveToken(SaveTokenData tokenData);
+        bool CreditcardSaved(string submissionId);
     }
 }

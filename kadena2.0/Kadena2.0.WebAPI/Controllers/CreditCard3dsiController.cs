@@ -46,5 +46,14 @@ namespace Kadena.WebAPI.Controllers
             var success = await service.SaveToken(saveTokenData);
             return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
         }
+
+
+        [HttpGet]
+        [Route("api/shoppingcart/creditcardSaved")]
+        public async Task<IHttpActionResult> CreditcardSaved(string submissionId)
+        {
+            var success = service.CreditcardSaved(submissionId);
+            return ResponseJson<bool>(success);
+        }
     }
 }
