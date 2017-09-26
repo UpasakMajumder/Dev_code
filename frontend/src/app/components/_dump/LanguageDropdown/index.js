@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 const LanguageDropdown = (props) => {
   const { languages, changeLanguage, shadow } = props;
 
-  const languagesList = languages.map((item) => {
+  const languagesList = languages.map((item, i) => {
     return (
       <li
         className='language-selector__item'
-        key={item.id}
+        key={i}
         onClick={() => changeLanguage(item)}
       >
         {item.language}
@@ -26,7 +26,6 @@ const LanguageDropdown = (props) => {
 
 LanguageDropdown.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
     language: PropTypes.string.isRequired
   }).isRequired).isRequired,
   shadow: PropTypes.bool,

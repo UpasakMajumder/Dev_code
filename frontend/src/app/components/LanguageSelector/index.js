@@ -21,7 +21,7 @@ class LanguageSelector extends Component {
   };
 
   render() {
-    const selectedLanguage = LANGUAGES.languages.filter(item => item.id === LANGUAGES.selectedId);
+    const selectedLanguage = LANGUAGES.languages.filter(item => item.language === LANGUAGES.selected);
 
     const languagesComponent = this.props.languageSelector
       ? <LanguageDropdown languages={LANGUAGES.languages} changeLanguage={this.changeLanguage}/>

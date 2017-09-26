@@ -166,24 +166,17 @@
         }
       },
       languages: {
-        title: 'Languages',
-        description: 'Select your preferred language',
-        placeholder: 'Select your default Language',
-        buttonTitle: 'Save changes',
-        selectedId: 0,
+        selected: 'English',
         languages: [
           {
-            id: 0,
             language: 'English',
             url: '#English'
           },
           {
-            id: 1,
             language: 'French',
             url: '#French'
           },
           {
-            id: 2,
             language: 'German',
             url: '#German'
           }
