@@ -11,7 +11,7 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TaxEstimationServiceClient : ClientBase, ITaxEstimationServiceClient
     {
-        public async Task<BaseResponseDto<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
+        public async Task<BaseResponseDto<decimal>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
         {
             using (var httpClient = new HttpClient())
             {
@@ -20,7 +20,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     using (var response = await httpClient.PostAsync(serviceEndpoint, content))
                     {
-                        return await ReadResponseJson<double>(response);
+                        return await ReadResponseJson<decimal>(response);
                     }
                 }
             }

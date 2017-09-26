@@ -15,8 +15,9 @@ namespace Kadena.WebAPI.Services
         private readonly IUserDataServiceClient userClient;
         private readonly IPaymentServiceClient paymentClient;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoLogger logger;
 
-        public CreditCardService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoResourceService resources)
+        public CreditCardService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoResourceService resources, IKenticoLogger logger)
         {
             if (submissionProvider == null)
             {
@@ -34,11 +35,16 @@ namespace Kadena.WebAPI.Services
             {
                 throw new ArgumentNullException(nameof(resources));
             }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
 
             this.submissionProvider = submissionProvider;
             this.userClient = userClient;
             this.paymentClient = paymentClient;
             this.resources = resources;
+            this.logger = logger;
         }
 
         public Guid GenerateSubmissionId()
@@ -51,7 +57,7 @@ namespace Kadena.WebAPI.Services
 
             submissionProvider.SaveSubmission(submission);
             return submission.SubmissionId;
-        }        
+        }
 
         public bool VerifySubmissionId(string submissionId)
         {
@@ -97,11 +103,20 @@ namespace Kadena.WebAPI.Services
 
             string userId = submission.UserId.ToString();
 
-            var tokenId =  await CallSaveToken(userId, tokenData.Token); // TODO get user id from custom table if necessary
+            var tokenId = await CallSaveToken(userId, tokenData.Token); // TODO get user id from custom table if necessary
+
+            if (string.IsNullOrEmpty(tokenId))
+            {
+                // TODO log and quit with error
+            }
 
             await CallAuthorizeAmount(userId, tokenId, tokenData.Token);
 
+            // TODO check if Auth failed
+
             // TODO pass data needet to finish the order
+
+            // TODO notify FE waiting request that it is done or failed
 
             return true;
         }
@@ -121,13 +136,14 @@ namespace Kadena.WebAPI.Services
 
             var result = await userClient.SaveCardToken(url, saveTokenRequest);
 
-            var tokenId = result.Payload.Result;
+            if (result == null || !result.Success || result.Payload == null)
+            {
+                var error = "Failed to call UserData microservice to SaveToken. " + result?.ErrorMessages;
+                logger.LogError("SaveToken", error);
+                return null;
+            }
 
-            // TODO handle calling error
-
-            // TODO log result
-
-            return tokenId;
+            return result.Payload.Result;
         }
 
 
@@ -155,9 +171,32 @@ namespace Kadena.WebAPI.Services
 
             var result = await paymentClient.AuthorizeAmount(url, authorizeAmountRequest);
 
-            // TODO handle calling error
+            if (result == null || !result.Success || result.Payload == null)
+            {
+                var error = "Failed to call Payment microservice to AuthorizeAmount. " + result?.ErrorMessages;
+                logger.LogError("SaveToken", error);
+                return;
+            }
 
-            // TODO log result
+            //return result.Payload.
+        }
+
+        public bool CreditcardSaved(string submissionId)
+        {
+            var submissionGuid = Guid.Empty;
+            if (!Guid.TryParse(submissionId, out submissionGuid))
+            {
+                return false;
+            }
+
+            var submission = submissionProvider.GetSubmission(submissionGuid);
+
+            if (submission == null || !submission.AlreadyUsed)
+            {
+                return false;
+            }
+
+            return false; // TODO
         }
     }
 }

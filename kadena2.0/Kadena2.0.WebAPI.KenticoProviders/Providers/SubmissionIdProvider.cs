@@ -8,7 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class SubmissionIdProvider : ISubmissionIdProvider
     {
-        private readonly string SubmissionsTable = "KDA.Neco";
+        private readonly string SubmissionsTable = "KDA.Submissions";
 
         public void SaveSubmission(Submission submission)
         {
