@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from 'app.consts';
+import { CARD_VALIDATION_ERROR, SUBMIT_CARD, FETCH, FAILURE } from 'app.consts';
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
-import { CARD_PAYMENT } from 'app.globals';
+import { CARD_PAYMENT, NOTIFICATION } from 'app.globals';
 
 export default (fields, cardType) => {
   const { name, cvc, number, expiry } = fields;
@@ -63,12 +63,10 @@ export default (fields, cardType) => {
       return;
     }
 
-    dispatch({
-      type: SUBMIT_CARD
-    });
+    dispatch({ type: SUBMIT_CARD + FETCH });
 
     // AJAX REQUEST
-    const { URL3DSi, ResultURL, BrowserRedirectURL, SubmissionID,
+    const { URL3DSi, ResultURL, RedirectURL, SubmissionID,
             CustomerIdentifier_MerchantCode,
             CustomerIdentifier_LocationCode,
             CustomerIdentifier_CustomerCode,
@@ -88,7 +86,6 @@ export default (fields, cardType) => {
       APCount,
       PTCount,
       ResultURL,
-      BrowserRedirectURL,
       SubmissionID,
       CustomerIdentifier_MerchantCode,
       CustomerIdentifier_LocationCode,
@@ -103,6 +100,24 @@ export default (fields, cardType) => {
       url: URL3DSi,
       headers: { 'Content-type': 'application/x-www-form-urlencoded' },
       data
+    });
+
+    axios({
+      method: 'get',
+      url: `${RedirectURL}/${SubmissionID}`
+    }).then((response) => {
+      const { payload, success, errorMessage } = response.data;
+
+      if (!success) {
+        dispatch({
+          type: SUBMIT_CARD + FAILURE,
+          alert: errorMessage
+        });
+      } else {
+        location.assign(payload);
+      }
+    }).catch(() => {
+      dispatch({ type: SUBMIT_CARD + FAILURE });
     });
   };
 };

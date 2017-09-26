@@ -179,6 +179,7 @@
       },
       cardPayment: {
         URL3DSi: '',
+        RedirectURL: 'hi',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: 'Proceed with payment',
         cardTypeInValidMessage: 'card type error',
@@ -201,7 +202,7 @@
           },
         },
         ResultURL: '',
-        SubmissionID: '',
+        SubmissionID: '1',
         APCount: '0',
         PTCount: '0',
         CustomerIdentifier_MerchantCode: 'Kadena2.0',
