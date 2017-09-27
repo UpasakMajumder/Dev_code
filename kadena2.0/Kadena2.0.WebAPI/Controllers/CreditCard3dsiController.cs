@@ -50,7 +50,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/shoppingcart/creditcardSaved")]
-        public async Task<IHttpActionResult> CreditcardSaved(string submissionId)
+        public IHttpActionResult CreditcardSaved(string submissionId)
         {
             var success = service.CreditcardSaved(submissionId);
             return ResponseJson<bool>(success);
