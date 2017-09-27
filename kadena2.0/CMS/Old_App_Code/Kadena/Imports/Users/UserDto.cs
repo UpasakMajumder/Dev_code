@@ -55,7 +55,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         [MaxLength(30)]
         public string Country { get; set; }
 
-        [Header(12, "Phone number")]
+        [Header(12, "State")]
+        [MaxLength(30)]
+        public string State { get; set; }
+
+        [Header(13, "Phone number")]
         [MaxLength(30)]
         public string PhoneNumber { get; set; }
 

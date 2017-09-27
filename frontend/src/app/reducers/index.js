@@ -15,6 +15,7 @@ import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
 import products from './products';
 import dialogAlert from './dialogAlert';
+import languageSelector from './languageSelector';
 
 const rootReducer = combineReducers({
   login,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   cartPreview,
   products,
   toastr,
-  dialogAlert
+  dialogAlert,
+  languageSelector
 });
 
 export default rootReducer;

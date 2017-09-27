@@ -169,9 +169,9 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return new ShoppingCartTotals()
             {
-                TotalItemsPrice = ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
-                TotalShipping = ECommerceContext.CurrentShoppingCart.TotalShipping,
-                TotalTax = ECommerceContext.CurrentShoppingCart.TotalTax
+                TotalItemsPrice = (decimal)ECommerceContext.CurrentShoppingCart.TotalItemsPrice,
+                TotalShipping = (decimal)ECommerceContext.CurrentShoppingCart.TotalShipping,
+                TotalTax = (decimal)ECommerceContext.CurrentShoppingCart.TotalTax
             };
         }
 
@@ -263,13 +263,13 @@ namespace Kadena.WebAPI.KenticoProviders
                 DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
                 SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                 SKUNumber = i.SKU?.SKUNumber,
-                TotalTax = 0.0d,
-                UnitPrice = showPrices ? i.UnitPrice : 0.0d,
+                TotalTax = 0.0m,
+                UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
                 UnitOfMeasure = "EA",
                 Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = showPrices ? i.UnitPrice * i.CartItemUnits : 0.0d,
+                TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
                 PriceText = showPrices ? string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits) : string.Empty,
                 PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),

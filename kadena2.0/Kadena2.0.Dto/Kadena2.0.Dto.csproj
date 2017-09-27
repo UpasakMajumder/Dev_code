@@ -68,7 +68,6 @@
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
-    <Compile Include="Checkout\Requests\CustomerDataRequestDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\WeightDto.cs" />
@@ -81,6 +80,8 @@
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
+    <Compile Include="Payment\CreditCard\MicroserviceRequests\AddressDto.cs" />
+    <Compile Include="Payment\CreditCard\MicroserviceRequests\CreateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
     <Compile Include="Product\ProductCategoryDto.cs" />
     <Compile Include="Product\ProductDto.cs" />
@@ -113,9 +114,8 @@
     <Compile Include="Settings\IdDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
-    <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
-    <Compile Include="Site\Requests\ArtworkFtpRequestDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
+    <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />

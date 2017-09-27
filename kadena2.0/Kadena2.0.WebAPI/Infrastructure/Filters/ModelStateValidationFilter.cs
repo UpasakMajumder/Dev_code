@@ -10,7 +10,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters
         {
             if (!context.ModelState.IsValid)
             {
-                var message = context.ModelState.Values?.FirstOrDefault()?.Errors?[0]?.ErrorMessage;
+                var message = context.ModelState.Values?.FirstOrDefault(v => (v.Errors?.Count ?? 0) > 0)?.Errors?.FirstOrDefault()?.ErrorMessage;
 
                 if (string.IsNullOrEmpty(message))
                     message = "Bad request format";

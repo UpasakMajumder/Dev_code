@@ -50,9 +50,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListExpired") };
                     }
 
-                    if (btnCell == null
-                        && !d.State.Equals("Addresses verified")
-                        && !d.State.Equals("Addresses need to be verified"))
+                    if (btnCell == null 
+                        && !d.State.Equals(MailingListState.AddressesVerified) 
+                        && !d.State.Equals(MailingListState.AddressesNeedToBeVerified))
                     {
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
                     }

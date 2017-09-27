@@ -68,8 +68,10 @@ namespace Kadena.WebAPI.KenticoProviders
             var favorites = CustomTableItemProvider.GetItems(CustomTableName)
                  .WhereEquals("ItemSiteID", SiteContext.CurrentSiteID)
                  .WhereEquals("ItemUserID", MembershipContext.AuthenticatedUser.UserID)
-                 .OrderByDescending("ItemModifiedWhen")
-                 .TopN(count);
+                 .OrderByDescending("ItemModifiedWhen");
+
+            if (count > 0)
+                 favorites = favorites.TopN(count);
 
             return favorites.Select(f => CreateProcuct(f.GetIntegerValue("ItemDocumentID", 0)))
                 .Where(f => f!=null)
