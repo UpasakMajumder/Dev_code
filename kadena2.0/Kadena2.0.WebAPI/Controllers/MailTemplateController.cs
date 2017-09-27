@@ -38,7 +38,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var result = service.GetMailTemplate(siteId, templateName, languageCode);
             var resultDto = mapper.Map<MailTemplateDto>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with name : {templateName}");
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template or it's localized variant");
         }
     }
 }
