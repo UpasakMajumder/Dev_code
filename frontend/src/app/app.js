@@ -47,6 +47,7 @@ const app = {
     render('Checkout', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
     render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
+    // render('Settings/Languages', document.querySelectorAll('.r-settings-languages'));
     render('OrderDetail', document.querySelectorAll('.r-order-detail'));
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));
@@ -61,6 +62,7 @@ const app = {
     render('ToastrTest', document.querySelectorAll('.r-toastr-test'));
     render('Products/All', document.querySelectorAll('.r-products'));
     render('Products/Favorites', document.querySelectorAll('.r-products-favorites'));
+    render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
   }
 };
 

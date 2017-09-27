@@ -106,6 +106,7 @@
         <li class="css-tabs__tab js-tab-settings" data-id="t2" data-tab-content=".js-tab-settings-password">Password</li>
         <li class="css-tabs__tab js-tab-settings" data-id="t3" data-tab-content=".js-tab-settings-email-notification">Email notification</li>
         <li class="css-tabs__tab js-tab-settings" data-id="t4" data-tab-content=".js-tab-settings-addresses">Addresses</li>
+        <li class="css-tabs__tab js-tab-settings" data-id="t5" data-tab-content=".js-tab-settings-languages">Languages</li>
       </ul>
 
       <div>
@@ -159,6 +160,10 @@
 
         <div class="css-tabs__content js-tab-settings-addresses">
           <div class="r-settings-addresses"></div>
+        </div>
+
+        <div class="css-tabs__content js-tab-settings-languages">
+          <div class="r-settings-languages"></div>
         </div>
       </div>
     </div>

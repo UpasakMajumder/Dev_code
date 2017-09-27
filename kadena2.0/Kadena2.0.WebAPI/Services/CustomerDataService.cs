@@ -39,6 +39,7 @@ namespace Kadena.WebAPI.Services
                 LastName = customer.LastName,
                 Email = customer.Email,
                 Phone = customer.Phone,
+                PreferredLanguage = customer.PreferredLanguage,
                 Address = new CustomerAddress()
                 {
                     Street = address.Street,
