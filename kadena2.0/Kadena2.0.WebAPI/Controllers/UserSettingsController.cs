@@ -36,5 +36,14 @@ namespace Kadena.WebAPI.Controllers
             var result = _mapper.Map<IdDto>(addressModel);
             return ResponseJson(result);
         }
+
+        [HttpPut]
+        [Route("api/usersettings/savelocalization")]
+        public IHttpActionResult SaveLocalization([FromBody] LocalizationDto localization)
+        {
+            var language = _mapper.Map<string>(localization);
+            var result = _service.SaveLocalization(language);
+            return ResponseJson(result);
+        }
     }
 }
