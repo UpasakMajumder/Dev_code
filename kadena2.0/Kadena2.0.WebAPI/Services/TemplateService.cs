@@ -97,7 +97,7 @@ namespace Kadena.WebAPI.Services
                         UpdatedDate = DateTime.Parse(d.Updated),
                         ProductName = d.Name
                     })
-                    .OrderByDescending(t => t.CreatedDate)
+                    .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
             }
             else

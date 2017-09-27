@@ -37,6 +37,12 @@
         }
       }
 
+      &--secondary {
+        @include media-breakpoint-down(lg) {
+          display: none;
+        }
+      }
+
       &:last-child {
         border-top-right-radius: $border-radius-xl;
 

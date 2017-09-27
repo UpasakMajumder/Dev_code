@@ -19,6 +19,7 @@ export const VALIDATION_ERROR = '_VALIDATION_ERROR';
 export const ADD_NEW_ADDRESS = 'ADD_NEW_ADDRESS';
 export const LOG_IN = 'LOG_IN';
 export const DIALOG = 'DIALOG';
+export const LANGUAGES = 'LANGUAGES';
 export const DIALOG_ALERT = 'DIALOG_ALERT';
 export const APP_LOADING = 'APP_LOADING';
 export const SEARCH_PAGE = 'SEARCH_PAGE';

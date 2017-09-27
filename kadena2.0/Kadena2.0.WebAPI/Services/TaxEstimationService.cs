@@ -25,7 +25,7 @@ namespace Kadena.WebAPI.Services
             this.kenticoLog = kenticoLog;
         }
 
-        public async Task<double> EstimateTotalTax(DeliveryAddress deliveryAddress)
+        public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
             DeliveryAddress addressTo = null;
 
@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.Services
             if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
             {
                 // not call microservice in this case
-                return 0.0d;
+                return 0.0m;
             }
 
             var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
@@ -55,7 +55,7 @@ namespace Kadena.WebAPI.Services
             if (!taxResponse.Success)
             {
                 kenticoLog.LogError("Tax estimation", $"Failed to estimate tax: {taxResponse.ErrorMessages}");
-                return 0.0d;
+                return 0.0m;
             }
 
             return taxResponse.Payload;
