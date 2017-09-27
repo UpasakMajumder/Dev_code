@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Dto.Site.Requests;
 using Kadena.Dto.Site.Responses;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
@@ -18,12 +19,13 @@ namespace Kadena.WebAPI.Controllers
             _mapper = mapper;
         }
 
+        
         [HttpGet]
         [Route("api/site")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetSiteData(int siteId = 0, string siteName = "")
+        public IHttpActionResult GetSiteData( [FromUri]SiteDataRequestDto request)
         {
-            var result = _service.GetKenticoSite(siteId, siteName);
+            var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
             var resultDto = _mapper.Map<SiteDataResponseDto>(result);
             return ResponseJsonCheckingNull(resultDto, "Unable to find site");
         }
