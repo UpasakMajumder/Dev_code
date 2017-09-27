@@ -30,11 +30,13 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}/language/{languageCode}")]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}/language")]
         [Route("api/site/{siteId}/mailtemplate/{templateName}")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetMailTemplate(int siteId, string templateName)
+        public IHttpActionResult GetMailTemplate(int siteId, string templateName, string languageCode = "")
         {
-            var result = service.GetMailTemplate(siteId, templateName);
+            var result = service.GetMailTemplate(siteId, templateName, languageCode);
             var resultDto = mapper.Map<MailTemplateDto>(result);
             return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with name : {templateName}");
         }
