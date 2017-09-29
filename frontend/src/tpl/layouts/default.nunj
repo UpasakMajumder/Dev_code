@@ -390,6 +390,7 @@
         addToFavorites: "Set product as favorite",
         loadProductsUrl: "/api/products",
         loadFavoritesProductsUrl: "/api/products/favorites",
+        nodeAliasPath: "/Products",
         markProductFavouriteUrl: "/api/favorites/set",
         unmarkProductFavouriteUrl: "/api/favorites/unset"
       }
