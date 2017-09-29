@@ -79,13 +79,13 @@ export const staticUI = {
             "type": "text"
           },
           {
-            "id": "address1",
+            "id": "street1",
             "label": "Address 1",
             "values": [],
             "type": "text"
           },
           {
-            "id": "address2",
+            "id": "street2",
             "label": "Address 2",
             "values": [],
             "type": "text",
