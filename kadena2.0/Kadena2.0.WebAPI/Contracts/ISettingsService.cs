@@ -6,6 +6,9 @@ namespace Kadena.WebAPI.Contracts
     public interface ISettingsService
     {
         SettingsAddresses GetAddresses();
+
         void SaveShippingAddress(DeliveryAddress address);
+
+        bool SaveLocalization(string code);
     }
 }

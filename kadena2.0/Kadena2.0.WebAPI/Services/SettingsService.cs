@@ -105,6 +105,11 @@ namespace Kadena.WebAPI.Services
             };
         }
 
+        public bool SaveLocalization(string code)
+        {
+            return _kenticoUsers.SaveLocalization(code);
+        }
+
         public void SaveShippingAddress(DeliveryAddress address)
         {
             _kentico.SaveShippingAddress(address);

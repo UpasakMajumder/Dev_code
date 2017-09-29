@@ -167,16 +167,20 @@
       },
       languages: {
         selected: 'English',
+        url: '#',
         languages: [
           {
+            code: '1',
             language: 'English',
             url: '#English'
           },
           {
+            code: '2',
             language: 'French',
             url: '#French'
           },
           {
+            code: '3',
             language: 'German',
             url: '#German'
           }
