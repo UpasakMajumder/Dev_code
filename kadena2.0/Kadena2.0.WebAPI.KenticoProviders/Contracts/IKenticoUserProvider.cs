@@ -11,7 +11,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Customer GetCurrentCustomer();
 
         Customer GetCustomer(int customerId);
+
         bool UserCanSeePrices();
+
         bool UserCanSeePrices(int siteId, int userId);
 
         bool UserCanSeeAllOrders();
@@ -19,5 +21,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool UserCanModifyShippingAddress();
 
         User GetCurrentUser();
+
+        bool SaveLocalization(string code);
     }
 }

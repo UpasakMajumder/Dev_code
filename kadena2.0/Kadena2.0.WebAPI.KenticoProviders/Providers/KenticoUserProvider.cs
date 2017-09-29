@@ -5,11 +5,19 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
+using System;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoUserProvider : IKenticoUserProvider
     {
+        private readonly IKenticoLogger _logger;
+
+        public KenticoUserProvider(IKenticoLogger logger)
+        {
+            _logger = logger;
+        }
+
         public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -30,7 +38,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return AddressFactory.CreateDeliveryAddresses(addresses);
         }
-       
+
         public Customer GetCurrentCustomer()
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -96,7 +104,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public bool UserCanModifyShippingAddress()
         {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress",
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
@@ -107,6 +115,25 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 UserId = user.UserID
             };
+        }
+
+        public bool SaveLocalization(string code)
+        {
+            try
+            {
+                var user = MembershipContext.AuthenticatedUser;
+                if (user != null)
+                {
+                    user.PreferredCultureCode = code;
+                    UserInfoProvider.SetUserInfo(user);
+                }
+            }
+            catch (Exception exc)
+            {
+                _logger.LogException("UserProvider - Saving Localization", exc);
+                throw;
+            }
+            return true;
         }
     }
 }
