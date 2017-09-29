@@ -122,8 +122,11 @@ namespace Kadena.WebAPI.KenticoProviders
             try
             {
                 var user = MembershipContext.AuthenticatedUser;
-                user.PreferredCultureCode = code;
-                UserInfoProvider.SetUserInfo(user);
+                if (user != null)
+                {
+                    user.PreferredCultureCode = code;
+                    UserInfoProvider.SetUserInfo(user);
+                }
             }
             catch (Exception exc)
             {
