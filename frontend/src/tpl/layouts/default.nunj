@@ -230,7 +230,8 @@
       },
       addToCartUrl: '',
       search: {
-        queryUrl: ""
+        queryUrl: "",
+        placeholder: "Search"
       },
       recentOrders: {
         getHeaders: '',
