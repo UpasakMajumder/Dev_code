@@ -264,7 +264,8 @@ namespace Kadena.WebAPI.Services
             var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
-            var redirectUrl = $"/order-submitted?success={serviceResult.Success.ToString().ToLower()}";
+            var redirectUrlBase = kenticoProvider.GetDocumentUrl("/order-submitted");
+            var redirectUrl = $"{redirectUrlBase}?success={serviceResult.Success}".ToLower();
             if (serviceResult.Success)
             {
                 redirectUrl += "&order_id=" + serviceResult.Payload;
