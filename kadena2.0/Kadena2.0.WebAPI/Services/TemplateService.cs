@@ -84,6 +84,10 @@ namespace Kadena.WebAPI.Services
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");
             }
+            else
+            {
+                productEditorUrl = _kentico.GetDocumentUrl(productEditorUrl);
+            }
 
             if (requestResult.Success)
             {
