@@ -49,7 +49,8 @@ namespace Kadena.WebAPI.Services
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var cartItems = kenticoProvider.GetShoppingCartItems();
             var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
-            var items = cartItems.Length == 1 ? "item" : "items"; // todo configurable
+            var items = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
+            var count = cartItems?.Length ?? 0;
 
             var otherAddressSettingValue = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
 
@@ -61,7 +62,7 @@ namespace Kadena.WebAPI.Services
                 EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
                 Products = new CartItems()
                 {
-                    Number = $"You have {cartItems.Length} {items} in your shopping cart",
+                    Number = string.Format(resources.GetResourceString("Kadena.Checkout.CountOfItems"), count, items),
                     Items = cartItems.ToList(),
                     SummaryPrice = new CartPrice
                     {
