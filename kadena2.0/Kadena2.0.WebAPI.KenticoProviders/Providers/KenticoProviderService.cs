@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetDocumentUrl(string aliasPath)
         {
-            return GetDocumentUrl(aliasPath, LocalizationContext.PreferredCultureCode);
+            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
         }
 
         public string GetDocumentUrl(string aliasPath, string cultureCode)
