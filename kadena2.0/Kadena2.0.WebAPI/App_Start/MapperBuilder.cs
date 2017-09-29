@@ -177,6 +177,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<ProductTemplate, ProductTemplateDTO>();
                 config.CreateMap<ProductTemplatesHeader, ProductTemplatesHeaderDTO>()
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
+                config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
             });
         }
     }

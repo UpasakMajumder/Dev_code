@@ -108,6 +108,7 @@
     <Compile Include="Settings\DialogButtonDto.cs" />
     <Compile Include="Settings\DialogTypeDto.cs" />
     <Compile Include="Settings\IdDto.cs" />
+    <Compile Include="Settings\LocalizationDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
