@@ -29,6 +29,28 @@ namespace Kadena.WebAPI.KenticoProviders
             this.resources = resources;
         }
 
+        public string GetDocumentUrl(string aliasPath)
+        {
+            return GetDocumentUrl(aliasPath, LocalizationContext.PreferredCultureCode);
+        }
+
+        public string GetDocumentUrl(string aliasPath, string cultureCode)
+        {
+            var document = DocumentHelper.GetDocument(
+                new NodeSelectionParameters
+                {
+                    AliasPath = aliasPath,
+                    SiteName = SiteContext.CurrentSiteName,
+                    CultureCode = cultureCode,
+                    CombineWithDefaultCulture = false
+                },
+                new TreeProvider(MembershipContext.AuthenticatedUser)
+            );
+            var url = document.DocumentUrlPath;
+
+            return url;
+        }
+
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
