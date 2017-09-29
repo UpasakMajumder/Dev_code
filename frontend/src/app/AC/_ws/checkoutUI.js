@@ -1,9 +1,7 @@
 /* eslint-disable */
 export const newAddress = {
-  "street": [
-    "Test Address line 1",
-    "Test Address line 2"
-  ],
+  "street1": "Test Address line 1",
+  "street2": "Test Address line 2",
   "city": "COLLIERVILLE",
   "state": "TN",
   "zip": "38017",
@@ -143,9 +141,8 @@ export const staticUI = {
       "emptyMessage": "Fill at least one address",
       "items": [
         {
-          "street": [
-            "Test Address line 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "COLLIERVILLE",
           "state": "TN",
           "zip": "38017",
@@ -153,9 +150,8 @@ export const staticUI = {
           "checked": true
         },
         {
-          "street": [
-            "House number 123"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Red Watter Village",
           "state": "",
           "zip": "56161",
@@ -163,9 +159,8 @@ export const staticUI = {
           "checked": false
         },
         {
-          "street": [
-            "Sun street 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Tokyo",
           "state": "",
           "zip": "13228",
@@ -173,9 +168,8 @@ export const staticUI = {
           "checked": false
         },
         {
-          "street": [
-            "Actum Hyper Company"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Prague",
           "state": "",
           "zip": "14000",
