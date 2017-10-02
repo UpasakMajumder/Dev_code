@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -23,6 +22,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
         private MailingListDataDTO _container;
+
+        public string RedirectPage
+        {
+            get
+            {
+                return GetStringValue("RedirectPage", string.Empty);
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -74,7 +81,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 inpFileName.Value = _container.Name;
                 inpFileName.Disabled = true;
             }
-        }        
+        }
 
         /// <summary>
         /// Creates radio button group for specified set with list of options.
@@ -214,7 +221,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             ServiceHelper.RemoveAddresses(containerId);
                         }
                         var fileId = uploadResult.Payload;
-                        var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
+                        var nextStepUrl = RedirectPage;
                         nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
                         nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", URLHelper.URLEncode(fileId));
                         Response.Redirect(nextStepUrl, false);

@@ -20,6 +20,22 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     {
         private Guid _containerId;
 
+        public string ConfirmedPageUrl
+        {
+            get
+            {
+                return GetStringValue("ConfirmedPageUrl", string.Empty);
+            }
+        }
+
+        public string ReuploadListPageUrl
+        {
+            get
+            {
+                return GetStringValue("ReuploadListPageUrl", string.Empty);
+            }
+        }
+
         public int NumberOfItems
         {
             get
@@ -110,7 +126,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     Reupload = new
                     {
                         Text = ResHelper.GetString("Kadena.MailingList.ReuploadList"),
-                        Url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty), "containerId", _containerId.ToString())
+                        Url = URLHelper.AddParameterToUrl(ReuploadListPageUrl, "containerId", _containerId.ToString())
                     },
                     Correct = ResHelper.GetString("Kadena.MailingList.CorrectErrors")
                 },
@@ -171,7 +187,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 ConfirmChanges = new
                 {
                     Text = ResHelper.GetString("Kadena.MailingList.ConfirmChanges"),
-                    Redirect = "/k-list/processing",
+                    Redirect = ConfirmedPageUrl,
                     Request = "/klist/update"
                 },
                 Message = new
