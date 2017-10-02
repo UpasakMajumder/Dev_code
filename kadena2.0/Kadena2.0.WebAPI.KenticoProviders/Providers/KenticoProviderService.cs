@@ -300,7 +300,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems
+                StockQuantity = i.SKU.SKUAvailableItems,
+                MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
+                TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
             }
             ).ToArray();
 

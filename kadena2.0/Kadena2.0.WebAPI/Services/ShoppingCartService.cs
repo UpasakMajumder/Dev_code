@@ -67,9 +67,7 @@ namespace Kadena.WebAPI.Services
                     ButtonLabels = new ButtonLabels
                     {
                         Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
-                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
-                        MailingList = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
-                        Template = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),                        
                     },
                     SummaryPrice = new CartPrice
                     {
