@@ -7,7 +7,7 @@ namespace Kadena.Models.Checkout
         public string Number { get; set; }
         public List<CartItem> Items { get; set; }
         public CartPrice SummaryPrice { get; set; }
-
+        public ButtonLabels ButtonLabels { get; set; }
         public void HidePrices()
         {
             Items.ForEach(item =>

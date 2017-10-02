@@ -27,7 +27,13 @@ class CheckoutProduct extends Component {
     isEditable: PropTypes.bool,
     delivery: PropTypes.string,
     quantity: PropTypes.number,
-    image: PropTypes.string
+    image: PropTypes.string,
+    templatePrefix: PropTypes.string.isRequired,
+    mailingListPrefix: PropTypes.string.isRequired,
+    buttonLabels: PropTypes.shape({
+      edit: PropTypes.string.isRequired,
+      remove: PropTypes.string.isRequired
+    }).isRequired
   };
 
   componentWillReceiveProps(nextProps) {
@@ -63,7 +69,7 @@ class CheckoutProduct extends Component {
   };
 
   defineEditButton = () => {
-    const { isEditable, editorURL, isMailingList, disableInteractivity } = this.props;
+    const { isEditable, editorURL, isMailingList, disableInteractivity, buttonLabels } = this.props;
 
     if (isMailingList) return null;
 
@@ -73,7 +79,7 @@ class CheckoutProduct extends Component {
           <a href={editorURL}
              className="cart-product__btn">
             <SVG name="edit"/>
-            Edit
+            {buttonLabels.edit}
           </a>
         );
       }
@@ -85,7 +91,7 @@ class CheckoutProduct extends Component {
           <div>
             <SVG name="edit"/>
           </div>
-          Edit
+          {buttonLabels.edit}
         </button>
       );
     }
@@ -95,7 +101,7 @@ class CheckoutProduct extends Component {
 
   render() {
     const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix,
-      template, removeProduct, isQuantityEditable, disableInteractivity } = this.props;
+      template, removeProduct, isQuantityEditable, disableInteractivity, templatePrefix, mailingListPrefix, buttonLabels } = this.props;
     const { quantity } = this.state;
 
     const quantityElement = isQuantityEditable
@@ -110,7 +116,7 @@ class CheckoutProduct extends Component {
       ? <div className="cart-product__mlist">
         <p>
           <SVG name="mailing-list"/>
-          <span>Mailing list: <strong>{mailingList}</strong></span>
+          <span>{mailingListPrefix}: <strong>{mailingList}</strong></span>
         </p>
       </div>
       : <div className="cart-product__quantity">
@@ -127,14 +133,6 @@ class CheckoutProduct extends Component {
       </div>
       : null;
 
-    const imgElement = image
-      ? <div className="cart-product__img">
-        <img src={image} alt={template} />
-      </div>
-      : <div className="cart-product__img">
-        <DefaultImg />
-      </div>;
-
     return (
       <div className={productClassName}>
         <div className="cart-product__img">
@@ -146,7 +144,7 @@ class CheckoutProduct extends Component {
           <div className="cart-product__template">
             <p>
               <SVG name="products"/>
-              <span>Template: <strong>{template}</strong></span>
+              <span>{templatePrefix}: <strong>{template}</strong></span>
             </p>
           </div>
 
@@ -170,7 +168,7 @@ class CheckoutProduct extends Component {
               <div>
                 <SVG name="cross--dark"/>
               </div>
-              Remove
+              {buttonLabels.remove}
             </button>
           </div>
         </div>

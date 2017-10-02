@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Checkout\AddressDialogDto.cs" />
+    <Compile Include="Checkout\ButtonLabelsDto.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
     <Compile Include="Checkout\CartItemsDTO.cs" />
