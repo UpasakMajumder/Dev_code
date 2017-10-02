@@ -270,7 +270,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoService = new KenticoProviderService(new KenticoResourceService());
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger());
                 return kenticoService.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
