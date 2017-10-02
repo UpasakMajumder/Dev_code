@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Dialog from 'app.dump/Dialog';
 import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
+/* globals */
+import { STATIC_FIELDS } from 'app.globals';
 
 class AddressDialog extends Component {
   constructor(props) {
@@ -101,7 +103,7 @@ class AddressDialog extends Component {
 
   getErrorMessage = (id) => {
     const { inValidFields } = this.state;
-    if (inValidFields.includes(id)) return 'The field is required';
+    if (inValidFields.includes(id)) return STATIC_FIELDS.validation.requiredMessage;
     return '';
   };
 

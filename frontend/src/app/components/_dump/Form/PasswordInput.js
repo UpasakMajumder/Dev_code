@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* utilities */
 import { removeProps } from 'app.helpers/object';
-import { LOGIN } from 'app.globals';
+import { LOGIN, STATIC_FIELDS } from 'app.globals';
 
 class PasswordInput extends Component {
   state = {
@@ -10,8 +10,8 @@ class PasswordInput extends Component {
   };
 
   static defaultProps = {
-    passwordHideText: LOGIN.passwordHide,
-    passwordShowText: LOGIN.passwordShow
+    passwordHideText: STATIC_FIELDS.password.hide,
+    passwordShowText: STATIC_FIELDS.password.show
   };
 
   static propTypes = {
