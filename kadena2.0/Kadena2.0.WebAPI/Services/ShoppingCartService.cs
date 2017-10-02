@@ -64,6 +64,13 @@ namespace Kadena.WebAPI.Services
                 {
                     Number = string.Format(resources.GetResourceString("Kadena.Checkout.CountOfItems"), count, items),
                     Items = cartItems.ToList(),
+                    ButtonLabels = new ButtonLabels
+                    {
+                        Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
+                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
+                        MailingList = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
+                        Template = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                    },
                     SummaryPrice = new CartPrice
                     {
                         PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
