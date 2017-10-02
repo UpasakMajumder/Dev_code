@@ -29,6 +29,10 @@ export const staticUI = {
         "pricePrefix": "$",
         "price": "10000.0"
       },
+      "buttonLabels": {
+        "edit": "Edit",
+        "remove": "Remove"
+      },
       "number": "You have 1 item in your shopping cart",
       "items": [
         {
@@ -36,6 +40,8 @@ export const staticUI = {
           "image": "",
           "template": "Template",
           "isMailingList": false,
+          "templatePrefix": "MailingListPrefix",
+          "mailingListPrefix": "MailingListPrefix",
           "mailingList": "Mailing list",
           "delivery": "",
           "pricePrefix": "$",
@@ -52,6 +58,8 @@ export const staticUI = {
           "image": "http://satyr.io/100-200x400-500?2",
           "template": "Template",
           "isMailingList": false,
+          "templatePrefix": "MailingListPrefix",
+          "mailingListPrefix": "MailingListPrefix",
           "mailingList": "Mailing list",
           "delivery": "",
           "pricePrefix": "$",
