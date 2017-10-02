@@ -186,6 +186,16 @@
           }
         ]
       },
+      staticFields: {
+        validation: {
+          requiredMessage: 'The field is required',
+          optionalLabel: 'optional'
+        },
+        password: {
+          show: 'show',
+          hide: 'hide',
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
