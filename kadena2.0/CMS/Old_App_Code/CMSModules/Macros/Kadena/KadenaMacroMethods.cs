@@ -12,6 +12,7 @@ using CMS.CustomTables;
 using System.Collections.Generic;
 using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI.KenticoProviders;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -168,10 +169,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 if ((int)parameters[2] == 0)
                 {
                     return "stock stock--out";
-                }              
-                
+                }
+
                 return "stock stock--available";
-                
+
             }
 
             return string.Empty;
@@ -262,6 +263,19 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return filename;
         }
 
+        [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
+        public static object GetLocalizedDocumentUrl(EvaluationContext context, params object[] parameters)
+        {
+            var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
+            if (!string.IsNullOrWhiteSpace(aliasPath))
+            {
+                var kenticoService = new KenticoProviderService(new KenticoResourceService());
+                return kenticoService.GetDocumentUrl(aliasPath);
+            }
+            return string.Empty;
+        }
+
         #endregion
 
         #region Private methods
@@ -270,7 +284,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var result = string.Empty;
             var pageTypes = new List<string>();
-        
+
             var moduleSettingsMappingsDataClassInfo = DataClassInfoProvider.GetDataClassInfo("KDA.KadenaModuleAndPageTypeConnection");
             if (moduleSettingsMappingsDataClassInfo != null)
             {
