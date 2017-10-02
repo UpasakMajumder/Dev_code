@@ -159,7 +159,6 @@ namespace Kadena.WebAPI
                 });
                 config.CreateMap<MailingAddress, MailingAddressDto>().AfterMap((s, d) => d.FirstName = s.Name);
                 config.CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
-                config.CreateMap<CartButton, CartButtonDTO>();
                 config.CreateMap<CartPrice, CartPriceDTO>();
                 config.CreateMap<MailingListDataDTO, MailingList>();
                 config.CreateMap<NewCartItemDto, NewCartItem>();
@@ -178,6 +177,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<ProductTemplatesHeader, ProductTemplatesHeaderDTO>()
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
+                config.CreateMap<ButtonLabels, ButtonLabelsDto>();
             });
         }
     }
