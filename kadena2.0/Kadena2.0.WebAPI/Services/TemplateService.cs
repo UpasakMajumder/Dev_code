@@ -43,6 +43,7 @@ namespace Kadena.WebAPI.Services
         {
             var productTemplates = new ProductTemplates
             {
+                Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
