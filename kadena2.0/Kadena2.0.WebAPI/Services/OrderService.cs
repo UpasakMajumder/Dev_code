@@ -266,7 +266,7 @@ namespace Kadena.WebAPI.Services
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
             var redirectUrlBaseLocalized = kenticoProvider.GetDocumentUrl(redirectUrlBase);
-            var redirectUrl = $"{redirectUrlBase}?success={serviceResult.Success}".ToLower();
+            var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
             if (serviceResult.Success)
             {
                 redirectUrl += "&order_id=" + serviceResult.Payload;
