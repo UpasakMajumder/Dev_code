@@ -53,7 +53,8 @@ namespace Kadena.WebAPI.Services
             _kenticoResources = kenticoResources;
             _kentico = kentico;
             _logger = logger;
-            _orderDetailUrl = _kenticoResources.GetSettingsKey("KDA_OrderDetailUrl");
+
+            _orderDetailUrl = kentico.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
         }
 
         public async Task<OrderHead> GetHeaders()
