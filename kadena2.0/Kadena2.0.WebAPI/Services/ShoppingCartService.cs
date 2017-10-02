@@ -384,11 +384,6 @@ namespace Kadena.WebAPI.Services
             var preview = new CartItemsPreview
             {
                 EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
-                Cart = new CartButton
-                {
-                    Label = resources.GetResourceString("Kadena.Checkout.ProceedToCheckout"),
-                    Url = "/checkout"
-                },
                 SummaryPrice = new CartPrice(),
 
                 Items = cartItems.ToList()
