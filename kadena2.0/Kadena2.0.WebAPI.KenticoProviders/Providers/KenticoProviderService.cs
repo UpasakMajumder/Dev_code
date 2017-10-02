@@ -296,6 +296,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 MailingListName = i.GetValue("MailingListName", string.Empty),
+                TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplatePrefix"),
                 Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),

@@ -8,6 +8,7 @@ namespace Kadena.Models.Checkout
         public string CartItemText { get; set; }
         public string ProductType { get; set; }
         public string Image { get; set; }
+        public string TemplatePrefix { get; set; }
         public string Template { get; set; }
         public string EditorTemplateId { get; set; }
         public int ProductPageId { get; set; }
