@@ -987,7 +987,7 @@
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
-    <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />    
+    <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
     <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
@@ -1009,6 +1009,10 @@
     <ProjectReference Include="..\Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj">
       <Project>{43388b1f-8597-46eb-8346-e9c6544c5306}</Project>
       <Name>Kadena2.0.ScheduledTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
+      <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
+      <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
