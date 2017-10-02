@@ -6,6 +6,7 @@ using CMS.Ecommerce;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Site;
+using CMS.Localization;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -13,7 +14,7 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         public string GetResourceString(string name)
         {
-            return ResHelper.GetString(name, useDefaultCulture:true);
+            return ResHelper.GetString(name, LocalizationContext.CurrentCulture.CultureCode);
         }
 
         public string GetSettingsKey(string key)
