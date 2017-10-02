@@ -133,5 +133,8 @@ namespace Kadena.Models.Checkout
         /// Template product service's task Id
         /// </summary>
         public Guid DesignFilePathTaskId { get; set; }
+
+        public string MailingListPrefix { get; set; }
+        public string TemplatePrefix { get; set; }
     }
 }

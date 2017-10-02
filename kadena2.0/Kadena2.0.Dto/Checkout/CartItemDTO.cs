@@ -16,5 +16,7 @@
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
         public string EditorURL { get; set; }
+        public string MailingListPrefix { get; set; }
+        public string TemplatePrefix { get; set; }
     }
 }
