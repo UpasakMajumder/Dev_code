@@ -5,12 +5,13 @@ import Product from 'app.dump/Product/Checkout';
 
 const Products = (props) => {
   const { ui, removeProduct, changeProductQuantity, disableInteractivity } = props;
-  const { number, items } = ui;
+  const { number, items, buttonLabels } = ui;
 
   const products = items.map((item) => {
     return <Product key={item.id} {...item}
                     removeProduct={removeProduct}
                     disableInteractivity={disableInteractivity}
+                    buttonLabels={buttonLabels}
                     changeProductQuantity={changeProductQuantity} />;
   });
 
@@ -25,7 +26,8 @@ const Products = (props) => {
 Products.propTypes = {
   ui: PropTypes.shape({
     number: PropTypes.string.isRequired,
-    items: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+    items: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    buttonLabels: PropTypes.object.isRequired
   }).isRequired,
   removeProduct: PropTypes.func.isRequired,
   changeProductQuantity: PropTypes.func.isRequired,
