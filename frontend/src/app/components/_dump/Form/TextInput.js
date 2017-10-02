@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /* utilities */
 import { removeProps } from 'app.helpers/object';
+/* globals */
+import { STATIC_FIELDS } from 'app.globals';
 
 const TextInput = (props) => {
   const { label, error, disabled, isOptional, className } = props;
@@ -12,7 +14,7 @@ const TextInput = (props) => {
   const selector = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
   const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
   const errorClass = error ? 'input--error' : '';
-  const optionalLabel = isOptional ? <span className="input__right-label">optional</span> : null;
+  const optionalLabel = isOptional ? <span className="input__right-label">{STATIC_FIELDS.validation.optionalLabel}</span> : null;
   const inputSelector = `input__text ${errorClass} ${className}`;
 
   return (
