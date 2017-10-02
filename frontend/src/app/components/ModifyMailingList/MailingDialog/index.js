@@ -68,7 +68,7 @@ class MailingDialog extends Component {
 
     const theader = (
       <tr>
-        <th>Error</th>
+        <th>{fields.error.header}</th>
         <th>{fields.fullName.header}</th>
         <th>{fields.firstAddressLine.header}</th>
         <th>{fields.secondAddressLine.header}</th>
@@ -192,6 +192,9 @@ class MailingDialog extends Component {
           header: PropTypes.string.isRequired,
           required: PropTypes.bool,
           values: PropTypes.array
+        }).isRequired,
+        error: PropTypes.shape({
+          header: PropTypes.string.isRequired
         }).isRequired
       }).isRequired
     }).isRequired,

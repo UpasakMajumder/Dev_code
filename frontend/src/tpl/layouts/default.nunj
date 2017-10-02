@@ -380,6 +380,9 @@
             postalCode: {
               header: "Postal Code",
               required: true
+            },
+            error: {
+              header: "Error"
             }
           }
         }
