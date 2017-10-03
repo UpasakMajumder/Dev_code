@@ -102,7 +102,8 @@ namespace Kadena.WebAPI.KenticoProviders
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-                dm.Icon = GetShippingProviderIcon(dm.Title);
+                dm.Icon = GetShippingProviderIcon(dm.Name);
+                dm.Title = ResolveMacroString(dm.Title);
             }
 
             return deliveryMethods;
@@ -127,9 +128,9 @@ namespace Kadena.WebAPI.KenticoProviders
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        public string GetShippingProviderIcon(string title)
+        public string GetShippingProviderIcon(string name)
         {
-            if (title != null)
+            if (name != null)
             {
                 var dictionary = new Dictionary<string, string>()
                 {
@@ -140,7 +141,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
                 foreach (var kvp in dictionary)
                 {
-                    if (title.ToLower().Contains(kvp.Key))
+                    if (name.ToLower().Contains(kvp.Key))
                         return kvp.Value;
                 }
             }
@@ -151,6 +152,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = DeliveryFactory.CreateOptions(services);
+            foreach (var item in result)
+            {
+                item.Title = ResolveMacroString(item.Title);
+            }
+
             GetShippingPrice(result);
             return result;
         }
@@ -185,6 +191,11 @@ namespace Kadena.WebAPI.KenticoProviders
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
         }
 
+        private string ResolveMacroString(string macroString)
+        {
+            return MacroResolver.Resolve(macroString, new MacroSettings { Culture = LocalizationContext.CurrentCulture.CultureCode });
+        }
+
         public PaymentMethod[] GetPaymentMethods()
         {
             var paymentOptionInfoCollection = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
@@ -192,7 +203,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             foreach (var method in methods)
             {
-                method.Title = MacroResolver.Resolve(method.DisplayName);
+                method.Title = ResolveMacroString(method.DisplayName);
             }
             return methods;
         }
