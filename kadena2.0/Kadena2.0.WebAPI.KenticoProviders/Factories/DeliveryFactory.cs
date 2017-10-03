@@ -17,7 +17,8 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
             {
                 Id = ci.CarrierID,
                 Opened = false,
-                Title = ci.CarrierDisplayName
+                Title = ci.CarrierDisplayName,
+                Name = ci.CarrierName
             };
         }
 
