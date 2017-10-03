@@ -39,7 +39,7 @@ namespace Kadena.CMSWebParts.Kadena.Modules
                             return;
                         }
                         // module is not enabled - unauthorized accesss
-                        var kenticoProviderService = new KenticoProviderService(new KenticoResourceService());
+                        var kenticoProviderService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger());
                         var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DisabledModuleUrl");
                         url = kenticoProviderService.GetDocumentUrl(url);
                         Response.Redirect(url);
