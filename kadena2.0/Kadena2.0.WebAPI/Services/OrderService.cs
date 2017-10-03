@@ -85,7 +85,8 @@ namespace Kadena.WebAPI.Services
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
-                    Title = "Payment"
+                    Title = "Payment",
+                    DatePrefix = resources.GetResourceString("Kadena.Checkout.PaymentDatePrefix")
                 },
                 PricingInfo = new PricingInfo()
                 {
@@ -177,7 +178,11 @@ namespace Kadena.WebAPI.Services
                 QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
                 ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
-                TrackingId = i.TrackingId
+                TrackingId = i.TrackingId,
+                MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
+                ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
+                TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
+                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix")
             }).ToList();
 
 
