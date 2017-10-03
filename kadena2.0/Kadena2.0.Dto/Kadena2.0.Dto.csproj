@@ -166,6 +166,7 @@
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
+    <Compile Include="_Attributes\StringListValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tax\MicroserviceResponses\" />
