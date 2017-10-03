@@ -10,23 +10,23 @@ const CommonInfo = ({ ui }) => {
 
   const tiles = [
     {
-      title: 'Status',
-      value: status,
+      title: status.title,
+      value: status.value,
       icon: 'flag'
     },
     {
-      title: 'Order date',
-      value: orderDate,
+      title: orderDate.title,
+      value: orderDate.value,
       icon: 'calendar'
     },
     {
-      title: 'Shipping date',
-      value: shippingDate,
+      title: shippingDate.title,
+      value: shippingDate.value,
       icon: 'truck'
     },
     {
-      title: 'Total cost',
-      value: totalCost,
+      title: totalCost.title,
+      value: totalCost.value,
       icon: 'dollar'
     }
   ];
@@ -55,10 +55,22 @@ const CommonInfo = ({ ui }) => {
 
 CommonInfo.propTypes = {
   ui: PropTypes.shape({
-    status: PropTypes.string.isRequired,
-    orderDate: PropTypes.string,
-    shippingDate: PropTypes.string,
-    totalCost: PropTypes.string.isRequired
+    status: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }).isRequired,
+    orderDate: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }).isRequired,
+    shippingDate: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }).isRequired,
+    totalCost: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }).isRequired
   })
 };
 
