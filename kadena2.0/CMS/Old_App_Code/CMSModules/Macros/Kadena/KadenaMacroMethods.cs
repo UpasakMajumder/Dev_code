@@ -276,6 +276,19 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
+        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
+        public static object GetUrlsForLanguageSelector(EvaluationContext context, params object[] parameters)
+        {
+            var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
+            if (!string.IsNullOrWhiteSpace(aliasPath))
+            {
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger());
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
+            }
+            return string.Empty;
+        }
+
         #endregion
 
         #region Private methods
