@@ -22,7 +22,12 @@ namespace Kadena.Dto.Attributes
         public override bool IsValid(object value)
         {
             var list = value as IList<string>;
-            if (list != null)
+
+            if (list == null && minElements == 0)
+            {
+                return true;
+            }
+            else if (list != null)
             {
                 return list.Count >= minElements &&
                        list.Count <= maxElements &&
