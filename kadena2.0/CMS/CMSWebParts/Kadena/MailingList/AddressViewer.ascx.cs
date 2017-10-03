@@ -228,6 +228,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     {
                         Required = true,
                         Header = ResHelper.GetString("Kadena.MailingList.Zip", string.Empty)
+                    },
+                    Error = new
+                    {
+                        Header = ResHelper.GetString("Kadena.MailingList.Error", string.Empty)
                     }
                 }
             };
