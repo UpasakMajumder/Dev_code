@@ -342,6 +342,55 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
+        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath)
+        {
+            var siteCultureCodes = CultureSiteInfoProvider.GetSiteCultureCodes(SiteContext.CurrentSiteName);
+            var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            var documents = tree.SelectNodes()
+                        .Path(aliasPath, PathTypeEnum.Explicit)
+                        .OnSite(SiteContext.CurrentSiteName)
+                        .AllCultures();
+
+            var selectorItems = new List<LanguageSelectorItem>(siteCultureCodes.Count);
+            foreach (var code in siteCultureCodes)
+            {
+                var localizedName = CultureInfoProvider.GetCultureInfo(code).CultureShortName;
+                var localizedFound = false;
+                foreach (var document in documents)
+                {
+                    if (document.DocumentCulture == code)
+                    {
+                        localizedFound = true;
+                        selectorItems.Add(new LanguageSelectorItem
+                        {
+                            Code = code,
+                            Language = localizedName,
+                            Url = document.DocumentUrlPath + "?lang=" + code
+                        });
+                    }
+                }
+
+                if (!localizedFound)
+                {
+                    selectorItems.Add(new LanguageSelectorItem
+                    {
+                        Code = code,
+                        Language = localizedName,
+                        Url = "/?lang=" + code
+                    });
+                }
+            }
+
+            return selectorItems.ToArray();
+        }
+
+        public class LanguageSelectorItem
+        {
+            public string Code { get; set; }
+            public string Language { get; set; }
+            public string Url { get; set; }
+        }
+
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
