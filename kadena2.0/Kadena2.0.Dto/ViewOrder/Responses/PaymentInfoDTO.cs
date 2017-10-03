@@ -6,6 +6,7 @@
         public string PaymentIcon { get; set; }
         public string PaidBy { get; set; }
         public string PaymentDetail { get; set; }
+        public string DatePrefix { get; set; }
         public string Date { get; set; }
     }
 }

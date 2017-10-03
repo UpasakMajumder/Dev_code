@@ -165,6 +165,7 @@
     <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
   </ItemGroup>
   <ItemGroup>
