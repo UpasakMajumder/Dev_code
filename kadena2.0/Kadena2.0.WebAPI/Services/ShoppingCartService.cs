@@ -188,9 +188,9 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null)
+        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
-            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+            var deliveryAddress = kenticoProvider.GetCurrentCartShippingAddress();
 
             var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
@@ -216,6 +216,12 @@ namespace Kadena.WebAPI.Services
 
             SetPricesVisibility(result);
             return result;
+        }
+
+        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        {
+            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+            return await GetDeliveryAndTotals();
         }
 
         private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)

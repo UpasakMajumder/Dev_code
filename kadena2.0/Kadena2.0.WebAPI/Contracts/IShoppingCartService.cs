@@ -9,7 +9,8 @@ namespace Kadena.WebAPI.Contracts
     public interface IShoppingCartService
     {
         CheckoutPage GetCheckoutPage();
-        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null);
+        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
+        Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress);
         CheckoutPage SelectShipipng(int id);
         CheckoutPage SelectAddress(int id);
         CheckoutPage ChangeItemQuantity(int id, int quantity);
