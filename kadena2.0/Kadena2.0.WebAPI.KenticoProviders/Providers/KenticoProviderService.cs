@@ -196,8 +196,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public PaymentMethod GetPaymentMethod(int id)
         {
-            var method = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
-            return PaymentOptionFactory.CreateMethod(method);
+            var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
+            var method = PaymentOptionFactory.CreateMethod(paymentInfo);
+            method.Title = MacroResolver.Resolve(method.DisplayName);
+
+            return method;
         }
 
         public ShoppingCartTotals GetShoppingCartTotals()
