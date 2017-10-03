@@ -22,18 +22,19 @@ namespace Kadena.Dto.Attributes
         public override bool IsValid(object value)
         {
             var list = value as IList<string>;
-
-            if (list == null && minElements == 0)
-            {
-                return true;
-            }
-            else if (list != null)
+            
+            if (list != null)
             {
                 return list.Count >= minElements &&
                        list.Count <= maxElements &&
                        list.All(e => (e?.Length ?? 0) >= minimalElementLength &&
                                      (e?.Length ?? 0) <= maximalElementLength);
             }
+            else if(minElements == 0)
+            {
+                return true;
+            }
+
             return false;
         }
     }
