@@ -4,7 +4,6 @@ using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.CustomerData;
-using Kadena.Dto.Checkout.Requests;
 using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI.Controllers
@@ -35,7 +34,7 @@ namespace Kadena.WebAPI.Controllers
         [IdentityBasicAuthentication]
         public IHttpActionResult CustomerData(int siteId, int customerId)
         {
-            var result = service.GetCustomerData( siteId, customerId);
+            var result = service.GetCustomerData(siteId, customerId);
             var resultDto = mapper.Map<CustomerDataDTO>(result);
             return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {customerId}"); 
         }

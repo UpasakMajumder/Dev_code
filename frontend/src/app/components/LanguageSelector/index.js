@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 /* components */
 import SVG from 'app.dump/SVG';
 import LanguageDropdown from 'app.dump/LanguageDropdown';
@@ -17,6 +18,13 @@ class LanguageSelector extends Component {
   };
 
   changeLanguage = (item) => {
+    axios({
+      method: 'put',
+      url: LANGUAGES.url,
+      data: {
+        language: item.code
+      }
+    });
     location.assign(item.url);
   };
 

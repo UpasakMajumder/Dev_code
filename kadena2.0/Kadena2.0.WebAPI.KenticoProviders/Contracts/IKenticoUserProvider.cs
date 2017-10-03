@@ -8,11 +8,15 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         DeliveryAddress[] GetCustomerShippingAddresses(int customerId);
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);
+
         bool UserCanSeePrices();
+
         bool UserCanSeePrices(int siteId, int userId);
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
         void SetDefaultShippingAddress(int addressId);
         User GetCurrentUser();
+
+        bool SaveLocalization(string code);
     }
 }

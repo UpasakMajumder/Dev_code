@@ -68,7 +68,7 @@ class MailingDialog extends Component {
 
     const theader = (
       <tr>
-        <th>Error</th>
+        <th>{fields.error.header}</th>
         <th>{fields.fullName.header}</th>
         <th>{fields.firstAddressLine.header}</th>
         <th>{fields.secondAddressLine.header}</th>
@@ -111,7 +111,8 @@ class MailingDialog extends Component {
           <td>
             <Select onChange={(e) => { this.handleChange(index, 'state', e.target.value); }}
                     value={errorItem.state}
-                    options={fields.state.value}/>
+                    error={this.getErrorMessage(index, 'state')}
+                    options={['', ...fields.state.value]}/>
           </td>
           <td>
             <TextInput onChange={(e) => { this.handleChange(index, 'postalCode', e.target.value); }}
@@ -192,6 +193,9 @@ class MailingDialog extends Component {
           header: PropTypes.string.isRequired,
           required: PropTypes.bool,
           values: PropTypes.array
+        }).isRequired,
+        error: PropTypes.shape({
+          header: PropTypes.string.isRequired
         }).isRequired
       }).isRequired
     }).isRequired,

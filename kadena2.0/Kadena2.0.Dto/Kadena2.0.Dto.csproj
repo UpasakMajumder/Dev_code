@@ -39,15 +39,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Checkout\AddressDialogDto.cs" />
-    <Compile Include="Checkout\CartButtonDTO.cs" />
+    <Compile Include="Checkout\ButtonLabelsDto.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
     <Compile Include="Checkout\CartItemsDTO.cs" />
@@ -112,6 +108,7 @@
     <Compile Include="Settings\DialogButtonDto.cs" />
     <Compile Include="Settings\DialogTypeDto.cs" />
     <Compile Include="Settings\IdDto.cs" />
+    <Compile Include="Settings\LocalizationDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
@@ -169,6 +166,7 @@
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
+    <Compile Include="_Attributes\StringListValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tax\MicroserviceResponses\" />

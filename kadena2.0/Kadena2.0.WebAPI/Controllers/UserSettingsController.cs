@@ -48,5 +48,14 @@ namespace Kadena.WebAPI.Controllers
             _service.SetDefaultShippingAddress(addressId);
             return SuccessJson();
         }
+
+        [HttpPut]
+        [Route("api/usersettings/savelocalization")]
+        public IHttpActionResult SaveLocalization([FromBody] LocalizationDto localization)
+        {
+            var language = _mapper.Map<string>(localization);
+            var result = _service.SaveLocalization(language);
+            return ResponseJson(result);
+        }
     }
 }

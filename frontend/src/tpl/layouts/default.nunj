@@ -167,20 +167,34 @@
       },
       languages: {
         selected: 'English',
+        url: '#',
         languages: [
           {
+            code: '1',
             language: 'English',
             url: '#English'
           },
           {
+            code: '2',
             language: 'French',
             url: '#French'
           },
           {
+            code: '3',
             language: 'German',
             url: '#German'
           }
         ]
+      },
+      staticFields: {
+        validation: {
+          requiredMessage: 'The field is required',
+          optionalLabel: 'optional'
+        },
+        password: {
+          show: 'show',
+          hide: 'hide',
+        }
       },
       login: {
         email: 'E-MAIL',
@@ -230,7 +244,18 @@
       },
       addToCartUrl: '',
       search: {
-        queryUrl: ""
+        queryUrl: "",
+        placeholder: "Search"
+      },
+      pagination: {
+        template: {
+          string: "Showing [FROM] to [TO] of [TOTAL] entries",
+          from: "[FROM]",
+          to: "[TO]",
+          total: "[TOTAL]",
+        },
+        nextLabel: "Next",
+        backLabel: "Previous",
       },
       recentOrders: {
         getHeaders: '',
@@ -254,7 +279,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "AA",
               postalCode: "94116",
               errorMessage: "Error"
             },
@@ -264,7 +289,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "",
               postalCode: "94116",
               errorMessage: "Error"
             }
@@ -365,6 +390,9 @@
             postalCode: {
               header: "Postal Code",
               required: true
+            },
+            error: {
+              header: "Error"
             }
           }
         }
@@ -386,6 +414,7 @@
         addToFavorites: "Set product as favorite",
         loadProductsUrl: "/api/products",
         loadFavoritesProductsUrl: "/api/products/favorites",
+        nodeAliasPath: "/Products",
         markProductFavouriteUrl: "/api/favorites/set",
         unmarkProductFavouriteUrl: "/api/favorites/unset"
       }

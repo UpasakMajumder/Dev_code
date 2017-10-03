@@ -261,3 +261,9 @@ kadena2.0/log.txt
 # search cache files
 kadena2.0\CMS\App_Data\CMSModules\SmartSearch\KDA_ProductsIndex
 kadena2.0\CMS\App_Data\CMSModules\SmartSearch\KDA_PagesIndex
+
+# Ignore all smart search indexes, but not the other system folder contents
+kadena2.0/CMS/App_Data/CMSModules/SmartSearch/**
+!kadena2.0/CMS/App_Data/CMSModules/SmartSearch/*/
+!kadena2.0/CMS/App_Data/CMSModules/SmartSearch/_StopWords/**
+!kadena2.0/CMS/App_Data/CMSModules/SmartSearch/_Synonyms/**

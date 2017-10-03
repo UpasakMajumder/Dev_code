@@ -11,6 +11,13 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoUserProvider : IKenticoUserProvider
     {
+        private readonly IKenticoLogger _logger;
+
+        public KenticoUserProvider(IKenticoLogger logger)
+        {
+            _logger = logger;
+        }
+
         public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -31,7 +38,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return AddressFactory.CreateDeliveryAddresses(addresses);
         }
-       
+
         public Customer GetCurrentCustomer()
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -69,7 +76,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 Phone = customer.CustomerPhone,
                 UserID = customer.CustomerUserID,
                 Company = customer.CustomerCompany,
-                SiteId = customer.CustomerSiteID
+                SiteId = customer.CustomerSiteID,
+                PreferredLanguage = customer.CustomerUser?.PreferredCultureCode ?? string.Empty
             };
         }
 
@@ -96,11 +104,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public bool UserCanModifyShippingAddress()
         {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress", 
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress",
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
-		
-		public User GetCurrentUser()
+
+        public User GetCurrentUser()
         {
             var user = MembershipContext.AuthenticatedUser;
             return new User
@@ -108,6 +116,26 @@ namespace Kadena.WebAPI.KenticoProviders
                 UserId = user.UserID
             };
         }
+
+        public bool SaveLocalization(string code)
+        {
+            try
+            {
+                var user = MembershipContext.AuthenticatedUser;
+                if (user != null)
+                {
+                    user.PreferredCultureCode = code;
+                    UserInfoProvider.SetUserInfo(user);
+                }
+            }
+            catch (Exception exc)
+            {
+                _logger.LogException("UserProvider - Saving Localization", exc);
+                throw;
+            }
+            return true;
+        }
+
 
         public void SetDefaultShippingAddress(int addressId)
         {

@@ -26,7 +26,7 @@ const CartPreviewProduct = (props) => {
       <div className="cart-preview__description">
         <p>
           <SVG name="products"/>
-          <span>Template: <strong>{props.template}</strong></span>
+          <span>{props.templatePrefix}: <strong>{props.template}</strong></span>
         </p>
         {description}
       </div>
@@ -41,6 +41,7 @@ CartPreviewProduct.propTypes = {
   id: PropTypes.number.isRequired,
   image: PropTypes.string,
   template: PropTypes.string.isRequired,
+  templatePrefix: PropTypes.string.isRequired,
   isMailingList: PropTypes.bool.isRequired,
   mailingList: PropTypes.string,
   pricePrefix: PropTypes.string.isRequired,
