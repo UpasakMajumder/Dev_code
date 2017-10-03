@@ -32,6 +32,9 @@ namespace Kadena.WebAPI.KenticoProviders
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Gets document URL with respect to current culture
+        /// </summary>
         public string GetDocumentUrl(string aliasPath)
         {
             return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
@@ -641,7 +644,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var result = string.Empty;
 
-            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var doc = DocumentHelper.GetDocument(documentId, LocalizationContext.CurrentCulture.CultureCode, new TreeProvider(MembershipContext.AuthenticatedUser));
             if ((doc?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
             {
                 result = URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", doc.GetGuidValue("ProductThumbnail", Guid.Empty)));
