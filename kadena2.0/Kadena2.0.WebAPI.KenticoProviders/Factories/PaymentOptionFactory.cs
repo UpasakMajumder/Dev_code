@@ -19,7 +19,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 Checked = false,
                 Disabled = !p.PaymentOptionEnabled,
                 Icon = p.GetStringValue("IconResource", string.Empty),
-                Title = p.PaymentOptionDisplayName,
+                DisplayName = p.PaymentOptionDisplayName,
                 ClassName = p.PaymentOptionClassName,
                 IsUnpayable = p.GetBooleanValue("IsUnpayable", false)
             };

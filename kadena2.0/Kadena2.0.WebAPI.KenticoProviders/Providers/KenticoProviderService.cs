@@ -5,6 +5,7 @@ using CMS.Ecommerce;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
@@ -183,8 +184,14 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
-            return PaymentOptionFactory.CreateMethods(methods);
+            var paymentOptionInfoCollection = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
+            var methods = PaymentOptionFactory.CreateMethods(paymentOptionInfoCollection);
+
+            foreach (var method in methods)
+            {
+                method.Title = MacroResolver.Resolve(method.DisplayName);
+            }
+            return methods;
         }
 
         public PaymentMethod GetPaymentMethod(int id)
