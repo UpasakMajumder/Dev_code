@@ -3,6 +3,7 @@ import { FETCH, SUCCESS, FAILURE, START, FINISH, MANAGE_PRODUCTS } from 'app.con
 const defaultState = {
   tableHeaders: [],
   templates: [],
+  title: '',
   isLoading: false
 };
 
@@ -21,6 +22,7 @@ export default (state = defaultState, action) => {
       ...state,
       tableHeaders: payload.header,
       templates: payload.data,
+      title: payload.title,
       isLoading: false
     };
   case MANAGE_PRODUCTS + FAILURE:

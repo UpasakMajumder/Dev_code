@@ -11,6 +11,7 @@ import { loadManageProducts } from 'app.ac/manageProducts';
 class ManageProducts extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
     loadManageProducts: PropTypes.func.isRequired,
     tableHeaders: PropTypes.array.isRequired,
     templates: PropTypes.array.isRequired
@@ -78,13 +79,13 @@ class ManageProducts extends Component {
   }
 
   render() {
-    const { isLoading, tableHeaders } = this.props;
+    const { isLoading, tableHeaders, title } = this.props;
     const { sortBy, sortOrderAsc, sortedTemplates } = this.state;
 
     return (
       <div className="product-template__block">
         <div className="product-template__item">
-          <h3>Manage products</h3>
+          <h3>{title}</h3>
         </div>
         <div className="product-template__item">
 
@@ -153,8 +154,8 @@ class ManageProducts extends Component {
 }
 
 export default connect((state) => {
-  const { isLoading, tableHeaders, templates } = state.manageProducts;
-  return { isLoading, tableHeaders, templates };
+  const { isLoading, tableHeaders, templates, title } = state.manageProducts;
+  return { isLoading, tableHeaders, templates, title };
 }, {
   loadManageProducts
 })(ManageProducts);
