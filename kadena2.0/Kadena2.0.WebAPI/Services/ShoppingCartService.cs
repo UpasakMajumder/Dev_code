@@ -67,7 +67,7 @@ namespace Kadena.WebAPI.Services
                     ButtonLabels = new ButtonLabels
                     {
                         Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
-                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),                        
+                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
                     },
                     SummaryPrice = new CartPrice
                     {
@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.Services
                     NewAddress = new NewAddressButton()
                     {
                         Label = resources.GetResourceString("Kadena.Checkout.NewAddress"),
-                        Url = "/settings?tab=t4"
+                        Url = kenticoProvider.GetDocumentUrl("/settings") + "?tab=t4"
                     },
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
