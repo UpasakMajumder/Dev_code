@@ -1,32 +1,34 @@
-﻿using CMS.Ecommerce;
-using Kadena.Models;
-using System.Linq;
-using CMS.SiteProvider;
-using CMS.Helpers;
-using System;
+﻿using CMS.CustomTables;
 using CMS.DataEngine;
-using CMS.Globalization;
-using System.Collections.Generic;
 using CMS.DocumentEngine;
+using CMS.Ecommerce;
+using CMS.Globalization;
+using CMS.Helpers;
+using CMS.Localization;
 using CMS.Membership;
-using Newtonsoft.Json;
+using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
-using CMS.Localization;
+using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
-using CMS.CustomTables;
-using Kadena.Models.Site;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoLogger logger;
 
-        public KenticoProviderService(IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger)
         {
             this.resources = resources;
+            this.logger = logger;
         }
 
         public string GetDocumentUrl(string aliasPath)
@@ -46,9 +48,13 @@ namespace Kadena.WebAPI.KenticoProviders
                 },
                 new TreeProvider(MembershipContext.AuthenticatedUser)
             );
-            var url = document.DocumentUrlPath;
+            if (document == null)
+            {
+                logger.LogInfo("GetDocumentUrl", "INFORMATION", $"Document not found for alias '{aliasPath}' and culture '{cultureCode}'");
+                return "/";
+            }
 
-            return url;
+            return document.DocumentUrlPath;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -262,7 +268,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
-
         public int GetShoppingCartItemsCount()
         {
             return ECommerceContext.CurrentShoppingCart.CartItems.Count;
@@ -319,7 +324,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (item == null)
                 return;
 
-            // Delete all the children from the database if available        
+            // Delete all the children from the database if available
             foreach (ShoppingCartItemInfo scii in cart.CartItems)
             {
                 if ((scii.CartItemBundleGUID == item.CartItemGUID) || (scii.CartItemParentGUID == item.CartItemGUID))
@@ -337,13 +342,61 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
+        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath)
+        {
+            var siteCultureCodes = CultureSiteInfoProvider.GetSiteCultureCodes(SiteContext.CurrentSiteName);
+            var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            var documents = tree.SelectNodes()
+                        .Path(aliasPath, PathTypeEnum.Explicit)
+                        .OnSite(SiteContext.CurrentSiteName)
+                        .AllCultures();
+
+            var selectorItems = new List<LanguageSelectorItem>(siteCultureCodes.Count);
+            foreach (var code in siteCultureCodes)
+            {
+                var localizedName = CultureInfoProvider.GetCultureInfo(code).CultureShortName;
+                var localizedFound = false;
+                foreach (var document in documents)
+                {
+                    if (document.DocumentCulture == code)
+                    {
+                        localizedFound = true;
+                        selectorItems.Add(new LanguageSelectorItem
+                        {
+                            Code = code,
+                            Language = localizedName,
+                            Url = document.DocumentUrlPath + "?lang=" + code
+                        });
+                    }
+                }
+
+                if (!localizedFound)
+                {
+                    selectorItems.Add(new LanguageSelectorItem
+                    {
+                        Code = code,
+                        Language = localizedName,
+                        Url = "/?lang=" + code
+                    });
+                }
+            }
+
+            return selectorItems.ToArray();
+        }
+
+        public class LanguageSelectorItem
+        {
+            public string Code { get; set; }
+            public string Language { get; set; }
+            public string Url { get; set; }
+        }
+
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
 
             if (item == null)
             {
-
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.ItemInCartNotFound", LocalizationContext.CurrentCulture.CultureCode),
                     id));
@@ -754,7 +807,6 @@ namespace Kadena.WebAPI.KenticoProviders
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
             cart.ShoppingCartShippingAddress = customerAddress;
         }
-
 
         public string MapOrderStatus(string microserviceStatus)
         {
