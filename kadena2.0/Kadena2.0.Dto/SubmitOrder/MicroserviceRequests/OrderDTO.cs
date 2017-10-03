@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 {
