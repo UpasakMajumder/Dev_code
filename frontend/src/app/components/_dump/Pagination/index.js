@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import ReactPaginate from 'react-paginate';
+import { PAGINATION } from 'app.globals';
 import ReactPaginate from './PaginationBoxView';
 
 const Pagination = (props) => {
@@ -11,11 +11,20 @@ const Pagination = (props) => {
   const pagesToByDefault = (currPage + 1) * itemsOnPage;
   const pagesTo = pagesToByDefault > itemsNumber ? itemsNumber : pagesToByDefault;
 
+  const generateText = () => {
+    const result = PAGINATION.template.string
+      .replace(PAGINATION.template.from, pagesFrom)
+      .replace(PAGINATION.template.to, pagesTo)
+      .replace(PAGINATION.template.total, itemsNumber);
+
+    return <span>{result}</span>;
+  };
+
   return pagesNumber > 1
     ? (
       <div className="row flex-align--center mt-4">
         <div className="col-6">
-          <span>Showing {pagesFrom} to {pagesTo} of {itemsNumber} entries</span>
+          {generateText()}
         </div>
         <div className="col-6 text--right">
           <ReactPaginate pageCount={pagesNumber}
