@@ -14,6 +14,7 @@ export default {
     {
       "id": 33,
       "image": "",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": false,
       "mailingList": "Mailing list",
@@ -25,6 +26,7 @@ export default {
     {
       "id": 31,
       "image": "http://satyr.io/50-200x100-300?2",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": false,
       "mailingList": "Mailing list",
@@ -36,6 +38,7 @@ export default {
     {
       "id": 13,
       "image": "http://satyr.io/50-200x100-300?3",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": true,
       "mailingList": "Mailing list",
@@ -47,6 +50,7 @@ export default {
     {
       "id": 13123,
       "image": "http://satyr.io/50-200x100-300?3",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": true,
       "mailingList": "Mailing list",
@@ -58,6 +62,7 @@ export default {
     {
       "id": 13123123,
       "image": "http://satyr.io/50-200x100-300?3",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": true,
       "mailingList": "Mailing list",
@@ -69,6 +74,7 @@ export default {
     {
       "id": 131231231,
       "image": "http://satyr.io/50-200x100-300?3",
+      "templatePrefix": "Bla",
       "template": "Template",
       "isMailingList": true,
       "mailingList": "Mailing list",
@@ -94,6 +100,7 @@ export const newState = {
       {
         "id": 33,
         "image": "",
+        "templatePrefix": "Bla",
         "template": "Template",
         "isMailingList": false,
         "mailingList": "Mailing list",
@@ -105,6 +112,7 @@ export const newState = {
       {
         "id": 31,
         "image": "http://satyr.io/50-200x100-300?2",
+        "templatePrefix": "Bla",
         "template": "Template",
         "isMailingList": false,
         "mailingList": "Mailing list",

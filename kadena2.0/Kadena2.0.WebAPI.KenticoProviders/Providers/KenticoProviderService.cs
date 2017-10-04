@@ -1,32 +1,64 @@
-﻿using CMS.Ecommerce;
-using Kadena.Models;
-using System.Linq;
-using CMS.SiteProvider;
-using CMS.Helpers;
-using System;
+﻿using CMS.CustomTables;
 using CMS.DataEngine;
-using CMS.Globalization;
-using System.Collections.Generic;
 using CMS.DocumentEngine;
+using CMS.Ecommerce;
+using CMS.Globalization;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.MacroEngine;
 using CMS.Membership;
-using Newtonsoft.Json;
+using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
-using CMS.Localization;
+using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
-using CMS.CustomTables;
-using Kadena.Models.Site;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProviderService : IKenticoProviderService
     {
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoLogger logger;
 
-        public KenticoProviderService(IKenticoResourceService resources)
+        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger)
         {
             this.resources = resources;
+            this.logger = logger;
+        }
+
+        /// <summary>
+        /// Gets document URL with respect to current culture
+        /// </summary>
+        public string GetDocumentUrl(string aliasPath)
+        {
+            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
+        }
+
+        public string GetDocumentUrl(string aliasPath, string cultureCode)
+        {
+            var document = DocumentHelper.GetDocument(
+                new NodeSelectionParameters
+                {
+                    AliasPath = aliasPath,
+                    SiteName = SiteContext.CurrentSiteName,
+                    CultureCode = cultureCode,
+                    CombineWithDefaultCulture = false
+                },
+                new TreeProvider(MembershipContext.AuthenticatedUser)
+            );
+            if (document == null)
+            {
+                logger.LogInfo("GetDocumentUrl", "INFORMATION", $"Document not found for alias '{aliasPath}' and culture '{cultureCode}'");
+                return "/";
+            }
+
+            return document.DocumentUrlPath;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -70,7 +102,8 @@ namespace Kadena.WebAPI.KenticoProviders
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
                 dm.SetShippingOptions(shippingOptions);
-                dm.Icon = GetShippingProviderIcon(dm.Title);
+                dm.Icon = GetShippingProviderIcon(dm.Name);
+                dm.Title = ResolveMacroString(dm.Title);
             }
 
             return deliveryMethods;
@@ -95,9 +128,9 @@ namespace Kadena.WebAPI.KenticoProviders
         /// <summary>
         /// Hardcoded until finding some convinient way to configure it in Kentico
         /// </summary>
-        public string GetShippingProviderIcon(string title)
+        public string GetShippingProviderIcon(string name)
         {
-            if (title != null)
+            if (name != null)
             {
                 var dictionary = new Dictionary<string, string>()
                 {
@@ -108,7 +141,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
                 foreach (var kvp in dictionary)
                 {
-                    if (title.ToLower().Contains(kvp.Key))
+                    if (name.ToLower().Contains(kvp.Key))
                         return kvp.Value;
                 }
             }
@@ -119,6 +152,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
             var result = DeliveryFactory.CreateOptions(services);
+            foreach (var item in result)
+            {
+                item.Title = ResolveMacroString(item.Title);
+            }
+
             GetShippingPrice(result);
             return result;
         }
@@ -153,16 +191,30 @@ namespace Kadena.WebAPI.KenticoProviders
             ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID = originalCartShippingId;
         }
 
+        private string ResolveMacroString(string macroString)
+        {
+            return MacroResolver.Resolve(macroString, new MacroSettings { Culture = LocalizationContext.CurrentCulture.CultureCode });
+        }
+
         public PaymentMethod[] GetPaymentMethods()
         {
-            var methods = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
-            return PaymentOptionFactory.CreateMethods(methods);
+            var paymentOptionInfoCollection = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
+            var methods = PaymentOptionFactory.CreateMethods(paymentOptionInfoCollection);
+
+            foreach (var method in methods)
+            {
+                method.Title = ResolveMacroString(method.DisplayName);
+            }
+            return methods;
         }
 
         public PaymentMethod GetPaymentMethod(int id)
         {
-            var method = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
-            return PaymentOptionFactory.CreateMethod(method);
+            var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
+            var method = PaymentOptionFactory.CreateMethod(paymentInfo);
+            method.Title = MacroResolver.Resolve(method.DisplayName);
+
+            return method;
         }
 
         public ShoppingCartTotals GetShoppingCartTotals()
@@ -240,7 +292,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
-
         public int GetShoppingCartItemsCount()
         {
             return ECommerceContext.CurrentShoppingCart.CartItems.Count;
@@ -278,7 +329,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems
+                StockQuantity = i.SKU.SKUAvailableItems,
+                MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
+                TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
             }
             ).ToArray();
 
@@ -295,7 +348,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (item == null)
                 return;
 
-            // Delete all the children from the database if available        
+            // Delete all the children from the database if available
             foreach (ShoppingCartItemInfo scii in cart.CartItems)
             {
                 if ((scii.CartItemBundleGUID == item.CartItemGUID) || (scii.CartItemParentGUID == item.CartItemGUID))
@@ -313,13 +366,61 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
+        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath)
+        {
+            var siteCultureCodes = CultureSiteInfoProvider.GetSiteCultureCodes(SiteContext.CurrentSiteName);
+            var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            var documents = tree.SelectNodes()
+                        .Path(aliasPath, PathTypeEnum.Explicit)
+                        .OnSite(SiteContext.CurrentSiteName)
+                        .AllCultures();
+
+            var selectorItems = new List<LanguageSelectorItem>(siteCultureCodes.Count);
+            foreach (var code in siteCultureCodes)
+            {
+                var localizedName = CultureInfoProvider.GetCultureInfo(code).CultureShortName;
+                var localizedFound = false;
+                foreach (var document in documents)
+                {
+                    if (document.DocumentCulture == code)
+                    {
+                        localizedFound = true;
+                        selectorItems.Add(new LanguageSelectorItem
+                        {
+                            Code = code,
+                            Language = localizedName,
+                            Url = document.DocumentUrlPath + "?lang=" + code
+                        });
+                    }
+                }
+
+                if (!localizedFound)
+                {
+                    selectorItems.Add(new LanguageSelectorItem
+                    {
+                        Code = code,
+                        Language = localizedName,
+                        Url = "/?lang=" + code
+                    });
+                }
+            }
+
+            return selectorItems.ToArray();
+        }
+
+        public class LanguageSelectorItem
+        {
+            public string Code { get; set; }
+            public string Language { get; set; }
+            public string Url { get; set; }
+        }
+
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
 
             if (item == null)
             {
-
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.ItemInCartNotFound", LocalizationContext.CurrentCulture.CultureCode),
                     id));
@@ -557,7 +658,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var result = string.Empty;
 
-            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var doc = DocumentHelper.GetDocument(documentId, LocalizationContext.CurrentCulture.CultureCode, new TreeProvider(MembershipContext.AuthenticatedUser));
             if ((doc?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
             {
                 result = URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", doc.GetGuidValue("ProductThumbnail", Guid.Empty)));
@@ -730,7 +831,6 @@ namespace Kadena.WebAPI.KenticoProviders
             var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
             cart.ShoppingCartShippingAddress = customerAddress;
         }
-
 
         public string MapOrderStatus(string microserviceStatus)
         {

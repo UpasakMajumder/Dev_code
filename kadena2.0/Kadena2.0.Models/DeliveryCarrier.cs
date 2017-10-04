@@ -16,6 +16,7 @@ namespace Kadena.Models
         public string DatePrefix { get; set; }
         public string Date { get; set; }
         public List<DeliveryOption> items { get; set; }
+        public string Name { get; set; }
 
         public void SetShippingOptions(IEnumerable<DeliveryOption> services)
         {

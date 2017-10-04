@@ -2,7 +2,6 @@
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace Kadena.WebAPI.Services
 {

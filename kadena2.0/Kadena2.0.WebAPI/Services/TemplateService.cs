@@ -43,6 +43,7 @@ namespace Kadena.WebAPI.Services
         {
             var productTemplates = new ProductTemplates
             {
+                Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
@@ -83,6 +84,10 @@ namespace Kadena.WebAPI.Services
             if (string.IsNullOrWhiteSpace(productEditorUrl))
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");
+            }
+            else
+            {
+                productEditorUrl = _kentico.GetDocumentUrl(productEditorUrl);
             }
 
             if (requestResult.Success)

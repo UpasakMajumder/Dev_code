@@ -157,7 +157,7 @@ class ModifyMailingList extends Component {
           </div>
 
           <div className="processed-list__table-inner">
-            <MailingTable items={filteredErrorList}/>
+            <MailingTable items={filteredErrorList} fields={formInfo.fields}/>
             <span className="processed-list__table-helper">
               {errorUI.tip}
               <SVG name="info-arrow" className="help-arrow"/>
@@ -181,17 +181,21 @@ class ModifyMailingList extends Component {
             {btnCorrectErrors}
           </div>
 
-          <MailingTable items={filteredSuccessList}/>
+          <MailingTable items={filteredSuccessList} fields={formInfo.fields}/>
         </div>
       );
     }
 
     if (isDialogShown) {
-      mailingDialog = <MailingDialog closeDialog={this.closeDialog}
-                                     formInfo={formInfo}
-                                     emptyFields={emptyFields}
-                                     reprocessAddresses={this.handleReprocessAddresses}
-                                     errorList={errorList}/>;
+      mailingDialog = (
+        <MailingDialog
+          closeDialog={this.closeDialog}
+          formInfo={formInfo}
+          emptyFields={emptyFields}
+          reprocessAddresses={this.handleReprocessAddresses}
+          errorList={errorList}
+        />
+      );
     }
 
     return (
