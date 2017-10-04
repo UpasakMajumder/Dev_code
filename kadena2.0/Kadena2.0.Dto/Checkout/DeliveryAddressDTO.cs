@@ -6,7 +6,7 @@ namespace Kadena.Dto.Checkout
 {
     public class DeliveryAddressDTO
     {
-        [StringListValidation(0,2,1,35, ErrorMessage = "Invalid count or length of Street lines in address")]
+        [StringListValidation(0,2,0,35, ErrorMessage = "Invalid count or length of Street lines in address")]
         public List<string> Street { get; set; }
 
         [MaxLength(40)]
