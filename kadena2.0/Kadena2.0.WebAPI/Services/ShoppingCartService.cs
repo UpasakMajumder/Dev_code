@@ -67,7 +67,7 @@ namespace Kadena.WebAPI.Services
                     ButtonLabels = new ButtonLabels
                     {
                         Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
-                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),                        
+                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
                     },
                     SummaryPrice = new CartPrice
                     {
@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.Services
                     NewAddress = new NewAddressButton()
                     {
                         Label = resources.GetResourceString("Kadena.Checkout.NewAddress"),
-                        Url = "/settings?tab=t4"
+                        Url = kenticoProvider.GetDocumentUrl(resources.GetSettingsKey("KDA_SettingsPageUrl")) + "?tab=t4"
                     },
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
@@ -188,9 +188,9 @@ namespace Kadena.WebAPI.Services
             };
         }
 
-        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals(DeliveryAddress deliveryAddress = null)
+        public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
-            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+            var deliveryAddress = kenticoProvider.GetCurrentCartShippingAddress();
 
             var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
@@ -216,6 +216,12 @@ namespace Kadena.WebAPI.Services
 
             SetPricesVisibility(result);
             return result;
+        }
+
+        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        {
+            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+            return await GetDeliveryAndTotals();
         }
 
         private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)

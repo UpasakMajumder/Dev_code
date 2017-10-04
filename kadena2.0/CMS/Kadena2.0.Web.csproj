@@ -872,13 +872,6 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.designer.cs">
       <DependentUpon>StatisticLabel.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.cs">
-      <DependentUpon>TemplatesList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.designer.cs">
-      <DependentUpon>TemplatesList.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.cs">
       <DependentUpon>DashboardMetrics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1046,7 +1039,6 @@
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
-    <Content Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />

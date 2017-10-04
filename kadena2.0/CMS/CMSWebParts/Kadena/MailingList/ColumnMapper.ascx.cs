@@ -28,6 +28,22 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private string _fileId;
         private Guid _containerId;
 
+        public string ReuploadListPageUrl
+        {
+            get
+            {
+                return GetStringValue("ReuploadListPageUrl", string.Empty);
+            }
+        }
+
+        public string ProcessListPageUrl
+        {
+            get
+            {
+                return GetStringValue("ProcessListPageUrl", string.Empty);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(Request.QueryString["fileid"])
@@ -103,14 +119,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     {
                         ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
                         ServiceHelper.ValidateAddresses(_containerId);
-                        Response.Redirect(GetStringValue("ProcessListPageUrl", string.Empty));
+                        Response.Redirect(ProcessListPageUrl);
                     }
                     catch (Exception ex)
                     {
                         EventLogProvider.LogException("Mailing List - Column mapping", "PROCESS", ex);
                         inpErrorTitle.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorTitle");
                         inpErrorText.Value = ResHelper.GetString("Kadena.MailingList.ColumnMapping.GeneralErrorText");
-                    }                    
+                    }
                 }
             }
             else
@@ -122,7 +138,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnReupload_ServerClick(object sender, EventArgs e)
         {
-            var url = URLHelper.AddParameterToUrl(GetStringValue("ReuploadListPageUrl", string.Empty)
+            var url = URLHelper.AddParameterToUrl(ReuploadListPageUrl
                 , "containerid", _containerId.ToString());
             Response.Redirect(url);
         }
