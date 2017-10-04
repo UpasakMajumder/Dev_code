@@ -69,6 +69,7 @@ namespace Kadena.WebAPI.Services
             }
 
             var data = microserviceResponse.Payload;
+            var genericStatus = kenticoProvider.MapOrderStatus(data.Status);
 
             var orderDetail = new OrderDetail()
             {
@@ -87,7 +88,7 @@ namespace Kadena.WebAPI.Services
                     Status = new TitleValuePair
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
-                        Value = data.Status
+                        Value = genericStatus
                     },
                     TotalCost = new TitleValuePair
                     {
