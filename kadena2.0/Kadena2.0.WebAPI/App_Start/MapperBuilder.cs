@@ -91,14 +91,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
                 config.CreateMap<BaseErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-                config.CreateMap<DeliveryAddress, AddressDto>()
-                    .AfterMap((d, a) =>
-                    {
-                        a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
-                        a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
-                    });
-                config.CreateMap<AddressDto, DeliveryAddress>()
-                    .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
+                config.CreateMap<DeliveryAddress, AddressDto>();
+                config.CreateMap<AddressDto, DeliveryAddress>();
                 config.CreateMap<DeliveryAddress, IdDto>();
                 config.CreateMap<PageButton, PageButtonDto>();
                 config.CreateMap<AddressList, AddressListDto>();

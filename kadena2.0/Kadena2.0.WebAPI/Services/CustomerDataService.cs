@@ -42,7 +42,7 @@ namespace Kadena.WebAPI.Services
                 PreferredLanguage = customer.PreferredLanguage,
                 Address = new CustomerAddress()
                 {
-                    Street = address.Street,
+                    Street = new List<string>() { address.Street1, address.Street2 },
                     City = address.City,
                     Country = address.Country,
                     State = address.State,
