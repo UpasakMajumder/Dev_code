@@ -142,7 +142,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Title = "Shipping",
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = data.ShippingInfo.AddressTo,
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null, // TODO Track your package url unknown
                     /*Tracking = new Tracking()
                     {
