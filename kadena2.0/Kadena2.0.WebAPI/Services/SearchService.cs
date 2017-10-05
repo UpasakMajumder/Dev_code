@@ -129,7 +129,7 @@ namespace Kadena.WebAPI.Services
                     {
                         resultItem.Stock = new Stock()
                         {
-                            Text = $"{product.StockItems} pcs in stock",
+                            Text = string.Format(resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts"), product.StockItems),
                             Type = product.Availability
                         };
                     }
