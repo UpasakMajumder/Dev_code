@@ -72,6 +72,7 @@ namespace Kadena.WebAPI.Services
                 },
                 Dialog = new AddressDialog
                 {
+                    UserNotification = _resources.GetResourceString(_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") == (_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") ? string.Empty : _resources.GetResourceString(_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage"),
                     Types = new DialogType
                     {
                         Add = _resources.GetResourceString("Kadena.Settings.Addresses.AddAddress"),

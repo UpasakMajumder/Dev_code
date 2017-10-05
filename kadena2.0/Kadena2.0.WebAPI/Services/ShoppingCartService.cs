@@ -77,6 +77,7 @@ namespace Kadena.WebAPI.Services
                 },
                 DeliveryAddresses = new DeliveryAddresses()
                 {
+                    UserNotification = resources.GetResourceString(kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") == (kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") ? string.Empty : resources.GetResourceString(kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage"),
                     IsDeliverable = true,
                     AvailableToAdd = otherAddressAvailable,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
