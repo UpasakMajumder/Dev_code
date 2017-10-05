@@ -8,6 +8,7 @@ using Kadena.Models;
 using System.Linq;
 using System.Text;
 using Kadena.WebAPI.Helpers;
+using System.Web;
 
 namespace Kadena.WebAPI.Services
 {
@@ -127,7 +128,7 @@ namespace Kadena.WebAPI.Services
             }
             if (!string.IsNullOrWhiteSpace(customName))
             {
-                url.AppendFormat(argumentFormat, "customName", customName);
+                url.AppendFormat(argumentFormat, "customName", HttpUtility.UrlEncode(customName));
             }
             return url.ToString();
         }

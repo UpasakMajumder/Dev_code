@@ -338,12 +338,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 if (cartItem.IsTemplated)
                 {
                     cartItem.EditorURL = $@"{GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
-                        ?nodeId={cartItem.ProductPageId}
-                        &templateId={cartItem.EditorTemplateId}
-                        &workspaceid={cartItem.ProductChiliWorkspaceId}
-                        &containerId={cartItem.MailingListGuid}
-                        &quantity={cartItem.Quantity}
-                        &customName={URLHelper.URLEncode(cartItem.CartItemText)}";
+?nodeId={cartItem.ProductPageId}
+&templateId={cartItem.EditorTemplateId}
+&workspaceid={cartItem.ProductChiliWorkspaceId}
+&containerId={cartItem.MailingListGuid}
+&quantity={cartItem.Quantity}
+&customName={URLHelper.URLEncode(cartItem.CartItemText)}";
                 }
                 return cartItem;
             }
