@@ -74,6 +74,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetCurrentSiteCodeName();
 
+        bool IsCurrentCultureDefault();
+
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
