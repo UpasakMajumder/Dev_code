@@ -4,6 +4,7 @@ using Kadena.Models.Settings;
 using System.Linq;
 using System.Collections.Generic;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 
 namespace Kadena.WebAPI.Services
 {
@@ -113,6 +114,11 @@ namespace Kadena.WebAPI.Services
         public void SaveShippingAddress(DeliveryAddress address)
         {
             _kentico.SaveShippingAddress(address);
+        }
+
+        public void SetDefaultShippingAddress(int addressId)
+        {
+            _kenticoUsers.SetDefaultShippingAddress(addressId);
         }
     }
 }

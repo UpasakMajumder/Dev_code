@@ -135,5 +135,17 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return true;
         }
+
+
+        public void SetDefaultShippingAddress(int addressId)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+
+            if (customer != null)
+            {
+                customer.SetValue("CustomerDefaultShippingAddresID", addressId);
+                CustomerInfoProvider.SetCustomerInfo(customer);
+            }
+        }
     }
 }
