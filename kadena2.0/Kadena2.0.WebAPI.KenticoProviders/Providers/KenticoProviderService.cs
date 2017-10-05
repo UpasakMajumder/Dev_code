@@ -332,6 +332,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 StockQuantity = i.SKU.SKUAvailableItems,
                 MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                EditorURL = GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))
             }
             ).ToArray();
 
