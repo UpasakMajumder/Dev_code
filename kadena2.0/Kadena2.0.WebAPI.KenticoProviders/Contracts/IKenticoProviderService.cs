@@ -62,6 +62,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Product GetProductByDocumentId(int documentId);
 
+        Product GetProductByNodeId(int nodeId);
+
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);

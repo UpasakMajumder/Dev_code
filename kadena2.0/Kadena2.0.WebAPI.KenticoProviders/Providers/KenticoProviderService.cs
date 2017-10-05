@@ -488,6 +488,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public Product GetProductByDocumentId(int documentId)
         {
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
+        }
+
+        private static Product GetProduct(TreeNode doc)
+        {
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
             if (doc == null)
@@ -497,7 +502,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var product = new Product()
             {
-                Id = documentId,
+                Id = doc.DocumentID,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
@@ -866,6 +871,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     Id = int.Parse(s["CountryID"].ToString()),
                     Name = s["CountryDisplayName"].ToString()
                 });
+        }
+
+        public Product GetProductByNodeId(int nodeId)
+        {
+            var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
+                new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
         }
     }
 }
