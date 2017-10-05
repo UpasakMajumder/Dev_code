@@ -27,6 +27,7 @@ namespace Kadena.WebAPI.Services
             var states = _kentico.GetStates();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
             var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
+            var userNotificationLocalizationKey = _kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
 
             var maxShippingAddresses = 3;
             if (!string.IsNullOrWhiteSpace(maxShippingAddressesSetting))
@@ -71,8 +72,8 @@ namespace Kadena.WebAPI.Services
                     Addresses = shippingAddresses.ToList()
                 },
                 Dialog = new AddressDialog
-                {
-                    UserNotification = _resources.GetResourceString(_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") == (_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage") ? string.Empty : _resources.GetResourceString(_kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage"),
+                {                    
+                    UserNotification = _resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : _resources.GetResourceString(userNotificationLocalizationKey),
                     Types = new DialogType
                     {
                         Add = _resources.GetResourceString("Kadena.Settings.Addresses.AddAddress"),
