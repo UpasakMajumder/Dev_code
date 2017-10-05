@@ -97,7 +97,7 @@ namespace Kadena.Models.Checkout
         {
             get
             {
-                return IsTemplated ? $"{_editorUrl}?documentId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}&customName={CartItemText}" : string.Empty;
+                return IsTemplated ? $"{_editorUrl}?nodeId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}&customName={CartItemText}" : string.Empty;
             }
             set
             {

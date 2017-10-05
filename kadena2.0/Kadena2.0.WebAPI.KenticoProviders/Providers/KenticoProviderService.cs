@@ -812,7 +812,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.CartItemText = sku.SKUName;
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
                 cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
-                cartItem.SetValue("ProductPageID", document.DocumentID);
+                cartItem.SetValue("ProductPageID", document.NodeID);
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
                 cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
                 cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));

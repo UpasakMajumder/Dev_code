@@ -4,7 +4,6 @@ using Kadena.Models.Checkout;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
-using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -38,10 +37,10 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [CustomerAuthorizationFilter]
-        [Route("api/products/{documentId}/templates")]
-        public async Task<IHttpActionResult> GetTemplates(int documentId)
+        [Route("api/products/{nodeId}/templates")]
+        public async Task<IHttpActionResult> GetTemplates(int nodeId)
         {
-            var result = await _templateService.GetTemplatesByProduct(documentId);
+            var result = await _templateService.GetTemplatesByProduct(nodeId);
             var resultDto = _mapper.Map<ProductTemplatesDTO>(result);
             return ResponseJson(resultDto);
         }
