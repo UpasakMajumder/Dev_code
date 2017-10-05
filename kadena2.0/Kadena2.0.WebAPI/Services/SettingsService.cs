@@ -1,10 +1,10 @@
-﻿using Kadena.WebAPI.Contracts;
-using Kadena.Models;
+﻿using Kadena.Models;
 using Kadena.Models.Settings;
-using System.Linq;
-using System.Collections.Generic;
+using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.Services
 {
@@ -23,6 +23,7 @@ namespace Kadena.WebAPI.Services
 
         public SettingsAddresses GetAddresses()
         {
+            var customer = _kenticoUsers.GetCurrentCustomer();
             var billingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Billing);
             var shippingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var states = _kentico.GetStates();
@@ -68,6 +69,15 @@ namespace Kadena.WebAPI.Services
                     {
                         Exists = false,
                         Text = _resources.GetResourceString("Kadena.Settings.Addresses.Remove")
+                    },
+                    DefaultAddress = new DefaultAddress
+                    {
+                        Id = customer.DefaultShippingAddressId,
+                        LabelDefault = "lblDef",
+                        LabelNonDefault = "lblNonDef",
+                        Tooltip = "some tooltip",
+                        SetUrl = "api/usersettings/setdefaultshippingaddress",
+                        UnsetUrl = "api/usersettings/unsetdefaultshippingaddress"
                     },
                     Addresses = shippingAddresses.ToList()
                 },
@@ -119,6 +129,11 @@ namespace Kadena.WebAPI.Services
         public void SetDefaultShippingAddress(int addressId)
         {
             _kenticoUsers.SetDefaultShippingAddress(addressId);
+        }
+
+        public void UnsetDefaultShippingAddress()
+        {
+            _kenticoUsers.UnsetDefaultShippingAddress();
         }
     }
 }

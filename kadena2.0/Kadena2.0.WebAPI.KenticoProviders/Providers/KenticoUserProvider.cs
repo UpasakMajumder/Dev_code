@@ -1,16 +1,18 @@
 ﻿using CMS.Ecommerce;
-using Kadena.Models;
-using System.Linq;
-using CMS.SiteProvider;
 using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using System;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoUserProvider : IKenticoUserProvider
     {
+        public static string CustomerDefaultShippingAddresIDFieldName => "CustomerDefaultShippingAddresID";
+
         private readonly IKenticoLogger _logger;
 
         public KenticoUserProvider(IKenticoLogger logger)
@@ -46,17 +48,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (customer == null)
                 return null;
 
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
-            };
+            return CustomerFactory.CreateCustomer(customer);
         }
 
         public Customer GetCustomer(int customerId)
@@ -66,19 +58,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (customer == null)
                 return null;
 
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany,
-                SiteId = customer.CustomerSiteID,
-                PreferredLanguage = customer.CustomerUser?.PreferredCultureCode ?? string.Empty
-            };
+            return CustomerFactory.CreateCustomer(customer);
         }
 
         public bool UserCanSeePrices()
@@ -143,9 +123,14 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (customer != null)
             {
-                customer.SetValue("CustomerDefaultShippingAddresID", addressId);
+                customer.SetValue(CustomerDefaultShippingAddresIDFieldName, addressId);
                 CustomerInfoProvider.SetCustomerInfo(customer);
             }
+        }
+
+        public void UnsetDefaultShippingAddress()
+        {
+            SetDefaultShippingAddress(0);
         }
     }
 }

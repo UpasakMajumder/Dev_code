@@ -18,5 +18,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         User GetCurrentUser();
 
         bool SaveLocalization(string code);
+        void UnsetDefaultShippingAddress();
     }
 }

@@ -105,6 +105,7 @@
     <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />
+    <Compile Include="Settings\DefaultAddressDto.cs" />
     <Compile Include="Settings\DialogButtonDto.cs" />
     <Compile Include="Settings\DialogTypeDto.cs" />
     <Compile Include="Settings\IdDto.cs" />

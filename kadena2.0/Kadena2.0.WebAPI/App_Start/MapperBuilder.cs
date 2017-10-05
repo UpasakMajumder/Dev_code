@@ -107,6 +107,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
                 config.CreateMap<Models.Checkout.AddressDialog, Dto.Checkout.AddressDialogDto>();
+                config.CreateMap<DefaultAddress, DefaultAddressDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
                 config.CreateMap<OrderedItem, OrderedItemDTO>();
                 config.CreateMap<OrderedItems, OrderedItemsDTO>();

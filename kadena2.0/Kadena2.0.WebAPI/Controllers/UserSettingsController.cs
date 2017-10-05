@@ -40,12 +40,21 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(result);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("api/usersettings/setdefaultshippingaddress")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult SetDefaultShippingAddress([FromBody] int addressId)
+        public IHttpActionResult SetDefaultShippingAddress([FromBody] DefaultAddressDto address)
         {
-            _service.SetDefaultShippingAddress(addressId);
+            _service.SetDefaultShippingAddress(address.Id);
+            return SuccessJson();
+        }
+
+        [HttpPut]
+        [Route("api/usersettings/unsetdefaultshippingaddress")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult UnsetDefaultShippingAddress()
+        {
+            _service.UnsetDefaultShippingAddress();
             return SuccessJson();
         }
 
