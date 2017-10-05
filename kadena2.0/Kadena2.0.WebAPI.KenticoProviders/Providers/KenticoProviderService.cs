@@ -897,5 +897,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return SiteContext.CurrentSiteName;
         }
+
+        public bool IsCurrentCultureDefault()
+        {
+            return SiteContext.CurrentSite.DefaultVisitorCulture == LocalizationContext.CurrentCulture.CultureCode;
+        }
     }
 }
