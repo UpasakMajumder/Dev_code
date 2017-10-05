@@ -16,7 +16,10 @@ const {
   addToCartUrl,
   products,
   notification,
-  chiliSave
+  chiliSave,
+  languages,
+  pagination,
+  staticFields
 } = localization;
 
 
@@ -36,3 +39,6 @@ export const CHILI_SAVE = chiliSave;
 export const MANAGE_PRODUCTS = manageProducts;
 export const MODIFY_MAILING_LIST_UI = modifyMailingList;
 export const BUTTONS_UI = checkoutButtons;
+export const LANGUAGES = languages;
+export const PAGINATION = pagination;
+export const STATIC_FIELDS = staticFields;

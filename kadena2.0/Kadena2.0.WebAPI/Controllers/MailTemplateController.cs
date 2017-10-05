@@ -3,7 +3,6 @@ using System.Web.Http;
 using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.Dto.MailTemplate.Requests;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
@@ -30,14 +29,16 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/mailtemplate")]
+        [HttpGet]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}/language/{languageCode}")]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}/language")]
+        [Route("api/site/{siteId}/mailtemplate/{templateName}")]
         [IdentityBasicAuthentication]
-        public IHttpActionResult GetMailTemplate([FromBody] MailTemplateRequestDto request)
+        public IHttpActionResult GetMailTemplate(int siteId, string templateName, string languageCode = "")
         {
-            var result = service.GetMailTemplate(request.SiteId, request.TemplateName);
+            var result = service.GetMailTemplate(siteId, templateName, languageCode);
             var resultDto = mapper.Map<MailTemplateDto>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template with id : {request.TemplateName}");
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve mail template or it's localized variant");
         }
     }
 }

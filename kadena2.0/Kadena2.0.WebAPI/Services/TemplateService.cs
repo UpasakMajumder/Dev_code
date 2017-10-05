@@ -43,6 +43,7 @@ namespace Kadena.WebAPI.Services
         {
             var productTemplates = new ProductTemplates
             {
+                Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
@@ -55,13 +56,13 @@ namespace Kadena.WebAPI.Services
                     {
                         Name = nameof(ProductTemplate.CreatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATECREATED"),
-                        Sorting = SortingType.Desc
+                        Sorting = SortingType.None
                     },
                     new ProductTemplatesHeader
                     {
                         Name = nameof(ProductTemplate.UpdatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATEUPDATED"),
-                        Sorting = SortingType.None
+                        Sorting = SortingType.Desc
                     },
                 },
                 Data = new ProductTemplate[0]
@@ -84,6 +85,10 @@ namespace Kadena.WebAPI.Services
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");
             }
+            else
+            {
+                productEditorUrl = _kentico.GetDocumentUrl(productEditorUrl);
+            }
 
             if (requestResult.Success)
             {
@@ -97,7 +102,7 @@ namespace Kadena.WebAPI.Services
                         UpdatedDate = DateTime.Parse(d.Updated),
                         ProductName = d.Name
                     })
-                    .OrderByDescending(t => t.CreatedDate)
+                    .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
             }
             else

@@ -68,8 +68,8 @@ namespace Kadena.Models.Checkout
             }
         }
         public string PricePrefix { get; set; }
-        public double UnitPrice { get; set; }
-        public double TotalPrice { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public bool IsQuantityEditable
         {
             get
@@ -80,7 +80,7 @@ namespace Kadena.Models.Checkout
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
-        public double TotalTax { get; set; }
+        public decimal TotalTax { get; set; }
         public string PriceText { get; set; }
         public Guid ProductChiliWorkspaceId { get; set; }
         public bool IsEditable
@@ -133,5 +133,8 @@ namespace Kadena.Models.Checkout
         /// Template product service's task Id
         /// </summary>
         public Guid DesignFilePathTaskId { get; set; }
+
+        public string MailingListPrefix { get; set; }
+        public string TemplatePrefix { get; set; }
     }
 }

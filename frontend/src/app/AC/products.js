@@ -36,7 +36,7 @@ export const loadProducts = () => {
   return (dispatch) => {
     dispatch({ type: PRODUCTS_LOAD + FETCH });
 
-    axios.get(`${PRODUCTS_GLOBAL.loadProductsUrl}?url=${window.location.pathname}`)
+    axios.get(`${PRODUCTS_GLOBAL.loadProductsUrl}?url=${PRODUCTS_GLOBAL.nodeAliasPath}`)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 

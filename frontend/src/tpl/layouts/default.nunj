@@ -167,6 +167,37 @@
           text: 'The template has been saved'
         }
       },
+      languages: {
+        selected: 'English',
+        url: '#',
+        languages: [
+          {
+            code: '1',
+            language: 'English',
+            url: '#English'
+          },
+          {
+            code: '2',
+            language: 'French',
+            url: '#French'
+          },
+          {
+            code: '3',
+            language: 'German',
+            url: '#German'
+          }
+        ]
+      },
+      staticFields: {
+        validation: {
+          requiredMessage: 'The field is required',
+          optionalLabel: 'optional'
+        },
+        password: {
+          show: 'show',
+          hide: 'hide',
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
@@ -215,7 +246,18 @@
       },
       addToCartUrl: PATH + 'products/add-to-cart',
       search: {
-        queryUrl: PATH + 'search/query'
+        queryUrl: PATH + 'search/query',
+        placeholder: "Search"
+      },
+      pagination: {
+        template: {
+          string: "Showing [FROM] to [TO] of [TOTAL] entries",
+          from: "[FROM]",
+          to: "[TO]",
+          total: "[TOTAL]",
+        },
+        nextLabel: "Next",
+        backLabel: "Previous"
       },
       recentOrders: {
         getHeaders: PATH + 'order/recent/ui',
@@ -239,7 +281,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "AA",
               postalCode: "94116",
               errorMessage: "Error"
             },
@@ -249,7 +291,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "",
               postalCode: "94116",
               errorMessage: "Error"
             }
@@ -350,6 +392,9 @@
             postalCode: {
               header: "Postal Code",
               required: true
+            },
+            error: {
+              header: "Error"
             }
           }
         }
@@ -372,7 +417,8 @@
         loadProductsUrl: PATH + 'products/all',
         loadFavoritesProductsUrl: PATH + 'products/favourites',
         markProductFavouriteUrl: PATH + 'products/favourite',
-        unmarkProductFavouriteUrl: PATH + 'products/unfavourite'
+        unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
+        nodeAliasPath: "/Products"
       }
     }
   };

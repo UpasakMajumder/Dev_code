@@ -6,6 +6,8 @@ import classNames from 'classnames';
 import PageView from './PageView';
 import BreakView from './BreakView';
 
+import { PAGINATION } from 'app.globals';
+
 
 export default class PaginationBoxView extends Component {
   static propTypes = {
@@ -39,8 +41,8 @@ export default class PaginationBoxView extends Component {
     activeClassName       : "selected",
     previousClassName     : "previous",
     nextClassName         : "next",
-    previousLabel         : "Previous",
-    nextLabel             : "Next",
+    previousLabel         : PAGINATION.backLabel,
+    nextLabel             : PAGINATION.nextLabel,
     breakLabel            : "...",
     disabledClassName     : "disabled",
     disableInitialCallback: false

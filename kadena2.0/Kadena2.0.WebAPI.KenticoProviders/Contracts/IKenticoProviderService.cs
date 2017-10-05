@@ -77,5 +77,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string MapOrderStatus(string microserviceStatus);
 
         void SetSkuAvailableQty(string skunumber, int availableItems);
+
+        string GetDocumentUrl(string aliasPath);
+
+        string GetDocumentUrl(string aliasPath, string cultureCode);
     }
 }

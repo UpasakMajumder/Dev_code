@@ -17,13 +17,20 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (index == null)
                 yield break;
-            
+
+            var searchText = string.Format("+({0})", phrase);
+            var culture = LocalizationContext.CurrentCulture.CultureCode;
+
+            var documentSearchCondition = new DocumentSearchCondition { Culture = culture };
+            var condition = new SearchCondition(documentCondition: documentSearchCondition);
+            searchText = SearchSyntaxHelper.CombineSearchCondition(searchText, condition);
+
             SearchParameters parameters = new SearchParameters()
             {
-                SearchFor = String.Format("+({0})", phrase),
+                SearchFor = searchText,
                 SearchSort = "##SCORE##",
                 Path = path,
-                CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
+                CurrentCulture = culture,
                 DefaultCulture = null,
                 CombineWithDefaultCulture = false,
                 CheckPermissions = checkPermissions,
@@ -38,7 +45,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 AttachmentOrderBy = String.Empty,
             };
 
-            var dataset = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}|{results}|{checkPermissions}"));
+            var dataset = CacheHelper.Cache<DataSet>(() => SearchHelper.Search(parameters), new CacheSettings(1, $"search|{indexName}|{path}|{phrase}|{results}|{checkPermissions}|{culture}"));
 
             if (dataset != null)
             {

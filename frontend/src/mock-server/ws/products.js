@@ -82,6 +82,7 @@ module.exports.managed = {
   "success":true,
   "errorMessage":null,
   "payload":{
+    "title": "Manage products",
     "header":[
       {
         "name":"productName",

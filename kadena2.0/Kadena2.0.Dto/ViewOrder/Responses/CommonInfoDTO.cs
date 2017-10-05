@@ -2,9 +2,9 @@
 {
     public class CommonInfoDTO
     {
-        public string Status { get; set; }
-        public string OrderDate { get; set; }
-        public string ShippingDate { get; set; }
-        public string TotalCost { get; set; }
+        public TitleValuePairDto Status { get; set; }
+        public TitleValuePairDto OrderDate { get; set; }
+        public TitleValuePairDto ShippingDate { get; set; }
+        public TitleValuePairDto TotalCost { get; set; }
     }
 }

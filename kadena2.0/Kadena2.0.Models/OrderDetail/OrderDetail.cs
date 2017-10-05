@@ -10,9 +10,9 @@
 
         public void HidePrices()
         {
-            if (CommonInfo != null)
+            if (CommonInfo != null && CommonInfo.TotalCost!=null)
             {
-                CommonInfo.TotalCost = string.Empty;
+                CommonInfo.TotalCost.Value = string.Empty;
             }
 
             PricingInfo = null;

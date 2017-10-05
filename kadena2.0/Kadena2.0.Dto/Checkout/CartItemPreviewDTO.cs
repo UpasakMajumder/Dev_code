@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Image { get; set; }
+        public string TemplatePrefix { get; set; }
         public string Template { get; set; }
         public bool IsMailingList { get; set; }
         public string MailingList { get; set; }

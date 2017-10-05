@@ -3,6 +3,7 @@ export default {
   "success":true,
   "errorMessage":null,
   "payload":{
+    "title": "Manage products",
     "header":[
       {
         "name":"productName",
