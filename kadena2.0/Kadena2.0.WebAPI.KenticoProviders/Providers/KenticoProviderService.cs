@@ -866,5 +866,10 @@ namespace Kadena.WebAPI.KenticoProviders
                     Name = s["CountryDisplayName"].ToString()
                 });
         }
+
+        public string GetCurrentSiteCodeName()
+        {
+            return SiteContext.CurrentSiteName;
+        }
     }
 }

@@ -53,6 +53,7 @@ namespace Kadena.WebAPI.Services
             var count = cartItems?.Length ?? 0;
 
             var otherAddressSettingValue = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
+            var userNotificationLocalizationKey = kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
 
             bool otherAddressAvailable = false;
             bool.TryParse(otherAddressSettingValue, out otherAddressAvailable);
@@ -77,6 +78,7 @@ namespace Kadena.WebAPI.Services
                 },
                 DeliveryAddresses = new DeliveryAddresses()
                 {
+                    UserNotification = resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : resources.GetResourceString(userNotificationLocalizationKey),
                     IsDeliverable = true,
                     AvailableToAdd = otherAddressAvailable,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
