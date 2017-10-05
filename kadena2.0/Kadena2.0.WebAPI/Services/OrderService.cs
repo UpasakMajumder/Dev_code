@@ -69,15 +69,32 @@ namespace Kadena.WebAPI.Services
             }
 
             var data = microserviceResponse.Payload;
+            var genericStatus = kenticoProvider.MapOrderStatus(data.Status);
 
             var orderDetail = new OrderDetail()
             {
                 CommonInfo = new CommonInfo()
                 {
-                    OrderDate = data.OrderDate.ToString("MM/dd/yyyy"),
-                    ShippingDate = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue),
-                    Status = data.Status,
-                    TotalCost = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
+                    OrderDate = new TitleValuePair
+                    {
+                       Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
+                       Value = data.OrderDate.ToString("MM/dd/yyyy")
+                    },
+                    ShippingDate = new TitleValuePair
+                    {
+                        Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
+                        Value = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue)
+                    },
+                    Status = new TitleValuePair
+                    {
+                        Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
+                        Value = genericStatus
+                    },
+                    TotalCost = new TitleValuePair
+                    {
+                        Title = resources.GetResourceString("Kadena.Order.TotalCostPrefix"),
+                        Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
+                    } 
                 },
                 PaymentInfo = new PaymentInfo()
                 {
@@ -85,43 +102,44 @@ namespace Kadena.WebAPI.Services
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
-                    Title = "Payment"
+                    Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
+                    DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix")
                 },
                 PricingInfo = new PricingInfo()
                 {
-                    Title = "Pricing",
+                    Title = resources.GetResourceString("Kadena.Order.PricingSection"),
                     Items = new List<PricingInfoItem>()
                     {
                         new PricingInfoItem()
                         {
-                            Title = "Summary",
+                            Title = resources.GetResourceString("Kadena.Order.PricingSummary"),
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary)
                         },
                         new PricingInfoItem()
                         {
-                            Title = "Shipping",
+                            Title = resources.GetResourceString("Kadena.Order.PricingShipping"),
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Shipping)
                         },
                         new PricingInfoItem()
                         {
-                            Title = "Subtotal",
+                            Title = resources.GetResourceString("Kadena.Order.PricingSubtotal"),
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping)
                         },
                         new PricingInfoItem()
                         {
-                            Title = "Tax",
+                            Title = resources.GetResourceString("Kadena.Order.PricingTax"),
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Tax)
                         },
                         new PricingInfoItem()
                         {
-                            Title = "Totals",
+                            Title = resources.GetResourceString("Kadena.Order.PricingTotals"),
                             Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
                         }
                     }
                 },
                 OrderedItems = new OrderedItems()
                 {
-                    Title = "Ordered items",
+                    Title = resources.GetResourceString("Kadena.Order.OrderedItemsSection"),
                     Items = await MapOrderedItems(data.Items)
                 }
             };
@@ -132,7 +150,7 @@ namespace Kadena.WebAPI.Services
             {
                 orderDetail.ShippingInfo = new ShippingInfo
                 {
-                    Title = "Shipping",
+                    Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     Message = resources.GetResourceString("Kadena.Checkout.UndeliverableText")
                 };
             }
@@ -140,7 +158,7 @@ namespace Kadena.WebAPI.Services
             {
                 orderDetail.ShippingInfo = new ShippingInfo
                 {
-                    Title = "Shipping",
+                    Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null, // TODO Track your package url unknown
@@ -177,7 +195,11 @@ namespace Kadena.WebAPI.Services
                 QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
                 ShippingDate = string.Empty, // TODO Shipping date per item unknown
                 Template = i.Name,
-                TrackingId = i.TrackingId
+                TrackingId = i.TrackingId,
+                MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
+                ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
+                TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
+                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix")
             }).ToList();
 
 
