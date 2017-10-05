@@ -4,6 +4,8 @@ namespace Kadena.Models.Checkout
 {
     public class CartItem
     {
+        private string _editorUrl;
+
         public int Id { get; set; }
         public string CartItemText { get; set; }
         public string ProductType { get; set; }
@@ -95,7 +97,11 @@ namespace Kadena.Models.Checkout
         {
             get
             {
-                return $"/products/product-tools/product-editor?documentId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}&customName={CartItemText}";
+                return IsTemplated ? $"{_editorUrl}?nodeId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}&customName={CartItemText}" : string.Empty;
+            }
+            set
+            {
+                _editorUrl = value;
             }
         }
 

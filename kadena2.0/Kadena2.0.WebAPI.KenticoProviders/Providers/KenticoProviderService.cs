@@ -332,6 +332,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 StockQuantity = i.SKU.SKUAvailableItems,
                 MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                EditorURL = GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))
             }
             ).ToArray();
 
@@ -487,6 +488,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public Product GetProductByDocumentId(int documentId)
         {
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
+        }
+
+        private static Product GetProduct(TreeNode doc)
+        {
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
             if (doc == null)
@@ -496,7 +502,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var product = new Product()
             {
-                Id = documentId,
+                Id = doc.DocumentID,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
@@ -806,7 +812,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.CartItemText = sku.SKUName;
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
                 cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
-                cartItem.SetValue("ProductPageID", document.DocumentID);
+                cartItem.SetValue("ProductPageID", document.NodeID);
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
                 cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
                 cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
@@ -865,6 +871,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     Id = int.Parse(s["CountryID"].ToString()),
                     Name = s["CountryDisplayName"].ToString()
                 });
+        }
+
+        public Product GetProductByNodeId(int nodeId)
+        {
+            var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
+                new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
         }
 
         public string GetCurrentSiteCodeName()
