@@ -212,7 +212,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
             var method = PaymentOptionFactory.CreateMethod(paymentInfo);
-            method.Title = MacroResolver.Resolve(method.DisplayName);
+            method.Title = ResolveMacroString(method.DisplayName);
 
             return method;
         }
@@ -878,6 +878,11 @@ namespace Kadena.WebAPI.KenticoProviders
             var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
                 new TreeProvider(MembershipContext.AuthenticatedUser));
             return GetProduct(doc);
+        }
+
+        public string GetCurrentSiteCodeName()
+        {
+            return SiteContext.CurrentSiteName;
         }
     }
 }

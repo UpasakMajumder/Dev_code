@@ -74,6 +74,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Site[] GetSites();
 
+        string GetCurrentSiteCodeName();
+
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
