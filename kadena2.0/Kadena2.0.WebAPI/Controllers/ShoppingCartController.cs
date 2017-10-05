@@ -57,10 +57,10 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/deliverytotals")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> GetDeliveryTotals([FromBody] DeliveryAddressDTO postedAddress)
+        public async Task<IHttpActionResult> SetDeliveryAddress([FromBody] DeliveryAddressDTO postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var deliveryTotals = await service.GetDeliveryAndTotals(address);
+            var deliveryTotals = await service.SetDeliveryAddress(address);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }

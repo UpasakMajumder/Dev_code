@@ -247,6 +247,16 @@
         queryUrl: "",
         placeholder: "Search"
       },
+      pagination: {
+        template: {
+          string: "Showing [FROM] to [TO] of [TOTAL] entries",
+          from: "[FROM]",
+          to: "[TO]",
+          total: "[TOTAL]",
+        },
+        nextLabel: "Next",
+        backLabel: "Previous",
+      },
       recentOrders: {
         getHeaders: '',
         getPageItems: ''
@@ -269,7 +279,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "AA",
               postalCode: "94116",
               errorMessage: "Error"
             },
@@ -279,7 +289,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "",
               postalCode: "94116",
               errorMessage: "Error"
             }
@@ -380,6 +390,9 @@
             postalCode: {
               header: "Postal Code",
               required: true
+            },
+            error: {
+              header: "Error"
             }
           }
         }

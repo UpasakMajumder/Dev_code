@@ -26,7 +26,6 @@ namespace Kadena.Old_App_Code.Kadena.Email
             {
                 setUpUrl = SettingsKeyInfoProvider.GetURLValue(_setUpPasswordUrlSettingKey, string.Empty);
             }
-
             return URLHelper.AddParameterToUrl(setUpUrl, "h", userCode.ToString());
         }
 
