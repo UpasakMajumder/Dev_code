@@ -178,6 +178,7 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
+                config.CreateMap<TitleValuePair, TitleValuePairDto>();
             });
         }
     }

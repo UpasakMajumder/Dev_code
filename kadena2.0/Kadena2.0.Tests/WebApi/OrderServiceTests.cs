@@ -95,7 +95,7 @@ namespace Kadena.Tests.WebApi
             var result = await sut.GetOrderDetail("0010-0016-17-00006");
 
             //Assert
-            Assert.Equal("Shipped", result.CommonInfo.Status);
+            Assert.Equal("Shipped", result.CommonInfo.Status.Value);
         }
 
         [Fact]
