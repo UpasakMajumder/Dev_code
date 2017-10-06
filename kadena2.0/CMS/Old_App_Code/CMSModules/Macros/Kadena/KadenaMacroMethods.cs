@@ -201,13 +201,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 var originalDocument = tree.SelectSingleNode(originalNodeID, LocalizationContext.CurrentCulture.CultureCode);
                 result += string.Format(selectedItemTemplate, originalDocument.DocumentName, originalDocument.NodeID);
             }
-            var kitDocuments = tree.SelectNodes()
+
+            var wantedTypes = new[] { ProductTypes.InventoryProduct, ProductTypes.StaticProduct, "KDA.POD" };
+
+            var allKitDocuments = tree.SelectNodes()
                 .OnCurrentSite()
                 .Path(productsPath, PathTypeEnum.Children)
                 .Culture(LocalizationContext.CurrentCulture.CultureCode)
                 .Types("KDA.Product")
-                .CheckPermissions()
-                .WhereLike("ProductType", "%KDA.InventoryProduct%").Or().WhereLike("ProductType", "%KDA.POD%").Or().WhereLike("ProductType", "%KDA.StaticProduct%");
+                .CheckPermissions();
+
+            var kitDocuments = allKitDocuments.Where(x => IsProductType(x, wantedTypes));
 
             if (kitDocuments != null)
             {
@@ -215,13 +219,23 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 for (int i = 1; i <= kitList.Count; i++)
                 {
                     var node = kitList[i - 1];
-                    if (node.NodeID != originalNodeID && !node.IsLink && node.NodeSiteID == SiteContext.CurrentSiteID)
+                    if (node.NodeID != originalNodeID && !node.IsLink)
                     {
                         result += string.Format(itemTemplate, i, node.DocumentName, node.NodeID);
                     }
                 }
             }
             return result;
+        }
+
+
+        /// <summary>
+        /// Checks if TreeNode's value "ProductType" contains any of given type strings
+        /// </summary>
+        private static bool IsProductType(TreeNode tn, IEnumerable<string> types)
+        {
+            var nodeType = tn.GetStringValue("ProductType", string.Empty);
+            return types.Any(t => nodeType.Contains(t));
         }
 
         [MacroMethod(typeof(string), "Returns where codition for one of main navigation repeaters based on enabled modules for customer.", 1)]
