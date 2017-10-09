@@ -34,7 +34,7 @@ class DeliveryAddress extends Component {
 
   render() {
     const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
-    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI } = ui;
+    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification } = ui;
 
     const renderAddresses = (item) => {
       return (
@@ -72,6 +72,8 @@ class DeliveryAddress extends Component {
         </a>
       );
 
+    const userNotificationComponent = userNotification ? <Alert type="info" text={userNotification}/> : null;
+
 
     return (
       <div>
@@ -79,6 +81,7 @@ class DeliveryAddress extends Component {
           submit={this.submitNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
+          userNotification={userNotification}
         />}
 
         <div>
@@ -86,6 +89,7 @@ class DeliveryAddress extends Component {
           <div className="cart-fill__block">
             <p className="cart-fill__info">{description}</p>
             {alert}
+            {userNotificationComponent}
             <div className="cart-fill__block-inner cart-fill__block--flex">
               {addresses}
               <div className="btn-group btn-grout--left">
@@ -105,6 +109,7 @@ DeliveryAddress.propTypes = {
   checkedId: PropTypes.number,
   disableInteractivity: PropTypes.bool.isRequired,
   ui: PropTypes.shape({
+    userNotification: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.object.isRequired),
     newAddress: PropTypes.shape({
       label: PropTypes.string.isRequired,
