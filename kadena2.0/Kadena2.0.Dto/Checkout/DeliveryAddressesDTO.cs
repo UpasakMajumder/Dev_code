@@ -13,5 +13,6 @@ namespace Kadena.Dto.Checkout
         public string EmptyMessage { get; set; }
         public List<DeliveryAddressDTO> Items { get; set; }
         public AddressDialogDto DialogUI { get; set; }
+        public DeliveryAddressesBoundsDTO Bounds { get; set; }
     }
 }

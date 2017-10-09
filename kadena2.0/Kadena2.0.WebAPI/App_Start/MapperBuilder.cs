@@ -147,6 +147,7 @@ namespace Kadena.WebAPI
                     });
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
+                config.CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<UpdateAddressDto, MailingAddress>().ProjectUsing(a => new MailingAddress
                 {

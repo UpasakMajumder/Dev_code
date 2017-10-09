@@ -48,6 +48,7 @@
     <Compile Include="Checkout\CheckoutPageDeliveryTotals.cs" />
     <Compile Include="Checkout\CheckoutPage.cs" />
     <Compile Include="Checkout\DeliveryAddresses.cs" />
+    <Compile Include="Checkout\DeliveryAddressesBounds.cs" />
     <Compile Include="Checkout\DeliveryCarriers.cs" />
     <Compile Include="Checkout\NewAddressButton.cs" />
     <Compile Include="Checkout\NewCartItem.cs" />
