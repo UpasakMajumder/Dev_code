@@ -160,7 +160,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = data.ShippingInfo.AddressTo,
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null, // TODO Track your package url unknown
                     /*Tracking = new Tracking()
                     {
@@ -385,8 +385,8 @@ namespace Kadena.WebAPI.Services
                 },
                 ShippingAddress = new AddressDTO()
                 {
-                    AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
-                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
+                    AddressLine1 = shippingAddress.Street1,
+                    AddressLine2 = shippingAddress.Street2,
                     City = shippingAddress.City,
                     State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
                     KenticoStateID = shippingAddress.StateId,

@@ -11,7 +11,8 @@ class NewAddressDialog extends Component {
     invalids: [],
     address: {
       customerName: '',
-      street: '',
+      street1: '',
+      street2: '',
       city: '',
       state: '',
       zip: '',

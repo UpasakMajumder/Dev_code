@@ -20,7 +20,8 @@ class DeliveryAddress extends Component {
     const data = {
       id: -1,
       customerName: address.customerName,
-      street: [address.address1, address.address2],
+      street1: address.street1,
+      street2: address.street2,
       city: address.city,
       state: address.state,
       zip: address.zip,

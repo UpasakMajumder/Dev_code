@@ -256,8 +256,8 @@ namespace Kadena.WebAPI.KenticoProviders
                     var info = new AddressInfo
                     {
                         AddressID = address.Id,
-                        AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
-                        AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                        AddressLine1 = address.Street1,
+                        AddressLine2 = address.Street2,
                         AddressCity = address.City,
                         AddressStateID = state?.StateID ?? 0,
                         AddressCountryID = country?.Id ?? 0,
@@ -627,8 +627,8 @@ namespace Kadena.WebAPI.KenticoProviders
             var info = new AddressInfo
             {
                 AddressID = address.Id,
-                AddressLine1 = address.Street.Count > 0 ? address.Street[0] : null,
-                AddressLine2 = address.Street.Count > 1 ? address.Street[1] : null,
+                AddressLine1 = address.Street1,
+                AddressLine2 = address.Street2,
                 AddressCity = address.City,
                 AddressStateID = state.StateID,
                 AddressCountryID = state.CountryID,

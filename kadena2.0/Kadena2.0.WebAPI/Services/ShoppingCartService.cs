@@ -140,13 +140,13 @@ namespace Kadena.WebAPI.Services
                     },
                     new DialogField
                     {
-                        Id = "address1",
+                        Id = "street1",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                         Type = "text"
                     },
                     new DialogField
                     {
-                        Id = "address2",
+                        Id = "street2",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                         IsOptional = true,
                         Type = "text"
