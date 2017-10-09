@@ -76,6 +76,7 @@ export const staticUI = {
     "deliveryAddresses": {
       "isDeliverable": true,
       "availableToAdd": true,
+      "userNotification": "Hello",
       "dialogUI": {
         "title": "New address",
         "discardBtnLabel": "Discard changes",

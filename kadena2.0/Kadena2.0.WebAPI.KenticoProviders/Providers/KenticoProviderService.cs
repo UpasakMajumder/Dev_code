@@ -212,7 +212,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
             var method = PaymentOptionFactory.CreateMethod(paymentInfo);
-            method.Title = MacroResolver.Resolve(method.DisplayName);
+            method.Title = ResolveMacroString(method.DisplayName);
 
             return method;
         }
@@ -301,37 +301,51 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
 
-            var result = items.Select(i => new CartItem()
+            var result = items.Select(i =>
             {
-                Id = i.CartItemID,
-                CartItemText = i.CartItemText,
-                DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
-                ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
-                ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
-                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
-                SKUNumber = i.SKU?.SKUNumber,
-                TotalTax = 0.0m,
-                UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = "EA",
-                Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
-                ProductType = i.GetValue("ProductType", string.Empty),
-                Quantity = i.CartItemUnits,
-                TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
-                PriceText = showPrices ? string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits) : string.Empty,
-                PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
-                QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
-                MailingListName = i.GetValue("MailingListName", string.Empty),
-                Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
-                ProductPageId = i.GetIntegerValue("ProductPageID", 0),
-                SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems,
-                MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
-                TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                var cartItem = new CartItem()
+                {
+                    Id = i.CartItemID,
+                    CartItemText = i.CartItemText,
+                    DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
+                    MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                    ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                    ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
+                    ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
+                    DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
+                    SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
+                    SKUNumber = i.SKU?.SKUNumber,
+                    TotalTax = 0.0m,
+                    UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
+                    UnitOfMeasure = "EA",
+                    Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
+                    ProductType = i.GetValue("ProductType", string.Empty),
+                    Quantity = i.CartItemUnits,
+                    TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
+                    PriceText = showPrices ? string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits) : string.Empty,
+                    PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
+                    QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
+                    MailingListName = i.GetValue("MailingListName", string.Empty),
+                    Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
+                    EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
+                    ProductPageId = i.GetIntegerValue("ProductPageID", 0),
+                    SKUID = i.SKUID,
+                    StockQuantity = i.SKU.SKUAvailableItems,
+                    MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
+                    TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel")
+                };
+                if (cartItem.IsTemplated)
+                {
+                    cartItem.EditorURL = $@"{GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
+?nodeId={cartItem.ProductPageId}
+&templateId={cartItem.EditorTemplateId}
+&workspaceid={cartItem.ProductChiliWorkspaceId}
+&containerId={cartItem.MailingListGuid}
+&quantity={cartItem.Quantity}
+&customName={URLHelper.URLEncode(cartItem.CartItemText)}";
+                }
+                return cartItem;
             }
             ).ToArray();
 
@@ -487,6 +501,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public Product GetProductByDocumentId(int documentId)
         {
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
+        }
+
+        private static Product GetProduct(TreeNode doc)
+        {
             var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
             if (doc == null)
@@ -496,7 +515,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var product = new Product()
             {
-                Id = documentId,
+                Id = doc.DocumentID,
                 Name = doc.DocumentName,
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
@@ -806,7 +825,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.CartItemText = sku.SKUName;
                 cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
                 cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
-                cartItem.SetValue("ProductPageID", document.DocumentID);
+                cartItem.SetValue("ProductPageID", document.NodeID);
                 cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
                 cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
                 cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
@@ -865,6 +884,23 @@ namespace Kadena.WebAPI.KenticoProviders
                     Id = int.Parse(s["CountryID"].ToString()),
                     Name = s["CountryDisplayName"].ToString()
                 });
+        }
+
+        public Product GetProductByNodeId(int nodeId)
+        {
+            var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
+                new TreeProvider(MembershipContext.AuthenticatedUser));
+            return GetProduct(doc);
+        }
+
+        public string GetCurrentSiteCodeName()
+        {
+            return SiteContext.CurrentSiteName;
+        }
+
+        public bool IsCurrentCultureDefault()
+        {
+            return SiteContext.CurrentSite.DefaultVisitorCulture == LocalizationContext.CurrentCulture.CultureCode;
         }
     }
 }

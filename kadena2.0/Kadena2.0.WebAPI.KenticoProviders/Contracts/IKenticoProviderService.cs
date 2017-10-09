@@ -62,6 +62,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Product GetProductByDocumentId(int documentId);
 
+        Product GetProductByNodeId(int nodeId);
+
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);
@@ -71,6 +73,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
 
         Site[] GetSites();
+
+        string GetCurrentSiteCodeName();
+
+        bool IsCurrentCultureDefault();
 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 

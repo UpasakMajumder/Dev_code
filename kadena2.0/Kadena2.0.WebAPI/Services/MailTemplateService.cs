@@ -15,12 +15,20 @@ namespace Kadena.WebAPI.Services
 
         public MailTemplate GetMailTemplate(int siteId, string templateName, string languageCode)
         {
+            MailTemplate template = null;
+
             if (!string.IsNullOrEmpty(languageCode))
             {
-                templateName = $"{templateName}.{languageCode}";
+                var templateLocalizedName = $"{templateName}.{languageCode}";
+                template = kenticoMail.GetMailTemplate(siteId, templateLocalizedName);
             }
 
-            return kenticoMail.GetMailTemplate(siteId, templateName);
+            if (template == null)
+            {
+                template = kenticoMail.GetMailTemplate(siteId, templateName);
+            }
+
+            return template;
         }
     }
 }
