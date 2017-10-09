@@ -50,7 +50,7 @@ namespace Kadena.WebAPI
                     SKU = new SKUDTO()
                     {
                         KenticoSKUID = p.SKUID,
-                        Name = p.SKUName, 
+                        Name = p.SKUName,
                         SKUNumber = p.SKUNumber
                     },
                     TotalPrice = p.TotalPrice,
@@ -91,14 +91,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
                 config.CreateMap<BaseErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-                config.CreateMap<DeliveryAddress, AddressDto>()
-                    .AfterMap((d, a) =>
-                    {
-                        a.Street1 = d.Street.Count > 0 ? d.Street[0] : null;
-                        a.Street2 = d.Street.Count > 1 ? d.Street[1] : null;
-                    });
-                config.CreateMap<AddressDto, DeliveryAddress>()
-                    .AfterMap((a, d) => d.Street = new List<string> { a.Street1, a.Street2 });
+                config.CreateMap<DeliveryAddress, AddressDto>();
+                config.CreateMap<AddressDto, DeliveryAddress>();
                 config.CreateMap<DeliveryAddress, IdDto>();
                 config.CreateMap<PageButton, PageButtonDto>();
                 config.CreateMap<AddressList, AddressListDto>();
@@ -169,8 +163,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<ArtworkFtpSettings, ArtworkFtpResponseDto>();
                 config.CreateMap<FtpCredentials, FtpCredentialsDto>();
                 config.CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
-                config.CreateMap<MailTemplate, MailTemplateDto>();	
-                config.CreateMap<KenticoSite, SiteDataResponseDto>();											
+                config.CreateMap<MailTemplate, MailTemplateDto>();
+                config.CreateMap<KenticoSite, SiteDataResponseDto>();
                 config.CreateMap<ProductsPage, GetProductsDto>();
                 config.CreateMap<ProductCategoryLink, ProductCategoryDto>();
                 config.CreateMap<ProductLink, ProductDto>();
@@ -180,7 +174,11 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
-                config.CreateMap<TitleValuePair, TitleValuePairDto>();
+                config.CreateMap<AddressDTO, DeliveryAddress>().AfterMap((s, d) =>
+                {
+                    d.Street1 = s.AddressLine1;
+                    d.Street2 = s.AddressLine2;
+                });
             });
         }
     }

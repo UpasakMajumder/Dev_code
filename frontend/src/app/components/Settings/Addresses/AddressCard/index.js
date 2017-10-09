@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tooltip } from 'react-tippy';
 /* components */
 import SVG from 'app.dump/SVG';
+import USAddress from 'app.dump/USAddress';
 
 const AddressCard = (props) => {
   const { editButton, removeButton, address, openDialog, defaultAddress, setDefault, unsetDefault } = props;
@@ -48,13 +49,6 @@ const AddressCard = (props) => {
       </Tooltip>
     );
   };
-
-  const street1 = createAddressElement(address.street1);
-  const street2 = createAddressElement(address.street2);
-  const city = createAddressElement(address.city);
-  const state = createAddressElement(address.state);
-  const zip = createAddressElement(address.zip);
-
   const removeElement = removeButton.exists
     ? <button type="button" className="in-card-btn">
         <SVG name="cross--dark"/>
@@ -75,10 +69,13 @@ const AddressCard = (props) => {
 
   return (
     <div className="address-card">
-      <div>{street1}</div>
-      <div>{street2}</div>
-      <div>{city}</div>
-      <div>{state} {zip}</div>
+      <USAddress
+        street1={address.street1}
+        street2={address.street2}
+        city={address.city}
+        state={address.state}
+        zip={address.zip}
+      />
       {buttonBlock}
     </div>
   );

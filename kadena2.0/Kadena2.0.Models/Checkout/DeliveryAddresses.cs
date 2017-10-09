@@ -5,6 +5,7 @@ namespace Kadena.Models.Checkout
 {
     public class DeliveryAddresses
     {
+        public string UserNotification { get; set; }
         public bool IsDeliverable { get; set; }
         public bool AvailableToAdd { get; set; }
         public string UnDeliverableText { get; set; }

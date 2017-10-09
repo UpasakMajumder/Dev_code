@@ -1,5 +1,4 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
@@ -62,9 +61,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 var uri = new Uri(newTemplateUrl);
                 var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-                var destinationUrl = String.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}",
+                var destinationUrl = string.Format("{0}?nodeId={1}&templateId={2}&workspaceid={3}",
                   ProductEditorUrl,
-                  DocumentContext.CurrentDocument.DocumentID,
+                  DocumentContext.CurrentDocument.NodeID,
                   newTemplateID,
                   workspaceID);
 

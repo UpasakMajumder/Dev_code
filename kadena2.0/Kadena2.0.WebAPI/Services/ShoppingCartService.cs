@@ -54,6 +54,12 @@ namespace Kadena.WebAPI.Services
 
             var otherAddressSettingValue = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
 
+            var userNotification = string.Empty;
+            var userNotificationLocalizationKey = kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
+            if (!kenticoProvider.IsCurrentCultureDefault())
+            {
+                userNotification = resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : resources.GetResourceString(userNotificationLocalizationKey);
+            }
             bool otherAddressAvailable = false;
             bool.TryParse(otherAddressSettingValue, out otherAddressAvailable);
 
@@ -77,6 +83,7 @@ namespace Kadena.WebAPI.Services
                 },
                 DeliveryAddresses = new DeliveryAddresses()
                 {
+                    UserNotification = userNotification,
                     IsDeliverable = true,
                     AvailableToAdd = otherAddressAvailable,
                     UnDeliverableText = resources.GetResourceString("Kadena.Checkout.UndeliverableText"),
@@ -139,13 +146,13 @@ namespace Kadena.WebAPI.Services
                     },
                     new DialogField
                     {
-                        Id = "address1",
+                        Id = "street1",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                         Type = "text"
                     },
                     new DialogField
                     {
-                        Id = "address2",
+                        Id = "street2",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                         IsOptional = true,
                         Type = "text"

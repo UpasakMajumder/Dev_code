@@ -25,7 +25,8 @@ class DeliveryAddress extends Component {
     const data = {
       id: -1,
       customerName: address.customerName,
-      street: [address.address1, address.address2],
+      street1: address.street1,
+      street2: address.street2,
       city: address.city,
       state: address.state,
       zip: address.zip,
@@ -53,7 +54,7 @@ class DeliveryAddress extends Component {
   render() {
     const { addressesNumber } = this.state;
     const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
-    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, bounds } = ui;
+    const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification, bounds } = ui;
 
     const renderAddresses = (item, i) => {
       if (i + 1 > addressesNumber) return false;
@@ -104,6 +105,8 @@ class DeliveryAddress extends Component {
         </a>
       );
 
+    const userNotificationComponent = userNotification ? <Alert type="info" text={userNotification}/> : null;
+
 
     return (
       <div>
@@ -111,6 +114,7 @@ class DeliveryAddress extends Component {
           submit={this.submitNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
+          userNotification={userNotification}
         />}
 
         <div>
@@ -118,6 +122,7 @@ class DeliveryAddress extends Component {
           <div className="cart-fill__block">
             <p className="cart-fill__info">{description}</p>
             {alert}
+            {userNotificationComponent}
             <div className="cart-fill__block-inner cart-fill__block--flex">
               {addresses}
               <div className="cart-fill__btns">
@@ -138,6 +143,7 @@ DeliveryAddress.propTypes = {
   checkedId: PropTypes.number,
   disableInteractivity: PropTypes.bool.isRequired,
   ui: PropTypes.shape({
+    userNotification: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.object.isRequired),
     newAddress: PropTypes.shape({
       label: PropTypes.string.isRequired,
