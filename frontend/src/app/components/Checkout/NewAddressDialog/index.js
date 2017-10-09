@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-/* Components */
+/* components */
+import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
 import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
@@ -48,7 +49,7 @@ class NewAddressDialog extends Component {
 
   render () {
     const { address } = this.state;
-    const { closeDialog, ui } = this.props;
+    const { closeDialog, ui, userNotification } = this.props;
 
     const footer = (
       <div className="btn-group btn-group--right">
@@ -99,14 +100,19 @@ class NewAddressDialog extends Component {
     const row1 = <tr>{bodyContent1Part}</tr>;
     const row2 = <tr>{bodyContent2Part}</tr>;
 
+    const userNotificationComponent = userNotification ? <Alert type="info" text={userNotification}/> : null;
 
     const body = (
-      <table className="checkout__dialog-table">
-        <tbody>
-        {row1}
-        {row2}
-        </tbody>
-      </table>
+      <div>
+        {userNotificationComponent}
+
+        <table className="checkout__dialog-table">
+          <tbody>
+          {row1}
+          {row2}
+          </tbody>
+        </table>
+      </div>
     );
 
     return (
@@ -123,6 +129,7 @@ class NewAddressDialog extends Component {
   static propTypes = {
     submit: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
+    userNotification: PropTypes.string,
     ui: PropTypes.shape({
       title: PropTypes.string.isRequired,
       discardBtnLabel: PropTypes.string.isRequired,

@@ -8,6 +8,7 @@ using Kadena.Models;
 using System.Linq;
 using System.Text;
 using Kadena.WebAPI.Helpers;
+using System.Web;
 
 namespace Kadena.WebAPI.Services
 {
@@ -39,7 +40,7 @@ namespace Kadena.WebAPI.Services
             return result.Success;
         }
 
-        public async Task<ProductTemplates> GetTemplatesByProduct(int documentId)
+        public async Task<ProductTemplates> GetTemplatesByProduct(int nodeId)
         {
             var productTemplates = new ProductTemplates
             {
@@ -68,7 +69,7 @@ namespace Kadena.WebAPI.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _kentico.GetProductByDocumentId(documentId);
+            var product = _kentico.GetProductByNodeId(nodeId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -95,7 +96,7 @@ namespace Kadena.WebAPI.Services
                 productTemplates.Data = requestResult.Payload
                     .Select(d => new ProductTemplate
                     {
-                        EditorUrl = BuildTemplateEditorUrl(productEditorUrl, documentId, d.TemplateId.ToString(), 
+                        EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(), 
                             product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 0, d.MailingList?.ContainerId, d.Name),
                         TemplateId = d.TemplateId,
                         CreatedDate = DateTime.Parse(d.Created),
@@ -113,11 +114,11 @@ namespace Kadena.WebAPI.Services
             return productTemplates;
         }
 
-        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int documentId, string templateId, string productChiliWorkgroupID, int mailingListRowCount, 
+        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int nodeId, string templateId, string productChiliWorkgroupID, int mailingListRowCount, 
             string containerId = null, string customName = null)
         {
             var argumentFormat = "&{0}={1}";
-            var url = new StringBuilder(productEditorBaseUrl + "?documentId=" + documentId)
+            var url = new StringBuilder(productEditorBaseUrl + "?nodeId=" + nodeId)
                 .AppendFormat(argumentFormat, "templateId", templateId)
                 .AppendFormat(argumentFormat, "workspaceid", productChiliWorkgroupID)
                 .AppendFormat(argumentFormat, "quantity", mailingListRowCount);
@@ -127,7 +128,7 @@ namespace Kadena.WebAPI.Services
             }
             if (!string.IsNullOrWhiteSpace(customName))
             {
-                url.AppendFormat(argumentFormat, "customName", customName);
+                url.AppendFormat(argumentFormat, "customName", HttpUtility.UrlEncode(customName));
             }
             return url.ToString();
         }

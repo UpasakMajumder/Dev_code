@@ -36,6 +36,7 @@ export default {
     ]
   },
   "dialog": {
+    "userNotification": "Hello",
     "types": {
       "add": "Add address:",
       "edit": "Edit address:"

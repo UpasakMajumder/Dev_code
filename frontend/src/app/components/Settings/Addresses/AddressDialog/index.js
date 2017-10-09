@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* components */
+import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
 import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
@@ -154,13 +155,21 @@ class AddressDialog extends Component {
       );
     });
 
-    const body = <table className="cart__dialog-table">
-      <tbody>
-      <tr>
-        {bodyContent}
-      </tr>
-      </tbody>
-    </table>;
+    const userNotification = dialog.userNotification ? <Alert type="info" text={dialog.userNotification}/> : null;
+
+    const body = (
+      <div>
+        {userNotification}
+
+        <table className="cart__dialog-table">
+          <tbody>
+          <tr>
+            {bodyContent}
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    );
 
     const title = isModifyingDialog ? dialog.types.edit : dialog.types.add;
 

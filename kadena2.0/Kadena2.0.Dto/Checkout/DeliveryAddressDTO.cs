@@ -1,6 +1,4 @@
-﻿using Kadena.Dto.Attributes;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.Checkout
 {
