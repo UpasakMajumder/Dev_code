@@ -73,9 +73,9 @@ namespace Kadena.WebAPI.Services
                     DefaultAddress = new DefaultAddress
                     {
                         Id = customer.DefaultShippingAddressId,
-                        LabelDefault = "lblDef",
-                        LabelNonDefault = "lblNonDef",
-                        Tooltip = "some tooltip",
+                        LabelDefault = _resources.GetResourceString("Kadena.Settings.Addresses.Primary"),
+                        LabelNonDefault = _resources.GetResourceString("Kadena.Settings.Addresses.NotPrimary"),
+                        Tooltip = _resources.GetResourceString("Kadena.Settings.Addresses.SetUnset"),
                         SetUrl = "api/usersettings/setdefaultshippingaddress",
                         UnsetUrl = "api/usersettings/unsetdefaultshippingaddress"
                     },
