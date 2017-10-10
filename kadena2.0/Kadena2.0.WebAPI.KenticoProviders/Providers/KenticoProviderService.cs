@@ -816,7 +816,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 var sku = SKUInfoProvider.GetSKUInfo(document.NodeSKUID);
 
                 var cart = ECommerceContext.CurrentShoppingCart;
-                AssignCartShippingAddress(cart);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
                 var parameters = new ShoppingCartItemParameters(sku.SKUID, 1);
@@ -844,13 +843,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             cartItem.CartItemUnits = amount;
         }
-
-        private static void AssignCartShippingAddress(ShoppingCartInfo cart)
-        {
-            var customerAddress = AddressInfoProvider.GetAddresses(ECommerceContext.CurrentCustomer?.CustomerID ?? 0).FirstOrDefault();
-            cart.ShoppingCartShippingAddress = customerAddress;
-        }
-
+        
         public string MapOrderStatus(string microserviceStatus)
         {
             var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")

@@ -51,6 +51,7 @@
     <Compile Include="Checkout\CartItemsPreviewDTO.cs" />
     <Compile Include="Checkout\CartPriceDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
+    <Compile Include="Checkout\DeliveryAddressesBoundsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\NewCartItemDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />
+    <Compile Include="Settings\DefaultAddressDto.cs" />
     <Compile Include="Settings\DialogButtonDto.cs" />
     <Compile Include="Settings\DialogTypeDto.cs" />
     <Compile Include="Settings\IdDto.cs" />
