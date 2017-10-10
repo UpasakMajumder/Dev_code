@@ -100,8 +100,8 @@ namespace Kadena.WebAPI.Services
                     Bounds = new DeliveryAddressesBounds
                     {
                         Limit = 3,
-                        ShowLessText = "Kadena.Checkout.DeliveryAddress.ShowLess",
-                        ShowMoreText = "Kadena.Checkout.DeliveryAddress.ShowMore"
+                        ShowLessText = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.ShowLess"),
+                        ShowMoreText = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.ShowMore")
                     }
                 },
                 PaymentMethods = new PaymentMethods()
