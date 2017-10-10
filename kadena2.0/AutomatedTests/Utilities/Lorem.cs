@@ -124,11 +124,11 @@ namespace AutomatedTests.Utilities
         {
             List<Address> addresses = new List<Address>()
             {
-                new Address() {ID = 1, AddressLine1 =  "9708 Vermont St.", City = "Kansas City", State = "MO", Zip = "64151"},
-                new Address() {ID = 2, AddressLine1 =  "7 Glenwood Street", City = "Glendale", State = "AZ", Zip = "85302"},
-                new Address() {ID = 3, AddressLine1 =  "570 Albany Ave.", City = "Bronx", State = "NY", Zip = "10451"},
-                new Address() {ID = 4, AddressLine1 =  "8245 George Ave.", City = "Raleigh", State = "NC", Zip = "27603"},
-                new Address() {ID = 5, AddressLine1 =  "9802 W. Durham St.", City = "Danvers", State = "MA", Zip = "01923"},
+                new Address() {ID = 1, Name = "Mathew Powers", AddressLine1 =  "565 W Chandler Blvd", City = "Chandler", State = "AZ", Zip = "85225-7537"},
+                new Address() {ID = 2, Name = "Hernan Franklin", AddressLine1 =  "2323 Melton Dr", City = "Howell", State = "MI", Zip = "48843-8419"},
+                new Address() {ID = 3, Name = "Kimberley Macias", AddressLine1 =  "105 Fleming Ave", City = "Danville", State = "PA", Zip = "17821"},
+                new Address() {ID = 4, Name = "Cheryl Burke", AddressLine1 =  "19 Thatcher St", City = "Selkirk", State = "NY", Zip = "12158"},
+                new Address() {ID = 5, Name = "Jasmine Estrada", AddressLine1 =  "150 Bradley Dr", City = "Russellville", State = "AL", Zip = "35654"},
             };
 
             int random = Random.Next(0, addresses.Count);

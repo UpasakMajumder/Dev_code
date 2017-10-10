@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
-    public interface ITaxEstimationService
+    public interface ITaxEstimationServiceClient
     {
-        Task<BaseResponseDto<double>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request);
+        Task<BaseResponseDto<decimal>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request);
     }
 }

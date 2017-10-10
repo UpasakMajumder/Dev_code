@@ -4,19 +4,18 @@ using System;
 using Kadena.Dto.Checkout;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
-using Kadena.WebAPI.Models.SubmitOrder;
 using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
-using Kadena.Dto.SubmitOrder.Requests;
-using Kadena.Dto.SubmitOrder.Responses;
-using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Models.Checkout;
+using Kadena.Dto.Product;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class ShoppingCartController : ApiControllerBase
     {
-        private readonly IShoppingCartService service;
+        private readonly IShoppingCartService service;        
         private readonly IMapper mapper;
 
         public ShoppingCartController(IShoppingCartService service, IMapper mapper)
@@ -37,83 +36,93 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/shoppingcart")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> Get()
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult Get()
         {
-            var checkoutPage = await service.GetCheckoutPage();
+            var checkoutPage = service.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }
-
+        
         [HttpGet]
-        [Route("api/orderdetail/{orderId}")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> Get([FromUri]string orderId)
+        [Route("api/deliverytotals")]
+        [CustomerAuthorizationFilter]
+        public async Task<IHttpActionResult> GetDeliveryTotals()
         {
-            var detailPage = await service.GetOrderDetail(orderId);
-            var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto); // TODO refactor using checking null
+            var deliveryTotals = await service.GetDeliveryAndTotals();
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotalsDto);
+        }
+
+        [HttpPost]
+        [Route("api/deliverytotals")]
+        [CustomerAuthorizationFilter]
+        public async Task<IHttpActionResult> SetDeliveryAddress([FromBody] DeliveryAddressDTO postedAddress)
+        {
+            var address = mapper.Map<DeliveryAddress>(postedAddress);
+            var deliveryTotals = await service.SetDeliveryAddress(address);
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotalsDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/selectshipping")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectShipipng(request.Id);
+            var result = service.SelectShipipng(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/selectaddress")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> SelectAddress([FromBody]ChangeSelectionRequestDto request)
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectAddress(request.Id);
+            var result = service.SelectAddress(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/removeitem")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> RemoveItem([FromBody]RemoveItemRequestDto request)
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
-            var result = await service.RemoveItem(request.Id);
+            var result = service.RemoveItem(request.Id);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/changequantity")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
-            var result = await service.ChangeItemQuantity(request.Id, request.Quantity);
+            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
             var resultDto = mapper.Map<CheckoutPageDTO>(result);
             return ResponseJson(resultDto);
         }
 
-
-        [HttpPost]
-        [Route("api/shoppingcart/submit")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
+        [HttpGet]
+        [Route("api/shoppingcart/itemspreview")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult ItemsPreview()
         {
-            var submitRequest = mapper.Map<SubmitOrderRequest>(request);
-            var serviceResponse = await service.SubmitOrder(submitRequest);
-            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            var result = service.ItemsPreview();
+            var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
             return ResponseJson(resultDto);
         }
 
-        [HttpGet]
-        [Route("api/shoppingcart/submittable")]
-        [AuthorizationFilter]
-        public async Task<IHttpActionResult> Submittable()
+        [HttpPost]
+        [Route("api/shoppingcart/addtocart")]
+        [CustomerAuthorizationFilter]
+        public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
         {
-            var serviceResponse = await service.IsSubmittable();
-            var resultDto = Mapper.Map<bool>(serviceResponse);
+            var addItem = mapper.Map<NewCartItem>(item);
+            var result = await service.AddToCart(addItem);
+            var resultDto = mapper.Map<AddToCartResultDto>(result);
             return ResponseJson(resultDto);
         }
     }

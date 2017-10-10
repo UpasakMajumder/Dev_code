@@ -4,7 +4,7 @@ using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.Dto.CustomerData;
-using Kadena.Dto.Checkout.Requests;
+using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -29,13 +29,14 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPost]
-        [Route("api/customerdata")]
-        public IHttpActionResult CustomerData([FromBody]CustomerDataRequestDto request)
+        [HttpGet]
+        [Route("api/customer/{customerId}/site/{siteId}")]
+        [IdentityBasicAuthentication]
+        public IHttpActionResult CustomerData(int siteId, int customerId)
         {
-            var result = service.GetCustomerData(request.CustomerId);
+            var result = service.GetCustomerData(siteId, customerId);
             var resultDto = mapper.Map<CustomerDataDTO>(result);
-            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {request.CustomerId}"); 
+            return ResponseJsonCheckingNull(resultDto, $"Failed to retrieve customer data for customerId: {customerId}"); 
         }
     }
 }

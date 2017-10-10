@@ -32,6 +32,11 @@
     flex-direction: column;
     width: 100%;
 
+    a,
+    p {
+      width: 100%;
+    }
+
     svg {
       @include rem(margin-bottom, 24px);
       @include rem(width, 70px);

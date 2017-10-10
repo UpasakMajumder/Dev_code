@@ -1,61 +1,73 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
+import Spinner from 'app.dump/Spinner';
+/* ac */
+import getUI from 'app.ac/orderDetail';
+/* utilities */
+import { getSearchObj } from 'app.helpers/location';
+/* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
-import getUI from '../../AC/orderDetail';
-import Spinner from '../Spinner';
-import { getSearchObj } from '../../helpers/location';
 
 class OrderDetail extends Component {
+  static propTypes = {
+    getUI: PropTypes.func.isRequired,
+    ui: PropTypes.shape({
+      commonInfo: PropTypes.object,
+      orderedItems: PropTypes.object,
+      paymentInfo: PropTypes.object,
+      pricingInfo: PropTypes.object,
+      shippingInfo: PropTypes.object
+    }).isRequired
+  };
+
   componentDidMount() {
+    const { getUI } = this.props;
     const { orderID } = getSearchObj();
 
     if (orderID) {
-      this.props.getUI(orderID);
+      getUI(orderID);
     } else {
-      this.props.getUI('');
+      getUI('');
     }
   }
 
   render() {
-    const { orderDetail } = this.props;
-    const { ui } = orderDetail;
+    const { ui } = this.props;
+    if (!Object.keys(ui).length) return <Spinner />;
+
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
 
-    const content = <div>
-      <CommonInfo ui={commonInfo} />
+    const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
+    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} /></div> : null;
+    const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
-      <div className="order-block">
-        <div className="row">
-          <div className="col-lg-4 mb-4">
-            <ShippingInfo ui={shippingInfo} />
-          </div>
+    return (
+      <div>
+        <CommonInfo ui={commonInfo} />
 
-          <div className="col-lg-4 mb-4">
-            <PaymentInfo ui={paymentInfo} />
-          </div>
-
-          <div className="col-lg-4 mb-4">
-            <PricingInfo ui={pricingInfo} />
+        <div className="order-block">
+          <div className="row">
+            {shippingInfoEl}
+            {paymentInfoEl}
+            {pricingInfoEl}
           </div>
         </div>
+
+        <OrderedItems ui={orderedItems}/>
       </div>
-
-      <OrderedItems ui={orderedItems}/>
-    </div>;
-
-    return Object.keys(ui).length
-      ? content
-      : <Spinner />;
+    );
   }
 }
 
-export default connect((state) => {
-  const { orderDetail } = state;
-  return { orderDetail };
+export default connect(({ orderDetail }) => {
+  const { ui } = orderDetail;
+  return { ui };
 }, {
   getUI
 })(OrderDetail);

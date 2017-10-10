@@ -1,9 +1,9 @@
-﻿using Kadena.WebAPI.Models.CustomerData;
+﻿using Kadena.Models.CustomerData;
 
 namespace Kadena.WebAPI.Contracts
 {
     public interface ICustomerDataService
     {
-        CustomerData GetCustomerData(int customerId);
+        CustomerData GetCustomerData(int siteId, int customerId);
     }
 }

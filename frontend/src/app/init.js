@@ -11,7 +11,7 @@ function request(moduleName, callback, isComponent = true) {
 
   System.import(`${modulePath}`)
     .then(module => callback(module))
-    .catch(error => new Error(`Render: Errow while rendering Component "${module.name}" (${module}}): ${error}`));
+    .catch(error => new Error(`Render: Error while rendering Component "${module.name}" (${module}}): ${error}`));
 }
 
 /* Initialize simple JavaScript modules */

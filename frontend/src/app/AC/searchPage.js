@@ -1,44 +1,56 @@
 import axios from 'axios';
-import { SEARCH_PAGE_UI_FETCHING, SEARCH_PAGE_UI_SUCCESS, SEARCH_PAGE_UI_FAILURE, CHANGE_PAGE_PAGINATOR, CHANGE_PAGE_PAGINATION_LIMIT } from '../constants';
-import { SEARCH_PAGE } from '../globals';
-import ui from '../testServices/searchPageUI';
+/* constants */
+import { FETCH, SUCCESS, FAILURE, INIT_UI, SEARCH_PAGE, CHANGE_PAGE_PAGINATOR, CHANGE_PAGINATION_LIMIT } from 'app.consts';
+/* helpers */
+import { callAC } from 'app.helpers/ac';
+/* globals */
+import { SEARCH_PAGE as SEARCH_PAGE_URL } from 'app.globals';
+/* web service */
+import ui from 'app.ws/searchPageUI';
 
 export const getUI = (query) => {
   return (dispatch) => {
-    dispatch({ type: SEARCH_PAGE_UI_FETCHING });
+    dispatch({ type: SEARCH_PAGE + INIT_UI + FETCH });
 
-    axios({
-      method: 'get',
-      url: `${SEARCH_PAGE.searchPageUrl}?phrase=${query}`
-    }).then((response) => {
-      const { payload, success, errorMessage } = response.data;
+    const prod = () => {
+      axios({
+        method: 'get',
+        url: `${SEARCH_PAGE_URL.searchPageUrl}?phrase=${query}`
+      }).then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-      if (!success) {
-        dispatch({ type: SEARCH_PAGE_UI_FAILURE });
-        alert(errorMessage); // eslint-disable-line no-alert
-      } else {
+        if (!success) {
+          dispatch({
+            type: SEARCH_PAGE + INIT_UI + FAILURE,
+            alert: errorMessage
+          });
+        } else {
+          dispatch({
+            type: SEARCH_PAGE + INIT_UI + SUCCESS,
+            payload: {
+              ...payload,
+              getAllResults: true
+            }
+          });
+        }
+      }).catch(() => {
+        dispatch({ type: SEARCH_PAGE + INIT_UI + FAILURE });
+      });
+    };
+
+    const dev = () => {
+      setTimeout(() => {
         dispatch({
-          type: SEARCH_PAGE_UI_SUCCESS,
+          type: SEARCH_PAGE + INIT_UI + SUCCESS,
           payload: {
-            ...payload,
+            ...ui,
             getAllResults: true
           }
         });
-      }
-    })
-      .catch(() => {
-        dispatch({ type: SEARCH_PAGE_UI_FAILURE });
-      });
+      }, 2000);
+    };
 
-    // setTimeout(() => {
-    //   dispatch({
-    //     type: SEARCH_PAGE_UI_SUCCESS,
-    //     payload: {
-    //       ...ui,
-    //       getAllResults: true
-    //     }
-    //   });
-    // }, 2000);
+    callAC(dev, prod);
   };
 };
 
@@ -57,7 +69,7 @@ export const changePage = (page, type) => {
 export const setPaginationLimit = (type, value) => {
   return (dispatch) => {
     dispatch({
-      type: CHANGE_PAGE_PAGINATION_LIMIT,
+      type: CHANGE_PAGINATION_LIMIT,
       payload: {
         value,
         type

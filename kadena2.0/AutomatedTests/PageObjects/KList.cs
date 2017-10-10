@@ -15,8 +15,16 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.ClassName, Using = "content-header__btn")]
         private IWebElement AddMailingListBtn { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = ".mailing-lists tr")]
-        private IList<IWebElement> MailingListsTableRows { get; set; }
+        [FindsBy(How = How.CssSelector, Using = ".mailing-lists tr:nth-child(2) td")]
+        private IList<IWebElement> MailingListsFirstRowColumns { get; set; }
+
+        public int NumberOfErrors
+        {
+            get
+            {
+                return int.Parse(MailingListsFirstRowColumns[3].GetText());
+            }            
+        }
 
         public KList()
         {
@@ -41,7 +49,7 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool IsMailingListOnThePage(string name)
         {           
-            return MailingListsTableRows[1].GetText().Contains(name);
+            return MailingListsFirstRowColumns[0].GetText().Contains(name);
         }
 
         /// <summary>
@@ -50,12 +58,9 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool WereAddressesValidated()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 25; i++)
             {
-                IList<IWebElement> firstRowColumns = MailingListsTableRows[1].FindElements(By.CssSelector("td"));
-                int numberOfErrors = int.Parse(firstRowColumns[3].GetText());
-                
-                if (numberOfErrors > 0)
+                if (AreThereAnyErrorsInFirstList())
                 {
                     return true;
                 }
@@ -65,6 +70,30 @@ namespace AutomatedTests.PageObjects
                 Browser.Refresh();
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns true if number of errors is higher than 0
+        /// </summary>
+        /// <returns></returns>
+        public bool AreThereAnyErrorsInFirstList()
+        {
+            int numberOfErrors;
+            if (!int.TryParse(MailingListsFirstRowColumns[3].GetText(), out numberOfErrors))
+            {
+                return false;
+            }
+            return numberOfErrors > 0;           
+        }
+
+        /// <summary>
+        /// Clicks on view button on first list
+        /// </summary>
+        /// <returns></returns>
+        public ListDetail OpenFirstList()
+        {
+            MailingListsFirstRowColumns[4].FindElement(By.CssSelector("a")).ClickElement();
+            return new ListDetail();
         }
     }
 }

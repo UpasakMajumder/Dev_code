@@ -3,7 +3,7 @@ using Kadena.Dto.Settings;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System.Web.Http;
-using Kadena.WebAPI.Models;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -34,6 +34,15 @@ namespace Kadena.WebAPI.Controllers
             var addressModel = _mapper.Map<DeliveryAddress>(address);
             _service.SaveShippingAddress(addressModel);
             var result = _mapper.Map<IdDto>(addressModel);
+            return ResponseJson(result);
+        }
+
+        [HttpPut]
+        [Route("api/usersettings/savelocalization")]
+        public IHttpActionResult SaveLocalization([FromBody] LocalizationDto localization)
+        {
+            var language = _mapper.Map<string>(localization);
+            var result = _service.SaveLocalization(language);
             return ResponseJson(result);
         }
     }

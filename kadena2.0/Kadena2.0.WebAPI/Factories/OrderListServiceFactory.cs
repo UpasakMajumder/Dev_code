@@ -1,8 +1,8 @@
-﻿using System;
-using Kadena.WebAPI.Contracts;
+﻿using Kadena.WebAPI.Contracts;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.Services;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Factories
 {
@@ -10,16 +10,18 @@ namespace Kadena.WebAPI.Factories
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
+        private readonly IKenticoUserProvider _kenticoUser;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoLogger _logger;
 
-        public OrderListServiceFactory(IMapper mapper, IOrderViewClient orderClient,
+        public OrderListServiceFactory(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUser,
             IKenticoResourceService kenticoResources, IKenticoProviderService kentico,
             IKenticoLogger logger)
         {
             _mapper = mapper;
             _orderClient = orderClient;
+            _kenticoUser = kenticoUser;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
             _logger = logger;
@@ -27,7 +29,7 @@ namespace Kadena.WebAPI.Factories
 
         public IOrderListService GetDashboard()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoResources, _kentico, _logger)
+            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _logger)
             {
                 PageCapacityKey = "KDA_DashboardOrdersPageCapacity"
             };
@@ -35,7 +37,7 @@ namespace Kadena.WebAPI.Factories
 
         public IOrderListService GetRecentOrders()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoResources, _kentico, _logger)
+            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _logger)
             {
                 PageCapacityKey = "KDA_RecentOrdersPageCapacity",
                 EnablePaging = true

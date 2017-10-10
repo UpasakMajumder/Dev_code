@@ -8,6 +8,7 @@ using CMS.Helpers;
 using CMS.MacroEngine;
 using System;
 using System.Web.UI.WebControls;
+using Kadena.Old_App_Code.Kadena.Email;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
@@ -17,8 +18,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         private const string _urlNewItem = "~/CMSModules/EmailTemplates/Pages/New.aspx";
         private const string _urlEditItem = "~/CMSModules/EmailTemplates/Pages/Frameset.aspx";
         private const string _templateType = "membershipchangepassword";
-        private const string _setUpPasswordUrlMacro = "SetUpPasswordUrl";
-        private const string _setUpPasswordUrlSettingKey = "KDA_SetUpPasswordURL";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -171,30 +170,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             // Creating and sending email message.
             var resolver = MacroResolver.GetInstance();
+            var emailService = new EmailService();
             foreach (var ui in users)
             {
-                resolver.SetNamedSourceData(_setUpPasswordUrlMacro, GetSetUpPasswordUrl(ui.UserGUID));
-                var message = new EmailMessage();
-                message.EmailFormat = EmailFormatEnum.Both;
-                message.From = emailTemplate.TemplateFrom;
-                message.Recipients = ui.Email;
-                message.Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject);
-                message.Body = resolver.ResolveMacros(emailTemplate.TemplateText);
-                message.PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText);
-                EmailSender.SendEmail(siteSelector.SiteName, message, false);
+                emailService.SendResetPasswordEmail(ui, emailTemplate, _siteId > 0 ? siteSelector.SiteName : null, resolver);
             }
 
             ShowConfirmation(GetString("system_email.emailsent"));
-        }
-
-        private string GetSetUpPasswordUrl(Guid userCode)
-        {
-            string setUpUrl;
-            if (_siteId > 0)
-                setUpUrl = SettingsKeyInfoProvider.GetURLValue($"{siteSelector.SiteName}.{_setUpPasswordUrlSettingKey}", string.Empty);
-            else
-                setUpUrl = SettingsKeyInfoProvider.GetURLValue(_setUpPasswordUrlSettingKey, string.Empty);
-            return URLHelper.AddParameterToUrl(setUpUrl, "h", userCode.ToString());
         }
     }
 }

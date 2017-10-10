@@ -26,8 +26,31 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.ClassName, Using = "summary-table__amount")]
         private IList<IWebElement> SummaryTableTotals { get; set; }
 
-        [FindsBy(How = How.CssSelector, Using = ".r-spinner")]
+        [FindsBy(How = How.CssSelector, Using = "spinner")]
         private IWebElement Spinner { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".alert .p-info")]
+        private IWebElement ShoppingCartEmptyInfo { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".cart-product")]
+        private IList<IWebElement> ProductsInCart { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".input__wrapper>.input__wrapper>input[name=paymentMethod]")]
+        private IWebElement PurchaseOrderInputField { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".shopping-cart__block>button")]
+        private IWebElement SubmitOrderBtn { get; set; }
+
+        [FindsBy(How = How.CssSelector, Using = ".icon-shipping")]
+        private IList<IWebElement> ShippingOptionsIcons { get; set; }
+
+        private IList<IWebElement> RemoveProductButtons
+        {
+            get
+            {
+                return Browser.Driver.FindElements(By.CssSelector(".cart-product__action .cart-product__btn"));
+            }
+        }
 
         private decimal summary;
         private decimal shipping;
@@ -55,8 +78,9 @@ namespace AutomatedTests.PageObjects
         public void SelectAddress(int index)
         {
             Browser.BaseWait.Until(r => DeliveryAddresses.Count > 0);
+            WaitForRecalculation();
             DeliveryAddresses[index].ClickElement();
-            WaitForLoading();
+            WaitForRecalculation();
         }
 
         /// <summary>
@@ -65,18 +89,32 @@ namespace AutomatedTests.PageObjects
         /// <returns></returns>
         public bool AreShippingCostEstimated()
         {
+            WaitForShippingOptions();
             if (DeliveryAddresses.Count == 0)
             {
                 return false;
             }
-            for (int i = 0; i < DeliveryMethods.Count; i++)
+            return DeliveryMethods.Any(r => r.Text.Contains("$"));
+
+        }
+
+        /// <summary>
+        /// Waits for page to stop calculating
+        /// </summary>
+        public void WaitForRecalculation()
+        {
+            //usually it takes some time until page starts to recalculate so we may get the expected response before
+            //page starts to recalculate. That is why we wait for it to be null first
+            //try-catch with short wait is in place, because this does not happen each time the same way
+            try
             {
-                if (DeliveryMethods[i].Text.Contains("$"))
-                {
-                    return true;
-                }
+                Browser.ShortWait.Until(s => Browser.JsExecutor.ExecuteScript("return store.getState().checkout.ui.deliveryMethods") == null);
             }
-            return false;
+            catch
+            {
+                //empty
+            }
+            Browser.BaseWait.Until(s => Browser.JsExecutor.ExecuteScript("return store.getState().checkout.ui.deliveryMethods") != null);
         }
 
         /// <summary>
@@ -84,6 +122,7 @@ namespace AutomatedTests.PageObjects
         /// </summary>
         public void SelectEstimatedCarrier()
         {
+            WaitForShippingOptions();
             for (int i = 0; i < DeliveryMethods.Count; i++)
             {
                 if (DeliveryMethods[i].Text.Contains("$"))
@@ -104,7 +143,6 @@ namespace AutomatedTests.PageObjects
                     break;
                 }
             }
-            WaitForLoading();
         }
 
         /// <summary>
@@ -112,6 +150,7 @@ namespace AutomatedTests.PageObjects
         /// </summary>
         private void ParseSummaryTableValues()
         {
+            WaitForRecalculation();
             summary = decimal.Parse(SummaryTableTotals[0].GetText().Substring(2));
             shipping = decimal.Parse(SummaryTableTotals[1].GetText().Substring(2));
             subtotal = decimal.Parse(SummaryTableTotals[2].GetText().Substring(2));
@@ -154,6 +193,62 @@ namespace AutomatedTests.PageObjects
             return tax > 0;
         }
 
-        
+        /// <summary>
+        /// Empty the cart if it is not empty
+        /// </summary>
+        public void EmptyTheCart()
+        {
+            Browser.BaseWait.Until(r => ProductsInCart.Count > 0 || ShoppingCartEmptyInfo.IsPresent());
+
+            if (ShoppingCartEmptyInfo.IsPresent())
+            {
+                return;
+            }
+            if (RemoveProductButtons.Count == 0)
+            {
+                throw new Exception("There are no remove buttons");
+            }
+            else
+            {
+                //click on each remove button and wait each time while the page is recalculated
+                while (RemoveProductButtons.Count > 0)
+                {
+                    IList<IWebElement> buttons = RemoveProductButtons;
+                    buttons[buttons.Count - 1].ClickElement();
+                    buttons[buttons.Count - 1].WaitTillNotPresent();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fills out random number to Purchase Order field
+        /// </summary>
+        public void FillOutPurchaseOrderNumber()
+        {
+            WaitForSubmitOrderBtnToBeClickable();
+            PurchaseOrderInputField.EnterText(Lorem.RandomNumber(10000, 99999).ToString());
+        }
+
+        /// <summary>
+        /// Clicks Place Order Button
+        /// </summary>
+        public void PlaceOrder()
+        {
+            SubmitOrderBtn.ClickElement();
+        }
+
+        /// <summary>
+        /// Waits until there is at least one shipping icon
+        /// </summary>
+        public void WaitForShippingOptions()
+        {
+            Browser.BaseWait.Until(r => ShippingOptionsIcons.Count > 0);
+            ShippingOptionsIcons[0].WaitTillVisible();
+        }
+
+        public void WaitForSubmitOrderBtnToBeClickable()
+        {
+            SubmitOrderBtn.WaitTillClickable();
+        }
     }
 }

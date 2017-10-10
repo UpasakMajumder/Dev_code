@@ -15,11 +15,8 @@ namespace AutomatedTests.Tests
         public void When_RecentOrdersOpened_Expect_OrdersDisplayed()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Open recent orders
             var recentOrders = new RecentOrders();

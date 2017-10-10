@@ -10,7 +10,7 @@ namespace AutomatedTests.PageObjects
 {
     class MapColumns : BasePage
     {
-        [FindsBy(How = How.Id, Using = "p_lt_WebPartZone3_zoneContent_pageplaceholder_p_lt_WebPartZone2_zoneContent_ColumnMapper_btnProcess")]
+        [FindsBy(How = How.CssSelector, Using = ".btn-group>button:nth-child(2)")]
         private IWebElement ProcessMyListBtn { get; set; }
 
         public MapColumns()

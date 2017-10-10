@@ -1,48 +1,58 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* ac */
+import { changeSearchQuery, closeDropdown, sendQuery } from 'app.ac/search';
+/* local components */
 import SearchInput from './SearchInput';
 import SearchDropdown from './SearchDropdown';
-import { changeSearchQuery, closeDropdown, sendQuery } from '../../AC/search';
 
 class Search extends Component {
-  constructor() {
-    super();
+  state = {
+    workingProcess: 0
+  };
 
-    this.state = {
-      workingProcess: 0
-    };
+  static propTypes = {
+    changeSearchQuery: PropTypes.func.isRequired,
+    areResultsShown: PropTypes.bool.isRequired,
+    closeDropdown: PropTypes.func.isRequired,
+    pressedEnter: PropTypes.bool.isRequired,
+    products: PropTypes.object.isRequired,
+    sendQuery: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired,
+    pages: PropTypes.object.isRequired,
+    query: PropTypes.string.isRequired
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.redirectUserToResultPage = this.redirectUserToResultPage.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = (event) => {
     const { target } = event;
     const { value: query } = target;
+    const { changeSearchQuery, sendQuery, closeDropdown } = this.props;
+    const { workingProcess } = this.state;
 
-    this.props.changeSearchQuery(query);
+    changeSearchQuery(query);
 
     if (query.length > 2) {
-      clearTimeout(this.state.workingProcess);
-      const workingProcess = setTimeout(() => {
-        this.props.sendQuery(query);
+      clearTimeout(workingProcess);
+      const workingProcessId = setTimeout(() => {
+        sendQuery(query);
       }, 1000);
-      this.setState({ workingProcess });
+      this.setState({ workingProcess: workingProcessId });
     }
 
-    if (!query.length) this.props.closeDropdown();
-  }
+    if (!query.length) closeDropdown();
+  };
 
-  redirectUserToResultPage(e) {
+  redirectUserToResultPage = (e) => {
     const { workingProcess } = this.state;
-    const { query } = this.props;
+    const { query, sendQuery } = this.props;
 
     if (e.keyCode === 13) {
       clearTimeout(workingProcess);
-      this.props.sendQuery(query, true);
+      sendQuery(query, true);
       e.preventDefault();
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps) { // eslint-disable-line class-methods-use-this
     const { pressedEnter, products, pages } = nextProps;
@@ -63,9 +73,9 @@ class Search extends Component {
   }
 
   render() {
-    const { query, products, pages, message, areResultsShown } = this.props;
+    const { query, products, pages, message, areResultsShown, closeDropdown } = this.props;
 
-    const content = (
+    return (
       <div>
         <SearchInput changeValue={this.handleChange}
                      closeDropdown={this.props.closeDropdown}
@@ -77,8 +87,6 @@ class Search extends Component {
                           message={message} />
       </div>
     );
-
-    return content;
   }
 }
 

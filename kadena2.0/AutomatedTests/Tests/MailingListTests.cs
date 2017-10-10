@@ -17,11 +17,8 @@ namespace AutomatedTests.Tests
         public void When_UploadingMailingList_Expect_MailingListCorrectlyUploaded()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //open K-list
             var kList = new KList();
@@ -30,7 +27,7 @@ namespace AutomatedTests.Tests
 
             //select mailing list and submit it
             newKList.SelectMailingList();
-            string mailingListName = StringHelper.RandomString(7);
+            string mailingListName = "automation " + StringHelper.RandomString(7);
             newKList.FillOutMailingListName(mailingListName);
             var mapColumns = newKList.SubmitMailingList();
 
@@ -44,6 +41,69 @@ namespace AutomatedTests.Tests
             kList.Open();
             Assert.IsTrue(kList.IsMailingListOnThePage(mailingListName));
             Assert.IsTrue(kList.WereAddressesValidated());
+            var listDetail = kList.OpenFirstList();
+
+            //verify if there are errors on list detail
+            Assert.IsTrue(listDetail.AreThereBadAddresses());
+            listDetail.UseOnlyCorrectAddresses();
+
+            //verify that there are no bad addresses after using only good ones
+            Assert.IsFalse(listDetail.AreThereBadAddresses());
+
+            //go back to K-List and check if the page is updated
+            kList.Open();
+            Assert.IsFalse(kList.AreThereAnyErrorsInFirstList());
+
         }
+
+        [Test]
+        public void When_CorrectingAddresses_Expect_AddressesAreCorrected()
+        {
+            //login
+            InitializeTest();
+            var dashboard = new Dashboard();
+
+            //open K-list
+            var kList = new KList();
+            SaveAuthenticationCookiesToFile();
+            kList.Open();
+            var newKList = kList.ClickAddMailingListBtn();
+
+            //select mailing list and submit it
+            newKList.SelectMailingList();
+            string mailingListName = "automation " + StringHelper.RandomString(7);
+            newKList.FillOutMailingListName(mailingListName);
+            var mapColumns = newKList.SubmitMailingList();
+
+            //confirm mapping
+            var listProcessing = mapColumns.ClickProcessList();
+
+            //verify if the list is being processed
+            Assert.True(listProcessing.WasMailingListSubmitted());
+
+            //go back to K-List and check if the list is there
+            kList.Open();
+            Assert.IsTrue(kList.IsMailingListOnThePage(mailingListName));
+            Assert.IsTrue(kList.WereAddressesValidated());
+            int numberOfErrors = kList.NumberOfErrors;
+            var listDetail = kList.OpenFirstList();
+
+            //verify if there are errors on list detail
+            Assert.IsTrue(listDetail.AreThereBadAddresses());
+
+            //correct one address
+            listDetail.CorrectErrors();
+            listDetail.CorrectFirstRow();
+            
+            //verify if the list is being processed
+            Assert.True(listProcessing.WasMailingListSubmitted());
+
+            //wait for validation and check if number of errors is correct
+            kList.Open();
+            Assert.IsTrue(kList.WereAddressesValidated());
+            int numberOfErrorsAfterCorrection = kList.NumberOfErrors;
+            Assert.IsTrue(numberOfErrorsAfterCorrection > 0);
+            Assert.IsTrue(numberOfErrorsAfterCorrection < numberOfErrors);
+        }      
     }
 }

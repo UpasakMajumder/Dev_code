@@ -1,14 +1,14 @@
 ﻿using Kadena.WebAPI.Contracts;
-using Kadena.WebAPI.Models.RecentOrders;
+using Kadena.Models.RecentOrders;
 using System.Collections.Generic;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
-using Kadena.WebAPI.Models;
-using System;
+using Kadena.Models;
 using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Services
 {
@@ -16,9 +16,12 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
+        private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoLogger _logger;
+
+        private readonly string _orderDetailUrl;
 
         private int _pageCapacity;
         private string _pageCapacityKey;
@@ -40,20 +43,24 @@ namespace Kadena.WebAPI.Services
 
         public bool EnablePaging { get; set; }
 
-        public OrderListService(IMapper mapper, IOrderViewClient orderClient,
+        public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
             IKenticoResourceService kenticoResources, IKenticoProviderService kentico,
             IKenticoLogger logger)
         {
             _mapper = mapper;
             _orderClient = orderClient;
+            _kenticoUsers = kenticoUsers;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
             _logger = logger;
+
+            _orderDetailUrl = kentico.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
         }
 
         public async Task<OrderHead> GetHeaders()
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
             if (EnablePaging && _pageCapacity > 0)
             {
@@ -76,23 +83,40 @@ namespace Kadena.WebAPI.Services
                     RowsOnPage = _pageCapacity,
                     PagesCount = pages
                 },
-                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems")
+                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
+                Rows = orderList.Orders.Select(o =>
+                {
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    return o;
+                })
             };
         }
 
         public async Task<OrderBody> GetBody(int pageNumber)
         {
-            var orderDetailUrl = _kenticoResources.GetSettingsKey("KDA_OrderDetailUrl");
             var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
+            MapOrdersStatusToGeneric(orderList?.Orders);
             return new OrderBody
             {
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };
         }
+
+        private void MapOrdersStatusToGeneric(IEnumerable<Order> orders)
+        {
+            if (orders == null)
+                return;
+
+            foreach (var o in orders)
+            {
+                o.Status = _kentico.MapOrderStatus(o.Status);
+            }
+        }
+
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
@@ -105,7 +129,7 @@ namespace Kadena.WebAPI.Services
             }
             else
             {
-                var customer = _kentico.GetCurrentCustomer();
+                var customer = _kenticoUsers.GetCurrentCustomer();
                 var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
                 response = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
             }

@@ -1,61 +1,80 @@
+// @flow
 import { SPOTFIRE } from '../../globals';
 
 export default class Spotfire {
-  constructor(container) { // container is a card block
-    const { id, dataset } = container;
-    const { url } = dataset;
-    const { serverUrl } = SPOTFIRE;
+  customisation: any;
 
+  constructor(container: HTMLElement) { // container is a card block
+    const { serverUrl, url, customerId } = SPOTFIRE;
     const parameters = '';
     const reloadAnalysisInstance = false;
 
-    this.customisation = new spotfire.webPlayer.Customization(); // eslint-disable-line no-undef
-    this.initCustomization();
+    // $FlowIgnore
 
-    const app = new spotfire.webPlayer.Application(  // eslint-disable-line no-undef
+    this.customisation = new window.spotfire.webPlayer.Customization();
+
+    const app = new window.spotfire.webPlayer.Application(
       serverUrl,
       this.customisation,
       url,
       parameters,
       reloadAnalysisInstance);
 
-    const doc = app.openDocument(id, 0, this.customisation);
+    if (container.dataset.report) {
+      const { id } = container;
+      this.initCustomization(true);
 
-    // const filterBtns = document.querySelectorAll('.js-filter-spotfire');
-    // Array.from(filterBtns).forEach((btn) => {
-    //   btn.addEventListener('click', (event) => {
-    //     const { target } = event;
-    //     const { filterTime } = target.dataset;
-    //
-    //     if (filterTime === 'all') {
-    //       doc.filtering.resetAllFilters();
-    //     } else {
-    //       doc.data.getActiveDataTable((dataTable) => {
-    //         const filterColumn = {
-    //           filteringSchemeName: "Filtering scheme",
-    //           dataTableName: dataTable.dataTableName,
-    //           dataColumnName: filterColumnNameInput.value, ///// COLUMN
-    //           filteringOperation: spotfire.webPlayer.filteringOperation.REPLACE,
-    //           filterSettings: {
-    //             includeEmpty: true,
-    //             values: filterValuesInput.value.split(',').map(item => item.trim()) // filterTime
-    //           }
-    //         };
-    //
-    //         const filteringOperation = spotfire.webPlayer.filteringOperation.REPLACE;
-    //
-    //         doc.filtering.setFilter(
-    //           filterColumn,
-    //           filteringOperation);
-    //       });
-    //     }
-    //
-    //   });
-    // });
+      app.openDocument(id, 0, this.customisation);
+    } else {
+      const tabs = Array.from(container.querySelectorAll('.js-spotfire-tab'));
+      this.initCustomization(false);
 
+      tabs.forEach((tab) => {
+        const { id, dataset } = tab;
+        const { doc } = dataset;
+
+        app.openDocument(id, doc, this.customisation);
+      });
+    }
+
+    const filterData = [
+      {
+        dataTableName: 'CDH_Inventory_Extract_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'CDH_Sales_Order_Extract_VW_IL',
+        dataColumnName: 'ClientID'
+      },
+      {
+        dataTableName: 'CDH_Material_Usage_VW_IL',
+        dataColumnName: 'Client_ID'
+      },
+      {
+        dataTableName: 'Material_Receipt_Adjustment_Destruction_IL',
+        dataColumnName: 'Client ID'
+      }
+    ];
+
+    // prefilters
+    filterData.forEach((data) => {
+      const filteringSchemeName = 'Filtering scheme';
+      const { dataTableName, dataColumnName } = data;
+      const filteringOperation = window.spotfire.webPlayer.filteringOperation.REPLACE;
+
+      const filterColumn = {
+        filteringSchemeName,
+        dataTableName,
+        dataColumnName,
+        filteringOperation,
+        filterSettings: { values: [customerId] }
+      };
+
+      app.analysisDocument.filtering.setFilter(filterColumn, filteringOperation);
+    });
   }
 
-  initCustomization() {
+  initCustomization(showPageNavigation) {
     this.customisation.showClose = false;
     this.customisation.showUndoRedo = true;
     this.customisation.showToolBar = false;
@@ -64,7 +83,7 @@ export default class Spotfire {
     this.customisation.showExportFile = false;
     this.customisation.showFilterPanel = false;
     this.customisation.showAnalysisInfo = true;
-    this.customisation.showPageNavigation = false;
+    this.customisation.showPageNavigation = showPageNavigation;
     this.customisation.showExportVisualization = false;
   }
 }

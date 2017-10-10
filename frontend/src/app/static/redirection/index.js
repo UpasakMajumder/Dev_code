@@ -1,14 +1,25 @@
-class Redirection {
-  constructor(link) {
-    const { url, blank } = link.dataset;
+// @flow
 
-    link.addEventListener('click', (event) => {
+/* helpers */
+import { consoleException } from 'app.helpers/io';
+
+class Redirection {
+  constructor(link: HTMLElement) {
+    const { url, blank }: { url: string, blank: string } = link.dataset;
+
+    if (!url) {
+      consoleException('Check link element, it must have data-url', link);
+      return;
+    }
+
+    link.addEventListener('click', (event: Event): void => {
+      if (!(event.target instanceof HTMLElement)) return;
       if (event.target.classList.contains('js-redirection-ignore')) return;
 
       if (blank === 'true') {
         window.open(url, '_blank');
       } else {
-        document.location = url;
+        document.location.replace(url);
       }
     });
   }

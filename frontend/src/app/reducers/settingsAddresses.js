@@ -1,4 +1,4 @@
-import { SETTINGS_ADDRESSES_UI_SUCCESS, MODIFY_SHIPPING_ADDRESS_SUCCESS } from '../constants';
+import { SETTINGS_ADDRESSES, ADD_SHIPPING_ADDRESS, MODIFY_SHIPPING_ADDRESS, SUCCESS, INIT_UI } from 'app.consts';
 
 export default (state = {}, action) => {
   const { type, payload } = action;
@@ -7,15 +7,27 @@ export default (state = {}, action) => {
   let addresses = [];
 
   switch (type) {
-  case SETTINGS_ADDRESSES_UI_SUCCESS:
+  case SETTINGS_ADDRESSES + INIT_UI + SUCCESS:
     return payload.ui;
 
-  case MODIFY_SHIPPING_ADDRESS_SUCCESS:
+  case ADD_SHIPPING_ADDRESS + SUCCESS:
+    return {
+      ...state,
+      shipping: {
+        ...state.shipping,
+        addresses: [
+          ...state.shipping.addresses,
+          payload
+        ]
+      }
+    };
+
+  case MODIFY_SHIPPING_ADDRESS + SUCCESS:
     mappedAddresses = state.shipping.addresses.map((address) => {
-      if (address.id === payload.data.id) {
+      if (address.id === payload.id) {
         return {
           ...address,
-          ...payload.data
+          ...payload
         };
       }
 
@@ -24,11 +36,7 @@ export default (state = {}, action) => {
 
     addresses = state.shipping.addresses.length
       ? mappedAddresses
-      : [{
-        ...payload.data,
-        isEditButton: true,
-        isRemoveButton: false
-      }];
+      : [payload];
 
     return {
       ...state,
@@ -40,6 +48,5 @@ export default (state = {}, action) => {
 
   default:
     return state;
-
   }
 };

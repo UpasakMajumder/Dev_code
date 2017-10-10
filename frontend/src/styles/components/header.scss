@@ -1,7 +1,6 @@
 .css-header {
   @extend .bg-white;
   position: relative;
-  z-index: $zindex-modal;
   height: $header-size + $main-layout-gutter;
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;
@@ -27,7 +26,7 @@
 
     .nav-item {
       @extend %flex--center--default;
-      cursor: pointer;
+      position: relative;
 
       &.active,
       &:hover {
@@ -35,6 +34,12 @@
 
         .nav-badge {
           border-color: $main-gutter-color;
+        }
+      }
+
+      &--secondary {
+        @include media-breakpoint-down(lg) {
+          display: none;
         }
       }
 

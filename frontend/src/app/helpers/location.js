@@ -1,14 +1,26 @@
+// @flow
+// $FlowIgnore
 import query from 'url-query';
+/* constants */
+import { DOMAIN } from 'app.consts';
 
-export const getSearchObj = () => {
-  const search = window.location.search;
+export const getSecondLevelDomain = () => {
+  const { domain } = document;
+  const array = domain.split('.');
+  const index = array.indexOf(DOMAIN);
+  if (index === -1) return false;
+  return [array[index - 1], array[index]].join('.');
+};
+
+export const getSearchObj = (): { tab?: string} => {
+  const search: ?string = window.location.search;
   if (search) return query(search);
   return {};
 };
 
-export const createSearchStr = (obj) => {
+export const createSearchStr = (obj: {}): string => {
   let search = '?';
-  const keys = Object.keys(obj);
+  const keys: number[] = Object.keys(obj);
   keys.forEach((key, index) => {
     if (index) {
       search += `&${key}=${obj[key]}`;
@@ -19,17 +31,23 @@ export const createSearchStr = (obj) => {
   return search;
 };
 
-export const createNewUrl = (data, loc) => {
+export const createNewUrl = (data: {
+  protocol?: string,
+  host?: string,
+  pathname?: ?string,
+  search?: { props: {}, method: ?string }
+}) => {
+  const { protocol: dataProtocol,
+    host: dataHost,
+    pathname: dataPathname,
+    search: dataSearch } = data;
+
   const { protocol: locationProtocol,
           host: locationHost,
           pathname: locationPathname,
-          search: locationSearch } = loc;
+          search: locationSearch } = location;
 
-  const { protocol: dataProtocol,
-          host: dataHost,
-          pathname: dataPathname,
-          search: dataSearch } = data;
-  let newUrl = '';
+  let newUrl: string = '';
 
   // Set protocol
   if (dataProtocol) {
@@ -66,7 +84,7 @@ export const createNewUrl = (data, loc) => {
       newUrl += '';
     }
   } else {
-    newUrl += locationSearch;
+    newUrl += locationSearch || '';
   }
 
   return newUrl;

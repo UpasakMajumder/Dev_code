@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SVG from '../../SVG';
+/* components */
+import SVG from 'app.dump/SVG';
+/* globals */
+import { SEARCH } from 'app.globals';
 
 const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirectUserToResultPage }) => {
   const closer = value
@@ -14,7 +17,7 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirec
       <div className="input__wrapper">
         <input type="text"
                className="input__text"
-               placeholder="Search"
+               placeholder={SEARCH.placeholder}
                onChange={(e) => { changeValue(e); }}
                onKeyDown={(e) => { redirectUserToResultPage(e); }}
                value={value}/>
@@ -25,9 +28,10 @@ const SearchInput = ({ changeValue, closeDropdown, value, searchPageUrl, redirec
 };
 
 SearchInput.propTypes = {
-  value: PropTypes.string.isRequired,
   closeDropdown: PropTypes.func.isRequired,
-  changeValue: PropTypes.func.isRequired
+  changeValue: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  searchPageUrl: PropTypes.string
 };
 
 export default SearchInput;

@@ -1,9 +1,9 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Chili;
 using System;
 using System.Linq;
@@ -61,15 +61,14 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 var uri = new Uri(newTemplateUrl);
                 var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-                var destinationUrl = String.Format("{0}?id={1}&skuid={2}&templateid={3}&workspaceid={4}",
+                var destinationUrl = string.Format("{0}?nodeId={1}&templateId={2}&workspaceid={3}",
                   ProductEditorUrl,
-                  DocumentContext.CurrentDocument.DocumentID,
-                  ECommerceContext.CurrentProduct.SKUID,
+                  DocumentContext.CurrentDocument.NodeID,
                   newTemplateID,
                   workspaceID);
 
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
-                if (productTypes.Contains("KDA.MailingProduct") && productTypes.Contains("KDA.TemplatedProduct"))
+                if (productTypes.Contains(ProductTypes.MailingProduct) && productTypes.Contains(ProductTypes.TemplatedProduct))
                 {
                     var selectMailingList = URLHelper.AddParameterToUrl(SelectMailingListUrl, "url", URLHelper.URLEncode(destinationUrl));
                     Response.Redirect(selectMailingList);

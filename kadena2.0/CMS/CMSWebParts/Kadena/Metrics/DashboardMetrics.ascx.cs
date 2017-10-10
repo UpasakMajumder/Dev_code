@@ -5,6 +5,7 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.Orders;
 
@@ -64,9 +65,15 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
             {
                 if (!page.IsLink)
                 {
-                    if (page.GetStringValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                    if (page.GetStringValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
                     {
                         var inventoryProduct = SKUInfoProvider.GetSKUInfo(page.NodeSKUID);
+                        if (inventoryProduct == null)
+                        {
+                            // skip invalid SKU id
+                            continue;
+                        }
+
                         if (inventoryProduct.SKUTrackInventory == TrackInventoryTypeEnum.Disabled)
                         {
                             result++;

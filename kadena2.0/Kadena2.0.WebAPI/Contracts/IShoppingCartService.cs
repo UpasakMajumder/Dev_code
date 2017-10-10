@@ -1,28 +1,21 @@
-﻿using Kadena.WebAPI.Models.Checkout;
-using Kadena.WebAPI.Models.OrderDetail;
-using Kadena.WebAPI.Models.SubmitOrder;
+﻿using Kadena.Models;
+using Kadena.Models.Checkout;
+using Kadena.Models.Product;
+using System;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Contracts
 {
     public interface IShoppingCartService
     {
-        Task<CheckoutPage> GetCheckoutPage();
-
-        Task<CheckoutPage> SelectShipipng(int id);
-
-        Task<CheckoutPage> SelectAddress(int id);
-        Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request);
-
-        Task<CheckoutPage> ChangeItemQuantity(int id, int quantity);
-        Task<CheckoutPage> RemoveItem(int id);
-
-        Task<CheckoutPage> OrderCurrentCart();
-
-        Task<double> EstimateTotalTax();
-
-        Task<bool> IsSubmittable();
-			
-        Task<OrderDetail> GetOrderDetail(string orderId);
+        CheckoutPage GetCheckoutPage();
+        Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
+        Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress);
+        CheckoutPage SelectShipipng(int id);
+        CheckoutPage SelectAddress(int id);
+        CheckoutPage ChangeItemQuantity(int id, int quantity);
+        CheckoutPage RemoveItem(int id);
+        CartItemsPreview ItemsPreview();
+        Task<AddToCartResult> AddToCart(NewCartItem item);
     }
 }

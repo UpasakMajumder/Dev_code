@@ -1,16 +1,17 @@
 ﻿using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.MailingList;
+using Kadena2.MicroserviceClients;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Web;
 using System.Web.UI;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
@@ -22,8 +23,18 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _validityTableName = "KDA.MailingValidity";
         private MailingListDataDTO _container;
 
+        public string RedirectPage
+        {
+            get
+            {
+                return GetStringValue("RedirectPage", string.Empty);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            btnSubmit.Text = ResHelper.GetString("Kadena.MailingList.Create");
+
             var containerId = Request.QueryString["containerid"];
             if (!string.IsNullOrWhiteSpace(containerId))
             {
@@ -171,11 +182,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             Stream fileStream = null;
-            for(int i = 0; i < Request.Files.Count; i++)
+            for (int i = 0; i < Request.Files.Count; i++)
             {
                 var file = Request.Files[i];
-                if (file.ContentLength > 0 
-                    && (file.ContentType == "application/vnd.ms-excel" 
+                if (file.ContentLength > 0
+                    && (file.ContentType == "application/vnd.ms-excel"
                     || file.ContentType == "text/csv"))
                 {
                     fileStream = file.InputStream;
@@ -187,33 +198,49 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 try
                 {
+                    var serviceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_LoadFileUrl");
                     var fileName = inpFileName.Value;
+                    var module = FileModule.KList;
 
-                    var fileId = ServiceHelper.UploadFile(fileStream, fileName);
-                    var containerId = Guid.Empty;
-                    if (_container == null)
+                    var client = new FileClient();
+                    var uploadResult = client.UploadToS3(serviceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
+                        fileStream, fileName).Result;
+                    if (uploadResult.Success)
                     {
-                        var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                        var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                        var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                        containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                        var containerId = Guid.Empty;
+                        if (_container == null)
+                        {
+                            var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+                            var product = Request.Form[GetString("Kadena.MailingList.Product")];
+                            var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
+                            containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                        }
+                        else
+                        {
+                            containerId = new Guid(_container.Id);
+                            ServiceHelper.RemoveAddresses(containerId);
+                        }
+                        var fileId = uploadResult.Payload;
+                        var nextStepUrl = RedirectPage;
+                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", URLHelper.URLEncode(fileId));
+                        Response.Redirect(nextStepUrl, false);
+                        Context.ApplicationInstance.CompleteRequest();
                     }
                     else
                     {
-                        containerId = new Guid(_container.Id);
-                        ServiceHelper.RemoveAddresses(containerId);
+                        throw new InvalidOperationException(uploadResult.ErrorMessages);
                     }
-
-                    var nextStepUrl = GetStringValue("RedirectPage", string.Empty);
-                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                    nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", fileId.ToString());
-                    Response.Redirect(nextStepUrl);
                 }
                 catch (Exception exc)
                 {
-                    txtError.InnerText = exc.Message;
-                    EventLogProvider.LogException("Mailing List Create", "EXCEPTION", exc, CurrentSite.SiteID);
+                    inpError.Value = exc.Message;
+                    EventLogProvider.LogException(GetType().Name, "EXCEPTION", exc, CurrentSite.SiteID);
                 }
+            }
+            else
+            {
+                inpError.Value = ResHelper.GetString("Kadena.MailingList.FileNotUploadedOrInvalid");
             }
         }
     }

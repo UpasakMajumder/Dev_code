@@ -1,43 +1,47 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+/* components */
+import Alert from 'app.dump/Alert';
+import Pagination from 'app.dump/Pagination';
+import Spinner from 'app.dump/Spinner';
+/* ac */
+import { changePage, initUI } from 'app.ac/recentOrders';
+/* local components */
 import Order from './Order';
-import Pagination from '../Pagination';
-import Alert from '../Alert';
-import { getHeadings, getRows } from '../../AC/recentOrders';
 
 class RecentOrders extends Component {
-  constructor() {
-    super();
+  state = {
+    currPage: 0,
+    prevPage: 0
+  };
 
-    this.state = {
-      currPage: 0,
-      prevPage: 0
-    };
+  static propTypes = {
+    changePage: PropTypes.func.isRequired,
+    headings: PropTypes.arrayOf(PropTypes.string).isRequired,
+    noOrdersMessage: PropTypes.string.isRequired,
+    pageInfo: PropTypes.object.isRequired,
+    rows: PropTypes.object.isRequired
+  };
 
-    this.changePage = this.changePage.bind(this);
-  }
-
-  changePage({ selected }) {
-    this.setState((prevState) => {
+  changePage = ({ selected }) => {
+    this.setState(({ currPage }) => {
       return {
         currPage: selected,
-        prevPage: prevState.currPage
+        prevPage: currPage
       };
     });
-
-  }
+  };
 
   componentWillUpdate(nextProps, nextState) {
     if (nextState.currPage === this.state.currPage) return;
     if (!Object.keys(nextProps.rows).length) return;
     if (nextProps.rows[nextState.currPage]) return;
-    this.props.getRows(nextState.currPage + 1);
+    this.props.changePage(nextState.currPage + 1, true);
   }
 
   componentDidMount() {
-    const { currPage } = this.state;
-    this.props.getHeadings();
-    this.props.getRows(currPage + 1);
+    this.props.initUI();
   }
 
   render() {
@@ -48,22 +52,20 @@ class RecentOrders extends Component {
     const headersList = headings.map((heading, index) => <th key={index}>{heading}</th>);
     const tableHeader = <tr>{headersList}</tr>;
 
-    let tableRows = null;
-
-    if (Object.keys(rows).length) {
-      if (rows[currPage]) {
-        tableRows = rows[currPage].map(row => <Order key={row.orderNumber} {...row}/>);
-      } else {
-        tableRows = rows[prevPage].map(row => <Order key={row.orderNumber} {...row}/>);
-      }
-    }
-
-    let content = null;
+    let content = <Spinner />;
 
     if (Object.keys(rows).length) {
       if (!rows[0].length) {
         content = <Alert type="info" text={noOrdersMessage} />;
       } else {
+        let tableRows = null;
+
+        if (rows[currPage]) {
+          tableRows = rows[currPage].map(row => <Order key={row.orderNumber} {...row}/>);
+        } else {
+          tableRows = rows[prevPage].map(row => <Order key={row.orderNumber} {...row}/>);
+        }
+
         content = (
           <div>
             <table className="show-table">
@@ -92,6 +94,6 @@ export default connect((state) => {
   const { recentOrders } = state;
   return { ...recentOrders };
 }, {
-  getHeadings,
-  getRows
+  changePage,
+  initUI
 })(RecentOrders);

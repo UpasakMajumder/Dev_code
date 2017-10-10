@@ -14,15 +14,17 @@ namespace AutomatedTests.PageObjects
         [FindsBy(How = How.CssSelector, Using = ".r-recent-orders tr")]
         private IList<IWebElement> Orders { get; set; }
 
+        [FindsBy(How = How.CssSelector, Using = ".show-table")]
+        private IWebElement RecentOrdersTable { get; set; }
+
         public RecentOrders()
         {
-            PageFactory.InitElements(Browser.Driver, this);
+            PageFactory.InitElements(Browser.Driver, this);           
         }
 
         public void Open()
         {
-            Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/recent-orders");
-            WaitForLoading();
+            Browser.Driver.Navigate().GoToUrl($"{TestEnvironment.Url}/recent-orders");           
         }
 
         /// <summary>
@@ -32,9 +34,26 @@ namespace AutomatedTests.PageObjects
         public bool IsThereAnyOrderInTable()
         {
             //not 0, first row is header
+            WaitForTable();
             return Orders.Count > 1;
         }
 
+        /// <summary>
+        /// Wait until table with orders is displayed
+        /// </summary>
+        public void WaitForTable()
+        {
+            RecentOrdersTable.WaitTillVisible();
+        }
 
+        /// <summary>
+        /// Returns true if there is specific order in the table
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <returns></returns>
+        public bool IsTheOrderDisplayedInTable(string orderID)
+        {
+            return Orders.Any(o => o.GetText().Contains(orderID));
+        }
     }
 }

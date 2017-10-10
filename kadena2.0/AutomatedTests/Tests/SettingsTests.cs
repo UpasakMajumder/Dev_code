@@ -15,11 +15,8 @@ namespace AutomatedTests.Tests
         public void When_UserChangesHisProfile_Expect_ProfileIsUpdated()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestUser.Name, TestUser.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //edit contact form and save
             var settings = new Settings();
@@ -36,11 +33,8 @@ namespace AutomatedTests.Tests
         public void When_ChangingPassword_Expect_PasswordIsValidated()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Switch to password tab and try to submit password which is
             //not strong enough
@@ -55,11 +49,8 @@ namespace AutomatedTests.Tests
         public void When_ChangingAddress_Expect_AddressIsChanged()
         {
             //login
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
+            InitializeTest();
+            var dashboard = new Dashboard();
 
             //Go to addresses, change the first address and verify if it was successfully changed
             var settings = new Settings();

@@ -22,6 +22,21 @@ if (!String.prototype.format) {
     };
 }
 
+function getDate(datePicker) {
+    try {
+        datePicker = $(datePicker);
+
+        var format = datePicker.datepicker("option", "dateFormat"),
+            text = datePicker.val(),
+            settings = datePicker.datepicker("option", "settings");
+
+        return $.datepicker.parseDate(format, text, settings);
+    }
+    catch (err) {
+        return null;
+    }    
+}
+
 // LOGOUT
 
 (function ($) {
@@ -83,9 +98,21 @@ if (!String.prototype.format) {
                 base.find(settings.passwordErrorLabel).show();
                 return;
             }
+            if (base.find(settings.passwordInput).val().indexOf(' ') != -1) {
+                base.find(settings.passwordInput).addClass("input--error");
+                base.find(settings.passwordErrorLabel).html(config.localization.initialPasswordSetting.passwordContainsWhitespaceValidationMessage);
+                base.find(settings.passwordErrorLabel).show();
+                return;
+            }
             if (base.find(settings.confirmPasswordInput).val() == '') {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.confirmPasswordErrorLabel).html(config.localization.initialPasswordSetting.passwordEmptyValidationMessage);
+                base.find(settings.confirmPasswordErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.confirmPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.confirmPasswordInput).addClass("input--error");
+                base.find(settings.confirmPasswordErrorLabel).html(config.localization.initialPasswordSetting.passwordContainsWhitespaceValidationMessage);
                 base.find(settings.confirmPasswordErrorLabel).show();
                 return;
             }
@@ -205,16 +232,14 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        window.location.href = window.location.href;
+                        toastr.success(config.localization.ContactPersonDetailsChange.SuccessTitle, config.localization.ContactPersonDetailsChange.Success);
                     } else {
-                        base.find(settings.errorMassage).html(data.d.errorMessage);
-                        base.find(settings.errorMassage).show();
+                        toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, data.d.errorMessage);
                     }
                     base.find(settings.submitButton).removeAttr("disabled");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    base.find(settings.errorMassage).html(config.localization.ContactPersonDetailsChange.Error);
-                    base.find(settings.errorMassage).show();
+                    toastr.error(config.localization.ContactPersonDetailsChange.ErrorTitle, config.localization.ContactPersonDetailsChange.Error);
 
                     base.find(settings.submitButton).removeAttr("disabled");
                 }
@@ -234,9 +259,12 @@ if (!String.prototype.format) {
             newPasswordInput: ".j-new-password",
             confirmPasswordInput: ".j-confirm-password",
 
-            oldPasswordErrorLabel: ".j-old-password-error-label",
-            newPasswordErrorLabel: ".j-new-password-error-label",
-            confirmPasswordErrorLabel: ".j-confirm-password-error-label",
+            oldPasswordEmptyErrorLabel: ".j-old-password-empty-error-label",
+            oldPasswordWhitespaceErrorLabel: ".j-old-password-whitespace-error-label",
+            newPasswordEmptyErrorLabel: ".j-new-password-empty-error-label",
+            newPasswordWhitespaceErrorLabel: ".j-new-password-whitespace-error-label",
+            confirmPasswordEmptyErrorLabel: ".j-confirm-password-empty-error-label",
+            confirmPasswordWhitespaceErrorLabel: ".j-confirm-password-whitespace-error-label",
             passwordsDontMatchErrorLabel: ".j-passwords-dont-match-error-label",
             generalErrorLabel: ".j-general-error-label",
 
@@ -267,31 +295,49 @@ if (!String.prototype.format) {
         base.find(settings.submitButton).click(function (e) {
             e.preventDefault();
 
-            base.find(settings.oldPasswordErrorLabel).hide();
+            base.find(settings.oldPasswordEmptyErrorLabel).hide();
+            base.find(settings.oldPasswordWhitespaceErrorLabel).hide();
             base.find(settings.oldPasswordInput).removeClass("input--error");
-            base.find(settings.newPasswordErrorLabel).hide();
+            base.find(settings.newPasswordEmptyErrorLabel).hide();
+            base.find(settings.newPasswordWhitespaceErrorLabel).hide();
             base.find(settings.newPasswordInput).removeClass("input--error");
-            base.find(settings.confirmPasswordErrorLabel).hide();
+            base.find(settings.confirmPasswordEmptyErrorLabel).hide();
+            base.find(settings.confirmPasswordWhitespaceErrorLabel).hide();
             base.find(settings.confirmPasswordInput).removeClass("input--error");
             base.find(settings.passwordsDontMatchErrorLabel).hide();
             base.find(settings.generalErrorLabel).hide();
 
-            if (base.find(settings.oldPasswordInput).val() == '') {
+            if (base.find(settings.oldPasswordInput).val().length == 0) {
                 base.find(settings.oldPasswordInput).addClass("input--error");
-                base.find(settings.oldPasswordErrorLabel).show();
+                base.find(settings.oldPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (base.find(settings.newPasswordInput).val() == '') {
+            if (base.find(settings.oldPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.oldPasswordInput).addClass("input--error");
+                base.find(settings.oldPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.newPasswordInput).val().length == 0) {
                 base.find(settings.newPasswordInput).addClass("input--error");
-                base.find(settings.newPasswordErrorLabel).show();
+                base.find(settings.newPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (base.find(settings.confirmPasswordInput).val() == '') {
+            if (base.find(settings.newPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.newPasswordInput).addClass("input--error");
+                base.find(settings.newPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.confirmPasswordInput).val().length == 0) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
-                base.find(settings.confirmPasswordErrorLabel).show();
+                base.find(settings.confirmPasswordEmptyErrorLabel).show();
                 return;
             }
-            if (base.find(settings.newPasswordInput).val() != base.find(settings.confirmPasswordInput).val()) {
+            if (base.find(settings.confirmPasswordInput).val().indexOf(' ') != -1) {
+                base.find(settings.confirmPasswordInput).addClass("input--error");
+                base.find(settings.confirmPasswordWhitespaceErrorLabel).show();
+                return;
+            }
+            if (base.find(settings.newPasswordInput).val() !== base.find(settings.confirmPasswordInput).val()) {
                 base.find(settings.confirmPasswordInput).addClass("input--error");
                 base.find(settings.passwordsDontMatchErrorLabel).show();
                 return;
@@ -315,7 +361,7 @@ if (!String.prototype.format) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d.success) {
-                        alert(config.localization.PasswordChange.Success);
+                        toastr.success(config.localization.PasswordChange.SuccessTitle, config.localization.PasswordChange.Success);
                     } else {
                         base.find(settings.generalErrorLabel).html(data.d.errorMessage);
                         base.find(settings.generalErrorLabel).show();
@@ -353,6 +399,7 @@ if (!String.prototype.format) {
             attachments: ".js-drop-zone",
             attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
             attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
+            generalErrorTitle: ".j-general-error-title"
         }, options);
 
         base.find(settings.fullNameInput).keyup(function (e) {
@@ -458,14 +505,12 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorLabel).html(data.errorMessage);
-                    base.find(settings.generalErrorLabel).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
-                base.find(settings.generalErrorLabel).html(config.localization.ContactForm.Error);
-                base.find(settings.generalErrorLabel).show();
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
 
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
@@ -499,6 +544,7 @@ if (!String.prototype.format) {
             selectionDateInput: ".j-selection-date",
             selectionDateInvalidMessage: ".j-selection-date-invalid-error-message",
             generalErrorMessage: ".j-general-error-message",
+            generalErrorTitle: ".j-general-error-message-title",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -579,17 +625,23 @@ if (!String.prototype.format) {
                 return;
             }
             // production date format validation
-            if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
-                base.find(settings.productionDateInput).addClass("input--error");
-                base.find(settings.productionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.productionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.productionDateInput).addClass("input--error");
+            //    base.find(settings.productionDateInvalidMessage).show();
+            //    return;
+            //}
             // selection date format validation
-            if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
-                base.find(settings.selectionDateInput).addClass("input--error");
-                base.find(settings.selectionDateInvalidMessage).show();
-                return;
-            }
+
+            // skipped - datepicker("getDate") is not valid method to get the date
+
+            //if (base.find(settings.selectionDateInput).val() != "" && base.find(settings.selectionDateInput).datepicker("getDate") == null) {
+            //    base.find(settings.selectionDateInput).addClass("input--error");
+            //    base.find(settings.selectionDateInvalidMessage).show();
+            //    return;
+            //}
 
             base.find(settings.submitButton).attr("disabled", "disabled");
 
@@ -599,9 +651,11 @@ if (!String.prototype.format) {
             formData.append('requestType', base.find(settings.requestTypeGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWay', base.find(settings.biddingWayGroup).find("input:checked").attr("data-value"));
             formData.append('biddingWayNumber', base.find(settings.biddingWayGroup).find("input:checked").attr("data-number"));
-            formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            //formData.append('productionDate', base.find(settings.productionDateInput).datepicker("getDate").toISOString());
+            formData.append('productionDateText', base.find(settings.productionDateInput).val());
             if (base.find(settings.selectionDateInput).val() != '') {
-                formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                //formData.append('selectionDate', base.find(settings.selectionDateInput).datepicker("getDate").toISOString());
+                formData.append('selectionDateText', base.find(settings.selectionDateInput).val());
             }
 
             if (base.find(settings.attachments).find(".js-drop-zone-file").length > 1) {
@@ -620,13 +674,13 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorMessage).html(data.errorMessage);
-                    base.find(settings.generalErrorMessage).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
             }, false);
 
             xhr.send(formData);
@@ -650,6 +704,7 @@ if (!String.prototype.format) {
             attachmentsNumberErrorMessage: ".j-number-of-attachments-error-message",
             attachmentsSizeErrorMessage: ".j-total-attachments-size-error-message",
             generalErrorMessage: ".j-general-error-message",
+            generalErrorTitle: ".j-general-error-title",
             submitButton: ".j-submit-button"
         }, options);
 
@@ -726,13 +781,13 @@ if (!String.prototype.format) {
                 if (data.success) {
                     window.location.href = base.attr("data-thank-you-page");
                 } else {
-                    base.find(settings.generalErrorMessage).html(data.errorMessage);
-                    base.find(settings.generalErrorMessage).show();
+                    toastr.error(base.find(settings.generalErrorTitle).html(), data.errorMessage);
                 }
                 base.find(settings.submitButton).removeAttr("disabled");
             }, false);
             xhr.addEventListener("error", function (evt) {
                 base.find(settings.submitButton).removeAttr("disabled");
+                toastr.error(base.find(settings.generalErrorTitle).html(), '');
             }, false);
 
             xhr.send(formData);
@@ -839,6 +894,81 @@ if (!String.prototype.format) {
     }
 }(jQuery));
 
+// K-List init
+
+(function ($) {
+    $.fn.setNewKListPage = function (options) {
+        var base = this;
+
+        if ($('.j-mailing-list-uploader-error').val() != '') {
+            setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, $('.j-mailing-list-uploader-error').val()); }, 0);
+        }
+
+        base.click(function (e) {
+            if (!$('.js-drop-zone').hasClass('isDropped')) {
+                toastr.error(config.localization.newKList.fileNotUploadedTitle, config.localization.newKList.fileNotUploadedText);
+                e.preventDefault();
+                return;
+            };
+            if (!$.trim($('input.js-drop-zone-name-input').val()).length) {
+                toastr.error(config.localization.newKList.enterValidValueTitle, config.localization.newKList.enterValidValue);
+                e.preventDefault();
+                return;
+            };
+        });
+    }
+}(jQuery));
+
+(function ($) {
+    $.fn.KListPage = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorMessage: ".j-error-message"
+        }, options);
+
+        var isSaved = getParameterByName("saved");
+
+        if (isSaved != null && isSaved == '1') {
+            setTimeout(function () { toastr.success(config.localization.newKList.listSavedTitle, config.localization.newKList.listSavedText); }, 0);
+        }
+        if (base.find(settings.errorMessage).val() != '') {
+            setTimeout(function () { toastr.error(config.localization.newKList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 0);
+        }
+    }
+}(jQuery));
+
+(function ($) {
+    $.fn.KListColumnMappingPage = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorTitle: ".j-error-title",
+            errorMessage: ".j-error-text"
+        }, options);
+
+        if (base.find(settings.errorTitle).val() != '') {
+            setTimeout(function () { toastr.error(base.find(settings.errorTitle).val(), base.find(settings.errorMessage).val()); }, 0);
+        }
+    }
+}(jQuery));
+
+// BID LIST
+
+(function ($) {
+    $.fn.BidList = function (options) {
+        var base = this;
+
+        var settings = $.extend({
+            errorMessage: ".j-error-message"
+        }, options);
+
+        if (base.find(settings.errorMessage).val() != '') {
+            setTimeout(function () { toastr.error(config.localization.BidList.generalErrorTitle, base.find(settings.errorMessage).val()); }, 500);
+        }
+    }
+}(jQuery));
+
 // custom script initialization
 
 var customScripts = {
@@ -846,25 +976,59 @@ var customScripts = {
         $("#js-logout").logout();
     },
     createPasswordInit: function () {
-        $(".j-initial-password-setting-form").createPassword();
+        if ($(".j-initial-password-setting-form").length > 0) {
+            $(".j-initial-password-setting-form").createPassword();
+        }
     },
     setPersonContactInformationInit: function () {
-        $(".j-contant-person-form").setPersonContactInformation();
+        if ($(".j-contant-person-form").length > 0) {
+            $(".j-contant-person-form").setPersonContactInformation();
+        }
     },
     changePasswordInit: function () {
-        $(".j-password-change-form").changePassword();
+        if ($(".j-password-change-form").length > 0) {
+            $(".j-password-change-form").changePassword();
+        }
     },
     contactUsFormInit: function () {
-        $(".j-contact-us-form").contactUsForm();
+        if ($(".j-contact-us-form").length > 0) {
+            $(".j-contact-us-form").contactUsForm();
+        }
     },
     submitBidInit: function () {
-        $(".j-bid-form").submitBid();
+        if ($(".j-bid-form").length > 0) {
+            $(".j-bid-form").submitBid();
+        }
     },
     requestNewProductInit: function () {
-        $(".j-new-product-form").requestNewProduct();
+        if ($(".j-new-product-form").length > 0) {
+            $(".j-new-product-form").requestNewProduct();
+        }
     },
     requestNewKitInit: function () {
-        $(".j-new-kit-request-form").requestNewKitForm();
+        if ($(".j-new-kit-request-form").length > 0) {
+            $(".j-new-kit-request-form").requestNewKitForm();
+        }
+    },
+    newKListInit: function () {
+        if ($(".j-submit-mailing-list-button").length > 0) {
+            $(".j-submit-mailing-list-button").setNewKListPage();
+        }
+    },
+    kListInit: function () {
+        if ($(".j-klist").length > 0) {
+            $(".j-klist").KListPage();
+        }
+    },
+    bidListInit: function () {
+        if ($(".j-bid-list").length > 0) {
+            $(".j-bid-list").BidList();
+        }
+    },
+    kListColumnMappingInit: function () {
+        if ($(".j-klist-column-mapper").length > 0) {
+            $(".j-klist-column-mapper").KListColumnMappingPage();
+        }
     },
     init: function () {
         var base = this;
@@ -877,6 +1041,10 @@ var customScripts = {
         base.contactUsFormInit();
         base.requestNewProductInit();
         base.requestNewKitInit();
+        base.newKListInit();
+        base.kListInit();
+        base.bidListInit();
+        base.kListColumnMappingInit();
     }
 }
 

@@ -15,43 +15,86 @@ namespace AutomatedTests.Tests
         [Test]
         public void When_ProductInCart_Expect_ShippingCostsEstimated()
         {
-            //Create a category using Kentico API
-            var category = new ProductCategory().Init();
-            var categoryResponse = Api.InsertDocument("/Products", category);
+            InitializeTest();
+            var dashboard = new Dashboard();
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
 
-            //Insert a product using Kentico API
-            var product = new Product().Init();
-            var productResponse = Api.InsertDocument($"{categoryResponse.NodeAliasPath}", product);
-            
-            //Login to Kadena
-            var login = new Login();
-            login.Open();
-            login.FillLogin(TestCustomer.Name, TestCustomer.Password);
-            var dashboard = login.Submit();
-            dashboard.WaitForKadenaPageLoad();
-            
-            //Go to the product you created and add it to cart
-            ProductDetail productDetail = new ProductDetail();
-            productDetail.Open(category.ProductCategoryTitle, product.DocumentName);
-            productDetail.ClickAddToCart();
-            productDetail.AcceptItemIsAddedAlert();
+            //make sure there is nothing in cart
+            Checkout checkout = new Checkout();
+            checkout.Open();
+            checkout.EmptyTheCart();
+
+            //find a product you can add to cart and add it
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+            var productDetail = dashboard.SelectProductYouCanAddToCart();
 
             //Go to checkout and verify if shipping cost is estimated
-            Checkout checkout = new Checkout();
             checkout.Open();
             checkout.SelectAddress(1);
             Assert.IsTrue(checkout.AreShippingCostEstimated(), "Shipping Cost is not estimated");
             checkout.SelectEstimatedCarrier();
-            
+
             //verify if tax is estimated
             Assert.IsTrue(checkout.IsTaxEstimated());
-            
+
             //verify if total and subtotal numbers are correct
             Assert.IsTrue(checkout.IsSubTotalCorrect());
             Assert.IsTrue(checkout.isTotalCorrect());
-            
-            //Delete the category with the product using Kentico Api
-            var deleteResponse = Api.DeleteDocument<ProductCategory>($"{categoryResponse.NodeAliasPath}");
+        }
+
+        [Test]
+        public void When_PlacingAnOrder_Expect_OrderIsSubmitted()
+        {
+            InitializeTest();
+            var dashboard = new Dashboard();
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+
+            //make sure there is nothing in cart
+            Checkout checkout = new Checkout();
+            checkout.Open();
+            checkout.EmptyTheCart();
+
+            //find a product you can add to cart and add it
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+            var productDetail = dashboard.SelectProductYouCanAddToCart();
+
+            //Go to checkout and place the order
+            checkout.Open();
+            checkout.FillOutPurchaseOrderNumber();
+            checkout.PlaceOrder();
+
+            //check if the order was successfully placed
+            var successPage = new SuccessPage();
+            Assert.IsTrue(successPage.IsSuccessPictureDisplayed());
+        }
+
+        [Test]
+        public void When_ProductAddedToCart_Expect_ProductsInCartPreviewShown()
+        {
+            InitializeTest();
+
+            //make sure there is nothing in cart
+            Checkout checkout = new Checkout();
+            checkout.Open();
+            checkout.EmptyTheCart();
+
+            Dashboard dashboard = new Dashboard();
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+
+            //find a product you can add to cart and add it           
+            var productDetail = dashboard.SelectProductYouCanAddToCart();
+
+            //see if the preview is not empty
+            dashboard.Open();
+            dashboard.WaitForRecentOrders();
+            dashboard.MoveToShoppingCartBtn();
+            Assert.IsTrue(dashboard.IsThereProductInCartPreview());
         }
     }
 }
+

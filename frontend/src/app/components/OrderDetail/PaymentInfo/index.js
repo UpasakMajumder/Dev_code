@@ -1,8 +1,12 @@
 import React from 'react';
-import SVG from '../../SVG';
+import PropTypes from 'prop-types';
+/* components */
+import SVG from 'app.dump/SVG';
+/* helpers */
+import { divideBySlash } from 'app.helpers/time';
 
-export default ({ ui }) => {
-  const { title, paymentIcon, paidBy, paymentDetail, date } = ui;
+const PaymentInfo = ({ ui }) => {
+  const { title, paymentIcon, paidBy, paymentDetail, date, datePrefix } = ui;
 
   return (
     <div className="order-block order-block--tile ">
@@ -10,8 +14,21 @@ export default ({ ui }) => {
       <div className="order-block__detail">
         <SVG name={paymentIcon}/>
         <p>{paidBy},<br /> {paymentDetail}</p>
-        <p>Payment date: <span className="weight--bold">{date}</span></p>
+        <p>{datePrefix}: <span className="weight--bold">{divideBySlash(date)}</span></p>
       </div>
     </div>
   );
 };
+
+PaymentInfo.propTypes = {
+  ui: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    paymentIcon: PropTypes.string.isRequired,
+    paidBy: PropTypes.string.isRequired,
+    paymentDetail: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    datePrefix: PropTypes.string.isRequired
+  })
+};
+
+export default PaymentInfo;

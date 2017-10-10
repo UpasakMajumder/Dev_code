@@ -36,7 +36,7 @@ namespace AutomatedTests.PageObjects
 
         public void Open()
         {
-            Browser.GoToUrl(TestEnvironment.Url);
+            Browser.GoToUrl($"{TestEnvironment.Url}/login");
         }
 
         public void FillLogin(string name, string pass)
@@ -45,6 +45,12 @@ namespace AutomatedTests.PageObjects
             txtPassword.EnterText(pass);
 
             Log.WriteLine("User '{0}' filled into login", name);
+        }
+
+        public Dashboard LoginAndSubmit(string name, string pass)
+        {
+            FillLogin(name, pass);
+            return Submit();
         }
 
         /// <summary>

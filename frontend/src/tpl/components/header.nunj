@@ -1,63 +1,49 @@
 {% from "macro/svg.nunj" import svg %}
 
-{% set headers = [ { 'title': 'Activity', 'icon': 'activity', 'badge': 'true' }, { 'title': 'Drafts', 'icon': 'newspaper', 'badge': 'true' }, { 'title': 'Shopping cart', 'icon': 'cart', 'badge': 'true' }, { 'title': 'Log Out', 'icon': 'sign-out' } ]
-%}
-
 <nav class="css-header navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <a class="navbar-brand" href="index.html">
     <img src="http://satyr.io/200x34/" alt="logo">
   </a>
 
-  <div class="search r-search">
-    {#<div class="search__input">#}
-      {#<div class="input__wrapper">#}
-        {#<input type="text" class="input__text" placeholder="Search">#}
-        {#<button type="button" class="js-toggle search__closer">#}
-          {#{{ svg('cross-xl', 'icon-close-search') }}#}
-        {#</button>#}
-      {#</div>#}
-    {#</div>#}
-
-    {#<div class="search__dropdown">#}
-      {#<div class="search__header">#}
-        {#<h2>Products</h2>#}
-        {#<a href="#">Show all results</a>#}
-      {#</div>#}
-
-      {#<div class="search__results">#}
-        {#{% for x in range(0, 3) %}#}
-          {#{% include "components/search-result.nunj" %}#}
-        {#{% endfor %}#}
-      {#</div>#}
-
-      {#<div class="search__header">#}
-        {#<h2>Products</h2>#}
-        {#<a href="#">Show all results</a>#}
-      {#</div>#}
-
-      {#<ul class="search__result-pages">#}
-        {#{% for x in range(0, 3) %}#}
-          {#<li>#}
-            {#<a href="#">The Sciense Of Superstitions</a>#}
-          {#</li>#}
-        {#{% endfor %}#}
-      {#</ul>#}
-    {#</div>#}
-  </div>
+  <div class="search r-search"></div>
 
   <ul class="navbar-nav mr-auto">
-    {% for header in headers %}
-      <li class="nav-item {% if(headerActive === header.title) %} active {% endif %}">
-        <a class="nav-link" href="#">
-          {{ svg(header.icon, 'icon-navigation icon-dashboard') }}
-          {{ header.title }}
-          {% if (header.badge === 'true') %}
-            <div class="nav-badge">
-              <span class="nav-badge__text">10</span>
-            </div>
-          {% endif %}
-        </a>
-      </li>
-    {% endfor %}
+    <li class="nav-item r-language-selector"></li>
+
+    <li class="nav-item {% if(headerActive === 'Activity') %} active {% endif %}">
+      <a class="nav-link" href="#">
+        {{ svg('activity', 'icon-navigation icon-dashboard') }}
+        Activity
+        <div class="nav-badge">
+          <span class="nav-badge__text">10</span>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item {% if(headerActive === 'Drafts') %} active {% endif %}">
+      <a class="nav-link" href="#">
+        {{ svg('newspaper', 'icon-navigation icon-dashboard') }}
+        Drafts
+        <div class="nav-badge">
+          <span class="nav-badge__text">10</span>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item {% if(headerActive === 'Shopping cart') %} active {% endif %} js-cart-preview">
+      <a class="nav-link" href="#">
+        {{ svg('cart', 'icon-navigation icon-dashboard') }}
+        Shopping cart
+        <div class="r-cart-items"></div>
+      </a>
+      <div class="r-cart-preview"></div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        {{ svg('sign-out', 'icon-navigation icon-dashboard') }}
+        Log Out
+      </a>
+    </li>
   </ul>
 </nav>

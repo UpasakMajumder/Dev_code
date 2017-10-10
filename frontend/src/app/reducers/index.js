@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as toastr } from 'react-redux-toastr';
 import login from './login';
-import shoppingCart from './shoppingCart';
+import checkout from './checkout';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
 import orderDetail from './orderDetail';
@@ -9,17 +10,30 @@ import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
 import recentOrders from './recentOrders';
+import manageProducts from './manageProducts';
+import modifyMailingList from './modifyMailingList';
+import cartPreview from './cartPreview';
+import products from './products';
+import dialogAlert from './dialogAlert';
+import languageSelector from './languageSelector';
 
 const rootReducer = combineReducers({
   login,
-  shoppingCart,
+  checkout,
   isLoading,
   settingsAddresses,
   searchPage,
   search,
   isShownHeaderShadow,
   orderDetail,
-  recentOrders
+  recentOrders,
+  manageProducts,
+  modifyMailingList,
+  cartPreview,
+  products,
+  toastr,
+  dialogAlert,
+  languageSelector
 });
 
 export default rootReducer;
