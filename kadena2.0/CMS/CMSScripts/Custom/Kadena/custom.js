@@ -52,7 +52,7 @@ function getDate(datePicker) {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    window.location.reload(false);
+                    window.location.href = "/";
                 },
                 error: function (xhr, ajaxOptions, thrownError) { }
             });
