@@ -20,6 +20,7 @@ namespace Kadena.Models.Checkout
         public string EmptyMessage { get; set; }
 
         public AddressDialog DialogUI { get; set; }
+        public DeliveryAddressesBounds Bounds { get; set; }
 
         public void CheckAddress(int id)
         {

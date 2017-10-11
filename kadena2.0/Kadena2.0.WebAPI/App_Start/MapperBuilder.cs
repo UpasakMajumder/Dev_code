@@ -101,6 +101,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DialogField, DialogFieldDto>();
                 config.CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
                 config.CreateMap<Models.Checkout.AddressDialog, Dto.Checkout.AddressDialogDto>();
+                config.CreateMap<DefaultAddress, DefaultAddressDto>();
                 config.CreateMap<SettingsAddresses, SettingsAddressesDto>();
                 config.CreateMap<OrderedItem, OrderedItemDTO>();
                 config.CreateMap<OrderedItems, OrderedItemsDTO>();
@@ -140,6 +141,7 @@ namespace Kadena.WebAPI
                     });
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
+                config.CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<UpdateAddressDto, MailingAddress>().ProjectUsing(a => new MailingAddress
                 {

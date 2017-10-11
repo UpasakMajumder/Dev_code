@@ -48,6 +48,7 @@
     <Compile Include="Checkout\CheckoutPageDeliveryTotals.cs" />
     <Compile Include="Checkout\CheckoutPage.cs" />
     <Compile Include="Checkout\DeliveryAddresses.cs" />
+    <Compile Include="Checkout\DeliveryAddressesBounds.cs" />
     <Compile Include="Checkout\DeliveryCarriers.cs" />
     <Compile Include="Checkout\NewAddressButton.cs" />
     <Compile Include="Checkout\NewCartItem.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="OrderDetail\TitleValuePair.cs" />
+    <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />

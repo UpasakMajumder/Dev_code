@@ -121,6 +121,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
+  var PATH = 'http://localhost:{{ _mockPort }}/api/';
+
   var config = {
     localization: {
       notification: {
@@ -209,8 +211,8 @@
         login: 'Log in'
       },
       checkout: {
-        initRenderUIURL: '',
-        initTotalDeliveryUIURL: '',
+        initRenderUIURL: PATH + 'checkout/ui',
+        initTotalDeliveryUIURL: PATH + 'checkout/total-price',
         changeAddressURL: '',
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',
@@ -226,25 +228,25 @@
       },
       userSettings: {
         addresses: {
-          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
-          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+          initUIURL: PATH + 'settings/address/ui',
+          editAddressURL: PATH + 'settings/address/modify'
         }
       },
       cartPreview: {
-        cartPreviewUrl: '#'
+        cartPreviewUrl: PATH + 'cartPreview'
       },
       orderDetail: {
-        orderDetailUrl: ""
+        orderDetailUrl: PATH + 'order/detail'
       },
       searchPage: {
-        searchPageUrl: ''
+        searchPageUrl: PATH + 'search/result'
       },
       chiliSave: {
         url: ''
       },
-      addToCartUrl: '',
+      addToCartUrl: PATH + 'products/add-to-cart',
       search: {
-        queryUrl: "",
+        queryUrl: PATH + 'search/query',
         placeholder: "Search"
       },
       pagination: {
@@ -255,11 +257,11 @@
           total: "[TOTAL]",
         },
         nextLabel: "Next",
-        backLabel: "Previous",
+        backLabel: "Previous"
       },
       recentOrders: {
-        getHeaders: '',
-        getPageItems: ''
+        getHeaders: PATH + 'order/recent/ui',
+        getPageItems: PATH + 'order/recent/page'
       },
       modifyMailingList: {
         errorList: {
@@ -300,7 +302,7 @@
           btns: {
             use: {
               text: "Use only correct",
-              url: "#"
+              url: PATH + 'mailing-list/use-correct'
             }
           },
           items: [
@@ -361,7 +363,7 @@
           confirmChanges: {
             text: "Confirm & reprocess addresses",
             redirect: "https://google.com",
-            request: "#"
+            request: PATH + 'mailing-list/reprocess'
           },
           message: {
             required: "The field is required"
@@ -400,23 +402,23 @@
       checkoutButtons: {
         checkout: {
           text: 'Proceed To Checkout',
-            url: '/shopping-cart.html'
+          url: '/shopping-cart.html'
         },
         products: {
           text: 'Continue Shopping',
-            url: '/products.html'
+          url: '/products.html'
         }
       },
       manageProducts: {
-        templatesUrl: '/api/products/123/templates'
+        templatesUrl: PATH + 'products/managed'
       },
       products: {
         addToFavorites: "Set product as favorite",
-        loadProductsUrl: "/api/products",
-        loadFavoritesProductsUrl: "/api/products/favorites",
-        nodeAliasPath: "/Products",
-        markProductFavouriteUrl: "/api/favorites/set",
-        unmarkProductFavouriteUrl: "/api/favorites/unset"
+        loadProductsUrl: PATH + 'products/all',
+        loadFavoritesProductsUrl: PATH + 'products/favourites',
+        markProductFavouriteUrl: PATH + 'products/favourite',
+        unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
+        nodeAliasPath: "/Products"
       }
     }
   };
