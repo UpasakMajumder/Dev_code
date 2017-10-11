@@ -68,6 +68,7 @@
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="OrderDetail\TitleValuePair.cs" />
+    <Compile Include="Product\Sku.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />
     <Compile Include="Site\KenticoSite.cs" />
