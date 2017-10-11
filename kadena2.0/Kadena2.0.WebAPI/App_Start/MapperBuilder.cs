@@ -107,6 +107,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<OrderedItems, OrderedItemsDTO>();
                 config.CreateMap<OrderDetail, OrderDetailDTO>();
                 config.CreateMap<CommonInfo, CommonInfoDTO>();
+                config.CreateMap<TitleValuePair, TitleValuePairDto>();
                 config.CreateMap<ShippingInfo, ShippingInfoDTO>();
                 config.CreateMap<PaymentInfo, PaymentInfoDTO>();
                 config.CreateMap<PricingInfo, PricingInfoDTO>();
