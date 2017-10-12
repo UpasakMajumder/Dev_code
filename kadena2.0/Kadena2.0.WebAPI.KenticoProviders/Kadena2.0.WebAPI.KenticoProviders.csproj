@@ -97,6 +97,8 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ProductClass.cs" />
+    <Compile Include="Classes\ProductClassWrapper.cs" />
     <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IKenticoFavoritesProvider.cs" />
     <Compile Include="Contracts\IKenticoProductsProvider.cs" />
