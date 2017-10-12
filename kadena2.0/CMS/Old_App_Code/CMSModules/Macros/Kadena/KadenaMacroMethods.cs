@@ -21,6 +21,31 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
     {
         #region Public methods
 
+        [MacroMethod(typeof(bool), "Validates product type and sku weight", 1)]
+        [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
+        [MacroMethodParam(1, "skuWeight", typeof(double), "SKU weight")]
+        public static object IsSKUWeightValid(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var productType = ValidationHelper.GetString(parameters[0], "");
+            var skuWeight = ValidationHelper.GetDouble(parameters[1], 0, LocalizationContext.CurrentCulture.CultureCode);
+
+            var skuWeightRequiredFor = new[] { ProductTypes.InventoryProduct, ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.TemplatedProduct };
+            if (skuWeightRequiredFor.Any(pt => productType.Contains(pt)))
+            {
+                if (skuWeight <= 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         [MacroMethod(typeof(bool), "Validates combination of product types - static type variant.", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsStaticProductTypeCombinationValid(EvaluationContext context, params object[] parameters)
