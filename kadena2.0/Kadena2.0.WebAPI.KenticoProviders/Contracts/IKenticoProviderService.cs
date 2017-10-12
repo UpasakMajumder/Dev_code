@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void RemoveCurrentItemsFromStock();
 
-        void RemoveCurrentItemsFromCart();
+        void ClearCart();
 
         double GetCurrentCartTotalItemsPrice();
 
