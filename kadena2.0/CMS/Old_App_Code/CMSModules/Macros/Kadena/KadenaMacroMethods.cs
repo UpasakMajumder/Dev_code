@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI.KenticoProviders;
+using Kadena.Models.Product;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -20,6 +21,21 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
     public class KadenaMacroMethods : MacroMethodContainer
     {
         #region Public methods
+
+        [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
+        [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
+        public static object IsSKUWeightRequired(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            
+            var productTypes = ValidationHelper.GetString(parameters[0], "");
+            var product = new Product { ProductType = productTypes };
+            var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
+            return !isWeightRequired;
+        }
 
         [MacroMethod(typeof(bool), "Validates product type and sku weight", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
@@ -31,19 +47,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            var productType = ValidationHelper.GetString(parameters[0], "");
+            var productTypes = ValidationHelper.GetString(parameters[0], "");
             var skuWeight = ValidationHelper.GetDouble(parameters[1], 0, LocalizationContext.CurrentCulture.CultureCode);
+            var product = new Product { Weight = skuWeight, ProductType = productTypes };
 
-            var skuWeightRequiredFor = new[] { ProductTypes.InventoryProduct, ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.TemplatedProduct };
-            if (skuWeightRequiredFor.Any(pt => productType.Contains(pt)))
-            {
-                if (skuWeight <= 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            var isValid = new ProductValidator().ValidateWeight(product);
+            return isValid;
         }
 
         [MacroMethod(typeof(bool), "Validates combination of product types - static type variant.", 1)]
