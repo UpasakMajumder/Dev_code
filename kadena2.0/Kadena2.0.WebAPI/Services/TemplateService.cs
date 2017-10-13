@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using Kadena.WebAPI.Helpers;
 using System.Web;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
