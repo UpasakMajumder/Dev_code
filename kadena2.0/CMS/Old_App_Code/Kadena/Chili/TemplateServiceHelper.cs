@@ -33,6 +33,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             var request = (HttpWebRequest)WebRequest.Create(requestUrl);
             request.ContentType = "application/json";
             request.Method = "POST";
+            request.Headers.Add("suppliantDomain", CMS.Helpers.RequestContext.CurrentDomain);
 
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
@@ -78,6 +79,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             var request = (HttpWebRequest)WebRequest.Create(requestUrl);
             request.ContentType = "application/json";
             request.Method = "GET";
+            request.Headers.Add("suppliantDomain", CMS.Helpers.RequestContext.CurrentDomain);
 
             try
             {
@@ -120,6 +122,7 @@ namespace Kadena.Old_App_Code.Kadena.Chili
             var request = (HttpWebRequest)WebRequest.Create(requestUrl);
             request.ContentType = "application/json";
             request.Method = "POST";
+            request.Headers.Add("suppliantDomain", CMS.Helpers.RequestContext.CurrentDomain);
 
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {

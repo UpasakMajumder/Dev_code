@@ -87,5 +87,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetDocumentUrl(string aliasPath);
 
         string GetDocumentUrl(string aliasPath, string cultureCode);
+
+        string GetCurrentSiteDomain();
     }
 }

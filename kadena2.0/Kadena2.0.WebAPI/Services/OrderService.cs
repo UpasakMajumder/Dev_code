@@ -329,7 +329,7 @@ namespace Kadena.WebAPI.Services
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
         {
             string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
+            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString(), kenticoProvider.GetCurrentSiteDomain());
             if (response.Success && response.Payload != null)
             {
                 return new Guid(response.Payload.TaskId);
