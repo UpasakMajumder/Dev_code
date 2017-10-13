@@ -1,12 +1,13 @@
-﻿using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using Kadena.Dto.General;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena.Dto.General;
-using System;
+using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Helpers;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -17,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
-                httpClient.DefaultRequestHeaders.Add("suppliantDomain", siteDomain);
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
                 var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
                 return await ReadResponseJson<GeneratePdfTaskResponseDto>(response);
             }
@@ -28,7 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdftask/{taskId}";
-                httpClient.DefaultRequestHeaders.Add("suppliantDomain", siteDomain);
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
                 var response = await httpClient.GetAsync(url).ConfigureAwait(false);
                 return await ReadResponseJson<GeneratePdfTaskStatusResponseDto>(response);
             }
@@ -39,7 +40,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template";
-                httpClient.DefaultRequestHeaders.Add("suppliantDomain", siteDomain);
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
                 using (var content = new StringContent(JsonConvert.SerializeObject(new
                 {
                     templateId = templateId,
@@ -59,7 +60,7 @@ namespace Kadena2.MicroserviceClients.Clients
             using (var httpClient = new HttpClient())
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{masterTemplateId}/users/{userId}";
-                httpClient.DefaultRequestHeaders.Add("suppliantDomain", siteDomain);
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
                 using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
                     return await ReadResponseJson<List<TemplateServiceDocumentResponse>>(response);
