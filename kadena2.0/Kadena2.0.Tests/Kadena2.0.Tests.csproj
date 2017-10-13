@@ -448,6 +448,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="FakeBackgroundTaskScheduler.cs" />
     <Compile Include="GetHeaderTest.cs" />
     <Compile Include="GetProjectsTest.cs" />

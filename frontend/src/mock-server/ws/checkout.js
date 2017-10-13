@@ -14,6 +14,10 @@ module.exports.ui = {
         "price": "10000.0"
       },
       "number": "You have 1 item in your shopping cart",
+      "buttonLabels": {
+        "edit": "Edit",
+        "remove": "Remove"
+      },
       "items": [
         {
           "id": 33,
@@ -54,7 +58,7 @@ module.exports.ui = {
       "availableToAdd": true,
       "bounds": {
         "showMoreText": "Show more",
-        "showMoreLess": "Show less",
+        "showLessText": "Show less",
         "limit": 3
       },
       "dialogUI": {
@@ -132,9 +136,8 @@ module.exports.ui = {
       "emptyMessage": "Fill at least one address",
       "items": [
         {
-          "street": [
-            "Test Address line 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "COLLIERVILLE",
           "state": "TN",
           "zip": "38017",
@@ -142,9 +145,8 @@ module.exports.ui = {
           "checked": true
         },
         {
-          "street": [
-            "House number 123"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Red Watter Village",
           "state": "",
           "zip": "56161",
@@ -152,9 +154,8 @@ module.exports.ui = {
           "checked": false
         },
         {
-          "street": [
-            "Sun street 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Tokyo",
           "state": "",
           "zip": "13228",
@@ -162,9 +163,8 @@ module.exports.ui = {
           "checked": false
         },
         {
-          "street": [
-            "Actum Hyper Company"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Prague",
           "state": "",
           "zip": "14000",
