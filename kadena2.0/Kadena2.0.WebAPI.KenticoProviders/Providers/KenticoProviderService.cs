@@ -603,10 +603,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void ClearCart()
         {
-            var newCart = ShoppingCartFactory.CreateCart(SiteContext.CurrentSite.SiteID, MembershipContext.AuthenticatedUser);
-            ShoppingCartInfoProvider.SetShoppingCartInfo(newCart);
-
-            ECommerceContext.CurrentShoppingCart = newCart;
+            ShoppingCartInfoProvider.DeleteShoppingCartInfo(ECommerceContext.CurrentShoppingCart);
         }
 
         public IEnumerable<State> GetStates()
