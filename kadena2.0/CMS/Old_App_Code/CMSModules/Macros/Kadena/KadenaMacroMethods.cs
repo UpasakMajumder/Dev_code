@@ -34,7 +34,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
-            return !isWeightRequired;
+            return isWeightRequired;
         }
 
         [MacroMethod(typeof(bool), "Validates product type and sku weight", 1)]

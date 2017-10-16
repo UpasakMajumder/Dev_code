@@ -300,7 +300,7 @@ namespace Kadena.WebAPI.Services
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 kenticoProvider.RemoveCurrentItemsFromStock();
-                kenticoProvider.RemoveCurrentItemsFromCart();
+                kenticoProvider.ClearCart();
 
                 // Temporary solution before microservices will implement better strategy for handling cold starts. 
                 var orderNumber = serviceResult.Payload;
