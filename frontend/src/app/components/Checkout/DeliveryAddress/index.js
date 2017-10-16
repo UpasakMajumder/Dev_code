@@ -77,11 +77,11 @@ class DeliveryAddress extends Component {
 
     const alert = items.length ? null : <Alert type="grey" text={emptyMessage} />;
 
-    const showMoreButton = items.length + 1 > bounds.limit
+    const showMoreButton = items.length > bounds.limit
       ?
       (
         <Button
-          text={addressesNumber === Math.POSITIVE_INFINITY ? bounds.showMoreLess : bounds.showMoreText}
+          text={addressesNumber === Math.POSITIVE_INFINITY ? bounds.showLessText : bounds.showMoreText}
           onClick={this.toggleAddressesNumber}
           type="action"
           btnClass="btn-action--secondary"
@@ -158,7 +158,7 @@ DeliveryAddress.propTypes = {
     emptyMessage: PropTypes.string,
     bounds: PropTypes.shape({
       showMoreText: PropTypes.string.isRequired,
-      showMoreLess: PropTypes.string.isRequired,
+      showLessText: PropTypes.string.isRequired,
       limit: PropTypes.number.isRequired
     }).isRequired
   }).isRequired,
