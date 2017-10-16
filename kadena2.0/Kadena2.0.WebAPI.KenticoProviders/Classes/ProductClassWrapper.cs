@@ -8,15 +8,15 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
 
         public static string CLASS_NAME => "KDA.Product";
 
-        public double SKUWeight
+        public double ProductSKUWeight
         {
-            get { return productNode.GetDoubleValue("SKUWeight", 0); }
-            set { productNode.SetValue("SKUWeight", value); }
+            get { return productNode.GetDoubleValue("ProductSKUWeight", 0); }
+            set { productNode.SetValue("ProductSKUWeight", value); }
         }
-        public bool SKUNeedsShipping
+        public bool ProductSKUNeedsShipping
         {
-            get { return productNode.GetBooleanValue("SKUNeedsShipping", false); }
-            set { productNode.SetValue("SKUNeedsShipping", value); }
+            get { return productNode.GetBooleanValue("ProductSKUNeedsShipping", false); }
+            set { productNode.SetValue("ProductSKUNeedsShipping", value); }
         }
         public int NodeSKUID
         {
@@ -41,8 +41,8 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             return new ProductClass
             {
                 NodeSKUID = NodeSKUID,
-                SKUNeedsShipping = SKUNeedsShipping,
-                SKUWeight = SKUWeight
+                SKUNeedsShipping = ProductSKUNeedsShipping,
+                SKUWeight = ProductSKUWeight
             };
         }
     }

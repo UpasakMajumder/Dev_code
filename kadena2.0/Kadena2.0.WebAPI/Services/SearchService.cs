@@ -8,6 +8,7 @@ using System.Web;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {

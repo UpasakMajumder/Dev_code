@@ -529,6 +529,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 product.SkuImageUrl = URLHelper.GetAbsoluteUrl(sku.SKUImagePath);
                 product.StockItems = sku.SKUAvailableItems;
                 product.Availability = sku.SKUAvailableItems > 0 ? "available" : "out";
+                product.Weight = sku.SKUWeight;
             }
 
             return product;
@@ -600,9 +601,12 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void RemoveCurrentItemsFromCart()
+        public void ClearCart()
         {
-            ShoppingCartInfoProvider.EmptyShoppingCart(ECommerceContext.CurrentShoppingCart);
+            var newCart = ShoppingCartFactory.CreateCart(SiteContext.CurrentSite.SiteID, MembershipContext.AuthenticatedUser);
+            ShoppingCartInfoProvider.SetShoppingCartInfo(newCart);
+
+            ECommerceContext.CurrentShoppingCart = newCart;
         }
 
         public IEnumerable<State> GetStates()
