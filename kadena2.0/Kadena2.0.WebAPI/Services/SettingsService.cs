@@ -26,6 +26,10 @@ namespace Kadena.WebAPI.Services
             var customer = _kenticoUsers.GetCurrentCustomer();
             var billingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Billing);
             var shippingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var shippingAddressesSorted = shippingAddresses
+                .Where(sa => sa.Id == customer.DefaultShippingAddressId)
+                .Concat(shippingAddresses.Where(sa => sa.Id != customer.DefaultShippingAddressId))
+                .ToList();
             var states = _kentico.GetStates();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
             var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
@@ -86,7 +90,7 @@ namespace Kadena.WebAPI.Services
                         SetUrl = "api/usersettings/setdefaultshippingaddress",
                         UnsetUrl = "api/usersettings/unsetdefaultshippingaddress"
                     },
-                    Addresses = shippingAddresses.ToList()
+                    Addresses = shippingAddressesSorted
                 },
                 Dialog = new AddressDialog
                 {                    
