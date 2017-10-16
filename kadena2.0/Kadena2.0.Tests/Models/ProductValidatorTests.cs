@@ -10,7 +10,7 @@ namespace Kadena.Tests.Models
         {
             return new Product
             {
-                ProductType = Product.GetProductTypesRequiringWeight().First()
+                ProductType = ProductTypes.InventoryProduct
             };
         }
 
@@ -18,7 +18,7 @@ namespace Kadena.Tests.Models
         {
             return new Product
             {
-                ProductType = ProductTypes.GetAll().Except(Product.GetProductTypesRequiringWeight()).First()
+                ProductType = ProductTypes.Combine(ProductTypes.MailingProduct, ProductTypes.TemplatedProduct)
             };
         }
 
