@@ -81,17 +81,17 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetTemplatesByProduct_ReturnsEmptyModel_WhenDocumentIsNotTemplatedProduct()
         {
-            var invalidDocumentId = 0;
+            var invalidNodeId = 0;
 
             var sut = new TemplateService(
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedProductService>(),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(invalidDocumentId) == new Product { ProductType = ProductTypes.StaticProduct }),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
                 Mock.Of<IKenticoUserProvider>()
             );
 
-            var templates = await sut.GetTemplatesByProduct(invalidDocumentId);
+            var templates = await sut.GetTemplatesByProduct(invalidNodeId);
 
             Assert.NotNull(templates);
             Assert.NotNull(templates.Data);
@@ -103,7 +103,7 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetTemplatesByProduct_ReturnsData_WhenDocumentHasTemplates()
         {
-            var documentId = 10;
+            var nodeId = 10;
             var fakeDatetime = new DateTime().ToString();
 
             var templatesResponse = new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
@@ -120,11 +120,11 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedProductService>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(documentId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
                 Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
             );
 
-            var templates = await sut.GetTemplatesByProduct(documentId);
+            var templates = await sut.GetTemplatesByProduct(nodeId);
 
             Assert.True(templates.Data.Length == 2);
         }
