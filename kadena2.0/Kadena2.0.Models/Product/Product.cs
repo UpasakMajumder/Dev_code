@@ -20,10 +20,5 @@ namespace Kadena.Models.Product
         {
             return ProductTypes.IsOfType(ProductType, productType);
         }
-
-        public static string[] GetProductTypesRequiringWeight()
-        {
-            return new[] { ProductTypes.InventoryProduct, ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.TemplatedProduct };
-        }
     }
 }
