@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {

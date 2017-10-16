@@ -4,6 +4,7 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Models;
+using Kadena.Models.Product;
 using Kadena.Old_App_Code.Kadena.Chili;
 using System;
 using System.Linq;
