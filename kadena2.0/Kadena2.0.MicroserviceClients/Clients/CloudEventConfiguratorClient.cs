@@ -30,7 +30,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     }
                     ), System.Text.Encoding.UTF8, "application/json"))
                 {
-                    using (var response = await client.PutAsync(endPoint, content).ConfigureAwait(false))
+                    using (var response = await client.PutAsync($"{endPoint}/cloudwatch", content).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<object>(response);
                     }
