@@ -18,9 +18,9 @@ namespace Kadena.Models.Product
 
         public bool IsSKUWeightRequired(Product product)
         {
-            var weightRequiredFor = Product.GetProductTypesRequiringWeight();
-            var weightIsRequired = weightRequiredFor.Any(pt => ProductTypes.IsOfType(product.ProductType, pt));
-            return weightIsRequired;
+            var weightNotRequired = ProductTypes.IsOfType(product.ProductType, ProductTypes.MailingProduct)
+                && ProductTypes.IsOfType(product.ProductType, ProductTypes.TemplatedProduct);
+            return !weightNotRequired;
         }
     }
 }
