@@ -68,7 +68,24 @@ namespace Kadena.Old_App_Code.EventHandlers
                     && !string.IsNullOrWhiteSpace(nooshToken)
                     && !string.IsNullOrWhiteSpace(nooshUrl);
 
-                
+                try
+                {
+                    var client = new CloudEventConfiguratorClient();
+                    var result = client.UpdateNooshRule(url, ruleName, enabled, rate, targetId, workGroupName, nooshUrl, nooshToken).Result;
+                    if (!result.Success)
+                    {
+                        throw new InvalidOperationException(result.ErrorMessages);
+                    }
+                    else
+                    {
+                        EventLogProvider.LogInformation("UPDATE - NOOSH EVENT SETTINGS", "MICROREQUEST", "Cloud Event was configured successfully.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    EventLogProvider.LogException("UPDATE - NOOSH EVENT SETTINGS", "EXCEPTION", e);
+
+                }
             }
         }
     }
