@@ -896,5 +896,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return SiteContext.CurrentSite.DefaultVisitorCulture == LocalizationContext.CurrentCulture.CultureCode;
         }
+
+        public string GetCurrentSiteDomain()
+        {
+            return RequestContext.CurrentDomain;
+        }
     }
 }
