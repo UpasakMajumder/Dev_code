@@ -72,12 +72,12 @@ class DeliveryAddress extends Component {
 
     let addresses = items.map(renderAddresses);
     if (Object.keys(newAddressObject).length > 0) {
-      addresses = [...items, newAddressObject].map(renderAddresses);
+      addresses = [newAddressObject, ...items].map(renderAddresses);
     }
 
-    const alert = items.length ? null : <Alert type="grey" text={emptyMessage} />;
+    const alert = addresses.length ? null : <Alert type="grey" text={emptyMessage} />;
 
-    const showMoreButton = items.length > bounds.limit
+    const showMoreButton = addresses.length > bounds.limit
       ?
       (
         <Button
