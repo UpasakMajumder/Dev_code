@@ -944,6 +944,7 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaModuleState.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
+    <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
