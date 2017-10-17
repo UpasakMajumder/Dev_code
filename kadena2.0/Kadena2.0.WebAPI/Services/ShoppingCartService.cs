@@ -405,6 +405,12 @@ namespace Kadena.WebAPI.Services
         public CheckoutPage RemoveItem(int id)
         {
             kenticoProvider.RemoveCartItem(id);
+            var itemsCount = kenticoProvider.GetShoppingCartItemsCount();
+            if (itemsCount == 0)
+            {
+                kenticoProvider.ClearCart();
+            }
+
             return GetCheckoutPage();
         }
 
