@@ -9,7 +9,7 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface ICloudEventConfiguratorClient
     {
-        Task<BaseResponseDto<object>> UpdateNooshRule(string endPoint, string ruleName, bool enabled, int rate
+        Task<BaseResponseDto<string>> UpdateNooshRule(string endPoint, string ruleName, bool enabled, int rate
             , string targetId, string workGroupName, string nooshUrl, string nooshToken);
     }
 }

@@ -78,7 +78,7 @@ namespace Kadena.Old_App_Code.EventHandlers
                     }
                     else
                     {
-                        EventLogProvider.LogInformation("UPDATE - NOOSH EVENT SETTINGS", "MICROREQUEST", "Cloud Event was configured successfully.");
+                        EventLogProvider.LogInformation("UPDATE - NOOSH EVENT SETTINGS", "MICROREQUEST", result.Payload);
                     }
                 }
                 catch (Exception e)
