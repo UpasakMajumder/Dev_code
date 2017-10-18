@@ -1,12 +1,13 @@
-﻿using CMS.EventLog;
+﻿using CMS.DataEngine;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.KSource;
+using CMS.SiteProvider;
+using Kadena.Dto.KSource;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -25,24 +26,30 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            IEnumerable<ProjectData> projects = null;
+            IEnumerable<ProjectDto> projects = null;
             try
             {
-                projects = BidServiceHelper.GetProjects();
-            }
-            catch (HttpRequestException exc)
-            {
-                pnlOpenProject.Visible = false;
-                pnlCompletedProjects.Visible = false;
-                
-                inpError.Value = ResHelper.GetString("Kadena.Error.MicroserviceFailed");
-                EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
-                return;
+                var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetProjectsUrl");
+                var workGroupName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_WorkgroupName");
+                var client = new BidClient();
+                var reqResult = client.GetProjects(url, workGroupName).Result;
+                if (reqResult.Success)
+                {
+                    projects = reqResult.Payload;
+                }
+                else
+                {
+                    throw new InvalidOperationException(reqResult.ErrorMessages);
+                }
             }
             catch (Exception exc)
             {
-                inpError.Value = exc.Message;
+                pnlOpenProject.Visible = false;
+                pnlCompletedProjects.Visible = false;
+
+                inpError.Value = ResHelper.GetString("Kadena.Error.MicroserviceFailed");
                 EventLogProvider.LogException("BidsList Load", "EXCEPTION", exc, CurrentSite.SiteID);
+                return;
             }
 
             int openCount = 0, completedCount = 0;
@@ -65,7 +72,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             pnlCompletedProjects.Visible = true;
         }
 
-        private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectData[] data, int recordsPerPage)
+        private static void FillTable(HtmlTable table, PlaceHolder placeHolder, ProjectDto[] data, int recordsPerPage)
         {
             for (int i = 0; i < data.Count(); i++)
             {
