@@ -10,6 +10,14 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class CloudEventConfiguratorClient : ClientBase, ICloudEventConfiguratorClient
     {
+        enum TargetType
+        {
+            Stream = 4,
+            GateWayApi = 5,
+            Lambda = 6,
+            Noosh = 12
+        }
+
         public async Task<BaseResponseDto<string>> UpdateNooshRule(string endPoint, string ruleName, bool enabled, int rate, string targetId, string workGroupName, string nooshUrl, string nooshToken)
         {
             using (var client = new HttpClient())
@@ -20,7 +28,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     Rate = rate,
                     Enabled = enabled,
                     TargetId = targetId,
-                    TargetType = 12,
+                    TargetType = TargetType.Noosh,
                     InputParameters = new
                     {
                         WorkGroups = new string[] { workGroupName },
