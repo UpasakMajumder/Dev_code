@@ -946,7 +946,6 @@
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
-    <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
@@ -968,7 +967,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
-    <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
