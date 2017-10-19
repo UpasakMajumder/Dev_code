@@ -69,6 +69,7 @@
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="FileFolder.cs" />
     <Compile Include="FileModule.cs" />
+    <Compile Include="Helpers\MicroserviceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
