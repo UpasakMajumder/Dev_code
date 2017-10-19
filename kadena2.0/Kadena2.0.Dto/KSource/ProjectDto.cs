@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Kadena.Old_App_Code.Kadena.KSource
+namespace Kadena.Dto.KSource
 {
     [DataContract]
-    public class ProjectData
+    public class ProjectDto
     {
         [DataMember(Name = "requestId")]
         public int RequestId { get; set; }
