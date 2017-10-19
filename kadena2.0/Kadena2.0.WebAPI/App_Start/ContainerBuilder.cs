@@ -65,6 +65,7 @@ namespace Kadena.WebAPI
         {
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
+            container.Register<ICache, InMemoryCache>();
             return container;
         }
     }

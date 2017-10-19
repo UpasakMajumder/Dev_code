@@ -1,9 +1,11 @@
-﻿using Kadena.WebAPI.Contracts;
-using Kadena.Models;
-using System.Threading.Tasks;
+﻿using Kadena.Models;
+using Kadena.WebAPI.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Kadena.WebAPI.KenticoProviders.Contracts;
+using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Services
 {
@@ -13,52 +15,71 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
+        private readonly ICache cache;
+
+        public TimeSpan ExternalServiceCacheExpiration { get; } = TimeSpan.FromHours(1);
 
         public TaxEstimationService(IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
-                                   IKenticoLogger kenticoLog)
+                                   IKenticoLogger kenticoLog,
+                                   ICache cache)
         {
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            
             this.kenticoLog = kenticoLog;
+            this.cache = cache;
         }
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
-            DeliveryAddress addressTo = null;
-
-            if (deliveryAddress != null)
-            {
-                addressTo = deliveryAddress;
-            }
-            else
-            {
-                addressTo = kenticoProvider.GetCurrentCartShippingAddress();
-            }
-
-            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
-            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
             double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
             double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
 
             if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
             {
-                // not call microservice in this case
+                // no need for tax estimation
                 return 0.0m;
             }
 
+            var addressTo = deliveryAddress ?? kenticoProvider.GetCurrentCartShippingAddress();
+            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
             var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
-            var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
+            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
-            if (!taxResponse.Success)
+            var estimate = await GetTaxEstimate(serviceEndpoint, taxRequest);
+
+            return estimate;
+        }
+
+        private async Task<decimal> GetTaxEstimate(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        {
+            var cacheKey = GetRequestKey("estimatetaxprice", serviceEndpoint, taxRequest);
+            var cachedValue = cache.Get(cacheKey);
+            if (cachedValue != null)
             {
-                kenticoLog.LogError("Tax estimation", $"Failed to estimate tax: {taxResponse.ErrorMessages}");
-                return 0.0m;
+                return (decimal)cachedValue;
             }
 
-            return taxResponse.Payload;
+            var response = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
+            if (response.Success)
+            {
+                var value = response.Payload;
+                cache.Insert(cacheKey, value, DateTime.UtcNow.Add(ExternalServiceCacheExpiration));
+                return value;
+            }
+            else
+            {
+                kenticoLog.LogError("DeliveryPriceEstimationClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
+                return 0.0m;
+            }
+        }
+
+        private string GetRequestKey(string keyPrefix, string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        {
+            var requestString = JsonConvert.SerializeObject(taxRequest);
+            return $"{keyPrefix}|{serviceEndpoint}|{taxRequest}";
         }
 
         private TaxCalculatorRequestDto CreateTaxCalculatorRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
