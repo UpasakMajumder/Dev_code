@@ -26,6 +26,7 @@ namespace Kadena.Old_App_Code.EventHandlers
         protected override void OnInit()
         {
             base.OnInit();
+            SettingsKeyInfo.TYPEINFO.Events.Insert.After += Update_After;
             SettingsKeyInfo.TYPEINFO.Events.Update.After += Update_After;
             SettingsKeyInfo.TYPEINFO.Events.Delete.After += Update_After;
         }
