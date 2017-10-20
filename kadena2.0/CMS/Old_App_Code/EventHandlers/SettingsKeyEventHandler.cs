@@ -45,47 +45,59 @@ namespace Kadena.Old_App_Code.EventHandlers
                     case _rateSettingKey:
                     case _targetIdSettingKey:
                     case _configuratorSettingKey:
-                        UpdateNooshEvent();
+                        if (e.Object.Site != null)
+                        {
+                            UpdateNooshEvent(e.Object.Site as SiteInfo);
+                        }
+                        else
+                        {
+                            foreach (var site in SiteInfoProvider.GetSites())
+                            {
+                                UpdateNooshEvent(site);
+                            }
+                        }
                         break;
                 }
             }
         }
 
-        private void UpdateNooshEvent()
+        private void UpdateNooshEvent(SiteInfo site)
         {
-            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_configuratorSettingKey}");
-            var ruleName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_ruleNameSettingKey}");
-            if (!string.IsNullOrWhiteSpace(url) && !string.IsNullOrWhiteSpace(ruleName))
+            if (site != null)
             {
-                var rate = SettingsKeyInfoProvider.GetIntValue($"{SiteContext.CurrentSiteName}.{_rateSettingKey}");
-                var targetId = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_targetIdSettingKey}");
-                var workGroupName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_workgroupNameSettingKey}");
-                var nooshUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_nooshApiSettingKey}");
-                var nooshToken = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_nooshTokenSettingKey}");
-
-                bool enabled = rate > 0
-                    && !string.IsNullOrWhiteSpace(targetId)
-                    && !string.IsNullOrWhiteSpace(workGroupName)
-                    && !string.IsNullOrWhiteSpace(nooshToken)
-                    && !string.IsNullOrWhiteSpace(nooshUrl);
-
-                try
+                var url = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_configuratorSettingKey}");
+                var ruleName = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_ruleNameSettingKey}");
+                if (!string.IsNullOrWhiteSpace(url) && !string.IsNullOrWhiteSpace(ruleName))
                 {
-                    var client = new CloudEventConfiguratorClient();
-                    var result = client.UpdateNooshRule(url, ruleName, enabled, rate, targetId, workGroupName, nooshUrl, nooshToken).Result;
-                    if (!result.Success)
-                    {
-                        throw new InvalidOperationException(result.ErrorMessages);
-                    }
-                    else
-                    {
-                        EventLogProvider.LogInformation("UPDATE - NOOSH EVENT SETTINGS", "MICROREQUEST", result.Payload);
-                    }
-                }
-                catch (Exception e)
-                {
-                    EventLogProvider.LogException("UPDATE - NOOSH EVENT SETTINGS", "EXCEPTION", e);
+                    var rate = SettingsKeyInfoProvider.GetIntValue($"{site.SiteName}.{_rateSettingKey}");
+                    var targetId = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_targetIdSettingKey}");
+                    var workGroupName = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_workgroupNameSettingKey}");
+                    var nooshUrl = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshApiSettingKey}");
+                    var nooshToken = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshTokenSettingKey}");
 
+                    bool enabled = rate > 0
+                        && !string.IsNullOrWhiteSpace(targetId)
+                        && !string.IsNullOrWhiteSpace(workGroupName)
+                        && !string.IsNullOrWhiteSpace(nooshToken)
+                        && !string.IsNullOrWhiteSpace(nooshUrl);
+
+                    try
+                    {
+                        var client = new CloudEventConfiguratorClient();
+                        var result = client.UpdateNooshRule(url, ruleName, enabled, rate, targetId, workGroupName, nooshUrl, nooshToken).Result;
+                        if (!result.Success)
+                        {
+                            throw new InvalidOperationException(result.ErrorMessages);
+                        }
+                        else
+                        {
+                            EventLogProvider.LogInformation("UPDATE - NOOSH EVENT SETTINGS", "MICROREQUEST", result.Payload);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        EventLogProvider.LogException("UPDATE - NOOSH EVENT SETTINGS", "EXCEPTION", e, site.SiteID);
+                    }
                 }
             }
         }
