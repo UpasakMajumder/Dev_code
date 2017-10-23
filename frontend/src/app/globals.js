@@ -19,8 +19,7 @@ const {
   chiliSave,
   languages,
   pagination,
-  staticFields,
-  locale
+  staticFields
 } = localization;
 
 
@@ -43,4 +42,3 @@ export const BUTTONS_UI = checkoutButtons;
 export const LANGUAGES = languages;
 export const PAGINATION = pagination;
 export const STATIC_FIELDS = staticFields;
-export const LOCALE = locale || 'en-gb';

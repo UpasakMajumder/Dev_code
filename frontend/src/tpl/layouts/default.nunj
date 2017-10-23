@@ -125,7 +125,6 @@
 
   var config = {
     localization: {
-      locale: 'ja-jp',
       notification: {
         removeProduct: {
           title: 'Success',
@@ -169,6 +168,7 @@
         }
       },
       languages: {
+        locale: 'ja-jp',
         selected: 'English',
         url: '#',
         languages: [

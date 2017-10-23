@@ -66,7 +66,6 @@
 <script>
   var config = {
     localization: {
-      locale: 'ja-jp',
       notification: {
         removeProduct: {
           title: 'Success',
@@ -96,6 +95,9 @@
           title: 'Error',
           text: 'The Spotfire is not available'
         }
+      },
+      languages: {
+        locale: 'ja-jp'
       },
       login: {
         email: 'E-MAIL',
