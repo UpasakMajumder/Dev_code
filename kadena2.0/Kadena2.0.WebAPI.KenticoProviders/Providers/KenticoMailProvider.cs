@@ -21,6 +21,9 @@ namespace Kadena.WebAPI.KenticoProviders
             return template == null ? null : new MailTemplate()
             {
                 From = template.TemplateFrom,
+                Cc = template.TemplateCc,
+                Bcc = template.TemplateBcc,
+                ReplyTo = template.TemplateReplyTo,
                 BodyHtml = Convert.ToBase64String(Encoding.UTF8.GetBytes(ResHelper.LocalizeString(template.TemplateText ?? string.Empty, localizeToCulture))),
                 BodyPlain = ResHelper.LocalizeString(template.TemplatePlainText, localizeToCulture),
                 Subject = ResHelper.LocalizeString(template.TemplateSubject, localizeToCulture)
