@@ -143,8 +143,8 @@ namespace Kadena.WebAPI.Services
                                     Name = c.Name,
                                     Values = sts.Select(s => new
                                     {
-                                        Id= s.Id.ToString(),
-                                        Name = s.StateName
+                                        Id = s.Id.ToString(),
+                                        Name = s.StateCode
                                     }).ToArray()
                                 }).ToList()
                         }
