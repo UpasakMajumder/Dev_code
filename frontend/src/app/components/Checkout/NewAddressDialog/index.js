@@ -7,20 +7,27 @@ import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
 
 class NewAddressDialog extends Component {
-  state = {
-    invalids: [],
-    address: {
-      customerName: '',
-      street1: '',
-      street2: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: 'USA',
-      phone: '',
-      email: ''
-    }
-  };
+  constructor(props) {
+    super(props);
+
+    this.stateIndex = this.props.ui.fields.findIndex(element => element.id === 'state');
+
+    this.state = {
+      invalids: [],
+      address: {
+        customerName: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        phone: '',
+        email: ''
+      },
+      fields: this.props.ui.fields
+    };
+  }
 
   submit = () => {
     const { address } = this.state;
@@ -31,7 +38,13 @@ class NewAddressDialog extends Component {
 
     bodyData.forEach((data) => {
       if (!data.isOptional) {
-        if (!address[data.id]) invalids.push(data.id);
+        if (!address[data.id]) {
+          if (data.id === 'state') {
+            this.countryHasState(address.country) && invalids.push(data.id);
+          } else {
+            invalids.push(data.id);
+          }
+        }
       }
     });
 
@@ -76,16 +89,15 @@ class NewAddressDialog extends Component {
 
     const bodyData = this.getBodyData();
 
-    bodyData.map((data, i) => {
-      // show State selector only for USA
-      if (data.id === 'state' && address.country !== 'USA') {
-        return null;
-      }
-
+    bodyData.forEach((data, i) => {
       let element = <TextInput {...data} />;
 
       if (data.isSelect) {
-        element = <Select {...data} />;
+        if (data.options.length) {
+          element = <Select {...data} />;
+        } else {
+          return null;
+        }
       }
 
       if (i + 1 <= Math.ceil(bodyData.length / 2)) {
@@ -142,18 +154,50 @@ class NewAddressDialog extends Component {
     this.setState({ invalids });
   };
 
+  getNewStateFields = (fields, countryId) => {
+    const options = fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values;
+    const state = fields.find(element => element.id === 'state');
+
+    return [
+      ...fields.slice(0, this.stateIndex),
+      {
+        ...state,
+        values: options
+      },
+      ...fields.slice(this.stateIndex + 1)
+    ];
+  }
+
+  countryHasState = (countryId) => {
+    if (!countryId) return false;
+    return !!this.props.ui.fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values.length;
+  }
+
   changeInput = (value, field) => {
     this.removeFromInvalids(field);
-    this.setState({
-      address: {
-        ...this.state.address,
-        [field]: value
-      }
-    });
+
+    if (field === 'country') {
+      const newState = this.countryHasState(value) ? this.state.fields.state : '';
+      this.setState({
+        address: {
+          ...this.state.address,
+          [field]: value,
+          state: newState
+        },
+        fields: this.getNewStateFields(this.state.fields, value)
+      });
+    } else {
+      this.setState({
+        address: {
+          ...this.state.address,
+          [field]: value
+        }
+      });
+    }
   };
 
   getBodyData = () => {
-    return this.props.ui.fields.map((field) => {
+    return this.state.fields.map((field) => {
       return {
         id: field.id,
         label: field.label,
@@ -163,7 +207,7 @@ class NewAddressDialog extends Component {
         isOptional: field.isOptional,
         isSelect: field.type === 'select',
         options: field.values,
-        value: this.state.address[field.id]
+        value: this.state.address[field.id] || field.label
       };
     });
   }

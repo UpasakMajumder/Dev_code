@@ -76,8 +76,8 @@ const AddressCard = (props) => {
   return (
     <div className="address-card">
       <USAddress
-        street1={address.street1}
-        street2={address.street2}
+        address1={address.address1}
+        address2={address.address2}
         city={address.city}
         state={state && state.name}
         zip={address.zip}
@@ -100,8 +100,8 @@ AddressCard.propTypes = {
     isEditButton: PropTypes.bool,
     isRemoveButton: PropTypes.bool,
     state: PropTypes.string,
-    street1: PropTypes.string,
-    street2: PropTypes.string,
+    address1: PropTypes.string,
+    address2: PropTypes.string,
     zip: PropTypes.string,
     country: PropTypes.string
   }),

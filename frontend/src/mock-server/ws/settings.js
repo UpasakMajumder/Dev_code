@@ -30,8 +30,8 @@ const address = {
         "addresses": [
           {
             "id": 1,
-            "street1": "4001 Valley Industrial Blvd",
-            "street2": "",
+            "address1": "4001 Valley Industrial Blvd",
+            "address2": "",
             "city": "Shakopee",
             "state": "22",
             "zip": "55379",
@@ -39,8 +39,8 @@ const address = {
           },
           {
             "id": 2,
-            "street1": "4001 Valley Industrial Blvd",
-            "street2": "",
+            "address1": "4001 Valley Industrial Blvd",
+            "address2": "",
             "city": "Shakopee",
             "zip": "55379",
             "country": "1"
@@ -58,13 +58,13 @@ const address = {
         },
         "fields": [
           {
-            "id": "street1",
+            "id": "address1",
             "label": "Address line 1",
             "values": [],
             "type": "text"
           },
           {
-            "id": "street2",
+            "id": "address2",
             "label": "Address line 2",
             "values": [],
             "type": "text",

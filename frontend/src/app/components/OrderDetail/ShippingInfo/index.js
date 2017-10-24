@@ -34,7 +34,12 @@ ShippingInfo.propTypes = {
   ui: PropTypes.shape({
     title: PropTypes.string.isRequired,
     deliveryMethod: PropTypes.string.isRequired,
-    address: PropTypes.string,
+    address: PropTypes.shape({
+      address1: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+      state: PropTypes.string.isRequired,
+      zip: PropTypes.string.isRequired
+    }).isRequired,
     message: PropTypes.string,
     tracking: PropTypes.shape({
       url: PropTypes.string,

@@ -17,10 +17,6 @@ class AddressDialog extends Component {
 
     this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
 
-    // Test again
-    // Checkout Page
-    // Update DOCS
-
     this.state = {
       fieldValues: {
         ...fieldValues,
@@ -42,8 +38,8 @@ class AddressDialog extends Component {
       isEditButton: PropTypes.bool,
       isRemoveButton: PropTypes.bool,
       state: PropTypes.string,
-      street1: PropTypes.string,
-      street2: PropTypes.string,
+      address1: PropTypes.string,
+      address2: PropTypes.string,
       zip: PropTypes.string
     }),
     dialog: PropTypes.shape({
@@ -123,8 +119,8 @@ class AddressDialog extends Component {
     this.setState({
       fieldValues: {
         id: -1,
-        street1: '',
-        street2: '',
+        address1: '',
+        address2: '',
         city: '',
         state: '',
         zip: ''
@@ -135,7 +131,7 @@ class AddressDialog extends Component {
   submitForm = (data) => {
     const { addDataAddress, changeDataAddress, isModifyingDialog } = this.props;
     const { fieldValues } = this.state;
-    const requiredFields = ['street1', 'city', 'country', 'zip'];
+    const requiredFields = ['address1', 'city', 'country', 'zip'];
     this.countryHasState(fieldValues.country) && requiredFields.push('state');
     const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
 
