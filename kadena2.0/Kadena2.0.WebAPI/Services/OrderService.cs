@@ -78,8 +78,8 @@ namespace Kadena.WebAPI.Services
                 {
                     OrderDate = new TitleValuePair
                     {
-                       Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
-                       Value = data.OrderDate.ToString("MM/dd/yyyy")
+                        Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
+                        Value = data.OrderDate.ToString("MM/dd/yyyy")
                     },
                     ShippingDate = new TitleValuePair
                     {
@@ -95,7 +95,7 @@ namespace Kadena.WebAPI.Services
                     {
                         Title = resources.GetResourceString("Kadena.Order.TotalCostPrefix"),
                         Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
-                    } 
+                    }
                 },
                 PaymentInfo = new PaymentInfo()
                 {
@@ -114,12 +114,12 @@ namespace Kadena.WebAPI.Services
                         new PricingInfoItem()
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingSummary"),
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary)
+                            Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
                         },
                         new PricingInfoItem()
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingShipping"),
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Shipping)
+                            Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Shipping)
                         },
                         new PricingInfoItem()
                         {
