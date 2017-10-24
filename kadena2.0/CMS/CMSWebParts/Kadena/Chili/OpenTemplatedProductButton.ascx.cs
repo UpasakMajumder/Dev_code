@@ -1,11 +1,13 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Models;
+using CMS.SiteProvider;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Models.Product;
-using Kadena.Old_App_Code.Kadena.Chili;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Linq;
 using System.Web;
@@ -33,6 +35,14 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
+        public string ServiceBaseUrl
+        {
+            get
+            {
+                return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
+            }
+        }
+
         #region Public methods
 
         public override void OnContentLoaded()
@@ -57,16 +67,27 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
             var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
-            var newTemplateUrl = new TemplateServiceHelper().CreateNewTemplate(MembershipContext.AuthenticatedUser.UserID, masterTemplateID, workspaceID);
+            var use3d = CurrentDocument.GetBooleanValue("ProductChili3dEnabled", false);
+            var client = new TemplatedProductService();
+            var requestBody = new NewTemplateRequestDto
+            {
+                User = MembershipContext.AuthenticatedUser.UserID.ToString(),
+                TemplateId = masterTemplateID,
+                WorkSpaceId = workspaceID,
+                UseHtmlEditor = false,
+                Use3d = use3d
+            };
+            var newTemplateUrl = client.CreateNewTemplate(ServiceBaseUrl, requestBody, RequestContext.CurrentDomain).Result?.Payload;
             if (!string.IsNullOrEmpty(newTemplateUrl))
             {
                 var uri = new Uri(newTemplateUrl);
                 var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-                var destinationUrl = string.Format("{0}?nodeId={1}&templateId={2}&workspaceid={3}",
+                var destinationUrl = string.Format("{0}?nodeId={1}&templateId={2}&workspaceid={3}&use3d={4}",
                   ProductEditorUrl,
                   DocumentContext.CurrentDocument.NodeID,
                   newTemplateID,
-                  workspaceID);
+                  workspaceID,
+                  use3d);
 
                 var productTypes = DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Split('|').ToLookup(s => s);
                 if (productTypes.Contains(ProductTypes.MailingProduct) && productTypes.Contains(ProductTypes.TemplatedProduct))

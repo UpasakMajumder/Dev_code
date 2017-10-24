@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
@@ -64,6 +65,33 @@ namespace Kadena2.MicroserviceClients.Clients
                 using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
                     return await ReadResponseJson<List<TemplateServiceDocumentResponse>>(response);
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<string>> GetEditorUrl(string endpoint, Guid templateId, Guid workSpaceId, bool useHtml, bool use3d, string siteDomain)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
+                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
+                {
+                    return await ReadResponseJson<string>(response);
+                }
+            }
+        }
+
+        public async Task<BaseResponseDto<string>> CreateNewTemplate(string endpoint, NewTemplateRequestDto request, string siteDomain)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var url = $"{endpoint.TrimEnd('/')}/api/template";
+                new MicroserviceHelper().AddHeader(httpClient, "suppliantDomain", siteDomain);
+                var content = new StringContent(JsonConvert.SerializeObject(request), System.Text.Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync(url, content).ConfigureAwait(false))
+                {
+                    return await ReadResponseJson<string>(response);
                 }
             }
         }
