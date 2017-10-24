@@ -14,6 +14,8 @@ using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Product;
+using Kadena.WebAPI;
+using AutoMapper;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -318,7 +320,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger());
+                MapperBuilder.InitializeAll();
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return kenticoService.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
@@ -331,7 +334,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger());
+                MapperBuilder.InitializeAll();
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
             }
             return string.Empty;
