@@ -620,19 +620,14 @@ namespace Kadena.WebAPI.KenticoProviders
         public void SaveShippingAddress(DeliveryAddress address)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var state = StateInfoProvider.GetStateInfoByCode(address.State);
-            if (state == null)
-            {
-                throw new ArgumentNullException(nameof(state), "Incorrect state was selected.");
-            }
             var info = new AddressInfo
             {
                 AddressID = address.Id,
                 AddressLine1 = address.Street1,
                 AddressLine2 = address.Street2,
                 AddressCity = address.City,
-                AddressStateID = state.StateID,
-                AddressCountryID = state.CountryID,
+                AddressStateID = address.StateId,
+                AddressCountryID = address.CountryId,
                 AddressZip = address.Zip,
                 AddressCustomerID = customer.CustomerID,
                 AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"

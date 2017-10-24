@@ -100,8 +100,16 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
                     .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2));
                 config.CreateMap<AddressDto, DeliveryAddress>()
-                    .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.State))
-                    .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.Country))
+                    .ForMember(dest => dest.StateId, opt =>
+                    {
+                        opt.MapFrom(src => src.State);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
+                    })
+                    .ForMember(dest => dest.CountryId, opt =>
+                    {
+                        opt.MapFrom(src => src.Country);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
+                    })
                     .ForMember(dest => dest.Street1, opt => opt.MapFrom(src => src.Address1))
                     .ForMember(dest => dest.Street2, opt => opt.MapFrom(src => src.Address2));
                 config.CreateMap<DeliveryAddress, IdDto>();
