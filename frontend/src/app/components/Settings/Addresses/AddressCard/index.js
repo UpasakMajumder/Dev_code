@@ -6,7 +6,16 @@ import SVG from 'app.dump/SVG';
 import USAddress from 'app.dump/USAddress';
 
 const AddressCard = (props) => {
-  const { editButton, removeButton, address, openDialog, defaultAddress, setDefault, unsetDefault } = props;
+  const {
+    editButton,
+    removeButton,
+    address,
+    dialog,
+    openDialog,
+    defaultAddress,
+    setDefault,
+    unsetDefault
+  } = props;
 
   let editElement = null;
   if (editButton.exists) {
@@ -49,6 +58,7 @@ const AddressCard = (props) => {
       </Tooltip>
     );
   };
+
   const removeElement = removeButton.exists
     ? <button type="button" className="in-card-btn">
         <SVG name="cross--dark"/>
@@ -56,16 +66,12 @@ const AddressCard = (props) => {
       </button>
     : null;
 
-  const buttonBlock = editElement || removeElement
-    ?
-    (
-      <div className="address-card__btn-block">
-        {editElement}
-        {removeElement}
-        {setDefaultElement()}
-      </div>
-    )
-    : null;
+  const country = dialog.fields
+    .find(field => field.id === 'country')
+    .values
+    .find(country => country.id === address.country);
+
+  const state = country.values.find(state => state.id === address.state);
 
   return (
     <div className="address-card">
@@ -73,10 +79,16 @@ const AddressCard = (props) => {
         street1={address.street1}
         street2={address.street2}
         city={address.city}
-        state={address.state}
+        state={state && state.name}
         zip={address.zip}
+        country={country.name}
       />
-      {buttonBlock}
+
+      <div className="address-card__btn-block">
+        {editElement}
+        {removeElement}
+        {setDefaultElement()}
+      </div>
     </div>
   );
 };
@@ -90,7 +102,8 @@ AddressCard.propTypes = {
     state: PropTypes.string,
     street1: PropTypes.string,
     street2: PropTypes.string,
-    zip: PropTypes.string
+    zip: PropTypes.string,
+    country: PropTypes.string
   }),
   defaultAddress: PropTypes.shape({
     id: PropTypes.number,

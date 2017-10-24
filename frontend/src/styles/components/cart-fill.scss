@@ -63,7 +63,9 @@
 }
 
 .cart__dialog-table {
-  @include dialog-table(5);
+  td:not(:first-child) {
+    @extend .pl-2;
+  }
 }
 
 .checkout__dialog-table {

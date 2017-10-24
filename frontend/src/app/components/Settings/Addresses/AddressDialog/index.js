@@ -12,18 +12,21 @@ class AddressDialog extends Component {
   constructor(props) {
     super(props);
 
-    const { address } = props;
+    const { address, dialog } = props;
     const fieldValues = (address && typeof address === 'object') ? address : {};
+
+    this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
+
+    // Test again
+    // Checkout Page
+    // Update DOCS
 
     this.state = {
       fieldValues: {
-        id: fieldValues.id || -1,
-        street1: fieldValues.street1 || '',
-        street2: fieldValues.street2 || '',
-        city: fieldValues.city || '',
-        state: fieldValues.state || '',
-        zip: fieldValues.zip || ''
+        ...fieldValues,
+        id: fieldValues.id || -1
       },
+      fields: fieldValues.state ? this.getNewStateFields(dialog.fields, fieldValues.country) : dialog.fields,
       inValidFields: []
     };
   }
@@ -52,7 +55,14 @@ class AddressDialog extends Component {
         id: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
-        values: PropTypes.arrayOf(PropTypes.string)
+        values: PropTypes.arrayOf(PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+          values: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired
+          })).isRequired
+        })).isRequired
       }).isRequired).isRequired,
       types: PropTypes.shape({
         add: PropTypes.string.isRequired,
@@ -61,17 +71,50 @@ class AddressDialog extends Component {
     })
   };
 
+  getNewStateFields = (fields, countryId) => {
+    const options = fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values;
+    const state = fields.find(element => element.id === 'state');
+
+    return [
+      ...fields.slice(0, this.stateIndex),
+      {
+        ...state,
+        values: options
+      },
+      ...fields.slice(this.stateIndex + 1)
+    ];
+  }
+
+  countryHasState = (countryId) => {
+    if (!countryId) return false;
+    return !!this.props.dialog.fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values.length;
+  }
+
   handleChange = (value, id) => {
-    const { inValidFields, fieldValues } = this.state;
+    const { inValidFields, fieldValues, fields } = this.state;
     const inValidFieldsNew = inValidFields.filter(inValidField => inValidField !== id);
 
-    this.setState({
-      fieldValues: {
-        ...fieldValues,
-        [id]: value
-      },
-      inValidFields: inValidFieldsNew
-    });
+    if (id === 'country') {
+      const newState = this.countryHasState(value) ? this.state.fieldValues.state : '';
+
+      this.setState({
+        fieldValues: {
+          ...fieldValues,
+          [id]: value,
+          state: newState
+        },
+        inValidFields: inValidFieldsNew,
+        fields: this.getNewStateFields(fields, value)
+      });
+    } else {
+      this.setState({
+        fieldValues: {
+          ...fieldValues,
+          [id]: value
+        },
+        inValidFields: inValidFieldsNew
+      });
+    }
   };
 
   closeDialog = () => {
@@ -92,12 +135,12 @@ class AddressDialog extends Component {
   submitForm = (data) => {
     const { addDataAddress, changeDataAddress, isModifyingDialog } = this.props;
     const { fieldValues } = this.state;
-    const requiredFields = ['street1', 'city', 'state', 'zip'];
+    const requiredFields = ['street1', 'city', 'country', 'zip'];
+    this.countryHasState(fieldValues.country) && requiredFields.push('state');
     const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
 
     if (!inValidFields.length) {
       isModifyingDialog ? changeDataAddress(data) : addDataAddress(data);
-      this.closeDialog();
     }
     this.setState({ inValidFields });
   };
@@ -110,7 +153,7 @@ class AddressDialog extends Component {
 
   render() {
     const { dialog, isModifyingDialog } = this.props;
-    const { fieldValues } = this.state;
+    const { fieldValues, fields } = this.state;
 
     const footer = <div className="btn-group btn-group--right">
       <button onClick={this.closeDialog}
@@ -129,27 +172,37 @@ class AddressDialog extends Component {
     </div>;
 
 
-    const bodyContent = dialog.fields.map((field) => {
+    const bodyContent = fields.map((field) => {
       const { label, values, type, id, isOptional } = field;
 
-      const input = (type === 'text')
-        ? <TextInput label={label}
-                     error={this.getErrorMessage(id)}
-                     value={fieldValues[id]}
-                     isOptional={isOptional}
-                     placeholder={label}
-                     onChange={(e) => { this.handleChange(e.target.value, id); }}
-                     type="text"
-        />
-        : <Select label={label}
-                  error={this.getErrorMessage(id)}
-                  options={values}
-                  value={fieldValues[id] || label}
-                  onChange={(e) => { this.handleChange(e.target.value, id); }}
-        />;
+      let input = {};
+
+      if (type === 'text') {
+        input = (
+          <TextInput label={label}
+            error={this.getErrorMessage(id)}
+            value={fieldValues[id]}
+            isOptional={isOptional}
+            placeholder={label}
+            onChange={(e) => { this.handleChange(e.target.value, id); }}
+            type="text"
+          />
+        );
+      } else if (values.length) {
+        input = (
+          <Select label={label}
+            error={this.getErrorMessage(id)}
+            options={values}
+            value={fieldValues[id] || label}
+            onChange={(e) => { this.handleChange(e.target.value, id); }}
+          />
+        );
+      } else {
+        return null;
+      }
 
       return (
-        <td key={id}>
+        <td style={{ width: `${100 / dialog.fields.length}%` }} key={id}>
           {input}
         </td>
       );

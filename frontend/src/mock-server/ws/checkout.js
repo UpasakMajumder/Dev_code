@@ -142,16 +142,8 @@ module.exports.ui = {
           "state": "TN",
           "zip": "38017",
           "id": 1,
-          "checked": true
-        },
-        {
-          "street1": "Test Address line 1",
-          "street2": "Test Address line 2",
-          "city": "Red Watter Village",
-          "state": "",
-          "zip": "56161",
-          "id": 2,
-          "checked": false
+          "checked": true,
+          "country": "USA"
         },
         {
           "street1": "Test Address line 1",
