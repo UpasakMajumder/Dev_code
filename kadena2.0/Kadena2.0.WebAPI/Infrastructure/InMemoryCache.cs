@@ -1,13 +1,34 @@
 ﻿using Kadena.WebAPI.Contracts;
 using System;
-using System.Web;
 using System.Web.Caching;
 
 namespace Kadena.WebAPI.Infrastructure
 {
     public class InMemoryCache : ICache
     {
-        public virtual Cache Cache => HttpContext.Current.Cache;
+        private Cache cache;
+        public Cache Cache
+        {
+            get
+            {
+                if (cache == null)
+                {
+                    TryInitCache();
+                }
+
+                return cache;
+            }
+        }
+
+        public InMemoryCache()
+        {
+            TryInitCache();
+        }
+
+        private void TryInitCache()
+        {
+            cache = System.Web.HttpContext.Current?.Cache;
+        }
 
         public object Get(string key)
         {

@@ -3,8 +3,6 @@ using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Services
@@ -17,7 +15,7 @@ namespace Kadena.WebAPI.Services
         private readonly ITaxEstimationServiceClient taxCalculator;
         private readonly ICache cache;
 
-        public TimeSpan ExternalServiceCacheExpiration { get; } = TimeSpan.FromHours(1);
+        public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
         public TaxEstimationService(IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,                                    
@@ -34,40 +32,33 @@ namespace Kadena.WebAPI.Services
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
-            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress);
 
-            if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
+            var estimate = await EstimateTotalTax(ServiceEndpoint, taxRequest);
+            return estimate;
+        }
+
+        private async Task<decimal> EstimateTotalTax(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        {
+            if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
             {
                 // no need for tax estimation
                 return 0.0m;
             }
 
-            var addressTo = deliveryAddress ?? kenticoProvider.GetCurrentCartShippingAddress();
-            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
-            var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
-            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
-
-            var estimate = await GetTaxEstimate(serviceEndpoint, taxRequest);
-
-            return estimate;
-        }
-
-        private async Task<decimal> GetTaxEstimate(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
-        {
-            var cacheKey = GetRequestKey("estimatetaxprice", serviceEndpoint, taxRequest);
-            var cachedValue = cache.Get(cacheKey);
-            if (cachedValue != null)
+            var cacheKey = $"DeliveryPriceEstimationClient|{serviceEndpoint}|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
+            var cachedResult = cache.Get(cacheKey);
+            if (cachedResult != null)
             {
-                return (decimal)cachedValue;
+                return (decimal)cachedResult;
             }
 
             var response = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
             if (response.Success)
             {
-                var value = response.Payload;
-                cache.Insert(cacheKey, value, DateTime.UtcNow.Add(ExternalServiceCacheExpiration));
-                return value;
+                var result = response.Payload;
+                cache.Insert(cacheKey, result);
+                return result;
             }
             else
             {
@@ -76,13 +67,7 @@ namespace Kadena.WebAPI.Services
             }
         }
 
-        private string GetRequestKey(string keyPrefix, string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
-        {
-            var requestString = JsonConvert.SerializeObject(taxRequest);
-            return $"{keyPrefix}|{serviceEndpoint}|{taxRequest}";
-        }
-
-        private TaxCalculatorRequestDto CreateTaxCalculatorRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
         {
             var taxRequest = new TaxCalculatorRequestDto()
             {
@@ -105,7 +90,18 @@ namespace Kadena.WebAPI.Services
             }
 
             return taxRequest;
-        }				
+        }
+
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress)
+        {
+            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
+            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
+
+            var addressTo = deliveryAddress ?? kenticoProvider.GetCurrentCartShippingAddress();
+            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
+
+            return CreateTaxEstimationRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
+        }
     }
 }
  
