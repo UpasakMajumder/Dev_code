@@ -118,6 +118,7 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/addtocart")]
         [CustomerAuthorizationFilter]
+        [RecalculateShoppingCart]
         public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
         {
             var addItem = mapper.Map<NewCartItem>(item);
