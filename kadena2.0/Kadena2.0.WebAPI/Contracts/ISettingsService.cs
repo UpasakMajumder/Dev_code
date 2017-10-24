@@ -7,5 +7,8 @@ namespace Kadena.WebAPI.Contracts
     {
         SettingsAddresses GetAddresses();
         void SaveShippingAddress(DeliveryAddress address);
+        void SetDefaultShippingAddress(int addressId);
+        bool SaveLocalization(string code);
+        void UnsetDefaultShippingAddress();
     }
 }

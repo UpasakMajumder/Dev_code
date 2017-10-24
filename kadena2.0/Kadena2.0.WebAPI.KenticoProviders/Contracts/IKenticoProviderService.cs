@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void RemoveCurrentItemsFromStock();
 
-        void RemoveCurrentItemsFromCart();
+        void ClearCart();
 
         double GetCurrentCartTotalItemsPrice();
 
@@ -62,6 +62,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Product GetProductByDocumentId(int documentId);
 
+        Product GetProductByNodeId(int nodeId);
+
         string GetDocumentUrl(int documentId);
 
         List<string> GetBreadcrumbs(int documentId);
@@ -72,10 +74,20 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Site[] GetSites();
 
+        string GetCurrentSiteCodeName();
+
+        bool IsCurrentCultureDefault();
+
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
 
         void SetSkuAvailableQty(string skunumber, int availableItems);
+
+        string GetDocumentUrl(string aliasPath);
+
+        string GetDocumentUrl(string aliasPath, string cultureCode);
+
+        string GetCurrentSiteDomain();
     }
 }

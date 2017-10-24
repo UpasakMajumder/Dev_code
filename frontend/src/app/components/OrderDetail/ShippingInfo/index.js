@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
+import USAddress from 'app.dump/USAddress';
 
 const ShippingInfo = ({ ui }) => {
   const { title, deliveryMethod, address, message, tracking } = ui;
@@ -13,12 +14,16 @@ const ShippingInfo = ({ ui }) => {
     trackingLink = <a className="link" href={url}>{text}</a>;
   }
 
+  const addressEl = address
+    ? <USAddress {...address} />
+    : <p>{message}</p>;
+
   return (
     <div className="order-block order-block--tile ">
       <h2 className="order-block__header">{title}</h2>
       <div className="order-block__detail">
         <SVG name={deliveryMethod} />
-        <p>{address || message}</p>
+        <div className="order-block__detail-address">{addressEl}</div>
         {trackingLink}
       </div>
     </div>

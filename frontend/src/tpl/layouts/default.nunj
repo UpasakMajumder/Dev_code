@@ -121,6 +121,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <script>
+  var PATH = 'http://localhost:{{ _mockPort }}/api/';
+
   var config = {
     localization: {
       notification: {
@@ -165,6 +167,38 @@
           text: 'The template has been saved'
         }
       },
+      languages: {
+        locale: 'ja-jp',
+        selected: 'English',
+        url: '#',
+        languages: [
+          {
+            code: '1',
+            language: 'English',
+            url: '#English'
+          },
+          {
+            code: '2',
+            language: 'French',
+            url: '#French'
+          },
+          {
+            code: '3',
+            language: 'German',
+            url: '#German'
+          }
+        ]
+      },
+      staticFields: {
+        validation: {
+          requiredMessage: 'The field is required',
+          optionalLabel: 'optional'
+        },
+        password: {
+          show: 'show',
+          hide: 'hide',
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',
@@ -178,8 +212,8 @@
         login: 'Log in'
       },
       checkout: {
-        initRenderUIURL: '',
-        initTotalDeliveryUIURL: '',
+        initRenderUIURL: PATH + 'checkout/ui',
+        initTotalDeliveryUIURL: PATH + 'checkout/total-price',
         changeAddressURL: '',
         changeDeliveryMethodURL: '',
         changeQuantityURL: '',
@@ -199,29 +233,40 @@
       },
       userSettings: {
         addresses: {
-          initUIURL: 'http://default.kadenadev.com:56000/api/usersettings',
-          editAddressURL: 'http://default.kadenadev.com:56000/api/usersettings/saveshippingaddress'
+          initUIURL: PATH + 'settings/address/ui',
+          editAddressURL: PATH + 'settings/address/modify'
         }
       },
       cartPreview: {
-        cartPreviewUrl: '#'
+        cartPreviewUrl: PATH + 'cartPreview'
       },
       orderDetail: {
-        orderDetailUrl: ""
+        orderDetailUrl: PATH + 'order/detail'
       },
       searchPage: {
-        searchPageUrl: ''
+        searchPageUrl: PATH + 'search/result'
       },
       chiliSave: {
         url: ''
       },
-      addToCartUrl: '',
+      addToCartUrl: PATH + 'products/add-to-cart',
       search: {
-        queryUrl: ""
+        queryUrl: PATH + 'search/query',
+        placeholder: "Search"
+      },
+      pagination: {
+        template: {
+          string: "Showing [FROM] to [TO] of [TOTAL] entries",
+          from: "[FROM]",
+          to: "[TO]",
+          total: "[TOTAL]",
+        },
+        nextLabel: "Next",
+        backLabel: "Previous"
       },
       recentOrders: {
-        getHeaders: '',
-        getPageItems: ''
+        getHeaders: PATH + 'order/recent/ui',
+        getPageItems: PATH + 'order/recent/page'
       },
       modifyMailingList: {
         errorList: {
@@ -241,7 +286,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "AA",
               postalCode: "94116",
               errorMessage: "Error"
             },
@@ -251,7 +296,7 @@
               firstAddressLine: "2167 255th Ave",
               secondAddressLine: "",
               city: "San Francisco",
-              state: "CA",
+              state: "",
               postalCode: "94116",
               errorMessage: "Error"
             }
@@ -262,7 +307,7 @@
           btns: {
             use: {
               text: "Use only correct",
-              url: "#"
+              url: PATH + 'mailing-list/use-correct'
             }
           },
           items: [
@@ -323,7 +368,7 @@
           confirmChanges: {
             text: "Confirm & reprocess addresses",
             redirect: "https://google.com",
-            request: "#"
+            request: PATH + 'mailing-list/reprocess'
           },
           message: {
             required: "The field is required"
@@ -352,6 +397,9 @@
             postalCode: {
               header: "Postal Code",
               required: true
+            },
+            error: {
+              header: "Error"
             }
           }
         }
@@ -359,22 +407,23 @@
       checkoutButtons: {
         checkout: {
           text: 'Proceed To Checkout',
-            url: '/shopping-cart.html'
+          url: '/shopping-cart.html'
         },
         products: {
           text: 'Continue Shopping',
-            url: '/products.html'
+          url: '/products.html'
         }
       },
       manageProducts: {
-        templatesUrl: '/api/products/123/templates'
+        templatesUrl: PATH + 'products/managed'
       },
       products: {
         addToFavorites: "Set product as favorite",
-        loadProductsUrl: "/api/products",
-        loadFavoritesProductsUrl: "/api/products/favorites",
-        markProductFavouriteUrl: "/api/favorites/set",
-        unmarkProductFavouriteUrl: "/api/favorites/unset"
+        loadProductsUrl: PATH + 'products/all',
+        loadFavoritesProductsUrl: PATH + 'products/favourites',
+        markProductFavouriteUrl: PATH + 'products/favourite',
+        unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
+        nodeAliasPath: "/Products"
       }
     }
   };

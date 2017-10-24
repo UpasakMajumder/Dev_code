@@ -7,6 +7,7 @@ using CMS.DataEngine;
 using CMS.Localization;
 using System.Linq;
 using CMS.Helpers;
+using CMS.Ecommerce;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -40,6 +41,19 @@ namespace Kadena.WebAPI.KenticoProviders
                 IsFavourite = false
             }
             ).ToList();
+        }
+
+        public void UpdateSku(Sku sku)
+        {
+            var skuInfo = SKUInfoProvider.GetSKUInfo(sku.SkuId);
+            if (skuInfo == null)
+            {
+                return;
+            }
+
+            skuInfo.SKUWeight = sku.Weight;
+            skuInfo.SKUNeedsShipping = sku.NeedsShipping;
+            skuInfo.Update();
         }
 
         private DocumentQuery GetDocuments(string path, string className)

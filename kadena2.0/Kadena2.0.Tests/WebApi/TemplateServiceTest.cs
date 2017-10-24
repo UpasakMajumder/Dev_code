@@ -55,7 +55,7 @@ namespace Kadena.Tests.WebApi
             Assert.NotEqual(newName, _currentName);
 
             var client = new Mock<ITemplatedProductService>();
-            client.Setup(c => c.SetName(null, Guid.Empty, newName))
+            client.Setup(c => c.SetName(null, Guid.Empty, newName, string.Empty))
                 .Returns(Task.FromResult(SetNameSuccess(newName)));
             var service = Create(client);
 
@@ -70,7 +70,7 @@ namespace Kadena.Tests.WebApi
             var newName = "newName";
 
             var client = new Mock<ITemplatedProductService>();
-            client.Setup(c => c.SetName(null, Guid.Empty, newName))
+            client.Setup(c => c.SetName(null, Guid.Empty, newName, string.Empty))
                 .Returns(Task.FromResult(SetNameFailed()));
             var service = Create(client);
             var result = await service.SetName(Guid.Empty, newName);
@@ -81,17 +81,17 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetTemplatesByProduct_ReturnsEmptyModel_WhenDocumentIsNotTemplatedProduct()
         {
-            var invalidDocumentId = 0;
+            var invalidNodeId = 0;
 
             var sut = new TemplateService(
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedProductService>(),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(invalidDocumentId) == new Product { ProductType = ProductTypes.StaticProduct }),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
                 Mock.Of<IKenticoUserProvider>()
             );
 
-            var templates = await sut.GetTemplatesByProduct(invalidDocumentId);
+            var templates = await sut.GetTemplatesByProduct(invalidNodeId);
 
             Assert.NotNull(templates);
             Assert.NotNull(templates.Data);
@@ -103,7 +103,7 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetTemplatesByProduct_ReturnsData_WhenDocumentHasTemplates()
         {
-            var documentId = 10;
+            var nodeId = 10;
             var fakeDatetime = new DateTime().ToString();
 
             var templatesResponse = new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
@@ -119,12 +119,12 @@ namespace Kadena.Tests.WebApi
             var sut = new TemplateService(
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
-                Mock.Of<ITemplatedProductService>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByDocumentId(documentId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
+                Mock.Of<ITemplatedProductService>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>(), string.Empty) == Task.FromResult(templatesResponse)),
+                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
                 Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
             );
 
-            var templates = await sut.GetTemplatesByProduct(documentId);
+            var templates = await sut.GetTemplatesByProduct(nodeId);
 
             Assert.True(templates.Data.Length == 2);
         }

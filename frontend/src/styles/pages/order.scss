@@ -32,10 +32,21 @@
     flex-direction: column;
     width: 100%;
 
+    a,
+    p {
+      width: 100%;
+    }
+
     svg {
       @include rem(margin-bottom, 24px);
       @include rem(width, 70px);
       @include rem(height, 50px);
+    }
+  }
+
+  &__detail-address {
+    p {
+      margin: 0;
     }
   }
 }

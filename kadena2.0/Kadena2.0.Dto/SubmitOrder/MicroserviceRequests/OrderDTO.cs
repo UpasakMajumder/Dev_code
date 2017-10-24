@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 {
@@ -14,11 +13,11 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 
          public ShippingOptionDTO ShippingOption { get; set; }
 
-         public double? TotalShipping { get; set; }
+         public decimal? TotalShipping { get; set; }
 
-         public double TotalPrice { get; set; }
+         public decimal TotalPrice { get; set; }
 
-         public double TotalTax { get; set; }
+         public decimal TotalTax { get; set; }
 
          public DateTime OrderDate { get; set; }
 

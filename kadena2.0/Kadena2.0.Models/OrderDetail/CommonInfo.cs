@@ -2,9 +2,9 @@
 {
     public class CommonInfo
     {
-        public string Status { get; set; }
-        public string OrderDate { get; set; }
-        public string ShippingDate { get; set; }
-        public string TotalCost { get; set; }
+        public TitleValuePair Status { get; set; }
+        public TitleValuePair OrderDate { get; set; }
+        public TitleValuePair ShippingDate { get; set; }
+        public TitleValuePair TotalCost { get; set; }
     }
 }

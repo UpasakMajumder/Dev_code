@@ -8,6 +8,7 @@ using System.Web;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -42,17 +43,18 @@ namespace Kadena.WebAPI.Services
         {
             var searchResultPages = SearchPages(phrase, results);
             var searchResultProducts = SearchProducts(phrase, results);
+            var serpUrl = kenticoProvider.GetDocumentUrl(resources.GetSettingsKey("KDA_SerpPageUrl"));
 
             var result = new AutocompleteResponse()
             {
                 Pages = new AutocompletePages()
                 {
-                    Url = $"/serp?phrase={HttpUtility.UrlEncode(phrase)}&tab=pages",
+                    Url = $"{serpUrl}?phrase={HttpUtility.UrlEncode(phrase)}&tab=pages",
                     Items = mapper.Map<List<AutocompletePage>>(searchResultPages)
                 },
                 Products = new AutocompleteProducts()
                 {
-                    Url = $"/serp?phrase={HttpUtility.UrlEncode(phrase)}&tab=products",
+                    Url = $"{serpUrl}?phrase={HttpUtility.UrlEncode(phrase)}&tab=products",
                     Items = searchResultProducts.Select(p => new AutocompleteProduct()
                     {
                         Id = p.Id,
@@ -128,7 +130,7 @@ namespace Kadena.WebAPI.Services
                     {
                         resultItem.Stock = new Stock()
                         {
-                            Text = $"{product.StockItems} pcs in stock",
+                            Text = string.Format(resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts"), product.StockItems),
                             Type = product.Availability
                         };
                     }

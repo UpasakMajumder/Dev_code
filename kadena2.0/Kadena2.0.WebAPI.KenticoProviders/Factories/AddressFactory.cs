@@ -15,12 +15,6 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 return null;
             }
 
-            var addressLines = new List<string> { ai.AddressLine1 };
-            if (!string.IsNullOrWhiteSpace(ai.AddressLine2))
-            {
-                addressLines.Add(ai.AddressLine2);
-            }
-
             var countryInfo = CountryInfoProvider.GetCountryInfo(ai.AddressCountryID);
 
             return new DeliveryAddress()
@@ -33,7 +27,8 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 CountryCode = ai.GetCountryTwoLetterCode(),
                 StateId = ai.AddressStateID,
                 CountryId = ai.AddressCountryID,
-                Street = addressLines,
+                Street1 = ai.AddressLine1,
+                Street2 = ai.AddressLine2,
                 Zip = ai.AddressZip
             };
         }

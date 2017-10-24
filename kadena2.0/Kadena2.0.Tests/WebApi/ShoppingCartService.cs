@@ -12,6 +12,7 @@ using Kadena.Models.Checkout;
 using System.Collections.Generic;
 using System.Linq;
 using Kadena.WebAPI.Factories.Checkout;
+using Kadena.Models.Product;
 
 namespace Kadena.Tests.WebApi
 {
@@ -70,8 +71,8 @@ namespace Kadena.Tests.WebApi
             return new ShoppingCartTotals()
             {
                 TotalItemsPrice = _items.Sum(i => i.TotalPrice),
-                TotalShipping = 19.99,
-                TotalTax = 0.2 * _items.Sum(i => i.TotalPrice)
+                TotalShipping = 19.99m,
+                TotalTax = 0.2m * _items.Sum(i => i.TotalPrice)
             };
         }
 

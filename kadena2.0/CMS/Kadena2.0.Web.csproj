@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -595,6 +597,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\MaxMindGEOIP.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -729,6 +735,13 @@
     </Compile>
     <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.designer.cs">
       <DependentUpon>S3UploaderControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.cs">
+      <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.designer.cs">
+      <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Import.aspx.cs">
       <DependentUpon>Import.aspx</DependentUpon>
@@ -865,13 +878,6 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.designer.cs">
       <DependentUpon>StatisticLabel.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.cs">
-      <DependentUpon>TemplatesList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx.designer.cs">
-      <DependentUpon>TemplatesList.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx.cs">
       <DependentUpon>DashboardMetrics.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -943,8 +949,9 @@
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaModuleState.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
+    <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
+    <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
-    <Compile Include="Old_App_Code\Helpers\BidServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\NewTemplateRequestData.cs" />
     <Compile Include="Old_App_Code\Kadena\Chili\TemplateServiceHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
@@ -966,7 +973,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
-    <Compile Include="Old_App_Code\Kadena\KSource\ProjectData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
@@ -979,6 +985,7 @@
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
+    <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
     <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
@@ -1001,6 +1008,10 @@
     <ProjectReference Include="..\Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj">
       <Project>{43388b1f-8597-46eb-8346-e9c6544c5306}</Project>
       <Name>Kadena2.0.ScheduledTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
+      <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
+      <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
@@ -1034,7 +1045,6 @@
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
-    <Content Include="CMSWebParts\Kadena\Chili\TemplatesList.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
@@ -1074,6 +1084,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -8,6 +8,8 @@ using Kadena.Models;
 using System.Linq;
 using System.Text;
 using Kadena.WebAPI.Helpers;
+using System.Web;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -31,7 +33,7 @@ namespace Kadena.WebAPI.Services
         public async Task<bool> SetName(Guid templateId, string name)
         {
             string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name);
+            var result = await _templateClient.SetName(endpoint, templateId, name, _kentico.GetCurrentSiteDomain());
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -39,10 +41,11 @@ namespace Kadena.WebAPI.Services
             return result.Success;
         }
 
-        public async Task<ProductTemplates> GetTemplatesByProduct(int documentId)
+        public async Task<ProductTemplates> GetTemplatesByProduct(int nodeId)
         {
             var productTemplates = new ProductTemplates
             {
+                Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
@@ -55,19 +58,19 @@ namespace Kadena.WebAPI.Services
                     {
                         Name = nameof(ProductTemplate.CreatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATECREATED"),
-                        Sorting = SortingType.Desc
+                        Sorting = SortingType.None
                     },
                     new ProductTemplatesHeader
                     {
                         Name = nameof(ProductTemplate.UpdatedDate).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.DATEUPDATED"),
-                        Sorting = SortingType.None
+                        Sorting = SortingType.Desc
                     },
                 },
                 Data = new ProductTemplate[0]
             };
 
-            var product = _kentico.GetProductByDocumentId(documentId);
+            var product = _kentico.GetProductByNodeId(nodeId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -77,12 +80,17 @@ namespace Kadena.WebAPI.Services
             var requestResult = await _templateClient
                 .GetTemplates(clientEndpoint,
                     _users.GetCurrentUser().UserId,
-                    product.ProductChiliTemplateID);
+                    product.ProductChiliTemplateID,
+                    _kentico.GetCurrentSiteDomain());
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");
+            }
+            else
+            {
+                productEditorUrl = _kentico.GetDocumentUrl(productEditorUrl);
             }
 
             if (requestResult.Success)
@@ -90,14 +98,14 @@ namespace Kadena.WebAPI.Services
                 productTemplates.Data = requestResult.Payload
                     .Select(d => new ProductTemplate
                     {
-                        EditorUrl = BuildTemplateEditorUrl(productEditorUrl, documentId, d.TemplateId.ToString(), 
+                        EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(), 
                             product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 0, d.MailingList?.ContainerId, d.Name),
                         TemplateId = d.TemplateId,
                         CreatedDate = DateTime.Parse(d.Created),
                         UpdatedDate = DateTime.Parse(d.Updated),
                         ProductName = d.Name
                     })
-                    .OrderByDescending(t => t.CreatedDate)
+                    .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
             }
             else
@@ -108,11 +116,11 @@ namespace Kadena.WebAPI.Services
             return productTemplates;
         }
 
-        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int documentId, string templateId, string productChiliWorkgroupID, int mailingListRowCount, 
+        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int nodeId, string templateId, string productChiliWorkgroupID, int mailingListRowCount, 
             string containerId = null, string customName = null)
         {
             var argumentFormat = "&{0}={1}";
-            var url = new StringBuilder(productEditorBaseUrl + "?documentId=" + documentId)
+            var url = new StringBuilder(productEditorBaseUrl + "?nodeId=" + nodeId)
                 .AppendFormat(argumentFormat, "templateId", templateId)
                 .AppendFormat(argumentFormat, "workspaceid", productChiliWorkgroupID)
                 .AppendFormat(argumentFormat, "quantity", mailingListRowCount);
@@ -122,7 +130,7 @@ namespace Kadena.WebAPI.Services
             }
             if (!string.IsNullOrWhiteSpace(customName))
             {
-                url.AppendFormat(argumentFormat, "customName", customName);
+                url.AppendFormat(argumentFormat, "customName", HttpUtility.UrlEncode(customName));
             }
             return url.ToString();
         }

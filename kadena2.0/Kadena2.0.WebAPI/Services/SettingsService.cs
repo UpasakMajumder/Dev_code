@@ -1,9 +1,10 @@
-﻿using Kadena.WebAPI.Contracts;
-using Kadena.Models;
+﻿using Kadena.Models;
 using Kadena.Models.Settings;
-using System.Linq;
-using System.Collections.Generic;
+using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.Services
 {
@@ -22,11 +23,23 @@ namespace Kadena.WebAPI.Services
 
         public SettingsAddresses GetAddresses()
         {
+            var customer = _kenticoUsers.GetCurrentCustomer();
             var billingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Billing);
             var shippingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var shippingAddressesSorted = shippingAddresses
+                .Where(sa => sa.Id == customer.DefaultShippingAddressId)
+                .Concat(shippingAddresses.Where(sa => sa.Id != customer.DefaultShippingAddressId))
+                .ToList();
             var states = _kentico.GetStates();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
             var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
+
+            var userNotification = string.Empty;
+            var userNotificationLocalizationKey = _kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
+            if (!_kentico.IsCurrentCultureDefault())
+            {
+                userNotification = _resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : _resources.GetResourceString(userNotificationLocalizationKey);
+            }
 
             var maxShippingAddresses = 3;
             if (!string.IsNullOrWhiteSpace(maxShippingAddressesSetting))
@@ -68,10 +81,20 @@ namespace Kadena.WebAPI.Services
                         Exists = false,
                         Text = _resources.GetResourceString("Kadena.Settings.Addresses.Remove")
                     },
-                    Addresses = shippingAddresses.ToList()
+                    DefaultAddress = new DefaultAddress
+                    {
+                        Id = customer.DefaultShippingAddressId,
+                        LabelDefault = _resources.GetResourceString("Kadena.Settings.Addresses.Primary"),
+                        LabelNonDefault = _resources.GetResourceString("Kadena.Settings.Addresses.NotPrimary"),
+                        Tooltip = _resources.GetResourceString("Kadena.Settings.Addresses.SetUnset"),
+                        SetUrl = "api/usersettings/setdefaultshippingaddress",
+                        UnsetUrl = "api/usersettings/unsetdefaultshippingaddress"
+                    },
+                    Addresses = shippingAddressesSorted
                 },
                 Dialog = new AddressDialog
-                {
+                {                    
+                    UserNotification = userNotification,
                     Types = new DialogType
                     {
                         Add = _resources.GetResourceString("Kadena.Settings.Addresses.AddAddress"),
@@ -105,9 +128,24 @@ namespace Kadena.WebAPI.Services
             };
         }
 
+        public bool SaveLocalization(string code)
+        {
+            return _kenticoUsers.SaveLocalization(code);
+        }
+
         public void SaveShippingAddress(DeliveryAddress address)
         {
             _kentico.SaveShippingAddress(address);
+        }
+
+        public void SetDefaultShippingAddress(int addressId)
+        {
+            _kenticoUsers.SetDefaultShippingAddress(addressId);
+        }
+
+        public void UnsetDefaultShippingAddress()
+        {
+            _kenticoUsers.UnsetDefaultShippingAddress();
         }
     }
 }

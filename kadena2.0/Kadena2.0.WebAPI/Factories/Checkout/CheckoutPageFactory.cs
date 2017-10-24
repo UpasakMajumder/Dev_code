@@ -6,10 +6,12 @@ namespace Kadena.WebAPI.Factories.Checkout
     public class CheckoutPageFactory : ICheckoutPageFactory
     {
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoProviderService _provider;
 
-        public CheckoutPageFactory(IKenticoResourceService resources)
+        public CheckoutPageFactory(IKenticoResourceService resources, IKenticoProviderService provider)
         {
             this.resources = resources;
+            _provider = provider;
         }
 
         public CartEmptyInfo CreateCartEmptyInfo(CartItem[] items)
@@ -21,9 +23,9 @@ namespace Kadena.WebAPI.Factories.Checkout
             {
                 Text = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
                 DashboardButtonText = resources.GetResourceString("Kadena.Checkout.ButtonDashboard"),
-                DashboardButtonUrl = resources.GetSettingsKey("KDA_EmptyCart_DashboardUrl"),
+                DashboardButtonUrl = _provider.GetDocumentUrl(resources.GetSettingsKey("KDA_EmptyCart_DashboardUrl")),
                 ProductsButtonText = resources.GetResourceString("Kadena.Checkout.ButtonProducts"),
-                ProductsButtonUrl = resources.GetSettingsKey("KDA_EmptyCart_ProductsUrl")
+                ProductsButtonUrl = _provider.GetDocumentUrl(resources.GetSettingsKey("KDA_EmptyCart_ProductsUrl"))
             };
         }
     }

@@ -151,7 +151,13 @@
             }
             if (!SecurityHelper.CheckPasswordPolicy(newPassword, SiteContext.CurrentSiteName))
             {
-                return new GeneralResultDTO { success = false, errorMessage = AuthenticationHelper.GetPolicyViolationMessage(SiteContext.CurrentSiteName) };
+                var errorMessage = string.Empty;
+                var customMessage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSPolicyViolationMessage");
+                if (!string.IsNullOrEmpty(customMessage))
+                {                    
+                    errorMessage = ResHelper.LocalizeString(customMessage, LocalizationContext.CurrentCulture.CultureCode);
+                }
+                return new GeneralResultDTO { success = false, errorMessage = errorMessage };
             }
 
             #endregion
