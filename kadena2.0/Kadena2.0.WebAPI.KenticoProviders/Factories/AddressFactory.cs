@@ -24,7 +24,6 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
                 City = ai.AddressCity,
                 State = ai.GetStateCode(),
                 Country = countryInfo?.CountryDisplayName,
-                CountryCode = ai.GetCountryTwoLetterCode(),
                 StateId = ai.AddressStateID,
                 CountryId = ai.AddressCountryID,
                 Street1 = ai.AddressLine1,

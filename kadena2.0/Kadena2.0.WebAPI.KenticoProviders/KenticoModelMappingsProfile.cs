@@ -14,7 +14,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ProjectUsing(src => new Country
                 {
                     Id = src.CountryID,
-                    Name = src.CountryDisplayName
+                    Name = src.CountryDisplayName,
+                    Code = src.CountryTwoLetterCode
                 });
         }
     }

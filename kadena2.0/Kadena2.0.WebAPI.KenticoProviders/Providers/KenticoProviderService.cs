@@ -867,7 +867,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CountryInfoProvider
                 .GetCountries()
-                .Columns(new[] { "CountryDisplayName", "CountryID" })
+                .Columns("CountryDisplayName", "CountryID", "CountryTwoLetterCode")
                 .Select<CountryInfo, Country>(s => _mapper.Map<Country>(s));
         }
 

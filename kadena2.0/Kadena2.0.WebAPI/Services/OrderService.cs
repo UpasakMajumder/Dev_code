@@ -348,6 +348,7 @@ namespace Kadena.WebAPI.Services
         {
             var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.CountryId);
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
@@ -355,7 +356,7 @@ namespace Kadena.WebAPI.Services
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
-
+            
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
@@ -393,10 +394,10 @@ namespace Kadena.WebAPI.Services
                     KenticoStateID = shippingAddress.StateId,
                     KenticoCountryID = shippingAddress.CountryId,
                     AddressCompanyName = customer.Company,
-                    isoCountryCode = shippingAddress.CountryCode,
+                    isoCountryCode = country.Code,
                     AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                     Zip = shippingAddress.Zip,
-                    Country = shippingAddress.Country,
+                    Country = country.Name,
                     KenticoAddressID = shippingAddress.Id
                 },
                 Customer = new CustomerDTO()
