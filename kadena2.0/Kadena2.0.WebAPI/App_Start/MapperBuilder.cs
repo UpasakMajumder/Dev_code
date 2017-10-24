@@ -29,6 +29,7 @@ using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
+using Kadena2.WebAPI.KenticoProviders;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI
@@ -39,6 +40,8 @@ namespace Kadena.WebAPI
         {
             Mapper.Initialize(config =>
             {
+                config.AddProfile<KenticoModelMappingsProfile>();
+
                 config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
                 {
                     DesignFilePath = p.DesignFilePath,

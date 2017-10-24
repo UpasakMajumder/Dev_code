@@ -1,4 +1,5 @@
-﻿using CMS.CustomTables;
+﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
@@ -25,11 +26,13 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger logger;
+        private readonly IMapper _mapper;
 
-        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger)
+        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger, IMapper mapper)
         {
             this.resources = resources;
             this.logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -610,11 +613,8 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return StateInfoProvider
                 .GetStates()
-                .Column("StateCode")
-                .Select(s => new State
-                {
-                    StateCode = s["StateCode"].ToString()
-                });
+                .Columns("StateId", "StateName", "StateCode", "CountryId")
+                .Select<StateInfo, State>(s => _mapper.Map<State>(s));
         }
 
         public void SaveShippingAddress(DeliveryAddress address)
@@ -873,11 +873,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return CountryInfoProvider
                 .GetCountries()
                 .Columns(new[] { "CountryDisplayName", "CountryID" })
-                .Select(s => new Country
-                {
-                    Id = int.Parse(s["CountryID"].ToString()),
-                    Name = s["CountryDisplayName"].ToString()
-                });
+                .Select<CountryInfo, Country>(s => _mapper.Map<Country>(s));
         }
 
         public Product GetProductByNodeId(int nodeId)
