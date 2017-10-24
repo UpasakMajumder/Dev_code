@@ -20,7 +20,6 @@ namespace Kadena.Dto.General
         [DataMember(Name = "payload")]
         public TResponse Payload { get; set; }
 
-        // TODO Remove DataMember attribute when all microservices will omit it.
         [DataMember(Name = "errorMessages")]
         public string ErrorMessages
         {
