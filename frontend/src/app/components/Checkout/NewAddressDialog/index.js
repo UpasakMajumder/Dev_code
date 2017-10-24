@@ -207,7 +207,7 @@ class NewAddressDialog extends Component {
         isOptional: field.isOptional,
         isSelect: field.type === 'select',
         options: field.values,
-        value: this.state.address[field.id] || field.label
+        value: field.id === 'country' ? this.state.address[field.id] || field.label : this.state.address[field.id]
       };
     });
   }
