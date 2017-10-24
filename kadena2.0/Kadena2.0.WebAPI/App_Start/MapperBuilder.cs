@@ -96,10 +96,14 @@ namespace Kadena.WebAPI
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.StateId))
-                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.CountryId));
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.CountryId))
+                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
+                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2));
                 config.CreateMap<AddressDto, DeliveryAddress>()
                     .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.State))
-                    .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.Country));
+                    .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.Country))
+                    .ForMember(dest => dest.Street1, opt => opt.MapFrom(src => src.Address1))
+                    .ForMember(dest => dest.Street2, opt => opt.MapFrom(src => src.Address2));
                 config.CreateMap<DeliveryAddress, IdDto>();
                 config.CreateMap<PageButton, PageButtonDto>();
                 config.CreateMap<AddressList, AddressListDto>();
