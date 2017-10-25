@@ -93,23 +93,47 @@ module.exports.ui = {
             "type": "text"
           },
           {
-            "id": "state",
-            "label": "State",
-            "values": ['CA', 'NV', 'NY'],
-            "type": "select",
-            "isOptional": true
-          },
-          {
             "id": "zip",
             "label": "Postal Code",
             "values": [],
             "type": "text"
           },
           {
+            "id": "state",
+            "label": "State",
+            "values": [],
+            "type": "select"
+          },
+          {
             "id": "country",
             "label": "Country",
-            "values": ['Czech republic', 'Russia', 'USA'],
-            "type": "select"
+            "type": "select",
+            "values": [
+              {
+                id: "1",
+                name: "Czech Republic",
+                values: []
+              },
+              {
+                id: "2",
+                name: "Japan",
+                values: []
+              },
+              {
+                id: "3",
+                name: "USA",
+                values: [
+                  {
+                    id: "31",
+                    name: "AK",
+                  },
+                  {
+                    id: "32",
+                    name: "AL"
+                  }
+                ]
+              }
+            ],
           },
           {
             "id": "phone",
@@ -136,32 +160,34 @@ module.exports.ui = {
       "emptyMessage": "Fill at least one address",
       "items": [
         {
-          "street1": "Test Address line 1",
-          "street2": "Test Address line 2",
-          "city": "COLLIERVILLE",
-          "state": "TN",
+          "address1": "Test Address line 1",
+          "address2": "Test Address line 2",
+          "city": "New York",
+          "state": "31",
           "zip": "38017",
           "id": 1,
           "checked": true,
-          "country": "USA"
+          "country": "3"
         },
         {
-          "street1": "Test Address line 1",
-          "street2": "Test Address line 2",
+          "address1": "Test Address line 1",
+          "address2": "Test Address line 2",
           "city": "Tokyo",
           "state": "",
           "zip": "13228",
           "id": 3,
-          "checked": false
+          "checked": false,
+          "country": "2"
         },
         {
-          "street1": "Test Address line 1",
-          "street2": "Test Address line 2",
+          "address1": "Test Address line 1",
+          "address2": "Test Address line 2",
           "city": "Prague",
           "state": "",
           "zip": "14000",
           "id": 4,
-          "checked": false
+          "checked": false,
+          "country": "1"
         }
       ]
     },

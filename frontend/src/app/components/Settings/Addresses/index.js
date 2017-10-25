@@ -65,12 +65,13 @@ class SettingAddresses extends Component {
     const dialogEl = isDialogOpen
       ?
       (
-        <AddressDialog isModifyingDialog={isModifyingDialog}
-                       closeDialog={this.closeDialog}
-                       addDataAddress={this.addDataAddress}
-                       changeDataAddress={this.changeDataAddress}
-                       dialog={dialog}
-                       address={address}
+        <AddressDialog
+          isModifyingDialog={isModifyingDialog}
+          closeDialog={this.closeDialog}
+          addDataAddress={this.addDataAddress}
+          changeDataAddress={this.changeDataAddress}
+          dialog={dialog}
+          address={address}
         />
       )
       : null;
