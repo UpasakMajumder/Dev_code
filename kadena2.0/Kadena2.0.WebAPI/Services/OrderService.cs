@@ -349,6 +349,7 @@ namespace Kadena.WebAPI.Services
             var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.CountryId);
+            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == shippingAddress.StateId);
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
@@ -390,7 +391,7 @@ namespace Kadena.WebAPI.Services
                     AddressLine1 = shippingAddress.Street1,
                     AddressLine2 = shippingAddress.Street2,
                     City = shippingAddress.City,
-                    State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
+                    State = !string.IsNullOrEmpty(state?.StateCode) ? state.StateCode : country.Name, // fill in mandatory for countries that have no states
                     KenticoStateID = shippingAddress.StateId,
                     KenticoCountryID = shippingAddress.CountryId,
                     AddressCompanyName = customer.Company,

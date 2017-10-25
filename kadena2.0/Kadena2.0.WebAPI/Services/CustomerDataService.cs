@@ -31,6 +31,9 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
+            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.CountryId);
+            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.StateId);
+
             var claims = GetCustomerClaims(siteId, customer.UserID);
 
             return new CustomerData()
@@ -40,12 +43,12 @@ namespace Kadena.WebAPI.Services
                 Email = customer.Email,
                 Phone = customer.Phone,
                 PreferredLanguage = customer.PreferredLanguage,
-                Address = new CustomerAddress()
+                Address = new CustomerAddress
                 {
-                    Street = new List<string>() { address.Street1, address.Street2 },
+                    Street = new List<string> { address.Street1, address.Street2 },
                     City = address.City,
-                    Country = address.Country,
-                    State = address.State,
+                    Country = country.Name,
+                    State = state.StateCode,
                     Zip = address.Zip
                 },
                 Claims = claims,
