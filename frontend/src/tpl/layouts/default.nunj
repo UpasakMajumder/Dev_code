@@ -220,7 +220,11 @@
         removeProductURL: '',
         submitURL: '',
         submittableURL: '',
-        addNewAddressURL: ''
+        addNewAddressURL: '',
+        tAndC: {
+          exists: false,
+          text: 'I have reviewed both the storefront Terms and Conditions and the order and certify that it is acceptable.'
+        }
       },
       spotfire: {
         serverUrl: 'http://10.83.71.208/spotfire/wp/',
