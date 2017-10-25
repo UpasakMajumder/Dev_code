@@ -40,6 +40,24 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::System.Web.UI.WebControls.FileUpload importFile;
         
         /// <summary>
+        /// userSelector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSModules_Membership_FormControls_Users_SelectUser userSelector;
+        
+        /// <summary>
+        /// roleSelector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSModules_Membership_FormControls_Roles_SelectRole roleSelector;
+        
+        /// <summary>
         /// btnUploadUserList control.
         /// </summary>
         /// <remarks>

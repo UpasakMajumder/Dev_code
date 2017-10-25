@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Addresses.aspx.cs" Inherits="Kadena.CMSModules.Kadena.Pages.Users.Addresses"
+﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="Addresses.aspx.cs" Inherits="Kadena.CMSModules.Kadena.Pages.Users.Addresses"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Users - Addresses" Theme="Default" %>
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -9,7 +9,6 @@
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/SelectRole.ascx" TagName="RoleSelector"
     TagPrefix="cms" %>
-
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
@@ -35,10 +34,10 @@
                         <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" onchange="onImportFileSelected(event)" runat="server" />
                         <br />
                         <label class="control-label" style="text-align: left">User:</label>
-                        <cms:UserSelector runat="server" name="userSelector" SelectionMode="Multiple"/>
+                        <cms:UserSelector runat="server" name="userSelector" ID="userSelector" SelectionMode="Multiple" />
                         <br />
                         <label class="control-label" style="text-align: left">Role:</label>
-                        <cms:RoleSelector runat="server" name="roleSelector" />
+                        <cms:RoleSelector runat="server" name="roleSelector" ID="roleSelector" />
                     </div>
                 </div>
             </div>

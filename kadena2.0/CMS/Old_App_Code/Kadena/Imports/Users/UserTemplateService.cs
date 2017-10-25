@@ -11,9 +11,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
     {
         private static readonly int MaxRowsPerSheet = 1024 * 1024;
 
-        public byte[] GetTemplateFile(int siteID)
+        public byte[] GetUserTemplateFile(int siteID)
         {
-            var columns = GetImportColumns();
+            var columns = GetUserImportColumns();
+            var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
+            var file = CreateTemplateFile(columns, roles);
+            return file;
+        }
+
+        public byte[] GetAddressTemplateFile(int siteID)
+        {
+            var columns = GetAddressImportColumns();
             var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
             var file = CreateTemplateFile(columns, roles);
             return file;
@@ -115,9 +123,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return style;
         }
 
-        private string[] GetImportColumns()
+        private string[] GetUserImportColumns()
         {
             var names = ImportHelper.GetHeaderProperties<UserDto>()
+                .Select(p => p.Key)
+                .ToArray();
+            return names;
+        }
+
+        private string[] GetAddressImportColumns()
+        {
+            var names = ImportHelper.GetHeaderProperties<AddressDto>()
                 .Select(p => p.Key)
                 .ToArray();
             return names;

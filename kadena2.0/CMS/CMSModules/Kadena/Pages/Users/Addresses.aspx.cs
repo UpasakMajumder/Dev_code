@@ -21,7 +21,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         private void Site_Changed(object sender, EventArgs e)
         {
-            // TODO clean users & roles from selectors
+            userSelector.Value = null;
+            roleSelector.Value = null; // TODO check if ok
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
@@ -63,8 +64,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetTemplateFile(SelectedSiteID);
-            var templateFileName = "users-upload-template.xlsx";
+            var bytes = new UserTemplateService().GetAddressTemplateFile(SelectedSiteID);
+            var templateFileName = "addresses-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
         }

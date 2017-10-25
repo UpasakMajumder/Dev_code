@@ -972,6 +972,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\HeaderAttribute.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportResult.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Users\AddressDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\Role.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\RoleProvider.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserDto.cs" />
