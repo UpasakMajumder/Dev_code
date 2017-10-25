@@ -32,7 +32,6 @@
                         <input type="text" id="importFileName" class="form-control" readonly="readonly" />
                         <label for="importFile" class="btn btn-default">Select file (XLS, XLSX)</label>
                         <br />
-                        
                         <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" onchange="onImportFileSelected(event)" runat="server" />
                         <br />
                         <label class="control-label" style="text-align: left">User:</label>
@@ -44,22 +43,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <cms:CMSUpdatePanel ID="pnlTemplate" runat="server" UpdateMode="Conditional">
-            <ContentTemplate>
-
-                <div class="form-group">
-                    <cms:LocalizedLabel CssClass="control-label" ID="lblEmailTemplate" runat="server" EnableViewState="false"
-                        ResourceString="Kadena.Email.SelectTemplate" DisplayColon="true" style="text-align: left" />
-                    <div class="editing-form-value-cell">
-                        <cms:UniSelector ID="selEmailTemplate" runat="server" IsLiveSite="false" ObjectType="cms.emailtemplate"
-                            SelectionMode="SingleTextBox" OrderBy="EmailTemplateDisplayName" ReturnColumnName="EmailTemplateName"
-                            ResourcePrefix="emailtemplateselect" />
-                    </div>
-                </div>
-
-            </ContentTemplate>
-        </cms:CMSUpdatePanel> -->
 
         <div class="form-group">
             <div class="editing-form-value-cell">
