@@ -31,8 +31,8 @@ namespace Kadena.WebAPI.Services
             if (address == null)
                 return null;
 
-            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.CountryId);
-            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.StateId);
+            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
+            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
 
             var claims = GetCustomerClaims(siteId, customer.UserID);
 

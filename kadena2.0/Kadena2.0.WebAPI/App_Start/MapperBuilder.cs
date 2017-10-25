@@ -95,19 +95,23 @@ namespace Kadena.WebAPI
                 config.CreateMap<BaseErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
-                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.StateId))
-                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.CountryId))
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
                     .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
                     .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2));
+                config.CreateMap<AddressDto, Country>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
+                config.CreateMap<AddressDto, State>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
                 config.CreateMap<AddressDto, DeliveryAddress>()
-                    .ForMember(dest => dest.StateId, opt =>
+                    .ForMember(dest => dest.State, opt =>
                     {
-                        opt.MapFrom(src => src.State);
+                        opt.MapFrom(src => src);
                         opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
                     })
-                    .ForMember(dest => dest.CountryId, opt =>
+                    .ForMember(dest => dest.Country, opt =>
                     {
-                        opt.MapFrom(src => src.Country);
+                        opt.MapFrom(src => src);
                         opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
                     })
                     .ForMember(dest => dest.Street1, opt => opt.MapFrom(src => src.Address1))

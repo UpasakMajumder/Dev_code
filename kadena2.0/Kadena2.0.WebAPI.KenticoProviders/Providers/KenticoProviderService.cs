@@ -260,8 +260,8 @@ namespace Kadena.WebAPI.KenticoProviders
                         AddressLine1 = address.Street1,
                         AddressLine2 = address.Street2,
                         AddressCity = address.City,
-                        AddressStateID = address.StateId,
-                        AddressCountryID = address.CountryId,
+                        AddressStateID = address.State.Id,
+                        AddressCountryID = address.Country.Id,
                         AddressZip = address.Zip,
                     };
 
@@ -624,8 +624,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressLine1 = address.Street1,
                 AddressLine2 = address.Street2,
                 AddressCity = address.City,
-                AddressStateID = address.StateId,
-                AddressCountryID = address.CountryId,
+                AddressStateID = address.State.Id,
+                AddressCountryID = address.Country.Id,
                 AddressZip = address.Zip,
                 AddressCustomerID = customer.CustomerID,
                 AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"

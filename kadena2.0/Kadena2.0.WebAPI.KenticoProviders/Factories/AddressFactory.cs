@@ -16,12 +16,12 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
             }
 
             return new DeliveryAddress
-            { 
+            {
                 Id = ai.AddressID,
                 Checked = false,
                 City = ai.AddressCity,
-                StateId = ai.AddressStateID,
-                CountryId = ai.AddressCountryID,
+                State = new State { Id = ai.AddressStateID },
+                Country = new Country { Id = ai.AddressCountryID },
                 Street1 = ai.AddressLine1,
                 Street2 = ai.AddressLine2,
                 Zip = ai.AddressZip
