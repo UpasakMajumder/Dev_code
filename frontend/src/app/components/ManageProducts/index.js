@@ -7,6 +7,8 @@ import SVG from 'app.dump/SVG';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import { loadManageProducts } from 'app.ac/manageProducts';
+/* helpers */
+import { convertToWords } from 'app.helpers/time';
 
 class ManageProducts extends Component {
   static propTypes = {
