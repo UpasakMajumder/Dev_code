@@ -67,7 +67,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-            return AddressFactory.CreateDeliveryAddress(address);
+            return _mapper.Map<DeliveryAddress>(address);
         }
 
         public BillingAddress GetDefaultBillingAddress()

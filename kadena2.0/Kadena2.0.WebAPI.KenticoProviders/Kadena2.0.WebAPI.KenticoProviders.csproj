@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="CMS.Base">
       <HintPath>..\Lib\CMS.Base.dll</HintPath>
@@ -107,7 +106,6 @@
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoMailProvider.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
-    <Compile Include="Factories\AddressFactory.cs" />
     <Compile Include="Factories\CustomerFactory.cs" />
     <Compile Include="Factories\DeliveryFactory.cs" />
     <Compile Include="Factories\PaymentOptionFactory.cs" />
