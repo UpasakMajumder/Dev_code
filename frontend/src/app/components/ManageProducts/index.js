@@ -123,10 +123,10 @@ class ManageProducts extends Component {
                   <a className="link weight--normal" href={template.editorUrl}>{template.productName}</a>
                 </td>
                 <td>
-                  {template.createdDate && moment(template.createdDate).format('MMM D YYYY')}
+                  {template.createdDate && convertToWords(template.createdDate)}
                 </td>
                 <td>
-                  {template.updatedDate && moment(template.updatedDate).format('MMM D YYYY')}
+                  {template.updatedDate && convertToWords(template.updatedDate)}
                 </td>
                 <td>
                   <div className="product-list__btn-group">
