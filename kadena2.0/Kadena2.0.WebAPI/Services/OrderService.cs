@@ -169,6 +169,12 @@ namespace Kadena.WebAPI.Services
                         Url = string.Empty 
                     }*/
                 };
+                orderDetail.ShippingInfo.Address.State = kenticoProvider
+                    .GetStates()
+                    .FirstOrDefault(s => s.StateCode.Equals(data.ShippingInfo.AddressTo.State));
+                orderDetail.ShippingInfo.Address.Country = kenticoProvider
+                    .GetCountries()
+                    .FirstOrDefault(s => s.Code.Equals(data.ShippingInfo.AddressTo.isoCountryCode));
             }
 
             if (!kenticoUsers.UserCanSeePrices())
