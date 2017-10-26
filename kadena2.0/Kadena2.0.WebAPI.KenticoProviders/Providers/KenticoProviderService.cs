@@ -254,17 +254,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     var cart = ECommerceContext.CurrentShoppingCart;
 
-                    var info = new AddressInfo
-                    {
-                        AddressID = address.Id,
-                        AddressLine1 = address.Address1,
-                        AddressLine2 = address.Address2,
-                        AddressCity = address.City,
-                        AddressStateID = address.State.Id,
-                        AddressCountryID = address.Country.Id,
-                        AddressZip = address.Zip,
-                    };
-
+                    var info = _mapper.Map<AddressInfo>(address);
                     cart.ShoppingCartShippingAddress = info;
                     cart.SubmitChanges(true);
                 }
