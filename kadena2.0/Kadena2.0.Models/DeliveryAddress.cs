@@ -2,8 +2,8 @@
 {
     public class DeliveryAddress
     {
-        public string Street1 { get; set; }
-        public string Street2 { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
         public string City { get; set; }
         public State State { get; set; } = new State();
         public Country Country { get; set; } = new Country();

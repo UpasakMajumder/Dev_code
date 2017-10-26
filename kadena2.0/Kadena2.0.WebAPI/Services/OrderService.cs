@@ -388,8 +388,8 @@ namespace Kadena.WebAPI.Services
                 },
                 ShippingAddress = new AddressDTO()
                 {
-                    AddressLine1 = shippingAddress.Street1,
-                    AddressLine2 = shippingAddress.Street2,
+                    AddressLine1 = shippingAddress.Address1,
+                    AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
                     State = !string.IsNullOrEmpty(state?.StateCode) ? state.StateCode : country.Name, // fill in mandatory for countries that have no states
                     KenticoStateID = shippingAddress.State.Id,

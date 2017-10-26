@@ -84,8 +84,6 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
 
                 config.CreateMap<DeliveryAddress, DeliveryAddressDTO>()
-                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
-                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
 
@@ -102,9 +100,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
                 config.CreateMap<DeliveryAddress, AddressDto>()
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
-                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
-                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
-                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2));
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
                 config.CreateMap<AddressDto, Country>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
                 config.CreateMap<AddressDto, State>()
@@ -119,9 +115,7 @@ namespace Kadena.WebAPI
                     {
                         opt.MapFrom(src => src);
                         opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
-                    })
-                    .ForMember(dest => dest.Street1, opt => opt.MapFrom(src => src.Address1))
-                    .ForMember(dest => dest.Street2, opt => opt.MapFrom(src => src.Address2));
+                    });
                 config.CreateMap<DeliveryAddress, IdDto>();
                 config.CreateMap<PageButton, PageButtonDto>();
                 config.CreateMap<AddressList, AddressListDto>();
@@ -206,8 +200,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
                 config.CreateMap<AddressDTO, DeliveryAddress>().AfterMap((s, d) =>
                 {
-                    d.Street1 = s.AddressLine1;
-                    d.Street2 = s.AddressLine2;
+                    d.Address1 = s.AddressLine1;
+                    d.Address2 = s.AddressLine2;
                 });
             });
         }
