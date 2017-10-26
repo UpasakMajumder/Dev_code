@@ -87,7 +87,24 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
 
-                config.CreateMap<DeliveryAddressDTO, DeliveryAddress>();
+                config.CreateMap<DeliveryAddressDTO, DeliveryAddress>()
+                    .ForMember(dest => dest.Country, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
+                    })
+                    .ForMember(dest => dest.State, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
+                    });
+
+                config.CreateMap<DeliveryAddressDTO, Country>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
+
+                config.CreateMap<DeliveryAddressDTO, State>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
+
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<SubmitButton, SubmitButtonDTO>();
