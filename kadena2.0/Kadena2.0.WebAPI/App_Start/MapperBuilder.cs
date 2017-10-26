@@ -115,14 +115,14 @@ namespace Kadena.WebAPI
                 config.CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
                 config.CreateMap<BaseErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-                config.CreateMap<DeliveryAddress, AddressDto>()
+                config.CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
-                config.CreateMap<AddressDto, Country>()
+                config.CreateMap<Dto.Settings.AddressDto, Country>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
-                config.CreateMap<AddressDto, State>()
+                config.CreateMap<Dto.Settings.AddressDto, State>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
-                config.CreateMap<AddressDto, DeliveryAddress>()
+                config.CreateMap<Dto.Settings.AddressDto, DeliveryAddress>()
                     .ForMember(dest => dest.State, opt =>
                     {
                         opt.MapFrom(src => src);
@@ -215,11 +215,14 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
-                config.CreateMap<AddressDTO, DeliveryAddress>().AfterMap((s, d) =>
-                {
-                    d.Address1 = s.AddressLine1;
-                    d.Address2 = s.AddressLine2;
-                });
+                config.CreateMap<AddressDTO, DeliveryAddress>()
+                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
+                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
+                    .ForMember(dest => dest.State, opt => opt.Ignore())
+                    .ForMember(dest => dest.Country, opt => opt.Ignore());
+                config.CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateCode))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             });
         }
     }
