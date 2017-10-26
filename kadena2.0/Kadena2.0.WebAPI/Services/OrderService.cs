@@ -348,8 +348,7 @@ namespace Kadena.WebAPI.Services
         {
             var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
-            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
-            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == shippingAddress.State.Id);
+            shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
@@ -391,14 +390,14 @@ namespace Kadena.WebAPI.Services
                     AddressLine1 = shippingAddress.Address1,
                     AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
-                    State = !string.IsNullOrEmpty(state?.StateCode) ? state.StateCode : country.Name, // fill in mandatory for countries that have no states
+                    State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
                     KenticoStateID = shippingAddress.State.Id,
                     KenticoCountryID = shippingAddress.Country.Id,
                     AddressCompanyName = customer.Company,
-                    isoCountryCode = country.Code,
+                    isoCountryCode = shippingAddress.Country.Code,
                     AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                     Zip = shippingAddress.Zip,
-                    Country = country.Name,
+                    Country = shippingAddress.Country.Name,
                     KenticoAddressID = shippingAddress.Id
                 },
                 Customer = new CustomerDTO()
