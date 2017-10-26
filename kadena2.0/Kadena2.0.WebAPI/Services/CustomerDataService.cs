@@ -3,6 +3,7 @@ using Kadena.Models.CustomerData;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Services
 {
@@ -26,7 +27,7 @@ namespace Kadena.WebAPI.Services
             if (customer == null)
                 return null;
 
-            var address = kenticoUsers.GetCustomerShippingAddresses(customerId).FirstOrDefault();
+            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
 
             if (address == null)
                 return null;

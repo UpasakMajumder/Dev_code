@@ -4,8 +4,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoUserProvider
     {
-        DeliveryAddress[] GetCustomerAddresses(string addressType = null);
-        DeliveryAddress[] GetCustomerShippingAddresses(int customerId);
+        DeliveryAddress[] GetCustomerAddresses(AddressType addressType);
+        DeliveryAddress[] GetCustomerAddresses(int customerId, AddressType addressType);
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);
 

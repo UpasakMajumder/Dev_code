@@ -23,24 +23,20 @@ namespace Kadena.WebAPI.KenticoProviders
             _mapper = mapper;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
+        public DeliveryAddress[] GetCustomerAddresses(AddressType addressType)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
-            if (!string.IsNullOrWhiteSpace(addressType))
+            return GetCustomerAddresses(customer.CustomerID, addressType);
+        }
+
+        public DeliveryAddress[] GetCustomerAddresses(int customerId, AddressType addressType)
+        {
+            var query = AddressInfoProvider.GetAddresses(customerId);
+            if (addressType != null)
             {
                 query = query.Where($"AddressType ='{addressType}'");
             }
             var addresses = query.ToArray();
-            return _mapper.Map<DeliveryAddress[]>(addresses);
-        }
-
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
-                .ToArray();
-
             return _mapper.Map<DeliveryAddress[]>(addresses);
         }
 
