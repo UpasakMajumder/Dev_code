@@ -36,8 +36,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 query = query.Where($"AddressType ='{addressType}'");
             }
-            var addresses = query.ToArray();
-            return _mapper.Map<DeliveryAddress[]>(addresses);
+            return _mapper.Map<DeliveryAddress[]>(query.ToArray());
         }
 
         public Customer GetCurrentCustomer()

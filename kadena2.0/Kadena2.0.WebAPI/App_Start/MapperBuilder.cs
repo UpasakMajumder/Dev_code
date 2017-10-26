@@ -82,7 +82,13 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryCarriers, DeliveryMethodsDTO>();
                 config.CreateMap<DeliveryCarrier, DeliveryMethodDTO>();
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
-                config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
+
+                config.CreateMap<DeliveryAddress, DeliveryAddressDTO>()
+                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.Street1))
+                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.Street2))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
+
                 config.CreateMap<DeliveryAddressDTO, DeliveryAddress>();
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
