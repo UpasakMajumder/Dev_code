@@ -84,7 +84,6 @@
     <Compile Include="KSource\ProjectDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
-    <Compile Include="MailTemplate\Requests\MailTemplateRequestDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\CreateCustomerContainerRequestDto.cs" />
@@ -126,6 +125,7 @@
     <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
