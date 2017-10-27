@@ -26,6 +26,7 @@ namespace Kadena.ScheduledTasks
                     if (container == null)
                     {
                         var newContainer = new Container();
+                        ConfigureMapper();
                         RegisterServices(newContainer);
 
                         container = newContainer;
