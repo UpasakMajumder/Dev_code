@@ -182,7 +182,6 @@ namespace Kadena.WebAPI.Services
                 orderDetail.HidePrices();
             }
 
-
             return orderDetail;
         }
 
