@@ -63,63 +63,8 @@
 
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-  var config = {
-    localization: {
-      notification: {
-        removeProduct: {
-          title: 'Success',
-          text: 'The product has been removed'
-        },
-        addProduct: {
-          title: 'Success',
-          text: 'The product has been added'
-        },
-        recentOrdersError: {
-          title: 'Recent orders could not be loaded',
-          // title is also from errorMessage
-        },
-        modifyAddress: {
-          title: 'Success',
-          text: 'The address has been changed'
-        },
-        wrongAddressesRemoved: {
-          title: 'Success',
-          text: 'The addresses with errors have been removed'
-        },
-        serverNotAvailable: {
-          title: 'Error',
-          text: 'The addresses with errors have been removed'
-        },
-        spotfireError: {
-          title: 'Error',
-          text: 'The Spotfire is not available'
-        }
-      },
-      languages: {
-        locale: 'ja-jp'
-      },
-      login: {
-        email: 'E-MAIL',
-        emailPlaceholder: 'your@email.com',
-        emailValidationMessage: 'Please check your email format.',
-        password: 'PASSWORD',
-        passwordPlaceholder: 'password',
-        passwordShow: 'SHOW',
-        passwordHide: 'HIDE',
-        passwordValidationMessage: 'Please enter password.',
-        keepMeLoggedIn: 'Keep me logged in',
-        login: 'Log in'
-      },
-      ui: {},
-      spotfire: {
-        serverUrl: 'http://10.83.71.208/spotfire/wp/',
-        url: '/Kadena/Standard Reports/Inventory and Sales order Report',
-        customerId: '40000240'
-      }
-    }
-  };
-</script>
+
+{% include './config.nunj' %}
 
 {% if _dev %}
   <script src="js/common.js"></script>
