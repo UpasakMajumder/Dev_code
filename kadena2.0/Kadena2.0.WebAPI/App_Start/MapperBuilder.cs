@@ -30,7 +30,6 @@ using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 using Kadena2.WebAPI.KenticoProviders;
-using System.Collections.Generic;
 
 namespace Kadena.WebAPI
 {

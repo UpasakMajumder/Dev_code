@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,9 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// <returns>List of template data</returns>
 
         Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, Guid masterTemplateId, string siteDomain);
+
+        Task<BaseResponseDto<string>> GetEditorUrl(string endpoint, Guid templateId, Guid workSpaceId, bool useHtml, bool use3d, string siteDomain);
+
+        Task<BaseResponseDto<string>> CreateNewTemplate(string endpoint, NewTemplateRequestDto request, string siteDomain);
     }
 }
