@@ -5,10 +5,10 @@ namespace Kadena.Dto.Checkout
     public class DeliveryAddressDTO
     {
         [MaxLength(35)]
-        public string Street1 { get; set; }
+        public string Address1 { get; set; }
 
         [MaxLength(35)]
-        public string Street2 { get; set; }
+        public string Address2 { get; set; }
 
         [MaxLength(40)]
         public string City { get; set; }

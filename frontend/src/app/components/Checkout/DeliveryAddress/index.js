@@ -25,8 +25,8 @@ class DeliveryAddress extends Component {
     const data = {
       id: -1,
       customerName: address.customerName,
-      street1: address.street1,
-      street2: address.street2,
+      address1: address.address1,
+      address2: address.address2,
       city: address.city,
       state: address.state,
       zip: address.zip,
@@ -58,13 +58,27 @@ class DeliveryAddress extends Component {
 
     const renderAddresses = (item, i) => {
       if (i + 1 > addressesNumber) return false;
+
+      const country = dialogUI.fields
+        .find(field => field.id === 'country')
+        .values
+        .find(country => country.id === item.country);
+
+      const state = country.values.find(state => state.id === item.state);
+
+      const address = {
+        ...item,
+        country: country.name,
+        state: state && state.name
+      };
+
       return (
         <div key={`da-${item.id}`} className="input__wrapper">
           <Address
             disableInteractivity={disableInteractivity}
             changeShoppingData={changeShoppingData}
             checkedId={checkedId}
-            {...item}
+            {...address}
           />
         </div>
       );

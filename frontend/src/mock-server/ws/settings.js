@@ -30,19 +30,20 @@ const address = {
         "addresses": [
           {
             "id": 1,
-            "street1": "4001 Valley Industrial Blvd",
-            "street2": "",
+            "address1": "4001 Valley Industrial Blvd",
+            "address2": "",
             "city": "Shakopee",
-            "state": "MN",
-            "zip": "55379"
+            "state": "22",
+            "zip": "55379",
+            "country": "2"
           },
           {
             "id": 2,
-            "street1": "4001 Valley Industrial Blvd",
-            "street2": "",
+            "address1": "4001 Valley Industrial Blvd",
+            "address2": "",
             "city": "Shakopee",
-            "state": "MN",
-            "zip": "55379"
+            "zip": "55379",
+            "country": "1"
           }
         ]
       },
@@ -57,13 +58,13 @@ const address = {
         },
         "fields": [
           {
-            "id": "street1",
+            "id": "address1",
             "label": "Address line 1",
             "values": [],
             "type": "text"
           },
           {
-            "id": "street2",
+            "id": "address2",
             "label": "Address line 2",
             "values": [],
             "type": "text",
@@ -76,66 +77,42 @@ const address = {
             "type": "text"
           },
           {
-            "id": "state",
-            "label": "State",
-            "values": ["AK",
-              "AL",
-              "AR",
-              "AZ",
-              "CA",
-              "CO",
-              "CT",
-              "DC",
-              "DE",
-              "FL",
-              "GA",
-              "HI",
-              "IA",
-              "ID",
-              "IL",
-              "IN",
-              "KS",
-              "KY",
-              "LA",
-              "MA",
-              "MD",
-              "ME",
-              "MI",
-              "MN",
-              "MO",
-              "MS",
-              "MT",
-              "NC",
-              "ND",
-              "NE",
-              "NH",
-              "NJ",
-              "NM",
-              "NV",
-              "NY",
-              "OH",
-              "OK",
-              "OR",
-              "PA",
-              "RI",
-              "SC",
-              "SD",
-              "TN",
-              "TX",
-              "UT",
-              "VA",
-              "VT",
-              "WA",
-              "WI",
-              "WV",
-              "WY"],
-            "type": "select"
-          },
-          {
             "id": "zip",
             "label": "Zip code",
             "values": [],
             "type": "text"
+          },
+          {
+            "id": "state",
+            "label": "State",
+            "type": "select",
+            "values": []
+          },
+          {
+            "id": "country",
+            "label": "Country",
+            "values": [
+              {
+                id: "1",
+                name: "Czech Republic",
+                values: []
+              },
+              {
+                id: "2",
+                name: "USA",
+                values: [
+                  {
+                    id: "21",
+                    name: "AK",
+                  },
+                  {
+                    id: "22",
+                    name: "AL"
+                  }
+                ]
+              }
+            ],
+            "type": "select"
           }
         ]
       }

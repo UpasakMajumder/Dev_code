@@ -3,6 +3,7 @@ using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Services
@@ -75,6 +76,8 @@ namespace Kadena.WebAPI.Services
                 ShipCost = shippingCosts
             };
 
+            var stateTo = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == addressTo.State.Id);
+
             if (addressFrom != null)
             {
                 taxRequest.ShipFromCity = addressFrom.City ?? string.Empty;
@@ -85,7 +88,7 @@ namespace Kadena.WebAPI.Services
             if (addressTo != null)
             {
                 taxRequest.ShipToCity = addressTo.City ?? string.Empty;
-                taxRequest.ShipToState = addressTo.State ?? string.Empty;
+                taxRequest.ShipToState = stateTo?.StateCode ?? string.Empty;
                 taxRequest.ShipToZip = addressTo.Zip ?? string.Empty;
             }
 
