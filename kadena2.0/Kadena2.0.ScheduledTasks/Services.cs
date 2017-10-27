@@ -1,4 +1,5 @@
-﻿using DryIoc;
+﻿using AutoMapper;
+using DryIoc;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
@@ -7,6 +8,7 @@ using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.ScheduledTasks
 {
@@ -37,10 +39,11 @@ namespace Kadena.ScheduledTasks
         private static void RegisterServices(IContainer container)
         {
             // infrastructure
-            container.Register<IConfigurationProvider, KenticoConfigurationProvider>();
+            container.Register<Infrastructure.IConfigurationProvider, KenticoConfigurationProvider>();
             container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoLogger, KenticoLogger>();
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
 
             // microservices
             container.Register<IMailingListClient, MailingListClient>();
@@ -49,6 +52,11 @@ namespace Kadena.ScheduledTasks
             // task services
             container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
+        }
+
+        private static void ConfigureMapper()
+        {
+            Mapper.Initialize(cfg => cfg.AddProfile<KenticoModelMappingsProfile>());
         }
     }
 }
