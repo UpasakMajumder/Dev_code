@@ -61,11 +61,11 @@ namespace Kadena.WebAPI.KenticoProviders
             return DocumentHelper.GetDocuments(className)
                             .Path(path, PathTypeEnum.Children)
                             .WhereEquals("ClassName", className)
-                            .OnSite(new SiteInfoIdentifier(SiteContext.CurrentSiteID))
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()
                             .NestingLevel(1)
-                            .OnCurrentSite();
+                            .OnCurrentSite()
+                            .Published();
         }
     }
 }
