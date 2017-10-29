@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import USAddress from 'app.dump/USAddress';
 
 const Address = (props) => {
-  const { id, street1, street2, city, state, zip, checkedId, changeShoppingData, disableInteractivity, customerName, email,
+  const { id, address1, address2, city, state, zip, checkedId, changeShoppingData, disableInteractivity, customerName, email,
     country, phone } = props;
 
   return (
@@ -21,8 +21,8 @@ const Address = (props) => {
         <USAddress
           customerName={customerName}
           email={email}
-          street1={street1}
-          street2={street2}
+          address1={address1}
+          address2={address2}
           city={city}
           state={state}
           zip={zip}
@@ -35,8 +35,8 @@ const Address = (props) => {
 };
 
 Address.propTypes = {
-  street1: PropTypes.string.isRequired,
-  street2: PropTypes.string,
+  address1: PropTypes.string.isRequired,
+  address2: PropTypes.string,
   changeShoppingData: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   zip: PropTypes.string.isRequired,

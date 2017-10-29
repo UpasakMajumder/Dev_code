@@ -7,7 +7,7 @@ import SVG from 'app.dump/SVG';
 import AddressCard from '../AddressCard';
 
 const AddressBlock = (props) => {
-  const { ui, openDialog, setDefault, unsetDefault } = props;
+  const { ui, openDialog, setDefault, unsetDefault, dialog } = props;
 
   if (!Object.keys(ui).length) return null;
 
@@ -37,16 +37,12 @@ const AddressBlock = (props) => {
     openDialog,
     defaultAddress,
     setDefault,
-    unsetDefault
+    unsetDefault,
+    dialog
   };
 
   const addressCards = addresses.length
-    ? addresses.map((address) => {
-      return <AddressCard key={address.id}
-                          address={address}
-                          {...commonProps}
-      />;
-    })
+    ? addresses.map(address => <AddressCard address={address} key={address.id} {...commonProps} />)
     : null;
 
   return (
@@ -76,6 +72,7 @@ AddressBlock.propTypes = {
     removeButton: PropTypes.object,
     title: PropTypes.string
   }).isRequired,
+  dialog: PropTypes.object.isRequired,
   openDialog: PropTypes.func.isRequired,
   setDefault: PropTypes.func.isRequired,
   unsetDefault: PropTypes.func.isRequired

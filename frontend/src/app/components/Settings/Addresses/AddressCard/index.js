@@ -6,7 +6,16 @@ import SVG from 'app.dump/SVG';
 import USAddress from 'app.dump/USAddress';
 
 const AddressCard = (props) => {
-  const { editButton, removeButton, address, openDialog, defaultAddress, setDefault, unsetDefault } = props;
+  const {
+    editButton,
+    removeButton,
+    address,
+    dialog,
+    openDialog,
+    defaultAddress,
+    setDefault,
+    unsetDefault
+  } = props;
 
   let editElement = null;
   if (editButton.exists) {
@@ -49,6 +58,7 @@ const AddressCard = (props) => {
       </Tooltip>
     );
   };
+
   const removeElement = removeButton.exists
     ? <button type="button" className="in-card-btn">
         <SVG name="cross--dark"/>
@@ -56,27 +66,29 @@ const AddressCard = (props) => {
       </button>
     : null;
 
-  const buttonBlock = editElement || removeElement
-    ?
-    (
+  const country = dialog.fields
+    .find(field => field.id === 'country')
+    .values
+    .find(country => country.id === address.country);
+
+  const state = country.values.find(state => state.id === address.state);
+
+  return (
+    <div className="address-card">
+      <USAddress
+        address1={address.address1}
+        address2={address.address2}
+        city={address.city}
+        state={state && state.name}
+        zip={address.zip}
+        country={country.name}
+      />
+
       <div className="address-card__btn-block">
         {editElement}
         {removeElement}
         {setDefaultElement()}
       </div>
-    )
-    : null;
-
-  return (
-    <div className="address-card">
-      <USAddress
-        street1={address.street1}
-        street2={address.street2}
-        city={address.city}
-        state={address.state}
-        zip={address.zip}
-      />
-      {buttonBlock}
     </div>
   );
 };
@@ -88,9 +100,10 @@ AddressCard.propTypes = {
     isEditButton: PropTypes.bool,
     isRemoveButton: PropTypes.bool,
     state: PropTypes.string,
-    street1: PropTypes.string,
-    street2: PropTypes.string,
-    zip: PropTypes.string
+    address1: PropTypes.string,
+    address2: PropTypes.string,
+    zip: PropTypes.string,
+    country: PropTypes.string
   }),
   defaultAddress: PropTypes.shape({
     id: PropTypes.number,
