@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -3908,6 +3908,7 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -15382,6 +15383,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.cs">
+      <DependentUpon>logonform.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.designer.cs">
+      <DependentUpon>logonform.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
