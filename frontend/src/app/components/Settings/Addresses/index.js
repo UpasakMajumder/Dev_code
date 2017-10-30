@@ -58,18 +58,20 @@ class SettingAddresses extends Component {
     const { dialog, billing, shipping } = ui;
 
     const commonProps = {
-      openDialog: this.openDialog
+      openDialog: this.openDialog,
+      dialog
     };
 
     const dialogEl = isDialogOpen
       ?
       (
-        <AddressDialog isModifyingDialog={isModifyingDialog}
-                       closeDialog={this.closeDialog}
-                       addDataAddress={this.addDataAddress}
-                       changeDataAddress={this.changeDataAddress}
-                       dialog={dialog}
-                       address={address}
+        <AddressDialog
+          isModifyingDialog={isModifyingDialog}
+          closeDialog={this.closeDialog}
+          addDataAddress={this.addDataAddress}
+          changeDataAddress={this.changeDataAddress}
+          dialog={dialog}
+          address={address}
         />
       )
       : null;

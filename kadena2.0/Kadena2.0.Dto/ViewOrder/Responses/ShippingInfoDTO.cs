@@ -1,6 +1,4 @@
-﻿using Kadena.Dto.Settings;
-
-namespace Kadena.Dto.ViewOrder.Responses
+﻿namespace Kadena.Dto.ViewOrder.Responses
 {
     public class ShippingInfoDTO
     {

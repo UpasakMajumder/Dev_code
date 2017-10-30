@@ -131,6 +131,8 @@ namespace Kadena.WebAPI.Services
 
         private Models.Checkout.AddressDialog GetOtherAddressDialog()
         {
+            var countries = kenticoProvider.GetCountries();
+            var states = kenticoProvider.GetStates();
             return new Models.Checkout.AddressDialog
             {
                 Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),
@@ -146,13 +148,13 @@ namespace Kadena.WebAPI.Services
                     },
                     new DialogField
                     {
-                        Id = "street1",
+                        Id = "address1",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                         Type = "text"
                     },
                     new DialogField
                     {
-                        Id = "street2",
+                        Id = "address2",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                         IsOptional = true,
                         Type = "text"
@@ -169,7 +171,7 @@ namespace Kadena.WebAPI.Services
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.State"),
                         IsOptional = true,
                         Type = "select",
-                        Values = kenticoProvider.GetStates().Select(s => (object)s.StateCode).ToList()
+                        Values = new List<object>()
                     },
                     new DialogField
                     {
@@ -182,7 +184,17 @@ namespace Kadena.WebAPI.Services
                         Id = "country",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.Country"),
                         Type = "select",
-                        Values = kenticoProvider.GetCountries().Select(c => (object)c.Name).ToList()
+                        Values = countries
+                                .GroupJoin(states, c => c.Id, s => s.CountryId, (c, sts) => (object) new
+                                {
+                                    Id = c.Id.ToString(),
+                                    Name = c.Name,
+                                    Values = sts.Select(s => new
+                                    {
+                                        Id = s.Id.ToString(),
+                                        Name = s.StateCode
+                                    }).ToArray()
+                                }).ToList()
                     },
                     new DialogField
                     {

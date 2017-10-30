@@ -29,7 +29,7 @@ using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
-using System.Collections.Generic;
+using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.WebAPI
 {
@@ -39,6 +39,8 @@ namespace Kadena.WebAPI
         {
             Mapper.Initialize(config =>
             {
+                config.AddProfile<KenticoModelMappingsProfile>();
+
                 config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
                 {
                     DesignFilePath = p.DesignFilePath,
@@ -79,8 +81,29 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryCarriers, DeliveryMethodsDTO>();
                 config.CreateMap<DeliveryCarrier, DeliveryMethodDTO>();
                 config.CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
-                config.CreateMap<DeliveryAddress, DeliveryAddressDTO>();
-                config.CreateMap<DeliveryAddressDTO, DeliveryAddress>();
+
+                config.CreateMap<DeliveryAddress, DeliveryAddressDTO>()
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
+
+                config.CreateMap<DeliveryAddressDTO, DeliveryAddress>()
+                    .ForMember(dest => dest.Country, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
+                    })
+                    .ForMember(dest => dest.State, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
+                    });
+
+                config.CreateMap<DeliveryAddressDTO, Country>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
+
+                config.CreateMap<DeliveryAddressDTO, State>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
+
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<SubmitButton, SubmitButtonDTO>();
@@ -91,8 +114,24 @@ namespace Kadena.WebAPI
                 config.CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
                 config.CreateMap<BaseErrorDto, SubmitOrderError>();
                 config.CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-                config.CreateMap<DeliveryAddress, AddressDto>();
-                config.CreateMap<AddressDto, DeliveryAddress>();
+                config.CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
+                config.CreateMap<Dto.Settings.AddressDto, Country>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
+                config.CreateMap<Dto.Settings.AddressDto, State>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
+                config.CreateMap<Dto.Settings.AddressDto, DeliveryAddress>()
+                    .ForMember(dest => dest.State, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
+                    })
+                    .ForMember(dest => dest.Country, opt =>
+                    {
+                        opt.MapFrom(src => src);
+                        opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
+                    });
                 config.CreateMap<DeliveryAddress, IdDto>();
                 config.CreateMap<PageButton, PageButtonDto>();
                 config.CreateMap<AddressList, AddressListDto>();
@@ -175,11 +214,14 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
-                config.CreateMap<AddressDTO, DeliveryAddress>().AfterMap((s, d) =>
-                {
-                    d.Street1 = s.AddressLine1;
-                    d.Street2 = s.AddressLine2;
-                });
+                config.CreateMap<AddressDTO, DeliveryAddress>()
+                    .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
+                    .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
+                    .ForMember(dest => dest.State, opt => opt.Ignore())
+                    .ForMember(dest => dest.Country, opt => opt.Ignore());
+                config.CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateCode))
+                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             });
         }
     }

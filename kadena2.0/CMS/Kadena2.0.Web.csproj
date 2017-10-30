@@ -26,6 +26,7 @@
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +54,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\AjaxMin.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005" />
     <Reference Include="AWSSDK.CloudWatchLogs, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
       <HintPath>..\packages\AWSSDK.CloudWatchLogs.3.3.2.16\lib\net45\AWSSDK.CloudWatchLogs.dll</HintPath>
       <Private>True</Private>
@@ -1011,6 +1013,10 @@
     <ProjectReference Include="..\Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj">
       <Project>{7ceeef15-afb6-4ef0-b04e-cb8d7843f31a}</Project>
       <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
+      <Project>{FB19606B-D327-4F43-AB3F-825000079B1A}</Project>
+      <Name>Kadena2.0.WebAPI</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
       <Project>{bb8817ae-48df-4672-a1cb-cfb7441b88da}</Project>
