@@ -76,7 +76,7 @@ namespace Kadena.WebAPI.Services
                 ShipCost = shippingCosts
             };
 
-            var stateTo = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == addressTo.State.Id);
+            var stateTo = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == (addressTo?.State?.Id ?? 0));
 
             if (addressFrom != null)
             {
