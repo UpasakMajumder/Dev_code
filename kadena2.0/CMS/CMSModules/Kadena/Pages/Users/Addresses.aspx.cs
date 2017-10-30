@@ -5,13 +5,26 @@ using System;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
-using CMS.DataEngine;
+using System.Linq;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
-    public partial class Import : CMSPage
+    public partial class Addresses : CMSPage
     {
-        private readonly string _templateType = "membershipchangepassword";
+        public int[] SelectedUserIds
+        {
+            get
+            {
+                var value = userSelector.Value as string;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var values = value.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    return values.Select(v => int.Parse(v)).ToArray();
+                }
+
+                return new int[0]; 
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,37 +32,17 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
-
-            SetUpEmailTemplateSelector();
-        }
-
-        private void SetUpEmailTemplateSelector()
-        {
-            var where = selEmailTemplate.WhereCondition;
-            where = SqlHelper.AddWhereCondition(where, "EmailTemplateSiteId = " + SelectedSiteID);
-            where = SqlHelper.AddWhereCondition(where, $"EmailTemplateType = '{_templateType}'");
-            selEmailTemplate.WhereCondition = where;
         }
 
         private void Site_Changed(object sender, EventArgs e)
         {
-            selEmailTemplate.Value = null;
-            selEmailTemplate.Reload(true);
-            SetUpEmailTemplateSelector();
-            pnlTemplate.Update();
+            userSelector.Value = null;
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
 
         protected void btnUploadUserList_Click(object sender, EventArgs e)
         {
-            var emailTemplateName = selEmailTemplate.Value.ToString();
-            if (string.IsNullOrWhiteSpace(emailTemplateName))
-            {
-                ShowErrorMessage(GetString("Kadena.Email.TemplateNotSelected"));
-                return;
-            }
-
             var file = importFile.PostedFile;
             if (string.IsNullOrWhiteSpace(file.FileName))
             {
@@ -57,20 +50,29 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 return;
             }
 
+            var selectedUsers = SelectedUserIds;
+            if ((selectedUsers?.Length ?? 0) == 0)
+            {
+                ShowErrorMessage("You need to select at least one user.");
+                return;
+            }
+
+
             var fileData = ReadFileFromRequest(file);
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 
             try
             {
-                var result = new UserImportService().ProcessUserImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new UserImportService().ProcessAddressImportFile(fileData, excelType, SelectedSiteID, selectedUsers);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
+                
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                EventLogProvider.LogException("Import addresses", "EXCEPTION", ex);
                 ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
             }
         }
@@ -83,8 +85,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetUserTemplateFile(SelectedSiteID);
-            var templateFileName = "users-upload-template.xlsx";
+            var bytes = new UserTemplateService().GetAddressTemplateFile();
+            var templateFileName = "addresses-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
         }
