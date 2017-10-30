@@ -13,7 +13,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
         public byte[] GetUserTemplateFile(int siteID)
         {
-            var columns = GetUserImportColumns();
+            var columns = GetImportColumns<UserDto>();
             var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
             var file = CreateTemplateFile(columns, roles);
             return file;
@@ -21,7 +21,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
         public byte[] GetAddressTemplateFile()
         {
-            var columns = GetAddressImportColumns();
+            var columns = GetImportColumns<AddressDto>();
             var file = CreateTemplateFile(columns);
             return file;
         }
@@ -125,20 +125,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return style;
         }
 
-        private string[] GetUserImportColumns()
+        private string[] GetImportColumns<T>() where T:class
         {
-            var names = ImportHelper.GetHeaderProperties<UserDto>()
+            return ImportHelper.GetHeaderProperties<T>()
                 .Select(p => p.Key)
                 .ToArray();
-            return names;
-        }
-
-        private string[] GetAddressImportColumns()
-        {
-            var names = ImportHelper.GetHeaderProperties<AddressDto>()
-                .Select(p => p.Key)
-                .ToArray();
-            return names;
         }
     }
 }
