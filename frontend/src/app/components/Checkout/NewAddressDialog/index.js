@@ -10,7 +10,11 @@ class NewAddressDialog extends Component {
   constructor(props) {
     super(props);
 
-    this.stateIndex = this.props.ui.fields.findIndex(element => element.id === 'state');
+    const { fields } = this.props.ui;
+
+    this.stateIndex = fields.findIndex(element => element.id === 'state');
+
+    const defaultCountry = fields.find(field => field.id === 'country').values.find(country => country.isDefault);
 
     this.state = {
       invalids: [],
@@ -21,11 +25,11 @@ class NewAddressDialog extends Component {
         city: '',
         state: '',
         zip: '',
-        country: '',
+        country: defaultCountry && defaultCountry.id,
         phone: '',
         email: ''
       },
-      fields: this.props.ui.fields
+      fields
     };
   }
 
