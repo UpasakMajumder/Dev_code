@@ -5,12 +5,27 @@ using System;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
-using CMS.DataEngine;
+using System.Linq;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
     public partial class Addresses : CMSPage
     {
+        public int[] SelectedUserIds
+        {
+            get
+            {
+                var value = userSelector.Value as string;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var values = value.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    return values.Select(v => int.Parse(v)).ToArray();
+                }
+
+                return new int[0]; 
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             HideErrorMessage();
@@ -22,7 +37,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         private void Site_Changed(object sender, EventArgs e)
         {
             userSelector.Value = null;
-            roleSelector.Value = null; // TODO check if ok
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
@@ -36,18 +50,25 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 return;
             }
 
+            var selectedUsers = SelectedUserIds;
+            if ((selectedUsers?.Length ?? 0) == 0)
+            {
+                ShowErrorMessage("You need to select at least one user.");
+                return;
+            }
+
+
             var fileData = ReadFileFromRequest(file);
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 
             try
             {
-                /*
-                var result = new UserImportService().ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new UserImportService().ProcessAddressImportFile(fileData, excelType, SelectedSiteID, selectedUsers);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
-                */
+                
             }
             catch (Exception ex)
             {
@@ -64,7 +85,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetAddressTemplateFile(SelectedSiteID);
+            var bytes = new UserTemplateService().GetAddressTemplateFile();
             var templateFileName = "addresses-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);

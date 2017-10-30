@@ -19,11 +19,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return file;
         }
 
-        public byte[] GetAddressTemplateFile(int siteID)
+        public byte[] GetAddressTemplateFile()
         {
             var columns = GetAddressImportColumns();
-            var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
-            var file = CreateTemplateFile(columns, roles);
+            var file = CreateTemplateFile(columns);
             return file;
         }
 
@@ -53,7 +52,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         /// <param name="columns">Columns to create. Expects last column to be role.</param>
         /// <param name="roles">Roles to add to role select box for last column.</param>
         /// <returns></returns>
-        private byte[] CreateTemplateFile(string[] columns, string[] roles)
+        private byte[] CreateTemplateFile(string[] columns, string[] roles = null)
         {
             // create workbook
             IWorkbook workbook = new XSSFWorkbook();
@@ -61,8 +60,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             CreateSheetHeader(columns, sheet);
 
             // add validation for roles
-            var rolesColumnIndex = columns.Length - 1; // role column should be last
-            AddRolesValidation(rolesColumnIndex, roles, sheet);
+            if (roles != null)
+            {
+                var rolesColumnIndex = columns.Length - 1; // role column should be last
+                AddRolesValidation(rolesColumnIndex, roles, sheet);
+            }
 
             using (var ms = new MemoryStream())
             {

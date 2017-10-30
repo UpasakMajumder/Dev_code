@@ -62,7 +62,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                var result = new UserImportService().ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new UserImportService().ProcessUserImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));

@@ -12,6 +12,7 @@
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
+
         <div class="form-group" style="margin-bottom: 3rem">
             <label class="control-label" for="siteSelector" style="text-align: left">Site:</label>
             <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
@@ -34,10 +35,10 @@
                         <asp:FileUpload ClientIDMode="Static" ID="importFile" name="importFile" accept=".xls, .xlsx" Style="display: none" onchange="onImportFileSelected(event)" runat="server" />
                         <br />
                         <label class="control-label" style="text-align: left">User:</label>
-                        <cms:UserSelector runat="server" name="userSelector" ID="userSelector" SelectionMode="Multiple" />
+                        <cms:UserSelector runat="server" name="userSelector" ID="userSelector" SelectionMode="Multiple"/>
                         <br />
-                        <label class="control-label" style="text-align: left">Role:</label>
-                        <cms:RoleSelector runat="server" name="roleSelector" ID="roleSelector" />
+                        <label class="control-label" style="text-align: left" hidden="true" >Role:</label>
+                        <cms:RoleSelector runat="server" name="roleSelector" ID="roleSelector" Visible="false" />
                     </div>
                 </div>
             </div>
