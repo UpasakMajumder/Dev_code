@@ -981,7 +981,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
-    <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
