@@ -14,20 +14,11 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<string>> Validate(string endPoint, string customerName, Guid containerId)
         {
-            using (var client = new HttpClient())
+            return await Post<string>(endPoint, new
             {
-                using (var content = CreateRequestContent(new
-                {
-                    ContainerId = containerId,
-                    CustomerName = customerName
-                }))
-                {
-                    using (var message = await client.PostAsync(endPoint, content).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<string>(message);
-                    }
-                }
-            }
+                ContainerId = containerId,
+                CustomerName = customerName
+            });
         }
     }
 }
