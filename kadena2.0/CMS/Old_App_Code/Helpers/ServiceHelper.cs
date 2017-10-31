@@ -47,6 +47,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="product">Product type option for mailing container.</param>
         /// <param name="validityDays">Validity option for mailing container.</param>
         /// <returns>Id of mailing container.</returns>
+        // Mailing Service
         public static Guid CreateMailingContainer(string name, string mailType, string product, int validityDays)
         {
             if (string.IsNullOrWhiteSpace(mailType))
@@ -105,12 +106,13 @@ namespace Kadena.Old_App_Code.Helpers
             }
             return containerId;
         }
-        
+
         /// <summary>
         /// Requests for headers of specified file.
         /// </summary>
         /// <param name="fileId">Id for file to get headers for.</param>
         /// <returns>List of header names.</returns>
+        // Parsing Service
         public static IEnumerable<string> GetHeaders(string fileId)
         {
             if (string.IsNullOrWhiteSpace(fileId))
@@ -164,6 +166,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// <param name="fileId">Id of file.</param>
         /// <param name="containerId">Id of mailing container.</param>
         /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
+        // Mailing Service
         public static void UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
             if (string.IsNullOrWhiteSpace(fileId))
@@ -235,61 +238,7 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
         }
-
-        /// <summary>
-        /// Forces microservices to start addresses validation for specified container.
-        /// </summary>
-        /// <param name="containerId">Id of container.</param>
-        /// <returns>If of file with valid addresses.</returns>
-        public static string ValidateAddresses(Guid containerId)
-        {
-            var customerName = GetCustomerName();
-
-            if (containerId == Guid.Empty)
-            {
-                throw new ArgumentException(_valueEmptyMessage, nameof(containerId));
-            }
-
-            Uri validateAddressUrl;
-            if (!Uri.TryCreate(SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}")
-                , UriKind.Absolute
-                , out validateAddressUrl))
-            {
-                throw new InvalidOperationException(_validateAddressIncorrectMessage);
-            }
-
-            using (var client = new HttpClient())
-            {
-                using (var content = new StringContent(JsonConvert.SerializeObject(new
-                {
-                    ContainerId = containerId,
-                    CustomerName = customerName
-                }), System.Text.Encoding.UTF8, "application/json"))
-                {
-                    using (var message = client.PostAsync(validateAddressUrl, content))
-                    {
-                        BaseResponseDto<string> response;
-                        try
-                        {
-                            response = (BaseResponseDto<string>)message.Result;
-                        }
-                        catch (JsonReaderException e)
-                        {
-                            throw new InvalidOperationException(_responseIncorrectMessage, e);
-                        }
-                        if (response?.Success ?? false)
-                        {
-                            return response.Payload;
-                        }
-                        else
-                        {
-                            throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
-                        }
-                    }
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Gets name of customer from site settings (Site application).
         /// </summary>
@@ -298,11 +247,12 @@ namespace Kadena.Old_App_Code.Helpers
         {
             return SiteContext.CurrentSiteName;
         }
-        
+
         /// <summary>
         /// Get all mailing list for particular customer (whole site) by specified Id.
         /// </summary>
         /// <param name="containerId">Id of container to get.</param>
+        // Mailing Service
         public static MailingListDataDTO GetMailingList(Guid containerId)
         {
             var customerName = GetCustomerName();
@@ -348,6 +298,7 @@ namespace Kadena.Old_App_Code.Helpers
         /// Removes all address from specified container.
         /// </summary>
         /// <param name="containerId">Id of container to be cleared.</param>
+        // Mailing Service
         public static void RemoveAddresses(Guid containerId, Guid[] addressIds = null)
         {
             var customerName = GetCustomerName();
@@ -398,11 +349,12 @@ namespace Kadena.Old_App_Code.Helpers
                 }
             }
         }
-        
+
         /// <summary>
         /// Returns order statistics for current customer (website).
         /// </summary>
         /// <returns></returns>
+        // Statistic Service
         public static OrderStatisticsData GetOrderStatistics()
         {
             var customerName = GetCustomerName();

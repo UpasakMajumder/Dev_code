@@ -1,8 +1,11 @@
-﻿using CMS.EventLog;
+﻿using CMS.DataEngine;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Helpers;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +17,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class ColumnMapper : CMSAbstractWebPart
     {
+        private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
+
         private static List<Tuple<string, string, bool>> _columnSelectors = new List<Tuple<string, string, bool>>
         {
             Tuple.Create("title", "Title", true ),
@@ -117,8 +122,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
+                        var validationUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}");
+                        var customerName = SiteContext.CurrentSiteName;
+                        var validationClient = new AddressValidationClient();
                         ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
-                        ServiceHelper.ValidateAddresses(_containerId);
+                        validationClient.Validate(validationUrl, customerName, _containerId).Wait();
                         Response.Redirect(ProcessListPageUrl);
                     }
                     catch (Exception ex)
