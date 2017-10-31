@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using Amazon.SecurityToken;
+using AutoMapper;
 using DryIoc;
+using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Factories.Checkout;
@@ -46,6 +48,7 @@ namespace Kadena.WebAPI
 
         public static Container RegisterMicroservices(this Container container)
         {
+            //container.Register<IAwsV4Signer, DefaultAwsV4Signer>();
             container.Register<IMailingListClient, MailingListClient>();
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
             container.Register<IOrderViewClient, OrderViewClient>();
@@ -66,6 +69,7 @@ namespace Kadena.WebAPI
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
+            //container.Register<IAmazonSecurityTokenService, AmazonSecurityTokenServiceClient>();
             return container;
         }
     }

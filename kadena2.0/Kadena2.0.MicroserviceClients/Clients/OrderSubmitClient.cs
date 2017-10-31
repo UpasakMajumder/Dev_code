@@ -2,39 +2,28 @@
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System;
+using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderSubmitClient : ClientBase, IOrderSubmitClient
     {
+        //public OrderSubmitClient(IAwsV4Signer signer) : base(signer)
+        //{
+
+        //}
+
         public async Task<BaseResponseDto<string>> FinishOrder(string serviceEndpoint, string orderNumber)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.Timeout = TimeSpan.FromSeconds(60);
-                var content = CreateRequestContent(orderNumber);
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), serviceEndpoint) { Content = content };
-                using (var response = await httpClient.SendAsync(request))
-                {
-                    return await ReadResponseJson<string>(response);
-                }
-            }
+            // TODO: Was timeout = 60s here, I think useless
+            return await Patch<string>(serviceEndpoint, orderNumber);
         }
 
         public async Task<BaseResponseDto<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.Timeout = TimeSpan.FromSeconds(60);
-                var content = CreateRequestContent(orderData);
-                using (var response = await httpClient.PostAsync(serviceEndpoint, content))
-                {
-                    return await ReadResponseJson<string>(response);
-                }
-            }
+            // TODO: Was timeout = 60s here, I think useless
+            return await Post<string>(serviceEndpoint, orderData);
         }
     }
 }

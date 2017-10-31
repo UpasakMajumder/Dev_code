@@ -1,4 +1,6 @@
-﻿using Kadena.Dto.General;
+﻿using Amazon.SecurityToken;
+using Kadena.Dto.General;
+using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients.Base
 {
-    public class ClientBase
+    public abstract class ClientBase
     {
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
 
@@ -20,9 +22,97 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             DateFormatString = "yyyy-MM-dd HH:mm:ss"
         };
 
-        protected StringContent CreateRequestContent(object request)
+        public bool SignRequest { get; set; }
+
+        public string AwsGatewayApiRole { get; set; }
+
+        public string SuppliantDomain { get; set; }
+
+        protected readonly IAwsV4Signer signer;
+
+        public ClientBase()
         {
-            var requestBody = JsonConvert.SerializeObject(request, camelCaseSerializer);
+            IAmazonSecurityTokenService service = new AmazonSecurityTokenServiceClient();
+            this.signer = new DefaultAwsV4Signer(service);
+        }
+
+        /*public ClientBase(IAwsV4Signer signer)
+        {
+            if(signer == null)
+            {
+                throw new ArgumentNullException(nameof(signer));
+            }
+
+            this.signer = signer;
+        }*/
+
+        public async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
+        {
+            return await Send<TResult>(HttpMethod.Get, url);
+        }
+
+        public async Task<BaseResponseDto<TResult>> Post<TResult>(string url, object body)
+        {
+            return await Send<TResult>(HttpMethod.Post, url, body);
+        }
+
+        public async Task<BaseResponseDto<TResult>> Delete<TResult>(string url, object body = null)
+        {
+            return await Send<TResult>(HttpMethod.Delete, url, body);
+        }
+
+        public async Task<BaseResponseDto<TResult>> Patch<TResult>(string url, object body)
+        {
+            return await Send<TResult>(new HttpMethod("PATCH"), url, body);
+        }
+
+        public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method,  string url, object body = null)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(method, url))
+                {
+                    if (!string.IsNullOrEmpty(SuppliantDomain))
+                    {
+                        AddHeader(client, "suppliantDomain", SuppliantDomain);
+                    }
+
+                    if (body != null)
+                    {
+                        request.Content = CreateRequestContent(request, body);
+                    }
+
+                    if (SignRequest)
+                    {
+                        await SignRequestMessage(request);
+                    }
+
+                    // TODO consider try-catch ?
+                    
+                    var response = await client.SendAsync(request);
+                    return await ReadResponseJson<TResult>(response);
+                }
+            }
+        }
+
+        private void AddHeader(HttpClient httpClient, string headerName, string headerValue)
+        {
+            httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
+        }
+
+        private async Task SignRequestMessage(HttpRequestMessage request)
+        {
+            if(string.IsNullOrEmpty(AwsGatewayApiRole))
+            {
+                throw new ArgumentNullException(nameof(AwsGatewayApiRole), "To use signed request to AWS microservice, you need to provide ApiGatewayRole");
+            }
+
+            await signer.SignRequest(request, AwsGatewayApiRole);
+        }
+
+        public StringContent CreateRequestContent(HttpRequestMessage request,  object body)
+        {
+            var requestBody = JsonConvert.SerializeObject(body, camelCaseSerializer);
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
             return content;
         }

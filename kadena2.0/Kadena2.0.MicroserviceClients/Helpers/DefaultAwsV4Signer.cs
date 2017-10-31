@@ -23,16 +23,25 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         private string awsSecretKey;
         private string awsAccessKey;
         private string sessionToken;
-        private string awsService;
-        private string awsRegion;
+        private string awsService = "execute-api";
+        private string awsRegion = "us-east-1";
         private DateTime requestDateTime;
         private readonly IAmazonSecurityTokenService amazonSecurityTokenService;
 
+        public DefaultAwsV4Signer()
+        {
+            // Hardcoded variant for the sake of simplicity when calling from WebParts
+            this.amazonSecurityTokenService = new AmazonSecurityTokenServiceClient();
+        }
+
         public DefaultAwsV4Signer(IAmazonSecurityTokenService amazonSecurityTokenService)
         {
+            if (amazonSecurityTokenService == null)
+            {
+                throw new ArgumentNullException(nameof(amazonSecurityTokenService));
+            }
+
             this.amazonSecurityTokenService = amazonSecurityTokenService;
-            this.awsService = "execute-api";
-            this.awsRegion = "us-east-1";
         }
 
         public void SetService(string service, string region)
