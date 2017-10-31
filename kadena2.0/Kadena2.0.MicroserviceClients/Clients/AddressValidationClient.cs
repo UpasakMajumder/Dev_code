@@ -14,7 +14,6 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<string>> Validate(string endPoint, string customerName, Guid containerId)
         {
-            string url = $"{endPoint}/api/AddressValidator";
             using (var client = new HttpClient())
             {
                 using (var content = CreateRequestContent(new
@@ -23,7 +22,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     CustomerName = customerName
                 }))
                 {
-                    using (var message = await client.PostAsync(url, content).ConfigureAwait(false))
+                    using (var message = await client.PostAsync(endPoint, content).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<string>(message);
                     }
