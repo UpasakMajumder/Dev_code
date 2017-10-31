@@ -14,19 +14,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserImportService
     {
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
+        public ImportResult ProcessUserImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
-            var rows = new ExcelReader().ReadDataFromExcelFile(importFileData, type);
-            if (rows.Count <= 1)
-            {
-                throw new Exception("The file contains no data");
-            }
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
 
-            var site = SiteInfoProvider.GetSiteInfo(siteID);
-            if (site == null)
-            {
-                throw new Exception("Invalid site id " + siteID);
-            }
             var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
 
             var header = rows.First();
@@ -78,6 +70,98 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             {
                 ErrorMessages = statusMessages.ToArray()
             };
+        }
+
+        public ImportResult ProcessAddressImportFile(byte[] importFileData, ExcelType type, int siteId, int[] userIds)
+        {
+            if ((userIds?.Length ?? 0) == 0)
+                throw new ArgumentOutOfRangeException("No users selected to upload addresses to");
+
+            var rows = GetExcelRows(importFileData, type);
+
+            var header = rows.First();
+            
+            var mapRowToAddress = ImportHelper.GetImportMapper<AddressDto>(header);
+
+            var addresses = rows.Skip(1)
+                .Select(row => mapRowToAddress(row))
+                .ToList();
+
+            var statusMessages = new List<string>();
+
+
+            foreach (var userId in userIds)
+            {
+                var user = UserInfoProvider.GetUserInfo(userId);
+
+                if (user == null)
+                {
+                    statusMessages.Add($"Nonexisting user : {userId}");
+                    continue;
+                }
+
+                var customer = EnsureCustomer(user, siteId);
+
+                foreach (var addressDto in addresses)
+                {
+                    CreateCustomerAddress(customer.CustomerID, new UserDto
+                    {
+                        Country = addressDto.Country,
+                        State = addressDto.State,
+                        AddressLine = addressDto.AddressLine,
+                        AddressLine2 = addressDto.AddressLine2,
+                        City = addressDto.City,
+                        ContactName = addressDto.ContactName,
+                        PostalCode = addressDto.PostalCode,
+                        PhoneNumber = addressDto.PhoneNumber
+
+                    });
+                }
+            }
+
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        private CustomerInfo EnsureCustomer(UserInfo user, int siteId)
+        {
+            var customer = CustomerInfoProvider.GetCustomerInfoByUserID(user.UserID);
+
+            if (customer == null)
+            {
+                customer = CreateCustomer(user.UserID, siteId , new UserDto
+                {
+                    FirstName = string.Empty,
+                    LastName = user.UserName,
+                    Email = user.Email
+                });
+            }
+
+            return customer;
+        }
+
+        
+
+        private List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
+        {
+            var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
+            if (rows.Count <= 1)
+            {
+                throw new Exception("The file contains no data");
+            }
+            return rows;
+        }
+
+        private SiteInfo GetSite(int siteID)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteID);
+            if (site == null)
+            {
+                throw new Exception("Invalid site id " + siteID);
+            }
+            return site;
         }
 
         private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
