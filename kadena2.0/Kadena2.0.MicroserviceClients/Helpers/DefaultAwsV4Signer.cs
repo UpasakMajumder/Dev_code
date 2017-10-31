@@ -49,7 +49,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
 
         public async Task SignRequest(HttpRequestMessage request, string gatewayApiRole)
         {
-            var assumedRole = await this.GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
+            var assumedRole = this.GetTemporaryRole(gatewayApiRole);
             this.SignRequest(request, assumedRole);
         }
 
@@ -60,14 +60,14 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             this.Sign(request);
         }
 
-        private async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
+        private AssumeRoleResponse GetTemporaryRole(string gatewayApiRole)
         {
-            var assumedRole = await this.amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
+            var assumedRole = this.amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
             {
                 RoleArn = gatewayApiRole,
                 RoleSessionName = "sessionNumber1"
             })
-            .ConfigureAwait(false);
+            .Result;
             return assumedRole;
         }
 
@@ -144,10 +144,10 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return canonicalHeaders.ToString();
         }
 
-        public static async Task<string> GetPayloadHash(HttpRequestMessage request)
+        public static string GetPayloadHash(HttpRequestMessage request)
         {
             var payload = request.Content != null
-                ? await request.Content.ReadAsStringAsync().ConfigureAwait(false)
+                ? request.Content.ReadAsStringAsync().Result
                 : string.Empty;
 
             return Utils.ToHex(Utils.Hash(payload));
