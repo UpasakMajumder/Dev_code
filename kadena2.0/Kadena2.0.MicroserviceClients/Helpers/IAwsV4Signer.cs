@@ -8,10 +8,10 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
     {
         void SetService(string service, string region);
 
-        void SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole);
+        Task SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole);
 
         Task SignRequest(HttpRequestMessage request, string gatewayApiRole);
 
-        void SignRequest(HttpRequestMessage request, string accessKey, string secretKey);
+        Task SignRequest(HttpRequestMessage request, string accessKey, string secretKey);
     }
 }

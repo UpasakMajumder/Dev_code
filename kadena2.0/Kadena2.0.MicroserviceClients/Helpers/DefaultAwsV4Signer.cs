@@ -41,33 +41,32 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             this.awsRegion = region;
         }
 
-        public void SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole)
+        public async Task SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole)
         {
             this.SetCredentials(assumedRole);
-            this.Sign(request);
+            await this.Sign(request).ConfigureAwait(false);
         }
 
         public async Task SignRequest(HttpRequestMessage request, string gatewayApiRole)
         {
-            var assumedRole = this.GetTemporaryRole(gatewayApiRole);
-            this.SignRequest(request, assumedRole);
+            var assumedRole = await this.GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
+            await this.SignRequest(request, assumedRole).ConfigureAwait(false);
         }
 
 
-        public void SignRequest(HttpRequestMessage request, string accessKey, string secretKey)
+        public async Task SignRequest(HttpRequestMessage request, string accessKey, string secretKey)
         {
             this.SetCredentials(accessKey, secretKey);
-            this.Sign(request);
+            await this.Sign(request).ConfigureAwait(false);
         }
 
-        private AssumeRoleResponse GetTemporaryRole(string gatewayApiRole)
+        private async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
         {
-            var assumedRole = this.amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
+            var assumedRole = await this.amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
             {
                 RoleArn = gatewayApiRole,
                 RoleSessionName = "sessionNumber1"
-            })
-            .Result;
+            }).ConfigureAwait(false);
             return assumedRole;
         }
 
@@ -77,11 +76,11 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         /// </summary>
         /// <param name="request">Request</param>
         /// <returns>Signature</returns>
-        private void Sign(HttpRequestMessage request)
+        private async Task Sign(HttpRequestMessage request)
         {
             this.requestDateTime = DateTime.UtcNow;
             var signedHeaders = this.AddAndGetSignedHeaders(request);
-            var canonicalRequest = this.GetCanonicalRequest(request, signedHeaders);
+            var canonicalRequest = await this.GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
             var stringToSign = this.GetStringToSign(canonicalRequest);
             var signiture = this.GetSignature(stringToSign);
             var authHeader = this.GetAuthHeader(signiture, signedHeaders);
@@ -89,7 +88,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-        public string GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
+        public async Task<string> GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
         {
             var canonicalRequest = new StringBuilder();
             canonicalRequest.AppendFormat("{0}\n", request.Method.Method);
@@ -97,7 +96,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             canonicalRequest.AppendFormat("{0}\n", GetCanonicalQueryParameters(HttpUtility.ParseQueryString(request.RequestUri.Query)));
             canonicalRequest.AppendFormat("{0}\n", GetCanonicalHeaders(request, signedHeaders));
             canonicalRequest.AppendFormat("{0}\n", String.Join(";", signedHeaders).ToLowerInvariant());
-            canonicalRequest.Append(GetPayloadHash(request));
+            canonicalRequest.Append(await GetPayloadHash(request).ConfigureAwait(false));
             return canonicalRequest.ToString();
         }
 
@@ -144,10 +143,10 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return canonicalHeaders.ToString();
         }
 
-        public static string GetPayloadHash(HttpRequestMessage request)
+        public static async Task<string> GetPayloadHash(HttpRequestMessage request)
         {
             var payload = request.Content != null
-                ? request.Content.ReadAsStringAsync().Result
+                ? await request.Content.ReadAsStringAsync().ConfigureAwait(false)
                 : string.Empty;
 
             return Utils.ToHex(Utils.Hash(payload));
