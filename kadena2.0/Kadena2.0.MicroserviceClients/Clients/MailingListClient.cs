@@ -9,105 +9,69 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class MailingListClient : ClientBase, IMailingListClient
     {
+        //public MailingListClient() : base()
+        //{
+
+        //}
+
+        //public MailingListClient(IAwsV4Signer signer) : base(signer)
+        //{
+
+        //}
+
         public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId)
         {
-            using (var client = new HttpClient())
-            {
-                using (var message = await client.GetAsync($"{serviceEndpoint}/{containerId}").ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<IEnumerable<MailingAddressDto>>(message);
-                }
-            }
+            var url = $"{serviceEndpoint}/{containerId}";
+            return await Get<IEnumerable<MailingAddressDto>>(url);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId)
         {
             string url = $"{serviceEndpoint}/{customerName}/{containerId}";
-
-            using (var client = new HttpClient())
-            {
-                using (var message = await client.GetAsync(url).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<MailingListDataDTO>(message);
-                }
-            }
+            return await Get<MailingListDataDTO>(url);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var encodedCustomerName = HttpUtility.UrlEncode(customerName);
-                // TODO remove redundant settings keys
-                // var url = $"{serviceEndpoint.TrimEnd('/')}/api/mailing/allforcustomer/{encodedCustomerName}";
-                var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}";
-                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<MailingListDataDTO[]>(response);
-                }
-            }
+            var encodedCustomerName = HttpUtility.UrlEncode(customerName);
+            var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}";
+            return await Get<MailingListDataDTO[]>(url);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, Guid mailingListId)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var encodedCustomerName = HttpUtility.UrlEncode(customerName);
-                var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}/{mailingListId}";
-                using (var response = await httpClient.DeleteAsync(url).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<object>(response);
-                }
-            }
+            var encodedCustomerName = HttpUtility.UrlEncode(customerName);
+            var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}/{mailingListId}";
+            return await Delete<object>(url);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, DateTime olderThan)
         {
-            using (var httpClient = new HttpClient())
+            var body = new
             {
-                var filter = CreateRequestContent(new
-                {
-                    customerName = customerName,
-                    validTo = olderThan
-                });
+                customerName = customerName,
+                validTo = olderThan
+            };
 
-                using (var request = new HttpRequestMessage(HttpMethod.Delete, serviceEndpoint) { Content = filter })
-                {
-                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<object>(response);
-                    }
-                }
-            }
+            return await Delete<object>(serviceEndpoint, body);
         }
 
         public async Task<BaseResponseDto<object>> RemoveAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<Guid> addressIds = null)
         {
-            using (var client = new HttpClient())
+            var body = new
             {
-                using (var request = new HttpRequestMessage
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new
-                    {
-                        ContainerId = containerId,
-                        ids = addressIds,
-                        CustomerName = customerName
-                    }), System.Text.Encoding.UTF8, "application/json"),
-                    RequestUri = new Uri(serviceEndpoint),
-                    Method = HttpMethod.Delete
-                })
-                {
-                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<object>(message);
-                    }
-                }
-            }
+                ContainerId = containerId,
+                ids = addressIds,
+                CustomerName = customerName
+            };
+
+            return await Delete<object>(serviceEndpoint, body);
         }
 
         public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<MailingAddressDto> addresses)
@@ -146,20 +110,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> Validate(string serviceEndpoint, string customerName, Guid containerId)
         {
-            using (var client = new HttpClient())
+            var body = new
             {
-                using (var content = new StringContent(JsonConvert.SerializeObject(new
-                {
-                    ContainerId = containerId,
-                    CustomerName = customerName
-                }), System.Text.Encoding.UTF8, "application/json"))
-                {
-                    using (var message = await client.PostAsync(serviceEndpoint, content).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<string>(message);
-                    }
-                }
-            }
+                ContainerId = containerId,
+                CustomerName = customerName
+            };
+
+            return await Post<string>(serviceEndpoint, body);
         }
     }
 }

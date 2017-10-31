@@ -1,6 +1,7 @@
 ﻿using Kadena.Dto.General;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
+using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Helpers;
@@ -14,6 +15,16 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TemplatedProductService : ClientBase, ITemplatedProductService
     {
+        //public TemplatedProductService() : base()
+        //{
+
+        //}
+
+        //public TemplatedProductService(IAwsV4Signer signer) : base(signer)
+        //{
+
+        //}
+
         public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId, string siteDomain)
         {
             using (var httpClient = new HttpClient())
