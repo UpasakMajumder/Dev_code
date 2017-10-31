@@ -31,6 +31,7 @@ namespace Kadena.WebAPI.Services
                 .Concat(shippingAddresses.Where(sa => sa.Id != customer.DefaultShippingAddressId))
                 .ToList();
             var states = _kentico.GetStates();
+            var countries = _kentico.GetCountries();
             var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
             var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
 
@@ -93,7 +94,7 @@ namespace Kadena.WebAPI.Services
                     Addresses = shippingAddressesSorted
                 },
                 Dialog = new AddressDialog
-                {                    
+                {
                     UserNotification = userNotification,
                     Types = new DialogType
                     {
@@ -106,23 +107,47 @@ namespace Kadena.WebAPI.Services
                         Save = _resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
                     },
                     Fields = new List<DialogField> {
-                        new DialogField { Id="street1",
+                        new DialogField {
+                            Id = "address1",
                             Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                             Type = "text"},
-                        new DialogField { Id="street2",
+                        new DialogField {
+                            Id = "address2",
                             Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
                             Type = "text",
-                            IsOptional = true},
-                        new DialogField { Id="city",
+                            IsOptional = true
+                        },
+                        new DialogField {
+                            Id = "city",
                             Label = _resources.GetResourceString("Kadena.Settings.Addresses.City"),
-                            Type = "text"},
-                        new DialogField { Id="state",
+                            Type = "text"
+                        },
+                        new DialogField {
+                            Id = "state",
                             Label = _resources.GetResourceString("Kadena.Settings.Addresses.State"),
                             Type = "select",
-                            Values = states.Select(s=>(object)s.StateCode).ToList() },
-                        new DialogField { Id="zip",
+                            Values = new List<object>()
+                        },
+                        new DialogField {
+                            Id = "zip",
                             Label = _resources.GetResourceString("Kadena.Settings.Addresses.Zip"),
-                            Type = "text"}
+                            Type = "text"
+                        } ,
+                        new DialogField {
+                            Id = "country",
+                            Label = "Country",
+                            Values = countries
+                                .GroupJoin(states, c => c.Id, s => s.CountryId, (c, sts) => (object) new
+                                {
+                                    Id = c.Id.ToString(),
+                                    Name = c.Name,
+                                    Values = sts.Select(s => new
+                                    {
+                                        Id = s.Id.ToString(),
+                                        Name = s.StateCode
+                                    }).ToArray()
+                                }).ToList()
+                        }
                     }
                 }
             };

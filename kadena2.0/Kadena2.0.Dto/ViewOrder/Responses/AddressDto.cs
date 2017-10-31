@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.Settings
+﻿namespace Kadena.Dto.ViewOrder.Responses
 {
     public class AddressDto
     {

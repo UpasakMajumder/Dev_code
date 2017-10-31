@@ -168,6 +168,7 @@
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
