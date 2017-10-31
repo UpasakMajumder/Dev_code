@@ -62,6 +62,7 @@
     <Compile Include="Clients\OrderViewClient.cs" />
     <Compile Include="Clients\OrderSubmitClient.cs" />
     <Compile Include="Clients\ShippingCostServiceClient.cs" />
+    <Compile Include="Clients\StatisticsClient.cs" />
     <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\IAddressValidationService.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
     <Compile Include="Contracts\IShippingCostServiceClient.cs" />
+    <Compile Include="Contracts\IStatisticsClient.cs" />
     <Compile Include="Contracts\ITemplatedProductService.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="FileFolder.cs" />
