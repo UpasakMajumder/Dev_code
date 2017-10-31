@@ -126,7 +126,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         var customerName = SiteContext.CurrentSiteName;
                         var validationClient = new AddressValidationClient();
                         ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
-                        validationClient.Validate(validationUrl, customerName, _containerId).Wait();
+                        var validationResult = validationClient.Validate(validationUrl, customerName, _containerId).Result;
+                        if (!validationResult.Success)
+                        {
+                            throw new InvalidOperationException(validationResult.ErrorMessages);
+                        }
                         Response.Redirect(ProcessListPageUrl);
                     }
                     catch (Exception ex)
