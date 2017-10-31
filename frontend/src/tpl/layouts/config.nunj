@@ -1,0 +1,308 @@
+<script>
+  var PATH = 'http://localhost:{{ _mockPort }}/api/';
+
+  var config = {
+    localization: {
+      notification: {
+        removeProduct: {
+          title: 'Success',
+          text: 'The product has been removed'
+        },
+        addProduct: {
+          title: 'Success',
+          text: 'The product has been added'
+        },
+        recentOrdersError: {
+          title: 'Recent orders could not be loaded',
+          // title is also from errorMessage
+        },
+        addAddress: {
+          title: 'Success',
+          text: 'The new address has been added'
+        },
+        modifyAddress: {
+          title: 'Success',
+          text: 'The address has been changed'
+        },
+        wrongAddressesRemoved: {
+          title: 'Success',
+          text: 'The addresses with errors have been removed'
+        },
+        serverNotAvailable: {
+          title: 'Error',
+          text: 'The server is not available'
+        },
+        spotfireError: {
+          title: 'Error',
+          text: 'The Spotfire is not available'
+        },
+        chiliNotAvailable: {
+          title: 'Error',
+          text: 'The Chili is not available'
+        },
+        chiliSaved: {
+          title: 'Success',
+          text: 'The template has been saved'
+        }
+      },
+      languages: {
+        locale: 'ja-jp',
+        selected: 'English',
+        url: '#',
+        languages: [
+          {
+            code: '1',
+            language: 'English',
+            url: '#English'
+          },
+          {
+            code: '2',
+            language: 'French',
+            url: '#French'
+          },
+          {
+            code: '3',
+            language: 'German',
+            url: '#German'
+          }
+        ]
+      },
+      staticFields: {
+        validation: {
+          requiredMessage: 'The field is required',
+          optionalLabel: 'optional'
+        },
+        password: {
+          show: 'show',
+          hide: 'hide',
+        }
+      },
+      login: {
+        email: 'E-MAIL',
+        emailPlaceholder: 'your@email.com',
+        emailValidationMessage: 'Please check your email format.',
+        password: 'PASSWORD',
+        passwordPlaceholder: 'password',
+        passwordShow: 'SHOW',
+        passwordHide: 'HIDE',
+        passwordValidationMessage: 'Please enter password.',
+        keepMeLoggedIn: 'Keep me logged in',
+        login: 'Log in'
+      },
+      checkout: {
+        initRenderUIURL: PATH + 'checkout/ui',
+        initTotalDeliveryUIURL: PATH + 'checkout/total-price',
+        changeAddressURL: '',
+        changeDeliveryMethodURL: '',
+        changeQuantityURL: '',
+        removeProductURL: '',
+        submitURL: '',
+        submittableURL: '',
+        addNewAddressURL: '',
+        tAndC: {
+          exists: false,
+          text: 'I have reviewed both the storefront Terms and Conditions and the order and certify that it is acceptable.'
+        }
+      },
+      spotfire: {
+        serverUrl: 'http://10.83.71.208/spotfire/wp/',
+        url: '/Kadena/Standard Reports/Inventory and Sales order Report_Single graph',
+        customerId: '40000240'
+      },
+      userSettings: {
+        addresses: {
+          initUIURL: PATH + 'settings/address/ui',
+          editAddressURL: PATH + 'settings/address/modify'
+        }
+      },
+      cartPreview: {
+        cartPreviewUrl: PATH + 'cartPreview'
+      },
+      orderDetail: {
+        orderDetailUrl: PATH + 'order/detail'
+      },
+      searchPage: {
+        searchPageUrl: PATH + 'search/result'
+      },
+      chiliSave: {
+        url: ''
+      },
+      addToCartUrl: PATH + 'products/add-to-cart',
+      search: {
+        queryUrl: PATH + 'search/query',
+        placeholder: "Search"
+      },
+      pagination: {
+        template: {
+          string: "Showing [FROM] to [TO] of [TOTAL] entries",
+          from: "[FROM]",
+          to: "[TO]",
+          total: "[TOTAL]",
+        },
+        nextLabel: "Next",
+        backLabel: "Previous"
+      },
+      recentOrders: {
+        getHeaders: PATH + 'order/recent/ui',
+        getPageItems: PATH + 'order/recent/page'
+      },
+      modifyMailingList: {
+        errorList: {
+          header: "We have found 8 errors in your file",
+          tip: "To correct your .csv file, view the line number, go to your original file and check the respective record.",
+          btns: {
+            reupload: {
+              text: "Reupload .csv",
+              url: "#"
+            },
+            correct: "Correct errors"
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "AA",
+              postalCode: "94116",
+              errorMessage: "Error"
+            },
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "",
+              postalCode: "94116",
+              errorMessage: "Error"
+            }
+          ]
+        },
+        successList: {
+          header: "332 addresses have been processed successfuly",
+          btns: {
+            use: {
+              text: "Use only correct",
+              url: PATH + 'mailing-list/use-correct'
+            }
+          },
+          items: [
+            {
+              id: "1",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "2",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "3",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "4",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            },
+            {
+              id: "5",
+              fullName: "Jane Doe",
+              firstAddressLine: "2167 255th Ave",
+              secondAddressLine: "",
+              city: "San Francisco",
+              state: "CA",
+              postalCode: "94116"
+            }
+          ]
+        },
+        formInfo: {
+          title: "We have found errors in the following entries:",
+          downloadErrorFile: {
+            text: "Download error file",
+            url: "#"
+          },
+          discardChanges: "Discard changes",
+          confirmChanges: {
+            text: "Confirm & reprocess addresses",
+            redirect: "https://google.com",
+            request: PATH + 'mailing-list/reprocess'
+          },
+          message: {
+            required: "The field is required"
+          },
+          fields: {
+            fullName: {
+              header: "Full Name",
+              required: true
+            },
+            firstAddressLine: {
+              header: "First Address Line",
+              required: true
+            },
+            secondAddressLine: {
+              header: "Second Address",
+            },
+            city: {
+              header: "City",
+              required: true
+            },
+            state: {
+              header: "State",
+              required: true,
+              value: ['AA', 'BB']
+            },
+            postalCode: {
+              header: "Postal Code",
+              required: true
+            },
+            error: {
+              header: "Error"
+            }
+          }
+        }
+      },
+      checkoutButtons: {
+        checkout: {
+          text: 'Proceed To Checkout',
+          url: '/shopping-cart.html'
+        },
+        products: {
+          text: 'Continue Shopping',
+          url: '/products.html'
+        }
+      },
+      manageProducts: {
+        templatesUrl: PATH + 'products/managed'
+      },
+      products: {
+        addToFavorites: "Set product as favorite",
+        loadProductsUrl: PATH + 'products/all',
+        loadFavoritesProductsUrl: PATH + 'products/favourites',
+        markProductFavouriteUrl: PATH + 'products/favourite',
+        unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
+        nodeAliasPath: "/Products"
+      }
+    }
+  };
+</script>
