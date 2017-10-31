@@ -1,5 +1,7 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.Ecommerce;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
@@ -7,11 +9,15 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
+using Kadena2.MicroserviceClients.Clients;
+using System;
 
 namespace Kadena.CMSWebParts.Kadena.Metrics
 {
     public partial class DashboardMetrics : CMSAbstractWebPart
     {
+        private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
+        
         #region Public methods
 
         public override void OnContentLoaded()
@@ -122,7 +128,23 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 
         private OrderStatisticsData GetOrderStatisticsInternal()
         {
-            return ServiceHelper.GetOrderStatistics();
+            var statisticUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getGetOrderStatisticsSettingsKey}");
+            var customerName = SiteContext.CurrentSiteName;
+            var statisticClient = new StatisticsClient();
+            var requestResult = statisticClient.GetOrderStatistics(statisticUrl, customerName).Result;
+            if (requestResult.Success)
+            {
+                return new OrderStatisticsData
+                {
+                    numberOfOrders = requestResult.Payload.NumberOfOrders,
+                    productionAvgTime = requestResult.Payload.ProductionAvgTime
+                };
+            }
+            else
+            {
+                EventLogProvider.LogException("DASHBOARD", "GET ORDER STATISTICS", new InvalidOperationException(requestResult.ErrorMessages));
+                return null;
+            }
         }
 
         #endregion

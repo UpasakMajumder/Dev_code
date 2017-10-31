@@ -6,9 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Kadena.Old_App_Code.Kadena.Orders;
 using CMS.Ecommerce;
-using CMS.EventLog;
 using Kadena.Dto.General;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 
@@ -25,7 +23,6 @@ namespace Kadena.Old_App_Code.Helpers
         private const string _getMailingListByIdSettingKey = "KDA_GetMailingListByIdUrl";
         private const string _deleteAddressesSettingKey = "KDA_DeleteAddressesUrl";
         private const string _getAddressesSettingKey = "KDA_GetMailingAddressesUrl";
-        private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
 
         private const string _customerNotSpecifiedMessage = "CustomerName not specified. Check settings for your site.";
         private const string _valueEmptyMessage = "Value can not be empty.";
@@ -345,54 +342,6 @@ namespace Kadena.Old_App_Code.Helpers
                         {
                             throw new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase);
                         }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns order statistics for current customer (website).
-        /// </summary>
-        /// <returns></returns>
-        // Statistic Service
-        public static OrderStatisticsData GetOrderStatistics()
-        {
-            var customerName = GetCustomerName();
-
-            Uri orderStatisticsUrl;
-            if (!Uri.TryCreate(
-                    string.Format("{0}?customerName={1}",
-                    SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getGetOrderStatisticsSettingsKey}"),
-                    customerName)
-                , UriKind.Absolute
-                , out orderStatisticsUrl))
-            {
-                EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_getOrderStatisticsIncorrectMessage));
-                return null;
-            }
-
-            using (var client = new HttpClient())
-            {
-                using (var message = client.GetAsync(orderStatisticsUrl))
-                {
-                    BaseResponseDto<OrderStatisticsData> response;
-                    try
-                    {
-                        response = (BaseResponseDto<OrderStatisticsData>)message.Result;
-                    }
-                    catch (JsonReaderException e)
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new InvalidOperationException(_responseIncorrectMessage, e));
-                        return null;
-                    }
-                    if (response?.Success ?? false)
-                    {
-                        return response.Payload;
-                    }
-                    else
-                    {
-                        EventLogProvider.LogException("SERVICE HELPER", "GET ORDER STATISTICS", new HttpRequestException(response?.ErrorMessages ?? message.Result.ReasonPhrase));
-                        return null;
                     }
                 }
             }
