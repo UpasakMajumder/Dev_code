@@ -29,6 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         public string SuppliantDomain { get; set; }
 
+        // TODO consider using static or singleton, based on how we will store credentials
         protected readonly IAwsV4Signer signer;
 
         public ClientBase()
@@ -61,27 +62,27 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         public async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
-            return await Send<TResult>(HttpMethod.Get, url);
+            return await Send<TResult>(HttpMethod.Get, url).ConfigureAwait(false); ;
         }
 
         public async Task<BaseResponseDto<TResult>> Post<TResult>(string url, object body)
         {
-            return await Send<TResult>(HttpMethod.Post, url, body);
+            return await Send<TResult>(HttpMethod.Post, url, body).ConfigureAwait(false); ;
         }
 
         public async Task<BaseResponseDto<TResult>> Delete<TResult>(string url, object body = null)
         {
-            return await Send<TResult>(HttpMethod.Delete, url, body);
+            return await Send<TResult>(HttpMethod.Delete, url, body).ConfigureAwait(false); ;
         }
 
         public async Task<BaseResponseDto<TResult>> Patch<TResult>(string url, object body)
         {
-            return await Send<TResult>(new HttpMethod("PATCH"), url, body);
+            return await Send<TResult>(new HttpMethod("PATCH"), url, body).ConfigureAwait(false); ;
         }
 
         public async Task<BaseResponseDto<TResult>> Put<TResult>(string url, object body)
         {
-            return await Send<TResult>(HttpMethod.Put, url, body);
+            return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
         public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method,  string url, object body = null)
@@ -102,13 +103,13 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
                     if (SignRequest)
                     {
-                        await SignRequestMessage(request);
+                        await SignRequestMessage(request).ConfigureAwait(false);
                     }
 
                     // TODO consider try-catch ?
                     
-                    var response = await client.SendAsync(request);
-                    return await ReadResponseJson<TResult>(response);
+                    var response = await client.SendAsync(request).ConfigureAwait(false);
+                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
                 }
             }
         }
