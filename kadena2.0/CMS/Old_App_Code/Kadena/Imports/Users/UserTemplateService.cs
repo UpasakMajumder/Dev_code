@@ -7,10 +7,8 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
-    public class UserTemplateService
+    public class UserTemplateService : TemplateServiceBase
     {
-        private static readonly int MaxRowsPerSheet = 1024 * 1024;
-
         public byte[] GetUserTemplateFile(int siteID)
         {
             var columns = GetImportColumns<UserDto>();
@@ -93,43 +91,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             validation.ShowErrorBox = true;
             validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
             sheet.AddValidationData(validation);
-        }
-
-        private static void CreateSheetHeader(string[] columns, ISheet sheet)
-        {
-            var row = sheet.CreateRow(0);
-            var style = CreateHeaderStyle(sheet.Workbook);
-            var charWidth = 256;
-            var minimalColumnWidth = charWidth * 18;
-
-            for (int i = 0; i < columns.Length; i++)
-            {
-                var cell = row.CreateCell(i);
-                cell.SetCellValue(columns[i]);
-                cell.CellStyle = style;
-                sheet.AutoSizeColumn(i);
-
-                if (sheet.GetColumnWidth(i) < minimalColumnWidth)
-                {
-                    sheet.SetColumnWidth(i, minimalColumnWidth);
-                }
-            }
-        }
-
-        private static ICellStyle CreateHeaderStyle(IWorkbook workbook)
-        {
-            var font = workbook.CreateFont();
-            font.IsBold = true;
-            var style = workbook.CreateCellStyle();
-            style.SetFont(font);
-            return style;
-        }
-
-        private string[] GetImportColumns<T>() where T:class
-        {
-            return ImportHelper.GetHeaderProperties<T>()
-                .Select(p => p.Key)
-                .ToArray();
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
-    public class UserImportService
+    public class UserImportService : ImportServiceBase
     {
         public ImportResult ProcessUserImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
@@ -108,7 +108,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                     try
                     {
                         List<string> validationResults;
-                        if (!ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
+                        if (!ValidatorHelper.ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
                         {
                             validationResults.Sort();
 
@@ -162,97 +162,24 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             return customer;
         }
 
-        
-
-        private List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
-        {
-            var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
-            if (rows.Count <= 1)
-            {
-                throw new Exception("The file contains no data");
-            }
-            return rows;
-        }
-
-        private SiteInfo GetSite(int siteID)
-        {
-            var site = SiteInfoProvider.GetSiteInfo(siteID);
-            if (site == null)
-            {
-                throw new Exception("Invalid site id " + siteID);
-            }
-            return site;
-        }
-
         private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
-            bool isValid = ValidateDto(userDto, out validationErrors, errorMessageFormat);
+            bool isValid = ValidatorHelper.ValidateDto(userDto, out validationErrors, errorMessageFormat);
 
             // validate special rules
-            if (!ValidateEmail(userDto.Email))
+            if (!ValidatorHelper.ValidateEmail(userDto.Email))
             {
                 isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Email), "Not a valid email address"));
             }
-            if (!ValidateRole(userDto.Role, roles))
+            if (!ValidatorHelper.ValidateRole(userDto.Role, roles))
             {
                 isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
 
             return isValid;
-        }
-
-        private bool ValidateDto(object dto, out List<string> validationErrors, string errorMessageFormat)
-        {
-            // validate annotations
-            var context = new ValidationContext(dto, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(
-                dto, context, validationResults,
-                validateAllProperties: true
-            );
-
-            validationErrors = new List<string>();
-            if (!isValid)
-            {
-                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
-                {
-                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
-                }
-            }
-
-            return isValid;
-        }
-
-
-        private bool ValidateEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return false;
-            }
-
-            var parts = email.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length == 2)
-            {
-                return parts[1]
-                    .Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Length >= 2;
-            }
-
-            return false;
-        }
-
-        private bool ValidateRole(string role, Role[] roles)
-        {
-            if (string.IsNullOrWhiteSpace(role))
-            {
-                return false;
-            }
-
-            return roles.Any(r => r.Description == role);
         }
 
         private CountryInfo FindCountry(string country)
