@@ -6,10 +6,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
     {
         [Header(0, "Contact name")]
         [MaxLength(30)]
+        [Required]
         public string ContactName { get; set; }
 
         [Header(1, "Address line")]
         [MaxLength(50)]
+        [Required]
         public string AddressLine { get; set; }
 
         [Header(2, "Address line 2")]
@@ -18,14 +20,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
         [Header(3, "City")]
         [MaxLength(30)]
+        [Required]
         public string City { get; set; }
 
         [Header(4, "Postal code")]
         [MaxLength(30)]
+        [Required]
         public string PostalCode { get; set; }
 
         [Header(5, "Country")]
         [MaxLength(30)]
+        [Required]
         public string Country { get; set; }
 
         [Header(6, "State")]
