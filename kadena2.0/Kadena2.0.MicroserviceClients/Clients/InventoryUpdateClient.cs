@@ -17,7 +17,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string serviceEndpoint, string clientId)
         {
             var url = $"{serviceEndpoint.TrimEnd('/')}/api/Inventory?erpClientId={clientId}";
-            return await Get<InventoryDataItemDto[]>(serviceEndpoint);
+            return await Get<InventoryDataItemDto[]>(serviceEndpoint).ConfigureAwait(false);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     {
                         var contentStream = await message.Content.ReadAsStreamAsync();
                         var resultStream = new MemoryStream();
-                        await contentStream.CopyToAsync(resultStream);
+                        await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
                         return new BaseResponseDto<Stream>
                         {
                             Success = true,
@@ -41,7 +41,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     }
                     else
                     {
-                        return await ReadResponseJson<Stream>(message);
+                        return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
                     }
                 }
             }

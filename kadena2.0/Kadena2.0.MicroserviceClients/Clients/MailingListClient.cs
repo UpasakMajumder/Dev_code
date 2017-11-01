@@ -28,27 +28,27 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId)
         {
             var url = $"{serviceEndpoint}/{containerId}";
-            return await Get<IEnumerable<MailingAddressDto>>(url);
+            return await Get<IEnumerable<MailingAddressDto>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId)
         {
             string url = $"{serviceEndpoint}/{customerName}/{containerId}";
-            return await Get<MailingListDataDTO>(url);
+            return await Get<MailingListDataDTO>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
         {
             var encodedCustomerName = HttpUtility.UrlEncode(customerName);
             var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}";
-            return await Get<MailingListDataDTO[]>(url);
+            return await Get<MailingListDataDTO[]>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, Guid mailingListId)
         {
             var encodedCustomerName = HttpUtility.UrlEncode(customerName);
             var url = $"{serviceEndpoint.TrimEnd('/')}/{encodedCustomerName}/{mailingListId}";
-            return await Delete<object>(url);
+            return await Delete<object>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, DateTime olderThan)
@@ -59,7 +59,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 validTo = olderThan
             };
 
-            return await Delete<object>(serviceEndpoint, body);
+            return await Delete<object>(serviceEndpoint, body).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> RemoveAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<Guid> addressIds = null)
@@ -71,7 +71,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 CustomerName = customerName
             };
 
-            return await Delete<object>(serviceEndpoint, body);
+            return await Delete<object>(serviceEndpoint, body).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<MailingAddressDto> addresses)
@@ -102,7 +102,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
-                        return await ReadResponseJson<IEnumerable<string>>(message);
+                        return await ReadResponseJson<IEnumerable<string>>(message).ConfigureAwait(false);
                     }
                 }
             }
@@ -116,7 +116,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 CustomerName = customerName
             };
 
-            return await Post<string>(serviceEndpoint, body);
+            return await Post<string>(serviceEndpoint, body).ConfigureAwait(false);
         }
     }
 }

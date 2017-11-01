@@ -40,7 +40,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
                     using (var message = await client.PostAsync(serviceEndpoint, content).ConfigureAwait(false))
                     {
-                        return await ReadResponseJson<string>(message);
+                        return await ReadResponseJson<string>(message).ConfigureAwait(false);
                     }
                 }
             }

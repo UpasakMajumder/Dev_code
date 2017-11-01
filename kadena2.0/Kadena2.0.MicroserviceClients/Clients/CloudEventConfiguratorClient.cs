@@ -45,7 +45,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
             };
 
-            return await Send<string>(HttpMethod.Put, url, body);
+            return await Send<string>(HttpMethod.Put, url, body).ConfigureAwait(false);
         }
     }
 }
