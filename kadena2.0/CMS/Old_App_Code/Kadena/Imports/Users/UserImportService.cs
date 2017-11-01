@@ -132,7 +132,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                     catch (Exception ex)
                     {
                         statusMessages.Add("There was an error when processing item number " + currentItemNumber);
-                        EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                        EventLogProvider.LogException("Import addresses", "EXCEPTION", ex);
                     }
 
                     currentItemNumber++;
