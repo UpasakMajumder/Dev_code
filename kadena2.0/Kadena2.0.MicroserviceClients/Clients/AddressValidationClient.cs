@@ -1,11 +1,7 @@
 ﻿using Kadena2.MicroserviceClients.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
-using System.Net.Http;
 using Kadena2.MicroserviceClients.Clients.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
@@ -18,7 +14,7 @@ namespace Kadena2.MicroserviceClients.Clients
             {
                 ContainerId = containerId,
                 CustomerName = customerName
-            });
+            }).ConfigureAwait(false);
         }
     }
 }
