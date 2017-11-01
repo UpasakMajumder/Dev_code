@@ -23,7 +23,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string endPoint, string workGroupName)
         {
             var url = $"{endPoint}/{workGroupName}";
-            return await Get<IEnumerable<ProjectDto>>(url);
+            return await Get<IEnumerable<ProjectDto>>(url).ConfigureAwait(false);
         }
     }
 }

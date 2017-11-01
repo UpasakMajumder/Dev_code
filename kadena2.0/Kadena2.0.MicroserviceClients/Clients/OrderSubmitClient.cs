@@ -17,13 +17,13 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<string>> FinishOrder(string serviceEndpoint, string orderNumber)
         {
             // TODO: Was timeout = 60s here, I think useless
-            return await Patch<string>(serviceEndpoint, orderNumber);
+            return await Patch<string>(serviceEndpoint, orderNumber).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
         {
             // TODO: Was timeout = 60s here, I think useless
-            return await Post<string>(serviceEndpoint, orderData);
+            return await Post<string>(serviceEndpoint, orderData).ConfigureAwait(false);
         }
     }
 }

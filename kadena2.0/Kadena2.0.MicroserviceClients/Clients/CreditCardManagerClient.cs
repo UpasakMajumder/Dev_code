@@ -22,7 +22,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<object>> CreateCustomerContainer(string serviceEndpoint, CreateCustomerContainerRequestDto request)
         {
             var url = $"{serviceEndpoint.TrimEnd('/')}/api/Customer/";
-            return await Post<object>(url, request);
+            return await Post<object>(url, request).ConfigureAwait(false);
         }
     }
 }

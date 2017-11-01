@@ -21,7 +21,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<decimal>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
         {
-            return await Post<decimal>(serviceEndpoint, request);
+            return await Post<decimal>(serviceEndpoint, request).ConfigureAwait(false);
         }
     }
 }
