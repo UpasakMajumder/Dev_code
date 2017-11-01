@@ -11,14 +11,7 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics(string endPoint, string customerName)
         {
-            string url = $"{endPoint}?customerName={customerName}";
-            using (var client = new HttpClient())
-            {
-                using (var message = await client.GetAsync(url).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<OrderStatisticDto>(message);
-                }
-            }
+            return await Get<OrderStatisticDto>($"{endPoint}?customerName={customerName}").ConfigureAwait(false);
         }
     }
 }
