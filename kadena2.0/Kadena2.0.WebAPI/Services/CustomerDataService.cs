@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.Services
                     Street = new List<string> { address.Address1, address.Address2 },
                     City = address.City,
                     Country = country.Name,
-                    State = state.StateCode,
+                    State = state?.StateCode,
                     Zip = address.Zip
                 },
                 Claims = claims,
