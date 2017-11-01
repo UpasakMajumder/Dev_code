@@ -54,6 +54,8 @@ namespace Kadena.WebAPI.Services
             this.taxService = taxService;
             this.templateService = templateService;
             this.backgroundWorker = backgroundWorker;
+
+            this.templateService.SuppliantDomain = this.kenticoProvider.GetCurrentSiteDomain();
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -335,7 +337,7 @@ namespace Kadena.WebAPI.Services
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
         {
             string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString(), kenticoProvider.GetCurrentSiteDomain());
+            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
             if (response.Success && response.Payload != null)
             {
                 return new Guid(response.Payload.TaskId);

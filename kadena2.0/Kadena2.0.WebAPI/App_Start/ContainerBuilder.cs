@@ -68,7 +68,7 @@ namespace Kadena.WebAPI
         {
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
-            container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
+            container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));            
             //container.Register<IAmazonSecurityTokenService, AmazonSecurityTokenServiceClient>();
             return container;
         }

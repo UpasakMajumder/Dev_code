@@ -28,12 +28,14 @@ namespace Kadena.WebAPI.Services
             _templateClient = templateClient;
             _kentico = kentico;
             _users = users;
+
+            _templateClient.SuppliantDomain = _kentico.GetCurrentSiteDomain();
         }
 
         public async Task<bool> SetName(Guid templateId, string name)
         {
             string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name, _kentico.GetCurrentSiteDomain());
+            var result = await _templateClient.SetName(endpoint, templateId, name);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -80,8 +82,7 @@ namespace Kadena.WebAPI.Services
             var requestResult = await _templateClient
                 .GetTemplates(clientEndpoint,
                     _users.GetCurrentUser().UserId,
-                    product.ProductChiliTemplateID,
-                    _kentico.GetCurrentSiteDomain());
+                    product.ProductChiliTemplateID);
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
