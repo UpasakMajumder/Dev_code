@@ -102,20 +102,40 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
                 var customer = EnsureCustomer(user, siteId);
 
+                var currentItemNumber = 1;
                 foreach (var addressDto in addresses)
                 {
-                    CreateCustomerAddress(customer.CustomerID, new UserDto
+                    try
                     {
-                        Country = addressDto.Country,
-                        State = addressDto.State,
-                        AddressLine = addressDto.AddressLine,
-                        AddressLine2 = addressDto.AddressLine2,
-                        City = addressDto.City,
-                        ContactName = addressDto.ContactName,
-                        PostalCode = addressDto.PostalCode,
-                        PhoneNumber = addressDto.PhoneNumber
+                        List<string> validationResults;
+                        if (!ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
+                        {
+                            validationResults.Sort();
 
-                    });
+                            statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                            continue;
+                        }
+
+                        CreateCustomerAddress(customer.CustomerID, new UserDto
+                        {
+                            Country = addressDto.Country,
+                            State = addressDto.State,
+                            AddressLine = addressDto.AddressLine,
+                            AddressLine2 = addressDto.AddressLine2,
+                            City = addressDto.City,
+                            ContactName = addressDto.ContactName,
+                            PostalCode = addressDto.PostalCode,
+                            PhoneNumber = addressDto.PhoneNumber
+
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        statusMessages.Add("There was an error when processing item number " + currentItemNumber);
+                        EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                    }
+
+                    currentItemNumber++;
                 }
             }
 
@@ -167,23 +187,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
-
-            // validate annotations
-            var context = new ValidationContext(userDto, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(
-                userDto, context, validationResults,
-                validateAllProperties: true
-            );
-
-            validationErrors = new List<string>();
-            if (!isValid)
-            {
-                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
-                {
-                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
-                }
-            }
+            bool isValid = ValidateDto(userDto, out validationErrors, errorMessageFormat);
 
             // validate special rules
             if (!ValidateEmail(userDto.Email))
@@ -199,6 +203,29 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             return isValid;
         }
+
+        private bool ValidateDto(object dto, out List<string> validationErrors, string errorMessageFormat)
+        {
+            // validate annotations
+            var context = new ValidationContext(dto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(
+                dto, context, validationResults,
+                validateAllProperties: true
+            );
+
+            validationErrors = new List<string>();
+            if (!isValid)
+            {
+                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
+                {
+                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
+                }
+            }
+
+            return isValid;
+        }
+
 
         private bool ValidateEmail(string email)
         {
