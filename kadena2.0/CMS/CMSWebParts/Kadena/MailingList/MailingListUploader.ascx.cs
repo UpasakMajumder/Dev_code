@@ -39,7 +39,19 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (!string.IsNullOrWhiteSpace(containerId))
             {
                 var id = new Guid(containerId);
-                _container = ServiceHelper.GetMailingList(id);
+
+                var mailingListUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListByIdUrl");
+                var mailingListClient = new MailingListClient();
+
+                var mailingListResponse = mailingListClient.GetMailingList(mailingListUrl, SiteContext.CurrentSiteName, id).Result;
+                if (mailingListResponse.Success)
+                {
+                    _container = mailingListResponse.Payload;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", mailingListResponse.ErrorMessages, siteId: CurrentSite.SiteID);
+                }
             }
             if (!IsPostBack)
             {
@@ -218,7 +230,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         else
                         {
                             containerId = new Guid(_container.Id);
-                            ServiceHelper.RemoveAddresses(containerId);
+                            var removeAddressesUrl = SettingsKeyInfoProvider.GetValue("KDA_DeleteAddressesUrl");
+                            var customerName = SiteContext.CurrentSiteName;
+                            var mailingClient = new MailingListClient();
+                            var removeResult = mailingClient.RemoveAddresses(removeAddressesUrl, customerName, containerId).Result;
+                            if (!removeResult.Success)
+                            {
+                                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", removeResult.ErrorMessages, siteId: CurrentSite.SiteID);
+                            }
                         }
                         var fileId = uploadResult.Payload;
                         var nextStepUrl = RedirectPage;
