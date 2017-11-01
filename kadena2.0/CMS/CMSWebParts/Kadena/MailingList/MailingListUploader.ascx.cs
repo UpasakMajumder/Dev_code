@@ -1,5 +1,6 @@
 ﻿using CMS.CustomTables;
 using CMS.DataEngine;
+using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
@@ -220,19 +221,36 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     if (uploadResult.Success)
                     {
                         var containerId = Guid.Empty;
+                        var mailingClient = new MailingListClient();
                         if (_container == null)
                         {
                             var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
                             var product = Request.Form[GetString("Kadena.MailingList.Product")];
                             var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                            containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
+                            var mailingUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_MailingServiceUrl");
+                            var customerName = SiteContext.CurrentSiteName;
+                            var createResult = mailingClient.CreateMailingContainer(
+                                mailingUrl,
+                                customerName,
+                                fileName,
+                                mailType,
+                                product,
+                                validity,
+                                ECommerceContext.CurrentCustomer?.CustomerID.ToString()).Result;
+                            if (createResult.Success)
+                            {
+                                containerId = createResult.Payload;
+                            }
+                            else
+                            {
+                                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", createResult.ErrorMessages, siteId: CurrentSite.SiteID);
+                            }
                         }
                         else
                         {
                             containerId = new Guid(_container.Id);
-                            var removeAddressesUrl = SettingsKeyInfoProvider.GetValue("KDA_DeleteAddressesUrl");
+                            var removeAddressesUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DeleteAddressesUrl");
                             var customerName = SiteContext.CurrentSiteName;
-                            var mailingClient = new MailingListClient();
                             var removeResult = mailingClient.RemoveAddresses(removeAddressesUrl, customerName, containerId).Result;
                             if (!removeResult.Success)
                             {
