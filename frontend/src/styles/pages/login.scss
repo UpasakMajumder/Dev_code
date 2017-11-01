@@ -10,6 +10,8 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
   right: 0;
 
   &__form {
+    @include rem(padding, 0 60px);
+
     @extend %flex--center--center;
     flex-direction: column;
     position: fixed;
@@ -25,7 +27,6 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
   }
 
   &__form-inner {
-    @include rem(padding, 30px 60px);
     overflow-y: auto;
     width: 100%;
   }
@@ -37,7 +38,6 @@ $login-bg-layer-color: rgba(255, 255, 255, .83);
 
   &__custom-logo {
     text-align: center;
-    height: 40px;
 
     img {
       height: 100%;
