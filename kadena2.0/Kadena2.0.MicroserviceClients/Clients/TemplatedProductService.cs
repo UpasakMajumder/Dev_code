@@ -19,14 +19,14 @@ namespace Kadena2.MicroserviceClients.Clients
             {
                 var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
                 var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
-                return await ReadResponseJson<GeneratePdfTaskResponseDto>(response);
+                return await ReadResponseJson<GeneratePdfTaskResponseDto>(response).ConfigureAwait(false);
             }
         }
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId)
         {
             var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdftask/{taskId}";
-            return await Get<GeneratePdfTaskStatusResponseDto>(url);
+            return await Get<GeneratePdfTaskStatusResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<bool?>> SetName(string endpoint, Guid templateId, string name)
@@ -38,25 +38,25 @@ namespace Kadena2.MicroserviceClients.Clients
                 name = name
             };
 
-            return await Put<bool?>(url, body);
+            return await Put<bool?>(url, body).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(string endpoint, int userId, Guid masterTemplateId)
         {
             var url = $"{endpoint.TrimEnd('/')}/api/template/{masterTemplateId}/users/{userId}";
-            return await Get<List<TemplateServiceDocumentResponse>>(url);
+            return await Get<List<TemplateServiceDocumentResponse>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> GetEditorUrl(string endpoint, Guid templateId, Guid workSpaceId, bool useHtml, bool use3d)
         {
             var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
-            return await Get<string>(url);
+            return await Get<string>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> CreateNewTemplate(string endpoint, NewTemplateRequestDto request)
         {
             var url = $"{endpoint.TrimEnd('/')}/api/template";
-            return await Post<string>(url, request);
+            return await Post<string>(url, request).ConfigureAwait(false);
         }
     }
 }
