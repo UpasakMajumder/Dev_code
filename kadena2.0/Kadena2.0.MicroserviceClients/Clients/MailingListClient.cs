@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using System.IO;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -130,6 +131,33 @@ namespace Kadena2.MicroserviceClients.Clients
                 mailType = mailType,
                 productType = product,
                 customerId = customerId
+            }).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<object>> UploadMapping(string endPoint, string customerName, string fileId, Guid containerId, Dictionary<string, int> mapping)
+        {
+            var uploadMappingUrl = $"{endPoint}/api/DeliveryAddress";
+            string jsonMapping = string.Empty;
+            using (var sw = new StringWriter())
+            {
+                using (var writer = new JsonTextWriter(sw))
+                {
+                    writer.WriteStartObject();
+                    foreach (var map in mapping)
+                    {
+                        writer.WritePropertyName(map.Key);
+                        writer.WriteValue(map.Value);
+                    }
+                    writer.WriteEndObject();
+                    jsonMapping = sw.ToString();
+                }
+            }
+            return await Post<object>(uploadMappingUrl, new
+            {
+                mapping = jsonMapping,
+                fileId = fileId,
+                customerName = customerName,
+                containerId = containerId
             }).ConfigureAwait(false);
         }
     }

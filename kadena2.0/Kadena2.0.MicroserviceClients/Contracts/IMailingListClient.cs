@@ -61,5 +61,13 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// <param name="validityDays">Validity option for mailing container.</param>
         /// <returns>Id of mailing container.</returns>
         Task<BaseResponseDto<Guid>> CreateMailingContainer(string endPoint, string customerName, string name, string mailType, string product, int validityDays, string customerId);
+
+        /// <summary>
+        /// Uploads specified mapping to microservice with binding to specified file and container.
+        /// </summary>
+        /// <param name="fileId">Id of file.</param>
+        /// <param name="containerId">Id of mailing container.</param>
+        /// <param name="mapping">Dictionary with mapping field names to index of column.</param>
+        Task<BaseResponseDto<object>> UploadMapping(string endPoint, string customerName, string fileId, Guid containerId, Dictionary<string, int> mapping);
     }
 }
