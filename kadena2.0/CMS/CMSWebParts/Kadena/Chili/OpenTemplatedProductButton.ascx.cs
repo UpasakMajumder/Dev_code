@@ -68,7 +68,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
             var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
             var use3d = CurrentDocument.GetBooleanValue("ProductChili3dEnabled", false);
-            var client = new TemplatedProductService();
+            var client = new TemplatedProductService() { SuppliantDomain = RequestContext.CurrentDomain };
             var requestBody = new NewTemplateRequestDto
             {
                 User = MembershipContext.AuthenticatedUser.UserID.ToString(),
@@ -77,7 +77,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 UseHtmlEditor = false,
                 Use3d = use3d
             };
-            var newTemplateUrl = client.CreateNewTemplate(ServiceBaseUrl, requestBody, RequestContext.CurrentDomain).Result?.Payload;
+            var newTemplateUrl = client.CreateNewTemplate(ServiceBaseUrl, requestBody).Result?.Payload;
             if (!string.IsNullOrEmpty(newTemplateUrl))
             {
                 var uri = new Uri(newTemplateUrl);

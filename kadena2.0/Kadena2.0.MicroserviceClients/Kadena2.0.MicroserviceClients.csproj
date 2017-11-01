@@ -71,6 +71,8 @@
     <Compile Include="Clients\ShippingCostServiceClient.cs" />
     <Compile Include="Clients\TemplatedProductService.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Contracts\Base\ISignedRequestClient.cs" />
+    <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Helpers\DefaultAwsV4Signer.cs" />
     <Compile Include="Helpers\IAwsV4Signer.cs" />
-    <Compile Include="Helpers\MicroserviceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

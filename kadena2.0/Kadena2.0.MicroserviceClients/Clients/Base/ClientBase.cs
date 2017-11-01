@@ -79,6 +79,11 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(new HttpMethod("PATCH"), url, body);
         }
 
+        public async Task<BaseResponseDto<TResult>> Put<TResult>(string url, object body)
+        {
+            return await Send<TResult>(HttpMethod.Put, url, body);
+        }
+
         public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method,  string url, object body = null)
         {
             using (var client = new HttpClient())
