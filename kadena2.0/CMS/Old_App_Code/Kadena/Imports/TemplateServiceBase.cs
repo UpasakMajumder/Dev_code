@@ -1,4 +1,5 @@
 ﻿using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using System.IO;
 using System.Linq;
 
@@ -53,6 +54,27 @@ namespace Kadena.Old_App_Code.Kadena.Imports
                 var bytes = ms.ToArray();
                 return bytes;
             }
+        }
+
+        protected void AddOneFromManyValidation(int columnIndex, string sheetWithValuesName, string[] values, ISheet sheet)
+        {
+            var workbook = sheet.Workbook;
+            var valuesSheet = workbook.CreateSheet(sheetWithValuesName);
+            workbook.SetSheetHidden(1, SheetState.VeryHidden);
+            for (int i = 0; i < values.Length; i++)
+            {
+                valuesSheet.CreateRow(i)
+                    .CreateCell(0)
+                    .SetCellValue(values[i]);
+            }
+
+            var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, columnIndex, columnIndex);
+            var validationHelper = sheet.GetDataValidationHelper();
+            var validationConstraint = validationHelper.CreateFormulaListConstraint($"{sheetWithValuesName}!$A$1:$A$" + values.Length);
+            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
+            validation.ShowErrorBox = true;
+            validation.CreateErrorBox("Validation failed", "Please choose a valid value.");
+            sheet.AddValidationData(validation);
         }
     }
 }

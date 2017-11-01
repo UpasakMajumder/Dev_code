@@ -61,31 +61,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             if (roles != null)
             {
                 var rolesColumnIndex = columns.Length - 1; // role column should be last
-                AddRolesValidation(rolesColumnIndex, roles, sheet);
+                AddOneFromManyValidation(rolesColumnIndex, "Roles", roles, sheet);
             }
 
             return GetWorkbookBytes(workbook);
-        }
-
-        private void AddRolesValidation(int rolesColumnIndex, string[] roles, ISheet sheet)
-        {
-            var workbook = sheet.Workbook;
-            var rolesSheet = workbook.CreateSheet("Roles");
-            workbook.SetSheetHidden(1, SheetState.VeryHidden);
-            for (int i = 0; i < roles.Length; i++)
-            {
-                rolesSheet.CreateRow(i)
-                    .CreateCell(0)
-                    .SetCellValue(roles[i]);
-            }
-
-            var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
-            var validationHelper = sheet.GetDataValidationHelper();
-            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A$1:$A$" + roles.Length);
-            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
-            validation.ShowErrorBox = true;
-            validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
-            sheet.AddValidationData(validation);
-        }
+        }      
     }
 }
