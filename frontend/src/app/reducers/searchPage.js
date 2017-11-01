@@ -6,7 +6,8 @@ const defaultState = {
   pagesPage: 0,
   productsPage: 0,
   productsPaginationLimit: 8,
-  getAllResults: false
+  getAllResults: false,
+  noResultMessage: ''
 };
 
 export default (state = defaultState, action) => {
