@@ -745,6 +745,13 @@
     <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.designer.cs">
       <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx.cs">
+      <DependentUpon>ProductsImport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx.designer.cs">
+      <DependentUpon>ProductsImport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Addresses.aspx.cs">
       <DependentUpon>Addresses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1001,6 +1008,7 @@
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
+    <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Addresses.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
     <Content Include="CMSPages\Kadena\S3Uploader.aspx" />

@@ -22,9 +22,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(4, "Description")]
         public string Description { get; set; }
 
-        [Header(5, "Representing")]
-        
-        public string Representing { get; set; }
+        [Header(5, "Product Type")]
+        public string ProductType { get; set; }
 
         [Header(6, "Customer Reference Number")]
         public string CustomerReferenceNumber { get; set; }
@@ -59,45 +58,42 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(16, "Bindery")]
         public string Bindery { get; set; }
 
-        [Header(17, "Product Type")]
-        public string ProductType { get; set; }
-
-        [Header(18, "Chili Template ID")]
+        [Header(17, "Chili Template ID")]
         public string ChiliTemplateID { get; set; }
 
-        [Header(19, "Chili Workgroup ID ")]
+        [Header(18, "Chili Workgroup ID ")]
         public string ChiliWorkgroupID { get; set; }
 
-        [Header(20, "Product Chili Pdf generator SettingsId")]
+        [Header(19, "Product Chili Pdf generator SettingsId")]
         public string ChiliPdfGeneratorSettingsID { get; set; }
 
-        [Header(21, "Production time")]
+        [Header(20, "Production time")]
         public string ProductionTime { get; set; }
 
-        [Header(22, "Ship Time")]
+        [Header(21, "Ship Time")]
         public string ShipTime { get; set; }
 
-        [Header(23, "Shipping cost")]
+        [Header(22, "Shipping cost")]
         public string ShippingCost { get; set; }
 
-        [Header(24, "Number of items in package")]
+        [Header(23, "Number of items in package")]
         [Required]
         public string ItemsInPackage { get; set; }
 
-        [Header(25, "Package weight")]
+        [Header(24, "Package weight")]
         [Required]
         public string PackageWeight { get; set; }
 
-        [Header(26, "Needs shipping")]
+        [Header(25, "Needs shipping")]
         public string NeedsShipping{ get; set; }
 
-        [Header(27, "Publish from")]
+        [Header(26, "Publish from")]
         public string PublishFrom { get; set; }
 
-        [Header(28, "Publish to")]
+        [Header(27, "Publish to")]
         public string PublishTo { get; set; }
 
-        [Header(29, "Track Inventory")]
+        [Header(28, "Track Inventory")]
         public string TrackInventory { get; set; }
     }
 }
