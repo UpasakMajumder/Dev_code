@@ -16,6 +16,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class ColumnMapper : CMSAbstractWebPart
     {
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
+        private const string _mailingUrlSettingKey = "KDA_MailingServiceUrl";
 
         private static List<Tuple<string, string, bool>> _columnSelectors = new List<Tuple<string, string, bool>>
         {
@@ -120,10 +121,16 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
+                        var mailingUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingUrlSettingKey}");
                         var validationUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}");
                         var customerName = SiteContext.CurrentSiteName;
+                        var mailingClient = new MailingListClient();
+                        var uploadResult = mailingClient.UploadMapping(mailingUrl, customerName, _fileId, _containerId, mapping).Result;
+                        if (!uploadResult.Success)
+                        {
+                            throw new InvalidOperationException(uploadResult.ErrorMessages);
+                        }
                         var validationClient = new AddressValidationClient();
-                        ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
                         var validationResult = validationClient.Validate(validationUrl, customerName, _containerId).Result;
                         if (!validationResult.Success)
                         {
