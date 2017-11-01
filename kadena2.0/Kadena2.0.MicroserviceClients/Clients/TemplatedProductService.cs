@@ -3,7 +3,6 @@ using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

@@ -29,6 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         public string SuppliantDomain { get; set; }
 
+        // TODO consider using static or singleton, based on how we will store credentials
         protected readonly IAwsV4Signer signer;
 
         public ClientBase()
