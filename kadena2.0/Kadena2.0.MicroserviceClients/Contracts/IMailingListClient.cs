@@ -51,5 +51,15 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// </summary>
         /// <param name="containerId">Id of container to get.</param>
         Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId);
+
+        /// <summary>
+        /// Sends request to microservice to create mailing container.
+        /// </summary>
+        /// <param name="name">Name for mailing container.</param>
+        /// <param name="mailType">Mail type option for mailing container.</param>
+        /// <param name="product">Product type option for mailing container.</param>
+        /// <param name="validityDays">Validity option for mailing container.</param>
+        /// <returns>Id of mailing container.</returns>
+        Task<BaseResponseDto<Guid>> CreateMailingContainer(string endPoint, string customerName, string name, string mailType, string product, int validityDays, string customerId);
     }
 }

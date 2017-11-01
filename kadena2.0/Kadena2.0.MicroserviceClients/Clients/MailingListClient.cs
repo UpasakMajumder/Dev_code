@@ -118,6 +118,20 @@ namespace Kadena2.MicroserviceClients.Clients
 
             return await Post<string>(serviceEndpoint, body).ConfigureAwait(false);
         }
+
+        public async Task<BaseResponseDto<Guid>> CreateMailingContainer(string endPoint, string customerName, string name, string mailType, string product, int validityDays, string customerId)
+        {
+            var createContainerUrl = $"{endPoint}/api/Mailing";
+            return await Post<Guid>(createContainerUrl, new
+            {
+                name = name,
+                customerName = customerName,
+                Validity = validityDays,
+                mailType = mailType,
+                productType = product,
+                customerId = customerId
+            }).ConfigureAwait(false);
+        }
     }
 }
 
