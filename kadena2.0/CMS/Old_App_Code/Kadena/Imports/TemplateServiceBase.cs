@@ -1,4 +1,5 @@
 ﻿using NPOI.SS.UserModel;
+using System.IO;
 using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
@@ -42,6 +43,16 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return ImportHelper.GetHeaderProperties<T>()
                 .Select(p => p.Key)
                 .ToArray();
+        }
+
+        protected byte[] GetWorkbookBytes(IWorkbook workbook)
+        {
+            using (var ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                var bytes = ms.ToArray();
+                return bytes;
+            }
         }
     }
 }

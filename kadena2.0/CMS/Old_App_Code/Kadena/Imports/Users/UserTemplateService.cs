@@ -64,12 +64,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 AddRolesValidation(rolesColumnIndex, roles, sheet);
             }
 
-            using (var ms = new MemoryStream())
-            {
-                workbook.Write(ms);
-                var bytes = ms.ToArray();
-                return bytes;
-            }
+            return GetWorkbookBytes(workbook);
         }
 
         private void AddRolesValidation(int rolesColumnIndex, string[] roles, ISheet sheet)
