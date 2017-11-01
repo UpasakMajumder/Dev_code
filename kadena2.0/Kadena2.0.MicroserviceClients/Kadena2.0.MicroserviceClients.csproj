@@ -69,6 +69,7 @@
     <Compile Include="Clients\InventoryUpdateClient.cs" />
     <Compile Include="Clients\OrderViewClient.cs" />
     <Compile Include="Clients\OrderSubmitClient.cs" />
+    <Compile Include="Clients\ParsingClient.cs" />
     <Compile Include="Clients\ShippingCostServiceClient.cs" />
     <Compile Include="Clients\StatisticsClient.cs" />
     <Compile Include="Clients\TemplatedProductService.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Contracts\InventoryUpdateClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
+    <Compile Include="Contracts\IParsingClient.cs" />
     <Compile Include="Contracts\IShippingCostServiceClient.cs" />
     <Compile Include="Contracts\IStatisticsClient.cs" />
     <Compile Include="Contracts\ITemplatedProductService.cs" />
