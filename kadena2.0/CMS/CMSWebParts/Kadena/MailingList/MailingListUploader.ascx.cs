@@ -6,7 +6,6 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Old_App_Code.Helpers;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
 using System;
