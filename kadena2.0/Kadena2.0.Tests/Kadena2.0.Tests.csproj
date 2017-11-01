@@ -456,7 +456,6 @@
   <ItemGroup>
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="FakeBackgroundTaskScheduler.cs" />
-    <Compile Include="GetHeaderTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
