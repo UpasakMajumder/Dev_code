@@ -76,7 +76,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(40)]
         public string ChiliTemplateID { get; set; }
 
-        [Header(18, "Chili Workgroup ID ")]
+        [Header(18, "Chili Workgroup ID")]
         [MaxLength(40)]
         public string ChiliWorkgroupID { get; set; }
 

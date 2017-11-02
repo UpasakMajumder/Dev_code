@@ -26,16 +26,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             IWorkbook workbook = new XSSFWorkbook();
             var sheet = workbook.CreateSheet("Products");
+            var columnInfos = ImportHelper.GetHeaderProperties<ProductDto>();
             CreateSheetHeader(columns, sheet);
             
             if (productTypes != null)
             {
-                var indexOfproductType = ImportHelper.GetHeaderProperties<ProductDto>()
-                    .FirstOrDefault(c => c.Name == "Product Type").Order;
-
+                var indexOfproductType = columnInfos.FirstOrDefault(c => c.Name == "Product Type").Order;
                 AddOneFromManyValidation(indexOfproductType, "ProductTypes", productTypes, sheet);
                 sheet.SetColumnWidth(indexOfproductType, 256 * productTypes.Max(t => t.Length));
             }
+
+            var indexOfChili1 = columnInfos.FirstOrDefault(c => c.Name == "Chili Template ID").Order;
+            var indexOfChili2 = columnInfos.FirstOrDefault(c => c.Name == "Chili Workgroup ID").Order;
+            var indexOfChili3 = columnInfos.FirstOrDefault(c => c.Name == "Product Chili Pdf generator SettingsId").Order;
+            var guidFieldWidth = 256 * 36;
+            sheet.SetColumnWidth(indexOfChili1, guidFieldWidth);
+            sheet.SetColumnWidth(indexOfChili2, guidFieldWidth);
+            sheet.SetColumnWidth(indexOfChili3, guidFieldWidth);
 
             return GetWorkbookBytes(workbook);
         }
