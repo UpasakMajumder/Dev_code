@@ -83,7 +83,7 @@
     <Compile Include="Contracts\IExportClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
-    <Compile Include="Contracts\InventoryUpdateClient.cs" />
+    <Compile Include="Contracts\IInventoryUpdateClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
     <Compile Include="Contracts\IParsingClient.cs" />
