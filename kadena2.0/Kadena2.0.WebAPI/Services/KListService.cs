@@ -14,13 +14,13 @@ namespace Kadena.WebAPI.Services
     public class KListService : IKListService
     {
         private readonly IMailingListClient _mailingClient;
-        private readonly IAddressValidationService _validationClient;
+        private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoResourceService _kentico;
         private readonly IMapper _mapper;
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
 
-        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationService validationClient, IMapper mapper)
+        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
         {
             _mailingClient = client;
             _kentico = kenticoResource;

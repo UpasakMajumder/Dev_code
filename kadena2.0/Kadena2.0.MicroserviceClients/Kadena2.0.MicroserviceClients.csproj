@@ -76,7 +76,7 @@
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\Base\ISignedRequestClient.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
-    <Compile Include="Contracts\IAddressValidationService.cs" />
+    <Compile Include="Contracts\IAddressValidationClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />

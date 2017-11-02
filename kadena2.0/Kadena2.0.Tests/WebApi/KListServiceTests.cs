@@ -43,7 +43,7 @@ namespace Kadena.Tests.WebApi
             }
         }
 
-        private KListService Create(Mock<IMailingListClient> mailingClient = null, Mock<IAddressValidationService> validationClient = null)
+        private KListService Create(Mock<IMailingListClient> mailingClient = null, Mock<IAddressValidationClient> validationClient = null)
         {
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
@@ -55,7 +55,7 @@ namespace Kadena.Tests.WebApi
             
             return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
                 kenticoClient.Object, 
-                validationClient?.Object ?? new Mock<IAddressValidationService>().Object, 
+                validationClient?.Object ?? new Mock<IAddressValidationClient>().Object, 
                 mapper);
         }
 
@@ -110,7 +110,7 @@ namespace Kadena.Tests.WebApi
         public async Task UseOnlyCorrectTestSuccess()
         {
             var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationService>();
+            var validationClient = new Mock<IAddressValidationClient>();
             mailingClient
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
@@ -127,7 +127,7 @@ namespace Kadena.Tests.WebApi
         public async Task UseOnlyCorrectTestValidationFailed()
         {
             var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationService>();
+            var validationClient = new Mock<IAddressValidationClient>();
             mailingClient
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
@@ -156,7 +156,7 @@ namespace Kadena.Tests.WebApi
         public async Task UpdateTestSuccess()
         {
             var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationService>();
+            var validationClient = new Mock<IAddressValidationClient>();
             mailingClient
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));
@@ -173,7 +173,7 @@ namespace Kadena.Tests.WebApi
         public async Task UpdateTestValidationFailed()
         {
             var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationService>();
+            var validationClient = new Mock<IAddressValidationClient>();
             mailingClient
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));

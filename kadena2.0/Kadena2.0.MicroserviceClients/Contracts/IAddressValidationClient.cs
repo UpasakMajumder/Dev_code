@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
-    public interface IAddressValidationService
+    public interface IAddressValidationClient
     {
         /// <summary>
         /// Forces microservices to start addresses validation for specified container.
