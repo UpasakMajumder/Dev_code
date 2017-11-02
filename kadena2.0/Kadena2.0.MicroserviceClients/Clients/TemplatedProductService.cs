@@ -60,7 +60,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> SetMailingList(string endPoint, string containerId, string templateId, string workSpaceId, bool use3d)
         {
-            var requestUrl = $"{endPoint}api/template/datasource";
+            var requestUrl = $"{endPoint}/api/template/datasource";
             return await Post<string>(requestUrl, new
             {
                 containerId,
