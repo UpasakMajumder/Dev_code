@@ -1,6 +1,7 @@
 ﻿using CMS.SiteProvider;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
@@ -15,6 +16,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
             return rows;
         }
+
+
+        protected List<T> GetDtosFromExcelRows<T>(List<string[]> rows) where T:class
+        {
+            var header = rows.First();
+            var mapper = ImportHelper.GetImportMapper<T>(header);
+            var values = rows.Skip(1)
+                .Select(row => mapper(row))
+                .ToList();
+            return values;
+        }
+
 
         protected SiteInfo GetSite(int siteID)
         {

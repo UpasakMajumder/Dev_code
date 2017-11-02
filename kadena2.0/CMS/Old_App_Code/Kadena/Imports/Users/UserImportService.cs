@@ -18,15 +18,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         {
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
-
             var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
-
-            var header = rows.First();
-            var mapRowToUser = ImportHelper.GetImportMapper<UserDto>(header);
-            var users = rows.Skip(1)
-                .Select(row => mapRowToUser(row))
-                .ToList();
-
+            var users = GetDtosFromExcelRows<UserDto>(rows);
             var statusMessages = new List<string>();
             var emailService = new EmailService();
 
@@ -78,17 +71,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 throw new ArgumentOutOfRangeException("No users selected to upload addresses to");
 
             var rows = GetExcelRows(importFileData, type);
-
-            var header = rows.First();
-            
-            var mapRowToAddress = ImportHelper.GetImportMapper<AddressDto>(header);
-
-            var addresses = rows.Skip(1)
-                .Select(row => mapRowToAddress(row))
-                .ToList();
+            var addresses = GetDtosFromExcelRows<AddressDto>(rows);
 
             var statusMessages = new List<string>();
-
 
             foreach (var userId in userIds)
             {

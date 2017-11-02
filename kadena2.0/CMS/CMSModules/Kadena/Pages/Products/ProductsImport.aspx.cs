@@ -15,11 +15,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             HideErrorMessage();
         }
 
-        private void Site_Changed(object sender, EventArgs e)
-        {
-            
-        }
-
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
 
         protected void btnUploadProductList_Click(object sender, EventArgs e)
@@ -31,18 +26,17 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
                 return;
             }
 
-
             var fileData = ReadFileFromRequest(file);
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 
             try
             {
-                /*var result = new UserImportService().ProcessAddressImportFile(fileData, excelType, SelectedSiteID, selectedUsers);
+                var result = new ProductImportService().ProcessImportFile(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
-                */
+                
             }
             catch (Exception ex)
             {
