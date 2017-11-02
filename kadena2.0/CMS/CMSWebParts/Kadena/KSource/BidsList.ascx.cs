@@ -16,6 +16,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
 {
     public partial class BidsList : CMSAbstractWebPart
     {
+        private readonly string _bidServiceUrlSettingKey = "KDA_BidServiceUrl";
+
         public int RecordsPerPage
         {
             get
@@ -29,7 +31,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             IEnumerable<ProjectDto> projects = null;
             try
             {
-                var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetProjectsUrl");
+                var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_bidServiceUrlSettingKey}");
                 var workGroupName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_WorkgroupName");
                 var client = new BidClient();
                 var reqResult = client.GetProjects(url, workGroupName).Result;
