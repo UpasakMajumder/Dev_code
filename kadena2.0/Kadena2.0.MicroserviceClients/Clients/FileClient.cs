@@ -23,12 +23,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public string GetFileUrl(string serviceEndpoint, string fileName, FileModule moduleName)
         {
-            return $"{serviceEndpoint}/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
+            return $"{serviceEndpoint}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
         }
 
         public async Task<BaseResponseDto<string>> UploadToS3(string serviceEndpoint, string siteName, FileFolder folderName,
             FileModule moduleName, Stream fileStream, string fileName)
         {
+            var url = $"{serviceEndpoint}/api/File";
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
@@ -38,7 +39,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     content.Add(new StringContent(folderName.ToString()), "ConsumerDetails.BucketType");
                     content.Add(new StringContent(siteName), "ConsumerDetails.CustomerName");
                     content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
-                    using (var message = await client.PostAsync(serviceEndpoint, content).ConfigureAwait(false))
+                    using (var message = await client.PostAsync(url, content).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<string>(message).ConfigureAwait(false);
                     }

@@ -12,6 +12,7 @@ namespace Kadena.CMSFormControls
 {
     public partial class S3Uploader : CMSPage
     {
+        private readonly string _fileServiceUrlSettingKey = "KDA_FileServiceUrl";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack)
@@ -32,18 +33,18 @@ namespace Kadena.CMSFormControls
             
             try
             {
-                var serviceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_LoadFileUrl");
+                var fileServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceUrlSettingKey}");
                 var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                 var module = FileModule.KProducts;
 
                 var client = new FileClient();
-                var uploadResult = client.UploadToS3(serviceUrl, SiteContext.CurrentSiteName, FileFolder.Artworks, module,
+                var uploadResult = client.UploadToS3(fileServiceUrl, SiteContext.CurrentSiteName, FileFolder.Artworks, module,
                     inpFile.PostedFile.InputStream, fileName).Result;
 
                 if (uploadResult.Success)
                 {
                     var fileKey = uploadResult.Payload;
-                    string fileUrl = client.GetFileUrl(serviceUrl, fileKey, module);
+                    string fileUrl = client.GetFileUrl(fileServiceUrl, fileKey, module);
 
                     lblMessage.Text = string.Empty;
                     lnkFile.Text = fileName;

@@ -21,6 +21,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
+        private readonly string _fileServiceUrlSettingKey = "KDA_FileServiceUrl";
         private MailingListDataDTO _container;
 
         public string RedirectPage
@@ -210,12 +211,12 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 try
                 {
-                    var serviceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_LoadFileUrl");
+                    var fileServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceUrlSettingKey}");
                     var fileName = inpFileName.Value;
                     var module = FileModule.KList;
 
                     var client = new FileClient();
-                    var uploadResult = client.UploadToS3(serviceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
+                    var uploadResult = client.UploadToS3(fileServiceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
                         fileStream, fileName).Result;
                     if (uploadResult.Success)
                     {
