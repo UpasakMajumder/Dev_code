@@ -81,20 +81,27 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 return null;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            TreeNode newPage = TreeNode.New("KDA.Product", tree);
-            newPage.DocumentName = product.ProductName;
-            newPage.DocumentCulture = "en-us";
-            newPage.SetValue("ProductType", product.ProductType);
-            newPage.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
-            newPage.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
+            TreeNode newProduct = parent.Children.FirstOrDefault(c => c.NodeName == product.ProductName);
 
-            newPage.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
-            newPage.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID?? string.Empty);
-            newPage.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
+            if (newProduct == null)
+            {
+                newProduct = TreeNode.New("KDA.Product", tree);
+                newProduct.NodeName = product.ProductName;
+                newProduct.DocumentName = product.ProductName;
+                newProduct.DocumentCulture = "en-us";
+                newProduct.SetValue("ProductType", product.ProductType);
+                newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
+                newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
 
-            // Inserts the new page as a child of the parent page
-            newPage.Insert(parent);
-            return newPage;
+                newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
+                newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
+                newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
+
+                // Inserts the new page as a child of the parent page
+                newProduct.Insert(parent);
+            }
+
+            return newProduct;
         }
 
         private TreeNode CreateProductCategory(string[] path)
