@@ -19,6 +19,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class AddressViewer : CMSAbstractWebPart
     {
         private Guid _containerId;
+        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
 
         public string ConfirmedPageUrl
         {
@@ -110,9 +111,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private IEnumerable<MailingAddressDto> GetAddresses()
         {
-            var getAddressUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingAddressesUrl");
+            var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
             var client = new MailingListClient();
-            return client.GetAddresses(getAddressUrl, _containerId).Result.Payload;
+            return client.GetAddresses(mailingServiceUrl, _containerId).Result.Payload;
         }
 
         private object CreateErrorList(IEnumerable<MailingAddressDto> addresses)

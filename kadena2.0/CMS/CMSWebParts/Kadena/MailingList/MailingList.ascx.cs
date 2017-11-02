@@ -10,6 +10,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class MailingList : CMSAbstractWebPart
     {
+        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
+
         public string ViewListUrl
         {
             get
@@ -40,10 +42,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private void GetMailingLists()
         {
-            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
+            var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
 
             var client = new MailingListClient();
-            var serviceCallResult = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result;
+            var serviceCallResult = client.GetMailingListsForCustomer(mailingServiceUrl, SiteContext.CurrentSiteName).Result;
 
             if (serviceCallResult.Success)
             {

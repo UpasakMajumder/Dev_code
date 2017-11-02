@@ -131,11 +131,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
-                        var mailingUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingUrlSettingKey}");
+                        var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingUrlSettingKey}");
                         var validationUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}");
                         var customerName = SiteContext.CurrentSiteName;
                         var mailingClient = new MailingListClient();
-                        var uploadResult = mailingClient.UploadMapping(mailingUrl, customerName, _fileId, _containerId, mapping).Result;
+                        var uploadResult = mailingClient.UploadMapping(mailingServiceUrl, customerName, _fileId, _containerId, mapping).Result;
                         if (!uploadResult.Success)
                         {
                             throw new InvalidOperationException(uploadResult.ErrorMessages);

@@ -22,6 +22,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
         private readonly string _fileServiceUrlSettingKey = "KDA_FileServiceUrl";
+        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private MailingListDataDTO _container;
 
         public string RedirectPage
@@ -41,10 +42,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 var id = new Guid(containerId);
 
-                var mailingListUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListByIdUrl");
+                var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
                 var mailingListClient = new MailingListClient();
 
-                var mailingListResponse = mailingListClient.GetMailingList(mailingListUrl, SiteContext.CurrentSiteName, id).Result;
+                var mailingListResponse = mailingListClient.GetMailingList(mailingServiceUrl, SiteContext.CurrentSiteName, id).Result;
                 if (mailingListResponse.Success)
                 {
                     _container = mailingListResponse.Payload;
@@ -220,6 +221,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         fileStream, fileName).Result;
                     if (uploadResult.Success)
                     {
+                        var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
                         var containerId = Guid.Empty;
                         var mailingClient = new MailingListClient();
                         if (_container == null)
@@ -227,10 +229,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                             var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
                             var product = Request.Form[GetString("Kadena.MailingList.Product")];
                             var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                            var mailingUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_MailingServiceUrl");
                             var customerName = SiteContext.CurrentSiteName;
                             var createResult = mailingClient.CreateMailingContainer(
-                                mailingUrl,
+                                mailingServiceUrl,
                                 customerName,
                                 fileName,
                                 mailType,
@@ -249,9 +250,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         else
                         {
                             containerId = new Guid(_container.Id);
-                            var removeAddressesUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DeleteAddressesUrl");
                             var customerName = SiteContext.CurrentSiteName;
-                            var removeResult = mailingClient.RemoveAddresses(removeAddressesUrl, customerName, containerId).Result;
+                            var removeResult = mailingClient.RemoveAddresses(mailingServiceUrl, customerName, containerId).Result;
                             if (!removeResult.Success)
                             {
                                 EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", removeResult.ErrorMessages, siteId: CurrentSite.SiteID);

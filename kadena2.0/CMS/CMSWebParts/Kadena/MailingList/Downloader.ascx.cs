@@ -11,6 +11,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class Downloader : CMSAbstractWebPart
     {
         private Guid _containerId;
+        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,10 +25,10 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var mailingListUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListByIdUrl");
+                var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
                 var mailingListClient = new MailingListClient();
 
-                var mailingListResponse = mailingListClient.GetMailingList(mailingListUrl, SiteContext.CurrentSiteName, _containerId).Result;
+                var mailingListResponse = mailingListClient.GetMailingList(mailingServiceUrl, SiteContext.CurrentSiteName, _containerId).Result;
                 if (mailingListResponse.Success)
                 {
                     var mailingList = mailingListResponse.Payload;
