@@ -2,7 +2,10 @@
 using CMS.EventLog;
 using CMS.Localization;
 using CMS.Membership;
+using Kadena.Models;
 using Kadena.Models.Product;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImportService : ImportServiceBase
     {
+        protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        };
+
         public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             var site = GetSite(siteID);
@@ -96,6 +105,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
                 newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
                 newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
+                newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
+                newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
 
                 // Inserts the new page as a child of the parent page
                 newProduct.Insert(parent);
@@ -103,6 +114,40 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             return newProduct;
         }
+
+        private string GetDynamicPricingJson(string min, string max, string price)
+        {
+            int[] mins, maxes;
+            decimal[] prices;
+
+            if (string.IsNullOrWhiteSpace(min) && string.IsNullOrWhiteSpace(max) && string.IsNullOrWhiteSpace(price))
+            {
+                return string.Empty;
+            }
+
+            try
+            {
+                mins = min.Split('\n').Select(m => Convert.ToInt32(m)).ToArray();
+                maxes = max.Split('\n').Select(m => Convert.ToInt32(m)).ToArray();
+                prices = price.Split('\n').Select(m => Convert.ToDecimal(m)).ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentOutOfRangeException("Bad format of Dynamic Pricing definitions.", ex);
+            }
+
+
+            if (mins.Length != maxes.Length || mins.Length != prices.Length)
+            {
+                throw new ArgumentOutOfRangeException("Dynamic Pricing definition cells must contain the same count of rows in one product.");
+            }
+
+
+            var ranges = mins.Select((item, index) => new DynamicPricingRange { MinVal = item, MaxVal = maxes[index], Price = prices[index] }).ToList();
+
+            return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
+        }
+
 
         private TreeNode CreateProductCategory(string[] path)
         {
