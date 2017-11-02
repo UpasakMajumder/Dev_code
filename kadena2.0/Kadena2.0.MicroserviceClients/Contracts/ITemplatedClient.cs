@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
-    public interface ITemplatedProductService : ISuppliantDomainClient
+    public interface ITemplatedClient : ISuppliantDomainClient
     {
         Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId);
         Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId);

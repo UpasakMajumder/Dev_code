@@ -17,7 +17,7 @@ namespace Kadena.Tests.WebApi
     {
         private string _currentName = "currentName";
 
-        private TemplateService Create(Mock<ITemplatedProductService> templateClient)
+        private TemplateService Create(Mock<ITemplatedClient> templateClient)
         {
             return new TemplateService(
                 Mock.Of<IKenticoResourceService>(), 
@@ -54,7 +54,7 @@ namespace Kadena.Tests.WebApi
             var newName = "newName";
             Assert.NotEqual(newName, _currentName);
 
-            var client = new Mock<ITemplatedProductService>();
+            var client = new Mock<ITemplatedClient>();
             client.Setup(c => c.SetName(null, Guid.Empty, newName))
                 .Returns(Task.FromResult(SetNameSuccess(newName)));
             var service = Create(client);
@@ -69,7 +69,7 @@ namespace Kadena.Tests.WebApi
         {
             var newName = "newName";
 
-            var client = new Mock<ITemplatedProductService>();
+            var client = new Mock<ITemplatedClient>();
             client.Setup(c => c.SetName(null, Guid.Empty, newName))
                 .Returns(Task.FromResult(SetNameFailed()));
             var service = Create(client);
@@ -86,7 +86,7 @@ namespace Kadena.Tests.WebApi
             var sut = new TemplateService(
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
-                Mock.Of<ITemplatedProductService>(),
+                Mock.Of<ITemplatedClient>(),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
                 Mock.Of<IKenticoUserProvider>()
             );
@@ -119,7 +119,7 @@ namespace Kadena.Tests.WebApi
             var sut = new TemplateService(
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
-                Mock.Of<ITemplatedProductService>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
+                Mock.Of<ITemplatedClient>(srv => srv.GetTemplates(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
                 Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
             );

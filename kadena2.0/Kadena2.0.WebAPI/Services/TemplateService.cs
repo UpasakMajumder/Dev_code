@@ -17,11 +17,11 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
-        private readonly ITemplatedProductService _templateClient;
+        private readonly ITemplatedClient _templateClient;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedProductService templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
         {
             _resources = resources;
             _logger = logger;

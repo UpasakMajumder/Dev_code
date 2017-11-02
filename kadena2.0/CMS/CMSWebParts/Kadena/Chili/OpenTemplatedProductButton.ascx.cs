@@ -68,7 +68,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
             var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
             var use3d = CurrentDocument.GetBooleanValue("ProductChili3dEnabled", false);
-            var client = new TemplatedProductService() { SuppliantDomain = RequestContext.CurrentDomain };
+            var client = new TemplatedClient() { SuppliantDomain = RequestContext.CurrentDomain };
             var requestBody = new NewTemplateRequestDto
             {
                 User = MembershipContext.AuthenticatedUser.UserID.ToString(),

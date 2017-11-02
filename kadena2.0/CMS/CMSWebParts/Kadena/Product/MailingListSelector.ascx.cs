@@ -101,7 +101,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
                     var templateServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
-                    var templateClient = new TemplatedProductService
+                    var templateClient = new TemplatedClient
                     {
                         SuppliantDomain = RequestContext.CurrentDomain
                     };

@@ -28,7 +28,7 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
-        private readonly ITemplatedProductService templateService;
+        private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
 
         public OrderService(IMapper mapper,
@@ -40,7 +40,7 @@ namespace Kadena.WebAPI.Services
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
-            ITemplatedProductService templateService,
+            ITemplatedClient templateService,
             IBackgroundTaskScheduler backgroundWorker)
         {
             this.mapper = mapper;

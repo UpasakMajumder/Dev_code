@@ -53,7 +53,7 @@ namespace Kadena.WebAPI
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
-            container.Register<ITemplatedProductService, TemplatedProductService>();
+            container.Register<ITemplatedClient, TemplatedClient>();
             return container;
         }
 

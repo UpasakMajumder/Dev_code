@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class TemplatedProductService : ClientBase, ITemplatedProductService
+    public class TemplatedClient : ClientBase, ITemplatedClient
     {
         public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
         {

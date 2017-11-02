@@ -67,7 +67,7 @@ namespace Kadena.Tests.WebApi
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingListClient = new Mock<IMailingListClient>();
-            var templateProductService = new Mock<ITemplatedProductService>();
+            var templateProductService = new Mock<ITemplatedClient>();
 
             return new OrderService(mapper,
                 orderSubmitClient.Object,

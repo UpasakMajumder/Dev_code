@@ -54,7 +54,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing && TemplateID != null)
             {
-                chilliIframe.Src = new TemplatedProductService() { SuppliantDomain = CMS.Helpers.RequestContext.CurrentDomain }.GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d).Result?.Payload ?? string.Empty;
+                chilliIframe.Src = new TemplatedClient() { SuppliantDomain = CMS.Helpers.RequestContext.CurrentDomain }.GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d).Result?.Payload ?? string.Empty;
             }
         }
     }
