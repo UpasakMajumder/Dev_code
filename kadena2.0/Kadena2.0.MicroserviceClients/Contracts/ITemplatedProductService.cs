@@ -26,5 +26,14 @@ namespace Kadena2.MicroserviceClients.Contracts
         Task<BaseResponseDto<string>> GetEditorUrl(string endpoint, Guid templateId, Guid workSpaceId, bool useHtml, bool use3d);
 
         Task<BaseResponseDto<string>> CreateNewTemplate(string endpoint, NewTemplateRequestDto request);
+
+        /// <summary>
+        /// Assign specified container to specified template.
+        /// </summary>
+        /// <param name="containerId">Id of container.</param>
+        /// <param name="templateId">Id of template.</param>
+        /// <param name="workspaceId">Id of template workspace</param>
+        /// <returns>Url to Chili's editor.</returns>
+        Task<BaseResponseDto<string>> SetMailingList(string endPoint, string containerId, string templateId, string workSpaceId, bool use3d);
     }
 }

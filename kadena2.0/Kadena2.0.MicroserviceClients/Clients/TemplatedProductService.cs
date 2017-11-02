@@ -57,5 +57,17 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{endpoint.TrimEnd('/')}/api/template";
             return await Post<string>(url, request).ConfigureAwait(false);
         }
+
+        public async Task<BaseResponseDto<string>> SetMailingList(string endPoint, string containerId, string templateId, string workSpaceId, bool use3d)
+        {
+            var requestUrl = $"{endPoint}api/template/datasource";
+            return await Post<string>(requestUrl, new
+            {
+                containerId,
+                templateId,
+                workSpaceId,
+                use3d
+            }).ConfigureAwait(false);
+        }
     }
 }
