@@ -42,7 +42,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
         protected string[] GetImportColumns<T>() where T : class
         {
             return ImportHelper.GetHeaderProperties<T>()
-                .Select(p => p.Key)
+                .Select(p => p.Name)
                 .ToArray();
         }
 

@@ -30,14 +30,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             
             if (productTypes != null)
             {
-                var index = (ImportHelper.GetHeaderProperties<ProductDto>()
-                    .FirstOrDefault(p => p.Key == "Product Type").Value?
-                    .GetCustomAttributes(typeof(HeaderAttribute), false)
-                    .FirstOrDefault() as HeaderAttribute)?.Order ?? 0;
-                    
+                var indexOfproductType = ImportHelper.GetHeaderProperties<ProductDto>()
+                    .FirstOrDefault(c => c.Name == "Product Type").Order;
 
-                AddOneFromManyValidation(index, "ProductTypes", productTypes, sheet);
-                sheet.SetColumnWidth(index, 256*productTypes.Max(t => t.Length));
+                AddOneFromManyValidation(indexOfproductType, "ProductTypes", productTypes, sheet);
+                sheet.SetColumnWidth(indexOfproductType, 256 * productTypes.Max(t => t.Length));
             }
 
             return GetWorkbookBytes(workbook);
