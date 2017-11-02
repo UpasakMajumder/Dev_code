@@ -3,6 +3,7 @@ using Kadena.Models.CustomerData;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Services
 {
@@ -26,10 +27,13 @@ namespace Kadena.WebAPI.Services
             if (customer == null)
                 return null;
 
-            var address = kenticoUsers.GetCustomerShippingAddresses(customerId).FirstOrDefault();
+            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
 
             if (address == null)
                 return null;
+
+            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
+            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
 
             var claims = GetCustomerClaims(siteId, customer.UserID);
 
@@ -40,12 +44,12 @@ namespace Kadena.WebAPI.Services
                 Email = customer.Email,
                 Phone = customer.Phone,
                 PreferredLanguage = customer.PreferredLanguage,
-                Address = new CustomerAddress()
+                Address = new CustomerAddress
                 {
-                    Street = address.Street,
+                    Street = new List<string> { address.Address1, address.Address2 },
                     City = address.City,
-                    Country = address.Country,
-                    State = address.State,
+                    Country = country.Name,
+                    State = state?.StateCode,
                     Zip = address.Zip
                 },
                 Claims = claims,

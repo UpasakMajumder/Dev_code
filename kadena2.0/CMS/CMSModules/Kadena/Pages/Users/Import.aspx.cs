@@ -62,7 +62,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                var result = new UserImportService().ProcessImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new UserImportService().ProcessUserImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -83,7 +83,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetTemplateFile(SelectedSiteID);
+            var bytes = new UserTemplateService().GetUserTemplateFile(SelectedSiteID);
             var templateFileName = "users-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);

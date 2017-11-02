@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -77,8 +78,8 @@ namespace Kadena.WebAPI.Services
                 {
                     OrderDate = new TitleValuePair
                     {
-                       Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
-                       Value = data.OrderDate.ToString("MM/dd/yyyy")
+                        Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
+                        Value = data.OrderDate.ToString("MM/dd/yyyy")
                     },
                     ShippingDate = new TitleValuePair
                     {
@@ -94,7 +95,7 @@ namespace Kadena.WebAPI.Services
                     {
                         Title = resources.GetResourceString("Kadena.Order.TotalCostPrefix"),
                         Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
-                    } 
+                    }
                 },
                 PaymentInfo = new PaymentInfo()
                 {
@@ -113,12 +114,12 @@ namespace Kadena.WebAPI.Services
                         new PricingInfoItem()
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingSummary"),
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Summary)
+                            Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary)
                         },
                         new PricingInfoItem()
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingShipping"),
-                            Value = String.Format("$ {0:#,0.00}",data.PaymentInfo.Shipping)
+                            Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Shipping)
                         },
                         new PricingInfoItem()
                         {
@@ -160,7 +161,7 @@ namespace Kadena.WebAPI.Services
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = data.ShippingInfo.AddressTo,
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null, // TODO Track your package url unknown
                     /*Tracking = new Tracking()
                     {
@@ -168,13 +169,18 @@ namespace Kadena.WebAPI.Services
                         Url = string.Empty 
                     }*/
                 };
+                orderDetail.ShippingInfo.Address.State = kenticoProvider
+                    .GetStates()
+                    .FirstOrDefault(s => s.StateCode.Equals(data.ShippingInfo.AddressTo.State));
+                orderDetail.ShippingInfo.Address.Country = kenticoProvider
+                    .GetCountries()
+                    .FirstOrDefault(s => s.Code.Equals(data.ShippingInfo.AddressTo.isoCountryCode));
             }
 
             if (!kenticoUsers.UserCanSeePrices())
             {
                 orderDetail.HidePrices();
             }
-
 
             return orderDetail;
         }
@@ -276,7 +282,7 @@ namespace Kadena.WebAPI.Services
                 customer.Phone = request.DeliveryAddress.Phone;
             }
 
-            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice);
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice, request.AgreeWithTandC);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -299,7 +305,7 @@ namespace Kadena.WebAPI.Services
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 kenticoProvider.RemoveCurrentItemsFromStock();
-                kenticoProvider.RemoveCurrentItemsFromCart();
+                kenticoProvider.ClearCart();
 
                 // Temporary solution before microservices will implement better strategy for handling cold starts. 
                 var orderNumber = serviceResult.Payload;
@@ -329,7 +335,7 @@ namespace Kadena.WebAPI.Services
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
         {
             string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
+            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString(), kenticoProvider.GetCurrentSiteDomain());
             if (response.Success && response.Payload != null)
             {
                 return new Guid(response.Payload.TaskId);
@@ -343,10 +349,13 @@ namespace Kadena.WebAPI.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice, bool termsAndConditionsExplicitlyAccepted)
         {
+            // TODO: add to order request. need confirmation on the name of the property from microservice side.
+
             var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
             var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
@@ -354,7 +363,7 @@ namespace Kadena.WebAPI.Services
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
-
+            
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
@@ -385,17 +394,17 @@ namespace Kadena.WebAPI.Services
                 },
                 ShippingAddress = new AddressDTO()
                 {
-                    AddressLine1 = shippingAddress.Street.Count > 0 ? shippingAddress.Street[0] : null,
-                    AddressLine2 = shippingAddress.Street.Count > 1 ? shippingAddress.Street[1] : null,
+                    AddressLine1 = shippingAddress.Address1,
+                    AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
-                    State = !string.IsNullOrEmpty(shippingAddress.State) ? shippingAddress.State : shippingAddress.Country, // fill in mandatory for countries that have no states
-                    KenticoStateID = shippingAddress.StateId,
-                    KenticoCountryID = shippingAddress.CountryId,
+                    State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
+                    KenticoStateID = shippingAddress.State.Id,
+                    KenticoCountryID = shippingAddress.Country.Id,
                     AddressCompanyName = customer.Company,
-                    isoCountryCode = shippingAddress.CountryCode,
+                    isoCountryCode = shippingAddress.Country.Code,
                     AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
                     Zip = shippingAddress.Zip,
-                    Country = shippingAddress.Country,
+                    Country = shippingAddress.Country.Name,
                     KenticoAddressID = shippingAddress.Id
                 },
                 Customer = new CustomerDTO()

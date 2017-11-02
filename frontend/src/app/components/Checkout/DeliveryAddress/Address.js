@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+/* components */
+import USAddress from 'app.dump/USAddress';
 
 const Address = (props) => {
-  const { id, street, city, state, zip, checkedId, changeShoppingData, disableInteractivity, customerName, email,
+  const { id, address1, address2, city, state, zip, checkedId, changeShoppingData, disableInteractivity, customerName, email,
     country, phone } = props;
-
-  const streets = street.map((st, i) => <p key={i}>{st}</p>);
-  const customerNameEl = customerName && <p>{customerName}</p>;
-  const emailEl = email && <p>{email}</p>;
-  const cityEl = city && <p>{city}</p>;
-  const countryEl = country && <p>{country}</p>;
-  const phoneEl = phone && <p>{phone}</p>;
 
   return (
     <div>
@@ -23,20 +18,25 @@ const Address = (props) => {
         type="radio"
         className="input__radio" />
       <label htmlFor={`da-${id}`} className="input__label input__label--radio">
-        {customerNameEl}
-        {emailEl}
-        {streets}
-        {cityEl}
-        <p>{state} {zip}</p>
-        {countryEl}
-        {phoneEl}
+        <USAddress
+          customerName={customerName}
+          email={email}
+          address1={address1}
+          address2={address2}
+          city={city}
+          state={state}
+          zip={zip}
+          country={country}
+          phone={phone}
+        />
       </label>
     </div>
   );
 };
 
 Address.propTypes = {
-  street: PropTypes.arrayOf(PropTypes.string).isRequired,
+  address1: PropTypes.string.isRequired,
+  address2: PropTypes.string,
   changeShoppingData: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   zip: PropTypes.string.isRequired,

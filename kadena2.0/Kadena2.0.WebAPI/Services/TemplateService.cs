@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using Kadena.WebAPI.Helpers;
 using System.Web;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Services
 {
@@ -32,7 +33,7 @@ namespace Kadena.WebAPI.Services
         public async Task<bool> SetName(Guid templateId, string name)
         {
             string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name);
+            var result = await _templateClient.SetName(endpoint, templateId, name, _kentico.GetCurrentSiteDomain());
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -79,7 +80,8 @@ namespace Kadena.WebAPI.Services
             var requestResult = await _templateClient
                 .GetTemplates(clientEndpoint,
                     _users.GetCurrentUser().UserId,
-                    product.ProductChiliTemplateID);
+                    product.ProductChiliTemplateID,
+                    _kentico.GetCurrentSiteDomain());
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))

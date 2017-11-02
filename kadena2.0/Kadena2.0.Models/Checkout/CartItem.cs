@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Models.Product;
+using System;
 
 namespace Kadena.Models.Checkout
 {

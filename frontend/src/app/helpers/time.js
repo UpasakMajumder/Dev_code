@@ -1,4 +1,8 @@
 import moment from 'moment';
+import 'moment/min/locales.min.js';
+import { LANGUAGES } from 'app.globals';
+
+if (LANGUAGES) moment.locale(LANGUAGES.locale || 'en-gb');
 
 export const convertToWords = (date) => {
   const timestamp = Date.parse(date);

@@ -1,42 +1,42 @@
-﻿using CMS.Ecommerce;
-using Kadena.Models;
-using System.Linq;
-using CMS.SiteProvider;
+﻿using AutoMapper;
+using CMS.Ecommerce;
 using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Factories;
 using System;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoUserProvider : IKenticoUserProvider
     {
-        private readonly IKenticoLogger _logger;
+        public static string CustomerDefaultShippingAddresIDFieldName => "CustomerDefaultShippingAddresID";
 
-        public KenticoUserProvider(IKenticoLogger logger)
+        private readonly IKenticoLogger _logger;
+        private readonly IMapper _mapper;
+
+        public KenticoUserProvider(IKenticoLogger logger, IMapper mapper)
         {
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public DeliveryAddress[] GetCustomerAddresses(string addressType = null)
+        public DeliveryAddress[] GetCustomerAddresses(AddressType addressType)
         {
             var customer = ECommerceContext.CurrentCustomer;
-            var query = AddressInfoProvider.GetAddresses(customer.CustomerID);
-            if (!string.IsNullOrWhiteSpace(addressType))
+            return GetCustomerAddresses(customer.CustomerID, addressType);
+        }
+
+        public DeliveryAddress[] GetCustomerAddresses(int customerId, AddressType addressType)
+        {
+            var query = AddressInfoProvider.GetAddresses(customerId);
+            if (addressType != null)
             {
                 query = query.Where($"AddressType ='{addressType}'");
             }
-            var addresses = query.ToArray();
-            return AddressFactory.CreateDeliveryAddresses(addresses);
-        }
-
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
-                .ToArray();
-
-            return AddressFactory.CreateDeliveryAddresses(addresses);
+            return _mapper.Map<DeliveryAddress[]>(query.ToArray());
         }
 
         public Customer GetCurrentCustomer()
@@ -46,17 +46,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (customer == null)
                 return null;
 
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany
-            };
+            return CustomerFactory.CreateCustomer(customer);
         }
 
         public Customer GetCustomer(int customerId)
@@ -66,19 +56,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (customer == null)
                 return null;
 
-            return new Customer()
-            {
-                Id = customer.CustomerID,
-                FirstName = customer.CustomerFirstName,
-                LastName = customer.CustomerLastName,
-                Email = customer.CustomerEmail,
-                CustomerNumber = customer.CustomerGUID.ToString(),
-                Phone = customer.CustomerPhone,
-                UserID = customer.CustomerUserID,
-                Company = customer.CustomerCompany,
-                SiteId = customer.CustomerSiteID,
-                PreferredLanguage = customer.CustomerUser?.PreferredCultureCode ?? string.Empty
-            };
+            return CustomerFactory.CreateCustomer(customer);
         }
 
         public bool UserCanSeePrices()
@@ -134,6 +112,23 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw;
             }
             return true;
+        }
+
+
+        public void SetDefaultShippingAddress(int addressId)
+        {
+            var customer = ECommerceContext.CurrentCustomer;
+
+            if (customer != null)
+            {
+                customer.SetValue(CustomerDefaultShippingAddresIDFieldName, addressId);
+                CustomerInfoProvider.SetCustomerInfo(customer);
+            }
+        }
+
+        public void UnsetDefaultShippingAddress()
+        {
+            SetDefaultShippingAddress(0);
         }
     }
 }

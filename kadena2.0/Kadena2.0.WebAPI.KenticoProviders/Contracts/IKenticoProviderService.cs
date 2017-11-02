@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void RemoveCurrentItemsFromStock();
 
-        void RemoveCurrentItemsFromCart();
+        void ClearCart();
 
         double GetCurrentCartTotalItemsPrice();
 
@@ -87,5 +87,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetDocumentUrl(string aliasPath);
 
         string GetDocumentUrl(string aliasPath, string cultureCode);
+
+        string GetCurrentSiteDomain();
     }
 }

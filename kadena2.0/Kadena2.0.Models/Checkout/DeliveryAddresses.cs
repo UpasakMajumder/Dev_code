@@ -15,11 +15,12 @@ namespace Kadena.Models.Checkout
 
         public NewAddressButton NewAddress { get; set; }
 
-        public List<DeliveryAddress> items { get; set; }
+        public List<DeliveryAddress> items { get; set; } = new List<DeliveryAddress>();
 
         public string EmptyMessage { get; set; }
 
         public AddressDialog DialogUI { get; set; }
+        public DeliveryAddressesBounds Bounds { get; set; }
 
         public void CheckAddress(int id)
         {
@@ -30,6 +31,12 @@ namespace Kadena.Models.Checkout
             if (address != null)
             {
                 address.Checked = true;
+
+                if (items.Count > 1)
+                {
+                    items.Remove(address);
+                    items.Insert(0, address);
+                }
             }
         }
 
