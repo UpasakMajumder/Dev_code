@@ -70,7 +70,7 @@
     </asp:Login>
 
 
-    <%-- Password retrieval part  --%>
+    <%-- Password retrieval part--%>
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdatePasswordRetrievalLink" UpdateMode="Conditional">
         <ContentTemplate>
             <cms:LocalizedLinkButton ID="lnkPasswdRetrieval" runat="server" EnableViewState="false" OnClick="lnkPasswdRetrieval_Click"
@@ -109,42 +109,4 @@
 
     <cms:LocalizedHyperlink runat="server" ID="lnkSignup"></cms:LocalizedHyperlink>
 
-     <%-- Password hint part  ResourceString="LogonForm.lnkPasswordRetrieval"--%>
-    <cms:CMSUpdatePanel runat="server" ID="CMSUpdatePanel1" UpdateMode="Conditional">
-        <ContentTemplate>
-            <cms:LocalizedLinkButton ID="lnkPasswordhint" runat="server" EnableViewState="false" OnClick="lnkPasswordhint_Click"
-                CssClass="logon-password-retrieval-link"  />
-        </ContentTemplate>
-    </cms:CMSUpdatePanel>
-
-    <%--PasswordHint Panel  --%>
-     <cms:CMSUpdatePanel runat="server" ID="pnlUpdatePasswordHint" UpdateMode="Conditional">
-        <ContentTemplate>
-            <asp:Panel ID="PnlPasswordHint" runat="server" CssClass="logon-panel-password-retrieval" DefaultButton="btnPasswordHint" Visible="False">
-
-                <%-- Form start --%>
-                <div class="form-horizontal mb-2" role="form">
-                    <div class="form-group">
-                        <div class="editing-form-label-cell">
-                            <cms:LocalizedLabel ID="lblPasswordHint" runat="server" EnableViewState="false" AssociatedControlID="txtPasswordRetrieval"
-                                CssClass="control-label" ResourceString="E-MAIL" />
-                        </div>
-                        <div class="editing-form-value-cell">
-                            <cms:CMSTextBox ID="txtPasswordHint" CssClass="input__text" placeholder="your@email.com" runat="server" />
-                        </div>
-                    </div>
-                    <%-- Form End --%>
-                </div>
-
-                <cms:LocalizedButton ID="btnPasswordHint" runat="server" EnableViewState="false" ButtonStyle="Default"
-                    CssClass="btn-action login__login-button btn--no-shadow" ResourceString="kadena.logonFrom.Passwordhint" />
-                <asp:Label ID="lblPwdHint" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result" />
-                <asp:Label ID="lblHintResult" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result" />
-
-            </asp:Panel>
-        </ContentTemplate>
-        <Triggers>
-            <asp:AsyncPostBackTrigger EventName="Click" ControlID="lnkPasswordhint" />
-        </Triggers>
-    </cms:CMSUpdatePanel>
 </asp:Panel>
