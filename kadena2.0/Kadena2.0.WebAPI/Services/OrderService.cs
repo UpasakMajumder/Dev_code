@@ -31,6 +31,7 @@ namespace Kadena.WebAPI.Services
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
+        private readonly string _orderServiceUrlSettingKey = "KDA_OrderServiceEndpoint";
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -273,7 +274,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
-            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
+            string orderServiceUrl = resources.GetSettingsKey(_orderServiceUrlSettingKey);
             Customer customer = null;
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
@@ -292,7 +293,7 @@ namespace Kadena.WebAPI.Services
                 throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
             }
 
-            var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
+            var serviceResultDto = await orderSubmitClient.SubmitOrder(orderServiceUrl, orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
@@ -312,7 +313,7 @@ namespace Kadena.WebAPI.Services
 
                 // Temporary solution before microservices will implement better strategy for handling cold starts. 
                 var orderNumber = serviceResult.Payload;
-                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(serviceEndpoint, orderNumber));
+                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderServiceUrl, orderNumber));
             }
             else
             {
