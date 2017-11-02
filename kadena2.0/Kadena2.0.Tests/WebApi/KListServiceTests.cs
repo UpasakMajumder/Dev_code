@@ -43,7 +43,7 @@ namespace Kadena.Tests.WebApi
             }
         }
 
-        private KListService Create(Mock<IMailingListClient> mailingClient = null)
+        private KListService Create(Mock<IMailingListClient> mailingClient = null, Mock<IAddressValidationService> validationClient = null)
         {
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
@@ -54,7 +54,9 @@ namespace Kadena.Tests.WebApi
                 .Returns(new KenticoSite());
             
             return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
-                kenticoClient.Object, mapper);
+                kenticoClient.Object, 
+                validationClient?.Object ?? new Mock<IAddressValidationService>().Object, 
+                mapper);
         }
 
         private BaseResponseDto<IEnumerable<MailingAddressDto>> GetAddresses()
@@ -108,13 +110,14 @@ namespace Kadena.Tests.WebApi
         public async Task UseOnlyCorrectTestSuccess()
         {
             var mailingClient = new Mock<IMailingListClient>();
+            var validationClient = new Mock<IAddressValidationService>();
             mailingClient
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
-            mailingClient
+            validationClient
                 .Setup(c => c.Validate(null, null, _containerId))
                 .Returns(Task.FromResult(ValidateSuccess()));
-            var srvs = Create(mailingClient);
+            var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UseOnlyCorrectAddresses(_containerId);
 
             Assert.True(result);
@@ -124,13 +127,14 @@ namespace Kadena.Tests.WebApi
         public async Task UseOnlyCorrectTestValidationFailed()
         {
             var mailingClient = new Mock<IMailingListClient>();
+            var validationClient = new Mock<IAddressValidationService>();
             mailingClient
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
-            mailingClient
+            validationClient
                 .Setup(c => c.Validate(null, null, _containerId))
                 .Returns(Task.FromResult(ValidateFailed()));
-            var srvs = Create(mailingClient);
+            var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UseOnlyCorrectAddresses(_containerId);
 
             Assert.False(result);
@@ -152,13 +156,14 @@ namespace Kadena.Tests.WebApi
         public async Task UpdateTestSuccess()
         {
             var mailingClient = new Mock<IMailingListClient>();
+            var validationClient = new Mock<IAddressValidationService>();
             mailingClient
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));
-            mailingClient
+            validationClient
                 .Setup(c => c.Validate(null, null, _containerId))
                 .Returns(Task.FromResult(ValidateSuccess()));
-            var srvs = Create(mailingClient);
+            var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UpdateAddresses(_containerId, null);
 
             Assert.True(result);
@@ -168,13 +173,14 @@ namespace Kadena.Tests.WebApi
         public async Task UpdateTestValidationFailed()
         {
             var mailingClient = new Mock<IMailingListClient>();
+            var validationClient = new Mock<IAddressValidationService>();
             mailingClient
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));
-            mailingClient
+            validationClient
                 .Setup(c => c.Validate(null, null, _containerId))
                 .Returns(Task.FromResult(ValidateFailed()));
-            var srvs = Create(mailingClient);
+            var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UpdateAddresses(_containerId, null);
 
             Assert.False(result);

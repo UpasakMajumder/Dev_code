@@ -54,6 +54,7 @@ namespace Kadena.WebAPI
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedClient, TemplatedClient>();
+            container.Register<IAddressValidationService, AddressValidationClient>();
             return container;
         }
 
