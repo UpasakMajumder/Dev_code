@@ -47,7 +47,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
                 catch (Exception ex)
                 {
-                    statusMessages.Add("There was an error when processing item number " + currentItemNumber);
+                    statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
                     EventLogProvider.LogException("Import users", "EXCEPTION", ex);
                 }
 
@@ -109,14 +109,41 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.NodeName = product.ProductName;
                 newProduct.DocumentCulture = LocalizationContext.PreferredCultureCode;
                 newProduct.SetValue("ProductType", product.ProductType);
-                newProduct.SetValue("ProductType", product.ProductType);
                 newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
                 newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
                 newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
                 newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
                 newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
                 newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
+                newProduct.SetValue("ProductChili3dEnabled", product.Chili3DEnabled.ToLower() == "true");
                 newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
+
+                newProduct.SetValue("ProductCustomerReferenceNumber", product.CustomerReferenceNumber);
+                newProduct.SetValue("ProductMachineType", product.MachineType);
+                newProduct.SetValue("ProductColor", product.Color);
+                newProduct.SetValue("ProductPaper", product.Paper);
+
+                newProduct.SetValue("ProductProductionTime", product.ProductionTime);
+                newProduct.SetValue("ProductShipTime", product.ShipTime);
+                newProduct.SetValue("ProductShippingCost", product.ShippingCost);
+
+                newProduct.SetValue("ProductSheetSize", product.SheetSize);
+                newProduct.SetValue("ProductTrimSize", product.TrimSize);
+                newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
+
+                newProduct.SetValue("ProductBindery", product.Bindery);
+
+                DateTime publishFrom, publishTo;
+                if (DateTime.TryParse(product.PublishFrom, out publishFrom))
+                {
+                    newProduct.DocumentPublishFrom = publishFrom;
+                }
+                if (DateTime.TryParse(product.PublishTo, out publishTo))
+                {
+                    newProduct.DocumentPublishTo = publishTo;
+                }
+
+
 
                 // Inserts the new page as a child of the parent page
                 newProduct.Insert(parent);
@@ -212,6 +239,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     SKUEnabled = true,
                     SKUSiteID = siteID,
                     SKUNumber = product.SKU,
+                    SKUDescription = product.Description
                 };
 
                 SKUInfoProvider.SetSKUInfo(sku);
