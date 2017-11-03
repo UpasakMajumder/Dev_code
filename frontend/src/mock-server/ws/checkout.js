@@ -122,6 +122,7 @@ module.exports.ui = {
               {
                 id: "3",
                 name: "USA",
+                isDefault: true,
                 values: [
                   {
                     id: "31",
