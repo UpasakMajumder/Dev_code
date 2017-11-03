@@ -26,6 +26,12 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
                 return;
             }
 
+            if (SelectedSiteID == 0)
+            {
+                ShowErrorMessage("You need to choose the Site.");
+                return;
+            }
+
             var fileData = ReadFileFromRequest(file);
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 

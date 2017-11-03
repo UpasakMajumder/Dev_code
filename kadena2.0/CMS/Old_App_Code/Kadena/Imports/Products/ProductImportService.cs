@@ -1,5 +1,7 @@
 ﻿using CMS.DocumentEngine;
+using CMS.Ecommerce;
 using CMS.EventLog;
+using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using Kadena.Models;
@@ -22,6 +24,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
+            CacheHelper.ClearCache();
+
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
@@ -39,7 +43,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                 try
                 {
-                    SaveProduct(productDto);
+                    SaveProduct(productDto, siteID);
                 }
                 catch (Exception ex)
                 {
@@ -49,6 +53,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                 currentItemNumber++;
             }
+
+            CacheHelper.ClearCache();
 
             return new ImportResult
             {
@@ -77,31 +83,35 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return isValid;
         }
 
-        private void SaveProduct(ProductDto productDto)
+        private void SaveProduct(ProductDto productDto, int siteID)
         {
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories);
-            var newProduct = AppendProduct(productParent, productDto);
+            var sku = EnsureSKU(productDto, siteID);
+            var newProduct = AppendProduct(productParent, productDto, sku);
         }
 
-        private TreeNode AppendProduct(TreeNode parent, ProductDto product)
+        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
         {
-            if (parent == null)
+            if (parent == null || product == null)
                 return null;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            TreeNode newProduct = parent.Children.FirstOrDefault(c => c.NodeName == product.ProductName);
+
+            SKUTreeNode newProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeName == product.ProductName);
 
             if (newProduct == null)
             {
-                newProduct = TreeNode.New("KDA.Product", tree);
-                newProduct.NodeName = product.ProductName;
+                newProduct = (SKUTreeNode)TreeNode.New("KDA.Product", tree);
                 newProduct.DocumentName = product.ProductName;
-                newProduct.DocumentCulture = "en-us";
+                newProduct.DocumentSKUName = product.ProductName;
+                newProduct.NodeSKUID = sku.SKUID;
+                newProduct.NodeName = product.ProductName;
+                newProduct.DocumentCulture = LocalizationContext.PreferredCultureCode;
+                newProduct.SetValue("ProductType", product.ProductType);
                 newProduct.SetValue("ProductType", product.ProductType);
                 newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
                 newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
-
                 newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
                 newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
                 newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
@@ -185,6 +195,29 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
 
             return AppendProductCategory(category, subnodes.Skip(1).ToArray());
+        }
+
+        private SKUInfo EnsureSKU(ProductDto product, int siteID)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUs()
+                                .WhereEquals("SKUName", product.ProductName)
+                                .FirstObject;
+
+            if (sku == null)
+            {
+                sku = new SKUInfo()
+                {
+                    SKUName = product.ProductName,
+                    SKUPrice = Convert.ToDouble(product.Price),
+                    SKUEnabled = true,
+                    SKUSiteID = siteID,
+                    SKUNumber = product.SKU,
+                };
+
+                SKUInfoProvider.SetSKUInfo(sku);
+            }
+
+            return sku;
         }
     }
 }
