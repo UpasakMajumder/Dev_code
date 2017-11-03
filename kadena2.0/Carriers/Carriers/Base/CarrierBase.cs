@@ -28,7 +28,7 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            ServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_EstimateDeliveryPriceServiceEndpoint");
+            ServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_ShippingCostServiceUrl");
         }
 
         public Guid GetConfigurationUIElementGUID()
