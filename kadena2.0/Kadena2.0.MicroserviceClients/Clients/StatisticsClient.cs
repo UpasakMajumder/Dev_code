@@ -11,7 +11,7 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics(string endPoint, string customerName)
         {
-            return await Get<OrderStatisticDto>($"{endPoint}?customerName={customerName}").ConfigureAwait(false);
+            return await Get<OrderStatisticDto>($"{endPoint}/api/OrderStats?customerName={customerName}").ConfigureAwait(false);
         }
     }
 }
