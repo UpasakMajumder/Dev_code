@@ -34,6 +34,7 @@ namespace Kadena.WebAPI.Services
 
             return new SearchResultPage()
             {
+                NoResultMessage = resources.GetResourceString("Kadena.Search.NoResults"),
                 Pages = searchResultPages,
                 Products = searchResultProducts
             };
