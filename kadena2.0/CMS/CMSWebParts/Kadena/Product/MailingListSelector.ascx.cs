@@ -16,6 +16,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
     public partial class MailingListSelector : CMSAbstractWebPart
     {
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
+        private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
         public string NewMailingListUrl
         {
@@ -102,7 +103,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var quantity = btn.Attributes["quantity"];
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    var templateServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_TemplatingServiceEndpoint");
+                    var templateServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_templatedServiceUrlSettingKey}");
                     var templateClient = new TemplatedClient
                     {
                         SuppliantDomain = RequestContext.CurrentDomain

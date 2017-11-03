@@ -33,6 +33,7 @@ namespace Kadena.WebAPI.Services
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly string _orderServiceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
+        private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -339,8 +340,8 @@ namespace Kadena.WebAPI.Services
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
         {
-            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
+            string templatedServiceUrl = resources.GetSettingsKey(_templatedServiceUrlSettingKey);
+            var response = await templateService.RunGeneratePdfTask(templatedServiceUrl, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
             if (response.Success && response.Payload != null)
             {
                 return new Guid(response.Payload.TaskId);

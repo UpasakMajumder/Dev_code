@@ -20,6 +20,7 @@ namespace Kadena.WebAPI.Services
         private readonly ITemplatedClient _templateClient;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
+        private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
         public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
         {
@@ -34,8 +35,8 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> SetName(Guid templateId, string name)
         {
-            string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name);
+            string templatedServiceUrl = _resources.GetSettingsKey(_templatedServiceUrlSettingKey);
+            var result = await _templateClient.SetName(templatedServiceUrl, templateId, name);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -78,9 +79,9 @@ namespace Kadena.WebAPI.Services
                 return productTemplates;
             }
 
-            var clientEndpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
+            var templatedServiceUrl = _resources.GetSettingsKey(_templatedServiceUrlSettingKey);
             var requestResult = await _templateClient
-                .GetTemplates(clientEndpoint,
+                .GetTemplates(templatedServiceUrl,
                     _users.GetCurrentUser().UserId,
                     product.ProductChiliTemplateID);
 
