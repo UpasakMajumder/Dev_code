@@ -238,7 +238,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 var address = AddressInfoProvider.GetAddressInfo(addressId);
                 cart.ShoppingCartShippingAddress = address;
-                cart.SubmitChanges(true);
+                ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             }
         }
 

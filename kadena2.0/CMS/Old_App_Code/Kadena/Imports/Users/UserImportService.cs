@@ -14,19 +14,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserImportService
     {
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
+        public ImportResult ProcessUserImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
-            var rows = new ExcelReader().ReadDataFromExcelFile(importFileData, type);
-            if (rows.Count <= 1)
-            {
-                throw new Exception("The file contains no data");
-            }
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
 
-            var site = SiteInfoProvider.GetSiteInfo(siteID);
-            if (site == null)
-            {
-                throw new Exception("Invalid site id " + siteID);
-            }
             var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
 
             var header = rows.First();
@@ -80,26 +72,122 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             };
         }
 
+        public ImportResult ProcessAddressImportFile(byte[] importFileData, ExcelType type, int siteId, int[] userIds)
+        {
+            if ((userIds?.Length ?? 0) == 0)
+                throw new ArgumentOutOfRangeException("No users selected to upload addresses to");
+
+            var rows = GetExcelRows(importFileData, type);
+
+            var header = rows.First();
+            
+            var mapRowToAddress = ImportHelper.GetImportMapper<AddressDto>(header);
+
+            var addresses = rows.Skip(1)
+                .Select(row => mapRowToAddress(row))
+                .ToList();
+
+            var statusMessages = new List<string>();
+
+
+            foreach (var userId in userIds)
+            {
+                var user = UserInfoProvider.GetUserInfo(userId);
+
+                if (user == null)
+                {
+                    statusMessages.Add($"Nonexisting user : {userId}");
+                    continue;
+                }
+
+                var customer = EnsureCustomer(user, siteId);
+
+                var currentItemNumber = 1;
+                foreach (var addressDto in addresses)
+                {
+                    try
+                    {
+                        List<string> validationResults;
+                        if (!ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
+                        {
+                            validationResults.Sort();
+
+                            statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                            continue;
+                        }
+
+                        CreateCustomerAddress(customer.CustomerID, new UserDto
+                        {
+                            Country = addressDto.Country,
+                            State = addressDto.State,
+                            AddressLine = addressDto.AddressLine,
+                            AddressLine2 = addressDto.AddressLine2,
+                            City = addressDto.City,
+                            ContactName = addressDto.ContactName,
+                            PostalCode = addressDto.PostalCode,
+                            PhoneNumber = addressDto.PhoneNumber
+
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        statusMessages.Add("There was an error when processing item number " + currentItemNumber);
+                        EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                    }
+
+                    currentItemNumber++;
+                }
+            }
+
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        private CustomerInfo EnsureCustomer(UserInfo user, int siteId)
+        {
+            var customer = CustomerInfoProvider.GetCustomerInfoByUserID(user.UserID);
+
+            if (customer == null)
+            {
+                customer = CreateCustomer(user.UserID, siteId , new UserDto
+                {
+                    FirstName = string.Empty,
+                    LastName = user.UserName,
+                    Email = user.Email
+                });
+            }
+
+            return customer;
+        }
+
+        
+
+        private List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
+        {
+            var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
+            if (rows.Count <= 1)
+            {
+                throw new Exception("The file contains no data");
+            }
+            return rows;
+        }
+
+        private SiteInfo GetSite(int siteID)
+        {
+            var site = SiteInfoProvider.GetSiteInfo(siteID);
+            if (site == null)
+            {
+                throw new Exception("Invalid site id " + siteID);
+            }
+            return site;
+        }
+
         private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
-
-            // validate annotations
-            var context = new ValidationContext(userDto, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(
-                userDto, context, validationResults,
-                validateAllProperties: true
-            );
-
-            validationErrors = new List<string>();
-            if (!isValid)
-            {
-                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
-                {
-                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
-                }
-            }
+            bool isValid = ValidateDto(userDto, out validationErrors, errorMessageFormat);
 
             // validate special rules
             if (!ValidateEmail(userDto.Email))
@@ -115,6 +203,29 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             return isValid;
         }
+
+        private bool ValidateDto(object dto, out List<string> validationErrors, string errorMessageFormat)
+        {
+            // validate annotations
+            var context = new ValidationContext(dto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(
+                dto, context, validationResults,
+                validateAllProperties: true
+            );
+
+            validationErrors = new List<string>();
+            if (!isValid)
+            {
+                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
+                {
+                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
+                }
+            }
+
+            return isValid;
+        }
+
 
         private bool ValidateEmail(string email)
         {
