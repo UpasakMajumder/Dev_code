@@ -133,6 +133,7 @@ namespace Kadena.WebAPI.Services
         {
             var countries = kenticoProvider.GetCountries();
             var states = kenticoProvider.GetStates();
+            var defaultCountryId = int.Parse(resources.GetSettingsKey("KDA_AddressDefaultCountry"));
             return new Models.Checkout.AddressDialog
             {
                 Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),
@@ -189,6 +190,7 @@ namespace Kadena.WebAPI.Services
                                 {
                                     Id = c.Id.ToString(),
                                     Name = c.Name,
+                                    IsDefault = (c.Id == defaultCountryId),
                                     Values = sts.Select(s => new
                                     {
                                         Id = s.Id.ToString(),
