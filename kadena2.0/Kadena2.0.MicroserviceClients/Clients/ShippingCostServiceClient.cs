@@ -30,11 +30,12 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(string serviceEndpoint, string requestBody)
         {
+            var url = $"{serviceEndpoint}/api/shippingcost";
             using (var httpClient = new HttpClient())
             {
                 using (var content = new StringContent(requestBody, Encoding.UTF8, "application/json"))
                 {
-                    using (var response = await httpClient.PostAsync(serviceEndpoint, content).ConfigureAwait(false))
+                    using (var response = await httpClient.PostAsync(url, content).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<EstimateDeliveryPricePayloadDto>(response).ConfigureAwait(false);
                     }
