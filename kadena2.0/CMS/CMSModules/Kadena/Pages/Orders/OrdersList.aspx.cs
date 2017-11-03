@@ -13,20 +13,22 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 {
     public partial class OrdersList : CMSEcommercePage
     {
+        private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            var url = SettingsKeyInfoProvider.GetValue("KDA_OrdersBySiteUrl");
+            var orderViewServiceUrl = SettingsKeyInfoProvider.GetValue(_orderViewServiceUrlSettingKey);
             var client = new OrderViewClient();
 
             // First request to get total count of records.
-            var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
+            var data = client.GetOrders(orderViewServiceUrl, SiteContext.CurrentSiteName, 1, 1).Result;
 
             if (data?.Success ?? false)
             {
                 if ((data.Payload.Orders?.Count() ?? 0) > 0)
                 {
                     // Second request to get all records.
-                    data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
+                    data = client.GetOrders(orderViewServiceUrl, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
 
                     if (data?.Success ?? false)
                     {

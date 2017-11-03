@@ -22,6 +22,7 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger _logger;
 
         private readonly string _orderDetailUrl;
+        private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
 
         private int _pageCapacity;
         private string _pageCapacityKey;
@@ -120,18 +121,17 @@ namespace Kadena.WebAPI.Services
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
+            var orderViewServiceUrl = _kenticoResources.GetSettingsKey(_orderViewServiceUrlSettingKey);
             var siteName = _kenticoResources.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
             if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
-                var url = _kenticoResources.GetSettingsKey("KDA_OrdersBySiteUrl");
-                response = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(orderViewServiceUrl, siteName, pageNumber, _pageCapacity);
             }
             else
             {
                 var customer = _kenticoUsers.GetCurrentCustomer();
-                var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
-                response = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(orderViewServiceUrl, customer?.Id ?? 0, pageNumber, _pageCapacity);
             }
 
             if (response?.Success ?? false)

@@ -28,13 +28,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, int customerId, int pageNumber, int quantity)
         {
-            var parameterizedUrl = $"{serviceEndpoint}?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}";
+            var parameterizedUrl = $"{serviceEndpoint}/api/Order?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}";
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<OrderListDto>> GetOrders(string serviceEndpoint, string siteName, int pageNumber, int quantity)
         {
-            var url = $"{serviceEndpoint}?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
+            var url = $"{serviceEndpoint}/api/Order/forSite?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
             return await Get<OrderListDto>(url).ConfigureAwait(false);
         }
     }

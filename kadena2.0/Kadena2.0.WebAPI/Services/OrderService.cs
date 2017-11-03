@@ -32,6 +32,7 @@ namespace Kadena.WebAPI.Services
         private readonly IBackgroundTaskScheduler backgroundWorker;
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly string _orderServiceUrlSettingKey = "KDA_OrderServiceEndpoint";
+        private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -64,8 +65,8 @@ namespace Kadena.WebAPI.Services
         {
             CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
-            var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
+            var orderViewServiceUrl = resources.GetSettingsKey(_orderViewServiceUrlSettingKey);
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderViewServiceUrl, orderId);
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
