@@ -3909,6 +3909,8 @@
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -15390,6 +15392,20 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.designer.cs">
       <DependentUpon>logonform.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.designer.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.cs">
+      <DependentUpon>UsersList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.designer.cs">
+      <DependentUpon>UsersList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
