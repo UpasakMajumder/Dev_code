@@ -86,7 +86,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private void SaveProduct(ProductDto productDto, int siteID)
         {
             var categories = productDto.ProductCategory.Split('\n');
-            var productParent = CreateProductCategory(categories);
+            var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
             var newProduct = AppendProduct(productParent, productDto, sku);
         }
@@ -180,7 +180,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
 
-        private TreeNode CreateProductCategory(string[] path)
+        private TreeNode CreateProductCategory(string[] path, int siteId)
         {
             var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
                             .Path("/", PathTypeEnum.Children)
@@ -188,7 +188,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()
                             .NestingLevel(1)
-                            .OnCurrentSite()
+                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
                             .Published()
                             .FirstObject;
 
