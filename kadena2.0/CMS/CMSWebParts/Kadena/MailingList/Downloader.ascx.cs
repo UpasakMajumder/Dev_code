@@ -2,6 +2,8 @@
 using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.IO;
@@ -32,9 +34,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 if (mailingListResponse.Success)
                 {
                     var mailingList = mailingListResponse.Payload;
-                    var exportUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_ExportServiceUrl");
-                    var exportClient = new ExportClient();
-                    var exportResponse = exportClient.ExportMailingList(exportUrl, _containerId, SiteContext.CurrentSiteName).Result;
+                    var exportClient = new ExportClient(new MicroProperties(new KenticoResourceService()));
+                    var exportResponse = exportClient.ExportMailingList(_containerId, SiteContext.CurrentSiteName).Result;
                     if (exportResponse.Success)
                     {
                         var exportedStream = exportResponse.Payload;
