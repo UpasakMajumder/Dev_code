@@ -31,9 +31,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var products = GetDtosFromExcelRows<ProductDto>(rows);
             var statusMessages = new List<string>();
 
-            var currentItemNumber = 1;
+            var currentItemNumber = 0;
             foreach (var productDto in products)
             {
+                currentItemNumber++;
+
                 List<string> validationResults;
                 if (!ValidateImportItem(productDto, out validationResults))
                 {
@@ -50,8 +52,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
                     EventLogProvider.LogException("Import users", "EXCEPTION", ex);
                 }
-
-                currentItemNumber++;
             }
 
             CacheHelper.ClearCache();
@@ -86,7 +86,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private void SaveProduct(ProductDto productDto, int siteID)
         {
             var categories = productDto.ProductCategory.Split('\n');
-            var productParent = CreateProductCategory(categories);
+            var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
             var newProduct = AppendProduct(productParent, productDto, sku);
         }
@@ -180,7 +180,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
 
-        private TreeNode CreateProductCategory(string[] path)
+        private TreeNode CreateProductCategory(string[] path, int siteId)
         {
             var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
                             .Path("/", PathTypeEnum.Children)
@@ -188,7 +188,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()
                             .NestingLevel(1)
-                            .OnCurrentSite()
+                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
                             .Published()
                             .FirstObject;
 
