@@ -6,7 +6,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.ProductImages
 {
     public class ProductImagesTemplateService : TemplateServiceBase
     {
-        public byte[] GetProductTemplateFile(int siteID)
+        public byte[] GetProductImagesTemplateFile(int siteID)
         {
             var columns = GetImportColumns<ProductImageDto>();
             return CreateTemplateFile(columns);
