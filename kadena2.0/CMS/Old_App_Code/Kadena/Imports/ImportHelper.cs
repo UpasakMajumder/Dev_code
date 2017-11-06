@@ -55,7 +55,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
         public static List<Column> GetHeaderProperties<T>()
         {
             var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute, IsMandatory = (p.GetCustomAttributes(inherit:false).FirstOrDefault(a => a is RequiredAttribute) as RequiredAttribute)!=null })
+            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute, IsMandatory = (p.GetCustomAttributes(inherit:false).FirstOrDefault(a => a is RequiredAttribute) )!=null })
                 .Where(p => p.HeaderInfo != null)
                 .OrderBy(p => p.HeaderInfo.Order)
                 .Select(p => new Column() { PropertyInfo = p.Property, Name = p.HeaderInfo.Title, Order = p.HeaderInfo.Order, IsMandatory = p.IsMandatory })
