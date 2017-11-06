@@ -115,7 +115,7 @@ namespace Kadena.Tests.WebApi
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
             validationClient
-                .Setup(c => c.Validate(null, null, _containerId))
+                .Setup(c => c.Validate(_containerId))
                 .Returns(Task.FromResult(ValidateSuccess()));
             var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UseOnlyCorrectAddresses(_containerId);
@@ -132,7 +132,7 @@ namespace Kadena.Tests.WebApi
                 .Setup(c => c.GetAddresses(null, _containerId))
                 .Returns(Task.FromResult(GetAddresses()));
             validationClient
-                .Setup(c => c.Validate(null, null, _containerId))
+                .Setup(c => c.Validate(_containerId))
                 .Returns(Task.FromResult(ValidateFailed()));
             var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UseOnlyCorrectAddresses(_containerId);
@@ -161,7 +161,7 @@ namespace Kadena.Tests.WebApi
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));
             validationClient
-                .Setup(c => c.Validate(null, null, _containerId))
+                .Setup(c => c.Validate(_containerId))
                 .Returns(Task.FromResult(ValidateSuccess()));
             var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UpdateAddresses(_containerId, null);
@@ -178,7 +178,7 @@ namespace Kadena.Tests.WebApi
                 .Setup(c => c.UpdateAddresses(null, null, _containerId, null))
                 .Returns(Task.FromResult(UpdateSuccess()));
             validationClient
-                .Setup(c => c.Validate(null, null, _containerId))
+                .Setup(c => c.Validate(_containerId))
                 .Returns(Task.FromResult(ValidateFailed()));
             var srvs = Create(mailingClient, validationClient);
             var result = await srvs.UpdateAddresses(_containerId, null);

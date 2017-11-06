@@ -11,6 +11,6 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// </summary>
         /// <param name="containerId">Id of container.</param>
         /// <returns>ID of file with valid addresses.</returns>
-        Task<BaseResponseDto<string>> Validate(string endPoint, string customerName, Guid containerId);
+        Task<BaseResponseDto<string>> Validate(Guid containerId);
     }
 }

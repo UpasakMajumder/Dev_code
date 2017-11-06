@@ -3,6 +3,8 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class ColumnMapper : CMSAbstractWebPart
     {
-        private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
         private const string _mailingUrlSettingKey = "KDA_MailingServiceUrl";
 
         private static List<Tuple<string, string, bool>> _columnSelectors = new List<Tuple<string, string, bool>>
@@ -132,7 +133,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     try
                     {
                         var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingUrlSettingKey}");
-                        var validationUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_validateAddressSettingKey}");
                         var customerName = SiteContext.CurrentSiteName;
                         var mailingClient = new MailingListClient();
                         var uploadResult = mailingClient.UploadMapping(mailingServiceUrl, customerName, _fileId, _containerId, mapping).Result;
@@ -140,8 +140,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         {
                             throw new InvalidOperationException(uploadResult.ErrorMessages);
                         }
-                        var validationClient = new AddressValidationClient();
-                        var validationResult = validationClient.Validate(validationUrl, customerName, _containerId).Result;
+                        var validationClient = new AddressValidationClient(new MicroProperties(new KenticoResourceService()));
+                        var validationResult = validationClient.Validate(_containerId).Result;
                         if (!validationResult.Success)
                         {
                             throw new InvalidOperationException(validationResult.ErrorMessages);

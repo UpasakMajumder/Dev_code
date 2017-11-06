@@ -18,7 +18,6 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoResourceService _kentico;
         private readonly IMapper _mapper;
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
-        private const string _validateAddressSettingKey = "KDA_ValidateAddressUrl";
 
         public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
         {
@@ -41,13 +40,12 @@ namespace Kadena.WebAPI.Services
         {
             var mailingServiceUrl = _kentico.GetSettingsKey(_mailingServiceUrlSettingKey);
             var customerName = _kentico.GetKenticoSite().Name;
-            var validateUrl = _kentico.GetSettingsKey(_validateAddressSettingKey);
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
             var updateResult = await _mailingClient.UpdateAddresses(mailingServiceUrl, customerName, containerId, changes);
             if (updateResult.Success)
             {
-                var validateResult = await _validationClient.Validate(validateUrl, customerName, containerId);
+                var validateResult = await _validationClient.Validate(containerId);
                 return validateResult.Success;
             }
             else
@@ -59,13 +57,12 @@ namespace Kadena.WebAPI.Services
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
         {
             var mailingServiceUrl = _kentico.GetSettingsKey(_mailingServiceUrlSettingKey);
-            var validateUrl = _kentico.GetSettingsKey(_validateAddressSettingKey);
             var customerName = _kentico.GetKenticoSite().Name;
 
             var addresses = await _mailingClient.GetAddresses(mailingServiceUrl, containerId);
             await _mailingClient.RemoveAddresses(mailingServiceUrl, customerName, containerId,
                 addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
-            var validateResult = await _validationClient.Validate(validateUrl, customerName, containerId);
+            var validateResult = await _validationClient.Validate(containerId);
 
             return validateResult.Success;
         }
