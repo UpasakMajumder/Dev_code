@@ -31,9 +31,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var products = GetDtosFromExcelRows<ProductDto>(rows);
             var statusMessages = new List<string>();
 
-            var currentItemNumber = 1;
+            var currentItemNumber = 0;
             foreach (var productDto in products)
             {
+                currentItemNumber++;
+
                 List<string> validationResults;
                 if (!ValidateImportItem(productDto, out validationResults))
                 {
@@ -50,8 +52,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
                     EventLogProvider.LogException("Import users", "EXCEPTION", ex);
                 }
-
-                currentItemNumber++;
             }
 
             CacheHelper.ClearCache();
