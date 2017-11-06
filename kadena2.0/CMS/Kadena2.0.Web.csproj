@@ -983,6 +983,8 @@
     <Compile Include="Old_App_Code\Kadena\Imports\ImportHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportResult.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportServiceBase.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\ProductImages\ProductImageDto.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\ProductImages\ProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductTemplateService.cs" />
