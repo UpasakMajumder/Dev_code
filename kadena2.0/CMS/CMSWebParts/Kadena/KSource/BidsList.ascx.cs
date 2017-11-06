@@ -4,6 +4,8 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
@@ -33,8 +35,8 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             {
                 var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_bidServiceUrlSettingKey}");
                 var workGroupName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_WorkgroupName");
-                var client = new BidClient();
-                var reqResult = client.GetProjects(url, workGroupName).Result;
+                var client = new BidClient(new MicroProperties(new KenticoResourceService()));
+                var reqResult = client.GetProjects(string.Empty, workGroupName).Result;
                 if (reqResult.Success)
                 {
                     projects = reqResult.Payload;
