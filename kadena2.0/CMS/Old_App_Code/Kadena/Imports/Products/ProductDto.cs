@@ -113,16 +113,28 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(10)]
         public string NeedsShipping{ get; set; }
 
-        [Header(27, "Publish from")]
+        [Header(27, "Publish from (MM/dd/yyyy)")]
         [MaxLength(20)]
         public string PublishFrom { get; set; }
 
-        [Header(28, "Publish to")]
+        [Header(28, "Publish to (MM/dd/yyyy)")]
         [MaxLength(20)]
         public string PublishTo { get; set; }
 
         [Header(29, "Track Inventory")]
         [MaxLength(20)]
         public string TrackInventory { get; set; }
+
+        [Header(30, "Sell only if items available")]
+        [MaxLength(20)]
+        public string SellOnlyIfItemsAvailable { get; set; }
+
+        [Header(31, "Min Items in Order")]
+        [MaxLength(20)]
+        public string MinItemsInOrder { get; set; }
+
+        [Header(32, "Max Items in Order")]
+        [MaxLength(20)]
+        public string MaxItemsInOrder { get; set; }
     }
 }

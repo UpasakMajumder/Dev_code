@@ -1,4 +1,5 @@
 ﻿using Kadena.Models.Product;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
@@ -35,6 +36,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 AddOneFromManyValidation(indexOfproductType, "ProductTypes", productTypes, sheet);
                 sheet.SetColumnWidth(indexOfproductType, 256 * productTypes.Max(t => t.Length));
             }
+
+            var indexOfTrack = columnInfos.FirstOrDefault(c => c.Name == "Track Inventory").Order;
+            AddOneFromManyValidation(indexOfTrack, "Trackings", new[] { "Yes", "No", "By variants" }, sheet);
 
             var indexOfChili1 = columnInfos.FirstOrDefault(c => c.Name == "Chili Template ID").Order;
             var indexOfChili2 = columnInfos.FirstOrDefault(c => c.Name == "Chili Workgroup ID").Order;

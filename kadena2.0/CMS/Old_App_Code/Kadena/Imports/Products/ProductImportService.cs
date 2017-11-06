@@ -143,9 +143,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     newProduct.DocumentPublishTo = publishTo;
                 }
 
-
-
-                // Inserts the new page as a child of the parent page
                 newProduct.Insert(parent);
             }
 
@@ -224,10 +221,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return AppendProductCategory(category, subnodes.Skip(1).ToArray());
         }
 
+        private TrackInventoryTypeEnum ParseTrackInventoryTypeEnum(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                if (value == "Yes")
+                    return TrackInventoryTypeEnum.ByProduct;
+                else if (value == "By variants")
+                    return TrackInventoryTypeEnum.ByVariants;
+            }
+            return TrackInventoryTypeEnum.Disabled;
+        }
+
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
             SKUInfo sku = SKUInfoProvider.GetSKUs()
-                                .WhereEquals("SKUName", product.ProductName)
+                                .WhereEquals("SKUNumber", product.SKU)
                                 .FirstObject;
 
             if (sku == null)
@@ -239,8 +248,21 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     SKUEnabled = true,
                     SKUSiteID = siteID,
                     SKUNumber = product.SKU,
-                    SKUDescription = product.Description
+                    SKUDescription = product.Description,
+                    SKUTrackInventory = ParseTrackInventoryTypeEnum(product.TrackInventory)
                 };
+
+                if (!string.IsNullOrWhiteSpace(product.MinItemsInOrder))
+                {
+                    sku.SetValue("SKUMinItemsInOrder", Convert.ToInt32(product.MinItemsInOrder));
+                }
+
+                if (!string.IsNullOrWhiteSpace(product.MaxItemsInOrder))
+                {
+                    sku.SetValue("SKUMaxItemsInOrder", Convert.ToInt32(product.MaxItemsInOrder));
+                }
+
+                sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
 
                 SKUInfoProvider.SetSKUInfo(sku);
             }
