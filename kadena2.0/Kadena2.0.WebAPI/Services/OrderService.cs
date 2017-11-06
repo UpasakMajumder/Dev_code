@@ -58,8 +58,6 @@ namespace Kadena.WebAPI.Services
             this.taxService = taxService;
             this.templateService = templateService;
             this.backgroundWorker = backgroundWorker;
-
-            this.templateService.SuppliantDomain = this.kenticoProvider.GetCurrentSiteDomain();
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)

@@ -1,6 +1,8 @@
 ﻿using CMS.DataEngine;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 
@@ -54,7 +56,10 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing && TemplateID != null)
             {
-                chilliIframe.Src = new TemplatedClient() { SuppliantDomain = CMS.Helpers.RequestContext.CurrentDomain }.GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d).Result?.Payload ?? string.Empty;
+                chilliIframe.Src = new TemplatedClient(new SuppliantDomain(new KenticoResourceService()))
+                    .GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d)
+                    .Result?
+                    .Payload ?? string.Empty;
             }
         }
     }

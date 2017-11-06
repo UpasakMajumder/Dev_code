@@ -2,6 +2,6 @@
 {
     public interface ISuppliantDomainClient
     {
-        string SuppliantDomain { get; set; }
+        string GetSuppliantDomain();
     }
 }

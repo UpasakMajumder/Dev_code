@@ -10,6 +10,8 @@ using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
 using CMS.EventLog;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI.Helpers;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -104,10 +106,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
                     var templateServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_templatedServiceUrlSettingKey}");
-                    var templateClient = new TemplatedClient
-                    {
-                        SuppliantDomain = RequestContext.CurrentDomain
-                    };
+                    var templateClient = new TemplatedClient(new SuppliantDomain(new KenticoResourceService()));
                     var setResult = templateClient.SetMailingList(templateServiceUrl, containerId, templateId, workspaceId, use3d).Result;
                     if (!setResult.Success)
                     {

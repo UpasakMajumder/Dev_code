@@ -7,6 +7,8 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Models.Product;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Linq;
@@ -68,7 +70,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
             var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
             var use3d = CurrentDocument.GetBooleanValue("ProductChili3dEnabled", false);
-            var client = new TemplatedClient() { SuppliantDomain = RequestContext.CurrentDomain };
+            var client = new TemplatedClient(new SuppliantDomain(new KenticoResourceService()));
             var requestBody = new NewTemplateRequestDto
             {
                 User = MembershipContext.AuthenticatedUser.UserID.ToString(),

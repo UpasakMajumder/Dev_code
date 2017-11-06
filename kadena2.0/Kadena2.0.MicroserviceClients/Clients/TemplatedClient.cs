@@ -3,6 +3,7 @@ using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,6 +13,10 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class TemplatedClient : ClientBase, ITemplatedClient
     {
+        public TemplatedClient(ISuppliantDomainClient suppliantDomain) : base(suppliantDomain)
+        {
+        }
+
         public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
         {
             using (var httpClient = new HttpClient())

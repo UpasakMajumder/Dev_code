@@ -29,8 +29,6 @@ namespace Kadena.WebAPI.Services
             _templateClient = templateClient;
             _kentico = kentico;
             _users = users;
-
-            _templateClient.SuppliantDomain = _kentico.GetCurrentSiteDomain();
         }
 
         public async Task<bool> SetName(Guid templateId, string name)

@@ -1,16 +1,16 @@
-﻿using Amazon.SecurityToken;
-using AutoMapper;
+﻿using AutoMapper;
 using DryIoc;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Factories.Checkout;
+using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena.WebAPI
 {
@@ -55,6 +55,7 @@ namespace Kadena.WebAPI
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedClient, TemplatedClient>();
             container.Register<IAddressValidationClient, AddressValidationClient>();
+            container.Register<ISuppliantDomainClient, SuppliantDomain>();
             return container;
         }
 

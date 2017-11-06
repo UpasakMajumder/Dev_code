@@ -2,6 +2,7 @@
 using Amazon.SecurityToken;
 using Kadena.Dto.General;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -14,6 +15,13 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public abstract class ClientBase
     {
+        private readonly ISuppliantDomainClient _suppliantDomain;
+
+        protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
+        {
+            _suppliantDomain = suppliantDomain;
+        }
+
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
 
         protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
@@ -26,8 +34,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         public bool SignRequest { get; set; } = false;
 
         public string AwsGatewayApiRole { get; set; } = "arn:aws:...........";
-
-        public string SuppliantDomain { get; set; }
 
         // TODO consider using static or singleton, based on how we will store credentials
         protected readonly IAwsV4Signer signer;
@@ -91,9 +97,10 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             {
                 using (var request = new HttpRequestMessage(method, url))
                 {
-                    if (!string.IsNullOrEmpty(SuppliantDomain))
+                    var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+                    if (!string.IsNullOrEmpty(suppliantDomain))
                     {
-                        AddHeader(client, "suppliantDomain", SuppliantDomain);
+                        AddHeader(client, "suppliantDomain", suppliantDomain);
                     }
 
                     if (body != null)
