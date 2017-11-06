@@ -28,9 +28,10 @@ namespace Kadena2.MicroserviceClients.Clients
             _properties = properties;
         }
 
-        public async Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string endPoint, string workGroupName)
+        public async Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string workGroupName)
         {
-            var url = $"{endPoint}/api/bid/{workGroupName}";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/bid/{workGroupName}";
             return await Get<IEnumerable<ProjectDto>>(url).ConfigureAwait(false);
         }
     }

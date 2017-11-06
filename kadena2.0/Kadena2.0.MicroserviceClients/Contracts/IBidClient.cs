@@ -7,6 +7,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IBidClient
     {
-        Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string endPoint, string workGroupName);
+        Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string workGroupName);
     }
 }
