@@ -97,55 +97,53 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 return null;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            SKUTreeNode existingProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeSKUID == sku.SKUID);
+            SKUTreeNode newProduct = existingProduct ?? (SKUTreeNode)TreeNode.New("KDA.Product", tree);
 
-            SKUTreeNode newProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeName == product.ProductName);
+            newProduct.DocumentName = product.ProductName;
+            newProduct.DocumentSKUName = product.ProductName;
+            newProduct.NodeSKUID = sku.SKUID;
+            newProduct.NodeName = product.ProductName;
+            newProduct.DocumentCulture = LocalizationContext.PreferredCultureCode;
+            newProduct.SetValue("ProductType", product.ProductType);
+            newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
+            newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
+            newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
+            newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
+            newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
+            newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
+            newProduct.SetValue("ProductChili3dEnabled", product.Chili3DEnabled.ToLower() == "true");
+            newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
+            newProduct.SetValue("ProductCustomerReferenceNumber", product.CustomerReferenceNumber);
+            newProduct.SetValue("ProductMachineType", product.MachineType);
+            newProduct.SetValue("ProductColor", product.Color);
+            newProduct.SetValue("ProductPaper", product.Paper);
+            newProduct.SetValue("ProductProductionTime", product.ProductionTime);
+            newProduct.SetValue("ProductShipTime", product.ShipTime);
+            newProduct.SetValue("ProductShippingCost", product.ShippingCost);
+            newProduct.SetValue("ProductSheetSize", product.SheetSize);
+            newProduct.SetValue("ProductTrimSize", product.TrimSize);
+            newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
+            newProduct.SetValue("ProductBindery", product.Bindery);
 
-            if (newProduct == null)
+            DateTime publishFrom, publishTo;
+            if (DateTime.TryParse(product.PublishFrom, out publishFrom))
             {
-                newProduct = (SKUTreeNode)TreeNode.New("KDA.Product", tree);
-                newProduct.DocumentName = product.ProductName;
-                newProduct.DocumentSKUName = product.ProductName;
-                newProduct.NodeSKUID = sku.SKUID;
-                newProduct.NodeName = product.ProductName;
-                newProduct.DocumentCulture = LocalizationContext.PreferredCultureCode;
-                newProduct.SetValue("ProductType", product.ProductType);
-                newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
-                newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
-                newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
-                newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
-                newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
-                newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
-                newProduct.SetValue("ProductChili3dEnabled", product.Chili3DEnabled.ToLower() == "true");
-                newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
-
-                newProduct.SetValue("ProductCustomerReferenceNumber", product.CustomerReferenceNumber);
-                newProduct.SetValue("ProductMachineType", product.MachineType);
-                newProduct.SetValue("ProductColor", product.Color);
-                newProduct.SetValue("ProductPaper", product.Paper);
-
-                newProduct.SetValue("ProductProductionTime", product.ProductionTime);
-                newProduct.SetValue("ProductShipTime", product.ShipTime);
-                newProduct.SetValue("ProductShippingCost", product.ShippingCost);
-
-                newProduct.SetValue("ProductSheetSize", product.SheetSize);
-                newProduct.SetValue("ProductTrimSize", product.TrimSize);
-                newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
-
-                newProduct.SetValue("ProductBindery", product.Bindery);
-
-                DateTime publishFrom, publishTo;
-                if (DateTime.TryParse(product.PublishFrom, out publishFrom))
-                {
-                    newProduct.DocumentPublishFrom = publishFrom;
-                }
-                if (DateTime.TryParse(product.PublishTo, out publishTo))
-                {
-                    newProduct.DocumentPublishTo = publishTo;
-                }
-
-                newProduct.Insert(parent);
+                newProduct.DocumentPublishFrom = publishFrom;
+            }
+            if (DateTime.TryParse(product.PublishTo, out publishTo))
+            {
+                newProduct.DocumentPublishTo = publishTo;
             }
 
+            if (existingProduct == null)
+            {
+                newProduct.Insert(parent);
+            }
+            else
+            {
+                newProduct.Update();
+            }
             return newProduct;
         }
 
@@ -181,7 +179,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
-
 
         private TreeNode CreateProductCategory(string[] path)
         {
@@ -235,38 +232,31 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            SKUInfo sku = SKUInfoProvider.GetSKUs()
-                                .WhereEquals("SKUNumber", product.SKU)
-                                .FirstObject;
+            var sku = SKUInfoProvider.GetSKUs()
+                .WhereEquals("SKUNumber", product.SKU)
+                .FirstObject ?? new SKUInfo();            
 
-            if (sku == null)
+            sku.SKUName = product.ProductName;
+            sku.SKUPrice = Convert.ToDouble(product.Price);
+            sku.SKUEnabled = true;
+            sku.SKUSiteID = siteID;
+            sku.SKUNumber = product.SKU;
+            sku.SKUDescription = product.Description;
+            sku.SKUTrackInventory = ParseTrackInventoryTypeEnum(product.TrackInventory);
+
+            if (!string.IsNullOrWhiteSpace(product.MinItemsInOrder))
             {
-                sku = new SKUInfo()
-                {
-                    SKUName = product.ProductName,
-                    SKUPrice = Convert.ToDouble(product.Price),
-                    SKUEnabled = true,
-                    SKUSiteID = siteID,
-                    SKUNumber = product.SKU,
-                    SKUDescription = product.Description,
-                    SKUTrackInventory = ParseTrackInventoryTypeEnum(product.TrackInventory)
-                };
-
-                if (!string.IsNullOrWhiteSpace(product.MinItemsInOrder))
-                {
-                    sku.SetValue("SKUMinItemsInOrder", Convert.ToInt32(product.MinItemsInOrder));
-                }
-
-                if (!string.IsNullOrWhiteSpace(product.MaxItemsInOrder))
-                {
-                    sku.SetValue("SKUMaxItemsInOrder", Convert.ToInt32(product.MaxItemsInOrder));
-                }
-
-                sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
-
-                SKUInfoProvider.SetSKUInfo(sku);
+                sku.SetValue("SKUMinItemsInOrder", Convert.ToInt32(product.MinItemsInOrder));
             }
 
+            if (!string.IsNullOrWhiteSpace(product.MaxItemsInOrder))
+            {
+                sku.SetValue("SKUMaxItemsInOrder", Convert.ToInt32(product.MaxItemsInOrder));
+            }
+
+            sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
+
+            SKUInfoProvider.SetSKUInfo(sku);
             return sku;
         }
     }
