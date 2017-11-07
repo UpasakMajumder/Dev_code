@@ -8,7 +8,7 @@ export default function CheckboxInput(props) {
 
   const inputProps = removeProps(props, ['error', 'label', 'inputClass']);
 
-  const labelElement = label ? <label htmlFor={props.id} className={`input__label input__label--${type}`}>{label}</label> : null;
+  const labelElement = label ? <label dangerouslySetInnerHTML={{ __html: label }} htmlFor={props.id} className={`input__label input__label--${type}`} /> : null;
   const wrapClass = disabled
     ? 'input__wrapper input__wrapper--disabled '
     : 'input__wrapper';

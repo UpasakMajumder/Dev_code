@@ -17,6 +17,7 @@ class SearchPagePages extends Component {
     pagesLength: PropTypes.number.isRequired,
     pagesPage: PropTypes.number.isRequired,
     changePage: PropTypes.func.isRequired,
+    noResultMessage: PropTypes.string.isRequired,
     filteredPages: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
@@ -25,7 +26,7 @@ class SearchPagePages extends Component {
   };
 
   render() {
-    const { filteredPages, pagesPage, pagesLength, changePage, getAllResults } = this.props;
+    const { filteredPages, pagesPage, pagesLength, changePage, getAllResults, noResultMessage } = this.props;
 
     const pageList = filteredPages.map(page => <Page key={page.id} {...page} />);
 
@@ -44,7 +45,7 @@ class SearchPagePages extends Component {
     );
 
     const plug = getAllResults
-      ? <Alert type="info" text="No pages found"/>
+      ? <Alert type="info" text={noResultMessage} />
       : <Spinner />;
 
     return pagesLength ? content : plug;
@@ -52,12 +53,12 @@ class SearchPagePages extends Component {
 }
 
 export default connect((state) => {
-  const { pages, pagesPage, getAllResults } = state.searchPage;
+  const { pages, pagesPage, getAllResults, noResultMessage } = state.searchPage;
 
   const filteredPages = paginationFilter(pages, pagesPage, 6);
   const pagesLength = pages.length;
 
-  return { filteredPages, pagesPage, pagesLength, getAllResults };
+  return { filteredPages, pagesPage, pagesLength, getAllResults, noResultMessage };
 }, {
   changePage
 })(SearchPagePages);

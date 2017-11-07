@@ -2,6 +2,7 @@ module.exports.result = {
   "success": true,
   "errorMessage": null,
   "payload": {
+    "noResultMessage": "No result!",
     "products": [
       {
         "id": 1,

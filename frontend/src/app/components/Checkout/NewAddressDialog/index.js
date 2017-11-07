@@ -10,7 +10,11 @@ class NewAddressDialog extends Component {
   constructor(props) {
     super(props);
 
-    this.stateIndex = this.props.ui.fields.findIndex(element => element.id === 'state');
+    const { fields } = this.props.ui;
+
+    this.stateIndex = fields.findIndex(element => element.id === 'state');
+
+    const defaultCountry = fields.find(field => field.id === 'country').values.find(country => country.isDefault);
 
     this.state = {
       invalids: [],
@@ -21,11 +25,11 @@ class NewAddressDialog extends Component {
         city: '',
         state: '',
         zip: '',
-        country: '',
+        country: defaultCountry && defaultCountry.id,
         phone: '',
         email: ''
       },
-      fields: this.props.ui.fields
+      fields: this.getNewStateFields(fields, defaultCountry && defaultCountry.id)
     };
   }
 
@@ -61,7 +65,6 @@ class NewAddressDialog extends Component {
   };
 
   render () {
-    const { address } = this.state;
     const { closeDialog, ui, userNotification } = this.props;
 
     const footer = (
@@ -155,6 +158,7 @@ class NewAddressDialog extends Component {
   };
 
   getNewStateFields = (fields, countryId) => {
+    if (!countryId) return fields;
     const options = fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values;
     const state = fields.find(element => element.id === 'state');
 
@@ -207,7 +211,7 @@ class NewAddressDialog extends Component {
         isOptional: field.isOptional,
         isSelect: field.type === 'select',
         options: field.values,
-        value: field.id === 'country' ? this.state.address[field.id] || field.label : this.state.address[field.id]
+        value: (field.id === 'country' || field.id === 'state') ? this.state.address[field.id] || field.label : this.state.address[field.id]
       };
     });
   }
