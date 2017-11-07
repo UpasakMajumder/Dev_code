@@ -45,7 +45,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
                 .ToArray();
 
-            return AddressFactory.CreateDeliveryAddresses(addresses);
+            return _mapper.Map<DeliveryAddress[]>(addresses.ToArray());
         }
        
         public Customer GetCurrentCustomer()
