@@ -17,7 +17,6 @@ namespace Kadena.WebAPI.Services
         private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoResourceService _kentico;
         private readonly IMapper _mapper;
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
 
         public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
         {
@@ -29,20 +28,17 @@ namespace Kadena.WebAPI.Services
 
         public async Task<MailingList> GetMailingList(Guid containerId)
         {
-            var mailingServiceUrl = _kentico.GetSettingsKey(_mailingServiceUrlSettingKey);
             var customerName = _kentico.GetKenticoSite().Name;
 
-            var data = await _mailingClient.GetMailingList(mailingServiceUrl, customerName, containerId);
+            var data = await _mailingClient.GetMailingList(containerId);
             return _mapper.Map<MailingList>(data.Payload);
         }
 
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
         {
-            var mailingServiceUrl = _kentico.GetSettingsKey(_mailingServiceUrlSettingKey);
-            var customerName = _kentico.GetKenticoSite().Name;
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
-            var updateResult = await _mailingClient.UpdateAddresses(mailingServiceUrl, customerName, containerId, changes);
+            var updateResult = await _mailingClient.UpdateAddresses(containerId, changes);
             if (updateResult.Success)
             {
                 var validateResult = await _validationClient.Validate(containerId);
@@ -56,11 +52,8 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
         {
-            var mailingServiceUrl = _kentico.GetSettingsKey(_mailingServiceUrlSettingKey);
-            var customerName = _kentico.GetKenticoSite().Name;
-
-            var addresses = await _mailingClient.GetAddresses(mailingServiceUrl, containerId);
-            await _mailingClient.RemoveAddresses(mailingServiceUrl, customerName, containerId,
+            var addresses = await _mailingClient.GetAddresses(containerId);
+            await _mailingClient.RemoveAddresses(containerId,
                 addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
             var validateResult = await _validationClient.Validate(containerId);
 

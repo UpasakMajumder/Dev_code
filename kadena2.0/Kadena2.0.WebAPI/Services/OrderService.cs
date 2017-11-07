@@ -30,7 +30,6 @@ namespace Kadena.WebAPI.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly string _orderServiceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
         private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
@@ -220,9 +219,7 @@ namespace Kadena.WebAPI.Services
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {
-            var mailingServiceUrl = resources.GetSettingsKey(_mailingServiceUrlSettingKey);
-            var customerName = resources.GetKenticoSite().Name;
-            var mailingResponse = await mailingClient.GetMailingListsForCustomer(mailingServiceUrl, customerName);
+            var mailingResponse = await mailingClient.GetMailingListsForCustomer();
 
             if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
             {

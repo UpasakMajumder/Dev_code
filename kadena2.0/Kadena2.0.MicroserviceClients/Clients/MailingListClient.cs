@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using System.IO;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -26,67 +27,83 @@ namespace Kadena2.MicroserviceClients.Clients
 
         //}
 
-        public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId)
+        private const string _serviceUrlSettingKey = "KDA_MailingServiceUrl";
+        private readonly IMicroProperties _properties;
+
+        public MailingListClient(IMicroProperties properties)
         {
-            var url = $"{serviceEndpoint}/api/DeliveryAddress/ByContainer/{containerId}";
+            _properties = properties;
+        }
+
+        public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(Guid containerId)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/DeliveryAddress/ByContainer/{containerId}";
             return await Get<IEnumerable<MailingAddressDto>>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(string serviceEndpoint, string customerName, Guid containerId)
+        public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(Guid containerId)
         {
-            string url = $"{serviceEndpoint}/api/Mailing/ByCustomerAndId/{customerName}/{containerId}";
+            var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{containerId}";
             return await Get<MailingListDataDTO>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer(string serviceEndpoint, string customerName)
+        public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer()
         {
-            var encodedCustomerName = HttpUtility.UrlEncode(customerName);
-            var url = $"{serviceEndpoint.TrimEnd('/')}/api/Mailing/AllForCustomer/{encodedCustomerName}";
+            var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url.TrimEnd('/')}/api/Mailing/AllForCustomer/{encodedCustomerName}";
             return await Get<MailingListDataDTO[]>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, Guid mailingListId)
+        public async Task<BaseResponseDto<object>> RemoveMailingList(Guid mailingListId)
         {
-            var encodedCustomerName = HttpUtility.UrlEncode(customerName);
-            var url = $"{serviceEndpoint.TrimEnd('/')}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
+            var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url.TrimEnd('/')}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
             return await Delete<object>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<object>> RemoveMailingList(string serviceEndpoint, string customerName, DateTime olderThan)
+        public async Task<BaseResponseDto<object>> RemoveMailingList(DateTime olderThan)
         {
-            var url = $"{serviceEndpoint}/api/Mailing/ByFilter";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/Mailing/ByFilter";
             var body = new
             {
-                customerName = customerName,
+                customerName = _properties.GetCustomerName(),
                 validTo = olderThan
             };
 
             return await Delete<object>(url, body).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<object>> RemoveAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<Guid> addressIds = null)
+        public async Task<BaseResponseDto<object>> RemoveAddresses(Guid containerId, IEnumerable<Guid> addressIds = null)
         {
-            var url = $"{serviceEndpoint}/api/DeliveryAddress/BulkDelete";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/DeliveryAddress/BulkDelete";
             var body = new
             {
                 ContainerId = containerId,
                 ids = addressIds,
-                CustomerName = customerName
+                CustomerName = _properties.GetCustomerName()
             };
 
             return await Delete<object>(url, body).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(string serviceEndpoint, string customerName, Guid containerId, IEnumerable<MailingAddressDto> addresses)
+        public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(Guid containerId, IEnumerable<MailingAddressDto> addresses)
         {
-            var url = $"{serviceEndpoint}/api/DeliveryAddress/ManualBulkUpdate";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/DeliveryAddress/ManualBulkUpdate";
             using (var client = new HttpClient())
             {
                 using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
                 {
                     Content = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        CustomerName = customerName,
+                        CustomerName = _properties.GetCustomerName(),
                         UpdateObjects = addresses.Select(a => new
                         {
                             HashKey = containerId,
@@ -112,13 +129,14 @@ namespace Kadena2.MicroserviceClients.Clients
             }
         }
 
-        public async Task<BaseResponseDto<Guid>> CreateMailingContainer(string endPoint, string customerName, string name, string mailType, string product, int validityDays, string customerId)
+        public async Task<BaseResponseDto<Guid>> CreateMailingContainer(string name, string mailType, string product, int validityDays, string customerId)
         {
-            var createContainerUrl = $"{endPoint}/api/Mailing";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            var createContainerUrl = $"{url}/api/Mailing";
             return await Post<Guid>(createContainerUrl, new
             {
                 name = name,
-                customerName = customerName,
+                customerName = _properties.GetCustomerName(),
                 Validity = validityDays,
                 mailType = mailType,
                 productType = product,
@@ -126,9 +144,10 @@ namespace Kadena2.MicroserviceClients.Clients
             }).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<object>> UploadMapping(string endPoint, string customerName, string fileId, Guid containerId, Dictionary<string, int> mapping)
+        public async Task<BaseResponseDto<object>> UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
-            var uploadMappingUrl = $"{endPoint}/api/DeliveryAddress";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            var uploadMappingUrl = $"{url}/api/DeliveryAddress";
             string jsonMapping = string.Empty;
             using (var sw = new StringWriter())
             {
@@ -148,7 +167,7 @@ namespace Kadena2.MicroserviceClients.Clients
             {
                 mapping = jsonMapping,
                 fileId = fileId,
-                customerName = customerName,
+                customerName = _properties.GetCustomerName(),
                 containerId = containerId
             }).ConfigureAwait(false);
         }

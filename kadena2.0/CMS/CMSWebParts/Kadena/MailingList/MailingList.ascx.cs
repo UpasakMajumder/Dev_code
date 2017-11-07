@@ -5,13 +5,13 @@ using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.EventLog;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
     public partial class MailingList : CMSAbstractWebPart
     {
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
-
         public string ViewListUrl
         {
             get
@@ -42,10 +42,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private void GetMailingLists()
         {
-            var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
-
-            var client = new MailingListClient();
-            var serviceCallResult = client.GetMailingListsForCustomer(mailingServiceUrl, SiteContext.CurrentSiteName).Result;
+            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+            var serviceCallResult = client.GetMailingListsForCustomer().Result;
 
             if (serviceCallResult.Success)
             {

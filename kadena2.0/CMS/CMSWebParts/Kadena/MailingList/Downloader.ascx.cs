@@ -13,7 +13,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
     public partial class Downloader : CMSAbstractWebPart
     {
         private Guid _containerId;
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,14 +26,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
-                var mailingListClient = new MailingListClient();
+                var microProperties = new MicroProperties(new KenticoResourceService());
+                var mailingListClient = new MailingListClient(microProperties);
 
-                var mailingListResponse = mailingListClient.GetMailingList(mailingServiceUrl, SiteContext.CurrentSiteName, _containerId).Result;
+                var mailingListResponse = mailingListClient.GetMailingList(_containerId).Result;
                 if (mailingListResponse.Success)
                 {
                     var mailingList = mailingListResponse.Payload;
-                    var exportClient = new ExportClient(new MicroProperties(new KenticoResourceService()));
+                    var exportClient = new ExportClient(microProperties);
                     var exportResponse = exportClient.ExportMailingList(_containerId, SiteContext.CurrentSiteName).Result;
                     if (exportResponse.Success)
                     {

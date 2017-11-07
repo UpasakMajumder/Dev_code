@@ -23,7 +23,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private MailingListDataDTO _container;
 
         public string RedirectPage
@@ -43,10 +42,9 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 var id = new Guid(containerId);
 
-                var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
-                var mailingListClient = new MailingListClient();
+                var mailingListClient = new MailingListClient(new MicroProperties(new KenticoResourceService()));
 
-                var mailingListResponse = mailingListClient.GetMailingList(mailingServiceUrl, SiteContext.CurrentSiteName, id).Result;
+                var mailingListResponse = mailingListClient.GetMailingList(id).Result;
                 if (mailingListResponse.Success)
                 {
                     _container = mailingListResponse.Payload;
@@ -216,23 +214,20 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     var fileName = inpFileName.Value;
                     var module = FileModule.KList;
 
-                    var client = new FileClient(new MicroProperties(new KenticoResourceService()));
-                    var uploadResult = client.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
+                    var microProperties = new MicroProperties(new KenticoResourceService());
+                    var fileClient = new FileClient(microProperties);
+                    var uploadResult = fileClient.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
                         fileStream, fileName).Result;
                     if (uploadResult.Success)
                     {
-                        var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
                         var containerId = Guid.Empty;
-                        var mailingClient = new MailingListClient();
+                        var mailingClient = new MailingListClient(microProperties);
                         if (_container == null)
                         {
                             var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
                             var product = Request.Form[GetString("Kadena.MailingList.Product")];
                             var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                            var customerName = SiteContext.CurrentSiteName;
                             var createResult = mailingClient.CreateMailingContainer(
-                                mailingServiceUrl,
-                                customerName,
                                 fileName,
                                 mailType,
                                 product,
@@ -250,8 +245,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         else
                         {
                             containerId = new Guid(_container.Id);
-                            var customerName = SiteContext.CurrentSiteName;
-                            var removeResult = mailingClient.RemoveAddresses(mailingServiceUrl, customerName, containerId).Result;
+                            var removeResult = mailingClient.RemoveAddresses(containerId).Result;
                             if (!removeResult.Success)
                             {
                                 EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", removeResult.ErrorMessages, siteId: CurrentSite.SiteID);

@@ -17,7 +17,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class MailingListSelector : CMSAbstractWebPart
     {
-        private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
         public string NewMailingListUrl
@@ -30,10 +29,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var mailingServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_mailingServiceUrlSettingKey}");
-            var client = new MailingListClient();
+            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
 
-            var mailingListData = client.GetMailingListsForCustomer(mailingServiceUrl, SiteContext.CurrentSiteName).Result.Payload
+            var mailingListData = client.GetMailingListsForCustomer().Result.Payload
                 .Where(l => l.AddressCount > 0);
 
             if (mailingListData.Count() > 0)
