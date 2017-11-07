@@ -17,8 +17,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class MailingListSelector : CMSAbstractWebPart
     {
-        private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
-
+        private KenticoResourceService _resources = new KenticoResourceService();
         public string NewMailingListUrl
         {
             get
@@ -29,7 +28,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+            var client = new MailingListClient(new MicroProperties(_resources));
 
             var mailingListData = client.GetMailingListsForCustomer().Result.Payload
                 .Where(l => l.AddressCount > 0);
@@ -103,9 +102,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var quantity = btn.Attributes["quantity"];
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    var templateServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_templatedServiceUrlSettingKey}");
-                    var templateClient = new TemplatedClient(new SuppliantDomain(new KenticoResourceService()));
-                    var setResult = templateClient.SetMailingList(templateServiceUrl, containerId, templateId, workspaceId, use3d).Result;
+                    var templateClient = new TemplatedClient(new SuppliantDomain(_resources), new MicroProperties(_resources));
+                    var setResult = templateClient.SetMailingList(containerId, templateId, workspaceId, use3d).Result;
                     if (!setResult.Success)
                     {
                         EventLogProvider.LogEvent(EventType.ERROR, "SET MAILING LIST", "ERROR", setResult.ErrorMessages);
