@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.Base.Web.UI;
+using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
@@ -86,7 +87,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                 try
                 {
-                    SetProductImage(imageDto, siteID);
+                    //SetProductImage(imageDto, siteID);
                 }
                 catch (Exception ex)
                 {
@@ -129,17 +130,26 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            var newProduct = AppendProduct(productParent, productDto, sku);
+            var newProduct = AppendProduct(productParent, productDto, sku, siteID);
+            SetProductImage(null, newProduct, sku, siteID);
         }
 
-        private void SetProductImage(ProductImageDto image, int siteId)
+        private void SetProductImage(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
-            var sku = GetSKU(image.SKU, siteId);
+            product.SetValue("SKUImagePath", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName} SKUImagePath");
 
-            //sku.SKUImagePath = 
+            var newAttachment = new AttachmentInfo(@"C:\doc\thumbnail.png")
+            {
+                AttachmentSiteID = siteId,
+                AttachmentDocumentID = product.DocumentID
+            };
+
+            AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
+            product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID);
+            product.Update();
         }
 
-        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
+        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
                 return null;
@@ -173,10 +183,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductTrimSize", product.TrimSize);
             newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
             newProduct.SetValue("ProductBindery", product.Bindery);
-
-            newProduct.SetValue("SKUImagePath", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}");
-            //newProduct.SetValue("ProductThumbnail", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}");
-
+            
             DateTime publishFrom, publishTo;
             if (DateTime.TryParse(product.PublishFrom, out publishFrom))
             {
