@@ -58,6 +58,7 @@
       switch (type) {
         case 'DocumentSaved':
           window.saveChiliTemplate();
+          if (window.addToCart) window.addToCartRequest(window.cartEvent);
           break;
       }
     }
