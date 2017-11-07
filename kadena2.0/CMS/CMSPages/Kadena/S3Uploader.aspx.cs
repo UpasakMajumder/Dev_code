@@ -3,16 +3,16 @@ using CMS.EventLog;
 using CMS.IO;
 using CMS.SiteProvider;
 using CMS.UIControls;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts;
 using System;
 
 namespace Kadena.CMSFormControls
 {
     public partial class S3Uploader : CMSPage
     {
-        private readonly string _fileServiceUrlSettingKey = "KDA_FileServiceUrl";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack)
@@ -33,18 +33,17 @@ namespace Kadena.CMSFormControls
             
             try
             {
-                var fileServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceUrlSettingKey}");
                 var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                 var module = FileModule.KProducts;
 
-                var client = new FileClient();
-                var uploadResult = client.UploadToS3(fileServiceUrl, SiteContext.CurrentSiteName, FileFolder.Artworks, module,
+                var client = new FileClient(new MicroProperties(new KenticoResourceService()));
+                var uploadResult = client.UploadToS3(SiteContext.CurrentSiteName, FileFolder.Artworks, module,
                     inpFile.PostedFile.InputStream, fileName).Result;
 
                 if (uploadResult.Success)
                 {
                     var fileKey = uploadResult.Payload;
-                    string fileUrl = client.GetFileUrl(fileServiceUrl, fileKey, module);
+                    string fileUrl = client.GetFileUrl(fileKey, module);
 
                     lblMessage.Text = string.Empty;
                     lnkFile.Text = fileName;

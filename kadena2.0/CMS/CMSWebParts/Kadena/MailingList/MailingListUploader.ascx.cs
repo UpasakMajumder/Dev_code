@@ -6,6 +6,8 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
 using System;
@@ -21,7 +23,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         private readonly string _mailTypeTableName = "KDA.MailingType";
         private readonly string _productTableName = "KDA.MailingProductType";
         private readonly string _validityTableName = "KDA.MailingValidity";
-        private readonly string _fileServiceUrlSettingKey = "KDA_FileServiceUrl";
         private readonly string _mailingServiceUrlSettingKey = "KDA_MailingServiceUrl";
         private MailingListDataDTO _container;
 
@@ -212,12 +213,11 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 try
                 {
-                    var fileServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_fileServiceUrlSettingKey}");
                     var fileName = inpFileName.Value;
                     var module = FileModule.KList;
 
-                    var client = new FileClient();
-                    var uploadResult = client.UploadToS3(fileServiceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
+                    var client = new FileClient(new MicroProperties(new KenticoResourceService()));
+                    var uploadResult = client.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
                         fileStream, fileName).Result;
                     if (uploadResult.Success)
                     {

@@ -6,6 +6,7 @@ using System.Web;
 using Kadena2.MicroserviceClients.Clients.Base;
 using System.Net.Http;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -21,15 +22,25 @@ namespace Kadena2.MicroserviceClients.Clients
 
         //}
 
-        public string GetFileUrl(string serviceEndpoint, string fileName, FileModule moduleName)
+        private const string _serviceUrlSettingKey = "KDA_FileServiceUrl";
+        private readonly IMicroProperties _properties;
+
+        public FileClient(IMicroProperties properties)
         {
-            return $"{serviceEndpoint}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
+            _properties = properties;
         }
 
-        public async Task<BaseResponseDto<string>> UploadToS3(string serviceEndpoint, string siteName, FileFolder folderName,
+        public string GetFileUrl(string fileName, FileModule moduleName)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            return $"{url}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
+        }
+
+        public async Task<BaseResponseDto<string>> UploadToS3(string siteName, FileFolder folderName,
             FileModule moduleName, Stream fileStream, string fileName)
         {
-            var url = $"{serviceEndpoint}/api/File";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/File";
             using (var client = new HttpClient())
             {
                 using (var content = new MultipartFormDataContent())
