@@ -30,7 +30,6 @@ namespace Kadena.WebAPI.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
-        private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
         private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
         public OrderService(IMapper mapper,
@@ -62,8 +61,7 @@ namespace Kadena.WebAPI.Services
         {
             CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
-            var orderViewServiceUrl = resources.GetSettingsKey(_orderViewServiceUrlSettingKey);
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderViewServiceUrl, orderId);
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderId);
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {

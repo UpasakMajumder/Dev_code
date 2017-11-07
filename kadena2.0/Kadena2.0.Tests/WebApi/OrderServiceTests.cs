@@ -87,7 +87,7 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var orderViewClient = new Mock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-17-00006"))
+            orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-17-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoOK()));
             var sut = CreateOrderService(orderViewClient: orderViewClient);
 
@@ -103,7 +103,7 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var orderViewClient = new Mock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0099-0099-17-00006"))
+            orderViewClient.Setup(o => o.GetOrderByOrderId("0099-0099-17-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
             var sut = CreateOrderService(orderViewClient: orderViewClient);
 
@@ -120,7 +120,7 @@ namespace Kadena.Tests.WebApi
             // Arrange
             var logger = new Mock<IKenticoLogger>();
             var orderViewClient = new Mock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, "0010-0016-66-00006"))
+            orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-66-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
             var sut = CreateOrderService(logger, orderViewClient);
 
@@ -175,7 +175,7 @@ namespace Kadena.Tests.WebApi
             {
                 new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
             });
-            orderViewClient.Setup(o => o.GetOrderByOrderId(null, orderId))
+            orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
                 .Returns(Task.FromResult(orderResponse));
             var sut = CreateOrderService(orderViewClient: orderViewClient);
 
