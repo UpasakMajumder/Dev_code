@@ -27,6 +27,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
         };
+        private MicroProperties _microProperties = new MicroProperties(new KenticoResourceService());
         private string _fileId;
         private Guid _containerId;
 
@@ -63,9 +64,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
             if (!string.IsNullOrWhiteSpace(_fileId) && _containerId != Guid.Empty)
             {
-                var parsingUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_ParsingServiceUrl");
-                var parsingClient = new ParsingClient();
-                var parseResult = parsingClient.GetHeaders(parsingUrl, _fileId.ToString()).Result;
+                var parsingClient = new ParsingClient(_microProperties);
+                var parseResult = parsingClient.GetHeaders(_fileId.ToString()).Result;
                 if (parseResult.Success)
                 {
                     var headers = parseResult.Payload.ToArray();
@@ -130,14 +130,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
-                        var microProperties = new MicroProperties(new KenticoResourceService());
-                        var mailingClient = new MailingListClient(microProperties);
+                        var mailingClient = new MailingListClient(_microProperties);
                         var uploadResult = mailingClient.UploadMapping(_fileId, _containerId, mapping).Result;
                         if (!uploadResult.Success)
                         {
                             throw new InvalidOperationException(uploadResult.ErrorMessages);
                         }
-                        var validationClient = new AddressValidationClient(microProperties);
+                        var validationClient = new AddressValidationClient(_microProperties);
                         var validationResult = validationClient.Validate(_containerId).Result;
                         if (!validationResult.Success)
                         {

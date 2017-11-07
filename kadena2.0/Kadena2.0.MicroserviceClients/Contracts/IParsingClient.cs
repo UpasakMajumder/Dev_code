@@ -11,6 +11,6 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// </summary>
         /// <param name="fileId">Id for file to get headers for.</param>
         /// <returns>List of header names.</returns>
-        Task<BaseResponseDto<IEnumerable<string>>> GetHeaders(string endPoint, string fileId);
+        Task<BaseResponseDto<IEnumerable<string>>> GetHeaders(string fileId);
     }
 }
