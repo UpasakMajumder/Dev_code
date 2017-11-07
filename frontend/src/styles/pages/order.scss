@@ -43,6 +43,12 @@
       @include rem(height, 50px);
     }
   }
+
+  &__detail-address {
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .order-block--animation-enter {

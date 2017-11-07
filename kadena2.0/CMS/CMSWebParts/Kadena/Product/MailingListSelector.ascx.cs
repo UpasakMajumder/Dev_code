@@ -50,9 +50,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListExpired") };
                     }
 
-                    if (btnCell == null
-                        && !d.State.Equals("Addresses verified")
-                        && !d.State.Equals("Addresses need to be verified"))
+                    if (btnCell == null 
+                        && !d.State.Equals(MailingListState.AddressesVerified) 
+                        && !d.State.Equals(MailingListState.AddressesNeedToBeVerified))
                     {
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
                     }
@@ -96,10 +96,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var containerId = btn.ID;
                 var templateId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "templateid");
                 var workspaceId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "workspaceid");
+                var use3d = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "use3d");
                 var quantity = btn.Attributes["quantity"];
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    new TemplateServiceHelper().SetMailingList(containerId, templateId, workspaceId);
+                    new TemplateServiceHelper().SetMailingList(containerId, templateId, workspaceId, use3d.ToLower() == "true");
                     url += $"&containerId={containerId}&quantity={quantity}";
                     Response.Redirect(url);
                 }

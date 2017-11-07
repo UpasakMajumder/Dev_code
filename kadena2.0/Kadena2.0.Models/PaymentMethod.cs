@@ -3,6 +3,7 @@
     public class PaymentMethod
     {
         public int Id { get; set; }
+        public string DisplayName { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; }
         public bool Disabled { get; set; }

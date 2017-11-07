@@ -7,10 +7,13 @@ import SVG from 'app.dump/SVG';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import { loadManageProducts } from 'app.ac/manageProducts';
+/* helpers */
+import { convertToWords } from 'app.helpers/time';
 
 class ManageProducts extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
     loadManageProducts: PropTypes.func.isRequired,
     tableHeaders: PropTypes.array.isRequired,
     templates: PropTypes.array.isRequired
@@ -78,13 +81,13 @@ class ManageProducts extends Component {
   }
 
   render() {
-    const { isLoading, tableHeaders } = this.props;
+    const { isLoading, tableHeaders, title } = this.props;
     const { sortBy, sortOrderAsc, sortedTemplates } = this.state;
 
     return (
       <div className="product-template__block">
         <div className="product-template__item">
-          <h3>Manage products</h3>
+          <h3>{title}</h3>
         </div>
         <div className="product-template__item">
 
@@ -120,10 +123,10 @@ class ManageProducts extends Component {
                   <a className="link weight--normal" href={template.editorUrl}>{template.productName}</a>
                 </td>
                 <td>
-                  {template.createdDate && moment(template.createdDate).format('MMM D YYYY')}
+                  {template.createdDate && convertToWords(template.createdDate)}
                 </td>
                 <td>
-                  {template.updatedDate && moment(template.updatedDate).format('MMM D YYYY')}
+                  {template.updatedDate && convertToWords(template.updatedDate)}
                 </td>
                 <td>
                   <div className="product-list__btn-group">
@@ -153,8 +156,8 @@ class ManageProducts extends Component {
 }
 
 export default connect((state) => {
-  const { isLoading, tableHeaders, templates } = state.manageProducts;
-  return { isLoading, tableHeaders, templates };
+  const { isLoading, tableHeaders, templates, title } = state.manageProducts;
+  return { isLoading, tableHeaders, templates, title };
 }, {
   loadManageProducts
 })(ManageProducts);

@@ -14,10 +14,11 @@ namespace Kadena.Models.Product
         public string ProductType { get; set; }
         public Guid ProductChiliTemplateID { get; set; }
         public Guid ProductChiliWorkgroupID { get; set; }
+        public double Weight { get; set; }
 
-        public bool HasProductTypeFlag(string productTypeflag)
+        public bool HasProductTypeFlag(string productType)
         {
-            return ProductType.Contains(productTypeflag);
+            return ProductTypes.IsOfType(ProductType, productType);
         }
     }
 }

@@ -7,15 +7,20 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
-    public class UserTemplateService
+    public class UserTemplateService : TemplateServiceBase
     {
-        private static readonly int MaxRowsPerSheet = 1024 * 1024;
-
-        public byte[] GetTemplateFile(int siteID)
+        public byte[] GetUserTemplateFile(int siteID)
         {
-            var columns = GetImportColumns();
+            var columns = GetImportColumns<UserDto>();
             var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
             var file = CreateTemplateFile(columns, roles);
+            return file;
+        }
+
+        public byte[] GetAddressTemplateFile()
+        {
+            var columns = GetImportColumns<AddressDto>();
+            var file = CreateTemplateFile(columns);
             return file;
         }
 
@@ -45,7 +50,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         /// <param name="columns">Columns to create. Expects last column to be role.</param>
         /// <param name="roles">Roles to add to role select box for last column.</param>
         /// <returns></returns>
-        private byte[] CreateTemplateFile(string[] columns, string[] roles)
+        private byte[] CreateTemplateFile(string[] columns, string[] roles = null)
         {
             // create workbook
             IWorkbook workbook = new XSSFWorkbook();
@@ -53,74 +58,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             CreateSheetHeader(columns, sheet);
 
             // add validation for roles
-            var rolesColumnIndex = columns.Length - 1; // role column should be last
-            AddRolesValidation(rolesColumnIndex, roles, sheet);
-
-            using (var ms = new MemoryStream())
+            if (roles != null)
             {
-                workbook.Write(ms);
-                var bytes = ms.ToArray();
-                return bytes;
-            }
-        }
-
-        private void AddRolesValidation(int rolesColumnIndex, string[] roles, ISheet sheet)
-        {
-            var workbook = sheet.Workbook;
-            var rolesSheet = workbook.CreateSheet("Roles");
-            workbook.SetSheetHidden(1, SheetState.VeryHidden);
-            for (int i = 0; i < roles.Length; i++)
-            {
-                rolesSheet.CreateRow(i)
-                    .CreateCell(0)
-                    .SetCellValue(roles[i]);
+                var rolesColumnIndex = columns.Length - 1; // role column should be last
+                AddOneFromManyValidation(rolesColumnIndex, "Roles", roles, sheet);
             }
 
-            var addressList = new CellRangeAddressList(1, MaxRowsPerSheet - 1, rolesColumnIndex, rolesColumnIndex);
-            var validationHelper = sheet.GetDataValidationHelper();
-            var validationConstraint = validationHelper.CreateFormulaListConstraint("Roles!$A$1:$A$" + roles.Length);
-            var validation = validationHelper.CreateValidation(validationConstraint, addressList);
-            validation.ShowErrorBox = true;
-            validation.CreateErrorBox("Validation failed", "Please choose a valid role.");
-            sheet.AddValidationData(validation);
-        }
-
-        private static void CreateSheetHeader(string[] columns, ISheet sheet)
-        {
-            var row = sheet.CreateRow(0);
-            var style = CreateHeaderStyle(sheet.Workbook);
-            var charWidth = 256;
-            var minimalColumnWidth = charWidth * 18;
-
-            for (int i = 0; i < columns.Length; i++)
-            {
-                var cell = row.CreateCell(i);
-                cell.SetCellValue(columns[i]);
-                cell.CellStyle = style;
-                sheet.AutoSizeColumn(i);
-
-                if (sheet.GetColumnWidth(i) < minimalColumnWidth)
-                {
-                    sheet.SetColumnWidth(i, minimalColumnWidth);
-                }
-            }
-        }
-
-        private static ICellStyle CreateHeaderStyle(IWorkbook workbook)
-        {
-            var font = workbook.CreateFont();
-            font.IsBold = true;
-            var style = workbook.CreateCellStyle();
-            style.SetFont(font);
-            return style;
-        }
-
-        private string[] GetImportColumns()
-        {
-            var names = ImportHelper.GetHeaderProperties<UserDto>()
-                .Select(p => p.Key)
-                .ToArray();
-            return names;
-        }
+            return GetWorkbookBytes(workbook);
+        }      
     }
 }

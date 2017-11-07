@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Models.Product;
+using System;
 
 namespace Kadena.Models.Checkout
 {
@@ -15,7 +16,7 @@ namespace Kadena.Models.Checkout
         /// <summary>
         /// SKU object ID in DB
         /// </summary>
-        public int SKUID { get;set;}
+        public int SKUID { get; set; }
 
         /// <summary>
         /// Nuber configurable in product's Form -> General -> SKU*
@@ -91,13 +92,7 @@ namespace Kadena.Models.Checkout
             }
         }
 
-        public string EditorURL
-        {
-            get
-            {
-                return $"/products/product-tools/product-editor?documentId={ProductPageId}&templateId={EditorTemplateId}&workspaceid={ProductChiliWorkspaceId}&containerId={MailingListGuid}&quantity={Quantity}&customName={CartItemText}";
-            }
-        }
+        public string EditorURL { get; set; }
 
         /// <summary>
         /// Main Chili template ID
@@ -127,11 +122,14 @@ namespace Kadena.Models.Checkout
 
         public string UnitOfMeasure { get; set; }
 
-               
+
 
         /// <summary>
         /// Template product service's task Id
         /// </summary>
         public Guid DesignFilePathTaskId { get; set; }
+
+        public string MailingListPrefix { get; set; }
+        public string TemplatePrefix { get; set; }
     }
 }

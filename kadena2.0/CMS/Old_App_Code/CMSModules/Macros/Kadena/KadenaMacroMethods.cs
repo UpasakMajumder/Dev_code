@@ -12,6 +12,10 @@ using CMS.CustomTables;
 using System.Collections.Generic;
 using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena.Models.Product;
+using Kadena.WebAPI;
+using AutoMapper;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -19,6 +23,39 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
     public class KadenaMacroMethods : MacroMethodContainer
     {
         #region Public methods
+
+        [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
+        [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
+        public static object IsSKUWeightRequired(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            
+            var productTypes = ValidationHelper.GetString(parameters[0], "");
+            var product = new Product { ProductType = productTypes };
+            var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
+            return isWeightRequired;
+        }
+
+        [MacroMethod(typeof(bool), "Validates product type and sku weight", 1)]
+        [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
+        [MacroMethodParam(1, "skuWeight", typeof(double), "SKU weight")]
+        public static object IsSKUWeightValid(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var productTypes = ValidationHelper.GetString(parameters[0], "");
+            var skuWeight = ValidationHelper.GetDouble(parameters[1], 0, LocalizationContext.CurrentCulture.CultureCode);
+            var product = new Product { Weight = skuWeight, ProductType = productTypes };
+
+            var isValid = new ProductValidator().ValidateWeight(product);
+            return isValid;
+        }
 
         [MacroMethod(typeof(bool), "Validates combination of product types - static type variant.", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
@@ -168,10 +205,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 if ((int)parameters[2] == 0)
                 {
                     return "stock stock--out";
-                }              
-                
+                }
+
                 return "stock stock--available";
-                
+
             }
 
             return string.Empty;
@@ -200,13 +237,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 var originalDocument = tree.SelectSingleNode(originalNodeID, LocalizationContext.CurrentCulture.CultureCode);
                 result += string.Format(selectedItemTemplate, originalDocument.DocumentName, originalDocument.NodeID);
             }
-            var kitDocuments = tree.SelectNodes()
+
+            var wantedTypes = new[] { ProductTypes.InventoryProduct, ProductTypes.StaticProduct, "KDA.POD" };
+
+            var allKitDocuments = tree.SelectNodes()
                 .OnCurrentSite()
                 .Path(productsPath, PathTypeEnum.Children)
                 .Culture(LocalizationContext.CurrentCulture.CultureCode)
                 .Types("KDA.Product")
-                .CheckPermissions()
-                .WhereLike("ProductType", "%KDA.InventoryProduct%").Or().WhereLike("ProductType", "%KDA.POD%").Or().WhereLike("ProductType", "%KDA.StaticProduct%");
+                .CheckPermissions();
+
+            var kitDocuments = allKitDocuments.Where(x => IsProductType(x, wantedTypes));
 
             if (kitDocuments != null)
             {
@@ -214,13 +255,23 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 for (int i = 1; i <= kitList.Count; i++)
                 {
                     var node = kitList[i - 1];
-                    if (node.NodeID != originalNodeID && !node.IsLink && node.NodeSiteID == SiteContext.CurrentSiteID)
+                    if (node.NodeID != originalNodeID && !node.IsLink)
                     {
                         result += string.Format(itemTemplate, i, node.DocumentName, node.NodeID);
                     }
                 }
             }
             return result;
+        }
+
+
+        /// <summary>
+        /// Checks if TreeNode's value "ProductType" contains any of given type strings
+        /// </summary>
+        private static bool IsProductType(TreeNode tn, IEnumerable<string> types)
+        {
+            var nodeType = tn.GetStringValue("ProductType", string.Empty);
+            return types.Any(t => nodeType.Contains(t));
         }
 
         [MacroMethod(typeof(string), "Returns where codition for one of main navigation repeaters based on enabled modules for customer.", 1)]
@@ -262,6 +313,34 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return filename;
         }
 
+        [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
+        public static object GetLocalizedDocumentUrl(EvaluationContext context, params object[] parameters)
+        {
+            var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
+            if (!string.IsNullOrWhiteSpace(aliasPath))
+            {
+                MapperBuilder.InitializeAll();
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return kenticoService.GetDocumentUrl(aliasPath);
+            }
+            return string.Empty;
+        }
+
+        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
+        public static object GetUrlsForLanguageSelector(EvaluationContext context, params object[] parameters)
+        {
+            var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
+            if (!string.IsNullOrWhiteSpace(aliasPath))
+            {
+                MapperBuilder.InitializeAll();
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
+            }
+            return string.Empty;
+        }
+
         #endregion
 
         #region Private methods
@@ -270,7 +349,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var result = string.Empty;
             var pageTypes = new List<string>();
-        
+
             var moduleSettingsMappingsDataClassInfo = DataClassInfoProvider.GetDataClassInfo("KDA.KadenaModuleAndPageTypeConnection");
             if (moduleSettingsMappingsDataClassInfo != null)
             {

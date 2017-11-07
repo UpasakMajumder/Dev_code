@@ -12,29 +12,14 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
-    public class UserImportService
+    public class UserImportService : ImportServiceBase
     {
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
+        public ImportResult ProcessUserImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
         {
-            var rows = new ExcelReader().ReadDataFromExcelFile(importFileData, type);
-            if (rows.Count <= 1)
-            {
-                throw new Exception("The file contains no data");
-            }
-
-            var site = SiteInfoProvider.GetSiteInfo(siteID);
-            if (site == null)
-            {
-                throw new Exception("Invalid site id " + siteID);
-            }
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
             var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
-
-            var header = rows.First();
-            var mapRowToUser = ImportHelper.GetImportMapper<UserDto>(header);
-            var users = rows.Skip(1)
-                .Select(row => mapRowToUser(row))
-                .ToList();
-
+            var users = GetDtosFromExcelRows<UserDto>(rows);
             var statusMessages = new List<string>();
             var emailService = new EmailService();
 
@@ -80,68 +65,106 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             };
         }
 
-        private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
+        public ImportResult ProcessAddressImportFile(byte[] importFileData, ExcelType type, int siteId, int[] userIds)
         {
-            var errorMessageFormat = "field {0} - {1}";
+            if ((userIds?.Length ?? 0) == 0)
+                throw new ArgumentOutOfRangeException("No users selected to upload addresses to");
 
-            // validate annotations
-            var context = new ValidationContext(userDto, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(
-                userDto, context, validationResults,
-                validateAllProperties: true
-            );
+            var rows = GetExcelRows(importFileData, type);
+            var addresses = GetDtosFromExcelRows<AddressDto>(rows);
 
-            validationErrors = new List<string>();
-            if (!isValid)
+            var statusMessages = new List<string>();
+
+            foreach (var userId in userIds)
             {
-                foreach (var item in validationResults.Where(res => res != ValidationResult.Success))
+                var user = UserInfoProvider.GetUserInfo(userId);
+
+                if (user == null)
                 {
-                    validationErrors.Add(string.Format(errorMessageFormat, item.MemberNames.First(), item.ErrorMessage));
+                    statusMessages.Add($"Nonexisting user : {userId}");
+                    continue;
+                }
+
+                var customer = EnsureCustomer(user, siteId);
+
+                var currentItemNumber = 1;
+                foreach (var addressDto in addresses)
+                {
+                    try
+                    {
+                        List<string> validationResults;
+                        if (!ValidatorHelper.ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
+                        {
+                            validationResults.Sort();
+
+                            statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                            continue;
+                        }
+
+                        CreateCustomerAddress(customer.CustomerID, new UserDto
+                        {
+                            Country = addressDto.Country,
+                            State = addressDto.State,
+                            AddressLine = addressDto.AddressLine,
+                            AddressLine2 = addressDto.AddressLine2,
+                            City = addressDto.City,
+                            ContactName = addressDto.ContactName,
+                            PostalCode = addressDto.PostalCode,
+                            PhoneNumber = addressDto.PhoneNumber
+
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        statusMessages.Add("There was an error when processing item number " + currentItemNumber);
+                        EventLogProvider.LogException("Import addresses", "EXCEPTION", ex);
+                    }
+
+                    currentItemNumber++;
                 }
             }
 
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        private CustomerInfo EnsureCustomer(UserInfo user, int siteId)
+        {
+            var customer = CustomerInfoProvider.GetCustomerInfoByUserID(user.UserID);
+
+            if (customer == null)
+            {
+                customer = CreateCustomer(user.UserID, siteId , new UserDto
+                {
+                    FirstName = string.Empty,
+                    LastName = user.UserName,
+                    Email = user.Email
+                });
+            }
+
+            return customer;
+        }
+
+        private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
+        {
+            var errorMessageFormat = "field {0} - {1}";
+            bool isValid = ValidatorHelper.ValidateDto(userDto, out validationErrors, errorMessageFormat);
+
             // validate special rules
-            if (!ValidateEmail(userDto.Email))
+            if (!ValidatorHelper.ValidateEmail(userDto.Email))
             {
                 isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Email), "Not a valid email address"));
             }
-            if (!ValidateRole(userDto.Role, roles))
+            if (!ValidatorHelper.ValidateRole(userDto.Role, roles))
             {
                 isValid = false;
                 validationErrors.Add(string.Format(errorMessageFormat, nameof(userDto.Role), "Not a valid role"));
             }
 
             return isValid;
-        }
-
-        private bool ValidateEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return false;
-            }
-
-            var parts = email.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length == 2)
-            {
-                return parts[1]
-                    .Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Length >= 2;
-            }
-
-            return false;
-        }
-
-        private bool ValidateRole(string role, Role[] roles)
-        {
-            if (string.IsNullOrWhiteSpace(role))
-            {
-                return false;
-            }
-
-            return roles.Any(r => r.Description == role);
         }
 
         private CountryInfo FindCountry(string country)

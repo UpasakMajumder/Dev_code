@@ -7,7 +7,8 @@ import { divideBySlash } from 'app.helpers/time';
 
 const Order = (props) => {
   const { image, template, mailingList, shippingDate, trackingId,
-    price, quantityPrefix, quantity, downloadPdfURL, quantityShippedPrefix, quantityShipped } = props;
+    price, quantityPrefix, quantity, downloadPdfURL, quantityShippedPrefix, quantityShipped,
+    mailingListPrefix, shippingDatePrefix, trackingIdPrefix, templatePrefix } = props;
 
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
@@ -19,7 +20,7 @@ const Order = (props) => {
     ? <div className="cart-product__mlist">
       <p>
         <SVG name="mailing-list"/>
-        <span>Mailing list: <strong>{mailingList}</strong></span>
+        <span>{mailingListPrefix}: <strong>{mailingList}</strong></span>
       </p>
     </div>
     : null;
@@ -28,7 +29,7 @@ const Order = (props) => {
     ? <div className="cart-product__tracking">
       <p>
         <SVG name="location"/>
-        <span>Tracking ID: <strong>{trackingId}</strong></span>
+        <span>{shippingDatePrefix}: <strong>{trackingId}</strong></span>
       </p>
     </div>
     : null;
@@ -37,7 +38,7 @@ const Order = (props) => {
     ? <div className="cart-product__tracking">
       <p>
         <SVG name="courier"/>
-        <span>Shipping date: <strong>{divideBySlash(shippingDate)}</strong></span>
+        <span>{trackingIdPrefix}: <strong>{divideBySlash(shippingDate)}</strong></span>
       </p>
     </div>
     : null;
@@ -67,7 +68,7 @@ const Order = (props) => {
         <div className="cart-product__template">
           <p>
             <SVG name="products"/>
-            <span>Template: <strong>{template}</strong></span>
+            <span>{templatePrefix}: <strong>{template}</strong></span>
           </p>
         </div>
 
@@ -98,7 +99,11 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingId: PropTypes.string
+  trackingId: PropTypes.string,
+  mailingListPrefix: PropTypes.string.isRequired,
+  shippingDatePrefix: PropTypes.string.isRequired,
+  trackingIdPrefix: PropTypes.string.isRequired,
+  templatePrefix: PropTypes.string.isRequired
 };
 
 export default Order;

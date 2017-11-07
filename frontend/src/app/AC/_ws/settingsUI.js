@@ -17,25 +17,26 @@ export default {
       "exists": false,
     },
     "addresses": [
-      // {
-      //   "id": 1,
-      //   "street1": "4001 Valley Industrial Blvd",
-      //   "street2": "",
-      //   "city": "Shakopee",
-      //   "state": "MN",
-      //   "zip": "55379"
-      // },
-      // {
-      //   "id": 2,
-      //   "street1": "4001 Valley Industrial Blvd",
-      //   "street2": "",
-      //   "city": "Shakopee",
-      //   "state": "MN",
-      //   "zip": "55379"
-      // }
+      {
+        "id": 1,
+        "street1": "4001 Valley Industrial Blvd",
+        "street2": "",
+        "city": "Shakopee",
+        "state": "MN",
+        "zip": "55379"
+      },
+      {
+        "id": 2,
+        "street1": "4001 Valley Industrial Blvd",
+        "street2": "",
+        "city": "Shakopee",
+        "state": "MN",
+        "zip": "55379"
+      }
     ]
   },
   "dialog": {
+    "userNotification": "Hello",
     "types": {
       "add": "Add address:",
       "edit": "Edit address:"

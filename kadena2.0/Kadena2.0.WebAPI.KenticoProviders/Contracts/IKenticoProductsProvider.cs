@@ -7,5 +7,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {
         List<ProductLink> GetProducts(string path);
         List<ProductCategoryLink> GetCategories(string path);
+        void UpdateSku(Sku sku);
     }
 }

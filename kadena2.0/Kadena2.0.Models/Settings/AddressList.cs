@@ -9,6 +9,7 @@ namespace Kadena.Models.Settings
         public PageButton AddButton { get; set; }
         public PageButton EditButton { get; set; }
         public PageButton RemoveButton { get; set; }
+        public DefaultAddress DefaultAddress { get; set; }
         public List<DeliveryAddress> Addresses { get; set; }
     }
 }

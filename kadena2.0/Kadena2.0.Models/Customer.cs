@@ -11,5 +11,7 @@
         public string CustomerNumber { get; set; }
         public string Company { get; set; }
         public int SiteId { get; set; }
+        public string PreferredLanguage { get; set; }
+        public int DefaultShippingAddressId { get; set; }
     }
 }

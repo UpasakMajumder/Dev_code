@@ -12,6 +12,7 @@ using Kadena.Models.Checkout;
 using System.Collections.Generic;
 using System.Linq;
 using Kadena.WebAPI.Factories.Checkout;
+using Kadena.Models.Product;
 
 namespace Kadena.Tests.WebApi
 {

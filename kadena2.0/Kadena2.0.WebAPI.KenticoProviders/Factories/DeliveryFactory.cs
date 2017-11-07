@@ -17,35 +17,14 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
             {
                 Id = ci.CarrierID,
                 Opened = false,
-                Title = ci.CarrierDisplayName
+                Title = ci.CarrierDisplayName,
+                Name = ci.CarrierName
             };
         }
 
         public static DeliveryCarrier[] CreateCarriers(CarrierInfo[] cis)
         {
             return cis.Select(c => CreateCarrier(c)).ToArray();
-        }
-
-
-        public static DeliveryOption CreateOption(ShippingOptionInfo s)
-        {
-            if (s == null)
-            {
-                return null;
-            }
-
-            return new DeliveryOption()
-            {
-                Id = s.ShippingOptionID,
-                CarrierId = s.ShippingOptionCarrierID,
-                Title = s.ShippingOptionDisplayName,
-                Service = s.ShippingOptionCarrierServiceName,
-            };
-        }
-
-        public static DeliveryOption[] CreateOptions(ShippingOptionInfo[] options)
-        {
-            return options.Select(s => CreateOption(s)).ToArray();
         }
     }
 }
