@@ -4,6 +4,7 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -13,18 +14,27 @@ namespace Kadena2.MicroserviceClients.Clients
         //{
 
         //}
+        private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
+        private readonly IMicroProperties _properties;
 
-        public async Task<BaseResponseDto<string>> FinishOrder(string serviceEndpoint, string orderNumber)
+        public OrderSubmitClient(IMicroProperties properties)
+        {
+            _properties = properties;
+        }
+
+        public async Task<BaseResponseDto<string>> FinishOrder(string orderNumber)
         {
             // TODO: Was timeout = 60s here, I think useless
-            var url = $"{serviceEndpoint}/api/order";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/order";
             return await Patch<string>(url, orderNumber).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
         {
             // TODO: Was timeout = 60s here, I think useless
-            var url = $"{serviceEndpoint}/api/order";
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/order";
             return await Post<string>(url, orderData).ConfigureAwait(false);
         }
     }

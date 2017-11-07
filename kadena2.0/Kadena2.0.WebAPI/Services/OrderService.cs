@@ -30,7 +30,6 @@ namespace Kadena.WebAPI.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
-        private readonly string _orderServiceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly string _orderViewServiceUrlSettingKey = "KDA_OrderViewServiceUrl";
         private readonly string _templatedServiceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
 
@@ -271,7 +270,6 @@ namespace Kadena.WebAPI.Services
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
-            string orderServiceUrl = resources.GetSettingsKey(_orderServiceUrlSettingKey);
             Customer customer = null;
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
@@ -290,7 +288,7 @@ namespace Kadena.WebAPI.Services
                 throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
             }
 
-            var serviceResultDto = await orderSubmitClient.SubmitOrder(orderServiceUrl, orderData);
+            var serviceResultDto = await orderSubmitClient.SubmitOrder(orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
@@ -310,7 +308,7 @@ namespace Kadena.WebAPI.Services
 
                 // Temporary solution before microservices will implement better strategy for handling cold starts. 
                 var orderNumber = serviceResult.Payload;
-                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderServiceUrl, orderNumber));
+                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderNumber));
             }
             else
             {
@@ -320,9 +318,9 @@ namespace Kadena.WebAPI.Services
             return serviceResult;
         }
 
-        private async Task FinishOrder(string serviceEndpoint, string orderNumber)
+        private async Task FinishOrder(string orderNumber)
         {
-            var finishOrderResult = await orderSubmitClient.FinishOrder(serviceEndpoint, orderNumber);
+            var finishOrderResult = await orderSubmitClient.FinishOrder(orderNumber);
             if (finishOrderResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order # {orderNumber} successfully finished");
