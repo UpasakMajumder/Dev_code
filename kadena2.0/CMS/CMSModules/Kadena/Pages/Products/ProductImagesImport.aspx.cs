@@ -5,7 +5,6 @@ using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
 using Kadena.Old_App_Code.Kadena.Imports.Products;
-using Kadena.Old_App_Code.Kadena.Imports.ProductImages;
 
 namespace Kadena.CMSModules.Kadena.Pages.Products
 {

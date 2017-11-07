@@ -22,7 +22,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
         };
 
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
 
@@ -50,7 +50,47 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                    EventLogProvider.LogException("Import products", "EXCEPTION", ex);
+                }
+            }
+
+            CacheHelper.ClearCache();
+
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        public ImportResult ProcessProductImagesImportFile(byte[] importFileData, ExcelType type, int siteID)
+        {
+            CacheHelper.ClearCache();
+
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
+            var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
+            var statusMessages = new List<string>();
+
+            var currentItemNumber = 0;
+            foreach (var imageDto in productImages)
+            {
+                currentItemNumber++;
+
+                List<string> validationResults;
+                if (!ValidatorHelper.ValidateDto(imageDto, out validationResults, "{0} - {1}"))
+                {
+                    statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                    continue;
+                }
+
+                try
+                {
+                    SetProductImage(imageDto, siteID);
+                }
+                catch (Exception ex)
+                {
+                    statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
+                    EventLogProvider.LogException("Import product images", "EXCEPTION", ex);
                 }
             }
 
@@ -89,6 +129,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
             var newProduct = AppendProduct(productParent, productDto, sku);
+        }
+
+        private void SetProductImage(ProductImageDto image, int siteId)
+        {
+            var sku = GetSKU(image.SKU, siteId);
+
+            sku.SKUImagePath = $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}";
         }
 
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
@@ -210,6 +257,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
+                category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
 
                 // Inserts the new page as a child of the parent page
                 category.Insert(parentPage);
@@ -230,11 +278,16 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return TrackInventoryTypeEnum.Disabled;
         }
 
+        private SKUInfo GetSKU(string sku, int siteID)
+        {
+            return SKUInfoProvider.GetSKUs()
+                .WhereEquals("SKUNumber", sku)
+                .FirstObject;
+        }
+
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = SKUInfoProvider.GetSKUs()
-                .WhereEquals("SKUNumber", product.SKU)
-                .FirstObject ?? new SKUInfo();            
+            var sku = GetSKU(product.SKU, siteID ) ?? new SKUInfo();            
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);

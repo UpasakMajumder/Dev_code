@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Kadena.Old_App_Code.Kadena.Imports.ProductImages
+namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImageDto
     {

@@ -37,7 +37,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
             try
             {
-                var result = new ProductImportService().ProcessImportFile(fileData, excelType, SelectedSiteID);
+                var result = new ProductImportService().ProcessProductsImportFile(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
