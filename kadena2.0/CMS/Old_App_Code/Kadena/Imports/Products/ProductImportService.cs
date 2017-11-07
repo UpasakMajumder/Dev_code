@@ -135,7 +135,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             var sku = GetSKU(image.SKU, siteId);
 
-            sku.SKUImagePath = $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}";
+            //sku.SKUImagePath = 
         }
 
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
@@ -172,6 +172,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductTrimSize", product.TrimSize);
             newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
             newProduct.SetValue("ProductBindery", product.Bindery);
+
+            newProduct.SetValue("SKUImagePath", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}");
+            //newProduct.SetValue("ProductThumbnail", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName}");
 
             DateTime publishFrom, publishTo;
             if (DateTime.TryParse(product.PublishFrom, out publishFrom))
