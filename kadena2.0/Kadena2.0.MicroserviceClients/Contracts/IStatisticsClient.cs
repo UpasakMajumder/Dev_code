@@ -10,6 +10,6 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// Returns order statistics for current customer (website).
         /// </summary>
         /// <returns></returns>
-        Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics(string endPoint, string customerName);
+        Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics();
     }
 }

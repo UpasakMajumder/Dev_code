@@ -9,6 +9,8 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 
@@ -16,8 +18,6 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 {
     public partial class DashboardMetrics : CMSAbstractWebPart
     {
-        private const string _getGetOrderStatisticsSettingsKey = "KDA_OrderStatisticsServiceEndpoint";
-        
         #region Public methods
 
         public override void OnContentLoaded()
@@ -128,10 +128,8 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 
         private OrderStatisticsData GetOrderStatisticsInternal()
         {
-            var statisticUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_getGetOrderStatisticsSettingsKey}");
-            var customerName = SiteContext.CurrentSiteName;
-            var statisticClient = new StatisticsClient();
-            var requestResult = statisticClient.GetOrderStatistics(statisticUrl, customerName).Result;
+            var statisticClient = new StatisticsClient(new MicroProperties(new KenticoResourceService()));
+            var requestResult = statisticClient.GetOrderStatistics().Result;
             if (requestResult.Success)
             {
                 return new OrderStatisticsData
