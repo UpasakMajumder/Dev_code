@@ -145,7 +145,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
 
             AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-            product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID);
+            product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); // todo check not to save twice
             product.Update();
         }
 
@@ -196,7 +196,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
 
-            if (existingProduct == null)
+            if (existingProduct == null) // todo check not to save twice with storing image
             {
                 newProduct.Insert(parent);
             }
