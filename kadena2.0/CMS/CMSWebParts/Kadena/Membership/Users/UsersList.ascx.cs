@@ -4,6 +4,7 @@ using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.Base;
+using CMS.Membership;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -738,150 +739,167 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
         else
         {
-            repUsers.DataBindByDefault = false;
-            pagerElem.PageControl = repUsers.ID;
+            int UserID = QueryHelper.GetInteger("userid", 0);
+            UserInfo User = UserInfoProvider.GetUserInfo(UserID);
 
-            filterUsers.Visible = ShowFilterControl;
-            filterUsers.OnFilterChanged += filterUsers_OnFilterChanged;
-            srcUsers.OnFilterChanged += filterUsers_OnFilterChanged;
-
-            // Basic control properties
-            repUsers.HideControlForZeroRows = HideControlForZeroRows;
-            repUsers.ZeroRowsText = ZeroRowsText;
-
-            // Data source properties
-            srcUsers.WhereCondition = WhereCondition;
-            srcUsers.OrderBy = OrderBy;
-            srcUsers.TopN = SelectTopN;
-            srcUsers.SelectedColumns = Columns;
-            srcUsers.SiteName = SiteName;
-            srcUsers.FilterName = filterUsers.ID;
-            srcUsers.SourceFilterName = FilterName;
-            srcUsers.CacheItemName = CacheItemName;
-            srcUsers.CacheDependencies = CacheDependencies;
-            srcUsers.CacheMinutes = CacheMinutes;
-            srcUsers.SelectOnlyApproved = SelectOnlyApproved;
-            srcUsers.SelectHidden = SelectHidden;
-
-            // Init data properties
-            filterUsers.InitDataProperties(srcUsers);
-
-
-            #region "Repeater template properties"
-
-            // Apply transformations if they exist
-            if (!String.IsNullOrEmpty(TransformationName))
+            if (User != null)
             {
-                repUsers.ItemTemplate = TransformationHelper.LoadTransformation(this, TransformationName);
+                pnlUserForm.Visible = true;
+                pnlListView.Visible = false;
+
+                formElem.Info = User;
+                formElem.SubmitButton.Visible = false;
             }
-            if (!String.IsNullOrEmpty(AlternatingItemTransformationName))
+            else
             {
-                repUsers.AlternatingItemTemplate = TransformationHelper.LoadTransformation(this, AlternatingItemTransformationName);
+                pnlUserForm.Visible = false;
+                pnlListView.Visible = true;
+
+                repUsers.DataBindByDefault = false;
+                pagerElem.PageControl = repUsers.ID;
+
+                filterUsers.Visible = ShowFilterControl;
+                filterUsers.OnFilterChanged += filterUsers_OnFilterChanged;
+                srcUsers.OnFilterChanged += filterUsers_OnFilterChanged;
+
+                // Basic control properties
+                repUsers.HideControlForZeroRows = HideControlForZeroRows;
+                repUsers.ZeroRowsText = ZeroRowsText;
+
+                // Data source properties
+                srcUsers.WhereCondition = WhereCondition;
+                srcUsers.OrderBy = OrderBy;
+                srcUsers.TopN = SelectTopN;
+                srcUsers.SelectedColumns = Columns;
+                srcUsers.SiteName = SiteName;
+                srcUsers.FilterName = filterUsers.ID;
+                srcUsers.SourceFilterName = FilterName;
+                srcUsers.CacheItemName = CacheItemName;
+                srcUsers.CacheDependencies = CacheDependencies;
+                srcUsers.CacheMinutes = CacheMinutes;
+                srcUsers.SelectOnlyApproved = SelectOnlyApproved;
+                srcUsers.SelectHidden = SelectHidden;
+
+                // Init data properties
+                filterUsers.InitDataProperties(srcUsers);
+
+
+                #region "Repeater template properties"
+
+                // Apply transformations if they exist
+                if (!String.IsNullOrEmpty(TransformationName))
+                {
+                    repUsers.ItemTemplate = TransformationHelper.LoadTransformation(this, TransformationName);
+                }
+                if (!String.IsNullOrEmpty(AlternatingItemTransformationName))
+                {
+                    repUsers.AlternatingItemTemplate = TransformationHelper.LoadTransformation(this, AlternatingItemTransformationName);
+                }
+                if (!String.IsNullOrEmpty(FooterTransformationName))
+                {
+                    repUsers.FooterTemplate = TransformationHelper.LoadTransformation(this, FooterTransformationName);
+                }
+                if (!String.IsNullOrEmpty(HeaderTransformationName))
+                {
+                    repUsers.HeaderTemplate = TransformationHelper.LoadTransformation(this, HeaderTransformationName);
+                }
+                if (!String.IsNullOrEmpty(SeparatorTransformationName))
+                {
+                    repUsers.SeparatorTemplate = TransformationHelper.LoadTransformation(this, SeparatorTransformationName);
+                }
+
+                #endregion
+
+
+                // UniPager properties
+                pagerElem.PageSize = PageSize;
+                pagerElem.GroupSize = GroupSize;
+                pagerElem.QueryStringKey = QueryStringKey;
+                pagerElem.DisplayFirstLastAutomatically = DisplayFirstLastAutomatically;
+                pagerElem.DisplayPreviousNextAutomatically = DisplayPreviousNextAutomatically;
+                pagerElem.HidePagerForSinglePage = HidePagerForSinglePage;
+                pagerElem.Enabled = EnablePaging;
+
+                switch (PagingMode.ToLowerCSafe())
+                {
+                    case "querystring":
+                        pagerElem.PagerMode = UniPagerMode.Querystring;
+                        break;
+
+                    default:
+                        pagerElem.PagerMode = UniPagerMode.PostBack;
+                        break;
+                }
+
+
+                #region "UniPager template properties"
+
+                // UniPager template properties
+                if (!String.IsNullOrEmpty(PagesTemplate))
+                {
+                    pagerElem.PageNumbersTemplate = TransformationHelper.LoadTransformation(pagerElem, PagesTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(CurrentPageTemplate))
+                {
+                    pagerElem.CurrentPageTemplate = TransformationHelper.LoadTransformation(pagerElem, CurrentPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(SeparatorTemplate))
+                {
+                    pagerElem.PageNumbersSeparatorTemplate = TransformationHelper.LoadTransformation(pagerElem, SeparatorTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(FirstPageTemplate))
+                {
+                    pagerElem.FirstPageTemplate = TransformationHelper.LoadTransformation(pagerElem, FirstPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(LastPageTemplate))
+                {
+                    pagerElem.LastPageTemplate = TransformationHelper.LoadTransformation(pagerElem, LastPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(PreviousPageTemplate))
+                {
+                    pagerElem.PreviousPageTemplate = TransformationHelper.LoadTransformation(pagerElem, PreviousPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(NextPageTemplate))
+                {
+                    pagerElem.NextPageTemplate = TransformationHelper.LoadTransformation(pagerElem, NextPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(PreviousGroupTemplate))
+                {
+                    pagerElem.PreviousGroupTemplate = TransformationHelper.LoadTransformation(pagerElem, PreviousGroupTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(NextGroupTemplate))
+                {
+                    pagerElem.NextGroupTemplate = TransformationHelper.LoadTransformation(pagerElem, NextGroupTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(DirectPageTemplate))
+                {
+                    pagerElem.DirectPageTemplate = TransformationHelper.LoadTransformation(pagerElem, DirectPageTemplate);
+                }
+
+                if (!String.IsNullOrEmpty(LayoutTemplate))
+                {
+                    pagerElem.LayoutTemplate = TransformationHelper.LoadTransformation(pagerElem, LayoutTemplate);
+                }
+
+                #endregion
+
+
+                // Connects repeater with data source
+                repUsers.DataSource = srcUsers.DataSource;
+                repUsers.DataBind();
+
+                filterUsers.NewUserButtonText = NewUserButtonText;
+                filterUsers.UserPageURL = UserPageURL;
             }
-            if (!String.IsNullOrEmpty(FooterTransformationName))
-            {
-                repUsers.FooterTemplate = TransformationHelper.LoadTransformation(this, FooterTransformationName);
-            }
-            if (!String.IsNullOrEmpty(HeaderTransformationName))
-            {
-                repUsers.HeaderTemplate = TransformationHelper.LoadTransformation(this, HeaderTransformationName);
-            }
-            if (!String.IsNullOrEmpty(SeparatorTransformationName))
-            {
-                repUsers.SeparatorTemplate = TransformationHelper.LoadTransformation(this, SeparatorTransformationName);
-            }
-
-            #endregion
-
-
-            // UniPager properties
-            pagerElem.PageSize = PageSize;
-            pagerElem.GroupSize = GroupSize;
-            pagerElem.QueryStringKey = QueryStringKey;
-            pagerElem.DisplayFirstLastAutomatically = DisplayFirstLastAutomatically;
-            pagerElem.DisplayPreviousNextAutomatically = DisplayPreviousNextAutomatically;
-            pagerElem.HidePagerForSinglePage = HidePagerForSinglePage;
-            pagerElem.Enabled = EnablePaging;
-
-            switch (PagingMode.ToLowerCSafe())
-            {
-                case "querystring":
-                    pagerElem.PagerMode = UniPagerMode.Querystring;
-                    break;
-
-                default:
-                    pagerElem.PagerMode = UniPagerMode.PostBack;
-                    break;
-            }
-
-
-            #region "UniPager template properties"
-
-            // UniPager template properties
-            if (!String.IsNullOrEmpty(PagesTemplate))
-            {
-                pagerElem.PageNumbersTemplate = TransformationHelper.LoadTransformation(pagerElem, PagesTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(CurrentPageTemplate))
-            {
-                pagerElem.CurrentPageTemplate = TransformationHelper.LoadTransformation(pagerElem, CurrentPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(SeparatorTemplate))
-            {
-                pagerElem.PageNumbersSeparatorTemplate = TransformationHelper.LoadTransformation(pagerElem, SeparatorTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(FirstPageTemplate))
-            {
-                pagerElem.FirstPageTemplate = TransformationHelper.LoadTransformation(pagerElem, FirstPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(LastPageTemplate))
-            {
-                pagerElem.LastPageTemplate = TransformationHelper.LoadTransformation(pagerElem, LastPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(PreviousPageTemplate))
-            {
-                pagerElem.PreviousPageTemplate = TransformationHelper.LoadTransformation(pagerElem, PreviousPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(NextPageTemplate))
-            {
-                pagerElem.NextPageTemplate = TransformationHelper.LoadTransformation(pagerElem, NextPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(PreviousGroupTemplate))
-            {
-                pagerElem.PreviousGroupTemplate = TransformationHelper.LoadTransformation(pagerElem, PreviousGroupTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(NextGroupTemplate))
-            {
-                pagerElem.NextGroupTemplate = TransformationHelper.LoadTransformation(pagerElem, NextGroupTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(DirectPageTemplate))
-            {
-                pagerElem.DirectPageTemplate = TransformationHelper.LoadTransformation(pagerElem, DirectPageTemplate);
-            }
-
-            if (!String.IsNullOrEmpty(LayoutTemplate))
-            {
-                pagerElem.LayoutTemplate = TransformationHelper.LoadTransformation(pagerElem, LayoutTemplate);
-            }
-
-            #endregion
-
-
-            // Connects repeater with data source
-            repUsers.DataSource = srcUsers.DataSource;
-            repUsers.DataBind();
-
-            filterUsers.NewUserButtonText = NewUserButtonText;
-            filterUsers.UserPageURL = UserPageURL;
         }
     }
 
@@ -902,5 +920,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     public override void ClearCache()
     {
         srcUsers.ClearCache();
+    }
+
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
+    }
+
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        formElem.SaveData("", true);
     }
 }

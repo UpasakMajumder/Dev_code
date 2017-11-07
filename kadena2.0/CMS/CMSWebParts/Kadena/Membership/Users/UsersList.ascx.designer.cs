@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList {
     
     /// <summary>
+    /// pnlListView control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSPanel pnlListView;
+    
+    /// <summary>
     /// filterUsers control.
     /// </summary>
     /// <remarks>
@@ -46,4 +55,40 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.DocumentEngine.Web.UI.UniPager pagerElem;
+    
+    /// <summary>
+    /// pnlUserForm control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSPanel pnlUserForm;
+    
+    /// <summary>
+    /// formElem control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.FormEngine.Web.UI.DataForm formElem;
+    
+    /// <summary>
+    /// btnSave control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton btnSave;
+    
+    /// <summary>
+    /// btnCancel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton btnCancel;
 }

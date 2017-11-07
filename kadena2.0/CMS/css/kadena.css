@@ -218,6 +218,6 @@ textarea{
     position: absolute;
     font-weight: 700;
 }
-.form{
-    /*max-width:100%;*/
+.form-lg.form{
+    max-width:100%;
 }
