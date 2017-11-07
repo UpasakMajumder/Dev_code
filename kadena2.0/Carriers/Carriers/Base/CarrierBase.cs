@@ -5,8 +5,8 @@ using CMS.Helpers;
 using CMS.SiteProvider;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
+using Kadena2.Carriers.Helpers;
 using Kadena2.MicroserviceClients.Clients;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,8 @@ namespace Kadena2.Carriers
 {
     public abstract class CarrierBase : ICarrierProvider
     {
-        private ShippingCostServiceClient microserviceClient = new ShippingCostServiceClient();
+        private readonly MicroProperties _properties;
+        private readonly ShippingCostServiceClient microserviceClient;
 
         protected string ServiceUrl { get; set; }
 
@@ -28,7 +29,9 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            ServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_ShippingCostServiceUrl");
+            _properties = new MicroProperties();
+            microserviceClient = new ShippingCostServiceClient(_properties);
+            ServiceUrl = _properties.GetServiceUrl("KDA_ShippingCostServiceUrl");
         }
 
         public Guid GetConfigurationUIElementGUID()
@@ -43,7 +46,7 @@ namespace Kadena2.Carriers
 
         protected BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(string requestBody)
         {
-            var response = microserviceClient.EstimateShippingCost(ServiceUrl, requestBody).Result;
+            var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
             if (!response.Success || response.Payload == null)
             {
