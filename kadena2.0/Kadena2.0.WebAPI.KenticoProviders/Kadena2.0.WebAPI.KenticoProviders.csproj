@@ -119,8 +119,7 @@
     <Compile Include="Contracts\IKenticoMailProvider.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
-    <Compile Include="Factories\AddressFactory.cs" />
-    <Compile Include="Factories\CustomerFactory.cs" />    
+    <Compile Include="Factories\CustomerFactory.cs" />
     <Compile Include="Factories\DeliveryFactory.cs" />
     <Compile Include="Factories\PaymentOptionFactory.cs" />
     <Compile Include="Factories\SiteFactory.cs" />
