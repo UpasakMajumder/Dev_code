@@ -4,6 +4,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
+using CMS.PortalEngine;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Newtonsoft.Json;
@@ -136,6 +137,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.DocumentPublishTo = publishTo;
             }
 
+            SetPageTemplate(newProduct, "_Kadena_Product_Detail");
+
             if (existingProduct == null)
             {
                 newProduct.Insert(parent);
@@ -144,8 +147,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 newProduct.Update();
             }
+
             return newProduct;
         }
+
+        protected void SetPageTemplate(TreeNode node, string templateName)
+        {
+            var pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templateName);
+            node.DocumentPageTemplateID = pageTemplateInfo?.PageTemplateId ?? 0;
+            node.NodeTemplateForAllCultures = true;
+        }
+
 
         private string GetDynamicPricingJson(string min, string max, string price)
         {
@@ -210,6 +222,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
+
+                SetPageTemplate(category, "_KDA_ProductCategory");
 
                 // Inserts the new page as a child of the parent page
                 category.Insert(parentPage);
