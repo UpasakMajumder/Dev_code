@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Kadena.Dto.General;
 using Kadena.Dto.InventoryUpdate.MicroserviceResponses;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -13,11 +14,19 @@ namespace Kadena2.MicroserviceClients.Clients
         //{
 
         //}
+        private const string _serviceUrlSettingKey = "KDA_InventoryUpdateServiceEndpoint";
+        private readonly IMicroProperties _properties;
 
-        public async Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string serviceEndpoint, string clientId)
+        public InventoryUpdateClient(IMicroProperties properties)
         {
-            var url = $"{serviceEndpoint.TrimEnd('/')}/api/Inventory?erpClientId={clientId}";
-            return await Get<InventoryDataItemDto[]>(serviceEndpoint).ConfigureAwait(false);
+            _properties = properties;
+        }
+
+        public async Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string clientId)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url.TrimEnd('/')}/api/Inventory?erpClientId={clientId}";
+            return await Get<InventoryDataItemDto[]>(url).ConfigureAwait(false);
         }
     }
 }
