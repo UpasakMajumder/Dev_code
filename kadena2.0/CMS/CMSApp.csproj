@@ -3908,6 +3908,8 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
@@ -4237,6 +4239,7 @@
     <Content Include="CorporateSite\Scripts\lightbox.js" />
     <Content Include="CorporateSite\Scripts\LightboxBundle.js" />
     <Content Include="CorporateSite\Stylesheets\lightbox.css" />
+    <Content Include="css\Custom.css" />
     <Content Include="DancingGoat\Fonts\Core-icons.svg" />
     <Content Include="DancingGoat\Icons\icons-core.css" />
     <Content Include="DancingGoat\Images\Favicons\favicon-16.png" />
@@ -15383,6 +15386,20 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
+      <DependentUpon>CampaignFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.designer.cs">
+      <DependentUpon>CampaignFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx.cs">
+      <DependentUpon>CampaignList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx.designer.cs">
+      <DependentUpon>CampaignList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.cs">
       <DependentUpon>CreateCampaign.ascx</DependentUpon>

@@ -18,6 +18,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
     private string mDefaultTargetUrl = "";
     private string folderpath="/";
+    private int campaignId = 0;
     #endregion
     #region "Properties"
 
@@ -62,6 +63,17 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         }
         else
         {
+            if (Request.QueryString["ID"] != null)
+            {
+
+                btnSave.Click += btnSave_Edit;
+                campaignId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
+                SetFeild(campaignId);
+            }
+            else
+            {
+                btnSave.Click += btnSave_Save;
+            }
             //assigning resource string to watermark text
             Name.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark");
             Description.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark");
@@ -131,6 +143,70 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         }
 
     }
+    protected void btnSave_Edit(object sender, EventArgs e)
+    {
+        string campaignName = Name.Text;
+        string campaignDes = Description.Text;
+        try
+        {
+            if (!string.IsNullOrEmpty(campaignName))
+            {
+                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+                CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, campaignId);
+                if(editPage !=null)
+                {
+                    // Sets the properties of the new page
+                    editPage.DocumentName = campaignName;
+                    editPage.DocumentCulture = "en-us";
+                    editPage.SetValue("Name", campaignName);
+                    editPage.SetValue("Description", campaignDes);
+
+                    // update the  campaign
+                    editPage.Update();
+                    lblSuccessMsg.Visible = true;
+                    lblFailureText.Visible = false;
+                    Name.Text = "";
+                    Description.Text = "";
+                }
+                else
+                {
+                    lblFailureText.Visible = true;
+                }
+        
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
+        }
+    }
+
+    ///
+    /// 
+    private void SetFeild(int _campaignId)
+    {
+        try
+        {
+            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, _campaignId);
+            if (editPage != null)
+            {
+                // get the properties of the page
+
+                Name.Text = editPage.GetValue("Name").ToString();
+                Description.Text = editPage.GetValue("Description").ToString();
+
+            }
+        }
+        catch(Exception ex)
+        {
+            EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
+        }
+
+        
+    }
+   
+
     /// <summary>
     /// Reloads the control data.
     /// </summary>
