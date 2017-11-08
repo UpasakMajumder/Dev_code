@@ -3908,6 +3908,9 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
+    <Content Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx" />
+    <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -4236,6 +4239,7 @@
     <Content Include="CorporateSite\Scripts\lightbox.js" />
     <Content Include="CorporateSite\Scripts\LightboxBundle.js" />
     <Content Include="CorporateSite\Stylesheets\lightbox.css" />
+    <Content Include="css\custom.css" />
     <Content Include="DancingGoat\Fonts\Core-icons.svg" />
     <Content Include="DancingGoat\Icons\icons-core.css" />
     <Content Include="DancingGoat\Images\Favicons\favicon-16.png" />
@@ -4372,6 +4376,7 @@
     <Content Include="PersonalSite\Scripts\jquery-1.11.0.min.js" />
     <Content Include="PersonalSite\Scripts\lightbox.js" />
     <Content Include="PersonalSite\Stylesheets\lightbox.css" />
+    <Content Include="ProgramWebservice.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -15383,6 +15388,27 @@
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.cs">
+      <DependentUpon>AddNewProgram.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.designer.cs">
+      <DependentUpon>AddNewProgram.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx.cs">
+      <DependentUpon>DeleteProgram.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx.designer.cs">
+      <DependentUpon>DeleteProgram.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.cs">
+      <DependentUpon>ProgramFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.designer.cs">
+      <DependentUpon>ProgramFilter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -21765,6 +21791,11 @@
       <DependentUpon>KadenaWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\Brand.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\Program.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProgramProvider.generated.cs" />
     <Compile Include="Old_App_Code\CMSModules\Automation\AutomationFunctions.cs" />
     <Compile Include="Old_App_Code\CMSModules\Badges\BadgesListControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\BadWords\BadWordsListControlExtender.cs" />
@@ -21851,6 +21882,10 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\CropImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\ResizeImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
+    <Compile Include="ProgramWebservice.asmx.cs">
+      <DependentUpon>ProgramWebservice.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -23279,6 +23314,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Old_App_Code\CMSClasses\" />
     <Folder Include="Old_App_Code\Kadena\Imports\Users\" />
   </ItemGroup>
   <PropertyGroup>
