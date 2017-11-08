@@ -25,9 +25,3 @@
         </div>
     </div>
 </cms:CMSPanel>
-
-<script>
-    $(document).ready(function () {
-        $(".input__password_field input[type='password']").addClass("input__text");
-    });
-</script>
