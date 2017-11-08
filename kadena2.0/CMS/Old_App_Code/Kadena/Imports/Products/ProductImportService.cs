@@ -222,10 +222,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
-
                 SetPageTemplate(category, "_KDA_ProductCategory");
-
-                // Inserts the new page as a child of the parent page
                 category.Insert(parentPage);
             }
 
@@ -246,7 +243,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = SKUInfoProvider.GetSKUs()
+            var sku = SKUInfoProvider.GetSKUs(siteID)
                 .WhereEquals("SKUNumber", product.SKU)
                 .FirstObject ?? new SKUInfo();            
 
