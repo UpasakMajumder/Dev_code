@@ -41,6 +41,12 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressZip, opt => opt.MapFrom(src => src.Zip))
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id));
+            CreateMap<ShippingOptionInfo, DeliveryOption>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ShippingOptionID))
+                .ForMember(dest => dest.CarrierId, opt => opt.MapFrom(src => src.ShippingOptionCarrierID))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.ShippingOptionDisplayName))
+                .ForMember(dest => dest.Service, opt => opt.MapFrom(src => src.ShippingOptionCarrierServiceName))
+                .ForMember(dest => dest.SAPName, opt => opt.MapFrom(src => src.GetStringValue("ShippingOptionSAPName", string.Empty)));
         }
     }
 }
