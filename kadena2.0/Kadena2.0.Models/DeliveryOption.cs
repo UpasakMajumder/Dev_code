@@ -14,6 +14,7 @@
         public bool Disabled { get; set; }
         public string CarrierCode { get; set; }
         public string Service { get; set; }
+        public string SAPName { get; set; }
         public bool IsCustomerPrice
         {
             get
