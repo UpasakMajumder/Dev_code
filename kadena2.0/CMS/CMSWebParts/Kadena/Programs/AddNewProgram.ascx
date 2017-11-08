@@ -16,14 +16,14 @@
         <div class="form">
             <div class="mb-2">
                 <div class="input__wrapper">
-                    <span class="input__label">Program Name</span>
+                    <span class="input__label" runat="server" id="lblProgramName"></span>
                     <asp:TextBox ID="txtProgramName" runat="server" CssClass="input__text"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="" ErrorMessage="Please enter Program Name" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
-                    <span class="input__label">Description</span>
+                    <span class="input__label" runat="server" id="lblProgramDescription"></span>
                     <div class="input__inner">
                         <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
                     </div>
@@ -31,14 +31,14 @@
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
-                    <span class="input__label">Brands</span>
+                    <span class="input__label" id="lblBrandName" runat="server"></span>
                     <uc1:UniSelector runat="server" ID="ddlBrand" ObjectType="customtableitem.KDA.Brand" ReturnColumnName="BrandCode" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%BrandName%}" AllowEmpty="false" />
                     <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="" ErrorMessage="Please select Brand" InitialValue="0" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
-                    <span class="input__label">Campaign Name</span>
+                    <span class="input__label" id="lblCampaignName" runat="server"></span>
                     <uc1:UniSelector runat="server" ID="ddlCampaign" ObjectType="cms.document.KDA.Campaign" ReturnColumnName="CampaignID" SelectionMode="SingleDropDownList" CssClass="input__select" AllowEmpty="false" />
                     <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="" ErrorMessage="Please select Campaign" InitialValue="0" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
                 </div>
@@ -46,9 +46,9 @@
         </div>
         <div class="mb-3 form_btns">
             <div class="">
-                <asp:Button ID="btnAddProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Text="Save" OnClick="btnAddProgram_Click" />
-                <asp:Button ID="btnUpdateProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Text="Update" OnClick="btnUpdateProgram_Click" />
-                <asp:Button ID="btnCancelProgram" CssClass="btn-action login__login-button btn--no-shadow" runat="server" Text="Cancel" OnClick="btnCancelProgram_Click" CausesValidation="false" />
+                <asp:Button ID="btnAddProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnAddProgram_Click" />
+                <asp:Button ID="btnUpdateProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnUpdateProgram_Click" />
+                <asp:Button ID="btnCancelProgram" CssClass="btn-action login__login-button btn--no-shadow" runat="server" OnClick="btnCancelProgram_Click" CausesValidation="false" />
             </div>
         </div>
     </div>

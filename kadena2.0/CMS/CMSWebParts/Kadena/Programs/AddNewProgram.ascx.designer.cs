@@ -21,6 +21,15 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl programHeader;
     
     /// <summary>
+    /// lblProgramName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProgramName;
+    
+    /// <summary>
     /// txtProgramName control.
     /// </summary>
     /// <remarks>
@@ -39,6 +48,15 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator programNameRequired;
     
     /// <summary>
+    /// lblProgramDescription control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProgramDescription;
+    
+    /// <summary>
     /// txtProgramDescription control.
     /// </summary>
     /// <remarks>
@@ -46,6 +64,15 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtProgramDescription;
+    
+    /// <summary>
+    /// lblBrandName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblBrandName;
     
     /// <summary>
     /// ddlBrand control.
@@ -64,6 +91,15 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.RequiredFieldValidator ddlBrandRequired;
+    
+    /// <summary>
+    /// lblCampaignName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCampaignName;
     
     /// <summary>
     /// ddlCampaign control.

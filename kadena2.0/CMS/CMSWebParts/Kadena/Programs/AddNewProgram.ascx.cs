@@ -18,6 +18,9 @@ using CMS.DocumentEngine.Types.KDA;
 public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebPart
 {
     #region "Properties"
+    /// <summary>
+    /// Progarm listing page url
+    /// </summary>
     public string ProgramListURL
     {
         get
@@ -27,6 +30,104 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         set
         {
             SetValue("ProgramListURL", value);
+        }
+    }
+    /// <summary>
+    /// Program name localization string
+    /// </summary>
+    public string ProgramNameText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.ProgramName"), "");
+        }
+        set
+        {
+            SetValue("ProgramNameText", value);
+        }
+    }
+    /// <summary>
+    /// Program description localization string
+    /// </summary>
+    public string ProgramDescriptionText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.ProgramDescription"), "");
+        }
+        set
+        {
+            SetValue("ProgramDescriptionText", value);
+        }
+    }
+    /// <summary>
+    /// BrandName localization string
+    /// </summary>
+    public string BrandNameText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.BrandName"), "");
+        }
+        set
+        {
+            SetValue("BrandNameText", value);
+        }
+    }
+    /// <summary>
+    /// Campaign name localization string
+    /// </summary>
+    public string CampaignNameText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.CampaignName"), "");
+        }
+        set
+        {
+            SetValue("CampaignNameText", value);
+        }
+    }
+    /// <summary>
+    /// SaveButton localization string
+    /// </summary>
+    public string SaveButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.SaveButton"), "");
+        }
+        set
+        {
+            SetValue("SaveButtonText", value);
+        }
+    }
+    /// <summary>
+    /// UpdateButton localization string
+    /// </summary>
+    public string UpdateButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.UpdateButton"), "");
+        }
+        set
+        {
+            SetValue("UpdateButtonText", value);
+        }
+    }
+    /// <summary>
+    /// CancelButton localization string
+    /// </summary>
+    public string CancelButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.CancelButton"), "");
+        }
+        set
+        {
+            SetValue("CancelButtonText", value);
         }
     }
     #endregion
@@ -55,6 +156,16 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         else
         {
+            // Assign localization text to labels
+            lblProgramName.InnerText = ProgramNameText;
+            lblProgramDescription.InnerText = ProgramDescriptionText;
+            lblBrandName.InnerText = BrandNameText;
+            lblCampaignName.InnerText = CampaignNameText;
+            btnAddProgram.Text = SaveButtonText;
+            btnCancelProgram.Text = CancelButtonText;
+            btnUpdateProgram.Text = UpdateButtonText;
+
+            //get program details by program id.
             int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
             if (programID != 0)
             {

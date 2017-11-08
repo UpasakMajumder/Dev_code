@@ -3909,7 +3909,6 @@
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
-    <Content Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
@@ -15394,13 +15393,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.designer.cs">
       <DependentUpon>AddNewProgram.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx.cs">
-      <DependentUpon>DeleteProgram.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\DeleteProgram.ascx.designer.cs">
-      <DependentUpon>DeleteProgram.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.cs">
       <DependentUpon>ProgramFilter.ascx</DependentUpon>
