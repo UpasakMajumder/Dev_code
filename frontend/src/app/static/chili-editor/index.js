@@ -67,8 +67,12 @@ class ChiliEditor extends AddToCart {
   }
 
   addToCart(event) {
+    // callback from HTML `product-editor.nunj`
+    window.addToCartRequest = this.addToCartRequest;
+    window.addToCart = true;
+    window.cartEvent = event;
+
     this.triggerChiliSave();
-    this.addToCartRequest(event);
   }
 
   triggerChiliSave() {

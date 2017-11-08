@@ -154,7 +154,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
-            var result = DeliveryFactory.CreateOptions(services);
+            var result = _mapper.Map<DeliveryOption[]>(services);
             foreach (var item in result)
             {
                 item.Title = ResolveMacroString(item.Title);
@@ -167,7 +167,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption GetShippingOption(int id)
         {
             var service = ShippingOptionInfoProvider.GetShippingOptionInfo(id);
-            var result = DeliveryFactory.CreateOption(service);
+            var result = _mapper.Map<DeliveryOption>(service);
             var carrier = CarrierInfoProvider.GetCarrierInfo(service.ShippingOptionCarrierID);
             result.CarrierCode = carrier.CarrierName;
             return result;
@@ -292,7 +292,9 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
 
-            var result = items.Select(i =>
+            var result = items
+            .Where(cartItem => !cartItem.IsProductOption)
+            .Select(i =>
             {
                 var cartItem = new CartItem()
                 {
@@ -865,7 +867,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             cartItem.CartItemUnits = amount;
         }
-        
+
         public string MapOrderStatus(string microserviceStatus)
         {
             var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")
