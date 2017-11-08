@@ -163,10 +163,14 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
                     // update the  campaign
                     editPage.Update();
-                    lblSuccessMsg.Visible = true;
-                    lblFailureText.Visible = false;
-                    Name.Text = "";
-                    Description.Text = "";
+                    var redirectUrl = RequestContext.CurrentURL;
+
+                    if (!String.IsNullOrEmpty(DefaultTargetUrl))
+                    {
+                        redirectUrl = ResolveUrl(DefaultTargetUrl);
+                    }
+
+                    URLHelper.Redirect(redirectUrl);
                 }
                 else
                 {
