@@ -26,27 +26,5 @@ namespace Kadena2.WebAPI.KenticoProviders.Factories
         {
             return cis.Select(c => CreateCarrier(c)).ToArray();
         }
-
-
-        public static DeliveryOption CreateOption(ShippingOptionInfo s)
-        {
-            if (s == null)
-            {
-                return null;
-            }
-
-            return new DeliveryOption()
-            {
-                Id = s.ShippingOptionID,
-                CarrierId = s.ShippingOptionCarrierID,
-                Title = s.ShippingOptionDisplayName,
-                Service = s.ShippingOptionCarrierServiceName,
-            };
-        }
-
-        public static DeliveryOption[] CreateOptions(ShippingOptionInfo[] options)
-        {
-            return options.Select(s => CreateOption(s)).ToArray();
-        }
     }
 }
