@@ -1,6 +1,7 @@
 ﻿using CMS.EventLog;
 using CMS.UIControls;
 using System;
+using System.Linq;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
@@ -12,7 +13,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            HideErrorMessage();
+            HideResultMessage();
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
@@ -42,19 +43,23 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
+                else
+                {
+                    ShowSuccessMessage("Operation successfully completed");
+                }
                 
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("Import products", "EXCEPTION", ex);
-                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
             }
         }
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = "There was an error while processing the request. Error details:<br /><br />";
-            return headline + string.Join("<br />", result.ErrorMessages);
+            var headline = $"There was {result.AllMessagesCount} error(s) while processing the request. Make sure all mandatory fields are filled in sheet and/or see Event log for details.<br /><br />First {result.ErrorMessages?.Length ?? 0} errors:<br /><br />";
+            return headline + string.Join("<br/>", result.ErrorMessages);
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
@@ -90,9 +95,16 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             errorMessage.Text = message;
         }
 
-        private void HideErrorMessage()
+        private void ShowSuccessMessage(string message)
+        {
+            successMessageContainer.Visible = true;
+            successMessage.Text = message;
+        }
+
+        private void HideResultMessage()
         {
             errorMessageContainer.Visible = false;
+            successMessageContainer.Visible = false;
         }
     }
 }

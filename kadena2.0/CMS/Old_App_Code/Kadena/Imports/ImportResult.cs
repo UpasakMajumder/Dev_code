@@ -2,6 +2,7 @@
 {
     public class ImportResult
     {
+        public int AllMessagesCount { get; set; }
         public string[] ErrorMessages { get; set; }
     }
 }
