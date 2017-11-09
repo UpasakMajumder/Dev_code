@@ -86,6 +86,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
+            /* TODO discuss with Cenveo and finish or delete. return true skips further validations !
             if (!string.IsNullOrEmpty(product.PublishFrom) && !string.IsNullOrEmpty(product.PublishTo))
             {
                 DateTime from, to;
@@ -116,7 +117,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                 validationErrors.Add("MinItemsInOrder and MaxItemsInOrder must be non-negative integer. If both are specified, MinItemsInOrder must be less than MaxnItemsInOrder");
                 return false;
-            }
+            }*/
 
 
             return isValid;
