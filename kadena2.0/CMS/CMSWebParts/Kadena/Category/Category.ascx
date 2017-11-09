@@ -24,7 +24,7 @@
     <div class="mb-3 form_btns">
         <div class="">
             
-            <cms:LocalizedButton ID="btnSave" ValidationGroup="feildvalidation" CssClass="btn-action login__login-button btn--no-shadow"  OnClick="btnSave_Save"  runat="server" ButtonStyle="Primary" EnableViewState="false" 
+            <cms:LocalizedButton ID="btnSave" ValidationGroup="feildvalidation" CssClass="btn-action login__login-button btn--no-shadow"    runat="server" ButtonStyle="Primary" EnableViewState="false" 
                     ResourceString="Kadena.CategroyForm.SaveText"  />
             <cms:LocalizedButton ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnCancel_Cancel" runat="server" ButtonStyle="Primary" CommandName="Login" EnableViewState="false" 
                     ResourceString="Kadena.CategroyForm.CancelButton" />
@@ -35,4 +35,5 @@
                                     </div>
 
     </div>
+
 
