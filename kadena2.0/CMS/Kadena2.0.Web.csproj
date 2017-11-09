@@ -993,6 +993,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\StatusMessages.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Orders\OrderStatisticsData.cs" />
