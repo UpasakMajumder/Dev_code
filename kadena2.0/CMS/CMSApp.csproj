@@ -3912,6 +3912,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
+    <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -15394,6 +15395,7 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.designer.cs">
       <DependentUpon>Category.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
       <DependentUpon>CampaignFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -15414,6 +15416,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.designer.cs">
       <DependentUpon>CreateCampaign.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.designer.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
