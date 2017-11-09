@@ -7,6 +7,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports
 {
     public abstract class ImportServiceBase
     {
+        protected StatusMessages statusMessages = new StatusMessages(10);
+
         protected List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
         {
             var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
