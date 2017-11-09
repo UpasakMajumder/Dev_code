@@ -75,35 +75,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
     {
         get
         {
-            if (string.IsNullOrEmpty(lnkNewUser.Text))
+            if (string.IsNullOrEmpty(ltrNewUser.Text))
             {
-                lnkNewUser.Text = ResHelper.GetString("Kadena.Users.NewUser");
+                ltrNewUser.Text = ResHelper.GetString("Kadena.Users.NewUser");
             }
-            return lnkNewUser.Text;
+            return ltrNewUser.Text;
         }
         set
         {
-            lnkNewUser.Text = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the User page URL.
-    /// </summary>
-    public string UserPageURL
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(lnkNewUser.PostBackUrl))
-            {
-                lnkNewUser.PostBackUrl = "~/";
-            }
-            return lnkNewUser.PostBackUrl;
-        }
-        set
-        {
-            lnkNewUser.PostBackUrl = value;
+            ltrNewUser.Text = value;
         }
     }
 

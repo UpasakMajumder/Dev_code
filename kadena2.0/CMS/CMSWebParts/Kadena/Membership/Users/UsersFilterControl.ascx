@@ -14,6 +14,8 @@
         <cms:CMSButton runat="server" ID="btnSelect" OnClick="btnSelect_Click" EnableViewState="false" ButtonStyle="Default" Style="display: none;" />
     </span>
     <div class="add_btn">
-        <cms:LocalizedLinkButton runat="server" ID="lnkNewUser"></cms:LocalizedLinkButton>
+        <a href="?userid=-1">
+            <cms:LocalizedLiteral runat="server" ID="ltrNewUser"></cms:LocalizedLiteral>
+        </a>
     </div>
 </asp:Panel>
