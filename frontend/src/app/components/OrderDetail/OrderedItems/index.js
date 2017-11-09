@@ -6,7 +6,7 @@ import Product from 'app.dump/Product/Order';
 const OrderedItems = ({ ui }) => {
   const { title, items } = ui;
 
-  const products = items.map(item => <Product key={item.id} {...item} />);
+  const products = items.map((item, i) => <Product key={i} {...item} />);
 
   return (
     <div className="order-block">
