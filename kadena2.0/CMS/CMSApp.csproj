@@ -4298,6 +4298,7 @@
     <Content Include="DancingGoat\Scripts\Vendor\DomReady\DomReady.js" />
     <Content Include="DancingGoat\Scripts\Vendor\jQuery\jQuery.min.js" />
     <Content Include="DancingGoat\Scripts\Vendor\RequireJS\require.min.js" />
+    <Content Include="DeleteAddressWebService.asmx" />
     <Content Include="EcommerceSite\images\blank.gif" />
     <Content Include="EcommerceSite\images\fancybox-x.png" />
     <Content Include="EcommerceSite\images\fancybox-y.png" />
@@ -21767,6 +21768,10 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="DeleteAddressWebService.asmx.cs">
+      <DependentUpon>DeleteAddressWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -21860,6 +21865,7 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\CropImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\ResizeImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ShippingAddress.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
