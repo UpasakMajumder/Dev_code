@@ -17,7 +17,7 @@ using CMS.CustomTables;
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
     #region "Properties"
-     public string AddressListPath
+    public string AddressListPath
     {
         get
         {
@@ -58,11 +58,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         {
             if (AuthenticationHelper.IsAuthenticated())
             {
+                BindResourceStrings();
                 int itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
                 if (itemID != default(int))
                 {
+                    headerAddress.InnerText = "Edit Address";
                     BindAddressData(itemID);
-                   // UpdateAddressData(itemID);
+                    // UpdateAddressData(itemID);
                 }
                 else
                 {
@@ -74,12 +76,27 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
     }
 
+    private void BindResourceStrings()
+    {
+        lblName.InnerText = ResHelper.GetString("Kadena.Address.Name");
+        lblAddressType.InnerText = ResHelper.GetString("Kadena.Address.AddressType");
+        lblCompany.InnerText = ResHelper.GetString("Kadena.Address.Company");
+        lblAddressLine1.InnerText = ResHelper.GetString("Kadena.Address.AddressLine1");
+        lblAddressLine2.InnerText = ResHelper.GetString("Kadena.Address.AddressLine2");
+        lblCity.InnerText = ResHelper.GetString("Kadena.Address.City");
+        lblCountry.InnerText = ResHelper.GetString("Kadena.Address.Country");
+        //ResHelper.GetString("Kadena.Address.State");
+        lblZipcode.InnerText = ResHelper.GetString("Kadena.Address.Zipcode");
+        lblTelephone.InnerText = ResHelper.GetString("Kadena.Address.Telephone");
+        lblEmail.InnerText = ResHelper.GetString("Kadena.Address.Email");
+    }
+
     private void UpdateAddressData(int itemID)
     {
         var addressObj = BindAddressObject(itemID);
         AddressInfoProvider.SetAddressInfo(addressObj);
 
-        var shippingObj=BindShippingAddressObject(addressObj);
+        var shippingObj = BindShippingAddressObject(addressObj);
         shippingObj.Update();
 
     }
@@ -136,7 +153,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", objAddress.AddressID).TopN(1).FirstOrDefault();
             item.ItemID = shippingData.ItemID;
         }
-            return item;
+        return item;
     }
 
     private AddressInfo BindAddressObject(int customerID)
@@ -156,14 +173,14 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         var country = ddlCountry.Value != null ? ddlCountry.Value.ToString() : string.Empty;
         objAddress.AddressCountryID = !string.IsNullOrEmpty(country) ? GetCountryID(country.Split(';').First()) : default(int);
         objAddress.AddressStateID = !string.IsNullOrEmpty(country) ? GetStateID(country.Split(';').Last()) : default(int);
-        objAddress.SetValue("AddressTypeID",ddlAddressType.Value);
+        objAddress.SetValue("AddressTypeID", ddlAddressType.Value);
 
         int itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
         if (itemID != default(int))
         {
             objAddress.AddressID = itemID;
         }
-            return objAddress;
+        return objAddress;
     }
 
 
