@@ -168,7 +168,37 @@ public partial class CMSWebParts_Kadena_Membership_Logon_logonform : CMSAbstract
             SetValue("ShowSignupLink", value);
         }
     }
-
+    /// <summary>
+    /// Gets or sets value of showpasswordhint
+    /// </summary>
+    public bool ShowPasswordLink
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("ShowPasswordLink"), false);
+        }
+        set
+        {
+            SetValue("ShowPasswordLink", value);
+        }
+    }
+    /// <summary>
+    /// Gets or sets value of password link text
+    /// </summary>
+    public string PasswordHintText
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("PasswordHintText"), "");
+        }
+        set
+        {
+            if (value.Trim() != "")
+            {
+                SetValue("PasswordHintText", value);
+            }
+        }
+    }
     /// <summary>
     /// Gets or sets Signup Page URL
     /// </summary>
@@ -301,6 +331,9 @@ function UpdateLabel_", ClientID, @"(content, context) {
             lnkSignup.Visible = ShowSignupLink;
             lnkSignup.NavigateUrl = SignupPageURL;
             lnkSignup.Text = SignupLinkText;
+            lnkPasswordhint.Visible = ShowPasswordLink;
+            lnkPasswordhint.Text = PasswordHintText;
+
         }
     }
 
@@ -394,6 +427,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
         Login1.Authenticate += Login1_Authenticate;
 
         btnPasswdRetrieval.Click += btnPasswdRetrieval_Click;
+        btnPasswordHint.Click += btnPasswordHint_Click;
     }
 
 
@@ -514,7 +548,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
 
             AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "LOGONFORM", SendEmailFrom, null, ResetPasswordURL, returnUrl);
 
-            lblResult.Text = String.Format(GetString("LogonForm.EmailSent"), value);
+            lblResult.Text = string.Format(GetString("LogonForm.EmailSent"), value);
             lblResult.Visible = true;
 
             pnlPasswdRetrieval.Visible = true;
@@ -528,7 +562,37 @@ function UpdateLabel_", ClientID, @"(content, context) {
         }
     }
 
+    //Retrieve the password hint
+    private void btnPasswordHint_Click(object sender, EventArgs e)
+    {
+        string value = txtPasswordHint.Text.Trim();
 
+        if (!String.IsNullOrEmpty(value) && ValidationHelper.IsEmail(value))
+        {
+                 var user = UserInfoProvider.GetUsers().Columns("UserId").WhereEquals("Email", value).TopN(1);
+            foreach (UserInfo aUser in user.TypedResult)
+            {
+                UserSettingsInfo Usersetting = CMS.Membership.UserSettingsInfoProvider.GetUserSettingsInfoByUser(aUser.UserID);
+                lblPwdHint.Text = Usersetting.GetStringValue("PasswordHint", "");
+                lblPwdHint.Visible = true;
+            }               
+            
+
+            //AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "LOGONFORM", SendEmailFrom, null, ResetPasswordURL, returnUrl);
+
+            lblHintResult.Text = string.Format(GetString("LogonFrom.pwdHintSuccess"), value);
+            lblHintResult.Visible = true;
+
+            pnlPasswdRetrieval.Visible = true;
+        }
+        else
+        {
+            lblHintResult.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
+            lblHintResult.Visible = true;
+
+            pnlPasswdRetrieval.Visible = true;
+        }
+    }
     /// <summary>
     /// Logged in handler.
     /// </summary>
@@ -761,4 +825,9 @@ function UpdateLabel_", ClientID, @"(content, context) {
     }
 
     #endregion
+
+    protected void lnkPasswordhint_Click(object sender, EventArgs e)
+    {
+        PnlPasswordHint.Visible = !PnlPasswordHint.Visible;
+    }
 }
