@@ -3908,6 +3908,7 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -4236,6 +4237,7 @@
     <Content Include="CorporateSite\Scripts\lightbox.js" />
     <Content Include="CorporateSite\Scripts\LightboxBundle.js" />
     <Content Include="CorporateSite\Stylesheets\lightbox.css" />
+    <Content Include="css\custom.css" />
     <Content Include="DancingGoat\Fonts\Core-icons.svg" />
     <Content Include="DancingGoat\Icons\icons-core.css" />
     <Content Include="DancingGoat\Images\Favicons\favicon-16.png" />
@@ -15382,6 +15384,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.cs">
+      <DependentUpon>AddressFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.designer.cs">
+      <DependentUpon>AddressFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
