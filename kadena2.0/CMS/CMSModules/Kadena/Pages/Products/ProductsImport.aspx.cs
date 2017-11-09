@@ -12,7 +12,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            HideErrorMessage();
+            HideResultMessage();
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
@@ -42,12 +42,16 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
+                else
+                {
+                    ShowSuccessMessage("Operation successfully completed");
+                }
                 
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("Import products", "EXCEPTION", ex);
-                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
             }
         }
 
@@ -90,9 +94,16 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             errorMessage.Text = message;
         }
 
-        private void HideErrorMessage()
+        private void ShowSuccessMessage(string message)
+        {
+            successMessageContainer.Visible = true;
+            successMessage.Text = message;
+        }
+
+        private void HideResultMessage()
         {
             errorMessageContainer.Visible = false;
+            successMessageContainer.Visible = false;
         }
     }
 }

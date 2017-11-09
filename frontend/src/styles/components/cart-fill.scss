@@ -62,6 +62,13 @@
   }
 }
 
+.cart__dialog-table,
+.checkout__dialog-table {
+  td {
+    vertical-align: top;
+  }
+}
+
 .cart__dialog-table {
   td:not(:first-child) {
     @extend .pl-2;
