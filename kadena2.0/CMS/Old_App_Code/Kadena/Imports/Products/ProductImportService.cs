@@ -112,8 +112,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
             newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
             newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
-            newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
-            newProduct.SetValue("ProductChili3dEnabled", product.Chili3DEnabled.ToLower() == "true");
+            newProduct.SetValue("ProductSKUNeedsShipping", (product.NeedsShipping?.ToLower() ?? string.Empty) == "true");
+            newProduct.SetValue("ProductChili3dEnabled", (product.Chili3DEnabled?.ToLower() ?? string.Empty) == "true");
             newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
             newProduct.SetValue("ProductCustomerReferenceNumber", product.CustomerReferenceNumber);
             newProduct.SetValue("ProductMachineType", product.MachineType);
@@ -222,10 +222,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
-
                 SetPageTemplate(category, "_KDA_ProductCategory");
-
-                // Inserts the new page as a child of the parent page
                 category.Insert(parentPage);
             }
 
@@ -246,7 +243,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = SKUInfoProvider.GetSKUs()
+            var sku = SKUInfoProvider.GetSKUs(siteID)
                 .WhereEquals("SKUNumber", product.SKU)
                 .FirstObject ?? new SKUInfo();            
 
@@ -268,7 +265,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 sku.SetValue("SKUMaxItemsInOrder", Convert.ToInt32(product.MaxItemsInOrder));
             }
 
-            sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
+            if (!string.IsNullOrEmpty(product.SellOnlyIfItemsAvailable))
+            {
+                sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
+            }
 
             SKUInfoProvider.SetSKUInfo(sku);
             return sku;
