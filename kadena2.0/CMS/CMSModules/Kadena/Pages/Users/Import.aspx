@@ -65,6 +65,19 @@
                 </div>
             </div>
         </asp:PlaceHolder>
+
+        <asp:PlaceHolder runat="server" ID="successMessageContainer" Visible="false">
+            <div class="alert-dismissable alert-info alert">
+                <span class="alert-icon">
+                    <i class="icon-check-circle"></i>
+                    <span class="sr-only">OK</span>
+                </span>
+                <div class="alert-label">
+                    <asp:Literal runat="server" ID="successMessage"></asp:Literal>
+                </div>
+            </div>
+        </asp:PlaceHolder>
+
     </div>
     <script>
         window.document.getElementById('btnDownloadTemplate').addEventListener('click', function () {

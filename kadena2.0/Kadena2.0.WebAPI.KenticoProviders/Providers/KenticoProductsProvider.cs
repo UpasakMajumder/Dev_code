@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Kadena.Models.Product;
 using CMS.DocumentEngine;
-using CMS.SiteProvider;
-using CMS.DataEngine;
 using CMS.Localization;
 using System.Linq;
 using CMS.Helpers;
