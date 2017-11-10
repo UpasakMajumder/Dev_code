@@ -446,7 +446,35 @@
             return match.Success;
         }
 
-        #endregion
+
+        //Method for deleteting the product category
+        [WebMethod(EnableSession = true)]
+        public bool DeleteCategory(int CategoryID)
+        {
+            bool status = false;
+            if (CategoryID > 0)
+            {
+                CMS.DocumentEngine.TreeProvider tree = new CMS.DocumentEngine.TreeProvider(CMS.Membership.MembershipContext.AuthenticatedUser);
+
+                // Gets the culture version of the page that will be deleted
+                CMS.DocumentEngine.TreeNode page = tree.SelectNodes("KDA.ProductCategory").Where("ProductCategoryID", CMS.DataEngine.QueryOperator.Equals, CategoryID).OnCurrentSite();
+                if (page != null)
+                {
+                    // Deletes the page and moves it to the recycle bin (only the specified culture version)
+                    status = page.Delete();
+
+                    //  Creates search tasks that remove the deleted page from the content of related search indexes
+                    if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
+                    {
+                        CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskTypeEnum.Delete, CMS.DocumentEngine.TreeNode.OBJECT_TYPE, CMS.DataEngine.SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
+                    }
+                }
+            }
+            return status;
+
+        }
+
+
         //Method for deleteting the campaign
         [WebMethod(EnableSession = true)]
         public bool DeleteCampaign(int CampaignID)
@@ -461,7 +489,7 @@
                 if (page != null)
                 {
                     // Deletes the page and moves it to the recycle bin (only the specified culture version)
-                    status= page.Delete();
+                    status = page.Delete();
 
                     //  Creates search tasks that remove the deleted page from the content of related search indexes
                     if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
@@ -473,5 +501,7 @@
             return status;
 
         }
+
+        #endregion
     }
 }

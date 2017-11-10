@@ -228,21 +228,36 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
     }
 
-
     /// <summary>
-    /// Gets or sets New User Page URL.
+    /// Gets or sets New User Alternative Form
     /// </summary>
-    public string UserPageURL
+    public string NewUserAlternativeForm
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("UserPageURL"), "~/");
+            return ValidationHelper.GetString(GetValue("NewUserAlternativeForm"), string.Empty);
         }
         set
         {
-            SetValue("UserPageURL", value);
+            SetValue("NewUserAlternativeForm", value);
         }
     }
+
+    /// <summary>
+    /// Gets or sets Edit User Alternative Form
+    /// </summary>
+    public string EditUserAlternativeForm
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("EditUserAlternativeForm"), string.Empty);
+        }
+        set
+        {
+            SetValue("EditUserAlternativeForm", value);
+        }
+    }
+
 
     #endregion
 
@@ -740,14 +755,27 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         else
         {
             int UserID = QueryHelper.GetInteger("userid", 0);
-            UserInfo User = UserInfoProvider.GetUserInfo(UserID);
+            UserInfo User = null;
 
-            if (User != null)
+            if (UserID > 0)
+                User = UserInfoProvider.GetUserInfo(UserID);
+
+            if (UserID != 0)
             {
+                if (User == null)
+                {
+                    User = new UserInfo();
+                    formElem.Mode = CMS.Base.Web.UI.FormModeEnum.Insert;
+                    formElem.AlternativeFormFullName = NewUserAlternativeForm;
+                }
+                else
+                    formElem.AlternativeFormFullName = EditUserAlternativeForm;
+
+                formElem.Info = User;
+
                 pnlUserForm.Visible = true;
                 pnlListView.Visible = false;
 
-                formElem.Info = User;
                 formElem.SubmitButton.Visible = false;
             }
             else
@@ -898,7 +926,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 repUsers.DataBind();
 
                 filterUsers.NewUserButtonText = NewUserButtonText;
-                filterUsers.UserPageURL = UserPageURL;
             }
         }
     }
@@ -929,6 +956,40 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        formElem.SaveData("", true);
+        UserInfo User = formElem.Info as UserInfo;
+
+        if (User == null || (User != null && User.UserID <= 0))
+        {
+            UserInfo NewUser = new UserInfo()
+            {
+                FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
+                LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
+                Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+                UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+                Enabled = true
+            };
+
+            NewUser.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
+            NewUser.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
+            NewUser.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
+            NewUser.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserPhone"), 0));
+            NewUser.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
+            NewUser.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
+            NewUser.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
+            NewUser.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
+            NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
+            NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
+            NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
+
+            string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
+            UserInfoProvider.SetUserInfo(NewUser);
+            UserInfoProvider.SetPassword(NewUser.UserName, Password);
+            UserInfoProvider.AddUserToSite(NewUser.UserName, CurrentSiteName);
+
+            if (NewUser != null && NewUser.UserID > 0)
+                Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + NewUser.UserID);
+        }
+        else
+            formElem.SaveData("", true);
     }
 }
