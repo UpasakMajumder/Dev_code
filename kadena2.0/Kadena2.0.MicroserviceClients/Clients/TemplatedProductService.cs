@@ -14,12 +14,8 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string endpoint, string templateId, string settingsId)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
-                var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead).ConfigureAwait(false);
-                return await ReadResponseJson<GeneratePdfTaskResponseDto>(response).ConfigureAwait(false);
-            }
+            var url = $"{endpoint.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
+            return await Get<GeneratePdfTaskResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string endpoint, string templateId, string taskId)
