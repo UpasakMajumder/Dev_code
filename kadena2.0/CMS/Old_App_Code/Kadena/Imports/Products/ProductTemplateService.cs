@@ -1,5 +1,4 @@
 ﻿using Kadena.Models.Product;
-using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
@@ -23,12 +22,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return types;
         }
 
-        private byte[] CreateTemplateFile(string[] columns, string[] productTypes)
+        private byte[] CreateTemplateFile(List<Column> columnInfos, string[] productTypes)
         {
             IWorkbook workbook = new XSSFWorkbook();
             var sheet = workbook.CreateSheet("Products");
-            var columnInfos = ImportHelper.GetHeaderProperties<ProductDto>();
-            CreateSheetHeader(columns, sheet);
+            CreateSheetHeader(columnInfos, sheet);
             
             if (productTypes != null)
             {

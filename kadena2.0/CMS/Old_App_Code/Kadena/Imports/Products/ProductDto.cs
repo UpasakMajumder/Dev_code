@@ -4,21 +4,21 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductDto
     {
-        [Header(0, "Product Category")]
+        [Header(0, "Product Category *")]
         [Required]
         public string ProductCategory { get; set; }
 
-        [Header(1, "Product Name")]
+        [Header(1, "Product Name *")]
         [Required]
         [MaxLength(100)]
         public string ProductName { get; set; }
 
-        [Header(2, "SKU")]
+        [Header(2, "SKU *")]
         [Required]
         [MaxLength(30)]
         public string SKU { get; set; }
 
-        [Header(3, "Price")]
+        [Header(3, "Price *")]
         [Required]
         [MaxLength(30)]
         public string Price { get; set; }
@@ -26,7 +26,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(4, "Description")]
         public string Description { get; set; }
 
-        [Header(5, "Product Type")]
+        [Header(5, "Product Type *")]
         [Required]
         [MaxLength(250)]
         public string ProductType { get; set; }
@@ -99,12 +99,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(20)]
         public string ShippingCost { get; set; }
 
-        [Header(24, "Number of items in package")]
+        [Header(24, "Number of items in package *")]
         [Required]
         [MaxLength(20)]
         public string ItemsInPackage { get; set; }
 
-        [Header(25, "Package weight")]
+        [Header(25, "Package weight *")]
         [Required]
         [MaxLength(20)]
         public string PackageWeight { get; set; }
