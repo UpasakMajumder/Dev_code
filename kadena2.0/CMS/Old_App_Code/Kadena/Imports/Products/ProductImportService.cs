@@ -86,21 +86,42 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
-            /* TODO discuss with Cenveo and finish or delete. return true skips further validations !
+            if (product.ProductType.Contains(ProductTypes.InventoryProduct) ||
+                product.ProductType.Contains(ProductTypes.POD) ||
+                product.ProductType.Contains(ProductTypes.StaticProduct) ||
+                product.ProductType.Contains(ProductTypes.TemplatedProduct))
+            {
+                decimal weight = 0.0m;
+                if(string.IsNullOrEmpty(product.PackageWeight) ||  !decimal.TryParse(product.PackageWeight, out weight))
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
+                }
+                if (weight <= 0.0m)
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be > 0");
+                }
+            }
+
+
             if (!string.IsNullOrEmpty(product.PublishFrom) && !string.IsNullOrEmpty(product.PublishTo))
             {
                 DateTime from, to;
 
                 if (DateTime.TryParse(product.PublishFrom, out from) && DateTime.TryParse(product.PublishTo, out to))
                 {
-                    if (to > from)
+                    if (from > to)
                     {
-                        return true;
+                        isValid = false;
+                        validationErrors.Add("If both are specified, PublishFrom must be earlier than PublishTo");
                     }
                 }
-
-                validationErrors.Add("PublishFrom and PublishTo must be in 'MM/dd/yyyy' format. If both are specified, PublishFrom must be earlier than PublishTo");
-                return false;
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("PublishFrom and PublishTo must be in 'MM/dd/yyyy' format.");
+                }
             }
 
 
@@ -109,16 +130,24 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 uint min, max;
                 if (uint.TryParse(product.MinItemsInOrder, out min) && uint.TryParse(product.MaxItemsInOrder, out max))
                 {
-                    if (min <= max)
+                    if (min > max)
                     {
-                        return true;
+                        isValid = false;
+                        validationErrors.Add("If both are specified, MinItemsInOrder must be less than MaxnItemsInOrder");
                     }
                 }
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("MinItemsInOrder and MaxItemsInOrder must be non-negative integer.");
+                }
+            }
 
-                validationErrors.Add("MinItemsInOrder and MaxItemsInOrder must be non-negative integer. If both are specified, MinItemsInOrder must be less than MaxnItemsInOrder");
-                return false;
-            }*/
-
+            if (Convert.ToInt32(product.ItemsInPackage) <= 0)
+            {
+                isValid = false;
+                validationErrors.Add("ItemsInPackagemust be > 0");
+            }
 
             return isValid;
         }
@@ -230,7 +259,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             if (ranges.Any(r => r.MaxVal < r.MinVal))
             {
-                throw new ArgumentOutOfRangeException("All Dynamic Pricing definition ranges must have Min <= Max.");
+                throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", "All Dynamic Pricing definition ranges must have Min <= Max.");
             }
 
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
