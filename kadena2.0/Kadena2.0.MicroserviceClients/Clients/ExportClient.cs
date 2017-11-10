@@ -30,7 +30,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     if (SignRequest)
                     {
-                        await SignRequestMessage(request);
+                        await SignRequestMessage(request).ConfigureAwait(false);
                     }
 
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
