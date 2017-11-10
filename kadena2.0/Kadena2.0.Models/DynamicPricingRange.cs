@@ -33,7 +33,10 @@ namespace Kadena.Models
                 return false;
             }
 
-            ranges = ranges.OrderBy(x => x.MinVal).ToList();
+            if (!requireAscendentOrder)
+            {
+                ranges = ranges.OrderBy(x => x.MinVal).ToList();
+            }
 
             bool isValid = true;
 
