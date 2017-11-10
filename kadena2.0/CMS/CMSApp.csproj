@@ -3908,8 +3908,9 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -4238,7 +4239,6 @@
     <Content Include="CorporateSite\Scripts\lightbox.js" />
     <Content Include="CorporateSite\Scripts\LightboxBundle.js" />
     <Content Include="CorporateSite\Stylesheets\lightbox.css" />
-    <Content Include="css\custom.css" />
     <Content Include="DancingGoat\Fonts\Core-icons.svg" />
     <Content Include="DancingGoat\Icons\icons-core.css" />
     <Content Include="DancingGoat\Images\Favicons\favicon-16.png" />
@@ -15386,19 +15386,26 @@
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.cs">
-      <DependentUpon>AddressFilter.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.cs">
+      <DependentUpon>logonform.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.designer.cs">
-      <DependentUpon>AddressFilter.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.designer.cs">
+      <DependentUpon>logonform.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.cs">
-      <DependentUpon>CreateAddress.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
-      <DependentUpon>CreateAddress.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.designer.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.cs">
+      <DependentUpon>UsersList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.designer.cs">
+      <DependentUpon>UsersList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
@@ -21868,7 +21875,8 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\CropImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\ResizeImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ShippingAddress.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
+    <Compile Include="Old_App_Code\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
