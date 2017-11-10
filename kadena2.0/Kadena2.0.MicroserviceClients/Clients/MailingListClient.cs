@@ -100,6 +100,11 @@ namespace Kadena2.MicroserviceClients.Clients
                     }), System.Text.Encoding.UTF8, "application/json"),
                 })
                 {
+                    if (SignRequest)
+                    {
+                        await SignRequestMessage(request).ConfigureAwait(false);
+                    }
+
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<IEnumerable<string>>(message).ConfigureAwait(false);

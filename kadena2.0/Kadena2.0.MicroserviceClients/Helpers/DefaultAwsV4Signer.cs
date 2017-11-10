@@ -42,7 +42,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
 
         public async Task SignRequest(HttpRequestMessage request, string gatewayApiRole)
         {
-            var assumedRole = await this.GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
+            var assumedRole = await GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
             await this.SignRequest(request, assumedRole).ConfigureAwait(false);
         }
 
@@ -58,7 +58,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             this.awsRegion = region;
         }
 
-        private async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
+        private static async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
         {
             var credentials = GetCredentialsDefault();
             var amazonSecurityTokenService = new AmazonSecurityTokenServiceClient(credentials);
@@ -70,7 +70,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return assumedRole;
         }
 
-        private AWSCredentials GetCredentialsDefault()
+        private static AWSCredentials GetCredentialsDefault()
         {
             return new StoredProfileAWSCredentials();
         }
