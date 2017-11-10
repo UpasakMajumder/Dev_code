@@ -3,13 +3,7 @@
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>
 <%@ Register Src="~/CMSFormControls/CountrySelector.ascx" TagPrefix="uc1" TagName="CountrySelector" %>
 
-<div class="content-header__inner">
-    <h1 class="content-header__page-name" id="headerAddress" runat="server">Add New Address</h1>
-  </div>
-  <div class="breadcrumbs">
-    <a href="http://demo3kentico10.raybiztech.com/">Home</a>
-    <a href="http://demo3kentico10.raybiztech.com/settings">Address</a>
-  </div>
+
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form_section">
@@ -122,6 +116,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-2 form_block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblEmail"></span>
@@ -132,7 +127,8 @@
                         </div>
                     </div>
                 </div>
-                <%--<div class="mb-2 form_block" style="height: 65px;">
+               
+                 <%--<div class="mb-2 form_block" style="height: 65px;">
                     <div class="input__wrapper">
                         <span class="input__label"></span>
 
