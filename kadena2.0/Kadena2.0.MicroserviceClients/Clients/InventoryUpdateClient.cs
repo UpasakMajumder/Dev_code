@@ -3,17 +3,12 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
 using Kadena.Dto.InventoryUpdate.MicroserviceResponses;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class InventoryUpdateClient : ClientBase, IInventoryUpdateClient
     {
-        //public InventoryUpdateClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
         private const string _serviceUrlSettingKey = "KDA_InventoryUpdateServiceEndpoint";
         private readonly IMicroProperties _properties;
 

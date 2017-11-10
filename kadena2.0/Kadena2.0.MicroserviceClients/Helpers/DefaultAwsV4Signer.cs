@@ -11,10 +11,11 @@ using Amazon.SecurityToken.Model;
 using Kadena2.MicroserviceClients.Helpers;
 using System.Web;
 using System.Collections.Specialized;
+using Amazon.Runtime;
 
 namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
 {
-    public class DefaultAwsV4Signer : IAwsV4Signer
+    class DefaultAwsV4Signer : IAwsV4Signer
     {
         public const string Iso8601DateTimeFormat = "yyyyMMddTHHmmssZ";
         public const string Iso8601DateFormat = "yyyyMMdd";
@@ -26,28 +27,11 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         private string awsService = "execute-api";
         private string awsRegion = "us-east-1";
         private DateTime requestDateTime;
-        private readonly IAmazonSecurityTokenService amazonSecurityTokenService;
 
-        public DefaultAwsV4Signer()
+        public async Task SignRequest(HttpRequestMessage request)
         {
-            // Hardcoded variant for the sake of simplicity when calling from WebParts
-            this.amazonSecurityTokenService = new AmazonSecurityTokenServiceClient();
-        }
-
-        public DefaultAwsV4Signer(IAmazonSecurityTokenService amazonSecurityTokenService)
-        {
-            if (amazonSecurityTokenService == null)
-            {
-                throw new ArgumentNullException(nameof(amazonSecurityTokenService));
-            }
-
-            this.amazonSecurityTokenService = amazonSecurityTokenService;
-        }
-
-        public void SetService(string service, string region)
-        {
-            this.awsService = service;
-            this.awsRegion = region;
+            this.SetCredentials();
+            await this.Sign(request).ConfigureAwait(false);
         }
 
         public async Task SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole)
@@ -58,10 +42,9 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
 
         public async Task SignRequest(HttpRequestMessage request, string gatewayApiRole)
         {
-            var assumedRole = await this.GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
+            var assumedRole = await GetTemporaryRole(gatewayApiRole).ConfigureAwait(false);
             await this.SignRequest(request, assumedRole).ConfigureAwait(false);
         }
-
 
         public async Task SignRequest(HttpRequestMessage request, string accessKey, string secretKey)
         {
@@ -69,14 +52,27 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             await this.Sign(request).ConfigureAwait(false);
         }
 
-        private async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
+        private void SetService(string service, string region)
         {
-            var assumedRole = await this.amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
+            this.awsService = service;
+            this.awsRegion = region;
+        }
+
+        private static async Task<AssumeRoleResponse> GetTemporaryRole(string gatewayApiRole)
+        {
+            var credentials = GetCredentialsDefault();
+            var amazonSecurityTokenService = new AmazonSecurityTokenServiceClient(credentials);
+            var assumedRole = await amazonSecurityTokenService.AssumeRoleAsync(new AssumeRoleRequest()
             {
                 RoleArn = gatewayApiRole,
                 RoleSessionName = "sessionNumber1"
             }).ConfigureAwait(false);
             return assumedRole;
+        }
+
+        private static AWSCredentials GetCredentialsDefault()
+        {
+            return new StoredProfileAWSCredentials();
         }
 
         /// <summary>
@@ -89,7 +85,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         {
             this.requestDateTime = DateTime.UtcNow;
             var signedHeaders = this.AddAndGetSignedHeaders(request);
-            var canonicalRequest = await this.GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
+            var canonicalRequest = await GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
             var stringToSign = this.GetStringToSign(canonicalRequest);
             var signiture = this.GetSignature(stringToSign);
             var authHeader = this.GetAuthHeader(signiture, signedHeaders);
@@ -97,7 +93,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-        public async Task<string> GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
+        private static async Task<string> GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
         {
             var canonicalRequest = new StringBuilder();
             canonicalRequest.AppendFormat("{0}\n", request.Method.Method);
@@ -109,7 +105,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return canonicalRequest.ToString();
         }
 
-        public static string GetCanonicalQueryParameters(NameValueCollection queryParameters)
+        private static string GetCanonicalQueryParameters(NameValueCollection queryParameters)
         {
             var canonicalQueryParameters = new StringBuilder();
 
@@ -127,7 +123,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return canonicalQueryParameters.ToString();
         }
 
-        public static string GetCanonicalHeaders(HttpRequestMessage request, IEnumerable<string> signedHeaders)
+        private static string GetCanonicalHeaders(HttpRequestMessage request, IEnumerable<string> signedHeaders)
         {
             var headers = request.Headers.ToDictionary(x => x.Key.Trim().ToLowerInvariant(),
                 x => string.Join(" ", x.Value).Trim());
@@ -152,7 +148,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return canonicalHeaders.ToString();
         }
 
-        public static async Task<string> GetPayloadHash(HttpRequestMessage request)
+        private static async Task<string> GetPayloadHash(HttpRequestMessage request)
         {
             var payload = request.Content != null
                 ? await request.Content.ReadAsStringAsync().ConfigureAwait(false)
@@ -162,7 +158,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html
-        public string GetStringToSign(string canonicalRequest)
+        private string GetStringToSign(string canonicalRequest)
         {
             var dateStamp = this.requestDateTime.ToString(Iso8601DateFormat, CultureInfo.InvariantCulture);
             var scope = $"{dateStamp}/{this.awsRegion}/{this.awsService}/aws4_request";
@@ -175,7 +171,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return stringToSign.ToString();
         }
 
-        public string GetAuthHeader(string signiture, IEnumerable<string> signedHeaders)
+        private string GetAuthHeader(string signiture, IEnumerable<string> signedHeaders)
         {
             var dateStamp = this.requestDateTime.ToString(Iso8601DateFormat, CultureInfo.InvariantCulture);
             var scope = $"{dateStamp}/{this.awsRegion}/{this.awsService}/aws4_request";
@@ -186,13 +182,13 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-calculate-signature.html
-        public string GetSignature(string stringToSign)
+        private string GetSignature(string stringToSign)
         {
             var kSigning = this.GetSigningKey();
             return Utils.ToHex(Utils.GetKeyedHash(kSigning, stringToSign));
         }
 
-        public byte[] GetSigningKey()
+        private byte[] GetSigningKey()
         {
             var dateStamp = this.requestDateTime.ToString(Iso8601DateFormat, CultureInfo.InvariantCulture);
             var kDate = Utils.GetKeyedHash("AWS4" + this.awsSecretKey, dateStamp);
@@ -201,20 +197,31 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
             return Utils.GetKeyedHash(kService, "aws4_request");
         }
 
-        public void SetCredentials(AssumeRoleResponse assumedRole)
+        private void SetCredentials(AssumeRoleResponse assumedRole)
         {
             this.awsSecretKey = assumedRole.Credentials.SecretAccessKey;
             this.awsAccessKey = assumedRole.Credentials.AccessKeyId;
             this.sessionToken = assumedRole.Credentials.SessionToken;
         }
 
-        public void SetCredentials(string accessKey, string secretKey)
+        private void SetCredentials(string accessKey, string secretKey)
         {
             this.awsSecretKey = secretKey;
             this.awsAccessKey = accessKey;
-        }        
+        }
 
-        public string[] AddAndGetSignedHeaders(HttpRequestMessage request)
+        private void SetCredentials()
+        {
+            var credentials = GetCredentialsDefault()?.GetCredentials();
+            if (credentials != null)
+            {
+                this.awsAccessKey = credentials.AccessKey;
+                this.awsSecretKey = credentials.SecretKey;
+                this.sessionToken = credentials.Token;
+            }
+        }
+
+        private string[] AddAndGetSignedHeaders(HttpRequestMessage request)
         {
             request.Headers.Add("Host", request.RequestUri.Host);
             request.Headers.Add("X-Amz-Date", this.requestDateTime.ToString(Iso8601DateTimeFormat, CultureInfo.InvariantCulture));
@@ -224,10 +231,10 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
                 request.Headers.Add("X-Amz-Security-Token", this.sessionToken);
             }
 
-            return this.GetSignedHeaders(request);
+            return GetSignedHeaders(request);
         }
 
-        public string[] GetSignedHeaders(HttpRequestMessage request)
+        private static string[] GetSignedHeaders(HttpRequestMessage request)
         {
             return request.Headers.Select(httpRequestHeader => httpRequestHeader.Key.ToLowerInvariant())
                 .OrderBy(t => t)

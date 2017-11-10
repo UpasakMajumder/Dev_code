@@ -4,23 +4,12 @@ using System.Threading.Tasks;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderViewClient : ClientBase, IOrderViewClient
     {
-        //public OrderViewClient() : base()
-        //{
-
-        //}
-
-        //public OrderViewClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         private const string _serviceUrlSettingKey = "KDA_OrderViewServiceUrl";
         private readonly IMicroProperties _properties;
 

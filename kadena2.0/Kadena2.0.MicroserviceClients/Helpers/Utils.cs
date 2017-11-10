@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kadena2.MicroserviceClients.Helpers
 {
-    public static class Utils
+    static class Utils
     {
         private const string ValidUrlCharacters =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";

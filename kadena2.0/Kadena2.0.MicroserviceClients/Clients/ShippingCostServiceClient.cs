@@ -1,7 +1,6 @@
 ﻿using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -14,15 +13,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class ShippingCostServiceClient : ClientBase, IShippingCostServiceClient
     {
-        //public ShippingCostServiceClient() : base()
-        //{
-
-        //}
-
-        //public ShippingCostServiceClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
         private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
         private readonly IMicroProperties _properties;
 
@@ -42,9 +32,16 @@ namespace Kadena2.MicroserviceClients.Clients
             url = $"{url}/api/shippingcost";
             using (var httpClient = new HttpClient())
             {
-                using (var content = new StringContent(requestBody, Encoding.UTF8, "application/json"))
+                using (var request = new HttpRequestMessage(HttpMethod.Post, url))
                 {
-                    using (var response = await httpClient.PostAsync(url, content).ConfigureAwait(false))
+                    request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+                    if (SignRequest)
+                    {
+                        await SignRequestMessage(request).ConfigureAwait(false);
+                    }
+
+                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<EstimateDeliveryPricePayloadDto>(response).ConfigureAwait(false);
                     }

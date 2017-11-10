@@ -17,16 +17,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class MailingListClient : ClientBase, IMailingListClient
     {
-        //public MailingListClient() : base()
-        //{
-
-        //}
-
-        //public MailingListClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         private const string _serviceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly IMicroProperties _properties;
 
@@ -121,6 +111,11 @@ namespace Kadena2.MicroserviceClients.Clients
                     }), System.Text.Encoding.UTF8, "application/json"),
                 })
                 {
+                    if (SignRequest)
+                    {
+                        await SignRequestMessage(request).ConfigureAwait(false);
+                    }
+
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<IEnumerable<string>>(message).ConfigureAwait(false);

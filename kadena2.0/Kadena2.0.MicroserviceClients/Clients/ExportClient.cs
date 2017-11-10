@@ -1,5 +1,4 @@
 ﻿using Kadena.Dto.General;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -12,15 +11,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class ExportClient : ClientBase, IExportClient
     {
-        //public ExportClient() : base()
-        //{
-
-        //}
-
-        //public ExportClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
         private const string _serviceUrlSettingKey = "KDA_ExportServiceUrl";
         private readonly IMicroProperties _properties;
 
@@ -35,22 +25,30 @@ namespace Kadena2.MicroserviceClients.Clients
             url = $"{url}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
             using (var client = new HttpClient())
             {
-                using (var message = await client.GetAsync(url).ConfigureAwait(false))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
-                    if (message.IsSuccessStatusCode)
+                    if (SignRequest)
                     {
-                        var contentStream = await message.Content.ReadAsStreamAsync();
-                        var resultStream = new MemoryStream();
-                        await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
-                        return new BaseResponseDto<Stream>
-                        {
-                            Success = true,
-                            Payload = resultStream
-                        };
+                        await SignRequestMessage(request).ConfigureAwait(false);
                     }
-                    else
+
+                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
-                        return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
+                        if (message.IsSuccessStatusCode)
+                        {
+                            var contentStream = await message.Content.ReadAsStreamAsync();
+                            var resultStream = new MemoryStream();
+                            await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
+                            return new BaseResponseDto<Stream>
+                            {
+                                Success = true,
+                                Payload = resultStream
+                            };
+                        }
+                        else
+                        {
+                            return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
+                        }
                     }
                 }
             }

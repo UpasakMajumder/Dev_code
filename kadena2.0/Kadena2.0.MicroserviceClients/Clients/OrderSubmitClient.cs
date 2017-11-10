@@ -3,17 +3,12 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderSubmitClient : ClientBase, IOrderSubmitClient
     {
-        //public OrderSubmitClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
         private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly IMicroProperties _properties;
 

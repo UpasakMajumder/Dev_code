@@ -10,16 +10,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class BidClient : ClientBase, IBidClient
     {
-        //public BidClient() : base()
-        //{
-
-        //}
-
-        //public BidClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         private const string _serviceUrlSettingKey = "KDA_BidServiceUrl";
         private readonly IMicroProperties _properties;
 

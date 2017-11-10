@@ -5,23 +5,12 @@ using System.IO;
 using System.Web;
 using Kadena2.MicroserviceClients.Clients.Base;
 using System.Net.Http;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class FileClient : ClientBase, IFileClient
     {
-        //public FileClient() : base()
-        //{
-
-        //}
-
-        //public FileClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         private const string _serviceUrlSettingKey = "KDA_FileServiceUrl";
         private readonly IMicroProperties _properties;
 
@@ -43,14 +32,22 @@ namespace Kadena2.MicroserviceClients.Clients
             url = $"{url}/api/File";
             using (var client = new HttpClient())
             {
-                using (var content = new MultipartFormDataContent())
+                using (var request = new HttpRequestMessage(HttpMethod.Post, url))
                 {
+                    var content = new MultipartFormDataContent();
                     fileStream.Seek(0, SeekOrigin.Begin);
                     content.Add(new StreamContent(fileStream), "file", fileName);
                     content.Add(new StringContent(folderName.ToString()), "ConsumerDetails.BucketType");
                     content.Add(new StringContent(siteName), "ConsumerDetails.CustomerName");
                     content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
-                    using (var message = await client.PostAsync(url, content).ConfigureAwait(false))
+                    request.Content = content;
+
+                    if (SignRequest)
+                    {
+                        await SignRequestMessage(request).ConfigureAwait(false);
+                    }
+
+                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<string>(message).ConfigureAwait(false);
                     }

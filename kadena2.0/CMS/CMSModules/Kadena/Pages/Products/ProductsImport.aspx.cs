@@ -1,59 +1,35 @@
 ﻿using CMS.EventLog;
 using CMS.UIControls;
-using Kadena.Old_App_Code.Kadena.Imports.Users;
 using System;
+using System.Linq;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
-using CMS.DataEngine;
+using Kadena.Old_App_Code.Kadena.Imports.Products;
 
-namespace Kadena.CMSModules.Kadena.Pages.Users
+namespace Kadena.CMSModules.Kadena.Pages.Products
 {
-    public partial class Import : CMSPage
+    public partial class ProductsImport : CMSPage
     {
-        private readonly string _templateType = "membershipchangepassword";
-
         protected void Page_Load(object sender, EventArgs e)
         {
             HideResultMessage();
-
-            siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
-            siteSelector.DropDownSingleSelect.AutoPostBack = true;
-
-            SetUpEmailTemplateSelector();
-        }
-
-        private void SetUpEmailTemplateSelector()
-        {
-            var where = selEmailTemplate.WhereCondition;
-            where = SqlHelper.AddWhereCondition(where, "EmailTemplateSiteId = " + SelectedSiteID);
-            where = SqlHelper.AddWhereCondition(where, $"EmailTemplateType = '{_templateType}'");
-            selEmailTemplate.WhereCondition = where;
-        }
-
-        private void Site_Changed(object sender, EventArgs e)
-        {
-            selEmailTemplate.Value = null;
-            selEmailTemplate.Reload(true);
-            SetUpEmailTemplateSelector();
-            pnlTemplate.Update();
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
 
-        protected void btnUploadUserList_Click(object sender, EventArgs e)
+        protected void btnUploadProductList_Click(object sender, EventArgs e)
         {
-            var emailTemplateName = selEmailTemplate.Value.ToString();
-            if (string.IsNullOrWhiteSpace(emailTemplateName))
-            {
-                ShowErrorMessage(GetString("Kadena.Email.TemplateNotSelected"));
-                return;
-            }
-
             var file = importFile.PostedFile;
             if (string.IsNullOrWhiteSpace(file.FileName))
             {
                 ShowErrorMessage("You need to choose the import file.");
+                return;
+            }
+
+            if (SelectedSiteID == 0)
+            {
+                ShowErrorMessage("You need to choose the Site.");
                 return;
             }
 
@@ -62,34 +38,34 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                var result = new UserImportService().ProcessUserImportFile(fileData, excelType, SelectedSiteID, emailTemplateName);
+                var result = new ProductImportService().ProcessImportFile(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
                 else
                 {
-                    ShowSuccessMessage("operation completed sucessfully");
+                    ShowSuccessMessage("Operation successfully completed");
                 }
+                
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                EventLogProvider.LogException("Import products", "EXCEPTION", ex);
                 ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
             }
         }
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = $"There was {result.AllMessagesCount} errors while processing the request. First {result.ErrorMessages?.Length ?? 0} error details:<br /><br />";
-            return headline + string.Join("<br />", result.ErrorMessages);
+            var headline = $"There was {result.AllMessagesCount} error(s) while processing the request. Make sure all mandatory fields are filled in sheet and/or see Event log for details.<br /><br />First {result.ErrorMessages?.Length ?? 0} errors:<br /><br />";
+            return headline + string.Join("<br/>", result.ErrorMessages);
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetUserTemplateFile(SelectedSiteID);
-            var templateFileName = "users-upload-template.xlsx";
-
+            var bytes = new ProductTemplateService().GetProductTemplateFile(SelectedSiteID);
+            var templateFileName = "products-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
         }
 

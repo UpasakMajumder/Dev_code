@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Kadena.Dto.General;
 using System.Net.Http;
 using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
@@ -17,16 +16,6 @@ namespace Kadena2.MicroserviceClients.Clients
             Lambda = 6,
             Noosh = 12
         }
-
-        //public CloudEventConfiguratorClient() : base()
-        //{
-
-        //}
-
-        //public CloudEventConfiguratorClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
 
         private const string _serviceUrlSettingKey = "KDA_CloudEventConfiguratorUrl";
         private readonly IMicroProperties _properties;
