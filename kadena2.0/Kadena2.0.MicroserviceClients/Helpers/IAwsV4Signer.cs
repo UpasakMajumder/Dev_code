@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
 {
-    public interface IAwsV4Signer
+    interface IAwsV4Signer
     {
-        void SetService(string service, string region);
+        Task SignRequest(HttpRequestMessage request);
 
         Task SignRequest(HttpRequestMessage request, AssumeRoleResponse assumedRole);
 

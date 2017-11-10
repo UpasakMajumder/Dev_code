@@ -1,6 +1,4 @@
-﻿using Amazon.Runtime.CredentialManagement;
-using Amazon.SecurityToken;
-using Kadena.Dto.General;
+﻿using Kadena.Dto.General;
 using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -23,42 +21,17 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             DateFormatString = "yyyy-MM-dd HH:mm:ss"
         };
 
-        public bool SignRequest { get; set; } = false;
-
-        public string AwsGatewayApiRole { get; set; } = "arn:aws:...........";
+        public bool SignRequest { get; set; } = true;
 
         public string SuppliantDomain { get; set; }
 
         // TODO consider using static or singleton, based on how we will store credentials
-        protected readonly IAwsV4Signer signer;
+        private readonly IAwsV4Signer signer;
 
         public ClientBase()
         {
-            //var filePath = SharedCredentialsFile.DefaultFilePath;
-            var filePath = @"c:\users\Cenveo\.aws\credentials";
-
-            var file = new SharedCredentialsFile(filePath);
-            CredentialProfile prof = null;
-            if (!file.TryGetProfile("default", out prof))
-            {
-                throw new ArgumentException($"Failed to load AWS credentials file");
-            }
-
-            CredentialProfileStoreChain source = new CredentialProfileStoreChain();
-            var credentials = prof.GetAWSCredentials(source).GetCredentials();
-            IAmazonSecurityTokenService service = new AmazonSecurityTokenServiceClient(credentials.AccessKey, credentials.SecretKey); // TODO or take from Kentico configuration
-            this.signer = new DefaultAwsV4Signer(service);
+            this.signer = new DefaultAwsV4Signer();
         }
-
-        /*public ClientBase(IAwsV4Signer signer)
-        {
-            if(signer == null)
-            {
-                throw new ArgumentNullException(nameof(signer));
-            }
-
-            this.signer = signer;
-        }*/
 
         public async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
@@ -121,12 +94,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private async Task SignRequestMessage(HttpRequestMessage request)
         {
-            if (string.IsNullOrEmpty(AwsGatewayApiRole))
-            {
-                throw new ArgumentNullException(nameof(AwsGatewayApiRole), "To use signed request to AWS microservice, you need to provide ApiGatewayRole");
-            }
-
-            await signer.SignRequest(request, AwsGatewayApiRole);
+            await signer.SignRequest(request).ConfigureAwait(false);
         }
 
         public StringContent CreateRequestContent(HttpRequestMessage request, object body)
