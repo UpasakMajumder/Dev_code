@@ -21,7 +21,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             DateFormatString = "yyyy-MM-dd HH:mm:ss"
         };
 
-        public bool SignRequest { get; set; } = true;
+        private bool SignRequest { get; set; } = true;
 
         public string SuppliantDomain { get; set; }
 
@@ -33,32 +33,32 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             this.signer = new DefaultAwsV4Signer();
         }
 
-        public async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
+        protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
             return await Send<TResult>(HttpMethod.Get, url).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Post<TResult>(string url, object body)
+        protected async Task<BaseResponseDto<TResult>> Post<TResult>(string url, object body)
         {
             return await Send<TResult>(HttpMethod.Post, url, body).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Delete<TResult>(string url, object body = null)
+        protected async Task<BaseResponseDto<TResult>> Delete<TResult>(string url, object body = null)
         {
             return await Send<TResult>(HttpMethod.Delete, url, body).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Patch<TResult>(string url, object body)
+        protected async Task<BaseResponseDto<TResult>> Patch<TResult>(string url, object body)
         {
             return await Send<TResult>(new HttpMethod("PATCH"), url, body).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Put<TResult>(string url, object body)
+        protected async Task<BaseResponseDto<TResult>> Put<TResult>(string url, object body)
         {
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        protected async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
             using (var client = new HttpClient())
             {
@@ -97,7 +97,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             await signer.SignRequest(request).ConfigureAwait(false);
         }
 
-        public StringContent CreateRequestContent(HttpRequestMessage request, object body)
+        private StringContent CreateRequestContent(HttpRequestMessage request, object body)
         {
             var requestBody = JsonConvert.SerializeObject(body, camelCaseSerializer);
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
