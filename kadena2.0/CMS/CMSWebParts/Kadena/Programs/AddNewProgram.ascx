@@ -1,16 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Programs_AddNewProgram" CodeBehind="~/CMSWebParts/Kadena/Programs/AddNewProgram.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>
 
-
-<div class="content-header">
-    <div class="content-header__inner">
-        <h1 class="content-header__page-name" runat="server" id="programHeader">Add Program</h1>
-    </div>
-    <div class="breadcrumbs">
-    </div>
-</div>
-
-
 <div class="login__form-content js-login">
     <div class="css-login changepwd_block">
         <div class="form">

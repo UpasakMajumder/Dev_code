@@ -12,15 +12,6 @@
 public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     
     /// <summary>
-    /// programHeader control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl programHeader;
-    
-    /// <summary>
     /// lblProgramName control.
     /// </summary>
     /// <remarks>

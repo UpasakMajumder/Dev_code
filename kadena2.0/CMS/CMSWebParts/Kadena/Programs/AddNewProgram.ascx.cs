@@ -169,7 +169,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
             if (programID != 0)
             {
-                programHeader.InnerText = "Edit Program";
                 Program program = ProgramProvider.GetPrograms().WhereEquals("ProgramID", programID).TopN(1).FirstOrDefault();
                 if (program != null)
                 {
@@ -295,7 +294,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 }
                 Response.Redirect(ProgramListURL);
             }
-        }
+        }   
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "btnUpdateProgram_Click", ex.Message);
