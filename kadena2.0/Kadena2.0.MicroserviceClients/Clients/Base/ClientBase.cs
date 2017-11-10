@@ -21,7 +21,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             DateFormatString = "yyyy-MM-dd HH:mm:ss"
         };
 
-        private bool SignRequest { get; set; } = true;
+        protected bool SignRequest { get; set; } = true;
 
         public string SuppliantDomain { get; set; }
 
@@ -92,7 +92,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
         }
 
-        private async Task SignRequestMessage(HttpRequestMessage request)
+        protected async Task SignRequestMessage(HttpRequestMessage request)
         {
             await signer.SignRequest(request).ConfigureAwait(false);
         }

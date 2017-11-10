@@ -26,22 +26,30 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{endpoint}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
             using (var client = new HttpClient())
             {
-                using (var message = await client.GetAsync(url).ConfigureAwait(false))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
-                    if (message.IsSuccessStatusCode)
+                    if (SignRequest)
                     {
-                        var contentStream = await message.Content.ReadAsStreamAsync();
-                        var resultStream = new MemoryStream();
-                        await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
-                        return new BaseResponseDto<Stream>
-                        {
-                            Success = true,
-                            Payload = resultStream
-                        };
+                        await SignRequestMessage(request);
                     }
-                    else
+
+                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
-                        return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
+                        if (message.IsSuccessStatusCode)
+                        {
+                            var contentStream = await message.Content.ReadAsStreamAsync();
+                            var resultStream = new MemoryStream();
+                            await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
+                            return new BaseResponseDto<Stream>
+                            {
+                                Success = true,
+                                Payload = resultStream
+                            };
+                        }
+                        else
+                        {
+                            return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
+                        }
                     }
                 }
             }

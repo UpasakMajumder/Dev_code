@@ -85,7 +85,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         {
             this.requestDateTime = DateTime.UtcNow;
             var signedHeaders = this.AddAndGetSignedHeaders(request);
-            var canonicalRequest = await this.GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
+            var canonicalRequest = await GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
             var stringToSign = this.GetStringToSign(canonicalRequest);
             var signiture = this.GetSignature(stringToSign);
             var authHeader = this.GetAuthHeader(signiture, signedHeaders);
@@ -93,7 +93,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-        private async Task<string> GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
+        private static async Task<string> GetCanonicalRequest(HttpRequestMessage request, string[] signedHeaders)
         {
             var canonicalRequest = new StringBuilder();
             canonicalRequest.AppendFormat("{0}\n", request.Method.Method);
@@ -231,10 +231,10 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
                 request.Headers.Add("X-Amz-Security-Token", this.sessionToken);
             }
 
-            return this.GetSignedHeaders(request);
+            return GetSignedHeaders(request);
         }
 
-        private string[] GetSignedHeaders(HttpRequestMessage request)
+        private static string[] GetSignedHeaders(HttpRequestMessage request)
         {
             return request.Headers.Select(httpRequestHeader => httpRequestHeader.Key.ToLowerInvariant())
                 .OrderBy(t => t)
