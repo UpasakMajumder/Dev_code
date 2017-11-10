@@ -1,8 +1,6 @@
 ﻿using NPOI.SS.UserModel;
-using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
@@ -50,7 +48,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
         /// <param name="columns">Columns to create. Expects last column to be role.</param>
         /// <param name="roles">Roles to add to role select box for last column.</param>
         /// <returns></returns>
-        private byte[] CreateTemplateFile(string[] columns, string[] roles = null)
+        private byte[] CreateTemplateFile(List<Column> columns, string[] roles = null)
         {
             // create workbook
             IWorkbook workbook = new XSSFWorkbook();
@@ -60,7 +58,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             // add validation for roles
             if (roles != null)
             {
-                var rolesColumnIndex = columns.Length - 1; // role column should be last
+                var rolesColumnIndex = columns.Count - 1; // role column should be last
                 AddOneFromManyValidation(rolesColumnIndex, "Roles", roles, sheet);
             }
 
