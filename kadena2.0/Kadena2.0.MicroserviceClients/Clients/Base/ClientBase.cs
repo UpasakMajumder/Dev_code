@@ -46,7 +46,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
             CredentialProfileStoreChain source = new CredentialProfileStoreChain();
             var credentials = prof.GetAWSCredentials(source).GetCredentials();
-            IAmazonSecurityTokenService service = new AmazonSecurityTokenServiceClient(credentials.AccessKey, credentials.SecretKey ); // TODO or take from Kentico configuration
+            IAmazonSecurityTokenService service = new AmazonSecurityTokenServiceClient(credentials.AccessKey, credentials.SecretKey); // TODO or take from Kentico configuration
             this.signer = new DefaultAwsV4Signer(service);
         }
 
@@ -85,7 +85,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
-        public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method,  string url, object body = null)
+        public async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
             using (var client = new HttpClient())
             {
@@ -107,7 +107,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     }
 
                     // TODO consider try-catch ?
-                    
+
                     var response = await client.SendAsync(request).ConfigureAwait(false);
                     return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
                 }
@@ -121,7 +121,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private async Task SignRequestMessage(HttpRequestMessage request)
         {
-            if(string.IsNullOrEmpty(AwsGatewayApiRole))
+            if (string.IsNullOrEmpty(AwsGatewayApiRole))
             {
                 throw new ArgumentNullException(nameof(AwsGatewayApiRole), "To use signed request to AWS microservice, you need to provide ApiGatewayRole");
             }
@@ -129,7 +129,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             await signer.SignRequest(request, AwsGatewayApiRole);
         }
 
-        public StringContent CreateRequestContent(HttpRequestMessage request,  object body)
+        public StringContent CreateRequestContent(HttpRequestMessage request, object body)
         {
             var requestBody = JsonConvert.SerializeObject(body, camelCaseSerializer);
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
@@ -143,9 +143,9 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             string responseContent = string.Empty;
 
             // In these cases, there may be JSON with standard structure and proper error message from microservice
-            if (response.StatusCode == HttpStatusCode.OK || 
-                response.StatusCode == HttpStatusCode.BadRequest || 
-                response.StatusCode == HttpStatusCode.Unauthorized || 
+            if (response.StatusCode == HttpStatusCode.OK ||
+                response.StatusCode == HttpStatusCode.BadRequest ||
+                response.StatusCode == HttpStatusCode.Unauthorized ||
                 response.StatusCode == HttpStatusCode.BadGateway ||
                 response.StatusCode == HttpStatusCode.NotImplemented ||
                 response.StatusCode == HttpStatusCode.InternalServerError)
@@ -177,15 +177,15 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
 
             return result ?? new BaseResponseDto<TResult>
-                                {
-                                    Success = false,
-                                    Payload = default(TResult),
-                                    Error = new BaseErrorDto
-                                    {
-                                        Message = $"{_responseIncorrectMessage} response content: '{responseContent}'",
-                                        InnerError = innerError
-                                    }
-                                };
+            {
+                Success = false,
+                Payload = default(TResult),
+                Error = new BaseErrorDto
+                {
+                    Message = $"{_responseIncorrectMessage} response content: '{responseContent}'",
+                    InnerError = innerError
+                }
+            };
         }
     }
 }
