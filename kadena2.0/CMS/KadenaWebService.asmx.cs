@@ -142,7 +142,8 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (confirmPassword.Contains(" ")) {
+            if (confirmPassword.Contains(" "))
+            {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
             }
             if (newPassword != confirmPassword)
@@ -154,16 +155,16 @@
                 var errorMessage = string.Empty;
                 var customMessage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSPolicyViolationMessage");
                 if (!string.IsNullOrEmpty(customMessage))
-                {                    
+                {
                     errorMessage = ResHelper.LocalizeString(customMessage, LocalizationContext.CurrentCulture.CultureCode);
                 }
                 return new GeneralResultDTO { success = false, errorMessage = errorMessage };
             }
 
 
-                #endregion
-              
-            }
+            #endregion
+
+
             return ChangePasswordInternal(userGUID, oldPassword, newPassword);
         }
 
@@ -488,7 +489,7 @@
                 if (page != null)
                 {
                     // Deletes the page and moves it to the recycle bin (only the specified culture version)
-                    status= page.Delete();
+                    status = page.Delete();
 
                     //  Creates search tasks that remove the deleted page from the content of related search indexes
                     if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
@@ -502,6 +503,6 @@
         }
 
         #endregion
-      
+
     }
 }
