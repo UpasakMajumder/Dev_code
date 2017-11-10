@@ -1,7 +1,7 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
@@ -9,18 +9,19 @@ namespace Kadena.Old_App_Code.Kadena.Imports
     {
         protected static readonly int MaxRowsPerSheet = 1024 * 1024;
 
-        protected static void CreateSheetHeader(string[] columns, ISheet sheet)
+        protected static void CreateSheetHeader(List<Column> columns, ISheet sheet)
         {
             var row = sheet.CreateRow(0);
-            var style = CreateHeaderStyle(sheet.Workbook);
+            var standardStyle = CreateHeaderStyle(sheet.Workbook);
+            var mandatoryStyle = CreateHeaderMandatoryStyle(sheet.Workbook);
             var charWidth = 256;
             var minimalColumnWidth = charWidth * 18;
 
-            for (int i = 0; i < columns.Length; i++)
+            for (int i = 0; i < columns.Count; i++)
             {
                 var cell = row.CreateCell(i);
-                cell.SetCellValue(columns[i]);
-                cell.CellStyle = style;
+                cell.SetCellValue(columns[i].Name);
+                cell.CellStyle = columns[i].IsMandatory ? mandatoryStyle : standardStyle;
                 sheet.AutoSizeColumn(i);
 
                 if (sheet.GetColumnWidth(i) < minimalColumnWidth)
@@ -39,11 +40,20 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return style;
         }
 
-        protected string[] GetImportColumns<T>() where T : class
+        protected static ICellStyle CreateHeaderMandatoryStyle(IWorkbook workbook)
         {
-            return ImportHelper.GetHeaderProperties<T>()
-                .Select(p => p.Name)
-                .ToArray();
+            var font = workbook.CreateFont();
+            font.IsBold = true;
+            font.Underline = FontUnderlineType.None;
+            font.Color = IndexedColors.Automatic.Index;
+            var style = workbook.CreateCellStyle();
+            style.SetFont(font);
+            return style;
+        }
+
+        protected List<Column> GetImportColumns<T>() where T : class
+        {
+            return ImportHelper.GetHeaderProperties<T>();
         }
 
         protected byte[] GetWorkbookBytes(IWorkbook workbook)
