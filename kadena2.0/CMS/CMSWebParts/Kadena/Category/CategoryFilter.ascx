@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CampaignFilter.ascx.cs" Inherits="CMSApp.CMSWebParts.Kadena.Campaign.CampaignFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CategoryFilter.ascx.cs" Inherits="CMSApp.CMSWebParts.Kadena.Category.CategoryFilter" %>
 <div class="search_block">
     <asp:TextBox ID="txtSearch" runat="server" CssClass="input__text" onkeypress="FireOnClickButton()"></asp:TextBox>
     
@@ -11,5 +11,4 @@ document.getElementByID("Button1").click();
  
 }
 </script>
- 
  
