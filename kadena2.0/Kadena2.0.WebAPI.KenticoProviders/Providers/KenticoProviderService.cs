@@ -292,7 +292,9 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
 
-            var result = items.Select(i =>
+            var result = items
+            .Where(cartItem => !cartItem.IsProductOption)
+            .Select(i =>
             {
                 var cartItem = new CartItem()
                 {
