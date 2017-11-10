@@ -75,11 +75,11 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl {
     protected global::CMS.Base.Web.UI.CMSButton btnSelect;
     
     /// <summary>
-    /// lnkNewUser control.
+    /// ltrNewUser control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton lnkNewUser;
+    protected global::CMS.Base.Web.UI.LocalizedLiteral ltrNewUser;
 }
