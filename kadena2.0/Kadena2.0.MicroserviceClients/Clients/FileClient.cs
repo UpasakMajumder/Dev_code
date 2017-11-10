@@ -5,22 +5,11 @@ using System.IO;
 using System.Web;
 using Kadena2.MicroserviceClients.Clients.Base;
 using System.Net.Http;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class FileClient : ClientBase, IFileClient
     {
-        //public FileClient() : base()
-        //{
-
-        //}
-
-        //public FileClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         public string GetFileUrl(string serviceEndpoint, string fileName, FileModule moduleName)
         {
             return $"{serviceEndpoint}/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";

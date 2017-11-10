@@ -10,16 +10,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class BidClient : ClientBase, IBidClient
     {
-        //public BidClient() : base()
-        //{
-
-        //}
-
-        //public BidClient(IAwsV4Signer signer) : base(signer)
-        //{
-            
-        //}
-
         public async Task<BaseResponseDto<IEnumerable<ProjectDto>>> GetProjects(string endPoint, string workGroupName)
         {
             var url = $"{endPoint}/{workGroupName}";

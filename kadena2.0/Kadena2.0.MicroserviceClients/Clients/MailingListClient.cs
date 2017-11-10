@@ -15,16 +15,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class MailingListClient : ClientBase, IMailingListClient
     {
-        //public MailingListClient() : base()
-        //{
-
-        //}
-
-        //public MailingListClient(IAwsV4Signer signer) : base(signer)
-        //{
-
-        //}
-
         public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(string serviceEndpoint, Guid containerId)
         {
             var url = $"{serviceEndpoint}/{containerId}";

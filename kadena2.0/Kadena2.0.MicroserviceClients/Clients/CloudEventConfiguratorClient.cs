@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Kadena.Dto.General;
 using System.Net.Http;
 using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -16,16 +15,6 @@ namespace Kadena2.MicroserviceClients.Clients
             Lambda = 6,
             Noosh = 12
         }
-
-        //public CloudEventConfiguratorClient() : base()
-        //{
-
-        //}
-
-        //public CloudEventConfiguratorClient(IAwsV4Signer signer) : base(signer)
-        //{
-            
-        //}
 
         public async Task<BaseResponseDto<string>> UpdateNooshRule(string endPoint, string ruleName, bool enabled, int rate, string targetId, string workGroupName, string nooshUrl, string nooshToken)
         {
