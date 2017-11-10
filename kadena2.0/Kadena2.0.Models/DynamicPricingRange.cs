@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.Models
 {
@@ -24,13 +25,15 @@ namespace Kadena.Models
             return isValid;
         }   
 
-        public static bool ValidateRanges(List<DynamicPricingRange> ranges, List<string> errors)
+        public static bool ValidateRanges(List<DynamicPricingRange> ranges, List<string> errors, bool requireAscendentOrder = false)
         {
             if (ranges == null || ranges.Count == 0)
             {
                 errors.Add("No Dynamic pricing ranges specified");
                 return false;
             }
+
+            ranges = ranges.OrderBy(x => x.MinVal).ToList();
 
             bool isValid = true;
 
