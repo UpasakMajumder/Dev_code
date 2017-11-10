@@ -73,7 +73,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
-            var statusMessages = new List<string>();
+            statusMessages.Clear();
 
             var currentItemNumber = 0;
             foreach (var imageDto in productImages)
@@ -246,7 +246,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private void SetProductImage(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
-            string libraryImageUrl = DownloadImageToMedialibrary(image.ImageURL);
+            var libraryImage = DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, siteId);
+            var libraryImageUrl = "TODO";
 
             SetProductImage(product, libraryImageUrl);
 

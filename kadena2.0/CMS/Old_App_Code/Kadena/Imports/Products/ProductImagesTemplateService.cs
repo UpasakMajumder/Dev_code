@@ -1,5 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
@@ -11,7 +12,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var columns = GetImportColumns<ProductImageDto>();
             return CreateTemplateFile(columns);
         }
-        private byte[] CreateTemplateFile(string[] columns)
+        private byte[] CreateTemplateFile(List<Column> columns)
         {
             IWorkbook workbook = new XSSFWorkbook();
             var sheet = workbook.CreateSheet("ProductImages");
