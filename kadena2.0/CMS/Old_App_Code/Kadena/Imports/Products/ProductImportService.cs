@@ -205,15 +205,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private void SetProductImage(ProductImageDto image, int siteId)
         {
-            var skus = SKUInfoProvider.GetSKUs(siteId)
-               .WhereEquals("SKUNumber", image.SKU);
-
-            if (skus.Count() > 1)
-            {
-                throw new Exception("More than .... TODO after merge"); // TODO
-            }
-
-            var sku = skus.FirstObject;
+            var sku = GetUniqueSKU(image.SKU, siteId);
 
             if (sku == null)
             {
@@ -241,13 +233,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            SetProductImage(image, product, sku, siteId);
+            GetAndSaveProductImages(image, product, sku, siteId);
+
+            product.Update();
         }
 
-        private void SetProductImage(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        // ready for potential use in Product upload
+        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
-            var libraryImage = DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, siteId);
-            var libraryImageUrl = "TODO";
+            string libraryImageUrl = DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, siteId);
 
             SetProductImage(product, libraryImageUrl);
 
@@ -255,8 +249,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             if (newAttachment != null)
             {
-                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); // todo check not to save twice
-                product.Update();
+                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); 
             }
         }
 
@@ -300,66 +293,42 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newAttachment;
         }
 
-        private AttachmentInfo DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int siteId)
+        private string DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int siteId)
         {
             var library = EnsureLibrary(siteId);
-            /*
-            AttachmentInfo newAttachment = null;
+            MediaFileInfo mediaFile = null;
 
             using (var client = new HttpClient())
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
-
                     var response = client.SendAsync(request).Result;
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stream = response.Content.ReadAsStreamAsync().Result;
+                        var imageName = $"Image{skuNumber}.png";
 
-                        
-
-                        // Prepares a path to a local file
-                        string filePath = @"C:\Files\images\Image.png";
-
-                        // Prepares a CMS.IO.FileInfo object representing the local file
-                        CMS.IO.FileInfo file = CMS.IO.FileInfo.New();
-
-                        if (file != null)
+                        mediaFile = new MediaFileInfo()
                         {
-                            // Creates a new media library file object
-                            MediaFileInfo mediaFile = new MediaFileInfo(filePath, library.LibraryID);
-
-                            // Sets the media library file properties
-                            mediaFile.FileName = "Image";
-                            mediaFile.FileTitle = "File title";
-                            mediaFile.FileDescription = "This file was added through the API.";
-                            mediaFile.FilePath = "NewFolder/Image/"; // Sets the path within the media library's folder structure
-                            mediaFile.FileExtension = file.Extension;
-                            mediaFile.FileMimeType = MimeTypeHelper.GetMimetype(file.Extension);
-                            mediaFile.FileSiteID = SiteContext.CurrentSiteID;
-                            mediaFile.FileLibraryID = library.LibraryID;
-                            mediaFile.FileSize = file.Length;
-
-                            
-
-                            // Saves the media library file
-                            MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
-                        }
-
+                            FileBinaryStream = stream,
+                            FileName = imageName,
+                            FileTitle = imageName,
+                            FileDescription = $"Product image for SKU {skuNumber}",
+                            FilePath = "ProductImages/",
+                            FileExtension = ".png",
+                            FileMimeType = MimeTypeHelper.GetMimetype(".png"),
+                            FileSiteID = siteId,
+                            FileLibraryID = library.LibraryID,
+                            FileSize = stream.Length,
+                        };
+                        
+                        MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
                     }
                 }
             }
             
-            if (newAttachment != null)
-            {
-                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-            }
-
-            return newAttachment;
-            */
-
-            return null;
+            return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
         }
 
         private MediaLibraryInfo EnsureLibrary(int siteId)
@@ -442,7 +411,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
 
-            if (existingProduct == null) // todo check not to save twice with storing image
+            if (existingProduct == null)
             {
                 newProduct.Insert(parent);
             }
@@ -551,24 +520,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return TrackInventoryTypeEnum.Disabled;
         }
 
-        private SKUInfo GetSKU(string sku, int siteID)
+        private SKUInfo GetUniqueSKU(string sku, int siteID)
         {
-            return SKUInfoProvider.GetSKUs()
-                .WhereEquals("SKUNumber", sku)
-                .FirstObject;
+            var skus = SKUInfoProvider.GetSKUs(siteID)
+                .WhereEquals("SKUNumber", sku);
+
+            if (skus.Count() > 1)
+            {
+                throw new Exception($"Multiple SKUs with SKUNumber {sku} exist on site");
+            }
+
+            return skus.FirstObject;
         }
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var skus = SKUInfoProvider.GetSKUs(siteID)
-                .WhereEquals("SKUNumber", product.SKU);
-
-            if (skus.Count() > 1)
-            {
-                throw new Exception($"Multiple SKUs with SKUNumber {product.SKU} exist on site");
-            }
-
-            var sku = skus.FirstObject ?? new SKUInfo();            
+            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);
