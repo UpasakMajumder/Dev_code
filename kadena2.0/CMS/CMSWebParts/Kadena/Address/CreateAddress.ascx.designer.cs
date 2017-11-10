@@ -12,6 +12,24 @@
 public partial class CMSWebParts_Kadena_Address_CreateAddress {
     
     /// <summary>
+    /// headerAddress control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl headerAddress;
+    
+    /// <summary>
+    /// lblName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblName;
+    
+    /// <summary>
     /// txtName control.
     /// </summary>
     /// <remarks>
@@ -30,6 +48,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfName;
     
     /// <summary>
+    /// lblAddressType control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAddressType;
+    
+    /// <summary>
     /// ddlAddressType control.
     /// </summary>
     /// <remarks>
@@ -39,6 +66,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::CMSAdminControls_UI_UniSelector_UniSelector ddlAddressType;
     
     /// <summary>
+    /// lblCompany control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCompany;
+    
+    /// <summary>
     /// txtComapnyName control.
     /// </summary>
     /// <remarks>
@@ -46,6 +82,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtComapnyName;
+    
+    /// <summary>
+    /// lblAddressLine1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAddressLine1;
     
     /// <summary>
     /// txtAddressLine1 control.
@@ -66,6 +111,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfAddressLine1;
     
     /// <summary>
+    /// lblAddressLine2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAddressLine2;
+    
+    /// <summary>
     /// txtAddressLine2 control.
     /// </summary>
     /// <remarks>
@@ -73,6 +127,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtAddressLine2;
+    
+    /// <summary>
+    /// lblCity control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCity;
     
     /// <summary>
     /// txtCity control.
@@ -93,6 +156,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfCity;
     
     /// <summary>
+    /// lblCountry control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCountry;
+    
+    /// <summary>
     /// ddlCountry control.
     /// </summary>
     /// <remarks>
@@ -100,6 +172,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSFormControls_CountrySelector ddlCountry;
+    
+    /// <summary>
+    /// lblZipcode control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblZipcode;
     
     /// <summary>
     /// txtZipcode control.
@@ -120,6 +201,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator txtZipcodeRequired;
     
     /// <summary>
+    /// lblTelephone control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTelephone;
+    
+    /// <summary>
     /// txtTelephone control.
     /// </summary>
     /// <remarks>
@@ -127,6 +217,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtTelephone;
+    
+    /// <summary>
+    /// lblEmail control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblEmail;
     
     /// <summary>
     /// txtEmail control.
