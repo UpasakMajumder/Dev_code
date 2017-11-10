@@ -161,9 +161,7 @@
                 return new GeneralResultDTO { success = false, errorMessage = errorMessage };
             }
 
-
             #endregion
-
 
             return ChangePasswordInternal(userGUID, oldPassword, newPassword);
         }
@@ -210,10 +208,8 @@
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
-
         public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames)
         {
-
             #region Validation
 
             if (string.IsNullOrWhiteSpace(name))
@@ -449,6 +445,8 @@
             Match match = regex.Match(email);
             return match.Success;
         }
+
+
         //Method for deleteting the product category
         [WebMethod(EnableSession = true)]
         public bool DeleteCategory(int CategoryID)
@@ -475,6 +473,8 @@
             return status;
 
         }
+
+
         //Method for deleteting the campaign
         [WebMethod(EnableSession = true)]
         public bool DeleteCampaign(int CampaignID)
@@ -503,6 +503,5 @@
         }
 
         #endregion
-
     }
 }
