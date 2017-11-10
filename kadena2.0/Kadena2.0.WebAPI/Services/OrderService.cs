@@ -460,7 +460,7 @@ namespace Kadena.WebAPI.Services
                 orderDto.ShippingOption = new ShippingOptionDTO()
                 {
                     KenticoShippingOptionID = deliveryMethod.Id,
-                    CarrierCode = deliveryMethod.Title,
+                    CarrierCode = deliveryMethod.SAPName,
                     ShippingCompany = deliveryMethod.CarrierCode,
                     ShippingService = deliveryMethod.Service.Replace("#", "")
                 };

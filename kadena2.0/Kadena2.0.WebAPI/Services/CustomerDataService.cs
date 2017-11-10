@@ -26,34 +26,37 @@ namespace Kadena.WebAPI.Services
 
             if (customer == null)
                 return null;
-
-            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
-
-            if (address == null)
-                return null;
-
-            var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
-            var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
-
+                    
             var claims = GetCustomerClaims(siteId, customer.UserID);
 
-            return new CustomerData()
+            var customerData = new CustomerData()
             {
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
                 Phone = customer.Phone,
                 PreferredLanguage = customer.PreferredLanguage,
-                Address = new CustomerAddress
+                Address = null,
+                Claims = claims,
+            };
+
+            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
+            if (address != null)
+            {
+                var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
+                var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
+
+                customerData.Address = new CustomerAddress
                 {
                     Street = new List<string> { address.Address1, address.Address2 },
                     City = address.City,
                     Country = country.Name,
-                    State = state.StateCode,
+                    State = state?.StateCode,
                     Zip = address.Zip
-                },
-                Claims = claims,
-            };
+                };
+            }
+
+            return  customerData;
         }
 
         private Dictionary<string, string> GetCustomerClaims(int siteId, int userId)
