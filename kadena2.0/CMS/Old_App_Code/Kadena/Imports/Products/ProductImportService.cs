@@ -29,12 +29,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
+            statusMessages.Clear();
 
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
-            var statusMessages = new List<string>();
-
+            
             var currentItemNumber = 0;
             foreach (var productDto in products)
             {
@@ -102,6 +102,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             return new ImportResult
             {
+                AllMessagesCount = statusMessages.AllMessagesCount,
                 ErrorMessages = statusMessages.ToArray()
             };
         }
@@ -111,7 +112,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var errorMessageFormat = "field {0} - {1}";
             bool isValid = ValidatorHelper.ValidateDto(product, out validationErrors, errorMessageFormat);
 
-            // validate special rules
+            if (!isValid)
+            {
+                return false;
+            }
+
             if (product.ProductType.Contains(ProductTypes.TemplatedProduct))
             {
                 if (string.IsNullOrWhiteSpace(product.ChiliTemplateID) ||
@@ -122,6 +127,69 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     isValid = false;
                     validationErrors.Add("ChiliTemplateID, ChiliWorkgroupID and ChiliPdfGeneratorSettingsID are mandatory for Templated product");
                 }
+            }
+
+            if (product.ProductType.Contains(ProductTypes.InventoryProduct) ||
+                product.ProductType.Contains(ProductTypes.POD) ||
+                product.ProductType.Contains(ProductTypes.StaticProduct) ||
+                product.ProductType.Contains(ProductTypes.TemplatedProduct))
+            {
+                decimal weight = 0.0m;
+                if(string.IsNullOrEmpty(product.PackageWeight) ||  !decimal.TryParse(product.PackageWeight, out weight))
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
+                }
+                if (weight <= 0.0m)
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be > 0");
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(product.PublishFrom) && !string.IsNullOrEmpty(product.PublishTo))
+            {
+                DateTime from, to;
+
+                if (DateTime.TryParse(product.PublishFrom, out from) && DateTime.TryParse(product.PublishTo, out to))
+                {
+                    if (from > to)
+                    {
+                        isValid = false;
+                        validationErrors.Add("If both are specified, PublishFrom must be earlier than PublishTo");
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("PublishFrom and PublishTo must be in 'MM/dd/yyyy' format.");
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(product.MinItemsInOrder) && !string.IsNullOrEmpty(product.MaxItemsInOrder))
+            {
+                uint min, max;
+                if (uint.TryParse(product.MinItemsInOrder, out min) && uint.TryParse(product.MaxItemsInOrder, out max))
+                {
+                    if (min > max)
+                    {
+                        isValid = false;
+                        validationErrors.Add("If both are specified, MinItemsInOrder must be less than MaxnItemsInOrder");
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("MinItemsInOrder and MaxItemsInOrder must be non-negative integer.");
+                }
+            }
+
+            if (Convert.ToInt32(product.ItemsInPackage) <= 0)
+            {
+                isValid = false;
+                validationErrors.Add("ItemsInPackagemust be > 0");
             }
 
             return isValid;
@@ -398,6 +466,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             int[] mins, maxes;
             decimal[] prices;
 
+            var message = "Bad format of Dynamic Pricing definitions. DynamicPriceMinItems, DynamicPriceMaxItems and DynamicPrice cells must contain the same count of rows in one product in proper numeric format.";
+
             if (string.IsNullOrWhiteSpace(min) && string.IsNullOrWhiteSpace(max) && string.IsNullOrWhiteSpace(price))
             {
                 return string.Empty;
@@ -411,17 +481,20 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
             catch (Exception ex)
             {
-                throw new ArgumentOutOfRangeException("Bad format of Dynamic Pricing definitions.", ex);
+                throw new ArgumentOutOfRangeException(message, ex);
             }
-
 
             if (mins.Length != maxes.Length || mins.Length != prices.Length)
             {
-                throw new ArgumentOutOfRangeException("Dynamic Pricing definition cells must contain the same count of rows in one product.");
+                throw new ArgumentOutOfRangeException(message);
             }
 
-
             var ranges = mins.Select((item, index) => new DynamicPricingRange { MinVal = item, MaxVal = maxes[index], Price = prices[index] }).ToList();
+
+            if (ranges.Any(r => r.MaxVal < r.MinVal))
+            {
+                throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", "All Dynamic Pricing definition ranges must have Min <= Max.");
+            }
 
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
@@ -486,9 +559,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = SKUInfoProvider.GetSKUs(siteID)
-                .WhereEquals("SKUNumber", product.SKU)
-                .FirstObject ?? new SKUInfo();            
+            var skus = SKUInfoProvider.GetSKUs(siteID)
+                .WhereEquals("SKUNumber", product.SKU);
+
+            if (skus.Count() > 1)
+            {
+                throw new Exception($"Multiple SKUs with SKUNumber {product.SKU} exist on site");
+            }
+
+            var sku = skus.FirstObject ?? new SKUInfo();            
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);
