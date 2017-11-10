@@ -3,8 +3,10 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
+using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Newtonsoft.Json;
@@ -12,6 +14,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -86,7 +89,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                 try
                 {
-                    //SetProductImage(imageDto, siteID);
+                    SetProductImage(imageDto, siteID);
                 }
                 catch (Exception ex)
                 {
@@ -129,24 +132,199 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            var newProduct = AppendProduct(productParent, productDto, sku, siteID);
-            SetProductImage(null, newProduct, sku, siteID);
+            AppendProduct(productParent, productDto, sku, siteID);            
+        }
+
+        private void SetProductImage(ProductImageDto image, int siteId)
+        {
+            var skus = SKUInfoProvider.GetSKUs(siteId)
+               .WhereEquals("SKUNumber", image.SKU);
+
+            if (skus.Count() > 1)
+            {
+                throw new Exception("More than .... TODO after merge"); // TODO
+            }
+
+            var sku = skus.FirstObject;
+
+            if (sku == null)
+            {
+                throw new Exception($"SKU with SKUNumber {image.SKU} doesn't exist");
+            }
+
+            var documents = DocumentHelper.GetDocuments("KDA.Product")
+                            .Path("/", PathTypeEnum.Children)
+                            .WhereEquals("ClassName", "KDA.Product")
+                            .WhereEquals("NodeSKUID", sku.SKUID)
+                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                            .CheckPermissions()
+                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
+                            .Published();
+
+            if (documents.Count() > 1)
+            {
+                throw new Exception($"Multiple product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            var product = documents.FirstObject as SKUTreeNode;
+
+            if (product == null)
+            {
+                throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            SetProductImage(image, product, sku, siteId);
         }
 
         private void SetProductImage(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
-            product.SetValue("SKUImagePath", $"https://dummyimage.com/320/0000ff/ffffff.png&text={sku.SKUName} SKUImagePath");
+            string libraryImageUrl = DownloadImageToMedialibrary(image.ImageURL);
 
-            var newAttachment = new AttachmentInfo(@"C:\doc\thumbnail.png")
+            SetProductImage(product, libraryImageUrl);
+
+            var newAttachment = DownloadAndAttachImage(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+
+            if (newAttachment != null)
             {
-                AttachmentSiteID = siteId,
-                AttachmentDocumentID = product.DocumentID
-            };
-
-            AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-            product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); // todo check not to save twice
-            product.Update();
+                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); // todo check not to save twice
+                product.Update();
+            }
         }
+
+        private AttachmentInfo DownloadAndAttachImage(string url, string skuNumber, int documentId, int siteId)
+        {
+            AttachmentInfo newAttachment = null;
+
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+
+                    var response = client.SendAsync(request).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var stream = response.Content.ReadAsStreamAsync().Result;
+
+                        // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
+                        newAttachment = new AttachmentInfo()
+                        {
+                            InputStream = stream,
+                            AttachmentSiteID = siteId,
+                            AttachmentDocumentID = documentId,
+                            AttachmentExtension = ".png", // TODO dehardcode extension
+                            AttachmentName = $"Thumbnail{skuNumber}.png",
+                            AttachmentLastModified = DateTime.Now,
+                            AttachmentMimeType = "image/png",
+                            AttachmentSize = (int)stream.Length
+                        };
+
+                    }
+                }
+            }
+
+            if (newAttachment != null)
+            {
+                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
+            }
+
+            return newAttachment;
+        }
+
+        private AttachmentInfo DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int siteId)
+        {
+            var library = EnsureLibrary(siteId);
+            /*
+            AttachmentInfo newAttachment = null;
+
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+
+                    var response = client.SendAsync(request).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var stream = response.Content.ReadAsStreamAsync().Result;
+
+                        
+
+                        // Prepares a path to a local file
+                        string filePath = @"C:\Files\images\Image.png";
+
+                        // Prepares a CMS.IO.FileInfo object representing the local file
+                        CMS.IO.FileInfo file = CMS.IO.FileInfo.New();
+
+                        if (file != null)
+                        {
+                            // Creates a new media library file object
+                            MediaFileInfo mediaFile = new MediaFileInfo(filePath, library.LibraryID);
+
+                            // Sets the media library file properties
+                            mediaFile.FileName = "Image";
+                            mediaFile.FileTitle = "File title";
+                            mediaFile.FileDescription = "This file was added through the API.";
+                            mediaFile.FilePath = "NewFolder/Image/"; // Sets the path within the media library's folder structure
+                            mediaFile.FileExtension = file.Extension;
+                            mediaFile.FileMimeType = MimeTypeHelper.GetMimetype(file.Extension);
+                            mediaFile.FileSiteID = SiteContext.CurrentSiteID;
+                            mediaFile.FileLibraryID = library.LibraryID;
+                            mediaFile.FileSize = file.Length;
+
+                            
+
+                            // Saves the media library file
+                            MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
+                        }
+
+                    }
+                }
+            }
+            
+            if (newAttachment != null)
+            {
+                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
+            }
+
+            return newAttachment;
+            */
+
+            return null;
+        }
+
+        private MediaLibraryInfo EnsureLibrary(int siteId)
+        {
+            string libraryName = "ProductImages";
+            var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
+            var meidaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
+            if (meidaLibrary == null)
+            {
+                // Creates a new media library object
+                meidaLibrary = new MediaLibraryInfo();
+
+                // Sets the library properties
+                meidaLibrary.LibraryDisplayName = libraryName;
+                meidaLibrary.LibraryName = libraryName;
+                meidaLibrary.LibraryDescription = "Media library for storing product images";
+                meidaLibrary.LibraryFolder = "Products";
+                meidaLibrary.LibrarySiteID = SiteContext.CurrentSiteID;
+
+                // Saves the new media library to the database
+                MediaLibraryInfoProvider.SetMediaLibraryInfo(meidaLibrary);
+            }
+
+            return meidaLibrary;
+        }
+
+        /// <summary>
+        /// Sets given <param name="imageUrl"></param> as SKUImagePath of product node
+        /// </summary>
+        private void SetProductImage(SKUTreeNode product, string imageUrl)
+        {
+            product.SetValue("SKUImagePath", imageUrl);
+        }
+
 
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
@@ -269,8 +447,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 return parentPage;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-
-            //try to find existing category
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);
 
             if (category == null)
@@ -278,11 +454,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
-                category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
+
+                // To set category image:
+                // category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
 
                 SetPageTemplate(category, "_KDA_ProductCategory");
-
-                // Inserts the new page as a child of the parent page
                 category.Insert(parentPage);
             }
 
