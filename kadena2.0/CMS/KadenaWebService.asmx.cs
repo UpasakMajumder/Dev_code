@@ -142,7 +142,8 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (confirmPassword.Contains(" ")) {
+            if (confirmPassword.Contains(" "))
+            {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
             }
             if (newPassword != confirmPassword)
@@ -154,7 +155,7 @@
                 var errorMessage = string.Empty;
                 var customMessage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSPolicyViolationMessage");
                 if (!string.IsNullOrEmpty(customMessage))
-                {                    
+                {
                     errorMessage = ResHelper.LocalizeString(customMessage, LocalizationContext.CurrentCulture.CultureCode);
                 }
                 return new GeneralResultDTO { success = false, errorMessage = errorMessage };
@@ -207,7 +208,8 @@
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
-        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames) {
+        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames)
+        {
             #region Validation
 
             if (string.IsNullOrWhiteSpace(name))
@@ -375,7 +377,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.ForgottenPasswordRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
-        }        
+        }
 
         private GeneralResultDTO SubmitNewKitRequestInternal(string name, string description, int[] productIDs, string[] productNames)
         {
@@ -442,6 +444,62 @@
             Regex regex = new Regex(regexText);
             Match match = regex.Match(email);
             return match.Success;
+        }
+
+
+        //Method for deleteting the product category
+        [WebMethod(EnableSession = true)]
+        public bool DeleteCategory(int CategoryID)
+        {
+            bool status = false;
+            if (CategoryID > 0)
+            {
+                CMS.DocumentEngine.TreeProvider tree = new CMS.DocumentEngine.TreeProvider(CMS.Membership.MembershipContext.AuthenticatedUser);
+
+                // Gets the culture version of the page that will be deleted
+                CMS.DocumentEngine.TreeNode page = tree.SelectNodes("KDA.ProductCategory").Where("ProductCategoryID", CMS.DataEngine.QueryOperator.Equals, CategoryID).OnCurrentSite();
+                if (page != null)
+                {
+                    // Deletes the page and moves it to the recycle bin (only the specified culture version)
+                    status = page.Delete();
+
+                    //  Creates search tasks that remove the deleted page from the content of related search indexes
+                    if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
+                    {
+                        CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskTypeEnum.Delete, CMS.DocumentEngine.TreeNode.OBJECT_TYPE, CMS.DataEngine.SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
+                    }
+                }
+            }
+            return status;
+
+        }
+
+
+        //Method for deleteting the campaign
+        [WebMethod(EnableSession = true)]
+        public bool DeleteCampaign(int CampaignID)
+        {
+            bool status = false;
+            if (CampaignID > 0)
+            {
+                CMS.DocumentEngine.TreeProvider tree = new CMS.DocumentEngine.TreeProvider(CMS.Membership.MembershipContext.AuthenticatedUser);
+
+                // Gets the culture version of the page that will be deleted
+                CMS.DocumentEngine.TreeNode page = tree.SelectNodes("KDA.Campaign").Where("CampaignID", CMS.DataEngine.QueryOperator.Equals, CampaignID).OnCurrentSite();
+                if (page != null)
+                {
+                    // Deletes the page and moves it to the recycle bin (only the specified culture version)
+                    status = page.Delete();
+
+                    //  Creates search tasks that remove the deleted page from the content of related search indexes
+                    if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
+                    {
+                        CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskTypeEnum.Delete, CMS.DocumentEngine.TreeNode.OBJECT_TYPE, CMS.DataEngine.SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
+                    }
+                }
+            }
+            return status;
+
         }
 
         #endregion
