@@ -15,7 +15,7 @@
 <cms:CMSPanel runat="server" ID="pnlUserForm">
     <div class="login__form-content js-login">
         <div class="css-login form_section">
-            <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" AlternativeFormFullName="cms.user.KDA_NewEditUser" />
+            <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" />
             <div class="mb-3 form_btns">
                 <div>
                     <cms:LocalizedLinkButton runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" Text="Save" OnClick="btnSave_Click"></cms:LocalizedLinkButton>
