@@ -562,36 +562,51 @@ function UpdateLabel_", ClientID, @"(content, context) {
         }
     }
 
-    //Retrieve the password hint
+    //Method to Retrieve the password hint
     private void btnPasswordHint_Click(object sender, EventArgs e)
     {
         string value = txtPasswordHint.Text.Trim();
-
-        if (!String.IsNullOrEmpty(value) && ValidationHelper.IsEmail(value))
+        try
         {
-                 var user = UserInfoProvider.GetUsers().Columns("UserId").WhereEquals("Email", value).TopN(1);
-            foreach (UserInfo aUser in user.TypedResult)
+            if (!String.IsNullOrEmpty(value) && ValidationHelper.IsEmail(value))
             {
-                UserSettingsInfo Usersetting = CMS.Membership.UserSettingsInfoProvider.GetUserSettingsInfoByUser(aUser.UserID);
-                lblPwdHint.Text = Usersetting.GetStringValue("PasswordHint", "");
-                lblPwdHint.Visible = true;
-            }               
-            
+                /// This method will return User object if entered email id is present in DB
+                UserInfo user = UserInfoProvider.GetUsers().Columns("UserId").WhereEquals("Email", value).TopN(1);
+                if (user != null)
+                {
+                    UserSettingsInfo Usersetting = CMS.Membership.UserSettingsInfoProvider.GetUserSettingsInfoByUser(user.UserID);
+                    lblPwdHint.Text = Usersetting.GetStringValue("PasswordHint", "");
+                    lblPwdHint.Visible = true;
+                    lblHintResult.Text = string.Format(GetString("Kadena.LogonFrom.pwdHintSuccess"), value);
+                    lblHintResult.Visible = true;
+                    pnlPasswdRetrieval.Visible = true;
+                }
+                else
+                {
+                    lblHintResult.Text = ResHelper.GetString("Kadena.loginForm.EmailNotExists"); 
+                    lblHintResult.Visible = true;
+                    pnlPasswdRetrieval.Visible = true;
+                }
 
-            //AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "LOGONFORM", SendEmailFrom, null, ResetPasswordURL, returnUrl);
-
-            lblHintResult.Text = string.Format(GetString("LogonFrom.pwdHintSuccess"), value);
-            lblHintResult.Visible = true;
-
-            pnlPasswdRetrieval.Visible = true;
+                //foreach (UserInfo aUser in user.TypedResult)
+                //{
+                //    UserSettingsInfo Usersetting = CMS.Membership.UserSettingsInfoProvider.GetUserSettingsInfoByUser(aUser.UserID);
+                //    lblPwdHint.Text = Usersetting.GetStringValue("PasswordHint", "");
+                //    lblPwdHint.Visible = true;
+                //}               
+            }
+            else
+            {
+                lblHintResult.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
+                lblHintResult.Visible = true;
+                pnlPasswdRetrieval.Visible = true;
+            }
         }
-        else
+        catch(Exception ex)
         {
-            lblHintResult.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
-            lblHintResult.Visible = true;
-
-            pnlPasswdRetrieval.Visible = true;
+            EventLogProvider.LogException("PasswordHintForm", "EXCEPTION", ex);
         }
+     
     }
     /// <summary>
     /// Logged in handler.
@@ -830,4 +845,6 @@ function UpdateLabel_", ClientID, @"(content, context) {
     {
         PnlPasswordHint.Visible = !PnlPasswordHint.Visible;
     }
+
+   
 }
