@@ -980,6 +980,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
             NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
             NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
+            NewUser.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
+            NewUser.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
 
             string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
             UserInfoProvider.SetUserInfo(NewUser);
