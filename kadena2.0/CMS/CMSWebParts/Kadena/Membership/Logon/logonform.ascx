@@ -4,7 +4,6 @@
     <%-- Logon part --%>
 
     <div class="login__form-content js-login"></div>
-
     <asp:Login ID="Login1" runat="server" DestinationPageUrl="~/Default.aspx" RenderOuterTable="false" Visible="false">
         <LayoutTemplate>
             <asp:Panel runat="server" ID="pnlLogin" DefaultButton="LoginButton" CssClass="logon-panel">

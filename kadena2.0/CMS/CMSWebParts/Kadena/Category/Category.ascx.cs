@@ -16,7 +16,6 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
 {
     #region "Variables"
 
-    private string mDefaultTargetUrl = "";
     private string folderpath = "/";
     private int categoyId = 0;
     #endregion
@@ -26,12 +25,11 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), mDefaultTargetUrl);
+            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), Request.UrlReferrer.ToString());
         }
         set
         {
             SetValue("DefaultTargetUrl", value);
-            mDefaultTargetUrl = value;
         }
     }
 
@@ -80,7 +78,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameValidation");
             revDescription.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.DesValidation");
             revName.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameRangeValidation");
-            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CategoryFolderPath");
+            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CategoryFolderPath",CurrentSiteName);
         }
     }
     /// <summary>
