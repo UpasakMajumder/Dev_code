@@ -22,7 +22,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         get
         {
-            return ValidationHelper.GetString("AddressListPath", string.Empty);
+            return ValidationHelper.GetString(GetValue("AddressListPath"),string.Empty);
         }
         set
         {
