@@ -295,3 +295,13 @@ textarea {
         border: 1px solid #009bd8;
         box-shadow: 0 0 8px 0 #009bd8;
     }
+
+.signup_form .input__error {
+    border-top: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.signup_form .input__error {
+    display: block;
+}
