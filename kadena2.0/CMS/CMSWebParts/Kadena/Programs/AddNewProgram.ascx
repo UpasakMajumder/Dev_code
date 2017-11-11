@@ -3,12 +3,12 @@
 
 <div class="login__form-content js-login">
     <div class="css-login changepwd_block">
-        <div class="form">
+        <div class="form signup_form">
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <asp:TextBox ID="txtProgramName" runat="server" CssClass="input__text"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="" ErrorMessage="Please enter Program Name" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="input__error" ErrorMessage="Please enter Program Name" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
