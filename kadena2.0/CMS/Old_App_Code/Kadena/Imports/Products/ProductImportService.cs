@@ -461,6 +461,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             var ranges = mins.Select((item, index) => new DynamicPricingRange { MinVal = item, MaxVal = maxes[index], Price = prices[index] }).ToList();
 
+            var dynamicRangeErrors = new List<string>();
+            if (!DynamicPricingRange.ValidateRanges(ranges, dynamicRangeErrors))
+            {
+                var allMessages = string.Join(Environment.NewLine, dynamicRangeErrors);
+                throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", allMessages);
+            }
+
             if (ranges.Any(r => r.MaxVal < r.MinVal))
             {
                 throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", "All Dynamic Pricing definition ranges must have Min <= Max.");
