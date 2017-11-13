@@ -25,8 +25,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "yyyy-MM-dd HH:mm:ss"
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
         protected bool SignRequest { get; set; } = true;
@@ -88,8 +87,10 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
                     // TODO consider try-catch ?
 
-                    var response = await client.SendAsync(request).ConfigureAwait(false);
-                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                    }
                 }
             }
         }
