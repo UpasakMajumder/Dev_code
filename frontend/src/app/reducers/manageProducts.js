@@ -4,6 +4,7 @@ const defaultState = {
   tableHeaders: [],
   templates: [],
   title: '',
+  openInDesignBtn: '',
   isLoading: false
 };
 
@@ -23,6 +24,7 @@ export default (state = defaultState, action) => {
       tableHeaders: payload.header,
       templates: payload.data,
       title: payload.title,
+      openInDesignBtn: payload.openInDesignBtn,
       isLoading: false
     };
   case MANAGE_PRODUCTS + FAILURE:
