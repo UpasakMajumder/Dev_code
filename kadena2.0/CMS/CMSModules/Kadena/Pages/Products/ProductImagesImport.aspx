@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="ProductsImport.aspx.cs" Inherits="Kadena.CMSModules.Kadena.Pages.Products.ProductsImport"
+﻿<%@ Page Language="C#" AutoEventWireup="True" CodeBehind="ProductImagesImport.aspx.cs" Inherits="Kadena.CMSModules.Kadena.Pages.Products.ProductImagesImport"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Products import" Theme="Default" %>
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -14,12 +14,12 @@
             <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
         </div>
 
-        <h4>Download template sheet for Products</h4>
+        <h4>Download template sheet for Product images</h4>
         <div class="form-group" style="margin-bottom: 3rem">
             <asp:Button Text="Download" CssClass="btn btn-primary" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
         </div>
 
-        <h4>Upload sheet with Products</h4>
+        <h4>Upload sheet with Product images</h4>
         <div class="form-group">
             <div class="editing-form-value-cell">
                 <div class="editing-form-control-nested-control">
@@ -48,18 +48,6 @@
                 </span>
                 <div class="alert-label">
                     <asp:Literal runat="server" ID="errorMessage"></asp:Literal>
-                </div>
-            </div>
-        </asp:PlaceHolder>
-
-        <asp:PlaceHolder runat="server" ID="successMessageContainer" Visible="false">
-            <div class="alert-dismissable alert-info alert">
-                <span class="alert-icon">
-                    <i class="icon-check-circle"></i>
-                    <span class="sr-only">OK</span>
-                </span>
-                <div class="alert-label">
-                    <asp:Literal runat="server" ID="successMessage"></asp:Literal>
                 </div>
             </div>
         </asp:PlaceHolder>

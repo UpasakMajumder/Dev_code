@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kadena.CMSModules.Kadena.Pages.Users {
+namespace Kadena.CMSModules.Kadena.Pages.Products {
     
     
-    public partial class Addresses {
+    public partial class ProductImagesImport {
         
         /// <summary>
         /// siteSelector control.
@@ -40,31 +40,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         protected global::System.Web.UI.WebControls.FileUpload importFile;
         
         /// <summary>
-        /// userSelector control.
+        /// btnUploadProductList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSModules_Membership_FormControls_Users_SelectUser userSelector;
-        
-        /// <summary>
-        /// roleSelector control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMSModules_Membership_FormControls_Roles_SelectRole roleSelector;
-        
-        /// <summary>
-        /// btnUploadUserList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUploadUserList;
+        protected global::System.Web.UI.WebControls.Button btnUploadProductList;
         
         /// <summary>
         /// errorMessageContainer control.
@@ -83,23 +65,5 @@ namespace Kadena.CMSModules.Kadena.Pages.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal errorMessage;
-        
-        /// <summary>
-        /// successMessageContainer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder successMessageContainer;
-        
-        /// <summary>
-        /// successMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal successMessage;
     }
 }

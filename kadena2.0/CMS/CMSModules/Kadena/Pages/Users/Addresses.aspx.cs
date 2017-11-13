@@ -28,7 +28,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            HideErrorMessage();
+            HideResultMessage();
 
             siteSelector.UniSelector.OnSelectionChanged += Site_Changed;
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
@@ -68,18 +68,22 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 {
                     ShowErrorMessage(FormatImportResult(result));
                 }
+                else
+                {
+                    ShowSuccessMessage("Operation completed successfully");
+                }
                 
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("Import addresses", "EXCEPTION", ex);
-                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in log.");
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
             }
         }
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = "There was an error while processing the request. Error details:<br /><br />";
+            var headline = $"There was {result.AllMessagesCount} error while processing the request. First {result.ErrorMessages?.Length ?? 0} error details:<br /><br />";
             return headline + string.Join("<br />", result.ErrorMessages);
         }
 
@@ -117,9 +121,16 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
             errorMessage.Text = message;
         }
 
-        private void HideErrorMessage()
+        private void ShowSuccessMessage(string message)
+        {
+            successMessageContainer.Visible = true;
+            successMessage.Text = message;
+        }
+
+        private void HideResultMessage()
         {
             errorMessageContainer.Visible = false;
+            successMessageContainer.Visible = false;
         }
     }
 }

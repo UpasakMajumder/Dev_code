@@ -7,7 +7,6 @@ using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Email;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Users
@@ -20,8 +19,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             var rows = GetExcelRows(importFileData, type);
             var siteRoles = new RoleProvider().GetAllRoles(site.SiteID);
             var users = GetDtosFromExcelRows<UserDto>(rows);
-            var statusMessages = new List<string>();
             var emailService = new EmailService();
+            statusMessages.Clear();
 
             var currentItemNumber = 1;
             foreach (var userDto in users)
@@ -61,6 +60,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             return new ImportResult
             {
+                AllMessagesCount = statusMessages.AllMessagesCount,
                 ErrorMessages = statusMessages.ToArray()
             };
         }
@@ -72,8 +72,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             var rows = GetExcelRows(importFileData, type);
             var addresses = GetDtosFromExcelRows<AddressDto>(rows);
-
-            var statusMessages = new List<string>();
+            statusMessages.Clear();
 
             foreach (var userId in userIds)
             {
@@ -126,6 +125,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             return new ImportResult
             {
+                AllMessagesCount = statusMessages.AllMessagesCount,
                 ErrorMessages = statusMessages.ToArray()
             };
         }
@@ -152,7 +152,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             var errorMessageFormat = "field {0} - {1}";
             bool isValid = ValidatorHelper.ValidateDto(userDto, out validationErrors, errorMessageFormat);
 
-            // validate special rules
+            if (!isValid)
+            {
+                return false;
+            }
+            
             if (!ValidatorHelper.ValidateEmail(userDto.Email))
             {
                 isValid = false;

@@ -3,15 +3,19 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
+using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -23,15 +27,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
         };
 
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
+            statusMessages.Clear();
 
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
-            var statusMessages = new List<string>();
-
+            
             var currentItemNumber = 0;
             foreach (var productDto in products)
             {
@@ -51,7 +55,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                    EventLogProvider.LogException("Import products", "EXCEPTION", ex);
                 }
             }
 
@@ -63,12 +67,57 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
+        public ImportResult ProcessProductImagesImportFile(byte[] importFileData, ExcelType type, int siteID)
+        {
+            CacheHelper.ClearCache();
+
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
+            var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
+            statusMessages.Clear();
+
+            var currentItemNumber = 0;
+            foreach (var imageDto in productImages)
+            {
+                currentItemNumber++;
+
+                List<string> validationResults;
+                if (!ValidatorHelper.ValidateDto(imageDto, out validationResults, "{0} - {1}"))
+                {
+                    statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                    continue;
+                }
+
+                try
+                {
+                    SetProductImage(imageDto, siteID);
+                }
+                catch (Exception ex)
+                {
+                    statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
+                    EventLogProvider.LogException("Import product images", "EXCEPTION", ex);
+                }
+            }
+
+            CacheHelper.ClearCache();
+
+            return new ImportResult
+            {
+                AllMessagesCount = statusMessages.AllMessagesCount,
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
         private bool ValidateImportItem(ProductDto product, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
             bool isValid = ValidatorHelper.ValidateDto(product, out validationErrors, errorMessageFormat);
 
-            // validate special rules
+            if (!isValid)
+            {
+                return false;
+            }
+
             if (product.ProductType.Contains(ProductTypes.TemplatedProduct))
             {
                 if (string.IsNullOrWhiteSpace(product.ChiliTemplateID) ||
@@ -81,6 +130,69 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
+            if (product.ProductType.Contains(ProductTypes.InventoryProduct) ||
+                product.ProductType.Contains(ProductTypes.POD) ||
+                product.ProductType.Contains(ProductTypes.StaticProduct) ||
+                product.ProductType.Contains(ProductTypes.TemplatedProduct))
+            {
+                decimal weight = 0.0m;
+                if(string.IsNullOrEmpty(product.PackageWeight) ||  !decimal.TryParse(product.PackageWeight, out weight))
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
+                }
+                if (weight <= 0.0m)
+                {
+                    isValid = false;
+                    validationErrors.Add($"{nameof(product.PackageWeight)} must be > 0");
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(product.PublishFrom) && !string.IsNullOrEmpty(product.PublishTo))
+            {
+                DateTime from, to;
+
+                if (DateTime.TryParse(product.PublishFrom, out from) && DateTime.TryParse(product.PublishTo, out to))
+                {
+                    if (from > to)
+                    {
+                        isValid = false;
+                        validationErrors.Add("If both are specified, PublishFrom must be earlier than PublishTo");
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("PublishFrom and PublishTo must be in 'MM/dd/yyyy' format.");
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(product.MinItemsInOrder) && !string.IsNullOrEmpty(product.MaxItemsInOrder))
+            {
+                uint min, max;
+                if (uint.TryParse(product.MinItemsInOrder, out min) && uint.TryParse(product.MaxItemsInOrder, out max))
+                {
+                    if (min > max)
+                    {
+                        isValid = false;
+                        validationErrors.Add("If both are specified, MinItemsInOrder must be less than MaxnItemsInOrder");
+                    }
+                }
+                else
+                {
+                    isValid = false;
+                    validationErrors.Add("MinItemsInOrder and MaxItemsInOrder must be non-negative integer.");
+                }
+            }
+
+            if (Convert.ToInt32(product.ItemsInPackage) <= 0)
+            {
+                isValid = false;
+                validationErrors.Add("ItemsInPackagemust be > 0");
+            }
+
             return isValid;
         }
 
@@ -89,10 +201,181 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            var newProduct = AppendProduct(productParent, productDto, sku);
+            AppendProduct(productParent, productDto, sku, siteID);            
         }
 
-        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
+        private void SetProductImage(ProductImageDto image, int siteId)
+        {
+            var sku = GetUniqueSKU(image.SKU, siteId);
+
+            if (sku == null)
+            {
+                throw new Exception($"SKU with SKUNumber {image.SKU} doesn't exist");
+            }
+
+            var documents = DocumentHelper.GetDocuments("KDA.Product")
+                            .Path("/", PathTypeEnum.Children)
+                            .WhereEquals("ClassName", "KDA.Product")
+                            .WhereEquals("NodeSKUID", sku.SKUID)
+                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                            .CheckPermissions()
+                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
+                            .Published();
+
+            if (documents.Count() > 1)
+            {
+                throw new Exception($"Multiple product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            var product = documents.FirstObject as SKUTreeNode;
+
+            if (product == null)
+            {
+                throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            GetAndSaveProductImages(image, product, sku, siteId);
+
+            product.Update();
+        }
+
+        // ready for potential use in Product upload
+        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        {
+            string libraryImageUrl = DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, siteId);
+
+            SetProductImage(product, libraryImageUrl);
+
+            var newAttachment = DownloadAndAttachImage(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+
+            if (newAttachment != null)
+            {
+                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); 
+            }
+        }
+
+        private AttachmentInfo DownloadAndAttachImage(string url, string skuNumber, int documentId, int siteId)
+        {
+            AttachmentInfo newAttachment = null;
+
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+
+                    var response = client.SendAsync(request).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var stream = response.Content.ReadAsStreamAsync().Result;
+                        var extension = Path.GetExtension(url);
+
+                        // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
+                        newAttachment = new AttachmentInfo()
+                        {
+                            InputStream = stream,
+                            AttachmentSiteID = siteId,
+                            AttachmentDocumentID = documentId,
+                            AttachmentExtension = extension,
+                            AttachmentName = $"Thumbnail{skuNumber}{extension}",
+                            AttachmentLastModified = DateTime.Now,
+                            AttachmentMimeType = response.Content.Headers.ContentType.MediaType,
+                            AttachmentSize = (int)stream.Length
+                        };
+
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to download thumbnail image");
+                    }
+                    
+                }
+            }
+
+            if (newAttachment != null)
+            {
+                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
+            }
+
+            return newAttachment;
+        }
+
+        private string DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int siteId)
+        {
+            var library = EnsureLibrary(siteId);
+            MediaFileInfo mediaFile = null;
+
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+                    var response = client.SendAsync(request).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var stream = response.Content.ReadAsStreamAsync().Result;
+                        var imageName = $"Image{skuNumber}";
+
+                        mediaFile = new MediaFileInfo()
+                        {
+                            FileBinaryStream = stream,
+                            FileName = imageName,
+                            FileTitle = imageName,
+                            FileDescription = $"Product image for SKU {skuNumber}",
+                            FilePath = "ProductImages/",
+                            FileExtension = Path.GetExtension(url),
+                            FileMimeType = response.Content.Headers.ContentType.MediaType,
+                            FileSiteID = siteId,
+                            FileLibraryID = library.LibraryID,
+                            FileSize = stream.Length,
+                        };
+                        
+                        MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to download product image");
+                    }
+                }
+            }
+            
+            return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
+        }
+
+        private MediaLibraryInfo EnsureLibrary(int siteId)
+        {
+            string libraryName = "ProductImages";
+            var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
+            var meidaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
+            if (meidaLibrary == null)
+            {
+                // Creates a new media library object
+                meidaLibrary = new MediaLibraryInfo();
+
+                // Sets the library properties
+                meidaLibrary.LibraryDisplayName = libraryName;
+                meidaLibrary.LibraryName = libraryName;
+                meidaLibrary.LibraryDescription = "Media library for storing product images";
+                meidaLibrary.LibraryFolder = "Products";
+                meidaLibrary.LibrarySiteID = SiteContext.CurrentSiteID;
+
+                // Saves the new media library to the database
+                MediaLibraryInfoProvider.SetMediaLibraryInfo(meidaLibrary);
+            }
+
+            return meidaLibrary;
+        }
+
+        /// <summary>
+        /// Sets given <param name="imageUrl"></param> as SKUImagePath of product node
+        /// </summary>
+        private void SetProductImage(SKUTreeNode product, string imageUrl)
+        {
+            product.SetValue("SKUImagePath", imageUrl);
+        }
+
+
+        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
                 return null;
@@ -112,8 +395,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
             newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
             newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
-            newProduct.SetValue("ProductSKUNeedsShipping", product.NeedsShipping.ToLower() == "true");
-            newProduct.SetValue("ProductChili3dEnabled", product.Chili3DEnabled.ToLower() == "true");
+            newProduct.SetValue("ProductSKUNeedsShipping", (product.NeedsShipping?.ToLower() ?? string.Empty) == "true");
+            newProduct.SetValue("ProductChili3dEnabled", (product.Chili3DEnabled?.ToLower() ?? string.Empty) == "true");
             newProduct.SetValue("ProductDynamicPricing", GetDynamicPricingJson(product.DynamicPriceMinItems, product.DynamicPriceMaxItems, product.DynamicPrice));
             newProduct.SetValue("ProductCustomerReferenceNumber", product.CustomerReferenceNumber);
             newProduct.SetValue("ProductMachineType", product.MachineType);
@@ -164,6 +447,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             int[] mins, maxes;
             decimal[] prices;
 
+            var message = "Bad format of Dynamic Pricing definitions. DynamicPriceMinItems, DynamicPriceMaxItems and DynamicPrice cells must contain the same count of rows in one product in proper numeric format.";
+
             if (string.IsNullOrWhiteSpace(min) && string.IsNullOrWhiteSpace(max) && string.IsNullOrWhiteSpace(price))
             {
                 return string.Empty;
@@ -177,17 +462,27 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
             catch (Exception ex)
             {
-                throw new ArgumentOutOfRangeException("Bad format of Dynamic Pricing definitions.", ex);
+                throw new ArgumentOutOfRangeException(message, ex);
             }
-
 
             if (mins.Length != maxes.Length || mins.Length != prices.Length)
             {
-                throw new ArgumentOutOfRangeException("Dynamic Pricing definition cells must contain the same count of rows in one product.");
+                throw new ArgumentOutOfRangeException(message);
             }
 
-
             var ranges = mins.Select((item, index) => new DynamicPricingRange { MinVal = item, MaxVal = maxes[index], Price = prices[index] }).ToList();
+
+            var dynamicRangeErrors = new List<string>();
+            if (!DynamicPricingRange.ValidateRanges(ranges, dynamicRangeErrors))
+            {
+                var allMessages = string.Join(Environment.NewLine, dynamicRangeErrors);
+                throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", allMessages);
+            }
+
+            if (ranges.Any(r => r.MaxVal < r.MinVal))
+            {
+                throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", "All Dynamic Pricing definition ranges must have Min <= Max.");
+            }
 
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
@@ -213,8 +508,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 return parentPage;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-
-            //try to find existing category
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);
 
             if (category == null)
@@ -223,9 +516,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
 
-                SetPageTemplate(category, "_KDA_ProductCategory");
+                // To set category image:
+                // category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
 
-                // Inserts the new page as a child of the parent page
+                SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
 
@@ -244,11 +538,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return TrackInventoryTypeEnum.Disabled;
         }
 
+        private SKUInfo GetUniqueSKU(string sku, int siteID)
+        {
+            var skus = SKUInfoProvider.GetSKUs(siteID)
+                .WhereEquals("SKUNumber", sku);
+
+            if (skus.Count() > 1)
+            {
+                throw new Exception($"Multiple SKUs with SKUNumber {sku} exist on site");
+            }
+
+            return skus.FirstObject;
+        }
+
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = SKUInfoProvider.GetSKUs()
-                .WhereEquals("SKUNumber", product.SKU)
-                .FirstObject ?? new SKUInfo();            
+            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);
@@ -268,7 +573,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 sku.SetValue("SKUMaxItemsInOrder", Convert.ToInt32(product.MaxItemsInOrder));
             }
 
-            sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
+            if (!string.IsNullOrEmpty(product.SellOnlyIfItemsAvailable))
+            {
+                sku.SetValue("SKUSellOnlyAvailable", product.SellOnlyIfItemsAvailable.ToLower() == "true");
+            }
 
             SKUInfoProvider.SetSKUInfo(sku);
             return sku;
