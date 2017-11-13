@@ -46,7 +46,7 @@ namespace CMSApp.CMSWebParts.Kadena.Campaign
             }
             else
             {
-                txtSearch.Attributes.Add("placeholder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
+                txtSearch.Attributes.Add("placeholder", ResHelper.GetString("Kadena.Campaignlst.Searchtext"));
             }
 
         }
