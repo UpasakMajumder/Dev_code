@@ -12,6 +12,7 @@ using Kadena.Models.Product;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -267,6 +268,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stream = response.Content.ReadAsStreamAsync().Result;
+                        var extension = Path.GetExtension(url);
 
                         // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
                         newAttachment = new AttachmentInfo()
@@ -274,14 +276,19 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             InputStream = stream,
                             AttachmentSiteID = siteId,
                             AttachmentDocumentID = documentId,
-                            AttachmentExtension = ".png", // TODO dehardcode extension
-                            AttachmentName = $"Thumbnail{skuNumber}.png",
+                            AttachmentExtension = extension,
+                            AttachmentName = $"Thumbnail{skuNumber}{extension}",
                             AttachmentLastModified = DateTime.Now,
-                            AttachmentMimeType = "image/png",
+                            AttachmentMimeType = response.Content.Headers.ContentType.MediaType,
                             AttachmentSize = (int)stream.Length
                         };
 
                     }
+                    else
+                    {
+                        throw new Exception("Failed to download thumbnail image");
+                    }
+                    
                 }
             }
 
@@ -307,7 +314,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stream = response.Content.ReadAsStreamAsync().Result;
-                        var imageName = $"Image{skuNumber}.png";
+                        var imageName = $"Image{skuNumber}";
 
                         mediaFile = new MediaFileInfo()
                         {
@@ -316,14 +323,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             FileTitle = imageName,
                             FileDescription = $"Product image for SKU {skuNumber}",
                             FilePath = "ProductImages/",
-                            FileExtension = ".png",
-                            FileMimeType = MimeTypeHelper.GetMimetype(".png"),
+                            FileExtension = Path.GetExtension(url),
+                            FileMimeType = response.Content.Headers.ContentType.MediaType,
                             FileSiteID = siteId,
                             FileLibraryID = library.LibraryID,
                             FileSize = stream.Length,
                         };
                         
                         MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to download product image");
                     }
                 }
             }
