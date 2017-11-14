@@ -23,13 +23,14 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public string GetRequestString(EstimateDeliveryPriceRequestDto request)
         {
-            return JsonConvert.SerializeObject(request, camelCaseSerializer);
+            return SerializeRequestContent(request);
         }
 
         public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(string requestBody)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/shippingcost";
+            
             using (var httpClient = new HttpClient())
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Post, url))

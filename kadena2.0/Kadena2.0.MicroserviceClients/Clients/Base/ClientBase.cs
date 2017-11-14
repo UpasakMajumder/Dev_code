@@ -25,7 +25,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
 
-        protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
+        private static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
             ContractResolver = new CamelCasePropertyNamesContractResolver()
@@ -70,7 +70,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
                     if (body != null)
                     {
-                        request.Content = CreateRequestContent(request, body);
+                        request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
                     }
                     
                     using (var response = await client.SendAsync(request).ConfigureAwait(false))
@@ -86,11 +86,9 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
         }
 
-        private StringContent CreateRequestContent(HttpRequestMessage request, object body)
+        protected static string SerializeRequestContent(object body)
         {
-            var requestBody = JsonConvert.SerializeObject(body, camelCaseSerializer);
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-            return content;
+            return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
         protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
