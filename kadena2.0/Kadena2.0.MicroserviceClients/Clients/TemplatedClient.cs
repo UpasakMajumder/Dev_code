@@ -6,7 +6,6 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
@@ -25,16 +24,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<GeneratePdfTaskResponseDto>(response).ConfigureAwait(false);
-                    }
-                }
-            }
+            return await Get<GeneratePdfTaskResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string templateId, string taskId)

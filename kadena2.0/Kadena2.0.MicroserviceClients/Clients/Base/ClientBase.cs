@@ -67,7 +67,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     {
                         AddHeader(client, "suppliantDomain", suppliantDomain);
                     }
-
+                    
                     if (body != null)
                     {
                         request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");

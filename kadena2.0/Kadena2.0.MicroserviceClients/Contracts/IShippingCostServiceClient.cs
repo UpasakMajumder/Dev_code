@@ -8,6 +8,6 @@ namespace Kadena2.MicroserviceClients.Contracts
     public interface IShippingCostServiceClient
     {
         string GetRequestString(EstimateDeliveryPriceRequestDto request);
-        Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(string requestBody);
+        Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(EstimateDeliveryPriceRequestDto requestBody);
     }
 }

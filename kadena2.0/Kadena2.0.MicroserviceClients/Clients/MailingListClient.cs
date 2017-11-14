@@ -2,7 +2,6 @@
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System;
@@ -86,18 +85,14 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/DeliveryAddress/ManualBulkUpdate";
-            using (var client = new HttpClient())
+            var requestBody = new
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), url)
+                CustomerName = _properties.GetCustomerName(),
+                UpdateObjects = addresses.Select(a => new
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new
-                    {
-                        CustomerName = _properties.GetCustomerName(),
-                        UpdateObjects = addresses.Select(a => new
-                        {
-                            HashKey = containerId,
-                            RangeKey = a.Id,
-                            UpdateField = new Dictionary<string, string> {
+                    HashKey = containerId,
+                    RangeKey = a.Id,
+                    UpdateField = new Dictionary<string, string> {
                                 { nameof(a.FirstName), a.FirstName ?? string.Empty },
                                 { nameof(a.Address1), a.Address1 ?? string.Empty },
                                 { nameof(a.Address2), a.Address2 ?? string.Empty },
@@ -106,16 +101,9 @@ namespace Kadena2.MicroserviceClients.Clients
                                 { nameof(a.Zip), a.Zip ?? string.Empty },
                                 { nameof(a.ErrorMessage), string.Empty }
                             }
-                        })
-                    }), System.Text.Encoding.UTF8, "application/json"),
                 })
-                {
-                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<IEnumerable<string>>(message).ConfigureAwait(false);
-                    }
-                }
-            }
+            };
+            return await Patch<IEnumerable<string>>(url, requestBody).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<Guid>> CreateMailingContainer(string name, string mailType, string product, int validityDays, string customerId)
@@ -152,13 +140,14 @@ namespace Kadena2.MicroserviceClients.Clients
                     jsonMapping = sw.ToString();
                 }
             }
-            return await Post<object>(uploadMappingUrl, new
+            var requestBody = new
             {
                 mapping = jsonMapping,
                 fileId = fileId,
                 customerName = _properties.GetCustomerName(),
                 containerId = containerId
-            }).ConfigureAwait(false);
+            };
+            return await Post<object>(uploadMappingUrl, requestBody).ConfigureAwait(false);
         }
     }
 }
