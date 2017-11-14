@@ -5,9 +5,7 @@
             <div class="form">
                 <div class="mb-2">
                     <div class="input__wrapper">
-
                         <cms:LocalizedLabel ID="lblTokenIDlabel" runat="server" CssClass="input__label" ResourceString="Kadena.CampaignForm.CampaignName" />
-
                         <cms:CMSTextBox ID="Name" runat="server" CssClass="input__text" MaxLength="100" />
                         <cms:CMSRequiredFieldValidator ValidationGroup="requiredValidation" ID="rfvUserNameRequired" runat="server" ControlToValidate="Name" Display="Dynamic" ForeColor="Red" />
                         <asp:RegularExpressionValidator ValidationGroup="requiredValidation" Display="Dynamic" ControlToValidate="Name" ID="rvName" ValidationExpression="^[\s\S]{0,40}$" runat="server" ForeColor="Red"></asp:RegularExpressionValidator>

@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.Ecommerce;
+using CMS.DataEngine;
 
 namespace CMSApp.CMSWebParts.Kadena.Campaign
 {
@@ -63,43 +64,15 @@ namespace CMSApp.CMSWebParts.Kadena.Campaign
             {
                 // Gets the ID of the selected department
                 string campaignname = ValidationHelper.GetString(this.txtSearch.Text, "");
-
-                if (campaignname != "")
-                {
-                    where = "Name = '" + campaignname + "' OR Description='" + campaignname + "'";
-                }
+                campaignname= SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(campaignname));
+                where = "Name like '%" + campaignname + "%' OR Description like '%" + campaignname + "%'";
+                
             }
-
-            //// Applies the selected product order
-            //if (this.drpOrder.SelectedValue != "")
-            //{
-            //    switch (this.drpOrder.SelectedValue)
-            //    {
-            //        case "priceAsc":
-            //            order = "SKUPrice";
-            //            break;
-
-            //        case "priceDesc":
-            //            order = "SKUPrice Desc";
-            //            break;
-
-            //        case "name":
-            //            order = "SKUName";
-            //            break;
-            //    }
-            //}
-
             if (where != null)
             {
                 // Sets the Where condition
                 this.WhereCondition = where;
             }
-
-            //if (order != null)
-            //{
-            //    // Sets the OrderBy clause
-            //    this.OrderBy = order;
-            //}
 
             // Raises the filter changed event
             this.RaiseOnFilterChanged();
