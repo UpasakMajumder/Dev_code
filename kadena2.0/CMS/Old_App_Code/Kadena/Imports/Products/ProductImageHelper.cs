@@ -63,11 +63,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newAttachment;
         }
 
-        public static void DetachAndDeleteThumbnail(string url, string skuNumber, int documentId, int siteId)
-        {
-
-        }
-
         public static void AttachTumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
         {
             if (newAttachment != null)
