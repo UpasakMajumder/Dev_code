@@ -71,8 +71,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
-            //return MediaFileInfoProvider.GetMediaFileUrl(mediaFile.FileGUID, mediaFile?.FileName);
-
             return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
         }
 

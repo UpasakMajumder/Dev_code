@@ -52,7 +52,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = "There was an error while processing the request. Error details:<br /><br />";
+            var headline = $"There was {result.AllMessagesCount} error(s) while processing the request. First {result.ErrorMessages.Length} errors: <br /><br />";
             return headline + string.Join("<br />", result.ErrorMessages);
         }
 
