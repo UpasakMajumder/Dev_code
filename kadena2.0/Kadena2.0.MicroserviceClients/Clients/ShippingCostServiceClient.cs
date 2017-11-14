@@ -36,11 +36,6 @@ namespace Kadena2.MicroserviceClients.Clients
                 {
                     request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
-
                     using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<EstimateDeliveryPricePayloadDto>(response).ConfigureAwait(false);

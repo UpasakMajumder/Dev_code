@@ -1,5 +1,4 @@
 ﻿using Kadena.Dto.General;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,6 +14,10 @@ namespace Kadena2.MicroserviceClients.Clients.Base
     {
         private readonly ISuppliantDomainClient _suppliantDomain;
 
+        public ClientBase()
+        {
+        }
+
         protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
         {
             _suppliantDomain = suppliantDomain;
@@ -27,16 +30,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             Formatting = Formatting.Indented,
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
-
-        protected bool SignRequest { get; set; } = true;
-
-        // TODO consider using static or singleton, based on how we will store credentials
-        private readonly IAwsV4Signer signer;
-
-        public ClientBase()
-        {
-            this.signer = new DefaultAwsV4Signer();
-        }
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
@@ -79,14 +72,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     {
                         request.Content = CreateRequestContent(request, body);
                     }
-
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
-
-                    // TODO consider try-catch ?
-
+                    
                     using (var response = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
@@ -98,11 +84,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         private void AddHeader(HttpClient httpClient, string headerName, string headerValue)
         {
             httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
-        }
-
-        protected async Task SignRequestMessage(HttpRequestMessage request)
-        {
-            await signer.SignRequest(request).ConfigureAwait(false);
         }
 
         private StringContent CreateRequestContent(HttpRequestMessage request, object body)

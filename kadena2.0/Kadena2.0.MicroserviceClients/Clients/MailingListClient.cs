@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using System.IO;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
@@ -111,11 +110,6 @@ namespace Kadena2.MicroserviceClients.Clients
                     }), System.Text.Encoding.UTF8, "application/json"),
                 })
                 {
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
-
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         return await ReadResponseJson<IEnumerable<string>>(message).ConfigureAwait(false);

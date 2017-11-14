@@ -27,11 +27,6 @@ namespace Kadena2.MicroserviceClients.Clients
             url = $"{url.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
             using (var request = new HttpRequestMessage(HttpMethod.Get, url))
             {
-                if (SignRequest)
-                {
-                    await SignRequestMessage(request).ConfigureAwait(false);
-                }
-
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
