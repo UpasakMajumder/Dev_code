@@ -3,19 +3,16 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
-using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
-using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
+using CMS.DataEngine;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -250,6 +247,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
 
+            ProductImageHelper.RemoveTumbnail(product, siteId);
+
             var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
 
             ProductImageHelper.AttachTumbnail(product, newAttachment);
@@ -374,7 +373,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()
                             .NestingLevel(1)
-                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
+                            .OnSite(new SiteInfoIdentifier(siteId))
                             .Published()
                             .FirstObject;
 

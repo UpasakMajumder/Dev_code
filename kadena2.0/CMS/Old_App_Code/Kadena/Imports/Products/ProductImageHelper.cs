@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.Ecommerce;
+using CMS.SiteProvider;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -67,11 +68,25 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         }
 
-        internal static void AttachTumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
+        public static void AttachTumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
         {
             if (newAttachment != null)
             {
                 product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID);
+            }
+        }
+
+        public static void RemoveTumbnail(SKUTreeNode product, int siteId)
+        {
+            var oldAttachmentGuid = product.GetGuidValue("ProductThumbnail", Guid.Empty);
+            var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
+            if (oldAttachmentGuid != Guid.Empty)
+            {
+                var oldAttachment = AttachmentInfoProvider.GetAttachmentInfo(oldAttachmentGuid, siteName);
+                if (oldAttachment != null)
+                {
+                    AttachmentInfoProvider.DeleteAttachmentInfo(oldAttachment);
+                }
             }
         }
     }
