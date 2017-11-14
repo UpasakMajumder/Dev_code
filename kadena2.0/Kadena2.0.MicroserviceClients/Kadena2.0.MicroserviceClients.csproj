@@ -75,7 +75,6 @@
     <Compile Include="Clients\TemplatedClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
     <Compile Include="Contracts\Base\IMicroProperties.cs" />
-    <Compile Include="Contracts\Base\ISignedRequestClient.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
     <Compile Include="Contracts\IAddressValidationClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
