@@ -242,139 +242,19 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         // ready for potential use in Product upload
         private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
-            string libraryImageUrl = DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, siteId);
-
-            SetProductImage(product, libraryImageUrl);
-
-            var newAttachment = DownloadAndAttachImage(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
-
-            if (newAttachment != null)
-            {
-                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID); 
-            }
-        }
-
-        private AttachmentInfo DownloadAndAttachImage(string url, string skuNumber, int documentId, int siteId)
-        {
-            AttachmentInfo newAttachment = null;
-
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                {
-
-                    var response = client.SendAsync(request).Result;
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var stream = response.Content.ReadAsStreamAsync().Result;
-                        var extension = Path.GetExtension(url);
-
-                        // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
-                        newAttachment = new AttachmentInfo()
-                        {
-                            InputStream = stream,
-                            AttachmentSiteID = siteId,
-                            AttachmentDocumentID = documentId,
-                            AttachmentExtension = extension,
-                            AttachmentName = $"Thumbnail{skuNumber}{extension}",
-                            AttachmentLastModified = DateTime.Now,
-                            AttachmentMimeType = response.Content.Headers.ContentType.MediaType,
-                            AttachmentSize = (int)stream.Length
-                        };
-
-                    }
-                    else
-                    {
-                        throw new Exception("Failed to download thumbnail image");
-                    }
-                    
-                }
-            }
-
-            if (newAttachment != null)
-            {
-                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-            }
-
-            return newAttachment;
-        }
-
-        private string DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int siteId)
-        {
-            var library = EnsureLibrary(siteId);
-            MediaFileInfo mediaFile = null;
-
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                {
-                    var response = client.SendAsync(request).Result;
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var stream = response.Content.ReadAsStreamAsync().Result;
-                        var imageName = $"Image{skuNumber}";
-
-                        mediaFile = new MediaFileInfo()
-                        {
-                            FileBinaryStream = stream,
-                            FileName = imageName,
-                            FileTitle = imageName,
-                            FileDescription = $"Product image for SKU {skuNumber}",
-                            FilePath = "ProductImages/",
-                            FileExtension = Path.GetExtension(url),
-                            FileMimeType = response.Content.Headers.ContentType.MediaType,
-                            FileSiteID = siteId,
-                            FileLibraryID = library.LibraryID,
-                            FileSize = stream.Length,
-                        };
-                        
-                        MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
-                    }
-                    else
-                    {
-                        throw new Exception("Failed to download product image");
-                    }
-                }
-            }
+            var library = MediaLibraryHelper.EnsureLibrary(siteId);
             
-            return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
+            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
+
+            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
+
+            ProductImageHelper.SetProductImage(product, libraryImageUrl);
+
+            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+
+            ProductImageHelper.AttachTumbnail(product, newAttachment);
         }
-
-        private MediaLibraryInfo EnsureLibrary(int siteId)
-        {
-            string libraryName = "ProductImages";
-            var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
-            var meidaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
-            if (meidaLibrary == null)
-            {
-                // Creates a new media library object
-                meidaLibrary = new MediaLibraryInfo();
-
-                // Sets the library properties
-                meidaLibrary.LibraryDisplayName = libraryName;
-                meidaLibrary.LibraryName = libraryName;
-                meidaLibrary.LibraryDescription = "Media library for storing product images";
-                meidaLibrary.LibraryFolder = "Products";
-                meidaLibrary.LibrarySiteID = SiteContext.CurrentSiteID;
-
-                // Saves the new media library to the database
-                MediaLibraryInfoProvider.SetMediaLibraryInfo(meidaLibrary);
-            }
-
-            return meidaLibrary;
-        }
-
-        /// <summary>
-        /// Sets given <param name="imageUrl"></param> as SKUImagePath of product node
-        /// </summary>
-        private void SetProductImage(SKUTreeNode product, string imageUrl)
-        {
-            product.SetValue("SKUImagePath", imageUrl);
-        }
-
-
+        
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
@@ -440,7 +320,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             node.DocumentPageTemplateID = pageTemplateInfo?.PageTemplateId ?? 0;
             node.NodeTemplateForAllCultures = true;
         }
-
 
         private string GetDynamicPricingJson(string min, string max, string price)
         {
