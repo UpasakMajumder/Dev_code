@@ -1,2 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Programs_ProgramFilter"  CodeBehind="~/CMSWebParts/Kadena/Programs/ProgramFilter.ascx.cs" %>
-<asp:TextBox runat="server" ID="txtSearchProgram" CssClass="input__text" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="txtSearchProgram_TextChanged"></asp:TextBox>
