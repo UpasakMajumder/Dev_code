@@ -24,53 +24,42 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void SetupControl()
         {
-            if (!StopProcessing)
+            if (StopProcessing)
             {
-                SetupDocument();
+                return;
+            }
 
-                if (IsProductMailingType())
-                {
-                    inpNumberOfItems.Attributes.Add("disabled", "true");
-                    inpNumberOfItems.Value = Request.QueryString["quantity"];
-                }
-                else
-                {
-                    if (IsProductTemplatedType())
-                    {
-                        var cartItem = ShoppingCartItemInfoProvider.GetShoppingCartItems()
-                            .WhereEquals("SKUID", _productDocument.NodeSKUID)
-                            .WhereEquals("ShoppingCartID", ECommerceContext.CurrentShoppingCart.ShoppingCartID)
-                            .FirstObject;
-                        if (cartItem != null)
-                        {
-                            inpNumberOfItems.Value = cartItem.CartItemUnits.ToString();
-                        }
-                    }
-                    if (IsProductInventoryType() && IsStockEmpty())
-                    {
-                        this.Visible = false;
-                    }
-                }
+            SetupDocument();
 
-                if (IsProductTemplatedType())
-                {
-                    btnAddToCart.Attributes.Add("class", "btn-action js-chili-addtocart");
-                    btnAddToCart.Disabled = true;
-                }
-                else
-                {
-                    btnAddToCart.Attributes.Add("class", "btn-action js-add-to-cart");
-                }
+            inpNumberOfItems.Value = Request.QueryString["quantity"];
 
-                Controls.Add(new LiteralControl(GetHiddenInput("documentId", _productDocument.DocumentID.ToString())));
-                if (!string.IsNullOrWhiteSpace(Request.QueryString["templateId"]))
-                {
-                    Controls.Add(new LiteralControl(GetHiddenInput("templateId", Request.QueryString["templateId"])));
-                }
-                if (!string.IsNullOrWhiteSpace(Request.QueryString["containerId"]))
-                {
-                    Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
-                }
+            if (IsProductMailingType())
+            {
+                inpNumberOfItems.Attributes.Add("disabled", "true");
+            }
+            else if (IsProductInventoryType() && IsStockEmpty())
+            {
+                this.Visible = false;
+            }
+
+            if (IsProductTemplatedType())
+            {
+                btnAddToCart.Attributes.Add("class", "btn-action js-chili-addtocart");
+                btnAddToCart.Disabled = true;
+            }
+            else
+            {
+                btnAddToCart.Attributes.Add("class", "btn-action js-add-to-cart");
+            }
+
+            Controls.Add(new LiteralControl(GetHiddenInput("documentId", _productDocument.DocumentID.ToString())));
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["templateId"]))
+            {
+                Controls.Add(new LiteralControl(GetHiddenInput("templateId", Request.QueryString["templateId"])));
+            }
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["containerId"]))
+            {
+                Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
             }
         }
 
