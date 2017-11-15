@@ -19,7 +19,6 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> FinishOrder(string orderNumber)
         {
-            // TODO: Was timeout = 60s here, I think useless
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/order";
             return await Patch<string>(url, orderNumber).ConfigureAwait(false);
@@ -27,7 +26,6 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
         {
-            // TODO: Was timeout = 60s here, I think useless
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/order";
             return await Post<string>(url, orderData).ConfigureAwait(false);
