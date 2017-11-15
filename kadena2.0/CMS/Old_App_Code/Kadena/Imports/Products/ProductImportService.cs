@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMS.DataEngine;
+using CMS.SiteProvider;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -204,6 +205,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private void SetProductImage(ProductImageDto image, int siteId)
         {
             var sku = GetUniqueSKU(image.SKU, siteId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+            var defaultSiteCulture = CultureHelper.GetDefaultCultureCode(site.SiteName);
+
+            SettingsKeyInfoProvider.GetSettingsKeyInfo("CMSDefaultCultureCode", new SiteInfoIdentifier(siteId));
 
             if (sku == null)
             {
@@ -214,9 +219,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             .Path("/", PathTypeEnum.Children)
                             .WhereEquals("ClassName", "KDA.Product")
                             .WhereEquals("NodeSKUID", sku.SKUID)
-                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                            .Culture(defaultSiteCulture)
                             .CheckPermissions()
-                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
+                            .OnSite(new SiteInfoIdentifier(siteId))
                             .Published();
 
             if (documents.Count() > 1)

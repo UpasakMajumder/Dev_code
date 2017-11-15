@@ -31,7 +31,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stream = response.Content.ReadAsStreamAsync().Result;
+                        var mimetype = response.Content.Headers.ContentType.MediaType;
                         var extension = Path.GetExtension(url);
+
+                        if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                        {
+                            extension = mimetype.Split('/')[1];
+                        }
 
                         // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
                         newAttachment = new AttachmentInfo()
@@ -40,9 +46,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             AttachmentSiteID = siteId,
                             AttachmentDocumentID = documentId,
                             AttachmentExtension = extension,
-                            AttachmentName = $"Thumbnail{skuNumber}{extension}",
+                            AttachmentName = $"Thumbnail{skuNumber}.{extension}",
                             AttachmentLastModified = DateTime.Now,
-                            AttachmentMimeType = response.Content.Headers.ContentType.MediaType,
+                            AttachmentMimeType = mimetype,
                             AttachmentSize = (int)stream.Length
                         };
 

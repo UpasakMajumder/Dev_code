@@ -37,7 +37,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {            
             MediaFileInfo mediaFile = null;
 
-            using (var client = new System.Net.Http.HttpClient())
+            using (var client = new HttpClient())
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
@@ -46,7 +46,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stream = response.Content.ReadAsStreamAsync().Result;
+                        var mimetype = response.Content.Headers.ContentType.MediaType;
                         var imageName = $"Image{skuNumber}";
+                        var extension = Path.GetExtension(url);
+
+                        if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                        {
+                            extension = $".{mimetype.Split('/')[1]}";
+                        }
 
                         mediaFile = new MediaFileInfo()
                         {
@@ -55,8 +62,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             FileTitle = imageName,
                             FileDescription = $"Product image for SKU {skuNumber}",
                             FilePath = "ProductImages/",
-                            FileExtension = Path.GetExtension(url),
-                            FileMimeType = response.Content.Headers.ContentType.MediaType,
+                            FileExtension = extension,
+                            FileMimeType = mimetype,
                             FileSiteID = siteId,
                             FileLibraryID = libraryId,
                             FileSize = stream.Length,
