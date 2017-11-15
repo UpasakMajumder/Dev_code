@@ -7,64 +7,6 @@ export default (fields, cardType) => {
   const { name, cvc, number, expiry } = fields;
 
   return (dispatch) => {
-    const maxLength = cardType === 'amex' ? cardPaymentSymbols.number.amex : cardPaymentSymbols.number.rest;
-    if (number.length < maxLength) {
-      dispatch({
-        type: CARD_VALIDATION_ERROR,
-        payload: {
-          errorField: 'number',
-          errorMessage: CARD_PAYMENT.fields.number.inValidMessage
-        }
-      });
-      return;
-    }
-
-    if (!CARD_PAYMENT.acceptedCards.includes(cardType)) {
-      dispatch({
-        type: CARD_VALIDATION_ERROR,
-        payload: {
-          errorField: 'number',
-          errorMessage: CARD_PAYMENT.cardTypeInValidMessage
-        }
-      });
-      return;
-    }
-
-    if (name.length < cardPaymentSymbols.name.min) {
-      dispatch({
-        type: CARD_VALIDATION_ERROR,
-        payload: {
-          errorField: 'name',
-          errorMessage: CARD_PAYMENT.fields.name.inValidMessage
-        }
-      });
-      return;
-    }
-
-    if (cvc.length < cardPaymentSymbols.cvc.min) {
-      dispatch({
-        type: CARD_VALIDATION_ERROR,
-        payload: {
-          errorField: 'cvc',
-          errorMessage: CARD_PAYMENT.fields.cvc.inValidMessage
-        }
-      });
-      return;
-    }
-
-    if (expiry.length < cardPaymentSymbols.expiry.min) {
-      dispatch({
-        type: CARD_VALIDATION_ERROR,
-        payload: {
-          errorField: 'expiry',
-          errorMessage: CARD_PAYMENT.fields.expiry.inValidMessage
-        }
-      });
-      return;
-    }
-
-    // AJAX REQUEST
-
     const submit = async () => {
       dispatch({ type: GET_SUBMISSIONID + FETCH });
 

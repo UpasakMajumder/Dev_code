@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import submitCard from 'app.ac/card-payment';
 /* helpers */
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
+import { cardExpiration } from 'app.helpers/regexp';
 /* globals */
 import { CARD_PAYMENT } from 'app.globals';
 /* components */
@@ -25,22 +26,92 @@ class Payment extends Component {
         cvc: ''
       },
       cardType: 'unknown',
-      focused: ''
+      focused: '',
+      invalids: []
     };
-
-    this.changeFieldValue = this.changeFieldValue.bind(this);
-    this.changeFocus = this.changeFocus.bind(this);
-    this.submit = this.submit.bind(this);
   }
 
-  submit() {
+  static getNewValueWithSlash = (value) => {
+    if (value.includes('/') || value.length < cardPaymentSymbols.expiry.min) return value;
+    return `${value.substr(0, 2)}/${value.substr(2)}`;
+  };
+
+  addSlashToExpirationDate = () => {
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        expiry: Payment.getNewValueWithSlash(this.state.fields.expiry)
+      }
+    });
+  };
+
+  getInvalids = () => {
+    const { fields, cardType } = this.state;
+    const invalids = [];
+    const staticData = CARD_PAYMENT.fields;
+
+    const maxLength = cardType === 'amex' ? cardPaymentSymbols.number.amex : cardPaymentSymbols.number.rest;
+
+    if (fields.number.length < maxLength) {
+      invalids.push({
+        errorField: 'number',
+        errorMessage: staticData.number.inValidMessage
+      });
+    }
+
+    if (!CARD_PAYMENT.acceptedCards.includes(cardType)) {
+      invalids.push({
+        errorField: 'number',
+        errorMessage: CARD_PAYMENT.cardTypeInValidMessage
+      });
+    }
+
+    if (fields.name.length < cardPaymentSymbols.name.min) {
+      invalids.push({
+        errorField: 'name',
+        errorMessage: staticData.name.inValidMessage
+      });
+    }
+
+    if (fields.cvc.length < cardPaymentSymbols.cvc.min) {
+      invalids.push({
+        errorField: 'cvc',
+        errorMessage: staticData.cvc.inValidMessage
+      });
+    }
+
+    if (fields.expiry.length < cardPaymentSymbols.expiry.min + 1) { // +1 – slash
+      invalids.push({
+        errorField: 'expiry',
+        errorMessage: staticData.expiry.inValidMessage
+      });
+    }
+
+    if (!fields.expiry.match(cardExpiration)) {
+      invalids.push({
+        errorField: 'expiry',
+        errorMessage: staticData.expiry.inValidMessage
+      });
+    }
+
+    return invalids;
+  };
+
+  submit = () => {
     const { proceedCard } = this.props;
     const { fields, cardType } = this.state;
-    proceedCard(fields, cardType);
+
+    const invalids = this.getInvalids();
+
+    if (invalids.length) {
+      this.setState({ invalids });
+    } else {
+      location.assign(CARD_PAYMENT.RedirectURL);
+      // proceedCard(fields, cardType);
+    }
   }
 
-  changeFieldValue(type, value) {
-    const cardType = this.refs.card.state.type.issuer;
+  static hasValueMaxLength = (type, value, cardType) => {
     let maxLength;
 
     switch (type) {
@@ -48,7 +119,7 @@ class Payment extends Component {
       maxLength = cardType === 'amex' ? cardPaymentSymbols.number.amex : cardPaymentSymbols.number.rest;
       break;
     case 'expiry':
-      maxLength = cardPaymentSymbols.expiry.max;
+      maxLength = value.includes('/') ? cardPaymentSymbols.expiry.max + 1 : cardPaymentSymbols.expiry.max;
       break;
     case 'cvc':
       maxLength = cardPaymentSymbols.cvc.max;
@@ -58,27 +129,38 @@ class Payment extends Component {
       break;
     }
 
-    if (value.length > maxLength) return;
+    return value.length > maxLength;
+  };
+
+  removeFromInvalids = (type) => {
+    const invalids = this.state.invalids.filter(invalid => invalid.errorField !== type);
+    this.setState({ invalids });
+  };
+
+  changeFieldValue = (type, value) => {
+    const cardType = this.refs.card.state.type.issuer;
+    if (Payment.hasValueMaxLength(type, value, cardType)) return;
+
+    this.removeFromInvalids(type);
 
     this.setState({
-      ...this.state,
       cardType,
       fields: {
         ...this.state.fields,
         [type]: value
       }
     });
-  }
+  };
 
-  changeFocus(type) {
+  changeFocus = (type) => {
     this.setState({
       focused: type
     });
-  }
+  };
 
   render() {
-    const { fields, focused } = this.state;
-    const { errorField, errorMessage, isProceeded } = this.props;
+    const { fields, focused, invalids } = this.state;
+    const { isProceeded } = this.props;
 
     return (
       <div className="card-payment">
@@ -93,8 +175,9 @@ class Payment extends Component {
           </div>
           <div className="card-payment__block">
             <PaymentForm
-              errorField={errorField}
-              errorMessage={errorMessage}
+              invalids={invalids}
+              staticData={CARD_PAYMENT.fields}
+              addSlashToExpirationDate={this.addSlashToExpirationDate}
               {...fields}
               changeFocus={this.changeFocus}
               changeFieldValue={this.changeFieldValue}

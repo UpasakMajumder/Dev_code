@@ -14,7 +14,7 @@
   }
 
   &__block {
-    display: inline-block;
+    display: inline-flex;
     width: calc(50% - #{$block-margin});
 
     &:not(:last-child) {
