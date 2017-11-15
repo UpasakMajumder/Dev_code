@@ -2,6 +2,7 @@
 using CMS.Ecommerce;
 using CMS.SiteProvider;
 using System;
+using System.Net.Mime;
 using System.IO;
 using System.Net.Http;
 
@@ -30,8 +31,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
+                        var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
+
+                        if (!mimetype.StartsWith("image/"))
+                        {
+                            throw new Exception("Thumbnail is not of image MIME type");
+                        }
+
                         var stream = response.Content.ReadAsStreamAsync().Result;
-                        var mimetype = response.Content.Headers.ContentType.MediaType;
+                        
                         var extension = Path.GetExtension(url);
 
                         if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))

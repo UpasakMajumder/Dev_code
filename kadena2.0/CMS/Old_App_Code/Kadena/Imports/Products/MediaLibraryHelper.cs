@@ -45,8 +45,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
+                        var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
+
+                        if (!mimetype.StartsWith("image/"))
+                        {
+                            throw new Exception("Image is not of image MIME type");
+                        }
+
                         var stream = response.Content.ReadAsStreamAsync().Result;
-                        var mimetype = response.Content.Headers.ContentType.MediaType;
                         var imageName = $"Image{skuNumber}";
                         var extension = Path.GetExtension(url);
 
