@@ -7,6 +7,7 @@ using Kadena.Models;
 using Kadena.Models.Product;
 using System.IO;
 using System.Web.UI;
+using System;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -30,14 +31,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
 
             SetupDocument();
-
-            inpNumberOfItems.Value = Request.QueryString["quantity"];
-
-            if (IsProductMailingType())
-            {
-                inpNumberOfItems.Attributes.Add("disabled", "true");
-            }
-            else if (IsProductInventoryType() && IsStockEmpty())
+            SetupQuantity();
+            
+            if (IsProductInventoryType() && IsStockEmpty())
             {
                 this.Visible = false;
             }
@@ -60,6 +56,20 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (!string.IsNullOrWhiteSpace(Request.QueryString["containerId"]))
             {
                 Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
+            }
+        }
+
+        private void SetupQuantity()
+        {
+            if (!int.TryParse(Request.QueryString["quantity"], out int quantity))
+            {
+                quantity = 1;
+            }
+            inpNumberOfItems.Value = quantity.ToString();
+
+            if (IsProductMailingType())
+            {
+                inpNumberOfItems.Attributes.Add("disabled", "true");
             }
         }
 
