@@ -208,8 +208,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var site = SiteInfoProvider.GetSiteInfo(siteId);
             var defaultSiteCulture = CultureHelper.GetDefaultCultureCode(site.SiteName);
 
-            SettingsKeyInfoProvider.GetSettingsKeyInfo("CMSDefaultCultureCode", new SiteInfoIdentifier(siteId));
-
             if (sku == null)
             {
                 throw new Exception($"SKU with SKUNumber {image.SKU} doesn't exist");
