@@ -12,6 +12,8 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -23,7 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
         };
 
-        public ImportResult ProcessImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
             statusMessages.Clear();
@@ -51,7 +53,47 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import users", "EXCEPTION", ex);
+                    EventLogProvider.LogException("Import products", "EXCEPTION", ex);
+                }
+            }
+
+            CacheHelper.ClearCache();
+
+            return new ImportResult
+            {
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
+        public ImportResult ProcessProductImagesImportFile(byte[] importFileData, ExcelType type, int siteID)
+        {
+            CacheHelper.ClearCache();
+
+            var site = GetSite(siteID);
+            var rows = GetExcelRows(importFileData, type);
+            var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
+            statusMessages.Clear();
+
+            var currentItemNumber = 0;
+            foreach (var imageDto in productImages)
+            {
+                currentItemNumber++;
+
+                List<string> validationResults;
+                if (!ValidatorHelper.ValidateDto(imageDto, out validationResults, "{0} - {1}"))
+                {
+                    statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
+                    continue;
+                }
+
+                try
+                {
+                    SetProductImage(imageDto, siteID);
+                }
+                catch (Exception ex)
+                {
+                    statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
+                    EventLogProvider.LogException("Import product images", "EXCEPTION", ex);
                 }
             }
 
@@ -157,10 +199,65 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            var newProduct = AppendProduct(productParent, productDto, sku);
+            AppendProduct(productParent, productDto, sku, siteID);            
         }
 
-        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku)
+        private void SetProductImage(ProductImageDto image, int siteId)
+        {
+            var sku = GetUniqueSKU(image.SKU, siteId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+            var defaultSiteCulture = CultureHelper.GetDefaultCultureCode(site.SiteName);
+
+            if (sku == null)
+            {
+                throw new Exception($"SKU with SKUNumber {image.SKU} doesn't exist");
+            }
+
+            var documents = DocumentHelper.GetDocuments("KDA.Product")
+                            .Path("/", PathTypeEnum.Children)
+                            .WhereEquals("ClassName", "KDA.Product")
+                            .WhereEquals("NodeSKUID", sku.SKUID)
+                            .Culture(defaultSiteCulture)
+                            .CheckPermissions()
+                            .OnSite(new SiteInfoIdentifier(siteId))
+                            .Published();
+
+            if (documents.Count() > 1)
+            {
+                throw new Exception($"Multiple product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            var product = documents.FirstObject as SKUTreeNode;
+
+            if (product == null)
+            {
+                throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
+            }
+
+            GetAndSaveProductImages(image, product, sku, siteId);
+
+            product.Update();
+        }
+
+        // ready for potential use in Product upload
+        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        {
+            var library = MediaLibraryHelper.EnsureLibrary(siteId);
+            
+            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
+
+            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
+
+            ProductImageHelper.SetProductImage(product, libraryImageUrl);
+
+            ProductImageHelper.RemoveTumbnail(product, siteId);
+
+            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+
+            ProductImageHelper.AttachTumbnail(product, newAttachment);
+        }
+        
+        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
                 return null;
@@ -226,7 +323,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             node.NodeTemplateForAllCultures = true;
         }
 
-
         private string GetDynamicPricingJson(string min, string max, string price)
         {
             int[] mins, maxes;
@@ -280,7 +376,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()
                             .NestingLevel(1)
-                            .OnSite(new CMS.DataEngine.SiteInfoIdentifier(siteId))
+                            .OnSite(new SiteInfoIdentifier(siteId))
                             .Published()
                             .FirstObject;
 
@@ -293,8 +389,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 return parentPage;
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-
-            //try to find existing category
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);
 
             if (category == null)
@@ -302,6 +396,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
                 category.DocumentCulture = "en-us";
+
+                // To set category image:
+                // category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
+
                 SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
@@ -321,17 +419,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return TrackInventoryTypeEnum.Disabled;
         }
 
-        private SKUInfo EnsureSKU(ProductDto product, int siteID)
+        private SKUInfo GetUniqueSKU(string sku, int siteID)
         {
             var skus = SKUInfoProvider.GetSKUs(siteID)
-                .WhereEquals("SKUNumber", product.SKU);
+                .WhereEquals("SKUNumber", sku);
 
             if (skus.Count() > 1)
             {
-                throw new Exception($"Multiple SKUs with SKUNumber {product.SKU} exist on site");
+                throw new Exception($"Multiple SKUs with SKUNumber {sku} exist on site");
             }
 
-            var sku = skus.FirstObject ?? new SKUInfo();            
+            return skus.FirstObject;
+        }
+
+        private SKUInfo EnsureSKU(ProductDto product, int siteID)
+        {
+            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);

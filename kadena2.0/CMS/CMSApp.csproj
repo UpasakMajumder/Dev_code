@@ -1120,7 +1120,6 @@
     <Content Include="App_Themes\PersonalSite\Images\UniGrid\Prev.gif" />
     <Content Include="App_Themes\PersonalSite\Images\UniGrid\PrevOver.gif" />
     <Content Include="App_Themes\PersonalSite\Skin.css" />
-    <Content Include="BrandWebservice.asmx" />
     <Content Include="CMSAdminControls\Basic\DisabledModuleInfo.ascx" />
     <Content Include="CMSAdminControls\CKeditor\adapters\jquery.js" />
     <Content Include="CMSAdminControls\CKeditor\ckeditor.js" />
@@ -3909,19 +3908,6 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
-    <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
-    <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
-    <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
-    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx" />
-    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />
-    <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
-    <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -4310,7 +4296,6 @@
     <Content Include="DancingGoat\Scripts\Vendor\DomReady\DomReady.js" />
     <Content Include="DancingGoat\Scripts\Vendor\jQuery\jQuery.min.js" />
     <Content Include="DancingGoat\Scripts\Vendor\RequireJS\require.min.js" />
-    <Content Include="DeleteAddressWebService.asmx" />
     <Content Include="EcommerceSite\images\blank.gif" />
     <Content Include="EcommerceSite\images\fancybox-x.png" />
     <Content Include="EcommerceSite\images\fancybox-y.png" />
@@ -4387,7 +4372,6 @@
     <Content Include="PersonalSite\Scripts\jquery-1.11.0.min.js" />
     <Content Include="PersonalSite\Scripts\lightbox.js" />
     <Content Include="PersonalSite\Stylesheets\lightbox.css" />
-    <Content Include="ProgramWebservice.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4444,10 +4428,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BrandWebservice.asmx.cs">
-      <DependentUpon>BrandWebservice.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="CMSAdminControls\UI\SmartTip.ascx.cs">
       <DependentUpon>SmartTip.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -15403,97 +15383,6 @@
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.cs">
-      <DependentUpon>AddressFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\AddressFilter.ascx.designer.cs">
-      <DependentUpon>AddressFilter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.cs">
-      <DependentUpon>CreateAddress.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
-      <DependentUpon>CreateAddress.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
-      <DependentUpon>CampaignFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.designer.cs">
-      <DependentUpon>CampaignFilter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx.cs">
-      <DependentUpon>CampaignList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx.designer.cs">
-      <DependentUpon>CampaignList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.cs">
-      <DependentUpon>CreateCampaign.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.designer.cs">
-      <DependentUpon>CreateCampaign.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.cs">
-      <DependentUpon>Category.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.designer.cs">
-      <DependentUpon>Category.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.cs">
-      <DependentUpon>CategoryFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.designer.cs">
-      <DependentUpon>CategoryFilter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx.cs">
-      <DependentUpon>BrandsFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx.designer.cs">
-      <DependentUpon>BrandsFilter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.cs">
-      <DependentUpon>logonform.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.designer.cs">
-      <DependentUpon>logonform.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.cs">
-      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.designer.cs">
-      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.cs">
-      <DependentUpon>UsersList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.designer.cs">
-      <DependentUpon>UsersList.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.cs">
-      <DependentUpon>AddNewProgram.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.designer.cs">
-      <DependentUpon>AddNewProgram.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.cs">
-      <DependentUpon>ProgramFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.designer.cs">
-      <DependentUpon>ProgramFilter.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -21869,10 +21758,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DeleteAddressWebService.asmx.cs">
-      <DependentUpon>DeleteAddressWebService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -21966,18 +21851,6 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\CropImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\ResizeImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\Brand.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ShippingAddress.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\KadenaMacroMethods.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\Program.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProgramProvider.generated.cs" />
-    <Compile Include="ProgramWebservice.asmx.cs">
-      <DependentUpon>ProgramWebservice.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,2 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Address_AddressFilter"  CodeBehind="~/CMSWebParts/Kadena/Address/AddressFilter.ascx.cs" %>
-<asp:TextBox runat="server" ID="txtSearchBrand" CssClass="input__text" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="txtSearchBrand_TextChanged"></asp:TextBox>
