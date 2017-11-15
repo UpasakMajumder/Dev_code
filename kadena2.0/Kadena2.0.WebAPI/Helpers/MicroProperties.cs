@@ -19,7 +19,7 @@ namespace Kadena.WebAPI.Helpers
 
         public string GetServiceUrl(string urlLocationName)
         {
-            return _kentico.GetSettingsKey(urlLocationName);
+            return _kentico.GetSettingsKey(urlLocationName).TrimEnd('/');
         }
     }
 }
