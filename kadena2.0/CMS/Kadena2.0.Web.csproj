@@ -948,6 +948,13 @@
     <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.designer.cs">
       <DependentUpon>logonform.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx.designer.cs">
+      <DependentUpon>UsersFilterControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx.cs">
       <DependentUpon>UsersList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1162,6 +1169,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
     <Content Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx" />
