@@ -1,9 +1,4 @@
 using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
@@ -60,10 +55,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated())
             {
                 BindResourceStrings();
+                ddlCountry.Value = "USA";
                 int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
                 if (itemID != default(int))
                 {
                     //headerAddress.InnerText = "Edit Address";
+                    //ddlCountry.Value = "271";
+                    
                     BindAddressData(itemID);
                     // UpdateAddressData(itemID);
                 }

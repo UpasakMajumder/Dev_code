@@ -7,7 +7,7 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form_section">
-            <div class="form">
+            <div class="form form_width100">
 
                 <div class="mb-2 form_block">
                     <div class="input__wrapper">
@@ -82,7 +82,7 @@
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblCountry"></span>
                         <div class="input__inner">
-                            <uc1:CountrySelector runat="server" ID="ddlCountry" AddNoneRecord="false" AddSelectCountryRecord="false" />
+                            <uc1:CountrySelector runat="server" ID="ddlCountry" AddNoneRecord="false" AddSelectCountryRecord="false" CssClass="input__select" />
                         </div>
                     </div>
                 </div>
