@@ -19,6 +19,7 @@ export const VALIDATION_ERROR = '_VALIDATION_ERROR';
 export const ADD_NEW_ADDRESS = 'ADD_NEW_ADDRESS';
 export const LOG_IN = 'LOG_IN';
 export const DIALOG = 'DIALOG';
+export const LANGUAGES = 'LANGUAGES';
 export const DIALOG_ALERT = 'DIALOG_ALERT';
 export const APP_LOADING = 'APP_LOADING';
 export const SEARCH_PAGE = 'SEARCH_PAGE';
@@ -57,6 +58,8 @@ export const PRODUCT_UNMARK_AS_FAVOURITE = 'PRODUCT_UNMARK_AS_FAVOURITE';
 export const MAILING_RESPONSE_SUCCESS = 'MAILING/MAILING_RESPONSE_SUCCESS';
 export const CARD_VALIDATION_ERROR = 'CARD_VALIDATION_ERROR';
 export const SUBMIT_CARD = 'SUBMIT_CARD';
+export const SET_ADDRESS_DEFAULT = 'SET_ADDRESS_DEFAULT';
+export const UNSET_ADDRESS_DEFAULT = 'UNSET_ADDRESS_DEFAULT';
 
 /* config */
 export const isDevelopment = process.env.NODE_ENV === 'development';

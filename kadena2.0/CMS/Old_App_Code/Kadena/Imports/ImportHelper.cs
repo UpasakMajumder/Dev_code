@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -15,9 +16,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             {
                 for (int propIndex = 0; propIndex < properties.Count; propIndex++)
                 {
-                    if (string.Compare(properties[propIndex].Key, header[colIndex], ignoreCase: true) == 0)
+                    if (string.Compare(properties[propIndex].Name, header[colIndex], ignoreCase: true) == 0)
                     {
-                        columnIndexToPropertyMap[colIndex] = properties[propIndex].Value;
+                        columnIndexToPropertyMap[colIndex] = properties[propIndex].PropertyInfo;
                         break;
                     }
                 }
@@ -51,13 +52,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
         }
 
-        public static List<KeyValuePair<string, PropertyInfo>> GetHeaderProperties<T>()
+        public static List<Column> GetHeaderProperties<T>()
         {
             var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute })
+            var namedProperties = properties.Select(p => new { Property = p, HeaderInfo = p.GetCustomAttributes(inherit: false).FirstOrDefault(a => a is HeaderAttribute) as HeaderAttribute, IsMandatory = (p.GetCustomAttributes(inherit:false).FirstOrDefault(a => a is RequiredAttribute) )!=null })
                 .Where(p => p.HeaderInfo != null)
                 .OrderBy(p => p.HeaderInfo.Order)
-                .Select(p => new KeyValuePair<string, PropertyInfo>(p.HeaderInfo.Title, p.Property))
+                .Select(p => new Column() { PropertyInfo = p.Property, Name = p.HeaderInfo.Title, Order = p.HeaderInfo.Order, IsMandatory = p.IsMandatory })
                 .ToList();
             return namedProperties;
         }

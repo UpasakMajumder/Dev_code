@@ -62,47 +62,30 @@ export const getUI = () => {
   return (dispatch) => {
     dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
 
-    const prod = () => {
-      axios.get(CHECKOUT_URL.initRenderUIURL)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
+    axios.get(CHECKOUT_URL.initRenderUIURL)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-          if (!success) {
-            dispatch({
-              type: CHECKOUT_STATIC + INIT_UI + FAILURE,
-              alert: errorMessage
-            });
-            return;
-          }
-
-          getTotalPrice(dispatch);
-
+        if (!success) {
           dispatch({
-            type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: CHECKOUT_STATIC + INIT_UI + FAILURE,
+            alert: errorMessage
           });
-        })
-        .catch((error) => {
-          dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
-        });
-    };
+          return;
+        }
 
-    const dev = () => {
-      setTimeout(() => {
-        getTotalPriceDev(dispatch);
+        getTotalPrice(dispatch);
 
         dispatch({
           type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
           payload: {
-            ui: staticUI.payload
+            ui: payload
           }
         });
-      }, 1500);
-    };
-
-    callAC(dev, prod);
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
+      });
   };
 };
 

@@ -1,9 +1,7 @@
 /* eslint-disable */
 export const newAddress = {
-  "street": [
-    "Test Address line 1",
-    "Test Address line 2"
-  ],
+  "street1": "Test Address line 1",
+  "street2": "Test Address line 2",
   "city": "COLLIERVILLE",
   "state": "TN",
   "zip": "38017",
@@ -29,6 +27,10 @@ export const staticUI = {
         "pricePrefix": "$",
         "price": "10000.0"
       },
+      "buttonLabels": {
+        "edit": "Edit",
+        "remove": "Remove"
+      },
       "number": "You have 1 item in your shopping cart",
       "items": [
         {
@@ -36,6 +38,8 @@ export const staticUI = {
           "image": "",
           "template": "Template",
           "isMailingList": false,
+          "templatePrefix": "MailingListPrefix",
+          "mailingListPrefix": "MailingListPrefix",
           "mailingList": "Mailing list",
           "delivery": "",
           "pricePrefix": "$",
@@ -52,6 +56,8 @@ export const staticUI = {
           "image": "http://satyr.io/100-200x400-500?2",
           "template": "Template",
           "isMailingList": false,
+          "templatePrefix": "MailingListPrefix",
+          "mailingListPrefix": "MailingListPrefix",
           "mailingList": "Mailing list",
           "delivery": "",
           "pricePrefix": "$",
@@ -68,6 +74,7 @@ export const staticUI = {
     "deliveryAddresses": {
       "isDeliverable": true,
       "availableToAdd": true,
+      "userNotification": "Hello",
       "dialogUI": {
         "title": "New address",
         "discardBtnLabel": "Discard changes",
@@ -81,13 +88,13 @@ export const staticUI = {
             "type": "text"
           },
           {
-            "id": "address1",
+            "id": "street1",
             "label": "Address 1",
             "values": [],
             "type": "text"
           },
           {
-            "id": "address2",
+            "id": "street2",
             "label": "Address 2",
             "values": [],
             "type": "text",
@@ -143,9 +150,8 @@ export const staticUI = {
       "emptyMessage": "Fill at least one address",
       "items": [
         {
-          "street": [
-            "Test Address line 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "COLLIERVILLE",
           "state": "TN",
           "zip": "38017",
@@ -153,9 +159,8 @@ export const staticUI = {
           "checked": true
         },
         {
-          "street": [
-            "House number 123"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Red Watter Village",
           "state": "",
           "zip": "56161",
@@ -163,9 +168,8 @@ export const staticUI = {
           "checked": false
         },
         {
-          "street": [
-            "Sun street 1"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Tokyo",
           "state": "",
           "zip": "13228",
@@ -173,9 +177,8 @@ export const staticUI = {
           "checked": false
         },
         {
-          "street": [
-            "Actum Hyper Company"
-          ],
+          "street1": "Test Address line 1",
+          "street2": "Test Address line 2",
           "city": "Prague",
           "state": "",
           "zip": "14000",

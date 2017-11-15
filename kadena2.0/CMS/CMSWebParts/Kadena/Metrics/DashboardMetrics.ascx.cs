@@ -6,6 +6,7 @@ using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Models;
+using Kadena.Models.Product;
 using Kadena.Old_App_Code.Helpers;
 using Kadena.Old_App_Code.Kadena.Orders;
 

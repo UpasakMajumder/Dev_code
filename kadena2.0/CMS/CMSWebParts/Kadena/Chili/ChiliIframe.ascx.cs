@@ -1,5 +1,8 @@
-﻿using CMS.PortalEngine.Web.UI;
-using Kadena.Old_App_Code.Kadena.Chili;
+﻿using CMS.DataEngine;
+using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
+using Kadena2.MicroserviceClients.Clients;
+using System;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
 {
@@ -7,6 +10,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
     {
         private const string _TemplateIDKey = "templateid";
         private const string _TemplateWorkspaceID = "workspaceid";
+        private const string _Use3dID = "use3d";
 
         private string TemplateID
         {
@@ -24,6 +28,22 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
+        private bool Use3d
+        {
+            get
+            {
+                return (Request?.QueryString?[_Use3dID] ?? string.Empty).ToLower() == "true";
+            }
+        }
+
+        public string ServiceBaseUrl
+        {
+            get
+            {
+                return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
+            }
+        }
+
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
@@ -34,7 +54,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing && TemplateID != null)
             {
-                chilliIframe.Src = new TemplateServiceHelper().GetEditorUrl(TemplateID, WorkspaceID);
+                chilliIframe.Src = new TemplatedProductService().GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d, CMS.Helpers.RequestContext.CurrentDomain).Result?.Payload ?? string.Empty;
             }
         }
     }

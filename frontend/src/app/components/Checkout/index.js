@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+/* globals */
+import { CHECKOUT } from 'app.globals';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
 import Spinner from 'app.dump/Spinner';
+import CheckboxInput from 'app.dump/Form/CheckboxInput';
 /* ac */
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity, getUI, addNewAddress } from 'app.ac/checkout';
@@ -17,6 +20,10 @@ import Products from './Products';
 import Total from './Total';
 
 class Checkout extends Component {
+  state = {
+    agreeWithTandC: !CHECKOUT.tAndC.exists
+  };
+
   static fireNotification(fields) {
     let message = 'Please, select one of ';
 
@@ -47,6 +54,14 @@ class Checkout extends Component {
 
     toastr.error(message);
   }
+
+  toggleAgreementWithTandC = () => {
+    this.setState((prevState) => {
+      return {
+        agreeWithTandC: !prevState.agreeWithTandC
+      };
+    });
+  };
 
   componentDidMount() {
     const { getUI } = this.props;
@@ -139,6 +154,21 @@ class Checkout extends Component {
 
     let content = <Spinner />;
 
+    const tAndCComponent = CHECKOUT.tAndC.exists
+      ?
+      (
+        <div className="shopping-cart__block">
+          <CheckboxInput
+            id="t&c"
+            label={CHECKOUT.tAndC.text}
+            type="checkbox"
+            value={this.state.agreeWithTandC}
+            onChange={this.toggleAgreementWithTandC}
+          />
+        </div>
+      )
+      : null;
+
     if (Object.keys(ui).length) {
       const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
@@ -223,12 +253,15 @@ class Checkout extends Component {
           {totalsComponent}
         </div>
 
+        {tAndCComponent}
+
         <div className="shopping-cart__block text--right">
           <Button
             text={submit.btnLabel}
             type="action"
+            disabled={!this.state.agreeWithTandC}
             isLoading={disableInteractivity}
-            onClick={() => this.placeOrder(checkedData)}
+            onClick={() => this.placeOrder({ ...checkedData, agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC })}
           />
         </div>
       </div>;

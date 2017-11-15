@@ -14,7 +14,6 @@ class ChiliEditor extends AddToCart {
     this.editor = null;
     this.frameWindow = null;
     this.chiliWorks = false;
-    this.addProduct = false;
 
     const newDomain = getSecondLevelDomain();
     if (newDomain) document.domain = newDomain;
@@ -43,12 +42,11 @@ class ChiliEditor extends AddToCart {
       this.frameWindow = frame.contentWindow;
       this.frameWindow.GetEditor(this.editorLoaded);
       this.chiliWorks = true;
+      this.initActions();
     } catch (e) {
       toastr.error(NOTIFICATION.chiliNotAvailable.title, NOTIFICATION.chiliNotAvailable.text);
       this.chiliWorks = false;
     }
-
-    this.initActions();
   }
 
   initActions() {
@@ -65,18 +63,16 @@ class ChiliEditor extends AddToCart {
     }
 
     const revertBtn = document.querySelector('.js-chili-revert');
-    if (revertBtn && this.chiliWorks) revertBtn.addEventListener('click', this.revertTemplate);
+    if (revertBtn) revertBtn.addEventListener('click', this.revertTemplate);
   }
 
   addToCart(event) {
-    this.addProduct = true;
-    if (this.chiliWorks) {
-      event.currentTarget.disabled = true;
-      this.event = event;
-      this.triggerChiliSave();
-    } else {
-      this.addToCartRequest(event);
-    }
+    // callback from HTML `product-editor.nunj`
+    window.addToCartRequest = this.addToCartRequest;
+    window.addToCart = true;
+    window.cartEvent = event;
+
+    this.triggerChiliSave();
   }
 
   triggerChiliSave() {
@@ -90,7 +86,6 @@ class ChiliEditor extends AddToCart {
         const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
         if (success) {
           toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
-          if (this.addProduct) this.addToCartRequest(this.event);
         } else {
           toastr.error(errorMessage);
         }

@@ -1,16 +1,33 @@
 /* eslint-disable */
 export default {
   "commonInfo": {
-    "status": "In progress",
-    "orderDate": "2017-08-07T09:12:08.108892Z",
-    "shippingDate": "N/A",
-    "totalCost": "$ 1,383.68"
+    status: {
+      title: 'Status',
+      value: 'In progress'
+    },
+    orderDate: {
+      title: 'Order date',
+      value: '2017-08-07T09:12:08.108892Z'
+    },
+    shippingDate: {
+      title: 'Shipping date',
+      value: 'N/A'
+    },
+    totalCost: {
+      title: 'Total cost',
+      value: '$ 1,383.68'
+    }
   },
   "shippingInfo": {
     "title": "Shipping",
     "deliveryMethod": "fedex-delivery",
     "message": "All items will be mailed according to the selected mailing list",
-    "address": "4001 Valley Industrial Blvd, Shakopee, MN 55379",
+    "address": {
+      "street1": "4001 Valley Industrial Blvd",
+      "city": "Shakopee",
+      "state": "MN",
+      "zip": "55379"
+    },
     "tracking": { // null
       "text": "Track your packages",
       "url": "#"
@@ -21,7 +38,8 @@ export default {
     "paymentIcon": "order-payment",
     "paidBy": "Paid by credit card",
     "paymentDetail": "Mastercard •••• 4062",
-    "date": "2017-08-07T09:12:08.108892Z"
+    "date": "2017-08-07T09:12:08.108892Z",
+    "datePrefix": "Payment date"
   },
   "pricingInfo": {
     "title": "Pricing",
@@ -59,6 +77,10 @@ export default {
         "mailingList": "Mailing",
         "shippingDate": "2017-08-07T09:12:08.108892Z",
         "trackingId": "",
+        "mailingListPrefix": "Mailing list",
+        "shippingDatePrefix": "Tracking ID",
+        "trackingIdPrefix": "Shipping date",
+        "templatePrefix": "Shipping date",
         "price": "$ 112.2",
         "quantityPrefix": "Quantity:", // Addresses/Quantity,
         "quantityShippedPrefix": "Quantity shipped:",

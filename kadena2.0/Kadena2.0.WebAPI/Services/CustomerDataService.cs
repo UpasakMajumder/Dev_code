@@ -3,6 +3,7 @@ using Kadena.Models.CustomerData;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
+using Kadena.Models;
 
 namespace Kadena.WebAPI.Services
 {
@@ -25,30 +26,37 @@ namespace Kadena.WebAPI.Services
 
             if (customer == null)
                 return null;
-
-            var address = kenticoUsers.GetCustomerShippingAddresses(customerId).FirstOrDefault();
-
-            if (address == null)
-                return null;
-
+                    
             var claims = GetCustomerClaims(siteId, customer.UserID);
 
-            return new CustomerData()
+            var customerData = new CustomerData()
             {
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
                 Phone = customer.Phone,
-                Address = new CustomerAddress()
-                {
-                    Street = address.Street,
-                    City = address.City,
-                    Country = address.Country,
-                    State = address.State,
-                    Zip = address.Zip
-                },
+                PreferredLanguage = customer.PreferredLanguage,
+                Address = null,
                 Claims = claims,
             };
+
+            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
+            if (address != null)
+            {
+                var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
+                var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
+
+                customerData.Address = new CustomerAddress
+                {
+                    Street = new List<string> { address.Address1, address.Address2 },
+                    City = address.City,
+                    Country = country.Name,
+                    State = state?.StateCode,
+                    Zip = address.Zip
+                };
+            }
+
+            return  customerData;
         }
 
         private Dictionary<string, string> GetCustomerClaims(int siteId, int userId)

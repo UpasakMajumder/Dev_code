@@ -1,9 +1,10 @@
-﻿using Kadena.WebAPI.Contracts;
-using Kadena.Models;
-using System.Threading.Tasks;
+﻿using Kadena.Models;
+using Kadena.WebAPI.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.Services
 {
@@ -13,61 +14,69 @@ namespace Kadena.WebAPI.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
+        private readonly ICache cache;
+
+        public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
         public TaxEstimationService(IKenticoProviderService kenticoProvider,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
-                                   IKenticoLogger kenticoLog)
+                                   IKenticoLogger kenticoLog,
+                                   ICache cache)
         {
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            
             this.kenticoLog = kenticoLog;
+            this.cache = cache;
         }
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
-            DeliveryAddress addressTo = null;
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress);
 
-            if (deliveryAddress != null)
+            var estimate = await EstimateTotalTax(ServiceEndpoint, taxRequest);
+            return estimate;
+        }
+
+        private async Task<decimal> EstimateTotalTax(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        {
+            if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
             {
-                addressTo = deliveryAddress;
+                // no need for tax estimation
+                return 0.0m;
+            }
+
+            var cacheKey = $"DeliveryPriceEstimationClient|{serviceEndpoint}|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
+            var cachedResult = cache.Get(cacheKey);
+            if (cachedResult != null)
+            {
+                return (decimal)cachedResult;
+            }
+
+            var response = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
+            if (response.Success)
+            {
+                var result = response.Payload;
+                cache.Insert(cacheKey, result);
+                return result;
             }
             else
             {
-                addressTo = kenticoProvider.GetCurrentCartShippingAddress();
-            }
-
-            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
-            var serviceEndpoint = resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
-            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
-
-            if (totalItemsPrice == 0.0d && shippingCosts == 0.0d)
-            {
-                // not call microservice in this case
+                kenticoLog.LogError("DeliveryPriceEstimationClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
                 return 0.0m;
             }
-
-            var taxRequest = CreateTaxCalculatorRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
-            var taxResponse = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
-
-            if (!taxResponse.Success)
-            {
-                kenticoLog.LogError("Tax estimation", $"Failed to estimate tax: {taxResponse.ErrorMessages}");
-                return 0.0m;
-            }
-
-            return taxResponse.Payload;
         }
 
-        private TaxCalculatorRequestDto CreateTaxCalculatorRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
         {
             var taxRequest = new TaxCalculatorRequestDto()
             {
                 TotalBasePrice = totalItemsPrice,
                 ShipCost = shippingCosts
             };
+
+            var stateTo = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == (addressTo?.State?.Id ?? 0));
 
             if (addressFrom != null)
             {
@@ -79,12 +88,23 @@ namespace Kadena.WebAPI.Services
             if (addressTo != null)
             {
                 taxRequest.ShipToCity = addressTo.City ?? string.Empty;
-                taxRequest.ShipToState = addressTo.State ?? string.Empty;
+                taxRequest.ShipToState = stateTo?.StateCode ?? string.Empty;
                 taxRequest.ShipToZip = addressTo.Zip ?? string.Empty;
             }
 
             return taxRequest;
-        }				
+        }
+
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress)
+        {
+            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
+            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
+
+            var addressTo = deliveryAddress ?? kenticoProvider.GetCurrentCartShippingAddress();
+            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
+
+            return CreateTaxEstimationRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
+        }
     }
 }
  

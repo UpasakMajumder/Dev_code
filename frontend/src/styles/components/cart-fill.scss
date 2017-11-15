@@ -32,10 +32,6 @@
         }
       }
     }
-
-    .btn-group {
-      @include rem(margin, 20px 0 20px);
-    }
   }
 
   &__block-inner {
@@ -55,10 +51,28 @@
       margin-bottom: 0;
     }
   }
+
+  &__btns {
+    display: flex;
+    flex-direction: column;
+
+    & > *:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.cart__dialog-table,
+.checkout__dialog-table {
+  td {
+    vertical-align: top;
+  }
 }
 
 .cart__dialog-table {
-  @include dialog-table(5);
+  td:not(:first-child) {
+    @extend .pl-2;
+  }
 }
 
 .checkout__dialog-table {
