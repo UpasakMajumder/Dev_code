@@ -130,19 +130,18 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
         {
             var statisticClient = new StatisticsClient(new MicroProperties(new KenticoResourceService()));
             var requestResult = statisticClient.GetOrderStatistics().Result;
-            if (requestResult.Success)
-            {
-                return new OrderStatisticsData
-                {
-                    numberOfOrders = requestResult.Payload.NumberOfOrders,
-                    productionAvgTime = requestResult.Payload.ProductionAvgTime
-                };
-            }
-            else
+
+            if (!requestResult.Success)
             {
                 EventLogProvider.LogException("DASHBOARD", "GET ORDER STATISTICS", new InvalidOperationException(requestResult.ErrorMessages));
                 return null;
             }
+
+            return new OrderStatisticsData
+            {
+                numberOfOrders = requestResult.Payload?.NumberOfOrders ?? 0,
+                productionAvgTime = requestResult.Payload?.ProductionAvgTime ?? 0
+            };
         }
 
         #endregion
