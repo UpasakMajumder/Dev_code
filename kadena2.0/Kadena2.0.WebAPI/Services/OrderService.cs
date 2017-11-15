@@ -268,6 +268,16 @@ namespace Kadena.WebAPI.Services
             throw new SecurityException("Permission denied");
         }
 
+        public async Task<SubmitOrderResult> SubmitOrderHandler(SubmitOrderRequest request)
+        {
+            var paymentMethods = kenticoProvider.GetPaymentMethods();
+            var selectedPayment = paymentMethods.Where(p => p.Id == (request.PaymentMethod?.Id ?? -1)).FirstOrDefault();
+
+            
+            
+
+        }
+
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
