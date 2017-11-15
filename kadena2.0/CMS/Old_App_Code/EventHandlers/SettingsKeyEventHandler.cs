@@ -2,6 +2,7 @@
 using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using Kadena.Dto.KSource;
 using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
@@ -71,22 +72,29 @@ namespace Kadena.Old_App_Code.EventHandlers
                 var ruleName = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_ruleNameSettingKey}");
                 if (!string.IsNullOrWhiteSpace(url) && !string.IsNullOrWhiteSpace(ruleName))
                 {
-                    var rate = SettingsKeyInfoProvider.GetIntValue($"{site.SiteName}.{_rateSettingKey}");
-                    var targetId = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_targetIdSettingKey}");
-                    var workGroupName = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_workgroupNameSettingKey}");
-                    var nooshUrl = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshApiSettingKey}");
-                    var nooshToken = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshTokenSettingKey}");
+                    var nooshRule = new RuleDto
+                    {
+                        RuleName = ruleName,
+                        Rate = SettingsKeyInfoProvider.GetIntValue($"{site.SiteName}.{_rateSettingKey}"),
+                        TargetId = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_targetIdSettingKey}")
+                    };
+                    var nooshSettings = new NooshDto
+                    {
+                        WorkgroupName = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_workgroupNameSettingKey}"),
+                        NooshUrl = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshApiSettingKey}"),
+                        NooshToken = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.{_nooshTokenSettingKey}")
+                    };
 
-                    bool enabled = rate > 0
-                        && !string.IsNullOrWhiteSpace(targetId)
-                        && !string.IsNullOrWhiteSpace(workGroupName)
-                        && !string.IsNullOrWhiteSpace(nooshToken)
-                        && !string.IsNullOrWhiteSpace(nooshUrl);
+                    nooshRule.Enabled = nooshRule.Rate > 0
+                        && !string.IsNullOrWhiteSpace(nooshRule.TargetId)
+                        && !string.IsNullOrWhiteSpace(nooshSettings.WorkgroupName)
+                        && !string.IsNullOrWhiteSpace(nooshSettings.NooshToken)
+                        && !string.IsNullOrWhiteSpace(nooshSettings.NooshUrl);
 
                     try
                     {
                         var client = new CloudEventConfiguratorClient(new MicroProperties(new KenticoResourceService()));
-                        var result = client.UpdateNooshRule(ruleName, enabled, rate, targetId, workGroupName, nooshUrl, nooshToken).Result;
+                        var result = client.UpdateNooshRule(nooshRule, nooshSettings).Result;
                         if (!result.Success)
                         {
                             throw new InvalidOperationException(result.ErrorMessages);
