@@ -42,7 +42,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/Mailing/AllForCustomer/{encodedCustomerName}";
+            url = $"{url}/api/Mailing/AllForCustomer/{encodedCustomerName}";
             return await Get<MailingListDataDTO[]>(url).ConfigureAwait(false);
         }
 
@@ -50,7 +50,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
+            url = $"{url}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
             return await Delete<object>(url).ConfigureAwait(false);
         }
 

@@ -20,7 +20,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<object>> CreateCustomerContainer(CreateCustomerContainerRequestDto request)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/Customer/";
+            url = $"{url}/api/Customer/";
             return await Post<object>(url, request).ConfigureAwait(false);
         }
     }

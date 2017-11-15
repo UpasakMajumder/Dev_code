@@ -21,7 +21,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/order/{orderId}";
+            url = $"{url}/api/order/{orderId}";
             return await Get<GetOrderByOrderIdResponseDTO>(url).ConfigureAwait(false);
         }
 

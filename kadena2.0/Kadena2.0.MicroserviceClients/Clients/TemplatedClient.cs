@@ -23,21 +23,21 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string templateId, string settingsId)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template/{templateId}/pdf/{settingsId}";
+            url = $"{url}/api/template/{templateId}/pdf/{settingsId}";
             return await Get<GeneratePdfTaskResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string templateId, string taskId)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template/{templateId}/pdftask/{taskId}";
+            url = $"{url}/api/template/{templateId}/pdftask/{taskId}";
             return await Get<GeneratePdfTaskStatusResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<bool?>> SetName(Guid templateId, string name)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template";
+            url = $"{url}/api/template";
             var body = new
             {
                 templateId = templateId,
@@ -50,21 +50,21 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(int userId, Guid masterTemplateId)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template/{masterTemplateId}/users/{userId}";
+            url = $"{url}/api/template/{masterTemplateId}/users/{userId}";
             return await Get<List<TemplateServiceDocumentResponse>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> GetEditorUrl(Guid templateId, Guid workSpaceId, bool useHtml, bool use3d)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
+            url = $"{url}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
             return await Get<string>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> CreateNewTemplate(NewTemplateRequestDto request)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url.TrimEnd('/')}/api/template";
+            url = $"{url}/api/template";
             return await Post<string>(url, request).ConfigureAwait(false);
         }
 
