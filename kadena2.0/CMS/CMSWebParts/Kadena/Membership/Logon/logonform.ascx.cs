@@ -550,14 +550,14 @@ function UpdateLabel_", ClientID, @"(content, context) {
 
             lblResult.Text = string.Format(GetString("LogonForm.EmailSent"), value);
             lblResult.Visible = true;
-
+            lblForgotPwdError.Visible = false;
             pnlPasswdRetrieval.Visible = true;
         }
         else
         {
-            lblResult.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
-            lblResult.Visible = true;
-
+            lblForgotPwdError.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
+            lblForgotPwdError.Visible = true;
+            lblResult.Visible = false;
             pnlPasswdRetrieval.Visible = true;
         }
     }
@@ -570,7 +570,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
         {
             if (!String.IsNullOrEmpty(value) && ValidationHelper.IsEmail(value))
             {
-                /// This method will return User object if entered email id is present in DB
+                /// This method will return User object if entered email id is present in DBlblHintResult
                 UserInfo user = UserInfoProvider.GetUsers().Columns("UserId").WhereEquals("Email", value).TopN(1);
                 if (user != null)
                 {
@@ -583,8 +583,10 @@ function UpdateLabel_", ClientID, @"(content, context) {
                 }
                 else
                 {
-                    lblHintResult.Text = ResHelper.GetString("Kadena.loginForm.EmailNotExists"); 
-                    lblHintResult.Visible = true;
+                    lblError.Text= ResHelper.GetString("Kadena.loginForm.EmailNotExists");
+                    lblError.Visible = true;
+                    lblHintResult.Visible = false;
+                    lblPwdHint.Visible = false;
                     pnlPasswdRetrieval.Visible = true;
                 }
 
@@ -597,8 +599,8 @@ function UpdateLabel_", ClientID, @"(content, context) {
             }
             else
             {
-                lblHintResult.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
-                lblHintResult.Visible = true;
+                lblError.Text = String.Format(GetString("LogonForm.EmailNotValid"), value);
+                lblError.Visible = true;
                 pnlPasswdRetrieval.Visible = true;
             }
         }

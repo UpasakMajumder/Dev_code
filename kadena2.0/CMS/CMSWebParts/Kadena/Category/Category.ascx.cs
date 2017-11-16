@@ -73,8 +73,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                 btnSave.Click += btnSave_Save;
             }
 
-            txtName.WatermarkText = ResHelper.GetString("Kadena.Categoryform.NameWatermark");
-            txtDescription.WatermarkText = ResHelper.GetString("Kadena.Categoryform.DesWatermark");
+            txtName.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.Categoryform.NameWatermark"));
+            txtDescription.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.Categoryform.DesWatermark"));
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameValidation");
             revDescription.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.DesValidation");
             revName.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameRangeValidation");

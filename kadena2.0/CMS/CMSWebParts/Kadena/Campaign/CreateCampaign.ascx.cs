@@ -74,8 +74,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 btnSave.Click += btnSave_Save;
             }
             //assigning resource string to watermark text
-            Name.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark");
-            Description.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark");
+            Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
+            Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
             rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
             rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
