@@ -134,7 +134,7 @@ namespace Kadena.WebAPI.Services
                 Token = token
             };
 
-            var result = await userClient.SaveCardToken(url, saveTokenRequest);
+            var result = await userClient.SaveCardToken(saveTokenRequest);
 
             if (result == null || !result.Success || result.Payload == null)
             {
@@ -169,7 +169,7 @@ namespace Kadena.WebAPI.Services
                 }
             };
 
-            var result = await paymentClient.AuthorizeAmount(url, authorizeAmountRequest);
+            var result = await paymentClient.AuthorizeAmount(authorizeAmountRequest);
 
             if (result == null || !result.Success || result.Payload == null)
             {

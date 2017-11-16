@@ -7,6 +7,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IUserDataServiceClient
     {
-        Task<BaseResponseDto<SaveCardTokenResponseDto>> SaveCardToken(string serviceEndpoint, SaveCardTokenRequestDto request);
+        Task<BaseResponseDto<SaveCardTokenResponseDto>> SaveCardToken(SaveCardTokenRequestDto request);
     }
 }
