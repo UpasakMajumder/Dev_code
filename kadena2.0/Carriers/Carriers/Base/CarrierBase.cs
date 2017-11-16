@@ -3,10 +3,11 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.SiteProvider;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
+using Kadena2.Carriers.Helpers;
 using Kadena2.MicroserviceClients.Clients;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace Kadena2.Carriers
 {
     public abstract class CarrierBase : ICarrierProvider
     {
-        private ShippingCostServiceClient microserviceClient = new ShippingCostServiceClient();
+        private readonly MicroProperties _properties;
+        private readonly ShippingCostServiceClient microserviceClient;
 
         protected string ServiceUrl { get; set; }
 
@@ -28,7 +30,9 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            ServiceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_EstimateDeliveryPriceServiceEndpoint");
+            _properties = new MicroProperties();
+            microserviceClient = new ShippingCostServiceClient(_properties);
+            ServiceUrl = _properties.GetServiceUrl("KDA_ShippingCostServiceUrl");
         }
 
         public Guid GetConfigurationUIElementGUID()
@@ -41,9 +45,9 @@ namespace Kadena2.Carriers
             return Guid.Empty;
         }
 
-        protected BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(string requestBody)
+        protected BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(EstimateDeliveryPriceRequestDto requestBody)
         {
-            var response = microserviceClient.EstimateShippingCost(ServiceUrl, requestBody).Result;
+            var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
             if (!response.Success || response.Payload == null)
             {
@@ -62,7 +66,7 @@ namespace Kadena2.Carriers
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = microserviceClient.GetRequestString(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<BaseResponseDto<EstimateDeliveryPricePayloadDto>>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
+            var result = CacheHelper.Cache(() => CallEstimationService(requestObject), new CacheSettings(5, cacheKey));
             return result.Success;
         }
 
@@ -71,7 +75,7 @@ namespace Kadena2.Carriers
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = microserviceClient.GetRequestString(requestObject);
             string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
-            var result = CacheHelper.Cache<BaseResponseDto<EstimateDeliveryPricePayloadDto>>(() => CallEstimationService(requestString), new CacheSettings(5, cacheKey));
+            var result = CacheHelper.Cache(() => CallEstimationService(requestObject), new CacheSettings(5, cacheKey));
             return result.Success ? (decimal)result.Payload?.Cost : 0.0m;
         }
 

@@ -1,5 +1,7 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.Ecommerce;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
@@ -7,8 +9,10 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
-using Kadena.Old_App_Code.Helpers;
-using Kadena.Old_App_Code.Kadena.Orders;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.MicroserviceClients.Clients;
+using System;
 
 namespace Kadena.CMSWebParts.Kadena.Metrics
 {
@@ -124,7 +128,20 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 
         private OrderStatisticsData GetOrderStatisticsInternal()
         {
-            return ServiceHelper.GetOrderStatistics();
+            var statisticClient = new StatisticsClient(new MicroProperties(new KenticoResourceService()));
+            var requestResult = statisticClient.GetOrderStatistics().Result;
+
+            if (!requestResult.Success)
+            {
+                EventLogProvider.LogException("DASHBOARD", "GET ORDER STATISTICS", new InvalidOperationException(requestResult.ErrorMessages));
+                return null;
+            }
+
+            return new OrderStatisticsData
+            {
+                numberOfOrders = requestResult.Payload?.NumberOfOrders ?? 0,
+                productionAvgTime = requestResult.Payload?.ProductionAvgTime ?? 0
+            };
         }
 
         #endregion

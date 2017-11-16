@@ -6,6 +6,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IInventoryUpdateClient
     {
-        Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string serviceEndpoint, string clientId);
+        Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string clientId);
     }
 }

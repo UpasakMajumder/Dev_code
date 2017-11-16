@@ -54,7 +54,7 @@ namespace Kadena.WebAPI.Services
                 return (decimal)cachedResult;
             }
 
-            var response = await taxCalculator.CalculateTax(serviceEndpoint, taxRequest);
+            var response = await taxCalculator.CalculateTax(taxRequest);
             if (response.Success)
             {
                 var result = response.Payload;

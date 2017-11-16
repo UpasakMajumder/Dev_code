@@ -1,4 +1,4 @@
-﻿namespace Kadena.Old_App_Code.Kadena.Orders
+﻿namespace Kadena.Models
 {
     public class OrderStatisticsData
     {

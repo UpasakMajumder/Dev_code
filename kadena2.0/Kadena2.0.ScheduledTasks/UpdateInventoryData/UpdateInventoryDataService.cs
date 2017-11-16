@@ -53,9 +53,8 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             foreach (var site in sites)
             {
                 var configuration = configurationProvider.Get<UpdateInventoryConfiguration>(site.Name);
-                var serviceEndpoint = configuration.InventoryUpdateServiceEndpoint;
                 var erpId = configuration.ErpClientId;
-                var task = UpdateSiteProducts(serviceEndpoint, erpId);
+                var task = UpdateSiteProducts(erpId);
                 tasks.Add(task);
             }
 
@@ -64,9 +63,9 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         }
 
 
-        private async Task<string> UpdateSiteProducts(string serviceEndpoint, string customerErpId)
+        private async Task<string> UpdateSiteProducts(string customerErpId)
         {
-            var products = await microserviceInventory.GetInventoryItems(serviceEndpoint, customerErpId).ConfigureAwait(false);
+            var products = await microserviceInventory.GetInventoryItems(customerErpId).ConfigureAwait(false);
 
             if(!products.Success)
             {

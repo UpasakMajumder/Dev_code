@@ -50,6 +50,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\AddressValidationClient.cs" />
     <Compile Include="Clients\Base\ClientBase.cs" />
     <Compile Include="Clients\BidClient.cs" />
     <Compile Include="Clients\CloudEventConfiguratorClient.cs" />
@@ -60,24 +61,30 @@
     <Compile Include="Clients\InventoryUpdateClient.cs" />
     <Compile Include="Clients\OrderViewClient.cs" />
     <Compile Include="Clients\OrderSubmitClient.cs" />
+    <Compile Include="Clients\ParsingClient.cs" />
     <Compile Include="Clients\ShippingCostServiceClient.cs" />
-    <Compile Include="Clients\TemplatedProductService.cs" />
+    <Compile Include="Clients\StatisticsClient.cs" />
+    <Compile Include="Clients\TemplatedClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Contracts\Base\IMicroProperties.cs" />
+    <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
+    <Compile Include="Contracts\IAddressValidationClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />
     <Compile Include="Contracts\IExportClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
-    <Compile Include="Contracts\InventoryUpdateClient.cs" />
+    <Compile Include="Contracts\IInventoryUpdateClient.cs" />
     <Compile Include="Contracts\IOrderViewClient.cs" />
     <Compile Include="Contracts\IOrderSubmitClient.cs" />
+    <Compile Include="Contracts\IParsingClient.cs" />
     <Compile Include="Contracts\IShippingCostServiceClient.cs" />
-    <Compile Include="Contracts\ITemplatedProductService.cs" />
+    <Compile Include="Contracts\IStatisticsClient.cs" />
+    <Compile Include="Contracts\ITemplatedClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="FileFolder.cs" />
     <Compile Include="FileModule.cs" />
-    <Compile Include="Helpers\MicroserviceHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +96,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
