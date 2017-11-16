@@ -12,11 +12,11 @@
 public partial class CMSWebParts_Kadena_Address_AddressFilter {
     
     /// <summary>
-    /// txtSearchBrand control.
+    /// txtSearchAddress control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtSearchBrand;
+    protected global::System.Web.UI.WebControls.TextBox txtSearchAddress;
 }

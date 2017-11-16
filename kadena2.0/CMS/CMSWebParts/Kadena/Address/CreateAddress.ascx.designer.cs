@@ -210,6 +210,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.TextBox txtTelephone;
     
     /// <summary>
+    /// cvTelephone control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.CustomValidator cvTelephone;
+    
+    /// <summary>
     /// lblEmail control.
     /// </summary>
     /// <remarks>

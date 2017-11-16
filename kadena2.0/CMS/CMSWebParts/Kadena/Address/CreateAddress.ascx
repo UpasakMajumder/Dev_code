@@ -112,7 +112,7 @@
                         <span class="input__label" runat="server" id="lblTelephone"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtTelephone" runat="server" CssClass="input__password" placeholder="Enter Telephone" MaxLength="25"></asp:TextBox>
-
+                            <asp:CustomValidator ID="cvTelephone" runat="server" ErrorMessage="Telephone number should be in between 10 and 25 characters" ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate" ></asp:CustomValidator>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                         <span class="input__label"></span>
 
                     </div>
-                </div>--%>
+                </div>--%>  
                 
                 <div class="clearfix"></div>
 
