@@ -268,17 +268,38 @@ namespace Kadena.WebAPI.Services
             throw new SecurityException("Permission denied");
         }
 
-        public async Task<SubmitOrderResult> SubmitOrderHandler(SubmitOrderRequest request)
+        public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             var paymentMethods = kenticoProvider.GetPaymentMethods();
-            var selectedPayment = paymentMethods.Where(p => p.Id == (request.PaymentMethod?.Id ?? -1)).FirstOrDefault();
+            var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
 
-            
-            
+            switch(selectedPayment?.ClassName ?? string.Empty)
+            {
+                case "KDA.PaymentMethods.CreditCard":
+                    return await PayByCard(request);
 
+                case "KDA.PaymentMethods.PurchaseOrder":
+                    return await SubmitPOOrder(request);
+
+                case "KDA.PaymentMethods.PayPal":
+                    throw new NotImplementedException("PayPal payment is not implemented yet");
+
+                default:
+                    throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
+            }
         }
 
-        public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
+        public async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)
+        {
+            return await Task.FromResult(new SubmitOrderResult
+                {
+                    Success = true,
+                    RedirectURL = "/recent-orders/insert-card-details" // TODO localize
+                }
+            );
+        }
+
+        public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             Customer customer = null;
