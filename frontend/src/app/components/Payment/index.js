@@ -170,6 +170,8 @@ class Payment extends Component {
               ref="card"
               {...fields}
               focused={focused}
+              locale={{ valid: CARD_PAYMENT.fields.expiry.cardLabel }}
+              placeholders={{ name: CARD_PAYMENT.fields.name.cardLabel }}
               acceptedCards={CARD_PAYMENT.acceptedCards}
             />
           </div>
