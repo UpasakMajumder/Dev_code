@@ -7,6 +7,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IPaymentServiceClient
     {
-        Task<BaseResponseDto<AuthorizeAmountResponseDto>> AuthorizeAmount(string serviceEndpoint, AuthorizeAmountRequestDto request);
+        Task<BaseResponseDto<AuthorizeAmountResponseDto>> AuthorizeAmount(AuthorizeAmountRequestDto request);
     }
 }

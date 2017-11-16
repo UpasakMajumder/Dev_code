@@ -1,26 +1,33 @@
 ﻿using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
 using Kadena.Dto.CreditCard.MicroserviceRequests;
 using Kadena.Dto.CreditCard.MicroserviceResponses;
+using Kadena2.MicroserviceClients.Contracts.Base;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class UserDataServiceClient : ClientBase, IUserDataServiceClient
     {
-        public async Task<BaseResponseDto<SaveCardTokenResponseDto>> SaveCardToken(string serviceEndpoint, SaveCardTokenRequestDto request)
+        private const string _serviceUrlSettingKey = "KDA_UserDataServiceUrl";
+        private readonly IMicroProperties _properties;
+
+        public UserDataServiceClient(IMicroProperties properties)
         {
-            using (var httpClient = new HttpClient())
+            if (properties == null)
             {
-                var url = $"{serviceEndpoint.TrimEnd('/')}/api/CardToken";
-                var content = CreateRequestContent(request);
-                using (var response = await httpClient.PostAsync(url, content).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<SaveCardTokenResponseDto>(response).ConfigureAwait(false);
-                }
+                throw new ArgumentNullException(nameof(properties));
             }
+
+            this._properties = properties;
+        }
+
+        public async Task<BaseResponseDto<SaveCardTokenResponseDto>> SaveCardToken(SaveCardTokenRequestDto request)
+        {
+            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken";
+            return await Post<SaveCardTokenResponseDto>(url, request).ConfigureAwait(false);
         }
     }
 }
