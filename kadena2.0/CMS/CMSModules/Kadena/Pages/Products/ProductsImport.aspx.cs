@@ -106,5 +106,10 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             errorMessageContainer.Visible = false;
             successMessageContainer.Visible = false;
         }
+
+        protected void btnDownloadProductCategoryTemplate_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
