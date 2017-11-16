@@ -3,17 +3,26 @@ import PropTypes from 'prop-types';
 /* component */
 import SVG from 'app.dump/SVG';
 import TextInput from 'app.dump/Form/TextInput';
-/* globals */
-import { CARD_PAYMENT } from 'app.globals';
 
 class PaymentForm extends Component {
   getErrorMessage = (field) => {
-    const { errorField, errorMessage } = this.props;
-    return (errorField === field) ? errorMessage : '';
+    const { invalids } = this.props;
+    const invalidField = invalids.filter(invalid => invalid.errorField === field)[0];
+
+    return invalidField ? invalidField.errorMessage : '';
   };
 
   render() {
-    const { number, name, cvc, expiry, changeFieldValue, changeFocus } = this.props;
+    const {
+      number,
+      name,
+      cvc,
+      expiry,
+      changeFieldValue,
+      changeFocus,
+      addSlashToExpirationDate,
+      staticData
+    } = this.props;
     const cardNumbersSvgs = <div className="card-payment__icon-block">
       <SVG className='card-payment__icon' name='card-am'/>
       <SVG className='card-payment__icon' name='card-mc'/>
@@ -29,7 +38,8 @@ class PaymentForm extends Component {
           <TextInput
             onChange={(e) => { changeFieldValue('number', e.target.value); }}
             onFocus={() => { changeFocus('number'); }}
-            label={CARD_PAYMENT.fields.number.label}
+            label={staticData.number.label}
+            placeholder={staticData.number.placeholder}
             value={number}
             error={this.getErrorMessage('number')}
           />
@@ -39,7 +49,8 @@ class PaymentForm extends Component {
           <TextInput
             onChange={(e) => { changeFieldValue('name', e.target.value); }}
             onFocus={() => { changeFocus('name'); }}
-            label={CARD_PAYMENT.fields.name.label}
+            label={staticData.name.label}
+            placeholder={staticData.name.placeholder}
             error={this.getErrorMessage('name')}
             value={name}
           />
@@ -47,21 +58,24 @@ class PaymentForm extends Component {
 
         <div className="card-payment__field card-payment__field--half">
           <TextInput
-            onChange={(e) => { changeFieldValue('cvc', e.target.value); }}
-            onFocus={() => { changeFocus('cvc'); }}
-            label={CARD_PAYMENT.fields.cvc.label}
-            value={cvc}
-            error={this.getErrorMessage('cvc')}
+            onChange={(e) => { changeFieldValue('expiry', e.target.value); }}
+            onFocus={() => { changeFocus('expiry'); }}
+            onBlur={addSlashToExpirationDate}
+            label={staticData.expiry.label}
+            placeholder={staticData.expiry.placeholder}
+            error={this.getErrorMessage('expiry')}
+            value={expiry}
           />
         </div>
 
         <div className="card-payment__field card-payment__field--half">
           <TextInput
-            onChange={(e) => { changeFieldValue('expiry', e.target.value); }}
-            onFocus={() => { changeFocus('expiry'); }}
-            label={CARD_PAYMENT.fields.expiry.label}
-            error={this.getErrorMessage('expiry')}
-            value={expiry}
+            onChange={(e) => { changeFieldValue('cvc', e.target.value); }}
+            onFocus={() => { changeFocus('cvc'); }}
+            label={staticData.cvc.label}
+            placeholder={staticData.cvc.placeholder}
+            value={cvc}
+            error={this.getErrorMessage('cvc')}
           />
         </div>
       </div>
@@ -75,7 +89,30 @@ PaymentForm.propTypes = {
   cvc: PropTypes.string.isRequired,
   expiry: PropTypes.string.isRequired,
   changeFieldValue: PropTypes.func.isRequired,
-  changeFocus: PropTypes.func.isRequired
+  changeFocus: PropTypes.func.isRequired,
+  invalids: PropTypes.arrayOf(PropTypes.shape({
+    errorField: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired
+  })).isRequired,
+  addSlashToExpirationDate: PropTypes.func.isRequired,
+  staticData: PropTypes.shape({
+    number: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      placeholder: PropTypes.string.isRequired
+    }).isRequired,
+    name: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      placeholder: PropTypes.string.isRequired
+    }).isRequired,
+    expiry: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      placeholder: PropTypes.string.isRequired
+    }).isRequired,
+    cvc: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      placeholder: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired
 };
 
 export default PaymentForm;

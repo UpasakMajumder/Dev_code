@@ -1,4 +1,4 @@
-import { CARD_VALIDATION_ERROR, SUBMIT_CARD } from '../constants';
+import { CARD_VALIDATION_ERROR, SUBMIT_CARD, FETCH, FAILURE } from '../constants';
 
 const defaultState = {
   errorField: '',
@@ -17,11 +17,18 @@ export default (state = defaultState, action) => {
       errorMessage: payload.errorMessage
     };
 
-  case SUBMIT_CARD:
+  case SUBMIT_CARD + FETCH:
     return {
       ...state,
       ...defaultState,
       isProceeded: true
+    };
+
+  case SUBMIT_CARD + FAILURE:
+    return {
+      ...state,
+      ...defaultState,
+      isProceeded: false
     };
 
   default:
