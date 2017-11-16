@@ -11,7 +11,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
 
         protected List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
         {
-            var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
+            var rows = ExcelReader.ReadDataFromExcelFile(fileData, type);
             if (rows.Count <= 1)
             {
                 throw new Exception("The file contains no data");
