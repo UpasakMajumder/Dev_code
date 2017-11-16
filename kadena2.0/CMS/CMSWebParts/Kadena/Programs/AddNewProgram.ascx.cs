@@ -164,7 +164,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnAddProgram.Text = SaveButtonText;
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
-
+            programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
             //get program details by program id.
             int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
             if (programID != 0)
@@ -215,24 +215,18 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             {
                 Campaign campaign = new Campaign();
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                var cmpaignDoc = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
-                if (cmpaignDoc != null)
+                Campaign CampaignNode = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
+                if (CampaignNode != null)
                 {
-                    int campaignNodeID = cmpaignDoc.NodeID;
-                    var document = TreeHelper.SelectSingleNode(campaignNodeID);
-                    CMS.DocumentEngine.TreeNode createNode = tree.SelectSingleNode(SiteContext.CurrentSiteName, document.NodeAliasPath, CurrentSite.DefaultVisitorCulture);
-                    if (document != null)
-                    {
-                        Program program = new Program();
-                        program.DocumentName = txtProgramName.Text;
-                        program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
-                        program.ProgramName = txtProgramName.Text;
-                        program.ProgramDescription = txtProgramDescription.Text;
-                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
-                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
-                        program.Insert(createNode, true);
-                        Response.Redirect(ProgramListURL);
-                    }
+                    Program program = new Program();
+                    program.DocumentName = txtProgramName.Text;
+                    program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
+                    program.ProgramName = txtProgramName.Text;
+                    program.ProgramDescription = txtProgramDescription.Text;
+                    program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
+                    program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+                    program.Insert(CampaignNode, true);
+                    Response.Redirect(ProgramListURL);
                 }
             }
         }
@@ -278,23 +272,14 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 {
                     if (Convert.ToInt32(ViewState["CampaignID"]) != campaignID)
                     {
-                        var targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
-                        if (targetCampaign != null)
-                        {
-                            int targetCampaignNodeID = targetCampaign.NodeID;
-                            var tagetDocument = TreeHelper.SelectSingleNode(targetCampaignNodeID);
-                            CMS.DocumentEngine.TreeNode targetPage = tree.SelectSingleNode(SiteContext.CurrentSiteName, tagetDocument.NodeAliasPath, SiteContext.CurrentSite.DefaultVisitorCulture);
-                            if ((program != null) && (targetPage != null))
-                            {
-                                DocumentHelper.MoveDocument(program, targetPage, tree, true);
-                            }
-                        }
-
+                        Campaign targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
+                        if (targetCampaign != null && program != null)
+                            DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
                     }
                 }
                 Response.Redirect(ProgramListURL);
             }
-        }   
+        }
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "btnUpdateProgram_Click", ex.Message);

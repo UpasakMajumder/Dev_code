@@ -27,7 +27,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.UserControl filterUsers;
+    protected global::CMSWebParts_Kadena_Membership_Users_UsersFilterControl filterUsers;
     
     /// <summary>
     /// repUsers control.
