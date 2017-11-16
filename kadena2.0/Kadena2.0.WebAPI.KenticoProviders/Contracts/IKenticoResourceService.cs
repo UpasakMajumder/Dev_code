@@ -28,5 +28,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         int GetOrderStatusId(string name);
 
         string GetSettingsKey(int siteId, string key);
+
+        string GetCurrentSiteDomain();
     }
 }

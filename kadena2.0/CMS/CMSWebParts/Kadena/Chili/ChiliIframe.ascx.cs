@@ -1,6 +1,8 @@
 ﻿using CMS.DataEngine;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 
@@ -35,15 +37,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 return (Request?.QueryString?[_Use3dID] ?? string.Empty).ToLower() == "true";
             }
         }
-
-        public string ServiceBaseUrl
-        {
-            get
-            {
-                return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
-            }
-        }
-
+        
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
@@ -54,7 +48,11 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing && TemplateID != null)
             {
-                chilliIframe.Src = new TemplatedProductService().GetEditorUrl(ServiceBaseUrl, Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d, CMS.Helpers.RequestContext.CurrentDomain).Result?.Payload ?? string.Empty;
+                var resources = new KenticoResourceService();
+                chilliIframe.Src = new TemplatedClient(new SuppliantDomain(resources), new MicroProperties(resources))
+                    .GetEditorUrl(Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d)
+                    .Result?
+                    .Payload ?? string.Empty;
             }
         }
     }

@@ -78,6 +78,7 @@
     <Compile Include="Base\CarrierBase.cs" />
     <Compile Include="Base\EstimatePriceRequestFactory.cs" />
     <Compile Include="FedExCarrier.cs" />
+    <Compile Include="Helpers\MicroProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UPSCarrier.cs" />
     <Compile Include="USPSCarrier.cs" />

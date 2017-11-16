@@ -13,37 +13,35 @@ namespace Kadena.WebAPI.Services
 {
     public class KListService : IKListService
     {
-        private readonly IMailingListClient _client;
+        private readonly IMailingListClient _mailingClient;
+        private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoResourceService _kentico;
         private readonly IMapper _mapper;
 
-        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IMapper mapper)
+        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
         {
-            _client = client;
+            _mailingClient = client;
             _kentico = kenticoResource;
             _mapper = mapper;
+            _validationClient = validationClient;
         }
 
         public async Task<MailingList> GetMailingList(Guid containerId)
         {
-            var url = _kentico.GetSettingsKey("KDA_GetMailingListByIdUrl");
             var customerName = _kentico.GetKenticoSite().Name;
 
-            var data = await _client.GetMailingList(url, customerName, containerId);
+            var data = await _mailingClient.GetMailingList(containerId);
             return _mapper.Map<MailingList>(data.Payload);
         }
 
         public async Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses)
         {
-            var updateUrl = _kentico.GetSettingsKey("KDA_UpdateAddressesUrl");
-            var customerName = _kentico.GetKenticoSite().Name;
-            var validateUrl = _kentico.GetSettingsKey("KDA_ValidateAddressUrl");
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
-            var updateResult = await _client.UpdateAddresses(updateUrl, customerName, containerId, changes);
+            var updateResult = await _mailingClient.UpdateAddresses(containerId, changes);
             if (updateResult.Success)
             {
-                var validateResult = await _client.Validate(validateUrl, customerName, containerId);
+                var validateResult = await _validationClient.Validate(containerId);
                 return validateResult.Success;
             }
             else
@@ -54,15 +52,10 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
         {
-            var getAddressUrl = _kentico.GetSettingsKey("KDA_GetMailingAddressesUrl");
-            var removeAddressesUrl = _kentico.GetSettingsKey("KDA_DeleteAddressesUrl");
-            var validateUrl = _kentico.GetSettingsKey("KDA_ValidateAddressUrl");
-            var customerName = _kentico.GetKenticoSite().Name;
-
-            var addresses = await _client.GetAddresses(getAddressUrl, containerId);
-            await _client.RemoveAddresses(removeAddressesUrl, customerName, containerId,
+            var addresses = await _mailingClient.GetAddresses(containerId);
+            await _mailingClient.RemoveAddresses(containerId,
                 addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
-            var validateResult = await _client.Validate(validateUrl, customerName, containerId);
+            var validateResult = await _validationClient.Validate(containerId);
 
             return validateResult.Success;
         }

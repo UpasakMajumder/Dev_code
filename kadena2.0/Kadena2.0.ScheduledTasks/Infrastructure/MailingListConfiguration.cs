@@ -2,7 +2,7 @@
 {
     public class MailingListConfiguration : IConfigurationSection
     {
-        public string DeleteMailingListsByValidToDateURL { get; set; }
+        public string MailingServiceUrl { get; set; }
         public int? DeleteMailingListsPeriod { get; set; }
     }
 }
