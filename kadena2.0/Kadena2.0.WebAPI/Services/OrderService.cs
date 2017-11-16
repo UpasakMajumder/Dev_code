@@ -291,10 +291,12 @@ namespace Kadena.WebAPI.Services
 
         public async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)
         {
+            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+
             return await Task.FromResult(new SubmitOrderResult
                 {
                     Success = true,
-                    RedirectURL = kenticoProvider.GetDocumentUrl("/recent-orders/insert-card-details")
+                    RedirectURL = kenticoProvider.GetDocumentUrl(insertCardUrl)
                 }
             );
         }
