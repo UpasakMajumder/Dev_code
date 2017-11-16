@@ -148,7 +148,9 @@
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
+    <Compile Include="Helpers\MicroProperties.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
+    <Compile Include="Helpers\SuppliantDomain.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\BackgroundTaskScheduler.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />

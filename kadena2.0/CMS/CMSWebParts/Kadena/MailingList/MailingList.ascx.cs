@@ -5,6 +5,8 @@ using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.EventLog;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -40,10 +42,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private void GetMailingLists()
         {
-            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
-
-            var client = new MailingListClient();
-            var serviceCallResult = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result;
+            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+            var serviceCallResult = client.GetMailingListsForCustomer().Result;
 
             if (serviceCallResult.Success)
             {

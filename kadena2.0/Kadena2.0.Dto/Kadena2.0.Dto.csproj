@@ -93,10 +93,13 @@
     <Compile Include="General\BaseResponseDto.cs" />
     <Compile Include="General\BaseErrorDto.cs" />
     <Compile Include="InventoryUpdate\MicroserviceResponses\InventoryDataItemDto.cs" />
+    <Compile Include="KSource\NooshDto.cs" />
     <Compile Include="KSource\ProjectDto.cs" />
+    <Compile Include="KSource\RuleDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
+    <Compile Include="Order\OrderStatisticDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\CreateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\AddToCartResultDto.cs" />
