@@ -8,13 +8,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductTemplateService : TemplateServiceBase
     {
-        public byte[] GetProductTemplateFile(int siteID)
-        {
-            var columns = GetImportColumns<ProductDto>();
-            var sheet = CreateSheet(columns);
-            return GetWorkbookBytes(sheet.Workbook);
-        }
-
         private string[] GetProductTypes()
         {
             var types = ProductTypes.GetAll().ToList();

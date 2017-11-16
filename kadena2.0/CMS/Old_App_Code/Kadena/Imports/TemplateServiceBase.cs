@@ -10,6 +10,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports
     {
         protected static readonly int MaxRowsPerSheet = 1024 * 1024;
 
+        public byte[] GetProductTemplateFile<T>(int siteID) where T : class
+        {
+            var columns = GetImportColumns<T>();
+            var sheet = CreateSheet(columns);
+            return GetWorkbookBytes(sheet.Workbook);
+        }
+
         protected static void CreateSheetHeader(List<Column> columns, ISheet sheet)
         {
             var row = sheet.CreateRow(0);
