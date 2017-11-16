@@ -66,6 +66,8 @@
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="CreditCard\SaveTokenData.cs" />
+    <Compile Include="CreditCard\Submission.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
     <Compile Include="OrderDetail\TitleValuePair.cs" />
+    <Compile Include="OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />

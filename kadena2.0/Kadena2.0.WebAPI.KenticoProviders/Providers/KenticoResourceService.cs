@@ -97,5 +97,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
         }
+
+        public string GetCurrentSiteDomain()
+        {
+            return RequestContext.CurrentDomain;
+        }
     }
 }
