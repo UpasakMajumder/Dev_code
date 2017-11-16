@@ -19,7 +19,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return rows;
         }
 
-
         protected List<T> GetDtosFromExcelRows<T>(List<string[]> rows) where T:class
         {
             var header = rows.First();
@@ -29,7 +28,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports
                 .ToList();
             return values;
         }
-
 
         protected SiteInfo GetSite(int siteID)
         {

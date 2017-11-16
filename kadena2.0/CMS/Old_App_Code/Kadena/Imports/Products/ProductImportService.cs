@@ -106,7 +106,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
-        private bool ValidateImportItem(ProductDto product, out List<string> validationErrors)
+        private static bool ValidateImportItem(ProductDto product, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
             bool isValid = ValidatorHelper.ValidateDto(product, out validationErrors, errorMessageFormat);
@@ -194,7 +194,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return isValid;
         }
 
-        private void SaveProduct(ProductDto productDto, int siteID)
+        private static void SaveProduct(ProductDto productDto, int siteID)
         {
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
@@ -202,7 +202,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             AppendProduct(productParent, productDto, sku, siteID);            
         }
 
-        private void SetProductImage(ProductImageDto image, int siteId)
+        private static void SetProductImage(ProductImageDto image, int siteId)
         {
             var sku = GetUniqueSKU(image.SKU, siteId);
             var site = SiteInfoProvider.GetSiteInfo(siteId);
@@ -240,7 +240,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         }
 
         // ready for potential use in Product upload
-        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        private static void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
         {
             var library = MediaLibraryHelper.EnsureLibrary(siteId);
             
@@ -257,7 +257,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ProductImageHelper.AttachTumbnail(product, newAttachment);
         }
         
-        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
+        private static SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
                 return null;
@@ -316,14 +316,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newProduct;
         }
 
-        protected void SetPageTemplate(TreeNode node, string templateName)
+        private static void SetPageTemplate(TreeNode node, string templateName)
         {
             var pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templateName);
             node.DocumentPageTemplateID = pageTemplateInfo?.PageTemplateId ?? 0;
             node.NodeTemplateForAllCultures = true;
         }
 
-        private string GetDynamicPricingJson(string min, string max, string price)
+        private static string GetDynamicPricingJson(string min, string max, string price)
         {
             int[] mins, maxes;
             decimal[] prices;
@@ -368,7 +368,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
 
-        private TreeNode CreateProductCategory(string[] path, int siteId)
+        private static TreeNode CreateProductCategory(string[] path, int siteId)
         {
             var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
                             .Path("/", PathTypeEnum.Children)
@@ -383,7 +383,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return AppendProductCategory(root, path);
         }
 
-        private TreeNode AppendProductCategory(TreeNode parentPage, string[] subnodes)
+        private static TreeNode AppendProductCategory(TreeNode parentPage, string[] subnodes)
         {
             if (parentPage == null || subnodes == null || subnodes.Length <= 0)
                 return parentPage;
@@ -407,7 +407,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return AppendProductCategory(category, subnodes.Skip(1).ToArray());
         }
 
-        private TrackInventoryTypeEnum ParseTrackInventoryTypeEnum(string value)
+        private static TrackInventoryTypeEnum ParseTrackInventoryTypeEnum(string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -419,7 +419,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return TrackInventoryTypeEnum.Disabled;
         }
 
-        private SKUInfo GetUniqueSKU(string sku, int siteID)
+        private static SKUInfo GetUniqueSKU(string sku, int siteID)
         {
             var skus = SKUInfoProvider.GetSKUs(siteID)
                 .WhereEquals("SKUNumber", sku);
@@ -432,7 +432,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return skus.FirstObject;
         }
 
-        private SKUInfo EnsureSKU(ProductDto product, int siteID)
+        private static SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
             var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
 

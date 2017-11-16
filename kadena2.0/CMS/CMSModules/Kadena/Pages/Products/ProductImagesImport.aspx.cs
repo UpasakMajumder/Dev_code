@@ -58,7 +58,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new ProductImagesTemplateService().GetProductImagesTemplateFile(SelectedSiteID);
+            var bytes = new ProductImagesTemplateService().GetTemplateFile<ProductImageDto>(SelectedSiteID);
             var templateFileName = "productimages-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
         }
