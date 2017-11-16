@@ -1,29 +1,28 @@
 ﻿using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class TaxEstimationServiceClient : ClientBase, ITaxEstimationServiceClient
     {
-        public async Task<BaseResponseDto<decimal>> CalculateTax(string serviceEndpoint, TaxCalculatorRequestDto request)
+        private const string _serviceUrlSettingKey = "KDA_TaxEstimationServiceEndpoint";
+        private readonly IMicroProperties _properties;
+
+        public TaxEstimationServiceClient(IMicroProperties properties)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var requestBody = JsonConvert.SerializeObject(request);
-                using (var content = new StringContent(requestBody, Encoding.UTF8, "application/json"))
-                {
-                    using (var response = await httpClient.PostAsync(serviceEndpoint, content))
-                    {
-                        return await ReadResponseJson<decimal>(response);
-                    }
-                }
-            }
+            _properties = properties;
+        }
+
+
+        public async Task<BaseResponseDto<decimal>> CalculateTax(TaxCalculatorRequestDto request)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/taxcalculator";
+            return await Post<decimal>(url, request).ConfigureAwait(false);
         }
     }
 }

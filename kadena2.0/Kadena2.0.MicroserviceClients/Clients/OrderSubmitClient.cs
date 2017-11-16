@@ -2,39 +2,33 @@
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderSubmitClient : ClientBase, IOrderSubmitClient
     {
-        public async Task<BaseResponseDto<string>> FinishOrder(string serviceEndpoint, string orderNumber)
+        private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
+        private readonly IMicroProperties _properties;
+
+        public OrderSubmitClient(IMicroProperties properties)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.Timeout = TimeSpan.FromSeconds(60);
-                var content = CreateRequestContent(orderNumber);
-                var request = new HttpRequestMessage(new HttpMethod("PATCH"), serviceEndpoint) { Content = content };
-                using (var response = await httpClient.SendAsync(request))
-                {
-                    return await ReadResponseJson<string>(response);
-                }
-            }
+            _properties = properties;
         }
 
-        public async Task<BaseResponseDto<string>> SubmitOrder(string serviceEndpoint, OrderDTO orderData)
+        public async Task<BaseResponseDto<string>> FinishOrder(string orderNumber)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.Timeout = TimeSpan.FromSeconds(60);
-                var content = CreateRequestContent(orderData);
-                using (var response = await httpClient.PostAsync(serviceEndpoint, content))
-                {
-                    return await ReadResponseJson<string>(response);
-                }
-            }
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/order";
+            return await Patch<string>(url, orderNumber).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/order";
+            return await Post<string>(url, orderData).ConfigureAwait(false);
         }
     }
 }
