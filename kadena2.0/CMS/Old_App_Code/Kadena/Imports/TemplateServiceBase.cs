@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
-    public abstract class TemplateServiceBase
+    public class TemplateServiceBase
     {
         protected static readonly int MaxRowsPerSheet = 1024 * 1024;
 

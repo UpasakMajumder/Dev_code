@@ -109,7 +109,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnDownloadProductCategoryTemplate_Click(object sender, EventArgs e)
         {
-
+            var bytes = new TemplateServiceBase().GetTemplateFile<ProductCategoryImportDto>(SelectedSiteID);
+            var templateFileName = "productcategories-upload-template.xlsx";
+            WriteFileToResponse(templateFileName, bytes);
         }
     }
 }
