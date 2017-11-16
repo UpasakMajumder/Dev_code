@@ -1,5 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.IO;
 
@@ -85,6 +86,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             validation.ShowErrorBox = true;
             validation.CreateErrorBox("Validation failed", "Please choose a valid value.");
             sheet.AddValidationData(validation);
+        }
+
+        protected virtual ISheet CreateSheet(List<Column> headers)
+        {
+            IWorkbook workbook = new XSSFWorkbook();
+            var sheet = workbook.CreateSheet("Products");
+            CreateSheetHeader(headers, sheet);
+            return sheet;
         }
     }
 }
