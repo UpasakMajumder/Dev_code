@@ -2,6 +2,7 @@ const { localization } = config; // eslint-disable-line no-undef
 
 const {
   login,
+  cardPayment,
   checkout,
   spotfire,
   userSettings,
@@ -22,8 +23,8 @@ const {
   staticFields
 } = localization;
 
-
 export const LOGIN = login;
+export const CARD_PAYMENT = cardPayment;
 export const CHECKOUT = checkout;
 export const SPOTFIRE = spotfire;
 export const USER_SETTINGS = userSettings;

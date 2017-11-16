@@ -15,6 +15,7 @@ import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
 import products from './products';
 import dialogAlert from './dialogAlert';
+import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 
 const rootReducer = combineReducers({
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   products,
   toastr,
   dialogAlert,
+  cardPayment,
   languageSelector
 });
 

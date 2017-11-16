@@ -44,6 +44,7 @@ const app = {
     window.store = configureStore();
     render('StyleguideInput', document.querySelectorAll('.styleguide-input'), { store: false });
     render('Login', document.querySelectorAll('.js-login'));
+    render('Payment', document.querySelectorAll('.js-credit-card-payment'));
     render('Checkout', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
     render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
