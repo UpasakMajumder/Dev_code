@@ -98,7 +98,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
         protected virtual ISheet CreateSheet(List<Column> headers)
         {
             IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("Products");
+            var sheet = workbook.CreateSheet();
             CreateSheetHeader(headers, sheet);
             return sheet;
         }
