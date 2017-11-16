@@ -294,7 +294,7 @@ namespace Kadena.WebAPI.Services
             return await Task.FromResult(new SubmitOrderResult
                 {
                     Success = true,
-                    RedirectURL = "/recent-orders/insert-card-details" // TODO localize
+                    RedirectURL = kenticoProvider.GetDocumentUrl("/recent-orders/insert-card-details")
                 }
             );
         }
