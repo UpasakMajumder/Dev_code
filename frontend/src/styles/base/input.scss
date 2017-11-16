@@ -1,4 +1,8 @@
 .input {
+  $translate-label-x: 16px;
+  $translate-label-y: 30px;
+  $color-label-dark: $brand-dark;
+  $color-label-light: $brand-darkgrey;
   $input-height: 41px;
 
   @extend .line-height--one;
@@ -42,6 +46,26 @@
 
     a {
       @extend .link;
+    }
+  }
+
+  &__wrapper--label-animation {
+    .input__label {
+      font-size: $font-xs;
+      z-index: 2;
+      transition: all 400ms;
+      position: relative;
+      transform: translate($translate-label-x, $translate-label-y);
+      color: $color-label-light;
+
+      &--active {
+        transform: none;
+        color: $color-label-dark;
+      }
+    }
+
+    .input__inner {
+      z-index: 1;
     }
   }
 
@@ -118,7 +142,7 @@
   }
 
   &__label {
-    color: $brand-dark;
+    color: $color-label-dark;
     display: block;
     text-transform: uppercase;
 
@@ -166,7 +190,7 @@
     top: 2px;
     font-size: $font-xs;
     font-weight: 400;
-    color: $brand-dark;
+    color: $color-label-dark;
   }
 
   &__label-group {

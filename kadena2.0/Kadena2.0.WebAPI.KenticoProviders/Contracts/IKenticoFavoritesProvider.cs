@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
