@@ -310,7 +310,8 @@
           name: {
             label: 'Full name',
             inValidMessage: 'name error',
-            placeholder: 'John Gold'
+            placeholder: 'John Gold',
+            cardLabel: 'You name'
           },
           cvc: {
             label: 'cvc',
@@ -320,7 +321,8 @@
           expiry: {
             label: 'Expiration date',
             inValidMessage: 'expiry error',
-            placeholder: 'mm/yy'
+            placeholder: 'mm/yy',
+            cardLabel: 'valid '
           },
         },
         ResultURL: '',
