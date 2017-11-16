@@ -3911,6 +3911,7 @@
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
@@ -15417,6 +15418,13 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.designer.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
       <DependentUpon>CampaignFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -21968,6 +21976,7 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\Brand.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ShippingAddress.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
