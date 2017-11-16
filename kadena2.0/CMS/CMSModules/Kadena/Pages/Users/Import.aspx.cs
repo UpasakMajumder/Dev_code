@@ -87,7 +87,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetUserTemplateFile(SelectedSiteID);
+            var bytes = new UserTemplateService().GetTemplateFile<UserDto>(SelectedSiteID);
             var templateFileName = "users-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);

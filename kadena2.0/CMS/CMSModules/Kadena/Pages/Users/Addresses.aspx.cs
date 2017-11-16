@@ -89,7 +89,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetAddressTemplateFile();
+            var bytes = new TemplateServiceBase().GetTemplateFile<AddressDto>(SelectedSiteID);
             var templateFileName = "addresses-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
