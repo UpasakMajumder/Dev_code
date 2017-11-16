@@ -836,6 +836,13 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
+      <DependentUpon>CampaignFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.designer.cs">
+      <DependentUpon>CampaignFilter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx.cs">
       <DependentUpon>CampaignList.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -856,6 +863,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.designer.cs">
       <DependentUpon>Category.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.designer.cs">
+      <DependentUpon>CategoryFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
@@ -1155,9 +1169,11 @@
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
+    <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
