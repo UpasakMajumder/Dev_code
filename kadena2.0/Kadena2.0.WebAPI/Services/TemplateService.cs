@@ -45,6 +45,7 @@ namespace Kadena.WebAPI.Services
             var productTemplates = new ProductTemplates
             {
                 Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
+                OpenInDesignBtn = _resources.GetResourceString("Kadena.Product.ManageProducts.OpenInDesign"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
