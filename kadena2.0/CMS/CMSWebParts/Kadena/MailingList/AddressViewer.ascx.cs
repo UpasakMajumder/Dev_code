@@ -7,6 +7,8 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -110,9 +112,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private IEnumerable<MailingAddressDto> GetAddresses()
         {
-            var getAddressUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingAddressesUrl");
-            var client = new MailingListClient();
-            return client.GetAddresses(getAddressUrl, _containerId).Result.Payload;
+            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+            return client.GetAddresses(_containerId).Result.Payload;
         }
 
         private object CreateErrorList(IEnumerable<MailingAddressDto> addresses)

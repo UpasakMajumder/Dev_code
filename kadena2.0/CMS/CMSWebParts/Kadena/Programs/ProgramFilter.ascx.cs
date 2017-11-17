@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DocumentEngine.Web.UI;
+using CMS.DataEngine;
 
 public partial class CMSWebParts_Kadena_Programs_ProgramFilter : CMSAbstractBaseFilterControl
 {
@@ -41,12 +42,12 @@ public partial class CMSWebParts_Kadena_Programs_ProgramFilter : CMSAbstractBase
         if (!string.IsNullOrEmpty(txtSearchProgram.Text))
         {
             // Gets the ID of the selected department
-            where += "ProgramName like '%" + txtSearchProgram.Text + "%' or ProgramDescription like '%" + txtSearchProgram.Text + "%' or BrandName like '%"+txtSearchProgram.Text+ "%' or Name like '%" + txtSearchProgram.Text + "%'";
+            where += "ProgramName like '%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProgram.Text)) + "%' or ProgramDescription like '%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProgram.Text)) + "%' or BrandName like '%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProgram.Text)) + "%' or Name like '%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProgram.Text)) + "%'";
         }
         if (where != null)
         {
             // Sets the Where condition
-            this.WhereCondition = where;
+            this.WhereCondition = where;            
         }
 
         if (order != null)

@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Kadena_Membership_Users_UsersList" CodeBehind="~/CMSWebParts/Kadena/Membership/Users/UsersList.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Membership_Users_UsersList" CodeBehind="~/CMSWebParts/Kadena/Membership/Users/UsersList.ascx.cs" %>
 <%@ Register Src="~/CMSWebParts/Kadena/Membership/Users/UsersFilterControl.ascx"
     TagName="UsersFilterControl" TagPrefix="uc1" %>
 

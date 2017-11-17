@@ -102,6 +102,15 @@ public partial class CMSWebParts_Kadena_Membership_Logon_logonform {
     protected global::System.Web.UI.WebControls.Label lblResult;
     
     /// <summary>
+    /// lblForgotPwdError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblForgotPwdError;
+    
+    /// <summary>
     /// lnkSignup control.
     /// </summary>
     /// <remarks>
@@ -190,4 +199,13 @@ public partial class CMSWebParts_Kadena_Membership_Logon_logonform {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label lblHintResult;
+    
+    /// <summary>
+    /// lblError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblError;
 }

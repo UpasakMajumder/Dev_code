@@ -39,14 +39,15 @@ namespace CMSApp.CMSWebParts.Kadena.Filters
             string where = null;
             string order = null;
 
-            // Generates a WHERE condition based on the selected product department
+            
             if (!string.IsNullOrEmpty(txtSearchBrand.Text))
             {
-                // Gets the ID of the selected department
-                where += "BrandName like '%" + txtSearchBrand.Text + "%' or BrandCode like '%" + txtSearchBrand.Text+"%'";
+                string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchBrand.Text));
+
+                where += "BrandName like '%" + filterText + "%' or BrandCode like '%" + filterText + "%'";
             }
 
-           
+
 
             if (where != null)
             {

@@ -28,7 +28,7 @@ namespace Kadena.WebAPI.Services
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
-        private readonly ITemplatedProductService templateService;
+        private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
 
         public OrderService(IMapper mapper,
@@ -40,7 +40,7 @@ namespace Kadena.WebAPI.Services
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
-            ITemplatedProductService templateService,
+            ITemplatedClient templateService,
             IBackgroundTaskScheduler backgroundWorker)
         {
             this.mapper = mapper;
@@ -60,8 +60,7 @@ namespace Kadena.WebAPI.Services
         {
             CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
 
-            var endpoint = resources.GetSettingsKey("KDA_OrderViewDetailServiceEndpoint");
-            var microserviceResponse = await orderViewClient.GetOrderByOrderId(endpoint, orderId);
+            var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderId);
 
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
@@ -216,9 +215,7 @@ namespace Kadena.WebAPI.Services
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {
-            var endpoint = resources.GetSettingsKey("KDA_GetMailingListsUrl");
-            var customerName = resources.GetKenticoSite().Name;
-            var mailingResponse = await mailingClient.GetMailingListsForCustomer(endpoint, customerName);
+            var mailingResponse = await mailingClient.GetMailingListsForCustomer();
 
             if (mailingResponse == null || mailingResponse.Success == false || mailingResponse.Payload == null)
             {
@@ -270,6 +267,39 @@ namespace Kadena.WebAPI.Services
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
+            var paymentMethods = kenticoProvider.GetPaymentMethods();
+            var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
+
+            switch(selectedPayment?.ClassName ?? string.Empty)
+            {
+                case "KDA.PaymentMethods.CreditCard":
+                    return await PayByCard(request);
+
+                case "KDA.PaymentMethods.PurchaseOrder":
+                    return await SubmitPOOrder(request);
+
+                case "KDA.PaymentMethods.PayPal":
+                    throw new NotImplementedException("PayPal payment is not implemented yet");
+
+                default:
+                    throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
+            }
+        }
+
+        public async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)
+        {
+            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+
+            return await Task.FromResult(new SubmitOrderResult
+                {
+                    Success = true,
+                    RedirectURL = kenticoProvider.GetDocumentUrl(insertCardUrl)
+                }
+            );
+        }
+
+        public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
+        {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             Customer customer = null;
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
@@ -289,7 +319,7 @@ namespace Kadena.WebAPI.Services
                 throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
             }
 
-            var serviceResultDto = await orderSubmitClient.SubmitOrder(serviceEndpoint, orderData);
+            var serviceResultDto = await orderSubmitClient.SubmitOrder(orderData);
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
@@ -309,7 +339,7 @@ namespace Kadena.WebAPI.Services
 
                 // Temporary solution before microservices will implement better strategy for handling cold starts. 
                 var orderNumber = serviceResult.Payload;
-                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(serviceEndpoint, orderNumber));
+                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderNumber));
             }
             else
             {
@@ -319,9 +349,9 @@ namespace Kadena.WebAPI.Services
             return serviceResult;
         }
 
-        private async Task FinishOrder(string serviceEndpoint, string orderNumber)
+        private async Task FinishOrder(string orderNumber)
         {
-            var finishOrderResult = await orderSubmitClient.FinishOrder(serviceEndpoint, orderNumber);
+            var finishOrderResult = await orderSubmitClient.FinishOrder(orderNumber);
             if (finishOrderResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order # {orderNumber} successfully finished");
@@ -334,8 +364,7 @@ namespace Kadena.WebAPI.Services
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
         {
-            string endpoint = resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var response = await templateService.RunGeneratePdfTask(endpoint, cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString(), kenticoProvider.GetCurrentSiteDomain());
+            var response = await templateService.RunGeneratePdfTask(cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
             if (response.Success && response.Payload != null)
             {
                 return new Guid(response.Payload.TaskId);

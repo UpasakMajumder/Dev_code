@@ -1,12 +1,14 @@
-﻿using CMS.EventLog;
+﻿using CMS.DataEngine;
+using CMS.EventLog;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Old_App_Code.Helpers;
+using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -25,6 +27,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
         };
+        private MicroProperties _microProperties = new MicroProperties(new KenticoResourceService());
         private string _fileId;
         private Guid _containerId;
 
@@ -61,33 +64,43 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
             if (!string.IsNullOrWhiteSpace(_fileId) && _containerId != Guid.Empty)
             {
-                var headers = ServiceHelper.GetHeaders(_fileId).ToArray();
-                foreach (var cs in _columnSelectors)
+                var parsingClient = new ParsingClient(_microProperties);
+                var parseResult = parsingClient.GetHeaders(_fileId.ToString()).Result;
+                if (parseResult.Success)
                 {
-                    var sel = (FindControl($"sel{cs.Item2}") as HtmlSelect);
-                    if (sel != null)
+                    var headers = parseResult.Payload.ToArray();
+
+                    foreach (var cs in _columnSelectors)
                     {
-                        var selectedValue = GetColumnValue(cs.Item2);
-                        var valueToSelect = -1;
-                        sel.Items.Clear();
-
-                        var emptyItem = new ListItem(GetString("Kadena.MailingList.Empty"), GetString("Kadena.MailingList.Empty"));
-                        if (!cs.Item3)
-                            emptyItem.Attributes["disabled"] = string.Empty;
-                        sel.Items.Add(emptyItem);
-
-                        for (int i = 0; i < headers.Length; i++)
+                        var sel = (FindControl($"sel{cs.Item2}") as HtmlSelect);
+                        if (sel != null)
                         {
-                            sel.Items.Add(new ListItem(headers[i], i.ToString()));
-                            if (headers[i].ToLower().Contains(cs.Item1.ToLower()))
-                                valueToSelect = i;
+                            var selectedValue = GetColumnValue(cs.Item2);
+                            var valueToSelect = -1;
+                            sel.Items.Clear();
+
+                            var emptyItem = new ListItem(GetString("Kadena.MailingList.Empty"), GetString("Kadena.MailingList.Empty"));
+                            if (!cs.Item3)
+                                emptyItem.Attributes["disabled"] = string.Empty;
+                            sel.Items.Add(emptyItem);
+
+                            for (int i = 0; i < headers.Length; i++)
+                            {
+                                sel.Items.Add(new ListItem(headers[i], i.ToString()));
+                                if (headers[i].ToLower().Contains(cs.Item1.ToLower()))
+                                    valueToSelect = i;
+                            }
+                            if (selectedValue > -1)
+                            {
+                                valueToSelect = selectedValue;
+                            }
+                            sel.Value = valueToSelect < 0 ? GetString("Kadena.MailingList.Empty") : valueToSelect.ToString();
                         }
-                        if (selectedValue > -1)
-                        {
-                            valueToSelect = selectedValue;
-                        }
-                        sel.Value = valueToSelect < 0 ? GetString("Kadena.MailingList.Empty") : valueToSelect.ToString();
                     }
+                }
+                else
+                {
+                    EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "ParsingHeaders", parseResult.ErrorMessages, siteId: CurrentSite.SiteID);
                 }
             }
         }
@@ -117,8 +130,18 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
-                        ServiceHelper.UploadMapping(_fileId, _containerId, mapping);
-                        ServiceHelper.ValidateAddresses(_containerId);
+                        var mailingClient = new MailingListClient(_microProperties);
+                        var uploadResult = mailingClient.UploadMapping(_fileId, _containerId, mapping).Result;
+                        if (!uploadResult.Success)
+                        {
+                            throw new InvalidOperationException(uploadResult.ErrorMessages);
+                        }
+                        var validationClient = new AddressValidationClient(_microProperties);
+                        var validationResult = validationClient.Validate(_containerId).Result;
+                        if (!validationResult.Success)
+                        {
+                            throw new InvalidOperationException(validationResult.ErrorMessages);
+                        }
                         Response.Redirect(ProcessListPageUrl);
                     }
                     catch (Exception ex)

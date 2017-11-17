@@ -3,8 +3,7 @@
 <asp:Panel ID="pnlBody" runat="server" CssClass="logon-page-background">
     <%-- Logon part --%>
 
-    <div class="login__form-content js-login"></div>
-
+    <div class="login__form-content js-login "></div>
     <asp:Login ID="Login1" runat="server" DestinationPageUrl="~/Default.aspx" RenderOuterTable="false" Visible="false">
         <LayoutTemplate>
             <asp:Panel runat="server" ID="pnlLogin" DefaultButton="LoginButton" CssClass="logon-panel">
@@ -99,6 +98,7 @@
                 <cms:LocalizedButton ID="btnPasswdRetrieval" runat="server" EnableViewState="false" ButtonStyle="Default"
                     CssClass="btn-action login__login-button btn--no-shadow" ResourceString="LogonForm.btnPasswordRetrieval" />
                 <asp:Label ID="lblResult" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result" />
+                <asp:Label ID="lblForgotPwdError" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result input__error " />
 
             </asp:Panel>
         </ContentTemplate>
@@ -140,6 +140,7 @@
                     CssClass="btn-action login__login-button btn--no-shadow" ResourceString="kadena.logonFrom.Passwordhint" />
                 <asp:Label ID="lblPwdHint" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result" />
                 <asp:Label ID="lblHintResult" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result" />
+                <asp:Label ID="lblError" runat="server" Visible="false" EnableViewState="false" CssClass="logon-password-retrieval-result input__error" />
 
             </asp:Panel>
         </ContentTemplate>

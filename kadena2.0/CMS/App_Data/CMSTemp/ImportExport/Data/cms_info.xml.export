@@ -2,19 +2,19 @@
   <NewDataSet>
     <cms_info>
       <Key>machinename</Key>
-      <Value>WMCL396</Value>
+      <Value>LAPTOP-053</Value>
     </cms_info>
     <cms_info>
       <Key>domainname</Key>
-      <Value>localhost:56000</Value>
+      <Value>localhost:8080</Value>
     </cms_info>
     <cms_info>
       <Key>currentuser</Key>
-      <Value>administrator</Value>
+      <Value>pavan.kumbhar</Value>
     </cms_info>
     <cms_info>
       <Key>starttime</Key>
-      <Value>4/19/2017 11:09:05 AM</Value>
+      <Value>11/16/2017 12:44:46 AM</Value>
     </cms_info>
     <cms_info>
       <Key>systemversion</Key>
@@ -26,10 +26,6 @@
     </cms_info>
     <cms_info>
       <Key>webapplication</Key>
-      <Value>True</Value>
-    </cms_info>
-    <cms_info>
-      <Key>siteincluded</Key>
       <Value>True</Value>
     </cms_info>
   </NewDataSet>

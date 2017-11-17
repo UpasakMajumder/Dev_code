@@ -183,13 +183,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.TextBox txtZipcode;
     
     /// <summary>
-    /// txtZipcodeRequired control.
+    /// rfZipcode control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RequiredFieldValidator txtZipcodeRequired;
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rfZipcode;
     
     /// <summary>
     /// lblTelephone control.
@@ -208,6 +208,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtTelephone;
+    
+    /// <summary>
+    /// cvTelephone control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.CustomValidator cvTelephone;
     
     /// <summary>
     /// lblEmail control.

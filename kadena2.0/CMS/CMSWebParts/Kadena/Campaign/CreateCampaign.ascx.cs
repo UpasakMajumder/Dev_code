@@ -16,8 +16,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
     #region "Variables"
 
-    private string mDefaultTargetUrl = "";
-    private string folderpath="/";
+    private string folderpath = "/";
     private int campaignId = 0;
     #endregion
     #region "Properties"
@@ -26,15 +25,15 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), mDefaultTargetUrl);
+            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), Request.UrlReferrer.ToString());
         }
         set
         {
             SetValue("DefaultTargetUrl", value);
-            mDefaultTargetUrl = value;
+            //mDefaultTargetUrl = value;
         }
     }
-  
+
 
     #endregion
 
@@ -75,13 +74,13 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 btnSave.Click += btnSave_Save;
             }
             //assigning resource string to watermark text
-            Name.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark");
-            Description.WatermarkText = ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark");
+            Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
+            Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
             rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
             rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
             //setting for folder path
-            folderpath = SettingsKeyInfoProvider.GetValue("KDA_FolderPath");
+            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CampaignFolderPath", CurrentSiteName);
         }
     }
 
@@ -153,7 +152,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
                 CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, campaignId);
-                if(editPage !=null)
+                if (editPage != null)
                 {
                     // Sets the properties of the new page
                     editPage.DocumentName = campaignName;
@@ -176,7 +175,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 {
                     lblFailureText.Visible = true;
                 }
-        
+
             }
         }
         catch (Exception ex)
@@ -202,14 +201,14 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
         }
 
-        
+
     }
-   
+
 
     /// <summary>
     /// Reloads the control data.

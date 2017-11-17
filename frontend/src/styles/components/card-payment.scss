@@ -1,0 +1,72 @@
+.card-payment {
+  $form-width: 706px;
+  $block-margin: 10px;
+  $icon-size: 35px;
+  $card-height: 208px;
+
+  &__form {
+    @include rem(padding, 20px);
+
+    @extend %flex--center--default;
+    width: $form-width;
+    background-color: rgba($brand-grey, .5);
+    border-radius: $border-radius-xl;
+  }
+
+  &__block {
+    display: inline-flex;
+    width: calc(50% - #{$block-margin});
+
+    &:not(:last-child) {
+      margin-right: $block-margin * 2;
+    }
+  }
+
+  &__field {
+    @extend .mb-3;
+    position: relative;
+
+    &--half {
+      @extend .card-payment__block;
+    }
+  }
+
+  &__icon {
+    height: $icon-size;
+    width: $icon-size;
+  }
+
+  &__icon-block {
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    height: $icon-size;
+    transform: translateY(50%);
+
+    & > * {
+      @extend .mr-1;
+    }
+  }
+
+  &__submit {
+    @extend .mt-4;
+  }
+
+  // Rewrite react-credit-cards style
+  .rccs {
+    width: 100%;
+
+    &__card {
+      @extend .rccs;
+      height: $card-height;
+    }
+  }
+
+  .rccs__card--flipped {
+    transform-style: flat;
+
+    .rccs__card--back {
+      transform: scale(-1, 1);
+    }
+  }
+}

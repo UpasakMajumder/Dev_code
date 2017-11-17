@@ -1,10 +1,29 @@
 using System;
 
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
 using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.PortalEngine;
 using CMS.Base;
+using CMS.Base.Web.UI;
 using CMS.Membership;
+
+
+using System.Configuration;
+using System.Text;
+using System.Web;
+using System.Web.Security;
+
+using CMS.Activities.Loggers;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.EventLog;
+using CMS.MembershipProvider;
+using CMS.SiteProvider;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -736,6 +755,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     protected void filterUsers_OnFilterChanged()
     {
         filterUsers.InitDataProperties(srcUsers);
+       
 
         // Connects repeater with data source
         repUsers.DataSource = srcUsers.DataSource;
@@ -980,6 +1000,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
             NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
             NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
+            NewUser.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
+            NewUser.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
 
             string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
             UserInfoProvider.SetUserInfo(NewUser);

@@ -3,12 +3,12 @@
 
 <div class="login__form-content js-login">
     <div class="css-login changepwd_block">
-        <div class="form">
+        <div class="form signup_form">
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <asp:TextBox ID="txtProgramName" runat="server" CssClass="input__text"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="" ErrorMessage="Please enter Program Name" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="input__error" ErrorMessage="" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
@@ -22,7 +22,7 @@
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" id="lblBrandName" runat="server"></span>
-                    <uc1:UniSelector runat="server" ID="ddlBrand" ObjectType="customtableitem.KDA.Brand" ReturnColumnName="BrandCode" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%BrandName%}" AllowEmpty="false" />
+                    <uc1:UniSelector runat="server" ID="ddlBrand" ObjectType="customtableitem.KDA.Brand" ReturnColumnName="ItemID" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%BrandName%}" AllowEmpty="false" />
                     <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="" ErrorMessage="Please select Brand" InitialValue="0" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>

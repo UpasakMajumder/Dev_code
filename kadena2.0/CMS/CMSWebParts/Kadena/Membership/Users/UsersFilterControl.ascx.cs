@@ -177,8 +177,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
     protected static string GenerateWhereCondition(string searchPhrase)
     {
         searchPhrase = SqlHelper.GetSafeQueryString(searchPhrase, false);
-        string whereCondition = "(UserName LIKE N'%" + searchPhrase + "%') OR ";
-        whereCondition += "(UserNickName LIKE N'%" + searchPhrase + "%')";
+        string whereCondition = "(UserName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%') OR ";
+        whereCondition += "(UserNickName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%')";
         return whereCondition;
     }
 }

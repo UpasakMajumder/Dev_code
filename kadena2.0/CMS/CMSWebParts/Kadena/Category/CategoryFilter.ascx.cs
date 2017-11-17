@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Web.UI;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using System;
 using System.Collections.Generic;
@@ -59,13 +60,11 @@ namespace CMSApp.CMSWebParts.Kadena.Category
                 // Gets the ID of the selected department
                 string categoryname = ValidationHelper.GetString(this.txtSearch.Text, "");
 
-                if (categoryname != "")
-                {
-                    where = "ProductCategoryTitle = '" + categoryname + "' OR ProductCategoryDescription='" + categoryname + "'";
-                }
-            }
-
                
+                    categoryname = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(categoryname));
+                    where = "ProductCategoryTitle like '%" + categoryname + "%' OR ProductCategoryDescription like '%" + categoryname + "%'";
+              
+            }
 
             if (where != null)
             {
