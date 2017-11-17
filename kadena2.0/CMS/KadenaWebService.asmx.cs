@@ -18,6 +18,8 @@
     using System.Web.Security;
     using System.Web.Services;
     using System.Linq;
+    using CMS.CustomTables;
+    using CMS.EventLog;
 
     [WebService]
     [ScriptService]
@@ -498,7 +500,31 @@
             return status;
 
         }
+        [WebMethod(EnableSession = true)]
+        public void EditPOSNumber(int posId, bool status)
+        {
+            string customTableClassName = "KDA.POSNumber";
+            try
+            {
+                // Gets the custom table
+                DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (brandTable != null)
+                {
+                    // Gets all data records from the POS table whose 'ItemId' field value equal to PosId
+                    CustomTableItem customTableData = CustomTableItemProvider.GetItem(posId, customTableClassName);
+                    if (customTableData != null)
+                    {
+                        customTableData.SetValue("Enable", ValidationHelper.GetBoolean(status, false));
+                        customTableData.Update();
 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm", "GetBrands", ex.Message);
+            }
+        }
         #endregion
     }
 }
