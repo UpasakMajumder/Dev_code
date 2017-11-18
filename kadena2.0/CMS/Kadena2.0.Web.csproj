@@ -835,6 +835,20 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.designer.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx.cs">
+      <DependentUpon>BusinessUnitFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx.designer.cs">
+      <DependentUpon>BusinessUnitFilter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
       <DependentUpon>CampaignFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1172,6 +1186,8 @@
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
+    <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
