@@ -989,27 +989,33 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 Enabled = true
             };
 
-            NewUser.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
-            NewUser.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
-            NewUser.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
-            NewUser.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserPhone"), 0));
-            NewUser.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
-            NewUser.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
-            NewUser.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
-            NewUser.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
-            NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
-            NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
-            NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
-            NewUser.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
-            NewUser.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
+            if(!string.IsNullOrEmpty(NewUser.Email))
+            {
 
-            string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
-            UserInfoProvider.SetUserInfo(NewUser);
-            UserInfoProvider.SetPassword(NewUser.UserName, Password);
-            UserInfoProvider.AddUserToSite(NewUser.UserName, CurrentSiteName);
+                NewUser.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
+                NewUser.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
+                NewUser.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
+                NewUser.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserCountry"), 0));
+                NewUser.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
+                NewUser.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
+                NewUser.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
+                NewUser.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
+                NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
+                NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
+                NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
+                NewUser.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
+                NewUser.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
 
-            if (NewUser != null && NewUser.UserID > 0)
-                Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + NewUser.UserID);
+                string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
+                UserInfoProvider.SetUserInfo(NewUser);
+                UserInfoProvider.SetPassword(NewUser.UserName, Password);
+                UserInfoProvider.AddUserToSite(NewUser.UserName, CurrentSiteName);
+
+                if (NewUser != null && NewUser.UserID > 0)
+                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + NewUser.UserID);
+            }
+            else
+                lblNewUserError.Visible = true;
         }
         else
             formElem.SaveData("", true);
