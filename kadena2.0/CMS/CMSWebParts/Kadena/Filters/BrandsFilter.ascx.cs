@@ -3,10 +3,6 @@ using CMS.Helpers;
 
 using CMS.DocumentEngine.Web.UI;
 using CMS.DataEngine;
-using CMS.Ecommerce;
-using System.Web.UI.WebControls;
-using CMS.EventLog;
-using System.Linq;
 
 
 namespace CMSApp.CMSWebParts.Kadena.Filters
