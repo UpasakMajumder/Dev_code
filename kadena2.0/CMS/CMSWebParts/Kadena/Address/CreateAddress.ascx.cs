@@ -17,25 +17,6 @@ using CMS.EventLog;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
-    #region "Properties"
-    /// <summary>
-    /// Navigation path after saving the address data
-    /// </summary>
-    public string AddressListPath
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("AddressListPath"), string.Empty);
-        }
-        set
-        {
-            SetValue("AddressListPath", value);
-        }
-    }
-
-
-    #endregion
-
 
     #region "Methods"
 
@@ -64,20 +45,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             {
                 ddlCountry.Value = "USA";
                 BindResourceStrings();
-                int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
-                if (itemID != default(int))
-                {
-                    //headerAddress.InnerText = "Edit Address";
+                int itemID = QueryHelper.GetInteger("id", 0);
+                if (itemID > 0)
                     BindAddressData(itemID);
-                    // UpdateAddressData(itemID);
-                }
-                else
-                {
-
-                }
             }
-
-
         }
     }
 
@@ -459,27 +430,19 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
             var customerID = IsUserCustomer(CurrentUser.UserID);
             if (itemID != default(int))
-            {
-                
-                    UpdateAddressData(itemID);
-                    Response.Redirect(AddressListPath);
-                
-            }
+                UpdateAddressData(itemID);
             else
             {
-                    if (customerID != default(int))
-                    {
-                        CreateNewAddress(customerID);
-                        Response.Redirect(AddressListPath);
-                    }
-                    else
-                    {
-                        customerID = CreateCustomer();
-                        CreateNewAddress(customerID);
-                        Response.Redirect(AddressListPath);
-                    }
-                
+                if (customerID != default(int))
+                    CreateNewAddress(customerID);
+                else
+                {
+                    customerID = CreateCustomer();
+                    CreateNewAddress(customerID);
+                }
             }
+
+            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
         }
         catch (Exception ex)
         {
@@ -494,14 +457,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     /// <param name="e"></param>
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-        try
-        {
-            Response.Redirect(AddressListPath);
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "btnCancel_Click()", ex);
-        }
+        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
 
     /// <summary>

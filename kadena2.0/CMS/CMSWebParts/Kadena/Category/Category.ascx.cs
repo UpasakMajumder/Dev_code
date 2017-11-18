@@ -19,24 +19,6 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
     private string folderpath = "/";
     private int categoyId = 0;
     #endregion
-    #region "Properties"
-
-    public string DefaultTargetUrl
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), Request.UrlReferrer.ToString());
-        }
-        set
-        {
-            SetValue("DefaultTargetUrl", value);
-        }
-    }
-
-
-    #endregion
-
-
 
     #region "Methods"
 
@@ -127,22 +109,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
     }
     protected void btnCancel_Cancel(object sender, EventArgs e)
     {
-        try
-        {
-            var redirectUrl = RequestContext.CurrentURL;
-
-            if (!String.IsNullOrEmpty(DefaultTargetUrl))
-            {
-                redirectUrl = ResolveUrl(DefaultTargetUrl);
-            }
-
-            URLHelper.Redirect(redirectUrl);
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CategroyCreateFormCancel", "EXCEPTION", ex);
-        }
-
+        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
     protected void btnSave_Edit(object sender, EventArgs e)
     {
@@ -164,14 +131,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
 
                     // update the  campaign
                     editPage.Update();
-                    var redirectUrl = RequestContext.CurrentURL;
 
-                    if (!String.IsNullOrEmpty(DefaultTargetUrl))
-                    {
-                        redirectUrl = ResolveUrl(DefaultTargetUrl);
-                    }
-
-                    URLHelper.Redirect(redirectUrl);
+                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                 }
                 else
                 {
