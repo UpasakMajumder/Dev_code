@@ -9,6 +9,7 @@ using System.Linq;
 using CMS.Membership;
 using CMS.CustomTables;
 using CMS.EventLog;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {

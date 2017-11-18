@@ -147,7 +147,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         try
         {
             BusinessUnitItem objBusinessUnit = new BusinessUnitItem();
-            objBusinessUnit.BusinessUnitNumber = ValidationHelper.GetInteger(txtBUNumber.Text, default(int));
+            objBusinessUnit.BusinessUnitNumber  = ValidationHelper.GetLong(txtBUNumber.Text, default(int)); ; //ValidationHelper.GetInteger(txtBUNumber.Text, default(int));
             objBusinessUnit.BusinessUnitName = ValidationHelper.GetString(txtBUName.Text, string.Empty);
             objBusinessUnit.Status = ddlStatus.SelectedValue == "0" ? false : true;
             objBusinessUnit.SiteID = CurrentSite.SiteID;
@@ -170,7 +170,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).Columns("BusinessUnitName,BusinessUnitNumber,Status,SiteID,ItemID").TopN(1).FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(buData))
             {
-                buData.BusinessUnitNumber = ValidationHelper.GetInteger(txtBUNumber.Text, default(int));
+                buData.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int));
                 buData.BusinessUnitName = ValidationHelper.GetString(txtBUName.Text, string.Empty);
                 buData.Status = ddlStatus.SelectedValue == "0" ? false : true;
                 buData.SiteID = CurrentSite.SiteID;
@@ -237,7 +237,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         try
         {
             BusinessUnitItem objBusinessUnit = new BusinessUnitItem();
-            var buNumber = ValidationHelper.GetInteger(txtBUNumber.Text, default(int));
+            var buNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int));
             var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
             if (itemID != default(int))
             {
