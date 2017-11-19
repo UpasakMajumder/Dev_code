@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
-<%--<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>--%>
+
 
 <div class="css-login">
     <div class="form">
@@ -7,11 +7,9 @@
             <div class="input__wrapper">
                 <span class="input__label">Program Name</span>
                 <div class="input__inner">
-                    <%--<uc1:UniSelector runat="server" ID="ddlProgram" ObjectType="cms.document.KDA.Program" ReturnColumnName="ProgramID" SelectionMode="SingleDropDownList" CssClass="input__select" AllowEmpty="false"/>--%>
                     <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true">
-                        <asp:ListItem Value="0">--Select Program--</asp:ListItem>
                     </asp:DropDownList>
-                   
+
                 </div>
             </div>
         </div>
@@ -19,11 +17,12 @@
             <div class="input__wrapper">
                 <span class="input__label">POS number</span>
                 <div class="input__inner">
-                    <select>
-                        <option>Select POS Number</option>
-                        <option>select1</option>
-                        <option>select2</option>
-                    </select>
+                    <asp:DropDownList runat="server" ID="ddlPos">
+                        <asp:ListItem Value="0">Select POS Number</asp:ListItem>
+                        <asp:ListItem Value="1">POS 1</asp:ListItem>
+                        <asp:ListItem Value="2">POS 2</asp:ListItem>
+                        <asp:ListItem Value="3">POS 3</asp:ListItem>
+                    </asp:DropDownList>
                 </div>
             </div>
         </div>
@@ -61,7 +60,8 @@
             <div class="input__wrapper">
                 <span class="input__label">Expiration Date</span>
                 <div class="input__inner date_picker">
-                    <input type="type" class="input__text">
+                    <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text"></asp:TextBox>
+                    <%-- <input type="type" class="input__text">--%>
                     <div class="datepicker_icon">
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </div>
@@ -73,6 +73,23 @@
                 <span class="input__label">Brand Name</span>
                 <div class="input__inner">
                     <asp:TextBox runat="server" ID="txtBrand" class="input__text" ReadOnly="true"></asp:TextBox>
+                    <asp:HiddenField runat="server" ID="hfBrandItemID" />
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form_block">
+            <div class="input__wrapper">
+                <span class="input__label">Estimated Price</span>
+                <div class="input__inner">
+                    <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form_block">
+            <div class="input__wrapper">
+                <span class="input__label">Actual Price</span>
+                <div class="input__inner">
+                    <asp:TextBox runat="server" ID="txtActualPrice" class="input__text"></asp:TextBox>
                 </div>
             </div>
         </div>
@@ -80,11 +97,8 @@
             <div class="input__wrapper">
                 <span class="input__label">Product Category</span>
                 <div class="input__inner">
-                    <select>
-                        <option>Select Product Category</option>
-                        <option>select1</option>
-                        <option>select2</option>
-                    </select>
+                    <asp:DropDownList ID="ddlProductcategory" runat="server">
+                    </asp:DropDownList>
                 </div>
             </div>
         </div>
@@ -109,6 +123,7 @@
                 <span class="input__label">Image</span>
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" class="input__file" />
+                    <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
                 </div>
             </div>
         </div>
