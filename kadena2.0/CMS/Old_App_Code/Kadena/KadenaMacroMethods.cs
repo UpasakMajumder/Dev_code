@@ -1,8 +1,10 @@
 ﻿using CMS;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Helpers;
 using CMS.MacroEngine;
+using CMS.SiteProvider;
 
 [assembly: RegisterExtension(typeof(KadenaMacroMethods), typeof(string))]
 public class KadenaMacroMethods : MacroMethodContainer
@@ -19,5 +21,30 @@ public class KadenaMacroMethods : MacroMethodContainer
             DivisionName = Division.DivisionName;
 
         return DivisionName;
+    }
+
+    [MacroMethod(typeof(string), "Returns Program name based on Program ID", 1)]
+    [MacroMethodParam(0, "ProgramID", typeof(int), "ProgramID")]
+    public static object GetProgramName(EvaluationContext context, params object[] parameters)
+    {
+        int ProgramID = ValidationHelper.GetInteger(parameters[0], 0);
+        string ProgramName = string.Empty;
+        Program program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID",SiteContext.CurrentSite.SiteID).WhereEquals("ProgramID", ProgramID).Columns("ProgramName").FirstObject;
+        if (program != null)
+            ProgramName = program.ProgramName;
+        return ProgramName;
+    }
+
+    [MacroMethod(typeof(string), "Returns Category name based on Category ID", 1)]
+    [MacroMethodParam(0, "CategoryID", typeof(int), "CategoryID")]
+    public static object GetCategoryName(EvaluationContext context, params object[] parameters)
+    {
+        int CategoryID = ValidationHelper.GetInteger(parameters[0], 0);
+        string CategoryName = string.Empty;
+        ProductCategory category = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProductCategoryID", CategoryID).Columns("ProductCategoryTitle").FirstObject;
+        if (category != null)
+            CategoryName = category.ProductCategoryTitle;
+
+        return CategoryName;
     }
 }
