@@ -9,7 +9,7 @@
 <div class="custom_select webcustom_select">
     <asp:DropDownList ID="ddlProductcategory" runat="server" OnSelectedIndexChanged="ddlProductcategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
 </div>
-<div class="add_btn">
+<div class="add_btn ">
     <asp:Button ID="btnNotifyAdmin" runat="server" class="btn-action" Text="Notify Global Admin" OnClick="btnNotifyAdmin_Click" Visible="false"/>
      <asp:Button ID="btnAllowUpates" runat="server" class="btn-action" Text="Allow Products Update" OnClick="btnAllowUpates_Click" Visible="false" />
      <asp:Button ID="btnNewProduct" runat="server" class="btn-action" Text="New Product" OnClick="btnNewProduct_Click" />

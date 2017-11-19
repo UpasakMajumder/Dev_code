@@ -36,6 +36,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         {
             BindPrograms();
             BindCategories();
+            BindButtons();
         }
     }
     /// <summary>
@@ -64,34 +65,51 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 this.WhereCondition = where;
             this.RaiseOnFilterChanged();
 
-            var nodeGuid = CurrentDocument.NodeGUID;
-            Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
-            if (campaign != null)
-            {
-                bool gAdminNotified = campaign.GlobalAdminNotified;
-                if (CurrentUser.IsInRole("TWEGlobalAdmin", SiteContext.CurrentSiteName))
-                {
-                    if (gAdminNotified)
-                    {
-                        btnNotifyAdmin.Visible = false;
-                        btnAllowUpates.Visible = true;
-                    }
-                }
-                else if (CurrentUser.IsInRole("TWEGlobalAdmin", SiteContext.CurrentSiteName))
-                {
-                    if (gAdminNotified)
-                    {
-                        btnNotifyAdmin.Visible = false;
-                        btnAllowUpates.Visible = false;
-                    }
-                }
-            }
+            BindButtons();
+           
         }
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "SetFilter", ex.Message);
         }
     }
+    public void BindButtons()
+    {
+        var nodeGuid = CurrentDocument.NodeGUID;
+        Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
+        if (campaign != null)
+        {
+            bool gAdminNotified = campaign.GlobalAdminNotified;
+            if (CurrentUser.IsInRole("TWEGlobalAdmin", SiteContext.CurrentSiteName))
+            {
+                if (gAdminNotified)
+                {
+                    btnNotifyAdmin.Enabled = false;
+                    btnNotifyAdmin.Visible = false;
+
+                    btnAllowUpates.Visible = true;
+                    btnAllowUpates.Visible = true;
+                }
+                else
+                {
+
+                }
+            }
+            else if (CurrentUser.IsInRole("TWEAdmin", SiteContext.CurrentSiteName))
+            {
+                if (gAdminNotified)
+                {
+                    btnNotifyAdmin.Visible = false;
+                    btnAllowUpates.Visible = false;
+                }
+                else
+                {
+                    btnNotifyAdmin.Visible = true;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Init event handler.
     /// </summary>
@@ -208,6 +226,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         {
             campaign.GlobalAdminNotified = false;
             campaign.Update();
+            this.Visible = false;
         }
     }
 
