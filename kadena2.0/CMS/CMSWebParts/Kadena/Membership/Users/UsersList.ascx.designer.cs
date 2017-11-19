@@ -66,6 +66,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList {
     protected global::CMS.Base.Web.UI.CMSPanel pnlUserForm;
     
     /// <summary>
+    /// lblNewUserError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblNewUserError;
+    
+    /// <summary>
     /// formElem control.
     /// </summary>
     /// <remarks>
