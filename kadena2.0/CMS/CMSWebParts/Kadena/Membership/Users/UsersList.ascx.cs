@@ -24,6 +24,9 @@ using CMS.DocumentEngine;
 using CMS.EventLog;
 using CMS.MembershipProvider;
 using CMS.SiteProvider;
+using CMS.CustomTables.Types.KDA;
+using CMS.CustomTables;
+using System.Linq;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -755,7 +758,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     protected void filterUsers_OnFilterChanged()
     {
         filterUsers.InitDataProperties(srcUsers);
-       
+
 
         // Connects repeater with data source
         repUsers.DataSource = srcUsers.DataSource;
@@ -980,7 +983,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
 
         if (User == null || (User != null && User.UserID <= 0))
         {
-            UserInfo NewUser = new UserInfo()
+            User = new UserInfo()
             {
                 FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
                 LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
@@ -989,35 +992,126 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 Enabled = true
             };
 
-            if(!string.IsNullOrEmpty(NewUser.Email))
+            if (!string.IsNullOrEmpty(User.Email))
             {
 
-                NewUser.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
-                NewUser.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
-                NewUser.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
-                NewUser.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserCountry"), 0));
-                NewUser.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
-                NewUser.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
-                NewUser.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
-                NewUser.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
-                NewUser.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
-                NewUser.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
-                NewUser.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
-                NewUser.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
-                NewUser.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
+                User.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
+                User.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
+                User.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
+                User.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserCountry"), 0));
+                User.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
+                User.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
+                User.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
+                User.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
+                User.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
+                User.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
+                User.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
+                User.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
+                User.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
 
                 string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
-                UserInfoProvider.SetUserInfo(NewUser);
-                UserInfoProvider.SetPassword(NewUser.UserName, Password);
-                UserInfoProvider.AddUserToSite(NewUser.UserName, CurrentSiteName);
+                UserInfoProvider.SetUserInfo(User);
+                UserInfoProvider.SetPassword(User.UserName, Password);
+                UserInfoProvider.AddUserToSite(User.UserName, CurrentSiteName);
 
-                if (NewUser != null && NewUser.UserID > 0)
-                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + NewUser.UserID);
+
+                if (User != null && User.UserID > 0)
+                {
+                    //storing the busienss units data while creating user 
+
+                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+                    if (User != null && User.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                        BindBusinessUnitsToUser(BusinessUnits, User.UserID);
+                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + User.UserID);
+                }
             }
             else
                 lblNewUserError.Visible = true;
         }
         else
+        {
             formElem.SaveData("", true);
+            //storing the busienss units data while updating user details
+            string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+            if (User != null && User.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                BindBusinessUnitsToUser(BusinessUnits, User.UserID);
+        }
+
+    }
+
+    /// <summary>
+    /// Inserts user related business units 
+    /// </summary>
+    /// <param name="BusinessUnits">all busieness units</param>
+    /// <param name="UserID">user id</param>
+    private void BindBusinessUnitsToUser(string BusinessUnits, int UserID)
+    {
+        try
+        {
+            DeleteUserBusinessUnits(UserID);
+            var delimitBuinessUnits = BusinessUnits.Split(';');
+            foreach (var s in delimitBuinessUnits)
+            {
+                if (s != string.Empty)
+                {
+                    if (IsBusinessUnitExisted(ValidationHelper.GetInteger(s, 0), UserID))
+                    {
+                        UserBusinessUnitsItem newBu = new UserBusinessUnitsItem();
+                        newBu.UserID = UserID;
+                        newBu.BusinessUnitID = ValidationHelper.GetInteger(s, 0);
+                        newBu.Insert();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "BindBusinessUnitsToUser()", ex);
+        }
+    }
+
+    /// <summary>
+    /// Checks whether the specifc business unit is assigned to the user
+    /// </summary>
+    /// <param name="BusinessUnitID">business unit item id</param>
+    /// <param name="UserID">user id</param>
+    /// <returns>true/false</returns>
+    private bool IsBusinessUnitExisted(int BusinessUnitID, int UserID)
+    {
+        try
+        {
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", UserID).And().WhereEquals("BusinessUnitID", BusinessUnitID).Columns("BusinessUnitID").FirstOrDefault();
+            if (DataHelper.DataSourceIsEmpty(buData)) return true;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "IsBusinessUnitExisted()", ex);
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Deletes all the user related busienss units
+    /// </summary>
+    /// <param name="UserID"></param>
+    /// <returns></returns>
+    private bool DeleteUserBusinessUnits(int UserID)
+    {
+        try
+        {
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", UserID).Columns("ItemID").ToList();
+            if (!DataHelper.DataSourceIsEmpty(buData))
+            {
+                buData.ForEach(b =>
+                {
+                    b.Delete();
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "DeleteUserBusinessUnits()", ex);
+        }
+        return false;
     }
 }
