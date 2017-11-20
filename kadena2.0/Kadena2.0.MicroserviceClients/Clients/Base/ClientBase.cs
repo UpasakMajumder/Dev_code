@@ -77,7 +77,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
 
-        private HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
+        protected virtual HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
             var request = new HttpRequestMessage(method, url);
             AddSuppliantDomain(request);
