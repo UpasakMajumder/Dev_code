@@ -17,25 +17,22 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
-        private readonly ITemplatedProductService _templateClient;
+        private readonly ITemplatedClient _templateClient;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedProductService templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
         {
             _resources = resources;
             _logger = logger;
             _templateClient = templateClient;
             _kentico = kentico;
             _users = users;
-
-            _templateClient.SuppliantDomain = _kentico.GetCurrentSiteDomain();
         }
 
         public async Task<bool> SetName(Guid templateId, string name)
         {
-            string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name);
+            var result = await _templateClient.SetName(templateId, name);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -48,6 +45,7 @@ namespace Kadena.WebAPI.Services
             var productTemplates = new ProductTemplates
             {
                 Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
+                OpenInDesignBtn = _resources.GetResourceString("Kadena.Product.ManageProducts.OpenInDesign"),
                 Header = new []
                 {
                     new ProductTemplatesHeader
@@ -78,11 +76,8 @@ namespace Kadena.WebAPI.Services
                 return productTemplates;
             }
 
-            var clientEndpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
             var requestResult = await _templateClient
-                .GetTemplates(clientEndpoint,
-                    _users.GetCurrentUser().UserId,
-                    product.ProductChiliTemplateID);
+                .GetTemplates(_users.GetCurrentUser().UserId, product.ProductChiliTemplateID);
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))

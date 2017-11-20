@@ -124,14 +124,12 @@ namespace Kadena.WebAPI.Services
             BaseResponseDto<OrderListDto> response = null;
             if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
-                var url = _kenticoResources.GetSettingsKey("KDA_OrdersBySiteUrl");
-                response = await _orderClient.GetOrders(url, siteName, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity);
             }
             else
             {
                 var customer = _kenticoUsers.GetCurrentCustomer();
-                var url = _kenticoResources.GetSettingsKey("KDA_OrderHistoryServiceEndpoint");
-                response = await _orderClient.GetOrders(url, customer?.Id ?? 0, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity);
             }
 
             if (response?.Success ?? false)

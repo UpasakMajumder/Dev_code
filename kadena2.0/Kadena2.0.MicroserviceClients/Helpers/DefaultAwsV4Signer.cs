@@ -13,7 +13,7 @@ using System.Web;
 using System.Collections.Specialized;
 using Amazon.Runtime;
 
-namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
+namespace Kadena2.MicroserviceClients.Helpers
 {
     class DefaultAwsV4Signer : IAwsV4Signer
     {

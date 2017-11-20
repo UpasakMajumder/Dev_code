@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
+namespace Kadena2.MicroserviceClients.Helpers
 {
     interface IAwsV4Signer
     {

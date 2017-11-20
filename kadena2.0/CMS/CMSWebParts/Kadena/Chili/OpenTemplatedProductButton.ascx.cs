@@ -7,6 +7,8 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Models.Product;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Linq;
@@ -35,14 +37,6 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             }
         }
 
-        public string ServiceBaseUrl
-        {
-            get
-            {
-                return SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_TemplatingServiceEndpoint");
-            }
-        }
-
         #region Public methods
 
         public override void OnContentLoaded()
@@ -68,7 +62,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             var masterTemplateID = CurrentDocument.GetStringValue("ProductChiliTemplateID", string.Empty);
             var workspaceID = CurrentDocument.GetStringValue("ProductChiliWorkgroupID", string.Empty);
             var use3d = CurrentDocument.GetBooleanValue("ProductChili3dEnabled", false);
-            var client = new TemplatedProductService() { SuppliantDomain = RequestContext.CurrentDomain };
+            var resource = new KenticoResourceService();
+            var client = new TemplatedClient(new SuppliantDomain(resource), new MicroProperties(resource));
             var requestBody = new NewTemplateRequestDto
             {
                 User = MembershipContext.AuthenticatedUser.UserID.ToString(),
@@ -77,7 +72,7 @@ namespace Kadena.CMSWebParts.Kadena.Chili
                 UseHtmlEditor = false,
                 Use3d = use3d
             };
-            var newTemplateUrl = client.CreateNewTemplate(ServiceBaseUrl, requestBody).Result?.Payload;
+            var newTemplateUrl = client.CreateNewTemplate(requestBody).Result?.Payload;
             if (!string.IsNullOrEmpty(newTemplateUrl))
             {
                 var uri = new Uri(newTemplateUrl);

@@ -51,7 +51,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    tasks.Add(mailingService.RemoveMailingList(config.DeleteMailingListsByValidToDateURL, customer.Name, deleteOlderThan));
+                    tasks.Add(mailingService.RemoveMailingList(deleteOlderThan));
                 }
             }
 

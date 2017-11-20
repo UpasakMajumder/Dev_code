@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Kadena.Dto.General;
 using System.Net.Http;
 using Kadena2.MicroserviceClients.Clients.Base;
+using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena.Dto.KSource;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -16,21 +18,30 @@ namespace Kadena2.MicroserviceClients.Clients
             Noosh = 12
         }
 
-        public async Task<BaseResponseDto<string>> UpdateNooshRule(string endPoint, string ruleName, bool enabled, int rate, string targetId, string workGroupName, string nooshUrl, string nooshToken)
+        private const string _serviceUrlSettingKey = "KDA_CloudEventConfiguratorUrl";
+        private readonly IMicroProperties _properties;
+
+        public CloudEventConfiguratorClient(IMicroProperties properties)
         {
-            var url = $"{endPoint}/cloudwatch";
+            _properties = properties;
+        }
+
+        public async Task<BaseResponseDto<string>> UpdateNooshRule(RuleDto rule, NooshDto noosh)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/cloudwatch";
             var body = new
             {
-                RuleName = ruleName,
-                Rate = rate,
-                Enabled = enabled,
-                TargetId = targetId,
+                RuleName = rule.RuleName,
+                Rate = rule.Rate,
+                Enabled = rule.Enabled,
+                TargetId = rule.TargetId,
                 TargetType = TargetType.Noosh,
                 InputParameters = new
                 {
-                    WorkGroups = new string[] { workGroupName },
-                    NooshUrl = nooshUrl,
-                    NooshToken = nooshToken
+                    WorkGroups = new string[] { noosh.WorkgroupName },
+                    NooshUrl = noosh.NooshUrl,
+                    NooshToken = noosh.NooshToken
                 }
             };
 

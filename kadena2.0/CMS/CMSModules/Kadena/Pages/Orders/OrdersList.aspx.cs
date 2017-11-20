@@ -3,6 +3,8 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
@@ -15,18 +17,18 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var url = SettingsKeyInfoProvider.GetValue("KDA_OrdersBySiteUrl");
-            var client = new OrderViewClient();
-
+            var client = new OrderViewClient(new MicroProperties(new KenticoResourceService()));
+            var initialPageNumber = 1;
+            var initialQuantity = 1;
             // First request to get total count of records.
-            var data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, 1).Result;
+            var data = client.GetOrders(SiteContext.CurrentSiteName, initialPageNumber, initialQuantity).Result;
 
             if (data?.Success ?? false)
             {
                 if ((data.Payload.Orders?.Count() ?? 0) > 0)
                 {
                     // Second request to get all records.
-                    data = client.GetOrders(url, SiteContext.CurrentSiteName, 1, data.Payload.TotalCount).Result;
+                    data = client.GetOrders(SiteContext.CurrentSiteName, initialPageNumber, data.Payload.TotalCount).Result;
 
                     if (data?.Success ?? false)
                     {

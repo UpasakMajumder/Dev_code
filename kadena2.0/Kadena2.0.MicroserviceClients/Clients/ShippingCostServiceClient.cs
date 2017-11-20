@@ -3,39 +3,31 @@ using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class ShippingCostServiceClient : ClientBase, IShippingCostServiceClient
     {
-        public string GetRequestString(EstimateDeliveryPriceRequestDto request)
+        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
+        private readonly IMicroProperties _properties;
+
+        public ShippingCostServiceClient(IMicroProperties properties)
         {
-            return JsonConvert.SerializeObject(request, camelCaseSerializer);
+            _properties = properties;
         }
 
-        public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(string serviceEndpoint, string requestBody)
+        public string GetRequestString(EstimateDeliveryPriceRequestDto request)
         {
-            using (var httpClient = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Post, serviceEndpoint))
-                {
-                    request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            return SerializeRequestContent(request);
+        }
 
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
-
-                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<EstimateDeliveryPricePayloadDto>(response).ConfigureAwait(false);
-                    }
-                }
-            }
+        public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(EstimateDeliveryPriceRequestDto requestBody)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/shippingcost";
+            return await Post<EstimateDeliveryPricePayloadDto>(url, requestBody).ConfigureAwait(false);
         }
     }
 }

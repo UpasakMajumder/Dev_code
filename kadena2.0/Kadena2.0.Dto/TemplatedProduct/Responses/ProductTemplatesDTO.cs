@@ -9,6 +9,7 @@ namespace Kadena.Dto.TemplatedProduct.Responses
     public class ProductTemplatesDTO
     {
         public string Title { get; set; }
+        public string OpenInDesignBtn { get; set; }
         public  ProductTemplatesHeaderDTO[] Header { get; set; }
         public ProductTemplateDTO[] Data { get; set; }
     }

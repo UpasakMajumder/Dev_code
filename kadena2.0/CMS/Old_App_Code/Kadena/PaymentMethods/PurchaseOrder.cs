@@ -2,7 +2,7 @@
 using CMS.Ecommerce.Web.UI;
 using Kadena.Old_App_Code.Kadena.PaymentMethods;
 
-[assembly: RegisterCustomClass("CreditCard", typeof(PurchaseOrder))]
+[assembly: RegisterCustomClass("PurchaseOrder", typeof(PurchaseOrder))]
 
 namespace Kadena.Old_App_Code.Kadena.PaymentMethods
 {

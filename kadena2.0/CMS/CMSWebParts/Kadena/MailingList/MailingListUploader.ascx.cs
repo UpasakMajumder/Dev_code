@@ -1,13 +1,16 @@
 ﻿using CMS.CustomTables;
 using CMS.DataEngine;
+using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Old_App_Code.Helpers;
+using Kadena.WebAPI.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +42,18 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             if (!string.IsNullOrWhiteSpace(containerId))
             {
                 var id = new Guid(containerId);
-                _container = ServiceHelper.GetMailingList(id);
+
+                var mailingListClient = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+
+                var mailingListResponse = mailingListClient.GetMailingList(id).Result;
+                if (mailingListResponse.Success)
+                {
+                    _container = mailingListResponse.Payload;
+                }
+                else
+                {
+                    EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", mailingListResponse.ErrorMessages, siteId: CurrentSite.SiteID);
+                }
             }
             if (!IsPostBack)
             {
@@ -181,6 +195,37 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var microProperties = new MicroProperties(new KenticoResourceService());
+
+                var fileStream = ReadRequestFileStream();
+                var fileName = inpFileName.Value;
+                var fileId = UploadFile(microProperties, fileStream, fileName);
+
+                var mailingClient = new MailingListClient(microProperties);
+                var containerId = Guid.Empty;
+                if (_container == null)
+                {
+                    containerId = CreateMailingContainer(mailingClient, fileName);
+                }
+                else
+                {
+                    containerId = new Guid(_container.Id);
+                    ClearMailingContainer(mailingClient, containerId);
+                }
+
+                RedirectToNextPage(containerId, fileId);
+            }
+            catch (Exception exc)
+            {
+                inpError.Value = exc.Message;
+                EventLogProvider.LogException(GetType().Name, "EXCEPTION", exc, CurrentSite.SiteID);
+            }
+        }
+
+        private Stream ReadRequestFileStream()
+        {
             Stream fileStream = null;
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -194,54 +239,83 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 }
             }
 
-            if (fileStream != null)
-            {
-                try
-                {
-                    var serviceUrl = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_LoadFileUrl");
-                    var fileName = inpFileName.Value;
-                    var module = FileModule.KList;
-
-                    var client = new FileClient();
-                    var uploadResult = client.UploadToS3(serviceUrl, SiteContext.CurrentSiteName, FileFolder.OriginalMailing, module,
-                        fileStream, fileName).Result;
-                    if (uploadResult.Success)
-                    {
-                        var containerId = Guid.Empty;
-                        if (_container == null)
-                        {
-                            var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
-                            var product = Request.Form[GetString("Kadena.MailingList.Product")];
-                            var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
-                            containerId = ServiceHelper.CreateMailingContainer(fileName, mailType, product, validity);
-                        }
-                        else
-                        {
-                            containerId = new Guid(_container.Id);
-                            ServiceHelper.RemoveAddresses(containerId);
-                        }
-                        var fileId = uploadResult.Payload;
-                        var nextStepUrl = RedirectPage;
-                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
-                        nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", URLHelper.URLEncode(fileId));
-                        Response.Redirect(nextStepUrl, false);
-                        Context.ApplicationInstance.CompleteRequest();
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(uploadResult.ErrorMessages);
-                    }
-                }
-                catch (Exception exc)
-                {
-                    inpError.Value = exc.Message;
-                    EventLogProvider.LogException(GetType().Name, "EXCEPTION", exc, CurrentSite.SiteID);
-                }
-            }
-            else
+            if (fileStream == null)
             {
                 inpError.Value = ResHelper.GetString("Kadena.MailingList.FileNotUploadedOrInvalid");
             }
+
+            return fileStream;
+        }
+
+        private void ClearMailingContainer(MailingListClient mailingClient, Guid containerId)
+        {
+            if (mailingClient == null)
+            {
+                return;
+            }
+
+            var removeResult = mailingClient.RemoveAddresses(containerId).Result;
+            if (!removeResult.Success)
+            {
+                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", removeResult.ErrorMessages, siteId: CurrentSite.SiteID);
+            }
+        }
+
+        private Guid CreateMailingContainer(MailingListClient mailingClient, string containerName)
+        {
+            if (mailingClient == null)
+            {
+                return Guid.Empty;
+            }
+
+            var mailType = Request.Form[GetString("Kadena.MailingList.MailType")];
+            var product = Request.Form[GetString("Kadena.MailingList.Product")];
+            var validity = int.Parse(Request.Form[GetString("Kadena.MailingList.Validity")]);
+            var createResult = mailingClient.CreateMailingContainer(
+                containerName,
+                mailType,
+                product,
+                validity,
+                ECommerceContext.CurrentCustomer?.CustomerID.ToString()).Result;
+            if (!createResult.Success)
+            {
+                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "MailingListClient", createResult.ErrorMessages, siteId: CurrentSite.SiteID);
+            }
+
+            return createResult?.Payload ?? Guid.Empty;
+        }
+
+        private static string UploadFile(IMicroProperties properties, Stream fileStream, string fileName)
+        {
+            if (properties == null || fileStream == null || string.IsNullOrWhiteSpace(fileName))
+            {
+                return string.Empty;
+            }
+
+            var fileClient = new FileClient(properties);
+            var uploadResult = fileClient.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, FileModule.KList,
+                fileStream, fileName).Result;
+
+            if (!uploadResult.Success)
+            {
+                throw new InvalidOperationException(uploadResult.ErrorMessages);
+            }
+
+            return uploadResult.Payload;
+        }
+
+        private void RedirectToNextPage(Guid containerId, string fileId)
+        {
+            if (containerId == Guid.Empty || string.IsNullOrWhiteSpace(fileId))
+            {
+                return;
+            }
+
+            var nextStepUrl = RedirectPage;
+            nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "containerid", containerId.ToString());
+            nextStepUrl = URLHelper.AddParameterToUrl(nextStepUrl, "fileid", URLHelper.URLEncode(fileId));
+            Response.Redirect(nextStepUrl, false);
+            Context.ApplicationInstance.CompleteRequest();
         }
     }
 }

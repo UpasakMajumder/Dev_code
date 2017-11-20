@@ -1,16 +1,16 @@
-﻿using Amazon.SecurityToken;
-using AutoMapper;
+﻿using AutoMapper;
 using DryIoc;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Factories.Checkout;
+using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena.WebAPI
 {
@@ -30,6 +30,7 @@ namespace Kadena.WebAPI
             container.Register<IMailTemplateService, MailTemplateService>();			
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
+            container.Register<ICreditCardService, CreditCardService>();
             return container;
         }
 
@@ -43,6 +44,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoMailProvider, KenticoMailProvider>();			
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
+            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             return container;
         }
 
@@ -53,7 +55,10 @@ namespace Kadena.WebAPI
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
-            container.Register<ITemplatedProductService, TemplatedProductService>();
+            container.Register<ITemplatedClient, TemplatedClient>();
+            container.Register<IAddressValidationClient, AddressValidationClient>();
+            container.Register<ISuppliantDomainClient, SuppliantDomain>();
+            container.Register<IMicroProperties, MicroProperties>();
             return container;
         }
 

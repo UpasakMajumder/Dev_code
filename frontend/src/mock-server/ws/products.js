@@ -83,6 +83,7 @@ module.exports.managed = {
   "errorMessage":null,
   "payload":{
     "title": "Manage products",
+    "openInDesignBtn": "Open in design",
     "header":[
       {
         "name":"productName",

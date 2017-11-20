@@ -1,5 +1,6 @@
 ﻿using Kadena.Dto.General;
-using Kadena.KOrder.PaymentService.Infrastucture.Helpers;
+using Kadena2.MicroserviceClients.Helpers;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -12,18 +13,9 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public abstract class ClientBase
     {
-        private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
-
-        protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "yyyy-MM-dd HH:mm:ss"
-        };
+        private readonly ISuppliantDomainClient _suppliantDomain;
 
         protected bool SignRequest { get; set; } = true;
-
-        public string SuppliantDomain { get; set; }
 
         // TODO consider using static or singleton, based on how we will store credentials
         private readonly IAwsV4Signer signer;
@@ -32,6 +24,19 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             this.signer = new DefaultAwsV4Signer();
         }
+
+        protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
+        {
+            _suppliantDomain = suppliantDomain;
+        }
+
+        private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
+
+        private static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
@@ -64,14 +69,15 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             {
                 using (var request = new HttpRequestMessage(method, url))
                 {
-                    if (!string.IsNullOrEmpty(SuppliantDomain))
+                    var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+                    if (!string.IsNullOrEmpty(suppliantDomain))
                     {
-                        AddHeader(client, "suppliantDomain", SuppliantDomain);
+                        AddHeader(client, "suppliantDomain", suppliantDomain);
                     }
-
+                    
                     if (body != null)
                     {
-                        request.Content = CreateRequestContent(request, body);
+                        request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
                     }
 
                     if (SignRequest)
@@ -79,10 +85,10 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                         await SignRequestMessage(request).ConfigureAwait(false);
                     }
 
-                    // TODO consider try-catch ?
-
-                    var response = await client.SendAsync(request).ConfigureAwait(false);
-                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                    }
                 }
             }
         }
@@ -97,11 +103,9 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             await signer.SignRequest(request).ConfigureAwait(false);
         }
 
-        private StringContent CreateRequestContent(HttpRequestMessage request, object body)
+        protected static string SerializeRequestContent(object body)
         {
-            var requestBody = JsonConvert.SerializeObject(body, camelCaseSerializer);
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-            return content;
+            return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
         protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
