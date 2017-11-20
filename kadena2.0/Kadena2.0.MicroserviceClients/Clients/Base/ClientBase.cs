@@ -63,7 +63,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
-        protected async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
             using (var request = new HttpRequestMessage(method, url))
             {
