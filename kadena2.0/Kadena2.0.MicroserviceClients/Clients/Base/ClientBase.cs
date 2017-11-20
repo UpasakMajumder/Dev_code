@@ -89,7 +89,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return request;
         }
 
-        protected async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
+        private async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             {
@@ -109,7 +109,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
 
-        protected async Task SignRequestMessage(HttpRequestMessage request)
+        private async Task SignRequestMessage(HttpRequestMessage request)
         {
             if (SignRequest && signer != null)
             {
