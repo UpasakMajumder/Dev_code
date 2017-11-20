@@ -95,7 +95,7 @@ namespace Kadena.WebAPI.Services
                     .Select(d => new ProductTemplate
                     {
                         EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(), 
-                            product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 0, d.MailingList?.ContainerId, d.Name),
+                            product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 1, d.MailingList?.ContainerId, d.Name),
                         TemplateId = d.TemplateId,
                         CreatedDate = DateTime.Parse(d.Created),
                         UpdatedDate = DateTime.Parse(d.Updated),
