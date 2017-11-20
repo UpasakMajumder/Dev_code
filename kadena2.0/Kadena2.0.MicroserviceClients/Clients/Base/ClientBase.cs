@@ -15,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
     {
         private readonly ISuppliantDomainClient _suppliantDomain;
 
-        protected bool SignRequest { get; set; } = true;
+        private const bool SignRequest  = true;
 
         // TODO consider using static or singleton, based on how we will store credentials
         private readonly IAwsV4Signer signer;
@@ -67,21 +67,14 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             using (var request = new HttpRequestMessage(method, url))
             {
-                var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
-                if (!string.IsNullOrEmpty(suppliantDomain))
-                {
-                    AddHeader(request, "suppliantDomain", suppliantDomain);
-                }
+                AddSuppliantDomain(request);
 
                 if (body != null)
                 {
                     request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
                 }
 
-                if (SignRequest)
-                {
-                    await SignRequestMessage(request).ConfigureAwait(false);
-                }
+                await SignRequestMessage(request).ConfigureAwait(false);
 
                 return await SendRequest<TResult>(request);
             }
@@ -98,14 +91,21 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
 
-        private void AddHeader(HttpRequestMessage request, string headerName, string headerValue)
+        private void AddSuppliantDomain(HttpRequestMessage request)
         {
-            request.Headers.Add(headerName, headerValue);
+            var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+            if (!string.IsNullOrEmpty(suppliantDomain))
+            {
+                request.Headers.Add("suppliantDomain", suppliantDomain);
+            }
         }
 
         protected async Task SignRequestMessage(HttpRequestMessage request)
         {
-            await signer.SignRequest(request).ConfigureAwait(false);
+            if (SignRequest && signer != null)
+            {
+                await signer.SignRequest(request).ConfigureAwait(false);
+            }
         }
 
         protected static string SerializeRequestContent(object body)

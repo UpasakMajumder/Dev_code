@@ -42,10 +42,7 @@ namespace Kadena2.MicroserviceClients.Clients
                     content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
                     request.Content = content;
 
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
+                    await SignRequestMessage(request).ConfigureAwait(false);
 
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {

@@ -27,10 +27,7 @@ namespace Kadena2.MicroserviceClients.Clients
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
+                    await SignRequestMessage(request).ConfigureAwait(false);
 
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
