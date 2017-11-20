@@ -18,20 +18,7 @@ using CMS.DocumentEngine.Types.KDA;
 public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebPart
 {
     #region "Properties"
-    /// <summary>
-    /// Progarm listing page url
-    /// </summary>
-    public string ProgramListURL
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("ProgramListURL"), "");
-        }
-        set
-        {
-            SetValue("ProgramListURL", value);
-        }
-    }
+   
     /// <summary>
     /// Program name localization string
     /// </summary>
@@ -226,7 +213,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                     program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
                     program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
                     program.Insert(CampaignNode, true);
-                    Response.Redirect(ProgramListURL);
+
+                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                 }
             }
         }
@@ -243,7 +231,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     /// <param name="e"></param>
     protected void btnCancelProgram_Click(object sender, EventArgs e)
     {
-        Response.Redirect(ProgramListURL);
+        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
     /// <summary>
     /// Update Program
@@ -277,7 +265,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                             DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
                     }
                 }
-                Response.Redirect(ProgramListURL);
+
+                URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
             }
         }
         catch (Exception ex)

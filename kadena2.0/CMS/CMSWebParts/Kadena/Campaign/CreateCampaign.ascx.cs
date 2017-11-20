@@ -19,24 +19,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     private string folderpath = "/";
     private int campaignId = 0;
     #endregion
-    #region "Properties"
-
-    public string DefaultTargetUrl
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("DefaultTargetUrl"), Request.UrlReferrer.ToString());
-        }
-        set
-        {
-            SetValue("DefaultTargetUrl", value);
-            //mDefaultTargetUrl = value;
-        }
-    }
-
-
-    #endregion
-
 
     #region "Methods"
 
@@ -125,22 +107,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     }
     protected void btnCancel_Cancel(object sender, EventArgs e)
     {
-        try
-        {
-            var redirectUrl = RequestContext.CurrentURL;
-
-            if (!String.IsNullOrEmpty(DefaultTargetUrl))
-            {
-                redirectUrl = ResolveUrl(DefaultTargetUrl);
-            }
-
-            URLHelper.Redirect(redirectUrl);
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CampaignCreateFormCancel", "EXCEPTION", ex);
-        }
-
+            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
     protected void btnSave_Edit(object sender, EventArgs e)
     {
@@ -162,14 +129,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
                     // update the  campaign
                     editPage.Update();
-                    var redirectUrl = RequestContext.CurrentURL;
 
-                    if (!String.IsNullOrEmpty(DefaultTargetUrl))
-                    {
-                        redirectUrl = ResolveUrl(DefaultTargetUrl);
-                    }
-
-                    URLHelper.Redirect(redirectUrl);
+                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                 }
                 else
                 {
