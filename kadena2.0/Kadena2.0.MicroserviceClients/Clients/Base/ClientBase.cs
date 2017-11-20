@@ -68,7 +68,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
-
         private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
             using (var request = CreateRequest(method, url, body))
@@ -90,7 +89,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return request;
         }
 
-        protected static async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
+        protected async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             {
@@ -118,7 +117,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
         
-        protected static async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;
