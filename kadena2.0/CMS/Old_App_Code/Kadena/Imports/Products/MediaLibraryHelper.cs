@@ -2,6 +2,7 @@
 using CMS.MediaLibrary;
 using CMS.SiteProvider;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -14,23 +15,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             string libraryName = "ProductImages";
             var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
-            var meidaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
-            if (meidaLibrary == null)
+            var mediaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
+            if (mediaLibrary == null)
             {
-                meidaLibrary = new MediaLibraryInfo();
-
-                // Sets the library properties
-                meidaLibrary.LibraryDisplayName = libraryName;
-                meidaLibrary.LibraryName = libraryName;
-                meidaLibrary.LibraryDescription = "Media library for storing product images";
-                meidaLibrary.LibraryFolder = $"/Products";
-                meidaLibrary.LibrarySiteID = SiteContext.CurrentSiteID;
-
-                // Saves the new media library to the database
-                MediaLibraryInfoProvider.SetMediaLibraryInfo(meidaLibrary);
+                mediaLibrary = new MediaLibraryInfo()
+                {
+                    LibraryDisplayName = libraryName,
+                    LibraryName = libraryName,
+                    LibraryDescription = "Media library for storing product images",
+                    LibraryFolder = $"/Products",
+                    LibrarySiteID = SiteContext.CurrentSiteID,
+                    Access = CMS.Helpers.SecurityAccessEnum.AuthenticatedUsers
+                };
+                
+                MediaLibraryInfoProvider.SetMediaLibraryInfo(mediaLibrary);
             }
 
-            return meidaLibrary;
+            return mediaLibrary;
         }
 
         public static string DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int libraryId, int siteId)
@@ -53,6 +54,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                         }
 
                         var stream = response.Content.ReadAsStreamAsync().Result;
+
+                        var img = Image.FromStream(stream);
+                        stream.Seek(0, SeekOrigin.Begin);
                         var imageName = $"Image{skuNumber}";
                         var extension = Path.GetExtension(url);
 
@@ -73,6 +77,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             FileSiteID = siteId,
                             FileLibraryID = libraryId,
                             FileSize = stream.Length,
+                            FileImageHeight = img.Height,
+                            FileImageWidth = img.Width
                         };
 
                         MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
