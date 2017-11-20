@@ -835,6 +835,27 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx.cs">
+      <DependentUpon>AddCampaignProducts.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx.designer.cs">
+      <DependentUpon>AddCampaignProducts.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\CampaignProductsFilter.ascx.cs">
+      <DependentUpon>CampaignProductsFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\CampaignProductsFilter.ascx.designer.cs">
+      <DependentUpon>CampaignProductsFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx.cs">
+      <DependentUpon>CampaignWebFormActions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx.designer.cs">
+      <DependentUpon>CampaignWebFormActions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
       <DependentUpon>CampaignFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1104,6 +1125,7 @@
     <Compile Include="Old_App_Code\Kadena\Email\EmailService.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\MediaMultiField.cs" />
+    <Compile Include="Old_App_Code\Kadena\ImageUpload\UploadImage.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Column.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ExcelReader.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ExcelType.cs" />
@@ -1130,7 +1152,11 @@
     <Compile Include="Old_App_Code\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProduct.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProductProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategory.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategoryProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Program.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProgramProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
@@ -1193,6 +1219,9 @@
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignProductsFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
