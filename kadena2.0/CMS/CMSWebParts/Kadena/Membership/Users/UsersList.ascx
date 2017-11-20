@@ -12,9 +12,10 @@
 </cms:CMSPanel>
 
 <cms:CMSPanel runat="server" ID="pnlUserForm">
+    <cms:LocalizedLabel runat="server" ID="lblNewUserError" ResourceString="KDA.NewUser.ErrorMSG" Visible="false"></cms:LocalizedLabel>
     <div class="login__form-content js-login">
         <div class="css-login form_section">
-            <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" />
+            <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" ValidateRequestMode="Enabled" ShowValidationErrorMessage="true" />
             <div class="mb-3 form_btns">
                 <div>
                     <cms:LocalizedLinkButton runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" Text="Save" OnClick="btnSave_Click"></cms:LocalizedLinkButton>
