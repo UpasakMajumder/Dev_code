@@ -97,7 +97,7 @@ namespace Kadena.KOrder.PaymentService.Infrastucture.Helpers
         {
             var canonicalRequest = new StringBuilder();
             canonicalRequest.AppendFormat("{0}\n", request.Method.Method);
-            canonicalRequest.AppendFormat("{0}\n", request.RequestUri.AbsolutePath);
+            canonicalRequest.AppendFormat("{0}\n", Uri.EscapeUriString(request.RequestUri.AbsolutePath));
             canonicalRequest.AppendFormat("{0}\n", GetCanonicalQueryParameters(HttpUtility.ParseQueryString(request.RequestUri.Query)));
             canonicalRequest.AppendFormat("{0}\n", GetCanonicalHeaders(request, signedHeaders));
             canonicalRequest.AppendFormat("{0}\n", String.Join(";", signedHeaders).ToLowerInvariant());
