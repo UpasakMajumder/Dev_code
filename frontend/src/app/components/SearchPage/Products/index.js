@@ -19,6 +19,7 @@ class SearchPageProducts extends Component {
     productsPage: PropTypes.PropTypes.number.isRequired,
     getAllResults: PropTypes.bool.isRequired,
     changePage: PropTypes.func.isRequired,
+    noResultMessage: PropTypes.string.isRequired,
     filteredProducts: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       stock: PropTypes.shape({
@@ -60,7 +61,7 @@ class SearchPageProducts extends Component {
   }
 
   render() {
-    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, changePage, getAllResults } = this.props;
+    const { filteredProducts, productsPage, productsLength, productsPaginationLimit, changePage, getAllResults, noResultMessage } = this.props;
 
     const productList = filteredProducts.map((product) => {
       return <div key={product.id} className="col-lg-4 col-xl-3"><TemplateProduct {...product} /></div>;
@@ -84,7 +85,7 @@ class SearchPageProducts extends Component {
     );
 
     const plug = getAllResults
-      ? <Alert type="info" text="No products found"/>
+      ? <Alert type="info" text={noResultMessage} />
       : <Spinner />;
 
     return productsLength ? content : plug;
@@ -92,13 +93,13 @@ class SearchPageProducts extends Component {
 }
 
 export default connect((state) => {
-  const { products, productsPage, productsPaginationLimit, getAllResults } = state.searchPage;
+  const { products, productsPage, productsPaginationLimit, getAllResults, noResultMessage } = state.searchPage;
 
   const filteredProducts = paginationFilter(products, productsPage, productsPaginationLimit);
 
   const productsLength = products.length;
 
-  return { filteredProducts, productsPage, productsLength, productsPaginationLimit, getAllResults };
+  return { filteredProducts, productsPage, productsLength, productsPaginationLimit, getAllResults, noResultMessage };
 }, {
   getUI,
   changePage,
