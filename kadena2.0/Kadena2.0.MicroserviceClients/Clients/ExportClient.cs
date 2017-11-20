@@ -23,12 +23,13 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-                {
-                    await SignRequestMessage(request).ConfigureAwait(false);
 
+            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            {
+                await SignRequestMessage(request).ConfigureAwait(false);
+
+                using (var client = new HttpClient())
+                {
                     using (var message = await client.SendAsync(request).ConfigureAwait(false))
                     {
                         if (message.IsSuccessStatusCode)

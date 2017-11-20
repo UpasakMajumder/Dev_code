@@ -30,25 +30,20 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/File";
-            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Post, url))
-                {
-                    var content = new MultipartFormDataContent();
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    content.Add(new StreamContent(fileStream), "file", fileName);
-                    content.Add(new StringContent(folderName.ToString()), "ConsumerDetails.BucketType");
-                    content.Add(new StringContent(siteName), "ConsumerDetails.CustomerName");
-                    content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
-                    request.Content = content;
+                var content = new MultipartFormDataContent();
+                fileStream.Seek(0, SeekOrigin.Begin);
+                content.Add(new StreamContent(fileStream), "file", fileName);
+                content.Add(new StringContent(folderName.ToString()), "ConsumerDetails.BucketType");
+                content.Add(new StringContent(siteName), "ConsumerDetails.CustomerName");
+                content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
+                request.Content = content;
 
-                    await SignRequestMessage(request).ConfigureAwait(false);
+                await SignRequestMessage(request).ConfigureAwait(false);
 
-                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<string>(message).ConfigureAwait(false);
-                    }
-                }
+                return await SendRequest<string>(request).ConfigureAwait(false);
+
             }
         }
     }
