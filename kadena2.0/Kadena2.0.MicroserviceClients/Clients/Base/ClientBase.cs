@@ -65,37 +65,42 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         protected async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
+            using (var request = new HttpRequestMessage(method, url))
+            {
+                var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+                if (!string.IsNullOrEmpty(suppliantDomain))
+                {
+                    AddHeader(request, "suppliantDomain", suppliantDomain);
+                }
+
+                if (body != null)
+                {
+                    request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
+                }
+
+                if (SignRequest)
+                {
+                    await SignRequestMessage(request).ConfigureAwait(false);
+                }
+
+                return await SendRequest<TResult>(request);
+            }
+        }
+
+        private static async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
+        {
             using (var client = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(method, url))
+                using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
-                    if (!string.IsNullOrEmpty(suppliantDomain))
-                    {
-                        AddHeader(client, "suppliantDomain", suppliantDomain);
-                    }
-                    
-                    if (body != null)
-                    {
-                        request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
-                    }
-
-                    if (SignRequest)
-                    {
-                        await SignRequestMessage(request).ConfigureAwait(false);
-                    }
-
-                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
-                    }
+                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
                 }
             }
         }
 
-        private void AddHeader(HttpClient httpClient, string headerName, string headerValue)
+        private void AddHeader(HttpRequestMessage request, string headerName, string headerValue)
         {
-            httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
+            request.Headers.Add(headerName, headerValue);
         }
 
         protected async Task SignRequestMessage(HttpRequestMessage request)
@@ -108,7 +113,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
-        protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected static async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;
