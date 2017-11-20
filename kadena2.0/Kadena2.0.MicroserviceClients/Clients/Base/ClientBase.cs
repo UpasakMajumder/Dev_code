@@ -15,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
     {
         private readonly ISuppliantDomainClient _suppliantDomain;
 
-        private const bool SignRequest  = true;
+        private const bool SignRequest = true;
 
         // TODO consider using static or singleton, based on how we will store credentials
         private readonly IAwsV4Signer signer;
@@ -63,24 +63,34 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
+        protected static string SerializeRequestContent(object body)
+        {
+            return JsonConvert.SerializeObject(body, camelCaseSerializer);
+        }
+
+
         private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
-            using (var request = new HttpRequestMessage(method, url))
+            using (var request = CreateRequest(method, url, body))
             {
-                AddSuppliantDomain(request);
-
-                if (body != null)
-                {
-                    request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
-                }
-
                 await SignRequestMessage(request).ConfigureAwait(false);
-
-                return await SendRequest<TResult>(request);
+                return await SendRequest<TResult>(request).ConfigureAwait(false);
             }
         }
 
-        private static async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
+        private HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
+        {
+            var request = new HttpRequestMessage(method, url);
+            AddSuppliantDomain(request);
+
+            if (body != null)
+            {
+                request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
+            }
+            return request;
+        }
+
+        protected static async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             {
@@ -107,12 +117,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                 await signer.SignRequest(request).ConfigureAwait(false);
             }
         }
-
-        protected static string SerializeRequestContent(object body)
-        {
-            return JsonConvert.SerializeObject(body, camelCaseSerializer);
-        }
-
+        
         protected static async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
