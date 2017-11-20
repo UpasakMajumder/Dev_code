@@ -511,8 +511,8 @@
             QueryDataParameters parameters = new QueryDataParameters();
             GeneralConnection cn = ConnectionHelper.GetConnection();
             parameters.Add("@UserID", userID);
-            parameters.Add("@Status", 1);
-            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.Status = @Status";
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.SiteID=@SiteID";
             QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
             var userBUData = cn.ExecuteQuery(qp);
             if (!DataHelper.DataSourceIsEmpty(userBUData))
@@ -562,7 +562,6 @@
             return JSONString;
         }
 
-        //[WebMethod(EnableSession = true)]
         [WebMethod]
         [ScriptMethod(UseHttpGet = true)]
         public string GetAllActiveBusienssUnits()
@@ -570,7 +569,8 @@
             QueryDataParameters parameters = new QueryDataParameters();
             GeneralConnection cn = ConnectionHelper.GetConnection();
             parameters.Add("@Status", 1);
-            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where  Status = @Status";
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where  Status = @Status and SiteID=@SiteID";
             QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
             var userBUData = cn.ExecuteQuery(qp);
             if (!DataHelper.DataSourceIsEmpty(userBUData))
