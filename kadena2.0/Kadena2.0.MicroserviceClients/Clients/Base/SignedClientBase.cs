@@ -15,8 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private async Task SignRequestMessage(HttpRequestMessage request)
         {
-            var signer = new DefaultAwsV4Signer();
-            await signer.SignRequest(request).ConfigureAwait(false);
+            await AwsSignerHelper.Sign(request).ConfigureAwait(false);
         }
     }
 }
