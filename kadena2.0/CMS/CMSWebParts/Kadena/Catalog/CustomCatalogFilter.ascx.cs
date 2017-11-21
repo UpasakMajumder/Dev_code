@@ -48,8 +48,9 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
                 //ddlBrands.Items.Insert(0, "Select Brand Name");
                 //ddlProductTypes.Items.Insert(0, "Select Category Name");
                 BindPrograms();
-                BindBrands();
+                BindBrands(ddlPrograms.SelectedValue);
                 BindProductTypes();
+                SetFilter();
             }
             else
             {
@@ -114,6 +115,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         {
             // Applies the filter to the displayed data
             SetFilter();
+            
         }
 
         base.OnPreRender(e);
@@ -126,33 +128,24 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
 
         try
         {
-            int capaignNodeID = ValidationHelper.GetInteger(Request.QueryString["camp"], default(int));
-            if (capaignNodeID != default(int))
+            var campaign = CampaignProvider.GetCampaigns().Columns("CampaignID").WhereEquals("OpenCampaign", 1).WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+            if (ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int)) != default(int))
             {
-                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                var campaign = DocumentHelper.GetDocument(capaignNodeID, CurrentSite.DefaultVisitorCulture, tree);
-                if (campaign != null)
+                var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int))).Columns("ProgramName,ProgramID").Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName }).ToList().OrderBy(y => y.ProgramName);
+                if (programs != null)
                 {
-                    int campaignID = campaign.GetIntegerValue("CampaignID", default(int));
-                    if (campaignID != default(int))
-                    {
-                        var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).Columns("ProgramName,BrandID").Select(x => new Program { BrandID = x.BrandID, ProgramName = x.ProgramName }).ToList();
-                        if (programs != null)
-                        {
-                            ddlPrograms.DataSource = programs;
-                            ddlPrograms.DataTextField = "ProgramName";
-                            ddlPrograms.DataValueField = "BrandID";
-                            ddlPrograms.DataBind();
-                            ddlPrograms.Items.Insert(0, "Select program");
+                    ddlPrograms.DataSource = programs;
+                    ddlPrograms.DataTextField = "ProgramName";
+                    ddlPrograms.DataValueField = "ProgramID";
+                    ddlPrograms.DataBind();
 
-                        }
-                    }
+
                 }
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindPrograms", ex.Message);
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_CustomCatalogFilter", "BindPrograms", ex.Message);
         }
 
     }
@@ -160,14 +153,21 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     /// Binding brands based on program
     /// </summary>
     /// <param name="brandID"></param>
-    private void BindBrands(String brandID = "1")
+    private void BindBrands(String programID = "1")
     {
-        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", brandID).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).ToList();
-        ddlBrands.DataSource = brand;
-        ddlBrands.DataBind();
-        ddlBrands.DataTextField = "BrandName";
-        ddlBrands.DataValueField = "ItemID";
-        ddlBrands.DataBind();
+        try
+        {
+            var brandId = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", ValidationHelper.GetInteger(programID,default(int))).Columns("BrandID").Select(x => new Program { BrandID = x.BrandID }).FirstOrDefault();
+            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", ValidationHelper.GetInteger(brandId.GetValue("BrandID"),default(int))).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).ToList().OrderBy(y => y.BrandName);
+            ddlBrands.DataSource = brand;
+            ddlBrands.DataBind();
+            ddlBrands.DataTextField = "BrandName";
+            ddlBrands.DataValueField = "ItemID";
+            ddlBrands.DataBind();
+        }
+        catch (Exception ex) {
+            EventLogProvider.LogException("Binding brands based on program", ex.Message, ex);
+        }
 
     }
     /// <summary>
@@ -175,7 +175,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     /// </summary>
     private void BindProductTypes()
     {
-        var productCategories = ProductCategoryProvider.GetProductCategories().Columns("ProductCategoryTitle,ProductCategoryID").WhereEquals("NodeSiteID", CurrentSite.SiteID).Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList();
+        var productCategories = ProductCategoryProvider.GetProductCategories().Columns("ProductCategoryTitle,ProductCategoryID").WhereEquals("NodeSiteID", CurrentSite.SiteID).Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList().OrderBy(y => y.ProductCategoryTitle);
         ddlProductTypes.DataSource = productCategories;
         ddlProductTypes.DataBind();
         ddlProductTypes.DataTextField = "ProductCategoryTitle";
