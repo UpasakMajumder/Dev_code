@@ -51,7 +51,7 @@ namespace Kadena.Tests.ScheduledTasks
             var sites = new[] { new Site { Name = site } };
             var kenticoProvider = Mock.Of<IKenticoProviderService>(kp => kp.GetSites() == sites);
             var mailingService = Mock.Of<IMailingListClient>(mlc =>
-                mlc.RemoveMailingList(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>()) == GetUnsuccessFullMicroserviceResponse());
+                mlc.RemoveMailingList(It.IsAny<DateTime>()) == GetUnsuccessFullMicroserviceResponse());
             var configuration = new MailingListConfiguration { DeleteMailingListsPeriod = 10 };
             var configurationProvider = Mock.Of<IConfigurationProvider>(cp =>
                 cp.Get<MailingListConfiguration>(site) == configuration);
@@ -75,7 +75,7 @@ namespace Kadena.Tests.ScheduledTasks
             var sites = new[] { new Site { Name = site } };
             var kenticoProvider = Mock.Of<IKenticoProviderService>(kp => kp.GetSites() == sites);
             var mailingService = Mock.Of<IMailingListClient>(mlc => 
-                mlc.RemoveMailingList(It.IsAny<string>(), site, minimalTime) == GetSuccessFullMicroserviceResponse());
+                mlc.RemoveMailingList(minimalTime) == GetSuccessFullMicroserviceResponse());
             var configurationProvider = Mock.Of<IConfigurationProvider>(cp =>
                 cp.Get<MailingListConfiguration>(site) == configuration);
             var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoProvider, mailingService);
@@ -86,7 +86,7 @@ namespace Kadena.Tests.ScheduledTasks
 
             // Assert
             Mock.Get(mailingService)
-                .Verify(mlc => mlc.RemoveMailingList(It.IsAny<string>(), site, minimalTime), Times.Once());
+                .Verify(mlc => mlc.RemoveMailingList(minimalTime), Times.Once());
         }
     }
 }

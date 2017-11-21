@@ -1,5 +1,4 @@
 ﻿using Kadena.Models.Product;
-using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
@@ -23,26 +22,25 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return types;
         }
 
-        private byte[] CreateTemplateFile(string[] columns, string[] productTypes)
+        private byte[] CreateTemplateFile(List<Column> columnInfos, string[] productTypes)
         {
             IWorkbook workbook = new XSSFWorkbook();
             var sheet = workbook.CreateSheet("Products");
-            var columnInfos = ImportHelper.GetHeaderProperties<ProductDto>();
-            CreateSheetHeader(columns, sheet);
+            CreateSheetHeader(columnInfos, sheet);
             
             if (productTypes != null)
             {
-                var indexOfproductType = columnInfos.FirstOrDefault(c => c.Name == "Product Type").Order;
+                var indexOfproductType = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ProductType)).Order;
                 AddOneFromManyValidation(indexOfproductType, "ProductTypes", productTypes, sheet);
                 sheet.SetColumnWidth(indexOfproductType, 256 * productTypes.Max(t => t.Length));
             }
 
-            var indexOfTrack = columnInfos.FirstOrDefault(c => c.Name == "Track Inventory").Order;
+            var indexOfTrack = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.TrackInventory)).Order;
             AddOneFromManyValidation(indexOfTrack, "Trackings", new[] { "Yes", "No", "By variants" }, sheet);
 
-            var indexOfChili1 = columnInfos.FirstOrDefault(c => c.Name == "Chili Template ID").Order;
-            var indexOfChili2 = columnInfos.FirstOrDefault(c => c.Name == "Chili Workgroup ID").Order;
-            var indexOfChili3 = columnInfos.FirstOrDefault(c => c.Name == "Product Chili Pdf generator SettingsId").Order;
+            var indexOfChili1 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliTemplateID)).Order;
+            var indexOfChili2 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliWorkgroupID)).Order;
+            var indexOfChili3 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliPdfGeneratorSettingsID)).Order;
             var guidFieldWidth = 256 * 36;
             sheet.SetColumnWidth(indexOfChili1, guidFieldWidth);
             sheet.SetColumnWidth(indexOfChili2, guidFieldWidth);

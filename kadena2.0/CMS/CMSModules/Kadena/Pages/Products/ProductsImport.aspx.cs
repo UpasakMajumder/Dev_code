@@ -1,6 +1,7 @@
 ﻿using CMS.EventLog;
 using CMS.UIControls;
 using System;
+using System.Linq;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
@@ -37,7 +38,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
             try
             {
-                var result = new ProductImportService().ProcessImportFile(fileData, excelType, SelectedSiteID);
+                var result = new ProductImportService().ProcessProductsImportFile(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -57,8 +58,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         private string FormatImportResult(ImportResult result)
         {
-            var headline = "There was an error while processing the request. Error details:<br /><br />";
-            return headline + string.Join("<br />", result.ErrorMessages);
+            var headline = $"There was {result.AllMessagesCount} error(s) while processing the request. Make sure all mandatory fields are filled in sheet and/or see Event log for details.<br /><br />First {result.ErrorMessages?.Length ?? 0} errors:<br /><br />";
+            return headline + string.Join("<br/>", result.ErrorMessages);
         }
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)

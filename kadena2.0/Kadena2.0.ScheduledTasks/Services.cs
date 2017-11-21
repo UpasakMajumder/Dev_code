@@ -4,10 +4,12 @@ using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
+using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.ScheduledTasks
@@ -53,6 +55,9 @@ namespace Kadena.ScheduledTasks
             // task services
             container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
+
+            // helpers
+            container.Register<IMicroProperties, MicroProperties>();
         }
 
         private static void ConfigureMapper()

@@ -7,6 +7,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IExportClient
     {
-        Task<BaseResponseDto<Stream>> ExportMailingList(string endpoint, Guid containerId, string siteName);
+        Task<BaseResponseDto<Stream>> ExportMailingList(Guid containerId, string siteName);
     }
 }

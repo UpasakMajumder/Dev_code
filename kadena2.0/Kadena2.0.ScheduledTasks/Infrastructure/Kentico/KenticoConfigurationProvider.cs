@@ -31,7 +31,7 @@ namespace Kadena.ScheduledTasks.Infrastructure.Kentico
 
         private void LoadSection(MailingListConfiguration section, string siteName)
         {
-            section.DeleteMailingListsByValidToDateURL = kenticoResources.GetSettingsKey(siteName, "KDA_MailingList_DeleteListByFilterURL");
+            section.MailingServiceUrl = kenticoResources.GetSettingsKey(siteName, "KDA_MailingServiceUrl");
             section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey(siteName, "KDA_MailingList_DeleteExpiredAfter"));
         }
 

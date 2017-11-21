@@ -81,7 +81,7 @@ class ManageProducts extends Component {
   }
 
   render() {
-    const { isLoading, tableHeaders, title } = this.props;
+    const { isLoading, tableHeaders, title, openInDesignBtn } = this.props;
     const { sortBy, sortOrderAsc, sortedTemplates } = this.state;
 
     return (
@@ -140,7 +140,7 @@ class ManageProducts extends Component {
                         <button type="button" className="btn-main">Delete</button>
                       </div>
                     </div> */}
-                    <a href={template.editorUrl} className="btn-action product-list__btn--primary">Open in design</a>
+                    <a href={template.editorUrl} className="btn-action product-list__btn--primary">{openInDesignBtn}</a>
                   </div>
                 </td>
               </tr>
@@ -156,8 +156,8 @@ class ManageProducts extends Component {
 }
 
 export default connect((state) => {
-  const { isLoading, tableHeaders, templates, title } = state.manageProducts;
-  return { isLoading, tableHeaders, templates, title };
+  const { isLoading, tableHeaders, templates, title, openInDesignBtn } = state.manageProducts;
+  return { isLoading, tableHeaders, templates, title, openInDesignBtn };
 }, {
   loadManageProducts
 })(ManageProducts);
