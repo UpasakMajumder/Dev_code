@@ -435,6 +435,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 BindPrograms();
                 BindCategories();
                 BindResorceStrings();
+                BindPOS();
                 int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
                 if (productID != 0)
                 {
@@ -506,7 +507,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             ddlProgram.DataTextField = "ProgramName";
                             ddlProgram.DataValueField = "ProgramID";
                             ddlProgram.DataBind();
-                            ddlProgram.Items.Insert(0,new ListItem("--Select Program--","0"));
+                            ddlProgram.Items.Insert(0, new ListItem("--Select Program--", "0"));
 
                         }
                     }
@@ -539,6 +540,28 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindCategories", ex.Message);
+        }
+    }
+    /// <summary>
+    /// Bind POS Number
+    /// </summary>
+    public void BindPOS()
+    {
+        try
+        {
+            var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME).Columns("ItemID,POSNumber").ToList();
+            if (!DataHelper.DataSourceIsEmpty(pos))
+            {
+                ddlPos.DataSource = pos;
+                ddlPos.DataTextField = "POSNumber";
+                ddlPos.DataValueField = "ItemID";
+                ddlPos.DataBind();
+                ddlPos.Items.Insert(0, new ListItem("--Select POS Number--", "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindPOS", ex.Message);
         }
     }
     /// <summary>

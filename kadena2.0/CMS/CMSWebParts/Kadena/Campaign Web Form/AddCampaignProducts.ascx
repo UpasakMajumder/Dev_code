@@ -24,10 +24,6 @@
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlPos">
-                            <asp:ListItem Value="0">Select POS Number</asp:ListItem>
-                            <asp:ListItem Value="1">POS 1</asp:ListItem>
-                            <asp:ListItem Value="2">POS 2</asp:ListItem>
-                            <asp:ListItem Value="3">POS 3</asp:ListItem>
                         </asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rqPOS" runat="server" CssClass="input-error" ControlToValidate="ddlPos" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
