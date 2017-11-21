@@ -234,25 +234,25 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            GetAndSaveProductImages(image, product, sku, siteId);
+            GetAndSaveProductImages(product, sku, siteId, image.ImageURL, image.ThumbnailURL);
 
             product.Update();
         }
 
         // ready for potential use in Product upload
-        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        private void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
             var library = MediaLibraryHelper.EnsureLibrary(siteId);
             
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
 
-            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
+            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
 
             ProductImageHelper.RemoveTumbnail(product, siteId);
 
-            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(thumbnailUrl, sku.SKUNumber, product.DocumentID, siteId);
 
             ProductImageHelper.AttachTumbnail(product, newAttachment);
         }
@@ -300,6 +300,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             if (DateTime.TryParse(product.PublishTo, out publishTo))
             {
                 newProduct.DocumentPublishTo = publishTo;
+            }
+
+            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
+            {
+                GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
             }
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
