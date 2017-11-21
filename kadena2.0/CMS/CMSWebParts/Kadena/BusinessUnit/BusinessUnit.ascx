@@ -32,7 +32,7 @@
             <div class="mb-3 form_btns">
                 <div class="">
                     <asp:Button ID="btnSave" runat="server" OnClick="btnSave_Click" CssClass="btn-action login__login-button btn--no-shadow" />
-                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" CssClass="btn-action login__login-button btn--no-shadow" />
+                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false"/>
                 </div>
             </div>
         </div>
