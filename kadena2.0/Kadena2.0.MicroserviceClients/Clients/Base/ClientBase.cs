@@ -1,5 +1,4 @@
 ﻿using Kadena.Dto.General;
-using Kadena2.MicroserviceClients.Helpers;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,14 +14,8 @@ namespace Kadena2.MicroserviceClients.Clients.Base
     {
         private readonly ISuppliantDomainClient _suppliantDomain;
 
-        private const bool SignRequest = true;
-
-        // TODO consider using static or singleton, based on how we will store credentials
-        private readonly IAwsV4Signer signer;
-
         public ClientBase()
         {
-            this.signer = new DefaultAwsV4Signer();
         }
 
         protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
@@ -68,12 +61,14 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
-        private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        protected virtual async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
         {
-            using (var request = CreateRequest(method, url, body))
+            using (var client = new HttpClient())
             {
-                await SignRequestMessage(request).ConfigureAwait(false);
-                return await SendRequest<TResult>(request).ConfigureAwait(false);
+                using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                {
+                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                }
             }
         }
 
@@ -89,34 +84,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return request;
         }
 
-        private async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
-        {
-            using (var client = new HttpClient())
-            {
-                using (var response = await client.SendAsync(request).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
-                }
-            }
-        }
-
-        private void AddSuppliantDomain(HttpRequestMessage request)
-        {
-            var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
-            if (!string.IsNullOrEmpty(suppliantDomain))
-            {
-                request.Headers.Add("suppliantDomain", suppliantDomain);
-            }
-        }
-
-        private async Task SignRequestMessage(HttpRequestMessage request)
-        {
-            if (SignRequest && signer != null)
-            {
-                await signer.SignRequest(request).ConfigureAwait(false);
-            }
-        }
-        
         protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
@@ -167,6 +134,23 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     InnerError = innerError
                 }
             };
+        }
+
+        private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        {
+            using (var request = CreateRequest(method, url, body))
+            {
+                return await SendRequest<TResult>(request).ConfigureAwait(false);
+            }
+        }
+
+        private void AddSuppliantDomain(HttpRequestMessage request)
+        {
+            var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+            if (!string.IsNullOrEmpty(suppliantDomain))
+            {
+                request.Headers.Add("suppliantDomain", suppliantDomain);
+            }
         }
     }
 }

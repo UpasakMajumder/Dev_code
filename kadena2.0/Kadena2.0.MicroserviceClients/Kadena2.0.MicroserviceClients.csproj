@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Clients\AddressValidationClient.cs" />
     <Compile Include="Clients\Base\ClientBase.cs" />
+    <Compile Include="Clients\Base\SignedClientBase.cs" />
     <Compile Include="Clients\BidClient.cs" />
     <Compile Include="Clients\CloudEventConfiguratorClient.cs" />
     <Compile Include="Clients\CreditCardManagerClient.cs" />

@@ -14,7 +14,11 @@ namespace Kadena2.MicroserviceClients.Clients
         private const string _serviceUrlSettingKey = "KDA_FileServiceUrl";
         private readonly IMicroProperties _properties;
 
-        private HttpContent _content;
+        private string _siteName;
+        private FileFolder _fileFolder;
+        private FileModule _moduleName;
+        private Stream _fileStream;
+        private string _fileName;
 
         public FileClient(IMicroProperties properties)
         {
@@ -30,13 +34,11 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<string>> UploadToS3(string siteName, FileFolder folderName,
             FileModule moduleName, Stream fileStream, string fileName)
         {
-            var content = new MultipartFormDataContent();
-            fileStream.Seek(0, SeekOrigin.Begin);
-            content.Add(new StreamContent(fileStream), "file", fileName);
-            content.Add(new StringContent(folderName.ToString()), "ConsumerDetails.BucketType");
-            content.Add(new StringContent(siteName), "ConsumerDetails.CustomerName");
-            content.Add(new StringContent(moduleName.ToString()), "ConsumerDetails.Module");
-            _content = content;
+            _siteName = siteName;
+            _fileFolder = folderName;
+            _moduleName = moduleName;
+            _fileStream = fileStream;
+            _fileName = fileName;
 
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/File";
@@ -46,9 +48,15 @@ namespace Kadena2.MicroserviceClients.Clients
         protected override HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
             var request = base.CreateRequest(method, url, body);
-            if (_content != null)
+            if (_fileStream != null)
             {
-                request.Content = _content;
+                var content = new MultipartFormDataContent();
+                _fileStream.Seek(0, SeekOrigin.Begin);
+                content.Add(new StreamContent(_fileStream), "file", _fileName);
+                content.Add(new StringContent(_fileFolder.ToString()), "ConsumerDetails.BucketType");
+                content.Add(new StringContent(_siteName), "ConsumerDetails.CustomerName");
+                content.Add(new StringContent(_moduleName.ToString()), "ConsumerDetails.Module");
+                request.Content = content;
             }
             return request;
         }
