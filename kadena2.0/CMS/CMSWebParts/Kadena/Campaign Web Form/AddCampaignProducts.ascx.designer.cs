@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     
     /// <summary>
+    /// lblProgramName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProgramName;
+    
+    /// <summary>
     /// ddlProgram control.
     /// </summary>
     /// <remarks>
@@ -19,6 +28,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlProgram;
+    
+    /// <summary>
+    /// rqProgram control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqProgram;
+    
+    /// <summary>
+    /// lblPosNumber control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblPosNumber;
     
     /// <summary>
     /// ddlPos control.
@@ -30,6 +57,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.DropDownList ddlPos;
     
     /// <summary>
+    /// rqPOS control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqPOS;
+    
+    /// <summary>
+    /// lblProductName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProductName;
+    
+    /// <summary>
     /// txtProductName control.
     /// </summary>
     /// <remarks>
@@ -37,6 +82,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtProductName;
+    
+    /// <summary>
+    /// rqProductName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqProductName;
+    
+    /// <summary>
+    /// lblState control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblState;
     
     /// <summary>
     /// txtState control.
@@ -48,6 +111,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.TextBox txtState;
     
     /// <summary>
+    /// lblLongDescription control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblLongDescription;
+    
+    /// <summary>
     /// txtLongDescription control.
     /// </summary>
     /// <remarks>
@@ -57,6 +129,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.TextBox txtLongDescription;
     
     /// <summary>
+    /// rqLongDescription control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqLongDescription;
+    
+    /// <summary>
+    /// lblExpirationDate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblExpirationDate;
+    
+    /// <summary>
     /// txtExpireDate control.
     /// </summary>
     /// <remarks>
@@ -64,6 +154,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtExpireDate;
+    
+    /// <summary>
+    /// lblBrand control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblBrand;
     
     /// <summary>
     /// txtBrand control.
@@ -84,6 +183,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.HiddenField hfBrandItemID;
     
     /// <summary>
+    /// rqBrand control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqBrand;
+    
+    /// <summary>
+    /// lblEstimatedPrice control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblEstimatedPrice;
+    
+    /// <summary>
     /// txtEstimatedprice control.
     /// </summary>
     /// <remarks>
@@ -91,6 +208,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtEstimatedprice;
+    
+    /// <summary>
+    /// rqEstimatePrice control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqEstimatePrice;
+    
+    /// <summary>
+    /// lblActualPrice control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblActualPrice;
     
     /// <summary>
     /// txtActualPrice control.
@@ -102,6 +237,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.TextBox txtActualPrice;
     
     /// <summary>
+    /// lblProductCategory control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProductCategory;
+    
+    /// <summary>
     /// ddlProductcategory control.
     /// </summary>
     /// <remarks>
@@ -109,6 +253,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlProductcategory;
+    
+    /// <summary>
+    /// rqProductCategory control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqProductCategory;
+    
+    /// <summary>
+    /// lblQtyPerPack control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblQtyPerPack;
     
     /// <summary>
     /// txtQty control.
@@ -120,6 +282,51 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.TextBox txtQty;
     
     /// <summary>
+    /// rqQty control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqQty;
+    
+    /// <summary>
+    /// lblStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblStatus;
+    
+    /// <summary>
+    /// ddlStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+    
+    /// <summary>
+    /// rqStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqStatus;
+    
+    /// <summary>
+    /// lblItemSpecs control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblItemSpecs;
+    
+    /// <summary>
     /// txtItemSpecs control.
     /// </summary>
     /// <remarks>
@@ -127,6 +334,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtItemSpecs;
+    
+    /// <summary>
+    /// rqItemSpecs control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqItemSpecs;
+    
+    /// <summary>
+    /// lblImage control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblImage;
     
     /// <summary>
     /// productImage control.
