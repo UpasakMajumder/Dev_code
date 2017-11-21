@@ -71,7 +71,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
-                    <asp:FileUpload ID="productImage" runat="server"  />
+                    <asp:FileUpload ID="productImage" runat="server" />
                     <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
                     <asp:RequiredFieldValidator ID="rfvImage" runat="server" ForeColor="Red" ControlToValidate="productImage">
                     </asp:RequiredFieldValidator>
@@ -181,34 +181,37 @@
             </div>
             <div class="Business_Assigned_user">
                 <table class="show-table">
-                     <asp:Repeater ID="RepSelectedUser" runat="server">
-                        <HeaderTemplate>
-                            <table class="show-table">
-                                <tbody>
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <ContentTemplate>
+                            <asp:Repeater ID="RepSelectedUser" runat="server">
+                                <HeaderTemplate>
+                                    <table class="show-table">
+                                        <tbody>
+                                            <tr>
+                                                <th>UserName</th>
+                                                <th>Email</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                </HeaderTemplate>
+                                <ItemTemplate>
                                     <tr>
-                                       
-                                        <th>UserName</th>
-                                        <th>Email</th>
-                                        <th>Quantity</th>
+                                        <td>
+                                            <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserId") %>' Style="display:none" />
+                                            <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailId") %>' /></td>
+                                        <td>
+                                            <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
                                     </tr>
-                        </HeaderTemplate>
-                        <ItemTemplate>
-                            <tr><td>
-                                    <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserId") %>' />
-                                    <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
-                                </td>
-                                <td>
-                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailId") %>' /></td>
-                                <td>
-                                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                  
-                            </tr>
-                        </ItemTemplate>
-                        <FooterTemplate>
-                            </tbody>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </tbody>
                                  </table>
-                        </FooterTemplate>
-                    </asp:Repeater>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
                 </table>
             </div>
 
@@ -233,7 +236,7 @@
         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
                 <div class="modal_header clearfix">
-                    <cms:LocalizedButton ID="AllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ResourceString="Kadena.Form.CancelButtonText" />
+                    <cms:LocalizedButton ID="btnAllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ResourceString="Kadena.Form.CancelButtonText" OnClientClick="$('.modal_popup').hide();" />
                     <a href="#" class="btn_close"><i class="fa fa-close"></i></a>
                 </div>
                 <div class="modal_body Business_Assigned_user">
@@ -251,10 +254,10 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <asp:CheckBox ID="chkAllocate" runat="server" /></td>
+                                    <asp:CheckBox ID="chkAllocate" runat="server"  /></td>
                                 <td>
                                     <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserName") %>' />
-                                <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
+                                    <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
                                 <td>
                                     <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("Email") %>' /></td>
                                 <td>
@@ -268,13 +271,14 @@
                     </asp:Repeater>
                     <asp:Repeater ID="rptPager" runat="server">
                         <ItemTemplate>
-                            <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>' 
+                            <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>'
                                 CssClass='<%# Convert.ToBoolean(Eval("Enabled")) ? "page_enabled" : "page_disabled" %>'
                                 OnClick="Page_Changed" OnClientClick='<%# !Convert.ToBoolean(Eval("Enabled")) ? "return false;" : "" %>' CausesValidation="false"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:Repeater>
                     <asp:Label runat="server" ID="lblButton" Visible="false" />
                 </div>
+
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>

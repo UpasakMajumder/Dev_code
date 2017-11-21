@@ -418,6 +418,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.LocalizedLabel lblProductAllcation;
         
         /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
         /// RepSelectedUser control.
         /// </summary>
         /// <remarks>
@@ -472,13 +481,13 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
-        /// AllocateProduct control.
+        /// btnAllocateProduct control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedButton AllocateProduct;
+        protected global::CMS.Base.Web.UI.LocalizedButton btnAllocateProduct;
         
         /// <summary>
         /// RepterDetails control.
