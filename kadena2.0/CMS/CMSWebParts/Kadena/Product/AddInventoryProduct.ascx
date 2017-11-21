@@ -1,10 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AddInventoryProduct.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.Product.AddInventoryProduct" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <div class="css-login">
     <div class="form">
         <div class="mb-2 form_block">
@@ -74,31 +71,14 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtImage" runat="server" EnableViewState="false" TextMode="DateTime"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvImage" runat="server" ForeColor="Red" ControlToValidate="txtImage">
+                    <asp:FileUpload ID="productImage" runat="server"  />
+                    <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
+                    <asp:RequiredFieldValidator ID="rfvImage" runat="server" ForeColor="Red" ControlToValidate="productImage">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
-        <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblProductAllcation" runat="server" EnableViewState="False" CssClass="input__label"
-                    ResourceString="Kadena.InvProductForm.lblProductAllcation" />
-                <div class="input__inner">
-                    <cms:CMSTextBox ID="txtProdAllocation" runat="server" EnableViewState="false" TextMode="DateTime"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvProdAllocation" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtProdAllocation">
-                    </asp:RequiredFieldValidator>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblCancel" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblCancel" />
-                <div class="input__inner">
-                    <cms:CMSCheckBoxList ID="chkCancel" runat="server" EnableViewState="false"></cms:CMSCheckBoxList>
-                </div>
-            </div>
-        </div>
+
 
         <div class="mb-2 form_block">
             <div class="input__wrapper">
@@ -180,10 +160,58 @@
                         <asp:ListItem Text="Enabled" Value="1"></asp:ListItem>
                         <asp:ListItem Text="Disabled" Value="0"></asp:ListItem>
                     </cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvStatus" runat="server" CssClass="" InitialValue="0" ForeColor="Red" ControlToValidate="ddlStatus">
-                    </asp:RequiredFieldValidator>
+
                 </div>
             </div>
+        </div>
+        <div class="mb-2 form_block">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblCancel" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblCancel" />
+                <div class="input__inner">
+
+                    <asp:CheckBox ID="chkcancel" runat="server" EnableViewState="false" />
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form_block">
+            <div class="input__wrapper allocated_block ">
+                <cms:LocalizedLabel ID="lblProductAllcation" runat="server" EnableViewState="False" CssClass="input__label"
+                    ResourceString="Kadena.InvProductForm.lblProductAllcation" />
+                <a href="#" onclick="$('.modal_popup').show();"><i class="fa fa-plus" aria-hidden="true"></i>User</a>
+            </div>
+            <div class="Business_Assigned_user">
+                <table class="show-table">
+                     <asp:Repeater ID="RepSelectedUser" runat="server">
+                        <HeaderTemplate>
+                            <table class="show-table">
+                                <tbody>
+                                    <tr>
+                                       
+                                        <th>UserName</th>
+                                        <th>Email</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr><td>
+                                    <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserId") %>' />
+                                    <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
+                                </td>
+                                <td>
+                                    <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailId") %>' /></td>
+                                <td>
+                                    <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                                  
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody>
+                                 </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                </table>
+            </div>
+
         </div>
         <div class="clearfix"></div>
     </div>
@@ -200,39 +228,54 @@
     <cms:LocalizedLabel ID="lblFailureText" runat="server" EnableViewState="False" CssClass="error-label input__error" Visible="false" ResourceString="Kadena.CampaignForm.FailureMsg" />
 </div>
 
-<div id="dialog" style="display: none" title="Basic dialog">
-    <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
-    <div class="cms-bootstrap">
-        <%-- <ajaxToolkit:ToolkitScriptManager ID="manScript" runat="server" EnableViewState="false" />--%>
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<div class="modal_popup" style="display: none">
+    <div class="modal-content">
+        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
-                <table>
-                    <tr>
-                        <td>
-                            <cms:UniGrid ID="UniGrid1" runat="server" ObjectType="cms.user" EnableViewState="false">
-                                <GridOptions ShowSelection="true" />
-                                <GridColumns>
-                                    <ug:Column Source="UserName" Caption="User name" Wrap="false" runat="server">
-                                    </ug:Column>
-                                    <ug:Column Source="UserID" Caption="User ID" Wrap="false" runat="server">
-                                    </ug:Column>
-                                </GridColumns>
-                            </cms:UniGrid>
-                            <td>
-                               <cms:LocalizedButton ID="OKButton" UseSubmitBehavior="false"  CausesValidation="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary"
-                EnableViewState="false"
-                ResourceString="Kadena.Form.CancelButtonText" /> 
-                            </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <asp:Label runat="server" ID="lblButton" Visible="false"/>
-                        </td>
-                    </tr>
-                </table>
+                <div class="modal_header clearfix">
+                    <cms:LocalizedButton ID="AllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ResourceString="Kadena.Form.CancelButtonText" />
+                    <a href="#" class="btn_close"><i class="fa fa-close"></i></a>
+                </div>
+                <div class="modal_body Business_Assigned_user">
+                    <asp:Repeater ID="RepterDetails" runat="server">
+                        <HeaderTemplate>
+                            <table class="show-table">
+                                <tbody>
+                                    <tr>
+                                        <th></th>
+                                        <th>UserName</th>
+                                        <th>Email</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td>
+                                    <asp:CheckBox ID="chkAllocate" runat="server" /></td>
+                                <td>
+                                    <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserName") %>' />
+                                <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
+                                <td>
+                                    <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("Email") %>' /></td>
+                                <td>
+                                    <asp:TextBox ID="txtQuantity" runat="server"></asp:TextBox></td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody>
+                                 </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                    <asp:Repeater ID="rptPager" runat="server">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>' 
+                                CssClass='<%# Convert.ToBoolean(Eval("Enabled")) ? "page_enabled" : "page_disabled" %>'
+                                OnClick="Page_Changed" OnClientClick='<%# !Convert.ToBoolean(Eval("Enabled")) ? "return false;" : "" %>' CausesValidation="false"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                    <asp:Label runat="server" ID="lblButton" Visible="false" />
+                </div>
             </ContentTemplate>
         </asp:UpdatePanel>
-        <%--<asp:Button runat="server" CausesValidation="false" ID="OKButton" OnClick="OKButton_Click" CssClass="btn btn-primary" Text="OK" />--%>
-        
     </div>
 </div>
