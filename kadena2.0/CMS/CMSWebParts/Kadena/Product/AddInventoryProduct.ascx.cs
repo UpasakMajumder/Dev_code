@@ -26,7 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private string folderpath = "/";
         private int PageSize = 10;
         private static List<AllocateProduct> lstUsers = new List<AllocateProduct>();
-       
+        string libraryFolderName = string.Empty;
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
@@ -71,12 +71,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
                     rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
                     folderpath = SettingsKeyInfoProvider.GetValue("KDA.InventoryProductFolderPath", CurrentSiteName);
-                   
-                }
+                     libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName); 
+            }
             if (!IsPostBack)
             {
                 if (Request.QueryString["ID"] != null)
-                {
+                {  
                     SetFeild(productId);
                 }
                 BindUsers(1);
@@ -85,9 +85,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 btnSave.Click += btnSave_SavePOS;
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += btnCancel_Cancel;
-          //  }
-        }
-        //This method will return the Brand list 
+         }
+        //This method will return the Brand list and bind it to Brand dropdowns
         private static ObjectQuery<CustomTableItem> GetBrands()
         {
 
@@ -136,6 +135,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             return items;
         }
+        //Method to return the list of product categories
         private List<ProductCategory> GetProductCategory()
         {
             // Creates an instance of the Tree provider
@@ -196,7 +196,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm_BindDataToDropdowns", "BindData", ex.Message);
             }
         }
-
+        //Save the Product to Product pagetype
         protected void btnSave_SavePOS(object sender, EventArgs e)
         {
             Guid imageGuid = default(Guid);
@@ -221,7 +221,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         newProduct.SetValue("ActualPrice", ValidationHelper.GetString(txtActualPrice.Text, string.Empty));
                         newProduct.SetValue("ShortDescription", ValidationHelper.GetString(txtShortDes.Text, string.Empty));
                         newProduct.SetValue("State", ValidationHelper.GetString(ddlState.SelectedItem.Text, string.Empty));
-                        newProduct.SetValue("ExpirationDate", ValidationHelper.GetString(txtExpDate.Text, string.Empty));
+                        newProduct.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date));
                         newProduct.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         newProduct.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
                         newProduct.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, ""));
@@ -231,7 +231,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         newProduct.SetValue("LongDescription", ValidationHelper.GetString(txtLongDes.Text, string.Empty));
                         if (productImage.HasFile)
                         {
-                            imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage);
+                            
+                            imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                             newProduct.SetValue("Image", ValidationHelper.GetString(imageGuid, ""));
                         }
                         // Inserts the new page as a child of the parent page
@@ -250,13 +251,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
             catch (Exception ex)
             {
+                string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductFolderName");
                 EventLogProvider.LogException("SaveProductFromButtonClick", "EXCEPTION", ex);
                 if (imageGuid != default(Guid))
-                    UploadImage.DeleteImage(imageGuid);
+                    UploadImage.DeleteImage(imageGuid,libraryFolderName);
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
 
         }
+        //on Cancel button Click
         protected void btnCancel_Cancel(object sender, EventArgs e)
         {
             try
@@ -279,13 +282,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         }
         /// <summary>
-        /// Handles the Click event of the submit button.
+        /// Handles the Click event of the Allocate product button click .
         /// </summary>
         protected void AllocateProduct_Click(object sender, EventArgs e)
         {
             // Assigns the value of the UniSelector control to be displayed by the Label
-            //lstUsers = new List<AllocateProduct>();
-            foreach (RepeaterItem ri in RepterDetails.Items)
+           foreach (RepeaterItem ri in RepterDetails.Items)
             {
                 CheckBox item_check = (CheckBox)ri.FindControl("chkAllocate");
                 if (item_check.Checked)
@@ -316,6 +318,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepSelectedUser.DataBind();
         }
 
+        //Method to update the product
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
             Guid imageGuid = default(Guid);
@@ -336,7 +339,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         product.SetValue("ActualPrice", ValidationHelper.GetString(txtActualPrice.Text, string.Empty));
                         product.SetValue("ShortDescription", ValidationHelper.GetString(txtShortDes.Text, string.Empty));
                         product.SetValue("State", ValidationHelper.GetString(ddlState.SelectedItem.Text, string.Empty));
-                        product.SetValue("ExpirationDate", ValidationHelper.GetString(txtExpDate.Text, string.Empty));
+                        product.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now));
                         product.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         product.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
                         product.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, ""));
@@ -348,8 +351,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         if (productImage.HasFile)
                         {
                             if (product.Image != default(Guid))
-                                UploadImage.DeleteImage(product.Image);
-                            imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage);
+                                UploadImage.DeleteImage(product.Image, libraryFolderName);
+                            imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                             product.Image = imageGuid;
                         }
                         // Inserts the new page as a child of the parent page
@@ -370,10 +373,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 EventLogProvider.LogException("SaveProductFromButtonClick", "EXCEPTION", ex);
                 if (imageGuid != default(Guid))
-                    UploadImage.DeleteImage(imageGuid);
+                    UploadImage.DeleteImage(imageGuid, libraryFolderName);
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
         }
+        //This method will save the allocated product w.r.t to User in custome tabel
         private void AllocateProductToUsers(int productID)
         {
             string customTableClassName = "KDA.UserAllocatedProducts";
@@ -395,6 +399,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
             }
         }
+        //Update the Product allocation
         private void UpdateAllocateProduct(int productID)
         {
             try
@@ -443,6 +448,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
 
         }
+        //Set the field with the record which user wants to edit
         private void SetFeild(int productid)
         {
             Guid imageGuid = default(Guid);
@@ -487,6 +493,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogException("GetProductFromButtonClick", "EXCEPTION", ex);
             }
         }
+        //Empty all the field of the form
         private void EmptyFields()
         {
             ddlBrand.SelectedIndex = 0;
@@ -507,6 +514,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
         }
+        //This method will get all the users and bind it to repeater
         private void BindUsers(int pageIndex)
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
@@ -527,6 +535,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepterDetails.DataBind();
             PopulatePager(UserInfoProvider.GetUsers().Count(), pageIndex);
         }
+        //This method will create pagination for repeater
         private void PopulatePager(int recordCount, int currentPage)
         {
             double dblPageCount = (double)((decimal)recordCount / Convert.ToDecimal(PageSize));
@@ -542,6 +551,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rptPager.DataSource = pages;
             rptPager.DataBind();
         }
+        //This method will get the users record when user click on pagination
         protected void Page_Changed(object sender, EventArgs e)
         {
             foreach (RepeaterItem ri in RepterDetails.Items)
@@ -574,7 +584,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
             int pageIndex = int.Parse((sender as LinkButton).CommandArgument);
             this.BindUsers(pageIndex);
         }
-
+        //This method will get all the allocated user
+        //and checked it in repeater
         private void BindEditProduct(int ProductId)
         {
             try
