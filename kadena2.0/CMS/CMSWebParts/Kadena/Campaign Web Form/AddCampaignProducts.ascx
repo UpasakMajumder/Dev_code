@@ -165,5 +165,9 @@
  <script>
   $( function() {
       $('[id$=txtExpireDate]').datepicker();
-  } );
+  });
+
+  $('[id$=productImage]').on('change', function () {
+      $('.product-img').hide();
+  });
   </script>
