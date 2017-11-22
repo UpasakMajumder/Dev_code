@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class ShippingCostServiceClient : ClientBase, IShippingCostServiceClient
+    public sealed class ShippingCostServiceClient : ClientBase, IShippingCostServiceClient
     {
         private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
         private readonly IMicroProperties _properties;

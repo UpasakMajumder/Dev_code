@@ -13,7 +13,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class MailingListClient : ClientBase, IMailingListClient
+    public sealed class MailingListClient : ClientBase, IMailingListClient
     {
         private const string _serviceUrlSettingKey = "KDA_MailingServiceUrl";
         private readonly IMicroProperties _properties;
