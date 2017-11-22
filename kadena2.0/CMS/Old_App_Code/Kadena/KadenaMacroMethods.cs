@@ -5,6 +5,7 @@ using CMS.DocumentEngine.Types.KDA;
 using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.SiteProvider;
+using System.Linq;
 
 [assembly: RegisterExtension(typeof(KadenaMacroMethods), typeof(string))]
 public class KadenaMacroMethods : MacroMethodContainer
@@ -46,5 +47,13 @@ public class KadenaMacroMethods : MacroMethodContainer
             CategoryName = category.ProductCategoryTitle;
 
         return CategoryName;
+    }
+
+    [MacroMethod(typeof(string), "Returns Currently opened campaign name", 1)]
+    
+    public static object GetCampaignName(EvaluationContext context, params object[] parameters)
+    {
+        var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", 1).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
+        return ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
     }
 }

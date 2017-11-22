@@ -856,6 +856,13 @@
     <Compile Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx.designer.cs">
       <DependentUpon>CampaignWebFormActions.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\ProductEditButton.ascx.cs">
+      <DependentUpon>ProductEditButton.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Campaign Web Form\ProductEditButton.ascx.designer.cs">
+      <DependentUpon>ProductEditButton.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx.cs">
       <DependentUpon>CampaignFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -876,6 +883,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.designer.cs">
       <DependentUpon>CreateCampaign.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx.cs">
+      <DependentUpon>CustomCatalogFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx.designer.cs">
+      <DependentUpon>CustomCatalogFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.cs">
       <DependentUpon>Category.ascx</DependentUpon>
@@ -1126,9 +1140,11 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
+    <Compile Include="Old_App_Code\Kadena\EmailNotifications\ProductEmailNotifications.cs" />
     <Compile Include="Old_App_Code\Kadena\Email\EmailService.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\MediaMultiField.cs" />
@@ -1229,9 +1245,11 @@
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx" />
+    <Content Include="CMSWebParts\Kadena\Campaign Web Form\ProductEditButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
+    <Content Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
