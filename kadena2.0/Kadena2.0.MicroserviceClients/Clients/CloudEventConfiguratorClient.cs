@@ -7,7 +7,7 @@ using Kadena.Dto.KSource;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class CloudEventConfiguratorClient : ClientBase, ICloudEventConfiguratorClient
+    public sealed class CloudEventConfiguratorClient : SignedClientBase, ICloudEventConfiguratorClient
     {
         enum TargetType
         {

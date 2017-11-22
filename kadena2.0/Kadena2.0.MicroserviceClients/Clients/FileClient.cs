@@ -9,7 +9,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class FileClient : ClientBase, IFileClient
+    public sealed class FileClient : SignedClientBase, IFileClient
     {
         private const string _serviceUrlSettingKey = "KDA_FileServiceUrl";
         private readonly IMicroProperties _properties;

@@ -7,7 +7,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class OrderSubmitClient : ClientBase, IOrderSubmitClient
+    public sealed class OrderSubmitClient : SignedClientBase, IOrderSubmitClient
     {
         private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly IMicroProperties _properties;

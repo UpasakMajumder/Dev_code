@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class ExportClient : ClientBase, IExportClient
+    public sealed class ExportClient : SignedClientBase, IExportClient
     {
         private const string _serviceUrlSettingKey = "KDA_ExportServiceUrl";
         private readonly IMicroProperties _properties;
