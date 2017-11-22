@@ -7,20 +7,15 @@ using System.Web.UI.WebControls;
 
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
-using CMS.DocumentEngine.Web.UI;
-using CMS.DocumentEngine;
-using System.Linq;
-using CMS.SiteProvider;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.CustomTables;
-using CMS.CustomTables.Types.KDA;
 using CMS.Membership;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Web.UI;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
+using System.Linq;
 
-public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstractBaseFilterControl
+public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstractBaseFilterControl
 {
-
     #region "Properties"
 
 
@@ -44,11 +39,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         {
             if (AuthenticationHelper.IsAuthenticated())
             {
-                //ddlPrograms.Items.Insert(0, "Select Program");
-                //ddlBrands.Items.Insert(0, "Select Brand Name");
-                //ddlProductTypes.Items.Insert(0, "Select Category Name");
                 BindPrograms();
-                BindBrands(ddlPrograms.SelectedValue);
                 BindProductTypes();
                 SetFilter();
             }
@@ -59,10 +50,6 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
 
         }
     }
-
-
-
-
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
     /// </summary>
@@ -72,11 +59,10 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         string order = null;
 
         var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue));
-        var brand = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlBrands.SelectedValue));
         var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue));
-        if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(brand) && !string.IsNullOrEmpty(product))
+        if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(product))
         {
-            where += "ProgramID = " + program + " AND BrandID = " + brand + " and CategoryID = " + product;
+            where += "ProgramID = " + program + " AND CategoryID = " + product;
         }
         if (where != null)
         {
@@ -115,7 +101,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         {
             // Applies the filter to the displayed data
             SetFilter();
-            
+
         }
 
         base.OnPreRender(e);
@@ -138,35 +124,12 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
                     ddlPrograms.DataTextField = "ProgramName";
                     ddlPrograms.DataValueField = "ProgramID";
                     ddlPrograms.DataBind();
-
-
                 }
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_CustomCatalogFilter", "BindPrograms", ex.Message);
-        }
-
-    }
-    /// <summary>
-    /// Binding brands based on program
-    /// </summary>
-    /// <param name="brandID"></param>
-    private void BindBrands(String programID = "1")
-    {
-        try
-        {
-            var brandId = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", ValidationHelper.GetInteger(programID,default(int))).Columns("BrandID").Select(x => new Program { BrandID = x.BrandID }).FirstOrDefault();
-            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", ValidationHelper.GetInteger(brandId.GetValue("BrandID"),default(int))).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).ToList().OrderBy(y => y.BrandName);
-            ddlBrands.DataSource = brand;
-            ddlBrands.DataBind();
-            ddlBrands.DataTextField = "BrandName";
-            ddlBrands.DataValueField = "ItemID";
-            ddlBrands.DataBind();
-        }
-        catch (Exception ex) {
-            EventLogProvider.LogException("Binding brands based on program", ex.Message, ex);
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", "BindPrograms", ex.Message);
         }
 
     }
@@ -175,38 +138,28 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     /// </summary>
     private void BindProductTypes()
     {
+        try { 
         var productCategories = ProductCategoryProvider.GetProductCategories().Columns("ProductCategoryTitle,ProductCategoryID").WhereEquals("NodeSiteID", CurrentSite.SiteID).Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList().OrderBy(y => y.ProductCategoryTitle);
         ddlProductTypes.DataSource = productCategories;
         ddlProductTypes.DataBind();
         ddlProductTypes.DataTextField = "ProductCategoryTitle";
         ddlProductTypes.DataValueField = "ProductCategoryID";
         ddlProductTypes.DataBind();
-
+        }
+        catch (Exception ex) {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", "BindProductTypes", ex.Message);
+        }
     }
     /// <summary>
     /// Programs dropdown select index change event
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void ddlPrograms_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindBrands(ddlPrograms.SelectedValue);
         SetFilter();
     }
     /// <summary>
-    /// Brands dropdown select index change event
+    /// Product Type dropdown select index change event
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlBrands_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-    /// <summary>
-    /// Product type dropdown select index change event
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void ddlProductTypes_SelectedIndexChanged(object sender, EventArgs e)
     {
         SetFilter();
