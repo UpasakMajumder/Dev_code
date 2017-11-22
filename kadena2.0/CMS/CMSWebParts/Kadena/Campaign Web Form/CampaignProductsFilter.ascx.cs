@@ -13,11 +13,12 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Web.UI;
 using CMS.EventLog;
 using CMS.SiteProvider;
+using CMS.Membership;
+using Kadena.Old_App_Code.Kadena.EmailNotifications;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter : CMSAbstractBaseFilterControl
 {
     #region "Properties"
-
 
 
     #endregion
@@ -37,7 +38,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             BindPrograms();
             BindCategories();
             BindButtons();
+            BindReourceStrings();
         }
+    }
+    /// <summary>
+    /// Binding the Resource string text to buttons
+    /// </summary>
+    public void BindReourceStrings()
+    {
+        btnNewProduct.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.NewProductsText"), string.Empty);
+        btnAllowUpates.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.AllowProductsUpdateText"), string.Empty);
+        btnNotifyAdmin.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.NotifyGlobalAdminText"), string.Empty);
     }
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
@@ -66,47 +77,140 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             this.RaiseOnFilterChanged();
 
             BindButtons();
-           
+
         }
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "SetFilter", ex.Message);
         }
     }
+    /// <summary>
+    /// Binding the busttons based on roles
+    /// </summary>
     public void BindButtons()
     {
-        var nodeGuid = CurrentDocument.NodeGUID;
-        Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
-        if (campaign != null)
+        try
         {
-            bool gAdminNotified = campaign.GlobalAdminNotified;
-            if (CurrentUser.IsInRole("TWEGlobalAdmin", SiteContext.CurrentSiteName))
+            var nodeGuid = CurrentDocument.NodeGUID;
+            Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
+            if (campaign != null)
             {
-                if (gAdminNotified)
-                {
-                    btnNotifyAdmin.Enabled = false;
-                    btnNotifyAdmin.Visible = false;
+                var products = campaign.AllChildren.WithAllData.Where(xx => xx.ClassName == CampaignProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID).ToList();
+                
+                bool initiated = campaign.CampaignInitiate;
+                bool gAdminNotified = campaign.GlobalAdminNotified;
+                bool openCampaign = campaign.OpenCampaign;
+                bool closeCampaign = campaign.CloseCampaign;
 
-                    btnAllowUpates.Visible = true;
-                    btnAllowUpates.Visible = true;
+                string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+                string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
+
+                if (CurrentUser.IsInRole(gAdminRoleName, SiteContext.CurrentSiteName))
+                {
+                    if (products.Count == 0)
+                    {
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = false;
+                        btnAllowUpates.CssClass = "disable btn-action";
+                    }
+                    if (!initiated)
+                    {
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action";
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = false;
+                        btnAllowUpates.CssClass = "disable btn-action btn-action";
+                    }
+
+                    else if (gAdminNotified && !openCampaign && !closeCampaign)
+                    {
+                        btnNotifyAdmin.Enabled = false;
+                        btnNotifyAdmin.Visible = false;
+
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = true;
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = true;
+                    }
+                    else if (!gAdminNotified && !openCampaign && !closeCampaign)
+                    {
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = false;
+                        btnAllowUpates.CssClass = "disable btn-action btn-action";
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = true;
+                    }
+                    else
+                    {
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = false;
+                        btnAllowUpates.CssClass = "disable btn-action btn-action";
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action btn-action";
+                    }
+                    if (openCampaign || closeCampaign)
+                    {
+                        btnAllowUpates.Visible = true;
+                        btnAllowUpates.Enabled = false;
+                        btnAllowUpates.CssClass = "disable btn-action";
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action";
+                    }
+
                 }
-                else
+                else if (CurrentUser.IsInRole(adminRoleName, SiteContext.CurrentSiteName))
                 {
-
+                    if (products.Count == 0)
+                    {
+                        btnNotifyAdmin.Visible = true;
+                        btnNotifyAdmin.Enabled = false;
+                        btnNotifyAdmin.CssClass = "disable btn-action";
+                    }
+                    if (!initiated)
+                    {
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action";
+                        btnNotifyAdmin.Visible = true;
+                        btnNotifyAdmin.Enabled = false;
+                        btnNotifyAdmin.CssClass = "disable btn-action";
+                    }
+                    else if (gAdminNotified && !openCampaign && !closeCampaign)
+                    {
+                        btnNotifyAdmin.Visible = true;
+                        btnNotifyAdmin.Enabled = false;
+                        btnNotifyAdmin.CssClass = "disable btn-action";
+                        btnAllowUpates.Visible = false;
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action";
+                    }
+                    else
+                    {
+                        btnNotifyAdmin.Visible = true;
+                        btnNotifyAdmin.Enabled = true;
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = true;
+                    }
+                    if (openCampaign || closeCampaign)
+                    {
+                        btnNotifyAdmin.Visible = true;
+                        btnNotifyAdmin.Enabled = false;
+                        btnNotifyAdmin.CssClass = "disable btn-action";
+                        btnNewProduct.Visible = true;
+                        btnNewProduct.Enabled = false;
+                        btnNewProduct.CssClass = "disable btn-action";
+                        btnAllowUpates.Visible = false;
+                    }
                 }
             }
-            else if (CurrentUser.IsInRole("TWEAdmin", SiteContext.CurrentSiteName))
-            {
-                if (gAdminNotified)
-                {
-                    btnNotifyAdmin.Visible = false;
-                    btnAllowUpates.Visible = false;
-                }
-                else
-                {
-                    btnNotifyAdmin.Visible = true;
-                }
-            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindButtons", ex.Message);
         }
     }
 
@@ -116,9 +220,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     protected override void OnInit(EventArgs e)
     {
         SetupControl();
-
-
-
         base.OnInit(e);
     }
 
@@ -157,7 +258,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     ddlPrograms.DataTextField = "ProgramName";
                     ddlPrograms.DataValueField = "ProgramID";
                     ddlPrograms.DataBind();
-                    ddlPrograms.Items.Insert(0, "--Select Program--");
+                    ddlPrograms.Items.Insert(0, new ListItem("--Select Program--", "0"));
                 }
             }
         }
@@ -180,7 +281,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 ddlProductcategory.DataTextField = "ProductCategoryTitle";
                 ddlProductcategory.DataValueField = "ProductCategoryID";
                 ddlProductcategory.DataBind();
-                ddlProductcategory.Items.Insert(0, "--Select Category--");
+                ddlProductcategory.Items.Insert(0, new ListItem("--Select Category--", "0"));
             }
         }
         catch (Exception ex)
@@ -206,33 +307,81 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         SetFilter();
     }
-
+    /// <summary>
+    /// Nottify Admin
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnNotifyAdmin_Click(object sender, EventArgs e)
     {
-        var nodeGuid = CurrentDocument.NodeGUID;
-        Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
-        if (campaign != null)
+        try
         {
-            campaign.GlobalAdminNotified = true;
-            campaign.Update();
+            var nodeGuid = CurrentDocument.NodeGUID;
+            Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
+            if (campaign != null)
+            {
+                campaign.GlobalAdminNotified = true;
+                campaign.Update();
+                var roleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+                var role = RoleInfoProvider.GetRoleInfo(roleName, CurrentSite.SiteID);
+                if(role!=null)
+                {
+                    var users = RoleInfoProvider.GetRoleUsers(role.RoleID);
+                    if (users != null)
+                    {
+                        foreach (var user in users.AsEnumerable().ToList())
+                        {
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), "ProductsAddedToCampaign");
+                        }
+                    }
+                }
+                Response.Redirect(CurrentDocument.AbsoluteURL);
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNotifyAdmin_Click", ex.Message);
         }
     }
-
+    /// <summary>
+    /// Allow the Products updates 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnAllowUpates_Click(object sender, EventArgs e)
     {
-        var nodeGuid = CurrentDocument.NodeGUID;
-        Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
-        if (campaign != null)
+        try
         {
-            campaign.GlobalAdminNotified = false;
-            campaign.Update();
-            this.Visible = false;
+            var nodeGuid = CurrentDocument.NodeGUID;
+            Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentSite.DefaultVisitorCulture, CurrentSite.SiteName);
+            if (campaign != null)
+            {
+                campaign.GlobalAdminNotified = false;
+                campaign.Update();
+                Response.Redirect(CurrentDocument.AbsoluteURL);
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnAllowUpates_Click", ex.Message);
         }
     }
-
+    /// <summary>
+    /// Adding the new product
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnNewProduct_Click(object sender, EventArgs e)
     {
-
+        try
+        {
+            string url = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath");
+            Response.Redirect(url + "?camp=" + CurrentDocument.NodeID);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNewProduct_Click", ex.Message);
+        }
     }
 }
 

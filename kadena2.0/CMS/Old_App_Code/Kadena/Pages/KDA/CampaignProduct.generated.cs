@@ -268,6 +268,23 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
+		/// Status.
+		/// </summary>
+		[DatabaseField]
+		public bool Status
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("Status"), true);
+			}
+			set
+			{
+				SetValue("Status", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Item Specs.
 		/// </summary>
 		[DatabaseField]
@@ -540,6 +557,22 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.QtyPerPack = value;
+				}
+			}
+
+
+			/// <summary>
+			/// Status.
+			/// </summary>
+			public bool Status
+			{
+				get
+				{
+					return mInstance.Status;
+				}
+				set
+				{
+					mInstance.Status = value;
 				}
 			}
 

@@ -28,7 +28,7 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
         /// </summary>
         /// <param name="productImage"></param>
         /// <returns></returns>
-        public static Guid UploadImageToMeadiaLibrary(FileUpload productImage)
+        public static Guid UploadImageToMeadiaLibrary(FileUpload productImage, string folderName)
         {
             Guid fileGuid = default(Guid);
             try
@@ -39,16 +39,13 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
                     Directory.CreateDirectory(folderPath);
                 }
                 string filePath = Path.GetFileName(productImage.PostedFile.FileName);
-                if (File.Exists("~/Uploads/" + filePath))
-                {
-                    filePath = filePath + new Random().Next(1, 1000);
-                }
+
                 productImage.PostedFile.SaveAs(System.Web.HttpContext.Current.Server.MapPath("~/Uploads/" + filePath));
-                MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo("CampaignProducts", SiteContext.CurrentSiteName);
+                MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo(folderName != null ? folderName.Replace(" ", "") : "CampaignProducts", SiteContext.CurrentSiteName);
                 if (library == null)
                 {
-                    CreateMeadiaLiabrary();
-                    library = MediaLibraryInfoProvider.GetMediaLibraryInfo("CampaignProducts", SiteContext.CurrentSiteName);
+                    CreateMeadiaLiabrary(folderName);
+                    library = MediaLibraryInfoProvider.GetMediaLibraryInfo(folderName != null ? folderName.Replace(" ", "") : "CampaignProducts", SiteContext.CurrentSiteName);
                 }
                 filePath = System.Web.HttpContext.Current.Server.MapPath("~/Uploads/" + filePath);
                 CMS.IO.FileInfo file = CMS.IO.FileInfo.New(filePath);
@@ -57,7 +54,7 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
                     MediaFileInfo mediaFile = new MediaFileInfo(filePath, library.LibraryID);
                     mediaFile.FileName = Path.GetFileName(productImage.PostedFile.FileName);
                     mediaFile.FileTitle = Path.GetFileName(productImage.PostedFile.FileName);
-                    mediaFile.FilePath = "Images/";
+                    // mediaFile.FilePath = "Images/";
                     mediaFile.FileExtension = file.Extension;
                     mediaFile.FileMimeType = MimeTypeHelper.GetMimetype(file.Extension);
                     mediaFile.FileSiteID = SiteContext.CurrentSiteID;
@@ -77,14 +74,14 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
         /// <summary>
         /// Create new Meadia Library
         /// </summary>
-        public static void CreateMeadiaLiabrary()
+        public static void CreateMeadiaLiabrary(string folderName)
         {
             try
             {
                 MediaLibraryInfo newLibrary = new MediaLibraryInfo();
-                newLibrary.LibraryDisplayName = "Campaign Products";
-                newLibrary.LibraryName = "CampaignProducts";
-                newLibrary.LibraryFolder = "CampaignProducts";
+                newLibrary.LibraryDisplayName = folderName != null ? folderName : "Campaign Products";
+                newLibrary.LibraryName = folderName != null ? folderName.Replace(" ", "") : "CampaignProducts";
+                newLibrary.LibraryFolder = folderName != null ? folderName.Replace(" ", "") : "CampaignProducts";
                 newLibrary.LibrarySiteID = SiteContext.CurrentSiteID;
                 MediaLibraryInfoProvider.SetMediaLibraryInfo(newLibrary);
             }
@@ -97,11 +94,11 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
         /// Delete Image by Guid
         /// </summary>
         /// <param name="imageGuid"></param>
-        public static void DeleteImage(Guid imageGuid)
+        public static void DeleteImage(Guid imageGuid, string folderName)
         {
             try
             {
-                MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo("CampaignProducts", SiteContext.CurrentSiteName);
+                MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo(folderName != null ? folderName : "CampaignProducts", SiteContext.CurrentSiteName);
                 if (library != null)
                 {
                     MediaFileInfo deleteFile = MediaFileInfoProvider.GetMediaFileInfo(imageGuid, SiteContext.CurrentSiteName);
