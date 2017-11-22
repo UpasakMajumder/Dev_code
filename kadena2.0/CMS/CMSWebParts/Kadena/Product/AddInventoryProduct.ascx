@@ -2,6 +2,12 @@
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 <div class="css-login">
     <div class="form form form_width100 formerrormsgs">
         <div class="mb-2 form_block">
@@ -62,7 +68,7 @@
         <div class="mb-2 form_block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblExpDate" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblExpDate" />
-                <div class="input__inner">
+                <div class="input__inner date_picker">
                     <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text" TextMode="DateTime"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
@@ -74,7 +80,10 @@
                 <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" />
-                    <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
+                    <div class="product-img">
+                           <asp:Image ID="imgProduct" runat="server" Height="100" Width="100"  />
+                        </div>
+                    
                 </div>
             </div>
         </div>
@@ -291,3 +300,16 @@
         </asp:UpdatePanel>
     </div>
 </div>
+<script>
+    $(function () {
+        $('[id$=txtExpDate]').datepicker({
+            showOn: "both",
+            buttonImage: "https://png.icons8.com/?id=3344&size=280",
+            buttonImageOnly: false
+        });
+    });
+
+    $('[id$=productImage]').on('change', function () {
+        $('.product-img').hide();
+    });
+</script>

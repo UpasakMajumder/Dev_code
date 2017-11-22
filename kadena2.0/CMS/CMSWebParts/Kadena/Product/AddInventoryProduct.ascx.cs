@@ -220,7 +220,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         newProduct.SetValue("EstimatedPrice", ValidationHelper.GetString(txtEstPrice.Text, string.Empty));
                         newProduct.SetValue("ActualPrice", ValidationHelper.GetString(txtActualPrice.Text, string.Empty));
                         newProduct.SetValue("ShortDescription", ValidationHelper.GetString(txtShortDes.Text, string.Empty));
-                        newProduct.SetValue("State", ValidationHelper.GetString(ddlState.SelectedItem.Text, string.Empty));
+                        newProduct.SetValue("State", ValidationHelper.GetString(ddlState.SelectedValue, string.Empty));
                         newProduct.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date));
                         newProduct.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         newProduct.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
@@ -338,7 +338,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         product.SetValue("EstimatedPrice", ValidationHelper.GetString(txtEstPrice.Text, string.Empty));
                         product.SetValue("ActualPrice", ValidationHelper.GetString(txtActualPrice.Text, string.Empty));
                         product.SetValue("ShortDescription", ValidationHelper.GetString(txtShortDes.Text, string.Empty));
-                        product.SetValue("State", ValidationHelper.GetString(ddlState.SelectedItem.Text, string.Empty));
+                        product.SetValue("State", ValidationHelper.GetString(ddlState.SelectedValue, string.Empty));
                         product.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now));
                         product.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         product.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
