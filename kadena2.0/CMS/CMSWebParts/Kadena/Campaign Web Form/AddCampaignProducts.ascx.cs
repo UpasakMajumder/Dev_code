@@ -455,7 +455,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         txtActualPrice.Text = product.ActualPrice;
                         txtEstimatedprice.Text = product.EstimatedPrice;
                         ddlStatus.SelectedValue = product.Status == true ? "1" : "0";
-                        if (product.Image != default(Guid) && !product.Image.Equals(Guid.Empty))
+                        if (product.Image != default(Guid))
                         {
                             MediaFileInfo image = MediaFileInfoProvider.GetMediaFileInfo(product.Image, SiteContext.CurrentSiteName);
                             if (!DataHelper.DataSourceIsEmpty(image))

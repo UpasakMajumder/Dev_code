@@ -164,10 +164,15 @@
 
  <script>
   $( function() {
-      $('[id$=txtExpireDate]').datepicker();
+      $('[id$=txtExpireDate]').datepicker({
+          showOn: "both",
+          buttonImage: "https://png.icons8.com/?id=3344&size=280",
+          buttonImageOnly: false
+      });
   });
 
   $('[id$=productImage]').on('change', function () {
       $('.product-img').hide();
   });
   </script>
+
