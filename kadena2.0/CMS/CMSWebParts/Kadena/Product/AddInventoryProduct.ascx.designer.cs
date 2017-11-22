@@ -148,6 +148,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBundleQnt;
         
         /// <summary>
+        /// revBundleQnt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revBundleQnt;
+        
+        /// <summary>
         /// lblExpDate control.
         /// </summary>
         /// <remarks>
@@ -200,15 +209,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgProduct;
-        
-        /// <summary>
-        /// rfvImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvImage;
         
         /// <summary>
         /// lblEstPrice control.
@@ -283,6 +283,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.CMSTextBox txtCVOProductId;
         
         /// <summary>
+        /// revProductid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revProductid;
+        
+        /// <summary>
         /// lblStoreFrontId control.
         /// </summary>
         /// <remarks>
@@ -301,6 +310,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.CMSTextBox txtStroeFrontId;
         
         /// <summary>
+        /// revStoreId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revStoreId;
+        
+        /// <summary>
         /// lblQuantity control.
         /// </summary>
         /// <remarks>
@@ -317,6 +335,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CMS.Base.Web.UI.CMSTextBox txtQuantity;
+        
+        /// <summary>
+        /// revQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revQuantity;
         
         /// <summary>
         /// lblState control.
