@@ -432,55 +432,71 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             try
             {
-                BindPrograms();
-                BindCategories();
-                BindResorceStrings();
-                BindPOS();
-                int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
-                if (productID != 0)
+                if (!IsPostBack)
                 {
-                    CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productID).TopN(1).FirstOrDefault();
-                    if (product != null)
+                    BindPrograms();
+                    BindCategories();
+                    BindResorceStrings();
+                    BindPOS();
+                    int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
+                    if (productID != 0)
                     {
-                        ddlProgram.SelectedValue = product.ProgramID.ToString();
-                        ddlPos.SelectedValue = product.POSNumber.ToString();
-                        txtProductName.Text = product.ProductName;
-                        txtState.Text = product.State;
-                        txtLongDescription.Text = product.LongDescription;
-                        txtExpireDate.Text = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date).ToString();
-                        txtBrand.Text = GetBrandName(product.BrandID);
-                        ddlProductcategory.SelectedValue = product.CategoryID.ToString();
-                        txtQty.Text = product.QtyPerPack;
-                        txtItemSpecs.Text = product.ItemSpecs;
-                        txtActualPrice.Text = product.ActualPrice;
-                        txtEstimatedprice.Text = product.EstimatedPrice;
-                        ddlStatus.SelectedValue = product.Status == true ? "1" : "0";
-                        if (product.Image != default(Guid) && !product.Image.Equals(Guid.Empty))
+                        CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productID).TopN(1).FirstOrDefault();
+                        if (product != null)
                         {
-                            MediaFileInfo image = MediaFileInfoProvider.GetMediaFileInfo(product.Image, SiteContext.CurrentSiteName);
-                            if (!DataHelper.DataSourceIsEmpty(image))
+                            ddlProgram.SelectedValue = product.ProgramID.ToString();
+                            ddlPos.SelectedValue = product.POSNumber.ToString();
+                            txtProductName.Text = product.ProductName;
+                            txtState.Text = product.State;
+                            txtLongDescription.Text = product.LongDescription;
+                            txtExpireDate.Text = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date).ToString();
+                            txtBrand.Text = GetBrandName(product.BrandID);
+                            ddlProductcategory.SelectedValue = product.CategoryID.ToString();
+                            txtQty.Text = product.QtyPerPack;
+                            txtItemSpecs.Text = product.ItemSpecs;
+                            txtActualPrice.Text = product.ActualPrice;
+                            txtEstimatedprice.Text = product.EstimatedPrice;
+                            ddlStatus.SelectedValue = product.Status == true ? "1" : "0";
+                            if (product.Image != default(Guid))
                             {
-                                imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileAbsoluteUrl(product.Image, image.FileName);
-                                imgProduct.Visible = true;
-                            }
-                        }
+                                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+                                MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo(!string.IsNullOrEmpty(folderName) ? folderName : "CampaignProducts", SiteContext.CurrentSiteName);
+                                if (!DataHelper.DataSourceIsEmpty(library))
+                                {
+                                    MediaFileInfo image = MediaFileInfoProvider.GetMediaFileInfo(product.Image, SiteContext.CurrentSiteName);
+                                    if (!DataHelper.DataSourceIsEmpty(image))
+                                    {
+                                        imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileAbsoluteUrl(product.Image, image.FileName);
+                                        imgProduct.Visible = true;
+                                    }
+                                    else
+                                        imgProduct.Visible = false;
 
-                        ViewState["ProgramID"] = product.ProgramID;
-                        ViewState["ProductNodeID"] = product.NodeID;
-                        btnSave.Visible = false;
-                        btnUpdate.Visible = true;
+                                }
+                                else
+                                    imgProduct.Visible = false;
+                            }
+                            else
+                                imgProduct.Visible = false;
+
+                            ViewState["ProgramID"] = product.ProgramID;
+                            ViewState["ProductNodeID"] = product.NodeID;
+                            btnSave.Visible = false;
+                            btnUpdate.Visible = true;
+                        }
                     }
-                }
-                else
-                {
-                    btnSave.Visible = true;
-                    btnUpdate.Visible = false;
+                    else
+                    {
+                        btnSave.Visible = true;
+                        btnUpdate.Visible = false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "SetupControl", ex.Message);
             }
+
         }
     }
     /// <summary>
@@ -633,9 +649,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         }
         catch (Exception ex)
         {
-            string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-            if (imageGuid != default(Guid))
-                UploadImage.DeleteImage(imageGuid, libraryFolderName);
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "btnSave_Click", ex.Message);
         }
     }
@@ -708,9 +721,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         }
         catch (Exception ex)
         {
-            string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-            if (imageGuid != default(Guid))
-                UploadImage.DeleteImage(imageGuid, libraryFolderName);
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "btnUpdate_Click", ex.Message);
         }
 
