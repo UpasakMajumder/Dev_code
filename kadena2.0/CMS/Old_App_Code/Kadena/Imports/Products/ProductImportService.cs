@@ -191,6 +191,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 validationErrors.Add("ItemsInPackagemust be > 0");
             }
 
+            if (string.IsNullOrEmpty(product.ImageURL) ^ string.IsNullOrEmpty(product.ThumbnailURL))
+            {
+                isValid = false;
+                validationErrors.Add("Both product Image and Thumbnail or none of them must be specified");
+            }
+
             return isValid;
         }
 
@@ -256,6 +262,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             ProductImageHelper.AttachTumbnail(product, newAttachment);
         }
+
+        private void RemoveProductImages(SKUTreeNode product, int siteId)
+        {
+            var library = MediaLibraryHelper.EnsureLibrary(siteId);
+            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
+            ProductImageHelper.RemoveTumbnail(product, siteId);
+        }
         
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
@@ -305,6 +318,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
             {
                 GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
+            }
+            else // todo discuss, remove existing images when new not specified ?
+            {
+                RemoveProductImages(newProduct, siteId); 
             }
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
