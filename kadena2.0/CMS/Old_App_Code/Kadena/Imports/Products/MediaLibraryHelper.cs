@@ -11,9 +11,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public static class MediaLibraryHelper
     {
-        public static MediaLibraryInfo EnsureLibrary(int siteId)
+        public static MediaLibraryInfo EnsureLibrary(int siteId, string libraryName)
         {
-            string libraryName = "ProductImages";
             var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
             var mediaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(libraryName, siteName);
             if (mediaLibrary == null)

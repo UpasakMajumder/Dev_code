@@ -257,7 +257,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         // ready for potential use in Product upload
         private static void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
-            var library = MediaLibraryHelper.EnsureLibrary(siteId);
+            var library = MediaLibraryHelper.EnsureLibrary(siteId, "ProductImages");
 
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
 
