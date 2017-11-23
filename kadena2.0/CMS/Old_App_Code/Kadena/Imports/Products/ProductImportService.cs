@@ -191,6 +191,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 validationErrors.Add("ItemsInPackagemust be > 0");
             }
 
+            if (string.IsNullOrEmpty(product.ImageURL) ^ string.IsNullOrEmpty(product.ThumbnailURL))
+            {
+                isValid = false;
+                validationErrors.Add("Both product Image and Thumbnail or none of them must be specified");
+            }
+
             return isValid;
         }
 
@@ -234,27 +240,34 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            GetAndSaveProductImages(image, product, sku, siteId);
+            GetAndSaveProductImages(product, sku, siteId, image.ImageURL, image.ThumbnailURL);
 
             product.Update();
         }
 
         // ready for potential use in Product upload
-        private void GetAndSaveProductImages(ProductImageDto image, SKUTreeNode product, SKUInfo sku, int siteId)
+        private void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
             var library = MediaLibraryHelper.EnsureLibrary(siteId);
             
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
 
-            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(image.ImageURL, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
+            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
 
             ProductImageHelper.RemoveTumbnail(product, siteId);
 
-            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(image.ThumbnailURL, sku.SKUNumber, product.DocumentID, siteId);
+            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(thumbnailUrl, sku.SKUNumber, product.DocumentID, siteId);
 
             ProductImageHelper.AttachTumbnail(product, newAttachment);
+        }
+
+        private void RemoveProductImages(SKUTreeNode product, int siteId)
+        {
+            var library = MediaLibraryHelper.EnsureLibrary(siteId);
+            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
+            ProductImageHelper.RemoveTumbnail(product, siteId);
         }
         
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
@@ -300,6 +313,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             if (DateTime.TryParse(product.PublishTo, out publishTo))
             {
                 newProduct.DocumentPublishTo = publishTo;
+            }
+
+            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
+            {
+                GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
+            }
+            else // todo discuss, remove existing images when new not specified ?
+            {
+                RemoveProductImages(newProduct, siteId); 
             }
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
