@@ -64,9 +64,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     if (Request.QueryString["ID"] != null)
                     {
                         SetFeild(productId);
+                        if(Request.UrlReferrer !=null)
+                        ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
                     }
                     BindUsers(1);
-                    ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
+                   
 
                 }
 
@@ -105,7 +107,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                     if (parentPage != null)
                     {
-                        // Creates a new page of the "CMS.MenuItem" page type
+                       
                         CMS.DocumentEngine.TreeNode newProduct = CMS.DocumentEngine.TreeNode.New("KDA.CampaignProduct", tree);
 
                         // Sets the properties of the new page
@@ -477,11 +479,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
         }
-        //This method will get all the users and bind it to repeater
-        private void BindUsers(int pageIndex)
-        {
+        /// <summary>
+        /// This method will get all the users and bind it to repeater
+        /// </summary>
+        /// <param name="pageIndex"></param>
+            private void BindUsers(int pageIndex)
+            {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
-            var users = UserInfoProvider.GetUsers().Skip(PageSize * (pageIndex - 1)).Take(PageSize);
+            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName").Skip(PageSize * (pageIndex - 1)).Take(PageSize);
             foreach (UserInfo user in users)
             {
                 AllocateProduct objProduct = new AllocateProduct();
@@ -581,7 +586,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     ddlPosNo.Items.Insert(Posindex++, new ListItem(PosNumber.GetValue("POSNumber").ToString(), PosNumber.GetValue("ItemID").ToString()));
                 }
-                //Product Category DropdownList
+                //Product Category DropdownList  
                 int ProdCategoryindex = 1;
                 ddlProdCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.CategoryWaterMark"), "0"));
                 List<ProductCategory> lstProdcategories = GetProductCategory();
@@ -589,6 +594,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     ddlProdCategory.Items.Insert(ProdCategoryindex++, new ListItem(lstProdcategory.CategoryName, lstProdcategory.CategoryId.ToString()));
                 }
+               
                 //Bind all the state to dropdown
                 // Gets the state
                 ObjectQuery<StateInfo> States = StateInfoProvider.GetStates();
@@ -624,6 +630,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
             return lstProdcategroy;
         }
+      
         /// <summary>
         /// This method will return the POSNUmber list
         /// </summary>

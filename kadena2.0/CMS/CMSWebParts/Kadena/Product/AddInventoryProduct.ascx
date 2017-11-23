@@ -1,12 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AddInventoryProduct.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.Product.AddInventoryProduct" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 
 <div class="css-login">
     <div class="form form form_width100 formerrormsgs">
@@ -301,16 +297,3 @@
         </asp:UpdatePanel>
     </div>
 </div>
-<script>
-    $(function () {
-        $('[id$=txtExpDate]').datepicker({
-            showOn: "both",
-            buttonImage: "https://png.icons8.com/?id=3344&size=280",
-            buttonImageOnly: false
-        });
-    });
-
-    $('[id$=productImage]').on('change', function () {
-        $('.product-img').hide();
-    });
-</script>
