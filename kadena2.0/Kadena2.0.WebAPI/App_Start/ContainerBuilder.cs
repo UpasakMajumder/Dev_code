@@ -59,6 +59,7 @@ namespace Kadena.WebAPI
             container.Register<ITemplatedClient, TemplatedClient>();
             container.Register<IAddressValidationClient, AddressValidationClient>();
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
+            container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
             return container;
         }
