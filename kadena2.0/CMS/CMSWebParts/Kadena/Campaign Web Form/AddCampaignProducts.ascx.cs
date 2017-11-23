@@ -1,16 +1,11 @@
 using System;
 using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Linq;
-using System.IO;
 
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DocumentEngine.Types.KDA;
-using System.Collections.Generic;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
@@ -375,7 +370,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         }
     }
 
-
     #endregion
 
 
@@ -389,6 +383,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         base.OnContentLoaded();
         SetupControl();
     }
+    /// <summary>
+    /// Bind resource strings to labels, buttons and error messages
+    /// </summary>
     public void BindResorceStrings()
     {
         lblPosNumber.InnerText = POSNumberText;
@@ -408,7 +405,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         btnSave.Text = SaveButtonText;
         btnUpdate.Text = UpdateButtonText;
         btnCancel.Text = CancelButtonText;
-
         rqPOS.ErrorMessage = PosError;
         rqProductName.ErrorMessage = ProductNameError;
         rqLongDescription.ErrorMessage = LongDescriptionError;
@@ -417,7 +413,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqBrand.ErrorMessage = BrandNameError;
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
-
     }
     /// <summary>
     /// Initializes the control properties.
@@ -586,7 +581,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     public override void ReloadData()
     {
         base.ReloadData();
-
         SetupControl();
     }
 
@@ -723,7 +717,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "btnUpdate_Click", ex.Message);
         }
-
     }
     /// <summary>
     /// Cancel
@@ -793,6 +786,3 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
 
     #endregion
 }
-
-
-

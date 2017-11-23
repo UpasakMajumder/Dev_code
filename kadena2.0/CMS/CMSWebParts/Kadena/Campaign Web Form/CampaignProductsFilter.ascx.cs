@@ -1,12 +1,7 @@
 using System;
 using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Linq;
-
-using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.DataEngine;
@@ -18,12 +13,6 @@ using Kadena.Old_App_Code.Kadena.EmailNotifications;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter : CMSAbstractBaseFilterControl
 {
-    #region "Properties"
-
-
-    #endregion
-
-
     /// <summary>
     /// Content loaded event handler.
     /// </summary>
@@ -101,10 +90,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 bool gAdminNotified = campaign.GlobalAdminNotified;
                 bool openCampaign = campaign.OpenCampaign;
                 bool closeCampaign = campaign.CloseCampaign;
-
                 string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
-
                 if (CurrentUser.IsInRole(gAdminRoleName, SiteContext.CurrentSiteName))
                 {
                     if (products.Count == 0)
@@ -122,7 +109,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnAllowUpates.Enabled = false;
                         btnAllowUpates.CssClass = "disable btn-action btn-action";
                     }
-
                     else if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnNotifyAdmin.Enabled = false;
@@ -159,7 +145,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.Enabled = false;
                         btnNewProduct.CssClass = "disable btn-action";
                     }
-
                 }
                 else if (CurrentUser.IsInRole(adminRoleName, SiteContext.CurrentSiteName))
                 {
