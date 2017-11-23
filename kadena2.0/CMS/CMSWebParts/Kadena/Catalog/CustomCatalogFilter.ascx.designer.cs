@@ -39,6 +39,15 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter {
     protected global::System.Web.UI.WebControls.DropDownList ddlProductTypes;
     
     /// <summary>
+    /// selectAllLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel selectAllLabel;
+    
+    /// <summary>
     /// llbPrintSelection control.
     /// </summary>
     /// <remarks>
