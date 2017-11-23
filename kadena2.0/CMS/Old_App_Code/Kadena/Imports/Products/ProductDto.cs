@@ -136,5 +136,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(32, "Max Items in Order")]
         [MaxLength(20)]
         public string MaxItemsInOrder { get; set; }
+
+        [Header(33, "Image URL")]
+        [MaxLength(200)]
+        public string ImageURL { get; set; }
+
+        [Header(34, "Thumbnail URL")]
+        [MaxLength(200)]
+        public string ThumbnailURL { get; set; }
     }
 }
