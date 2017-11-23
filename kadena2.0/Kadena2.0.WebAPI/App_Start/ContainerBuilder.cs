@@ -31,6 +31,7 @@ namespace Kadena.WebAPI
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
             container.Register<ICreditCardService, CreditCardService>();
+            container.Register<IPdfService, PdfService>();
             return container;
         }
 

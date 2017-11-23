@@ -30,10 +30,10 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/pdf/{orderid}/{row}")]
-        public async Task<RedirectResult> CustomerData(string orderId, int row)
+        [Route("api/pdf/hires/{orderid}/{line}")]
+        public async Task<RedirectResult> GetHiresPdf(string orderId, int line)
         {
-            var result = await service.GetHiresPdfLink(orderId, row);
+            var result = await service.GetHiresPdfLink(orderId, line);
             return Redirect(result);
         }
     }

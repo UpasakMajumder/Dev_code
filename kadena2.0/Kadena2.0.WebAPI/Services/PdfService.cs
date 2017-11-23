@@ -13,7 +13,7 @@ namespace Kadena.WebAPI.Services
             this.orderViewClient = orderViewClient;
         }
 
-        public async Task<string> GetHiresPdfLink(string orderId, int row)
+        public async Task<string> GetHiresPdfLink(string orderId, int line)
         {
             var order = await orderViewClient.GetOrderByOrderId(orderId);
             return await Task.FromResult("http://www.pes.cz");

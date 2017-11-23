@@ -4,6 +4,6 @@ namespace Kadena.WebAPI.Contracts
 {
     public interface IPdfService
     {
-        Task<string> GetHiresPdfLink(string orderId, int row);
+        Task<string> GetHiresPdfLink(string orderId, int line);
     }
 }
