@@ -33,7 +33,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
-            
+
             var currentItemNumber = 0;
             foreach (var productDto in products)
             {
@@ -143,7 +143,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 product.ProductType.Contains(ProductTypes.TemplatedProduct))
             {
                 decimal weight = 0.0m;
-                if(string.IsNullOrEmpty(product.PackageWeight) ||  !decimal.TryParse(product.PackageWeight, out weight))
+                if (string.IsNullOrEmpty(product.PackageWeight) || !decimal.TryParse(product.PackageWeight, out weight))
                 {
                     isValid = false;
                     validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
@@ -214,7 +214,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            AppendProduct(productParent, productDto, sku, siteID);            
+            AppendProduct(productParent, productDto, sku, siteID);
         }
 
         private static void SetProductImage(ProductImageDto image, int siteId)
@@ -258,10 +258,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private static void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
             var library = MediaLibraryHelper.EnsureLibrary(siteId);
-            
+
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
 
-            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
+            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, library.LibraryID, siteId);
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
 
@@ -278,7 +278,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
             ProductImageHelper.RemoveTumbnail(product, siteId);
         }
-        
+
         private static SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
@@ -330,7 +330,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
             else // todo discuss, remove existing images when new not specified ?
             {
-                RemoveProductImages(newProduct, siteId); 
+                RemoveProductImages(newProduct, siteId);
             }
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
@@ -426,11 +426,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
-                category.DocumentCulture = "en-us";
-
-                // To set category image:
-                // category.SetValue("ProductCategoryImage", $"https://dummyimage.com/320/0000ff/ffffff.png&text={subnodes[0]}");
-
+                category.DocumentCulture = LocalizationContext.PreferredCultureCode;
                 SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
@@ -465,7 +461,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private static SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
+            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);
