@@ -29,9 +29,19 @@ namespace Kadena.WebAPI.Services
         {
             var order = await orderViewClient.GetOrderByOrderId(orderId);
 
-            // todo if not sucessfull or no lines .....
+            if (!order.Success)
+            {
+                return string.Empty;
+            }
+            
+            var orderLines = order.Payload?.Items?.Count ?? 0;
 
-            var fileUrl = order?.Payload?.Items?[line]?.FileUrl;
+            if (orderLines == 0 || orderLines < (line-1))
+            {
+                return string.Empty;
+            }
+
+            var fileInfo = order.Payload.Items[line].FileInfo;
 
             // fileurl will disapead, there will be new property fileInfo : { module ,  key }
 
