@@ -4,13 +4,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductCategoryImportDto
     {
-        [Header(0, "Product Category")]
-        public string ProductCategory { get; set; }
-
-        [Header(1, "Category Name *")]
+        [Header(1, "Product Category *")]
         [Required]
         [MaxLength(100)]
-        public string ProductName { get; set; }
+        public string ProductCategory { get; set; }
 
         [Header(2, "Image URL")]
         [MaxLength(200)]
