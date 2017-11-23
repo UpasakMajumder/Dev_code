@@ -21,19 +21,11 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
         protected void btnUploadProductList_Click(object sender, EventArgs e)
         {
             var file = importFile.PostedFile;
-            if (string.IsNullOrWhiteSpace(file.FileName))
+            var fileData = ReadBytes(file);
+            if (fileData == null)
             {
-                ShowErrorMessage("You need to choose the import file.");
                 return;
             }
-
-            if (SelectedSiteID == 0)
-            {
-                ShowErrorMessage("You need to choose the Site.");
-                return;
-            }
-
-            var fileData = ReadFileFromRequest(file);
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
 
             try
@@ -69,8 +61,20 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             WriteFileToResponse(templateFileName, bytes);
         }
 
-        private byte[] ReadFileFromRequest(HttpPostedFile fileRequest)
+        private byte[] ReadBytes(HttpPostedFile fileRequest)
         {
+            if (string.IsNullOrWhiteSpace(fileRequest.FileName))
+            {
+                ShowErrorMessage("You need to choose the import file.");
+                return null;
+            }
+
+            if (SelectedSiteID == 0)
+            {
+                ShowErrorMessage("You need to choose the Site.");
+                return null;
+            }
+
             using (var binaryReader = new BinaryReader(fileRequest.InputStream))
             {
                 return binaryReader.ReadBytes(fileRequest.ContentLength);
