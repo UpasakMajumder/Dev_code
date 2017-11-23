@@ -117,5 +117,37 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             var templateFileName = "productcategories-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
         }
+
+        protected void btnUploadProductCategories_Click(object sender, EventArgs e)
+        {
+            var file = importFile.PostedFile;
+            var fileData = ReadBytes(file);
+            if (fileData == null)
+            {
+                return;
+            }
+
+            var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
+
+            try
+            {
+                var result = new ProductImportService().ProcessProductCategories(fileData, excelType, SelectedSiteID);
+                if (result.ErrorMessages.Length > 0)
+                {
+                    ShowErrorMessage(FormatImportResult(result));
+                }
+                else
+                {
+                    ShowSuccessMessage("Operation successfully completed");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Import product categories", "EXCEPTION", ex);
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
+            }
+
+        }
     }
 }

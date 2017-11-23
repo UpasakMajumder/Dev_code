@@ -106,6 +106,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
+        public ImportResult ProcessProductCategories(byte[] importFileData, ExcelType type, int siteID)
+        {
+            return new ImportResult
+            {
+                AllMessagesCount = statusMessages.AllMessagesCount,
+                ErrorMessages = statusMessages.ToArray()
+            };
+        }
+
         private static bool ValidateImportItem(ProductDto product, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";

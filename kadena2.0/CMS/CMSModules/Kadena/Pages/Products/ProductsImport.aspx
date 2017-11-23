@@ -36,7 +36,7 @@
             </div>
             <div class="editing-form-value-cell">
                 <asp:Button Text="Upload file" CssClass="btn btn-primary" ClientIDMode="Static" ID="btnUploadProductCategories" 
-                    runat="server" />
+                    runat="server" OnClick="btnUploadProductCategories_Click"/>
             </div>
         </div>
 
