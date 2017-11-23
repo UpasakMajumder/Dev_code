@@ -34,7 +34,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return mediaLibrary;
         }
 
-        public static string DownloadImageToMedialibrary(string url, string skuNumber, int documentId, int libraryId, int siteId)
+        public static string DownloadImageToMedialibrary(string url, string skuNumber, int libraryId, int siteId)
         {            
             MediaFileInfo mediaFile = null;
 
