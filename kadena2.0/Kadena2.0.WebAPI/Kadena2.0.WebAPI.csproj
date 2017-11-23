@@ -117,7 +117,8 @@
     <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Contracts\ICreditCardService.cs" />
-    <Compile Include="Contracts\ICache.cs" />    
+    <Compile Include="Contracts\ICache.cs" />
+    <Compile Include="Contracts\IPdfService.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Controllers\CreditCard3dsiController.cs" />
+    <Compile Include="Controllers\PdfController.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\MailTemplateController.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Infrastructure\InMemoryCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CreditCardService.cs" />
+    <Compile Include="Services\PdfService.cs" />
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\OrderService.cs" />
