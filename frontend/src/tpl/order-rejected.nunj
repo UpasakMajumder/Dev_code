@@ -1,0 +1,24 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/steps.nunj" import steps %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Order error' %}
+{% set headerActive = "Shopping cart" %}
+{% set breadcrumbs = [headerActive, title] %}
+{% set headerTitle = "Something's wrong with your cart" %}
+
+{% block content %}
+  <div class="submitted">
+    {{ svg('bad-card', 'submitted__central-img') }}
+
+    <div class="submitted__text-group submitted__text-group--centered">
+      <p class="p-info">It seems like some of yur credit card information are incorrect or your card is out of date.</p>
+      <p class="p-info">Please double check your credit card information while filling them, or choose another payment type.</p>
+    </div>
+
+    <div class="submitted__btn-group">
+      <a href="#" type="type" class="btn-action btn-action--secondary">Go to Shopping card</a>
+      <a href="#" type="type" class="btn-action">Try again</a>
+    </div>
+  </div>
+{% endblock %}

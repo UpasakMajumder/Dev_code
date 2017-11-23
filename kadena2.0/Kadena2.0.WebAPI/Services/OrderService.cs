@@ -267,6 +267,40 @@ namespace Kadena.WebAPI.Services
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
+            var paymentMethods = kenticoProvider.GetPaymentMethods();
+            var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
+
+            switch(selectedPayment?.ClassName ?? string.Empty)
+            {
+                case "KDA.PaymentMethods.CreditCard":
+                    return await PayByCard(request);
+
+                case "KDA.PaymentMethods.PurchaseOrder":
+                    return await SubmitPOOrder(request);
+
+                case "KDA.PaymentMethods.PayPal":
+                    throw new NotImplementedException("PayPal payment is not implemented yet");
+
+                default:
+                    throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
+            }
+        }
+
+        public async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)
+        {
+            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+
+            return await Task.FromResult(new SubmitOrderResult
+                {
+                    Success = true,
+                    RedirectURL = kenticoProvider.GetDocumentUrl(insertCardUrl)
+                }
+            );
+        }
+
+        public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
+        {
+            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             Customer customer = null;
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {

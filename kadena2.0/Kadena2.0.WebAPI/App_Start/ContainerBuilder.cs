@@ -30,6 +30,7 @@ namespace Kadena.WebAPI
             container.Register<IMailTemplateService, MailTemplateService>();			
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
+            container.Register<ICreditCardService, CreditCardService>();
             return container;
         }
 
@@ -43,6 +44,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoMailProvider, KenticoMailProvider>();			
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
+            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             return container;
         }
 

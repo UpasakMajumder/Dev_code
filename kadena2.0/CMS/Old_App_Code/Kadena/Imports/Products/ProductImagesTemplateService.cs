@@ -11,7 +11,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var sheet = base.CreateSheet(headers);
 
             var indexOfUrl1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ImageURL)).Order;
-            var indexOfUrl2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ImageURL)).Order;
+            var indexOfUrl2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ThumbnailURL)).Order;
 
             var urlFieldWidth = 256 * 100;
             sheet.SetColumnWidth(indexOfUrl1, urlFieldWidth);

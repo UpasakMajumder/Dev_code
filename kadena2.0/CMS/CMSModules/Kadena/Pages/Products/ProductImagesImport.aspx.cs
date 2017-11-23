@@ -12,7 +12,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            HideErrorMessage();
+            HideResultMessages();
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
@@ -40,7 +40,11 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
                 var result = new ProductImportService().ProcessProductImagesImportFile(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
-                    ShowErrorMessage(FormatImportResult(result)); // TODO format results properly
+                    ShowErrorMessage(FormatImportResult(result));
+                }
+                else
+                {
+                    ShowSuccessMessage("Operation successfully completed");
                 }
             }
             catch (Exception ex)
@@ -89,9 +93,16 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             errorMessage.Text = message;
         }
 
-        private void HideErrorMessage()
+        private void ShowSuccessMessage(string message)
+        {
+            successMessageContainer.Visible = true;
+            successMessage.Text = message;
+        }
+
+        private void HideResultMessages()
         {
             errorMessageContainer.Visible = false;
+            successMessageContainer.Visible = false;
         }
     }
 }
