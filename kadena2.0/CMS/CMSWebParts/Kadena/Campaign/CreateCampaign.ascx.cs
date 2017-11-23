@@ -37,16 +37,10 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-            // Do not process
-
-        }
-        else
+        if (!this.StopProcessing)
         {
             if (Request.QueryString["ID"] != null)
             {
-
                 btnSave.Click += btnSave_Edit;
                 campaignId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
                 SetFeild(campaignId);
@@ -75,7 +69,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             if (!string.IsNullOrEmpty(campaignName))
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture("en-us").FirstObject;
+                CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                 if (parentPage != null)
                 {
                     // Creates a new page of the "CMS.MenuItem" page type
@@ -83,7 +77,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
                     // Sets the properties of the new page
                     newPage.DocumentName = campaignName;
-                    newPage.DocumentCulture = "en-us";
+                    newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     newPage.SetValue("Name", campaignName);
                     newPage.SetValue("Description", campaignDes);
 
@@ -123,7 +117,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 {
                     // Sets the properties of the new page
                     editPage.DocumentName = campaignName;
-                    editPage.DocumentCulture = "en-us";
+                    editPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     editPage.SetValue("Name", campaignName);
                     editPage.SetValue("Description", campaignDes);
 
@@ -166,8 +160,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         {
             EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
         }
-
-
     }
 
 

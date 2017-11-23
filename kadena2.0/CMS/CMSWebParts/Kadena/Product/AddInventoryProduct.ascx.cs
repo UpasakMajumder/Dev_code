@@ -22,11 +22,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class AddInventoryProduct : CMSAbstractWebPart
     {
+        #region variables
         private int productId = 0;
         private string folderpath = "/";
         private int PageSize = 10;
         private static List<AllocateProduct> lstUsers = new List<AllocateProduct>();
         string libraryFolderName = string.Empty;
+        string redirectUrl = string.Empty;
+        #endregion
+        #region WebpartSetupMethods
         public override void OnContentLoaded()
         {
             base.OnContentLoaded();
@@ -38,165 +42,58 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             SetupControl();
         }
-
         protected void SetupControl()
         {
-            if (this.StopProcessing)
+            if (!this.StopProcessing)
             {
                 // Do not process
-            }
-            else
-            {
-                     BindData();
+                BindData();
+                if (Request.QueryString["ID"] != null)
+                {
+
+                    btnSave.Click += btnUpdate_Click;
+                    productId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
+
+                }
+                else
+                {
+                    btnSave.Click += btnSave_SavePOS;
+                }
+                if (!IsPostBack)
+                {
                     if (Request.QueryString["ID"] != null)
                     {
-
-                        btnSave.Click += btnUpdate_Click;
-                        productId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
-
+                        SetFeild(productId);
                     }
-                    else
-                    {
-                        btnSave.Click += btnSave_SavePOS;
-                    }
+                    BindUsers(1);
+                    ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
 
-                    rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
-                    rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
-                    rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
-                    rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
-                    rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
-                    rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
-                    rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
-                    rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
-                    rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
-                    rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
-                    folderpath = SettingsKeyInfoProvider.GetValue("KDA.InventoryProductFolderPath", CurrentSiteName);
-                     libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName); 
-            }
-            if (!IsPostBack)
-            {
-                if (Request.QueryString["ID"] != null)
-                {  
-                    SetFeild(productId);
                 }
-                BindUsers(1);
-            }
 
                 btnSave.Click += btnSave_SavePOS;
                 btnAllocateProduct.Click += AllocateProduct_Click;
-                btnCancel.Click += btnCancel_Cancel;
-         }
-        //This method will return the Brand list and bind it to Brand dropdowns
-        private static ObjectQuery<CustomTableItem> GetBrands()
-        {
-
-            // Prepares the code name (class name) of the custom table
-            ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
-            string customTableClassName = "KDA.Brand";
-            try
-            {
-                // Gets the custom table
-                DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-                if (brandTable != null)
-                {
-                    // Gets a custom table records 
-                    items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("BrandName");
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_ProductForm", "GetBrands", ex.Message);
-            }
-
-            return items;
-        }
-        //This method will return the POSNUmber list 
-        private static ObjectQuery<CustomTableItem> GetPosNumber()
-        {
-
-            // Prepares the code name (class name) of the custom table
-            ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
-            string customTableClassName = "KDA.POSNumber";
-            try
-            {
-                // Gets the custom table
-                DataClassInfo PosTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-                if (PosTable != null)
-                {
-                    // Gets a custom table records 
-                    items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("POSNumber");
-
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("CMSWebParts_Kadena_Product_ProductForm", "GetPosNumber", ex.Message);
-            }
-
-            return items;
-        }
-        //Method to return the list of product categories
-        private List<ProductCategory> GetProductCategory()
-        {
-            // Creates an instance of the Tree provider
-            List<ProductCategory> lstProdcategroy = new List<ProductCategory>();
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            var pages = tree.SelectNodes("KDA.ProductCategory");
-            foreach (CMS.DocumentEngine.TreeNode page in pages)
-            {
-                ProductCategory category = new ProductCategory();
-                category.CategoryId = page.GetValue("ProductCategoryID", 0);
-                category.CategoryName = page.GetValue("ProductCategoryTitle", string.Empty);
-                lstProdcategroy.Add(category);
-            }
-            return lstProdcategroy;
-        }
-        // Method to bind the data to the dropdowns
-        private void BindData()
-        {
-            try
-            {
-                //Binding data to Brand dropdownlist
-                ddlBrand.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), "0"));
-                ObjectQuery<CustomTableItem> Brands = GetBrands();
-                int brandindex = 1;
-                foreach (CustomTableItem Brand in Brands)
-                {
-                    ddlBrand.Items.Insert(brandindex++, new ListItem(Brand.GetValue("BrandName").ToString(), Brand.GetValue("BrandCode").ToString()));
-                }
-                // Adds the '(any)' and '(default)' filtering options
-                ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.PosNoWaterMark"), "0"));
-                ObjectQuery<CustomTableItem> PosNumbers = GetPosNumber();
-                int Posindex = 1;
-                foreach (CustomTableItem PosNumber in PosNumbers)
-                {
-                    ddlPosNo.Items.Insert(Posindex++, new ListItem(PosNumber.GetValue("POSNumber").ToString(), PosNumber.GetValue("ItemID").ToString()));
-                }
-                //Product Category DropdownList
-                int ProdCategoryindex = 1;
-                ddlProdCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.CategoryWaterMark"), "0"));
-                List<ProductCategory> lstProdcategories = GetProductCategory();
-                foreach (ProductCategory lstProdcategory in lstProdcategories)
-                {
-                    ddlProdCategory.Items.Insert(ProdCategoryindex++, new ListItem(lstProdcategory.CategoryName, lstProdcategory.CategoryId.ToString()));
-                }
-                //Bind all the state to dropdown
-                // Gets the state
-                ObjectQuery<StateInfo> States = StateInfoProvider.GetStates();
-                ddlState.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), "0"));
-                int Stateindex = 1;
-                foreach (StateInfo State in States)
-                {
-                    ddlState.Items.Insert(Stateindex++, new ListItem(State.StateDisplayName, State.StateCode));
-                }
-
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm_BindDataToDropdowns", "BindData", ex.Message);
+                btnCancel.Click += BtnCancel_Cancel;
+                rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
+                rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
+                rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
+                rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
+                rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
+                rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
+                rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
+                rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
+                rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
+                rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+                folderpath = SettingsKeyInfoProvider.GetValue("KDA.InventoryProductFolderPath", CurrentSiteName);
+                libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
             }
         }
-        //Save the Product to Product pagetype
+        #endregion
+        #region ButtonclickEvents
+        /// <summary>
+        /// Save the Product to Product pagetype
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSave_SavePOS(object sender, EventArgs e)
         {
             Guid imageGuid = default(Guid);
@@ -205,14 +102,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
                 {
                     TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                    CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture("en-us").FirstObject;
+                    CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                     if (parentPage != null)
                     {
                         // Creates a new page of the "CMS.MenuItem" page type
                         CMS.DocumentEngine.TreeNode newProduct = CMS.DocumentEngine.TreeNode.New("KDA.CampaignProduct", tree);
 
                         // Sets the properties of the new page
-                        newProduct.DocumentCulture = "en-us";
+                        newProduct.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                         newProduct.DocumentName = txtShortDes.Text;
                         newProduct.SetValue("BundleQty", ValidationHelper.GetString(txtBundleQnt.Text, string.Empty));
                         newProduct.SetValue("POSNumber", ValidationHelper.GetInteger(ddlPosNo.SelectedValue, 0));
@@ -224,18 +121,17 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         newProduct.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date));
                         newProduct.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         newProduct.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
-                        newProduct.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, ""));
-                        newProduct.SetValue("TotalQty", ValidationHelper.GetString(txtQuantity.Text, ""));
-                        newProduct.SetValue("Status", ValidationHelper.GetString(ddlStatus.SelectedValue, ""));
+                        newProduct.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, string.Empty));
+                        newProduct.SetValue("TotalQty", ValidationHelper.GetString(txtQuantity.Text, string.Empty));
+                        newProduct.SetValue("Status", ValidationHelper.GetString(ddlStatus.SelectedValue, string.Empty));
                         newProduct.SetValue("StorefrontProductID", ValidationHelper.GetString(txtStroeFrontId.Text, string.Empty));
                         newProduct.SetValue("LongDescription", ValidationHelper.GetString(txtLongDes.Text, string.Empty));
                         if (productImage.HasFile)
                         {
-                            
                             imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
-                            newProduct.SetValue("Image", ValidationHelper.GetString(imageGuid, ""));
+                            newProduct.SetValue("Image", ValidationHelper.GetString(imageGuid, string.Empty));
                         }
-                        // Inserts the new page as a child of the parent page
+                        //// Inserts the new page as a child of the parent page
                         newProduct.Insert(parentPage);
                         var productID = ValidationHelper.GetInteger(newProduct.GetValue("CampaignProductID"), 0);
                         AllocateProductToUsers(productID);
@@ -254,32 +150,30 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductFolderName");
                 EventLogProvider.LogException("SaveProductFromButtonClick", "EXCEPTION", ex);
                 if (imageGuid != default(Guid))
-                    UploadImage.DeleteImage(imageGuid,libraryFolderName);
+                    UploadImage.DeleteImage(imageGuid, libraryFolderName);
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
 
         }
-        //on Cancel button Click
-        protected void btnCancel_Cancel(object sender, EventArgs e)
+        
+        /// <summary>
+        /// on Cancel button Click It will redirect to the last page
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void BtnCancel_Cancel(object sender, EventArgs e)
         {
             try
             {
                 EmptyFields();
                 lstUsers = new List<AllocateProduct>();
-                //var redirectUrl = RequestContext.CurrentURL;
-
-                //if (!String.IsNullOrEmpty(DefaultTargetUrl))
-                //{
-                //    redirectUrl = ResolveUrl(DefaultTargetUrl);
-                //}
-
-                //URLHelper.Redirect(redirectUrl);
+                var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
+                Response.Redirect(redirectUrl, false);
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("CancePOSFormButtonClick", "EXCEPTION", ex);
             }
-
         }
         /// <summary>
         /// Handles the Click event of the Allocate product button click .
@@ -287,38 +181,92 @@ namespace Kadena.CMSWebParts.Kadena.Product
         protected void AllocateProduct_Click(object sender, EventArgs e)
         {
             // Assigns the value of the UniSelector control to be displayed by the Label
-           foreach (RepeaterItem ri in RepterDetails.Items)
+            try
             {
-                CheckBox item_check = (CheckBox)ri.FindControl("chkAllocate");
-                if (item_check.Checked)
+                foreach (RepeaterItem ri in RepterDetails.Items)
                 {
-                    int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
-                    if (index == -1)
+                    CheckBox item_check = (CheckBox)ri.FindControl("chkAllocate");
+                    if (item_check.Checked)
                     {
-                        AllocateProduct objAllocateProduct = new AllocateProduct();
-                        objAllocateProduct.UserID = ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0);
-                        objAllocateProduct.UserName = ValidationHelper.GetString(((Label)ri.FindControl("lblUserName")).Text, "");
-                        objAllocateProduct.EmailID = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, "");
-                        objAllocateProduct.Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
-                        lstUsers.Add(objAllocateProduct);
+                        int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
+                        if (index == -1)
+                        {
+                            AllocateProduct objAllocateProduct = new AllocateProduct();
+                            objAllocateProduct.UserID = ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0);
+                            objAllocateProduct.UserName = ValidationHelper.GetString(((Label)ri.FindControl("lblUserName")).Text, string.Empty);
+                            objAllocateProduct.EmailID = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, string.Empty);
+                            objAllocateProduct.Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
+                            lstUsers.Add(objAllocateProduct);
+                        }
+                    }
+                    else
+                    {
+                        int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
+                        if (index != -1)
+                        {
+                            lstUsers.RemoveAt(index);
+                        }
                     }
                 }
-                else
-                {
-                    int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
-                    if (index != -1)
-                    {
-                        lstUsers.RemoveAt(index);
-                    }
-                }
-            }
-            RepSelectedUser.DataSource = "";
-            RepSelectedUser.DataBind();
-            RepSelectedUser.DataSource = lstUsers;
-            RepSelectedUser.DataBind();
-        }
 
-        //Method to update the product
+                RepSelectedUser.DataSource = lstUsers;
+                RepSelectedUser.DataBind();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products_AllocateProduct", "AllocateProduct_Click", ex.Message);
+            }
+        }
+       
+        /// <summary>
+        /// This method will get the users record when user click on pagination
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Changed(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (RepeaterItem ri in RepterDetails.Items)
+                {
+                    CheckBox item_check = (CheckBox)ri.FindControl("chkAllocate");
+                    if (item_check.Checked)
+                    {
+                        int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
+                        if (index == -1)
+                        {
+                            AllocateProduct objAllocateProduct = new AllocateProduct();
+                            objAllocateProduct.UserID = ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0);
+                            objAllocateProduct.UserName = ValidationHelper.GetString(((Label)ri.FindControl("lblUserName")).Text, string.Empty);
+                            objAllocateProduct.EmailID = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, string.Empty);
+                            objAllocateProduct.Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
+                            lstUsers.Add(objAllocateProduct);
+                        }
+                    }
+                    else
+                    {
+                        int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
+                        if (index != -1)
+                        {
+                            lstUsers.RemoveAt(index);
+                        }
+                    }
+                }
+                int pageIndex = int.Parse((sender as LinkButton).CommandArgument);
+                this.BindUsers(pageIndex);
+            }
+            catch(Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products_Pagination", "Page_Changed", ex.Message);
+            }
+          
+        }
+      
+        /// <summary>
+        /// Method to update the product
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
             Guid imageGuid = default(Guid);
@@ -330,8 +278,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     if (product != null)
                     {
 
-                        // Sets the properties of the new page
-                        product.DocumentCulture = "en-us";
+                        //// Sets the properties of the new page
+                        product.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                         product.SetValue("BundleQty", ValidationHelper.GetString(txtBundleQnt.Text, string.Empty));
                         product.SetValue("POSNumber", ValidationHelper.GetInteger(ddlPosNo.SelectedValue, 0));
                         product.SetValue("BrandID", ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0));
@@ -342,12 +290,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         product.SetValue("ExpirationDate", ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now));
                         product.SetValue("CategoryID", ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, 0));
                         product.SetValue("Cancelled", ValidationHelper.GetBoolean(chkcancel.Checked, false));
-                        product.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, ""));
-                        product.SetValue("TotalQty", ValidationHelper.GetString(txtQuantity.Text, ""));
+                        product.SetValue("CVOProductID", ValidationHelper.GetString(txtCVOProductId.Text, string.Empty));
+                        product.SetValue("TotalQty", ValidationHelper.GetString(txtQuantity.Text, string.Empty));
                         product.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false));
                         product.SetValue("StorefrontProductID", ValidationHelper.GetString(txtStroeFrontId.Text, string.Empty));
                         product.SetValue("LongDescription", ValidationHelper.GetString(txtLongDes.Text, string.Empty));
-                        
+
                         if (productImage.HasFile)
                         {
                             if (product.Image != default(Guid))
@@ -355,7 +303,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                             product.Image = imageGuid;
                         }
-                        // Inserts the new page as a child of the parent page
+                        //// Inserts the new page as a child of the parent page
                         product.Update();
                         var productID = ValidationHelper.GetInteger(product.GetValue("CampaignProductID"), 0);
                         UpdateAllocateProduct(productID);
@@ -377,7 +325,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
         }
-        //This method will save the allocated product w.r.t to User in custome tabel
+        #endregion
+        #region PrivateMethods
+        /// <summary>
+        /// This method will save the allocated product w.r.t to User in custome tabel
+        /// </summary>
+        /// <param name="productID">The id of the product which user wants to Allocate</param>
         private void AllocateProductToUsers(int productID)
         {
             string customTableClassName = "KDA.UserAllocatedProducts";
@@ -399,7 +352,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
             }
         }
-        //Update the Product allocation
+        /// <summary>
+        /// Update the Product allocation
+        /// </summary>
+        /// <param name="productID">The id of the product which user wants to Update</param>
         private void UpdateAllocateProduct(int productID)
         {
             try
@@ -448,7 +404,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
 
         }
-        //Set the field with the record which user wants to edit
+       
+        /// <summary>
+        /// Set the field with the record which user wants to edit
+        /// </summary>
+        /// <param name="productid">The id of the product which user wants to edit</param>
         private void SetFeild(int productid)
         {
             Guid imageGuid = default(Guid);
@@ -458,7 +418,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (product != null)
                 {
                     // Sets the properties of the new page
-                    product.DocumentCulture = "en-us";
+                    product.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     txtBundleQnt.Text = product.GetValue("BundleQty", string.Empty);
                     ddlPosNo.SelectedValue = product.GetValue("POSNumber", string.Empty);
                     ddlBrand.SelectedValue = product.GetValue("BrandID", string.Empty);
@@ -473,7 +433,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     txtCVOProductId.Text = product.GetValue("CVOProductID", string.Empty);
                     txtQuantity.Text = product.GetValue("TotalQty", string.Empty);
                     ddlStatus.SelectedValue = product.GetValue("Status", string.Empty);
-                    txtStroeFrontId.Text= product.GetValue("StorefrontProductID", string.Empty);
+                    txtStroeFrontId.Text = product.GetValue("StorefrontProductID", string.Empty);
                     if (product.Image != default(Guid) && !product.Image.Equals(Guid.Empty))
                     {
                         MediaFileInfo image = MediaFileInfoProvider.GetMediaFileInfo(product.Image, SiteContext.CurrentSiteName);
@@ -481,10 +441,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         {
                             imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileAbsoluteUrl(product.Image, image.FileName);
                             imgProduct.Visible = true;
-                            
+
                         }
                     }
-                  
+
                     BindEditProduct(ValidationHelper.GetInteger(product.GetValue("CampaignProductID"), 0));
                 }
             }
@@ -493,7 +453,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogException("GetProductFromButtonClick", "EXCEPTION", ex);
             }
         }
-        //Empty all the field of the form
+    
+        /// <summary>
+        /// Empty all the field of the form
+        /// </summary>
         private void EmptyFields()
         {
             ddlBrand.SelectedIndex = 0;
@@ -501,16 +464,16 @@ namespace Kadena.CMSWebParts.Kadena.Product
             ddlProdCategory.SelectedIndex = 0;
             ddlState.SelectedIndex = 0;
             ddlStatus.SelectedIndex = 0;
-            txtActualPrice.Text = "";
-            txtBundleQnt.Text = "";
-            txtCVOProductId.Text = "";
-            txtEstPrice.Text = "";
-            txtExpDate.Text = "";
-            txtLongDes.Text = "";
-            txtQuantity.Text = "";
-            txtShortDes.Text = "";
-            txtStroeFrontId.Text = "";
-            RepSelectedUser.DataSource = "";
+            txtActualPrice.Text = string.Empty;
+            txtBundleQnt.Text = string.Empty;
+            txtCVOProductId.Text = string.Empty;
+            txtEstPrice.Text = string.Empty;
+            txtExpDate.Text = string.Empty;
+            txtLongDes.Text = string.Empty;
+            txtQuantity.Text = string.Empty;
+            txtShortDes.Text = string.Empty;
+            txtStroeFrontId.Text = string.Empty;
+            RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
         }
@@ -519,13 +482,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
             var users = UserInfoProvider.GetUsers().Skip(PageSize * (pageIndex - 1)).Take(PageSize);
-            foreach(UserInfo user in users)
+            foreach (UserInfo user in users)
             {
                 AllocateProduct objProduct = new AllocateProduct();
                 objProduct.EmailID = user.Email;
                 objProduct.UserID = user.UserID;
                 objProduct.UserName = user.FullName;
-                if (lstUsers.FindIndex(item => item.UserID == user.UserID)>-1)
+                if (lstUsers.FindIndex(item => item.UserID == user.UserID) > -1)
                 {
                     objProduct.Selected = true;
                 }
@@ -535,7 +498,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepterDetails.DataBind();
             PopulatePager(UserInfoProvider.GetUsers().Count(), pageIndex);
         }
-        //This method will create pagination for repeater
+        /// <summary>
+        /// This method will create pagination for repeater
+        /// </summary>
+        /// <param name="recordCount">The no of record to fetch</param>
+        /// <param name="currentPage">Current page no</param>
+       
         private void PopulatePager(int recordCount, int currentPage)
         {
             double dblPageCount = (double)((decimal)recordCount / Convert.ToDecimal(PageSize));
@@ -551,41 +519,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rptPager.DataSource = pages;
             rptPager.DataBind();
         }
-        //This method will get the users record when user click on pagination
-        protected void Page_Changed(object sender, EventArgs e)
-        {
-            foreach (RepeaterItem ri in RepterDetails.Items)
-            {
-                CheckBox item_check = (CheckBox)ri.FindControl("chkAllocate");
-                if (item_check.Checked)
-                {
-                    int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
-                    if (index == -1)
-                    {
-                        AllocateProduct objAllocateProduct = new AllocateProduct();
-                        objAllocateProduct.UserID = ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0);
-                        objAllocateProduct.UserName = ValidationHelper.GetString(((Label)ri.FindControl("lblUserName")).Text, "");
-                        objAllocateProduct.EmailID = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, "");
-                        objAllocateProduct.Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
-                        lstUsers.Add(objAllocateProduct);
-                    }
-                }
-                else
-                {
-                    int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
-                    if (index != -1)
-                    {
-                        lstUsers.RemoveAt(index);
-                    }
-                }
-             
+        /// <summary>
+        ///  This method will get all the allocated user
+         ////    and checked it in repeater
+        /// </summary>
+        /// <param name="ProductId"></param>
 
-            }
-            int pageIndex = int.Parse((sender as LinkButton).CommandArgument);
-            this.BindUsers(pageIndex);
-        }
-        //This method will get all the allocated user
-        //and checked it in repeater
         private void BindEditProduct(int ProductId)
         {
             try
@@ -601,18 +540,16 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     foreach (CustomTableItem item in customTableData)
                     {
                         AllocateProduct objProduct = new AllocateProduct();
-                        objProduct.EmailID = ValidationHelper.GetString(item.GetValue("EmailID"),string.Empty);
-                        objProduct.UserName = UserInfoProvider.GetUserInfo(ValidationHelper.GetInteger(item.GetValue("UserID"),0)).FullName;
+                        objProduct.EmailID = ValidationHelper.GetString(item.GetValue("EmailID"), string.Empty);
+                        objProduct.UserName = UserInfoProvider.GetUserInfo(ValidationHelper.GetInteger(item.GetValue("UserID"), 0)).FullName;
                         objProduct.Quantity = ValidationHelper.GetInteger(item.GetValue("Quantity"), 0);
-                        objProduct.UserID= ValidationHelper.GetInteger(item.GetValue("UserID"), 0);
+                        objProduct.UserID = ValidationHelper.GetInteger(item.GetValue("UserID"), 0);
                         lstProduct.Add(objProduct);
-                        
-                        
+
+
                     }
                     lstUsers.AddRange(lstProduct);
                 }
-                RepSelectedUser.DataSource = "";
-                RepSelectedUser.DataBind();
                 RepSelectedUser.DataSource = lstProduct;
                 RepSelectedUser.DataBind();
             }
@@ -621,12 +558,143 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogException("Product allocation update BindEdit", "EXCEPTION", ex);
             }
         }
+        /// <summary>
+        ///  Method to bind the data to the dropdowns
+        /// </summary>
+        private void BindData()
+        {
+            try
+            {
+                //Binding data to Brand dropdownlist
+                ddlBrand.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), "0"));
+                ObjectQuery<CustomTableItem> Brands = GetBrands();
+                int brandindex = 1;
+                foreach (CustomTableItem Brand in Brands)
+                {
+                    ddlBrand.Items.Insert(brandindex++, new ListItem(Brand.GetValue("BrandName").ToString(), Brand.GetValue("BrandCode").ToString()));
+                }
+                // Adds the '(any)' and '(default)' filtering options
+                ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.PosNoWaterMark"), "0"));
+                ObjectQuery<CustomTableItem> PosNumbers = GetPosNumber();
+                int Posindex = 1;
+                foreach (CustomTableItem PosNumber in PosNumbers)
+                {
+                    ddlPosNo.Items.Insert(Posindex++, new ListItem(PosNumber.GetValue("POSNumber").ToString(), PosNumber.GetValue("ItemID").ToString()));
+                }
+                //Product Category DropdownList
+                int ProdCategoryindex = 1;
+                ddlProdCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.CategoryWaterMark"), "0"));
+                List<ProductCategory> lstProdcategories = GetProductCategory();
+                foreach (ProductCategory lstProdcategory in lstProdcategories)
+                {
+                    ddlProdCategory.Items.Insert(ProdCategoryindex++, new ListItem(lstProdcategory.CategoryName, lstProdcategory.CategoryId.ToString()));
+                }
+                //Bind all the state to dropdown
+                // Gets the state
+                ObjectQuery<StateInfo> States = StateInfoProvider.GetStates();
+                ddlState.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), "0"));
+                int Stateindex = 1;
+                foreach (StateInfo State in States)
+                {
+                    ddlState.Items.Insert(Stateindex++, new ListItem(State.StateDisplayName, State.StateCode));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm_BindDataToDropdowns", "BindData", ex.Message);
+            }
+        }
+        /// <summary>
+        /// Method to return the list of product categories
+        /// </summary>
+        /// <returns></returns>
+        private List<ProductCategory> GetProductCategory()
+        {
+            // Creates an instance of the Tree provider
+            List<ProductCategory> lstProdcategroy = new List<ProductCategory>();
+            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            var pages = tree.SelectNodes("KDA.ProductCategory");
+            foreach (CMS.DocumentEngine.TreeNode page in pages)
+            {
+                ProductCategory category = new ProductCategory();
+                category.CategoryId = page.GetValue("ProductCategoryID", 0);
+                category.CategoryName = page.GetValue("ProductCategoryTitle", string.Empty);
+                lstProdcategroy.Add(category);
+            }
+            return lstProdcategroy;
+        }
+        /// <summary>
+        /// This method will return the POSNUmber list
+        /// </summary>
+        /// <returns>POS Number</returns>
+        private static ObjectQuery<CustomTableItem> GetPosNumber()
+        {
+
+            // Prepares the code name (class name) of the custom table
+            ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
+            string customTableClassName = "KDA.POSNumber";
+            try
+            {
+                // Gets the custom table
+                DataClassInfo PosTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (PosTable != null)
+                {
+                    // Gets a custom table records 
+                    items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("POSNumber");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_Product_ProductForm", "GetPosNumber", ex.Message);
+            }
+
+            return items;
+        }
+        /// <summary>
+        /// This method will return the Brand list and bind it to Brand dropdowns
+        /// </summary>
+        /// <returns>The list of Brand</returns>
+        private static ObjectQuery<CustomTableItem> GetBrands()
+        {
+
+            // Prepares the code name (class name) of the custom table
+            ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
+            string customTableClassName = "KDA.Brand";
+            try
+            {
+                // Gets the custom table
+                DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (brandTable != null)
+                {
+                    // Gets a custom table records 
+                    items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("BrandName");
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_ProductForm", "GetBrands", ex.Message);
+            }
+
+            return items;
+        }
+
+        #endregion
+
     }
+    #region class
+    /// <summary>
+    /// Properties for Product category
+    /// </summary>
     public class ProductCategory
     {
         public string CategoryName { get; set; }
         public int CategoryId { get; set; }
     }
+    /// <summary>
+    /// Properties related to product allocation
+    /// </summary>
     public class AllocateProduct
     {
         public int UserID { get; set; }
@@ -635,4 +703,5 @@ namespace Kadena.CMSWebParts.Kadena.Product
         public bool Selected { get; set; }
         public int Quantity { get; set; }
     }
+    #endregion
 }

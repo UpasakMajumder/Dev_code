@@ -77,7 +77,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             if (!string.IsNullOrEmpty(categoryName))
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture("en-us").FirstObject;
+                CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                 if (parentPage != null)
                 {
                     // Creates a new page of the "CMS.MenuItem" page type
@@ -85,7 +85,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
 
                     // Sets the properties of the new page
                     newPage.DocumentName = categoryName;
-                    newPage.DocumentCulture = "en-us";
+                    newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     newPage.SetValue("ProductCategoryTitle", categoryName);
                     newPage.SetValue("ProductCategoryDescription", categroyDes);
 
@@ -125,7 +125,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                 {
                     // Sets the properties of the new page
                     editPage.DocumentName = categoryName;
-                    editPage.DocumentCulture = "en-us";
+                    editPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     editPage.SetValue("ProductCategoryTitle", categoryName);
                     editPage.SetValue("ProductCategoryDescription", categroyDes);
 

@@ -184,33 +184,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvExpDate;
         
         /// <summary>
-        /// lblImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblImage;
-        
-        /// <summary>
-        /// productImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload productImage;
-        
-        /// <summary>
-        /// imgProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgProduct;
-        
-        /// <summary>
         /// lblEstPrice control.
         /// </summary>
         /// <remarks>
@@ -236,6 +209,33 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEstPrice;
+        
+        /// <summary>
+        /// lblImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblImage;
+        
+        /// <summary>
+        /// productImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload productImage;
+        
+        /// <summary>
+        /// imgProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgProduct;
         
         /// <summary>
         /// lblActualPrice control.
@@ -479,6 +479,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CMS.Base.Web.UI.LocalizedButton btnCancel;
+        
+        /// <summary>
+        /// hdnLastPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnLastPage;
         
         /// <summary>
         /// lblSuccessMsg control.

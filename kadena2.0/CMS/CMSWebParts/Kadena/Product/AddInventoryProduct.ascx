@@ -75,19 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
-                <div class="input__inner">
-                    <asp:FileUpload ID="productImage" runat="server" />
-                    <div class="product-img">
-                           <asp:Image ID="imgProduct" runat="server" Height="100" Width="100"  />
-                        </div>
-                    
-                </div>
-            </div>
-        </div>
-
+      
 
         <div class="mb-2 form_block">
             <div class="input__wrapper">
@@ -97,6 +85,18 @@
                     <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtEstPrice">
 
                     </asp:RequiredFieldValidator>
+                </div>
+            </div>
+        </div>
+          <div class="mb-2 form_block">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
+                <div class="input__inner">
+                    <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
+                    <div class="product-img">
+                           <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false"  />
+                        </div>
+                    
                 </div>
             </div>
         </div>
@@ -238,6 +238,7 @@
             <cms:LocalizedButton ID="btnCancel" CausesValidation="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary"
                 EnableViewState="false"
                 ResourceString="Kadena.Form.CancelButtonText" />
+            <asp:HiddenField ID="hdnLastPage" runat="server" />
         </div>
     </div>
     <cms:LocalizedLabel ID="lblSuccessMsg" Visible="false" runat="server" CssClass="input__label" EnableViewState="False" ResourceString="Kadena.InvProductForm.SaveMsg" ForeColor="Green" />
