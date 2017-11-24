@@ -8,7 +8,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblBrand" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.BrandLabel" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false"></cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false" onchange="brandChange(this);return false;"></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass=""  InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand">
 
                     </asp:RequiredFieldValidator>
@@ -19,7 +19,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblYear" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.FiscalYearLabel" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlYear" runat="server" EnableViewState="false"></cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlYear" runat="server" EnableViewState="false" onchange="yearChange(this);return false;" ></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvYear" runat="server" InitialValue="0" ForeColor="Red"  ControlToValidate="ddlYear">
 
                     </asp:RequiredFieldValidator>
@@ -30,7 +30,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblCategory" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSCategoryLabel" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlCategory" runat="server" EnableViewState="false"></cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlCategory" runat="server" EnableViewState="false" ></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvCatgory" InitialValue="0" runat="server" CssClass=""  ForeColor="Red" ControlToValidate="ddlCategory">
                     </asp:RequiredFieldValidator>
                 </div>
@@ -40,13 +40,13 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblPOSCode" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSLabel" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtPOSCode" runat="server" EnableViewState="false"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtPOSCode" runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvPOSCode" runat="server" CssClass=""  ForeColor="Red" ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="revPOSCode" runat="server" ControlToValidate="txtPOSCode"
                          ForeColor="Red" ValidationExpression="^\d+$" ></asp:RegularExpressionValidator>
                     <asp:RegularExpressionValidator ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
-                         ForeColor="Red" ValidationExpression="^[\s\S]{0,4}$"></asp:RegularExpressionValidator>
+                         ForeColor="Red" ValidationExpression="^[\s\S]{4}$"></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
