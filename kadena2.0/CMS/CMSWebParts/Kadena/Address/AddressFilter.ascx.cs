@@ -1,11 +1,4 @@
 using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DocumentEngine.Web.UI;
 using CMS.DataEngine;
@@ -13,9 +6,6 @@ using CMS.DataEngine;
 public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseFilterControl
 {
     #region "Properties"
-
-    
-
     #endregion
 
 
@@ -24,17 +14,8 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     /// </summary>
     private void SetupControl()
     {
-        // Hides the filter if StopProcessing is enabled
         if (this.StopProcessing)
-        {
             this.Visible = false;
-        }
-
-        // Initializes only if the current request is NOT a postback
-        else if (!RequestHelper.IsPostBack())
-        {
-
-        }
     }
 
     /// <summary>
@@ -44,27 +25,15 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     {
         string where = null;
         string order = null;
-
-        // Generates a WHERE condition based on the selected product department
         if (!string.IsNullOrEmpty(txtSearchAddress.Text))
         {
             string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchAddress.Text));
-            // Gets the ID of the selected department
-            where += "AddressPersonalName like '%" + filterText + "%' or AddressTypeName like '%" + filterText + "%' or AddressName like '%" + filterText + "%' or CompanyName like '%" + filterText + "%' or Email like '%" + filterText + "%' or AddressPhone like '%" + filterText + "%'";
+            where += $"AddressPersonalName like '%{filterText}'% or AddressTypeName like '%{filterText}'% or AddressName like '%{filterText}'% or CompanyName like '%{filterText}'% or Email like '%{filterText}'% or AddressPhone like '%{filterText}'%";
         }
         if (where != null)
-        {
-            // Sets the Where condition
             this.WhereCondition = where;
-        }
-
         if (order != null)
-        {
-            // Sets the OrderBy clause
             this.OrderBy = order;
-        }
-
-        // Raises the filter changed event
         this.RaiseOnFilterChanged();
     }
 
@@ -74,7 +43,6 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     /// </summary>
     protected override void OnInit(EventArgs e)
     {
-        // Creates the child controls
         SetupControl();
         base.OnInit(e);
     }
@@ -84,13 +52,8 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     /// </summary>
     protected override void OnPreRender(EventArgs e)
     {
-        // Checks if the current request is a postback
         if (RequestHelper.IsPostBack())
-        {
-            // Applies the filter to the displayed data
             SetFilter();
-        }
-
         base.OnPreRender(e);
     }
     protected void txtSearchAddress_TextChanged(object sender, EventArgs e)

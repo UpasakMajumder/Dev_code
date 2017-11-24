@@ -7,28 +7,15 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnitFilter : CMSAbs
 {
 
     #region "Properties"
-
-
-
     #endregion
-
 
     /// <summary>
     /// Sets up the inner child controls.
     /// </summary>
     private void SetupControl()
     {
-        // Hides the filter if StopProcessing is enabled
         if (this.StopProcessing)
-        {
             this.Visible = false;
-        }
-
-        // Initializes only if the current request is NOT a postback
-        else if (!RequestHelper.IsPostBack())
-        {
-
-        }
     }
 
     /// <summary>
@@ -37,22 +24,13 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnitFilter : CMSAbs
     private void SetFilter()
     {
         string where = null;
-
-        // Generates a WHERE condition based on the selected product department
         if (!string.IsNullOrEmpty(txtSearchBusinessUnit.Text))
         {
             string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchBusinessUnit.Text));
-
-            where += "BusinessUnitNumber like '%" + filterText + "%' or BusinessUnitName like'%" + filterText + "%'";
-
+            where += $"BusinessUnitNumber like '% {filterText}%' or BusinessUnitName like'% {filterText} %'";
         }
         if (where != null)
-        {
-            // Sets the Where condition
             this.WhereCondition = where;
-        }
-
-        // Raises the filter changed event
         this.RaiseOnFilterChanged();
     }
 
@@ -62,7 +40,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnitFilter : CMSAbs
     /// </summary>
     protected override void OnInit(EventArgs e)
     {
-        // Creates the child controls
         SetupControl();
         base.OnInit(e);
     }
@@ -72,16 +49,13 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnitFilter : CMSAbs
     /// </summary>
     protected override void OnPreRender(EventArgs e)
     {
-        // Checks if the current request is a postback
         if (RequestHelper.IsPostBack())
-        {
-            // Applies the filter to the displayed data
             SetFilter();
-        }
-
         base.OnPreRender(e);
     }
-
+    /// <summary>
+    /// Filter the data based on the text entered in the textbox
+    /// </summary>
     protected void txtSearchBusinessUnit_TextChanged(object sender, EventArgs e)
     {
         SetFilter();

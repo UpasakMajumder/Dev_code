@@ -9,11 +9,10 @@
                         <span id="lblBUNumber" runat="server" class="input__label"></span>
                         <asp:TextBox ID="txtBUNumber" runat="server" MaxLength="10" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rfBUNumber" ControlToValidate="txtBUNumber" runat="server" CssClass="input__error"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revBUNumber" runat="server" ControlToValidate="txtBUNumber" ValidationExpression="^[0-9]{8,10}$"  CssClass="input__error"/>
+                        <asp:RegularExpressionValidator ID="revBUNumber" runat="server" ControlToValidate="txtBUNumber" ValidationExpression="^[0-9]{8,10}$" CssClass="input__error" />
                         <asp:CustomValidator ID="cvBUNumber" runat="server" OnServerValidate="cvBUNumber_ServerValidate" ControlToValidate="txtBUNumber" Enabled="true" CssClass="input__error"></asp:CustomValidator>
                     </div>
                 </div>
-
                 <div class="mb-2">
                     <div class="input__wrapper">
                         <span id="lblBUName" runat="server" class="input__label"></span>
@@ -28,11 +27,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="mb-3 form_btns">
                 <div class="">
                     <asp:Button ID="btnSave" runat="server" OnClick="btnSave_Click" CssClass="btn-action login__login-button btn--no-shadow" />
-                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false"/>
+                    <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" />
                 </div>
             </div>
         </div>

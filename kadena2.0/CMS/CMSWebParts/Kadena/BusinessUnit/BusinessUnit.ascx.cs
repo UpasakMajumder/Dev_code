@@ -11,8 +11,6 @@ using System.Web.UI.WebControls;
 public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractWebPart
 {
     #region "Properties"
-
-
     #endregion
 
 
@@ -53,7 +51,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     public override void ReloadData()
     {
         base.ReloadData();
-
         SetupControl();
     }
 
@@ -67,18 +64,13 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     {
         try
         {
-            //Bind lables
             lblBUNumber.InnerText = ResHelper.GetString("Kadena.BusinessUnit.NumberText");
             lblBUName.InnerText = ResHelper.GetString("Kadena.BusinessUnit.NameText");
             lblBUStatus.InnerText = ResHelper.GetString("Kadena.BusinessUnit.StatusText");
-
-            //Bind error messages
             rfBUNumber.ErrorMessage = ResHelper.GetString("Kadena.BusinessUnit.BUNumberRequired");
             rfBUName.ErrorMessage = ResHelper.GetString("Kadena.BusinessUnit.BUNameRequired");
             revBUNumber.ErrorMessage = ResHelper.GetString("Kadena.BusinessUnit.BUNumberRange");
             cvBUNumber.ErrorMessage = ResHelper.GetString("Kadena.BusinessUnit.BUNumberUnique");
-
-            //Binding button text
             btnCancel.Text = ResHelper.GetString("Kadena.BusinessUnit.CancelText");
             btnSave.Text = Request.QueryString["itemID"] != null ? ResHelper.GetString("Kadena.BusinessUnit.UpdateText") : ResHelper.GetString("Kadena.BusinessUnit.SaveText");
         }
@@ -109,7 +101,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         {
             EventLogProvider.LogException("BusinessUnit.ascx.cs", "BindBusinessUnitData()", ex);
         }
-
     }
 
     /// <summary>
@@ -129,7 +120,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         try
         {
             BusinessUnitItem objBusinessUnit = new BusinessUnitItem();
-            objBusinessUnit.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int)); ; //ValidationHelper.GetInteger(txtBUNumber.Text, default(int));
+            objBusinessUnit.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int)); ;
             objBusinessUnit.BusinessUnitName = ValidationHelper.GetString(txtBUName.Text, string.Empty);
             objBusinessUnit.Status = ddlStatus.SelectedValue == "0" ? false : true;
             objBusinessUnit.SiteID = CurrentSite.SiteID;
@@ -196,8 +187,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     /// <summary>
     /// redirects to listing page
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
@@ -206,8 +195,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     /// <summary>
     /// custom validator for checking the uniqueness of the busines unit number
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="args"></param>
     protected void cvBUNumber_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
     {
         try
@@ -218,16 +205,12 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             if (itemID != default(int))
             {
                 var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).And().WhereNotEquals("ItemID", itemID).Columns("BusinessUnitNumber").TopN(1).FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(buData)) args.IsValid = false;
-                else
-                    args.IsValid = true;
+                args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
             else
             {
                 var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).Columns("BusinessUnitNumber").TopN(1).FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(buData)) args.IsValid = false;
-                else
-                    args.IsValid = true;
+                args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
         }
         catch (Exception ex)
