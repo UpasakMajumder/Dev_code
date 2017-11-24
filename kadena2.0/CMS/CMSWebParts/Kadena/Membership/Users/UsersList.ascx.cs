@@ -1,29 +1,10 @@
 using System;
-
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-
 using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using CMS.PortalEngine;
 using CMS.Base;
-using CMS.Base.Web.UI;
 using CMS.Membership;
-
-
-using System.Configuration;
-using System.Text;
-using System.Web;
-using System.Web.Security;
-
-using CMS.Activities.Loggers;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
 using CMS.EventLog;
-using CMS.MembershipProvider;
-using CMS.SiteProvider;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -793,7 +774,9 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             UserInfo user = null;
 
             if (userID > 0)
+            {
                 user = UserInfoProvider.GetUserInfo(userID);
+            }
 
             if (userID != 0)
             {
@@ -1015,7 +998,9 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 }
             }
             else
+            {
                 formElem.ShowValidationErrorMessage = true;
+            }
         }
         catch (Exception ex)
         {
@@ -1056,6 +1041,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
 
         if (!string.IsNullOrEmpty(NewUserRole))
+        {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
+        }
     }
 }
