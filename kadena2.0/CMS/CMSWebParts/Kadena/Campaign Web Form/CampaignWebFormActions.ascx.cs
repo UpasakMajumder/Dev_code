@@ -1,13 +1,12 @@
-using System;
-using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
+using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.DataEngine;
-using CMS.EventLog;
+using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using System;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions : CMSAbstractWebPart
 {
@@ -27,6 +26,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("CampaignID", value);
         }
     }
+
     /// <summary>
     /// Edit campaign link resource string text
     /// </summary>
@@ -41,6 +41,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("EditCampaignLinkText", value);
         }
     }
+
     /// <summary>
     /// View products link resource string text
     /// </summary>
@@ -55,6 +56,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("ViewProductsLinkText", value);
         }
     }
+
     /// <summary>
     /// Update products link resource string text
     /// </summary>
@@ -69,6 +71,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("UpdateProductsLinkText", value);
         }
     }
+
     /// <summary>
     /// Open Campaign link resource string text
     /// </summary>
@@ -83,6 +86,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("OpenCampaignLinkText", value);
         }
     }
+
     /// <summary>
     /// Close campaign link campaign text
     /// </summary>
@@ -97,6 +101,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("CloseCampaignLinkText", value);
         }
     }
+
     /// <summary>
     /// Initiate campaign link resource string text
     /// </summary>
@@ -112,8 +117,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         }
     }
 
-    #endregion
-
+    #endregion "Properties"
 
     #region "Methods"
 
@@ -123,22 +127,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
     public override void OnContentLoaded()
     {
         base.OnContentLoaded();
-        SetupControl();
     }
-    /// <summary>
-    /// Initializes the control properties.
-    /// </summary>
-    protected void SetupControl()
-    {
-        if (this.StopProcessing)
-        {
-            // Do not process
-        }
-        else
-        {
 
-        }
-    }
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -146,10 +136,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
     {
         base.ReloadData();
 
-        SetupControl();
         BindActions();
         BindResourceStrings();
     }
+
     /// <summary>
     /// Bind resource strings for links
     /// </summary>
@@ -162,6 +152,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         lnkOpenCampaign.Text = OpenCampaignLinkText;
         lnkCloseCampaign.Text = CloseCampaignLinkText;
     }
+
     /// <summary>
     /// Binding the links based on admin roles
     /// </summary>
@@ -262,9 +253,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "BindActions", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "BindActions", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// showing the campain list in edit view
     /// </summary>
@@ -277,13 +269,14 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
             string url = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_CampaignCreatePageUrl ");
-            Response.Redirect(url + "?ID=" + campaignID);
+            Response.Redirect($"{url}?ID={campaignID}");
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkEdit_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkEdit_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// initiate the Campaign
     /// </summary>
@@ -300,14 +293,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             {
                 campaign.CampaignInitiate = true;
                 campaign.Update();
-                Response.Redirect(CurrentDocument.AbsoluteURL);
+                Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkInitiate_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkInitiate_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// view the current campaign products
     /// </summary>
@@ -320,13 +314,14 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
             Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
-            Response.Redirect(campaign.AbsoluteURL);
+            Response.Redirect(campaign.DocumentUrlPath);
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkViewProducts_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkViewProducts_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Redirect to products list
     /// </summary>
@@ -339,13 +334,14 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
             Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
-            Response.Redirect(campaign.AbsoluteURL);
+            Response.Redirect(campaign.DocumentUrlPath);
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkUpdateProducts_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkUpdateProducts_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Open the Campaign
     /// </summary>
@@ -371,14 +367,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignOpenEmail");
                     }
                 }
-                Response.Redirect(CurrentDocument.AbsoluteURL);
+                Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkOpenCampaign_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkOpenCampaign_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Closing the campaign
     /// </summary>
@@ -403,18 +400,14 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
                     }
                 }
-                Response.Redirect(CurrentDocument.AbsoluteURL);
-                Response.Redirect(CurrentDocument.AbsoluteURL);
+                Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkCloseCampaign_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkCloseCampaign_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
 
-    #endregion
+    #endregion "Methods"
 }
-
-
-
