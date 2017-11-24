@@ -400,14 +400,14 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             try
             {
-                int DivisionID = ValidationHelper.GetInteger(parameters[0], 0);
-                string DivisionName = string.Empty;
+                int divisionID = ValidationHelper.GetInteger(parameters[0], 0);
+                string divisionName = string.Empty;
 
-                DivisionItem Division = CustomTableItemProvider.GetItem<DivisionItem>(DivisionID);
-                if (Division != null)
-                    DivisionName = Division.DivisionName;
+                DivisionItem division = CustomTableItemProvider.GetItem<DivisionItem>(divisionID);
+                if (division != null)
+                    divisionName = division.DivisionName;
 
-                return DivisionName;
+                return divisionName;
             }
             catch (Exception ex)
             {
@@ -427,12 +427,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             try
             {
-                int ProgramID = ValidationHelper.GetInteger(parameters[0], 0);
-                string ProgramName = string.Empty;
-                Program program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProgramID", ProgramID).Columns("ProgramName").FirstObject;
+                int programID = ValidationHelper.GetInteger(parameters[0], 0);
+                string programName = string.Empty;
+                Program program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProgramID", programID).Columns("ProgramName").FirstObject;
                 if (program != null)
-                    ProgramName = program.ProgramName;
-                return ProgramName;
+                    programName = program.ProgramName;
+                return programName;
             }
             catch (Exception ex)
             {
@@ -452,12 +452,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             try
             {
-                int CategoryID = ValidationHelper.GetInteger(parameters[0], 0);
-                string CategoryName = string.Empty;
-                ProductCategory category = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProductCategoryID", CategoryID).Columns("ProductCategoryTitle").FirstObject;
+                int categoryID = ValidationHelper.GetInteger(parameters[0], 0);
+                string categoryName = string.Empty;
+                ProductCategory category = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProductCategoryID", categoryID).Columns("ProductCategoryTitle").FirstObject;
                 if (category != null)
-                    CategoryName = category.ProductCategoryTitle;
-                return CategoryName;
+                    categoryName = category.ProductCategoryTitle;
+                return categoryName;
             }
             catch (Exception ex)
             {
