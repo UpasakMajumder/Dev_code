@@ -2,7 +2,6 @@
 using CMS.Ecommerce;
 using CMS.SiteProvider;
 using System;
-using System.Net.Mime;
 using System.IO;
 using System.Net.Http;
 
