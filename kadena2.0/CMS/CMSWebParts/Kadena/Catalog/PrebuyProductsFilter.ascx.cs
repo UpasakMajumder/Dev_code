@@ -113,7 +113,6 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         {
             var productCategories = ProductCategoryProvider.GetProductCategories().Columns("ProductCategoryTitle,ProductCategoryID").WhereEquals("NodeSiteID", CurrentSite.SiteID).Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList().OrderBy(y => y.ProductCategoryTitle);
             ddlProductTypes.DataSource = productCategories;
-            ddlProductTypes.DataBind();
             ddlProductTypes.DataTextField = "ProductCategoryTitle";
             ddlProductTypes.DataValueField = "ProductCategoryID";
             ddlProductTypes.DataBind();
