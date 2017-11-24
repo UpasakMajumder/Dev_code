@@ -1,29 +1,18 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Linq;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.DocumentEngine.Web.UI;
 using CMS.EventLog;
-using CMS.SiteProvider;
+using CMS.Helpers;
 using CMS.Membership;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using System;
+using System.Data;
+using System.Linq;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter : CMSAbstractBaseFilterControl
 {
-    #region "Properties"
-
-
-    #endregion
-
-
     /// <summary>
     /// Content loaded event handler.
     /// </summary>
@@ -41,6 +30,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             BindReourceStrings();
         }
     }
+
     /// <summary>
     /// Binding the Resource string text to buttons
     /// </summary>
@@ -50,6 +40,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         btnAllowUpates.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.AllowProductsUpdateText"), string.Empty);
         btnNotifyAdmin.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.NotifyGlobalAdminText"), string.Empty);
     }
+
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
     /// </summary>
@@ -60,30 +51,30 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += "ProductName like '%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text)) + "%'";
+                where += $"ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
                 int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
-                where += where != null ? "and ProgramID=" + programID : "ProgramID=" + programID;
+                where += where != null ? $"and ProgramID={ programID}" : $"ProgramID={ programID}";
             }
             if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
             {
                 int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
-                where += where != null ? "and CategoryID=" + categoryID : "CategoryID=" + categoryID;
+                where += where != null ? $"and CategoryID={ categoryID}" : $"CategoryID={ categoryID}";
             }
             if (where != null)
                 this.WhereCondition = where;
             this.RaiseOnFilterChanged();
 
             BindButtons();
-
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "SetFilter", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "SetFilter", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Binding the busttons based on roles
     /// </summary>
@@ -96,15 +87,13 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             if (campaign != null)
             {
                 var products = campaign.AllChildren.WithAllData.Where(xx => xx.ClassName == CampaignProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID).ToList();
-                
+
                 bool initiated = campaign.CampaignInitiate;
                 bool gAdminNotified = campaign.GlobalAdminNotified;
                 bool openCampaign = campaign.OpenCampaign;
                 bool closeCampaign = campaign.CloseCampaign;
-
                 string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
-
                 if (CurrentUser.IsInRole(gAdminRoleName, SiteContext.CurrentSiteName))
                 {
                     if (products.Count == 0)
@@ -120,9 +109,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.CssClass = "disable btn-action";
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action btn-action";
+                        btnAllowUpates.CssClass = "disable btn-action";
                     }
-
                     else if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnNotifyAdmin.Enabled = false;
@@ -137,20 +125,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     {
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action btn-action";
+                        btnAllowUpates.CssClass = "disable btn-action";
                         btnNewProduct.Visible = true;
                         btnNewProduct.Enabled = true;
                     }
                     else
-                    {
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action btn-action";
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action btn-action";
-                    }
-                    if (openCampaign || closeCampaign)
                     {
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = false;
@@ -159,7 +138,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.Enabled = false;
                         btnNewProduct.CssClass = "disable btn-action";
                     }
-
                 }
                 else if (CurrentUser.IsInRole(adminRoleName, SiteContext.CurrentSiteName))
                 {
@@ -210,7 +188,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindButtons", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindButtons", ex, CurrentSite.SiteID, ex.Message);
         }
     }
 
@@ -232,6 +210,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             SetFilter();
         base.OnPreRender(e);
     }
+
     /// <summary>
     /// search data by given text
     /// </summary>
@@ -241,6 +220,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         SetFilter();
     }
+
     /// <summary>
     /// Bind the prograns to dropdown
     /// </summary>
@@ -258,15 +238,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     ddlPrograms.DataTextField = "ProgramName";
                     ddlPrograms.DataValueField = "ProgramID";
                     ddlPrograms.DataBind();
-                    ddlPrograms.Items.Insert(0, new ListItem("--Select Program--", "0"));
+                    string selectText = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_SelectProgramText");
+                    ddlPrograms.Items.Insert(0, new ListItem(selectText, "0"));
                 }
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindPrograms", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindPrograms", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Bind Categories to dropdown
     /// </summary>
@@ -281,14 +263,16 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 ddlProductcategory.DataTextField = "ProductCategoryTitle";
                 ddlProductcategory.DataValueField = "ProductCategoryID";
                 ddlProductcategory.DataBind();
-                ddlProductcategory.Items.Insert(0, new ListItem("--Select Category--", "0"));
+                string selectText = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_SelectCategoryText");
+                ddlProductcategory.Items.Insert(0, new ListItem(selectText, "0"));
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindCategories", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindCategories", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// filter data by category id
     /// </summary>
@@ -298,6 +282,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         SetFilter();
     }
+
     /// <summary>
     /// filter data by brogram id
     /// </summary>
@@ -307,6 +292,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         SetFilter();
     }
+
     /// <summary>
     /// Nottify Admin
     /// </summary>
@@ -324,7 +310,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 campaign.Update();
                 var roleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 var role = RoleInfoProvider.GetRoleInfo(roleName, CurrentSite.SiteID);
-                if(role!=null)
+                if (role != null)
                 {
                     var users = RoleInfoProvider.GetRoleUsers(role.RoleID);
                     if (users != null)
@@ -335,16 +321,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         }
                     }
                 }
-                Response.Redirect(CurrentDocument.AbsoluteURL);
+                Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNotifyAdmin_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNotifyAdmin_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
-    /// Allow the Products updates 
+    /// Allow the Products updates
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -358,14 +345,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             {
                 campaign.GlobalAdminNotified = false;
                 campaign.Update();
-                Response.Redirect(CurrentDocument.AbsoluteURL);
+                Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnAllowUpates_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnAllowUpates_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Adding the new product
     /// </summary>
@@ -376,14 +364,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         try
         {
             string url = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath");
-            Response.Redirect(url + "?camp=" + CurrentDocument.NodeID);
+            Response.Redirect($"{url}?camp={CurrentDocument.NodeID}");
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNewProduct_Click", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "btnNewProduct_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
 }
-
-
-

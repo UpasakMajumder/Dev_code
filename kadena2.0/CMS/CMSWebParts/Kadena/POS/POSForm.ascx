@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_POSForm" CodeBehind="~/CMSWebParts/Kadena/POSForm.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>
-
+
+
 <div class="css-login changepwd_block">
     <div class="form">
         <div class="mb-2">
