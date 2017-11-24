@@ -13,43 +13,47 @@ using System.Linq;
 public class KadenaInitializationModule : Module
 {
     // Module class constructor, the system registers the module under the name "CustomInit"
-    public KadenaInitializationModule()
-        : base("CustomInit")
-    {
-    }
+    public KadenaInitializationModule() : base("CustomInit") { }
 
     // Contains initialization code that is executed when the application starts
     protected override void OnInit()
     {
         base.OnInit();
-
-        // Assigns custom handlers to events
         UserInfo.TYPEINFO.Events.Update.After += KDAUser_Update_After;
     }
 
+    /// <summary>
+    /// Global event for User object to update FY Budget
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void KDAUser_Update_After(object sender, ObjectEventArgs e)
     {
-        bool UserFYBudgetEnabled = SettingsKeyInfoProvider.GetBoolValue("KDA_UserFYBudgetEnabled", SiteContext.CurrentSiteID);
-        UserInfo User = e.Object as UserInfo;
-        if (User != null && UserFYBudgetEnabled)
+        bool userFYBudgetEnabled = SettingsKeyInfoProvider.GetBoolValue("KDA_UserFYBudgetEnabled", SiteContext.CurrentSiteID);
+        UserInfo user = e.Object as UserInfo;
+        if (user != null && userFYBudgetEnabled)
         {
-            double Budget = User.GetDoubleValue("FYBudget", 0);
-            if (Budget > 0)
+            double budget = user.GetDoubleValue("FYBudget", 0);
+            if (budget > 0)
             {
-                UserFYBudgetAllocationItem UserBudget = CustomTableItemProvider.GetItems<UserFYBudgetAllocationItem>().Where(x => x.UserID.Equals(User.UserID) && x.Year.Equals(DateTime.Now.Year.ToString()) && x.SiteID.Equals(SiteContext.CurrentSiteID)).FirstOrDefault();
+                UserFYBudgetAllocationItem userBudget = CustomTableItemProvider.GetItems<UserFYBudgetAllocationItem>()
+                                                        .Where(x => x.UserID.Equals(user.UserID) &&
+                                                                    x.Year.Equals(DateTime.Now.Year.ToString()) &&
+                                                                    x.SiteID.Equals(SiteContext.CurrentSiteID))
+                                                        .FirstOrDefault();
 
-                if (UserBudget == null)
-                    UserBudget = new UserFYBudgetAllocationItem();
+                if (userBudget == null)
+                    userBudget = new UserFYBudgetAllocationItem();
 
-                UserBudget.Year = DateTime.Now.Year.ToString();
-                UserBudget.UserID = User.UserID;
-                UserBudget.Budget = Budget;
-                UserBudget.SiteID = SiteContext.CurrentSiteID;
+                userBudget.Year = DateTime.Now.Year.ToString();
+                userBudget.UserID = user.UserID;
+                userBudget.Budget = budget;
+                userBudget.SiteID = SiteContext.CurrentSiteID;
 
-                if (UserBudget.ItemID > 0)
-                    UserBudget.Update();
+                if (userBudget.ItemID > 0)
+                    userBudget.Update();
                 else
-                    UserBudget.Insert();
+                    userBudget.Insert();
             }
         }
     }
