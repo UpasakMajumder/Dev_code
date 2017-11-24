@@ -68,14 +68,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
                     }
                     BindUsers(1);
-                   
-
                 }
-
                 btnSave.Click += btnSave_SavePOS;
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
-                hdnDatepickerUrl.Value=ResHelper.GetString("Kadena.ProductFrom.DatePickerPath");
+                hdnDatepickerUrl.Value= SettingsKeyInfoProvider.GetValue("KDA_DatePickerPath", CurrentSiteName);
                 rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
                 rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
                 rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
