@@ -1014,12 +1014,14 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     /// <param name="user"></param>
     private void CreateNewUser(UserInfo user)
     {
-        user = new UserInfo();
-
-        user.FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty);
-        user.LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty);
-        user.Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty);
-        user.UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty);
+        user = new UserInfo()
+        {
+            FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
+            LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
+            Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+            UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+            Enabled = true
+        };
         user.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
         user.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
         user.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
@@ -1033,7 +1035,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         user.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
         user.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
         user.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
-        user.Enabled = true;
 
         string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
         UserInfoProvider.SetUserInfo(user);
