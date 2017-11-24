@@ -444,11 +444,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-            // Do not process
-        }
-        else
+        if (!this.StopProcessing)
         {
             try
             {
