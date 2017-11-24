@@ -23279,7 +23279,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CMSScripts\Custom\Kadena\" />
     <Folder Include="CMSWebParts\Kadena\" />
     <Folder Include="Old_App_Code\Kadena\Imports\Users\" />
   </ItemGroup>

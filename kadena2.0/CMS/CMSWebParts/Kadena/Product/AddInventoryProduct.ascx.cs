@@ -152,8 +152,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductFolderName");
                 EventLogProvider.LogException("SaveProductFromButtonClick", "EXCEPTION", ex);
                 if (imageGuid != default(Guid))
+                {
                     UploadImage.DeleteImage(imageGuid, libraryFolderName);
-                EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
+                }
+                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
 
         }

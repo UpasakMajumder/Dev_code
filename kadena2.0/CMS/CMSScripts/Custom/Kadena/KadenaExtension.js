@@ -8,7 +8,7 @@ $(document).ready(function () {
   var POSNumber = $('[id$=txtPOSNumber]').val();
   
   $('[id$=ddlBrand]').change(function () {
-    var brandId = $('[id$=ddlBrand]').val() != 0 ? $('[id$=ddlBrand]').val() : '';
+    var brandId = $(this).val() != 0 ? $(this).val() : '';
     var year = $('[id$=ddlYear]').val() != 0 ? $('[id$=ddlYear]').val().toString().substr(-2) : '';
     var pos_number = brandId + year + $('[id$=txtPOSCode]').val();
     if (pos_number.length <= 8) {
@@ -17,7 +17,7 @@ $(document).ready(function () {
   });
   $('[id$=ddlYear]').change(function () {
     var brandId = $('[id$=ddlBrand]').val() != 0 ? $('[id$=ddlBrand]').val() : '';
-    var year = $('[id$=ddlYear]').val() != 0 ? $('[id$=ddlYear]').val().toString().substr(-2) : '';
+    var year = $(this).val() != 0 ? $(this).val().toString().substr(-2) : '';
     var pos_number = brandId + year + $('[id$=txtPOSCode]').val();
     if (pos_number.length <= 8) {
       $('[id$=txtPOSNumber]').val(pos_number);
@@ -26,7 +26,7 @@ $(document).ready(function () {
   $('[id$=txtPOSCode]').change(function () {
     var brandId = $('[id$=ddlBrand]').val() != 0 ? $('[id$=ddlBrand]').val() : '';
     var year = $('[id$=ddlYear]').val() != 0 ? $('[id$=ddlYear]').val().toString().substr(-2) : '';
-    var pos_number = brandId + year + $('[id$=txtPOSCode]').val();
+    var pos_number = brandId + year + $(this).val();
     if (pos_number.length <= 8) {
       $('[id$=txtPOSNumber]').val(pos_number);
     }
@@ -45,3 +45,17 @@ $(document).ready(function () {
     $('[id$=productImage]').on('change', function () {
         $('.product-img').hide();
     });
+//end
+//Product Campaign js
+  $(function () {
+        $('[id$=txtExpireDate]').datepicker({
+            showOn: "both",
+            buttonImage: "https://png.icons8.com/?id=3344&size=280",
+            buttonImageOnly: false
+        });
+    });
+
+    $('[id$=productImage]').on('change', function () {
+        $('.product-img').hide();
+    });
+//end

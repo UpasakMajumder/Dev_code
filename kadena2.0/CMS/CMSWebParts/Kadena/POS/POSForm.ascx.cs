@@ -15,7 +15,7 @@ using CMS.Membership;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
-    #region "Properties"
+    #region "Variables"
     int posId = 0;
     #endregion
 
@@ -112,11 +112,11 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         {
             //Binding data to Brand dropdownlist
             ddlBrand.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.BrandWaterMark"), "0"));
-            ObjectQuery<CustomTableItem> Brands = GetBrands();
+            ObjectQuery<CustomTableItem> brands = GetBrands();
             int index = 1;
-            foreach (CustomTableItem Brand in Brands)
+            foreach (CustomTableItem brand in brands)
             {
-                ddlBrand.Items.Insert(index++, new ListItem(Brand.GetValue("BrandName").ToString(), Brand.GetValue("BrandCode").ToString()));
+                ddlBrand.Items.Insert(index++, new ListItem(brand.GetValue("BrandName").ToString(), brand.GetValue("BrandCode").ToString()));
             }
             // Adds the '(any)' and '(default)' filtering options
             ddlYear.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.FiscalYearWaterMark"), "0"));
