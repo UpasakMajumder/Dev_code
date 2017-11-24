@@ -891,6 +891,13 @@
     <Compile Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx.designer.cs">
       <DependentUpon>CustomCatalogFilter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx.cs">
+      <DependentUpon>PrebuyProductsFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx.designer.cs">
+      <DependentUpon>PrebuyProductsFilter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Category\Category.ascx.cs">
       <DependentUpon>Category.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1172,7 +1179,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\StatusMessages.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProduct.generated.cs" />
@@ -1250,6 +1256,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />

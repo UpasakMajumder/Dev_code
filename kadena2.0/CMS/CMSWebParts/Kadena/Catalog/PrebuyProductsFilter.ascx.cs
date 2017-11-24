@@ -1,5 +1,3 @@
-using CMS.CustomTables;
-using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.DocumentEngine.Web.UI;
@@ -11,7 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 
-public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstractBaseFilterControl
+public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstractBaseFilterControl
 {
     /// <summary>
     /// Sets up the inner child controls.
@@ -27,7 +25,6 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
             if (AuthenticationHelper.IsAuthenticated())
             {
                 BindPrograms();
-                BindBrands(ddlPrograms.SelectedValue);
                 BindProductTypes();
                 SetFilter();
             }
@@ -43,11 +40,10 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         {
             string where = null;
             var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue)).Trim();
-            var brand = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlBrands.SelectedValue)).Trim();
             var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue)).Trim();
-            if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(brand) && !string.IsNullOrEmpty(product))
+            if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(product))
             {
-                where += $"ProgramID={program} AND BrandID ={brand} and CategoryID ={product}";
+                where = $"ProgramID = {program} AND CategoryID = {product}";
             }
             if (where != null)
             {
@@ -57,7 +53,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("CMSWebParts_Kadena_CustomCatalogFilter setfilter()", ex.Message, ex);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message,ex);
         }
     }
 
@@ -76,7 +72,9 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
+        {
             SetFilter();
+        }
         base.OnPreRender(e);
     }
 
@@ -102,29 +100,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("CMSWebParts_Kadena_CustomCatalogFilter BindPrograms", ex.Message, ex);
-        }
-    }
-
-    /// <summary>
-    /// Binding brands based on program
-    /// </summary>
-    /// <param name="programID"></param>
-    private void BindBrands(String programID)
-    {
-        try
-        {
-            var brandID = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", ValidationHelper.GetInteger(programID, default(int))).Columns("BrandID").Select(x => new Program { BrandID = x.BrandID }).FirstOrDefault();
-            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", ValidationHelper.GetInteger(brandID.GetValue("BrandID"), default(int))).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).FirstOrDefault();
-            ddlBrands.DataSource = brand;
-            ddlBrands.DataBind();
-            ddlBrands.DataTextField = "BrandName";
-            ddlBrands.DataValueField = "ItemID";
-            ddlBrands.DataBind();
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("Binding brands based on program", ex.Message, ex);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message,ex);
         }
     }
 
@@ -144,36 +120,21 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("Binding producttypes based on program", ex.Message, ex);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message, ex);
         }
     }
 
     /// <summary>
     /// Programs dropdown select index change event
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void ddlPrograms_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindBrands(ddlPrograms.SelectedValue);
         SetFilter();
     }
 
     /// <summary>
-    /// Brands dropdown select index change event
+    /// Product Type dropdown select index change event
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlBrands_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Product type dropdown select index change event
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void ddlProductTypes_SelectedIndexChanged(object sender, EventArgs e)
     {
         SetFilter();
