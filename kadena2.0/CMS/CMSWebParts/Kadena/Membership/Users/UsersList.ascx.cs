@@ -5,6 +5,7 @@ using CMS.PortalEngine.Web.UI;
 using CMS.Base;
 using CMS.Membership;
 using CMS.EventLog;
+using System.Collections.Generic;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -1014,33 +1015,45 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     /// <param name="user"></param>
     private void CreateNewUser(UserInfo user)
     {
+        List<string> stringUserSettingKeys = new List<string>() {
+            "UserMobile",
+            "UserTitle",
+            "UserState",
+            "UserCity",
+            "UserAddress",
+            "UserFax",
+            "FYBudget",
+            "PasswordHint"
+        };
+        List<string> intUserSettingKeys = new List<string>() {
+            "UserCountry",
+            "UserDivisionID",
+            "SalesManagerID",
+            "TradeMarketingManagerID",
+        };
         user = new UserInfo()
         {
             FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
             LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
             Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
             UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
-            Enabled = true
+            Enabled = true,
+            UserSettings = {
+                UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty)
+            }
         };
-        user.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
-        user.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
-        user.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
-        user.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserCountry"), 0));
-        user.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
-        user.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
-        user.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
-        user.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
-        user.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
-        user.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
-        user.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
-        user.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
-        user.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
-
+        foreach (string stringUserSettingKey in stringUserSettingKeys)
+        {
+            user.UserSettings.SetValue(stringUserSettingKey, ValidationHelper.GetString(formElem.GetFieldValue(stringUserSettingKey), string.Empty));
+        }
+        foreach (string intUserSettingKey in intUserSettingKeys)
+        {
+            user.UserSettings.SetValue(intUserSettingKey, ValidationHelper.GetInteger(formElem.GetFieldValue(intUserSettingKey), 0));
+        }
         string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
         UserInfoProvider.SetUserInfo(user);
         UserInfoProvider.SetPassword(user.UserName, Password);
         UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
-
         if (!string.IsNullOrEmpty(NewUserRole))
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
