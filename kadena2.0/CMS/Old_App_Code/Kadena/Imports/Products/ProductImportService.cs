@@ -61,6 +61,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             return new ImportResult
             {
+                AllMessagesCount = statusMessages.AllMessagesCount,
                 ErrorMessages = statusMessages.ToArray()
             };
         }
