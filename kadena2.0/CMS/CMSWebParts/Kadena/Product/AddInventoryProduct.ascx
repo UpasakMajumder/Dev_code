@@ -234,7 +234,7 @@
             <cms:LocalizedButton ID="btnCancel" CausesValidation="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary"
                 EnableViewState="false"
                 ResourceString="Kadena.Form.CancelButtonText" />
-            <asp:HiddenField ID="hdnLastPage" runat="server" />
+            <asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
         </div>
     </div>
     <cms:LocalizedLabel ID="lblSuccessMsg" Visible="false" runat="server" CssClass="input__label" EnableViewState="False" ResourceString="Kadena.InvProductForm.SaveMsg" ForeColor="Green" />

@@ -481,13 +481,13 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.LocalizedButton btnCancel;
         
         /// <summary>
-        /// hdnLastPage control.
+        /// hdnDatepickerUrl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnLastPage;
+        protected global::System.Web.UI.WebControls.HiddenField hdnDatepickerUrl;
         
         /// <summary>
         /// lblSuccessMsg control.

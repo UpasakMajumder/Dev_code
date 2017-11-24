@@ -75,6 +75,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 btnSave.Click += btnSave_SavePOS;
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
+                hdnDatepickerUrl.Value=ResHelper.GetString("Kadena.ProductFrom.DatePickerPath");
                 rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
                 rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
                 rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
