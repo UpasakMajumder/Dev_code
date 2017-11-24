@@ -1,4 +1,5 @@
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
@@ -55,7 +56,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
     {
         try
         {
-            Campaign campaign = CampaignProvider.GetCampaign(CurrentDocument.NodeGUID, CurrentSite.DefaultVisitorCulture, CurrentSiteName);
+            Campaign campaign = CampaignProvider.GetCampaign(CurrentDocument.NodeGUID, CurrentDocument.DocumentCulture, CurrentSiteName);
             if (campaign != null)
             {
                 bool initiated = campaign.GetBooleanValue("CampaignInitiate", false);
@@ -116,9 +117,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
             int productID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
             if (productID != 0)
             {
-                string url = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath");
-                int campainNodeID = CurrentDocument.NodeID;
-                Response.Redirect($"{url}?camp={ campainNodeID }&id={ productID}");
+                Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
+                {
+                    if (!nodeGUID.Equals(Guid.Empty))
+                    {
+                        var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                        if (document != null)
+                        {
+                            Response.Redirect($"{document.DocumentUrlPath}?camp={ CurrentDocument.NodeID }&id={ productID}");
+                        }
+                    }
+                }
             }
         }
         catch (Exception ex)

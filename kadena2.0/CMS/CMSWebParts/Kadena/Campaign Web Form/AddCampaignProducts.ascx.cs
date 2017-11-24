@@ -394,6 +394,21 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         }
     }
 
+    /// <summary>
+    /// Get the CalenderIcon Path
+    /// </summary>
+    public string CalenderIconPath
+    {
+        get
+        {
+            return ValidationHelper.GetString(SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_DatePickerPath"), string.Empty);
+        }
+        set
+        {
+            SetValue("CalenderIconPath", value);
+        }
+    }
+
     #endregion "Properties"
 
     #region "Methods"
@@ -437,6 +452,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqBrand.ErrorMessage = BrandNameError;
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
+        hdnDatepickerUrl.Value = CalenderIconPath;
     }
 
     /// <summary>
@@ -525,7 +541,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             if (capaignNodeID != default(int))
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                var campaign = DocumentHelper.GetDocument(capaignNodeID, CurrentSite.DefaultVisitorCulture, tree);
+                var campaign = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
                 if (!DataHelper.DataSourceIsEmpty(campaign))
                 {
                     int campaignID = campaign.GetIntegerValue("CampaignID", default(int));
@@ -627,26 +643,28 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 if (!DataHelper.DataSourceIsEmpty(programDoc))
                 {
                     int programNodeID = programDoc.NodeID;
-                    var document = DocumentHelper.GetDocument(programNodeID, CurrentSite.DefaultVisitorCulture, tree);
-                    CMS.DocumentEngine.TreeNode createNode = tree.SelectSingleNode(SiteContext.CurrentSiteName, document.NodeAliasPath, CurrentSite.DefaultVisitorCulture);
+                    var document = DocumentHelper.GetDocument(programNodeID, CurrentDocument.DocumentCulture, tree);
+                    var createNode = tree.SelectSingleNode(SiteContext.CurrentSiteName, document.NodeAliasPath, CurrentDocument.DocumentCulture);
                     if (createNode != null)
                     {
-                        CampaignProduct products = new CampaignProduct();
+                        CampaignProduct products = new CampaignProduct()
+                        {
+                            ProgramID = ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)),
+                            ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty),
+                            State = ValidationHelper.GetString(txtState.Text, string.Empty),
+                            LongDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
+                            ExpirationDate = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date),
+                            EstimatedPrice = ValidationHelper.GetString(txtEstimatedprice.Text, string.Empty),
+                            ActualPrice = ValidationHelper.GetString(txtActualPrice.Text, string.Empty),
+                            BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int)),
+                            CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, default(int)),
+                            QtyPerPack = ValidationHelper.GetString(txtQty.Text, string.Empty),
+                            POSNumber = ValidationHelper.GetInteger(ddlPos.SelectedValue, default(int)),
+                            ItemSpecs = ValidationHelper.GetString(txtItemSpecs.Text, string.Empty),
+                            Status = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
+                        };
                         products.DocumentName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
-                        products.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
-                        products.ProgramID = ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int));
-                        products.ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
-                        products.State = ValidationHelper.GetString(txtState.Text, string.Empty);
-                        products.LongDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
-                        products.ExpirationDate = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date);
-                        products.EstimatedPrice = ValidationHelper.GetString(txtEstimatedprice.Text, string.Empty);
-                        products.ActualPrice = ValidationHelper.GetString(txtActualPrice.Text, string.Empty);
-                        products.BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int));
-                        products.CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, default(int));
-                        products.QtyPerPack = ValidationHelper.GetString(txtQty.Text, string.Empty);
-                        products.POSNumber = ValidationHelper.GetInteger(ddlPos.SelectedValue, default(int));
-                        products.ItemSpecs = ValidationHelper.GetString(txtItemSpecs.Text, string.Empty);
-                        products.Status = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false;
+                        products.DocumentCulture = CurrentDocument.DocumentCulture;
                         if (productImage.HasFile)
                         {
                             string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
@@ -656,7 +674,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         products.Insert(createNode, true);
 
                         int capaignNodeID = ValidationHelper.GetInteger(Request.QueryString["camp"], default(int));
-                        var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentSite.DefaultVisitorCulture, tree);
+                        var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
                         if (campDoc != null)
                         {
                             Response.Redirect(campDoc.DocumentUrlPath);
@@ -706,7 +724,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     {
                         string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                         if (product.Image != default(Guid))
+                        {
                             UploadImage.DeleteImage(product.Image, libraryFolderName);
+                        }
                         imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                         product.Image = imageGuid;
                     }
@@ -720,8 +740,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         var targetProgram = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", programID).Column("NodeID").FirstOrDefault();
                         if (targetProgram != null)
                         {
-                            var tagetDocument = DocumentHelper.GetDocument(targetProgram.NodeID, CurrentSite.DefaultVisitorCulture, tree);
-                            CMS.DocumentEngine.TreeNode targetPage = tree.SelectSingleNode(SiteContext.CurrentSiteName, tagetDocument.NodeAliasPath, CurrentSite.DefaultVisitorCulture);
+                            var tagetDocument = DocumentHelper.GetDocument(targetProgram.NodeID, CurrentDocument.DocumentCulture, tree);
+                            var targetPage = tree.SelectSingleNode(SiteContext.CurrentSiteName, tagetDocument.NodeAliasPath, CurrentDocument.DocumentCulture);
                             if ((product != null) && (targetPage != null))
                             {
                                 DocumentHelper.MoveDocument(product, targetPage, tree, true);
@@ -730,7 +750,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     }
                 }
                 int capaignNodeID = ValidationHelper.GetInteger(Request.QueryString["camp"], default(int));
-                var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentSite.DefaultVisitorCulture, tree);
+                var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
                 if (campDoc != null)
                 {
                     Response.Redirect(campDoc.DocumentUrlPath);
@@ -754,7 +774,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             int capaignNodeID = ValidationHelper.GetInteger(Request.QueryString["camp"], default(int));
-            var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentSite.DefaultVisitorCulture, tree);
+            var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
             if (campDoc != null)
             {
                 Response.Redirect(campDoc.DocumentUrlPath);
