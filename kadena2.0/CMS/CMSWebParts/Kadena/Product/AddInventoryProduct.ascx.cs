@@ -278,7 +278,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
                 {
-                    CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productId).TopN(1).FirstOrDefault();
+                    CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productId).FirstOrDefault();
                     if (product != null)
                     {
 
@@ -303,7 +303,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         if (productImage.HasFile)
                         {
                             if (product.Image != default(Guid))
+                            {
                                 UploadImage.DeleteImage(product.Image, libraryFolderName);
+                            }
                             imageGuid = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                             product.Image = imageGuid;
                         }
@@ -325,7 +327,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 EventLogProvider.LogException("SaveProductFromButtonClick", "EXCEPTION", ex);
                 if (imageGuid != default(Guid))
+                {
                     UploadImage.DeleteImage(imageGuid, libraryFolderName);
+                }
                 EventLogProvider.LogInformation("CMSWebParts_Kadena_Add_inventory_Products", "btnSave_Click", ex.Message);
             }
         }
@@ -418,7 +422,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             Guid imageGuid = default(Guid);
             try
             {
-                CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productid).TopN(1).FirstOrDefault();
+                CampaignProduct product = CampaignProductProvider.GetCampaignProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignProductID", productid).FirstOrDefault();
                 if (product != null)
                 {
                     // Sets the properties of the new page

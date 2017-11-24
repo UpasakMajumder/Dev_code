@@ -18,11 +18,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 this.Visible = false;
             }
 
-            // Initializes only if the current request is NOT a postback
-            else if (!RequestHelper.IsPostBack())
-            {
-
-            }
         }
 
         /// <summary>
