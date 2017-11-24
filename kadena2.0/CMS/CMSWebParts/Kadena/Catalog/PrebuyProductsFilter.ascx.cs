@@ -1,17 +1,14 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CMS.PortalEngine.Web.UI;
+using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.DocumentEngine.Web.UI;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.DataEngine;
-using CMS.DocumentEngine.Web.UI;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.EventLog;
+using System;
+using System.Data;
 using System.Linq;
+using System.Web.UI.WebControls;
+
 public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstractBaseFilterControl
 {
     /// <summary>
@@ -31,12 +28,9 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
                 BindProductTypes();
                 SetFilter();
             }
-            else
-            {
-                Response.Redirect("~/Access-Denied");
-            }
         }
     }
+
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
     /// </summary>
@@ -45,11 +39,11 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         try
         {
             string where = null;
-            var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue));
-            var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue));
+            var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue)).Trim();
+            var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue)).Trim();
             if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(product))
             {
-                where += "ProgramID = " + program + " AND CategoryID = " + product;
+                where = $"ProgramID = {program} AND CategoryID = {product}";
             }
             if (where != null)
             {
@@ -59,9 +53,10 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", "SetFilter", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message,ex);
         }
     }
+
     /// <summary>
     /// Init event handler.
     /// </summary>
@@ -70,6 +65,7 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         SetupControl();
         base.OnInit(e);
     }
+
     /// <summary>
     /// PreRender event handler
     /// </summary>
@@ -81,6 +77,7 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         }
         base.OnPreRender(e);
     }
+
     /// <summary>
     /// Binding programs based on campaign
     /// </summary>
@@ -88,7 +85,7 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
     {
         try
         {
-            var campaign = CampaignProvider.GetCampaigns().Columns("CampaignID").WhereEquals("OpenCampaign", 1).WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+            var campaign = CampaignProvider.GetCampaigns().Columns("CampaignID").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
             if (ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int)) != default(int))
             {
                 var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int))).Columns("ProgramName,ProgramID").Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName }).ToList().OrderBy(y => y.ProgramName);
@@ -103,9 +100,10 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", "BindPrograms", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message,ex);
         }
     }
+
     /// <summary>
     /// Binding product types
     /// </summary>
@@ -122,9 +120,10 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", "BindProductTypes", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_Catalog_PrebuyProductsFilter", ex.Message, ex);
         }
     }
+
     /// <summary>
     /// Programs dropdown select index change event
     /// </summary>
@@ -132,6 +131,7 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
     {
         SetFilter();
     }
+
     /// <summary>
     /// Product Type dropdown select index change event
     /// </summary>
@@ -140,6 +140,3 @@ public partial class CMSWebParts_Kadena_Catalog_PrebuyProductsFilter : CMSAbstra
         SetFilter();
     }
 }
-
-
-

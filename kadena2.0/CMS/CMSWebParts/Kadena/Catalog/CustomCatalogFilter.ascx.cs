@@ -1,21 +1,16 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.DocumentEngine.Web.UI;
-using CMS.DocumentEngine;
-using System.Linq;
-using CMS.SiteProvider;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
-using CMS.Membership;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.DocumentEngine.Web.UI;
 using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Membership;
+using System;
+using System.Data;
+using System.Linq;
+using System.Web.UI.WebControls;
+
 public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstractBaseFilterControl
 {
     /// <summary>
@@ -36,12 +31,9 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
                 BindProductTypes();
                 SetFilter();
             }
-            else
-            {
-                Response.Redirect("~/Access-Denied");
-            }
         }
     }
+
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
     /// </summary>
@@ -50,12 +42,12 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         try
         {
             string where = null;
-            var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue));
-            var brand = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlBrands.SelectedValue));
-            var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue));
+            var program = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlPrograms.SelectedValue)).Trim();
+            var brand = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlBrands.SelectedValue)).Trim();
+            var product = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(ddlProductTypes.SelectedValue)).Trim();
             if (!string.IsNullOrEmpty(program) && !string.IsNullOrEmpty(brand) && !string.IsNullOrEmpty(product))
             {
-                where += "ProgramID = " + program + " AND BrandID = " + brand + " and CategoryID = " + product;
+                where += $"ProgramID={program} AND BrandID ={brand} and CategoryID ={product}";
             }
             if (where != null)
             {
@@ -65,9 +57,10 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_CustomCatalogFilter", "Setfilter()", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_CustomCatalogFilter setfilter()", ex.Message, ex);
         }
     }
+
     /// <summary>
     /// Init event handler.
     /// </summary>
@@ -76,15 +69,17 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         SetupControl();
         base.OnInit(e);
     }
+
     /// <summary>
     /// PreRender event handler
     /// </summary>
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
-        SetFilter();
+            SetFilter();
         base.OnPreRender(e);
     }
+
     /// <summary>
     /// Binding programs based on campaign
     /// </summary>
@@ -92,7 +87,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     {
         try
         {
-            var campaign = CampaignProvider.GetCampaigns().Columns("CampaignID").WhereEquals("OpenCampaign", 1).WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+            var campaign = CampaignProvider.GetCampaigns().Columns("CampaignID").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
             if (ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int)) != default(int))
             {
                 var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", ValidationHelper.GetInteger(campaign.GetValue("CampaignID"), default(int))).Columns("ProgramName,ProgramID").Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName }).ToList().OrderBy(y => y.ProgramName);
@@ -107,9 +102,10 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_CustomCatalogFilter", "BindPrograms", ex.Message);
+            EventLogProvider.LogException("CMSWebParts_Kadena_CustomCatalogFilter BindPrograms", ex.Message, ex);
         }
     }
+
     /// <summary>
     /// Binding brands based on program
     /// </summary>
@@ -118,8 +114,8 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     {
         try
         {
-            var brandId = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", ValidationHelper.GetInteger(programID, default(int))).Columns("BrandID").Select(x => new Program { BrandID = x.BrandID }).FirstOrDefault();
-            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", ValidationHelper.GetInteger(brandId.GetValue("BrandID"), default(int))).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).ToList().OrderBy(y => y.BrandName);
+            var brandID = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", ValidationHelper.GetInteger(programID, default(int))).Columns("BrandID").Select(x => new Program { BrandID = x.BrandID }).FirstOrDefault();
+            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandName,ItemID").WhereEquals("ItemID", ValidationHelper.GetInteger(brandID.GetValue("BrandID"), default(int))).TopN(1).Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") }).FirstOrDefault();
             ddlBrands.DataSource = brand;
             ddlBrands.DataBind();
             ddlBrands.DataTextField = "BrandName";
@@ -131,6 +127,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
             EventLogProvider.LogException("Binding brands based on program", ex.Message, ex);
         }
     }
+
     /// <summary>
     /// Binding product types
     /// </summary>
@@ -150,6 +147,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
             EventLogProvider.LogException("Binding producttypes based on program", ex.Message, ex);
         }
     }
+
     /// <summary>
     /// Programs dropdown select index change event
     /// </summary>
@@ -160,6 +158,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         BindBrands(ddlPrograms.SelectedValue);
         SetFilter();
     }
+
     /// <summary>
     /// Brands dropdown select index change event
     /// </summary>
@@ -169,6 +168,7 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     {
         SetFilter();
     }
+
     /// <summary>
     /// Product type dropdown select index change event
     /// </summary>
@@ -179,6 +179,3 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
         SetFilter();
     }
 }
-
-
-

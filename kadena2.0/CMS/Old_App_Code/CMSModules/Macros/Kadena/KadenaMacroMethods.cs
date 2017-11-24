@@ -35,7 +35,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
-            
+
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
@@ -386,6 +386,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #endregion
+
         #region TWE macro methods
         /// <summary>
         /// Returns Division name based on Division ID
