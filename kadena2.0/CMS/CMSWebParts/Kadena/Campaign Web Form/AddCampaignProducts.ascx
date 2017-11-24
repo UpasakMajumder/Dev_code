@@ -1,10 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<link rel="stylesheet" href="/resources/demos/style.css">
 
 <div class="login__form-content js-login">
     <div class="css-login">
@@ -43,11 +40,6 @@
                     <span class="input__label" runat="server" id="lblState"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtState" CssClass="input__text"></asp:TextBox>
-                        <%--  <select>
-                        <option>Select States</option>
-                        <option>select1</option>
-                        <option>select2</option>
-                    </select>--%>
                     </div>
                 </div>
             </div>
@@ -66,9 +58,6 @@
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text"></asp:TextBox>
-                        <%--  <div class="datepicker_icon" id="datepicker">
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                        </div>--%>
                     </div>
                 </div>
             </div>
@@ -143,7 +132,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblImage"></span>
                     <div class="input__inner">
-                        <asp:FileUpload ID="productImage" runat="server" class="input__file" />
+                        <asp:FileUpload ID="productImage" runat="server" class="input__file" EnableViewState="true" />
                         <div class="product-img">
                             <asp:Image ID="imgProduct" runat="server" Visible="false" />
                         </div>
@@ -162,17 +151,5 @@
     </div>
 </div>
 
- <script>
-  $( function() {
-      $('[id$=txtExpireDate]').datepicker({
-          showOn: "both",
-          buttonImage: "https://png.icons8.com/?id=3344&size=280",
-          buttonImageOnly: false
-      });
-  });
 
-  $('[id$=productImage]').on('change', function () {
-      $('.product-img').hide();
-  });
-  </script>
 

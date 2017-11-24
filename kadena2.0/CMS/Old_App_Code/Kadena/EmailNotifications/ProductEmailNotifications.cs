@@ -5,9 +5,6 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -41,9 +38,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena.Old_App_Code.Kadena.EmailNotifications", "CampaignEmail", ex.Message);
+                EventLogProvider.LogException("ProductEmailNotifications", "CampaignEmail", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
-
         }
     }
 }
