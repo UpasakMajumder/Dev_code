@@ -63,25 +63,25 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                 bool isGlobalAdminNotified = campaign.GetBooleanValue("GlobalAdminNotified", false);
                 bool closeCampaign = campaign.GetBooleanValue("CloseCampaign", false);
 
-                string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+                string globalAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
 
                 lnkEdit.Text = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.EditProductLink"), string.Empty);
-                if (CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+                if (CurrentUser.IsInRole(globalAdminRoleName, CurrentSiteName))
                 {
                     if (!openCampaign && !closeCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
                     }
-                    else if (openCampaign || closeCampaign)
+                    else
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = false;
                         lnkEdit.CssClass = "disable";
                     }
                 }
-                if (CurrentUser.IsInRole(adminRoleName, CurrentSiteName))
+                else if (CurrentUser.IsInRole(adminRoleName, CurrentSiteName))
                 {
                     if (!isGlobalAdminNotified && !openCampaign && !closeCampaign)
                     {
