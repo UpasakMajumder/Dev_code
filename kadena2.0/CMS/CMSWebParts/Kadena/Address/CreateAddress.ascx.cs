@@ -37,13 +37,15 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
         else
         {
-            if (AuthenticationHelper.IsAuthenticated())
+            if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 ddlCountry.Value = "USA";
                 BindResourceStrings();
                 int itemID = QueryHelper.GetInteger("id", 0);
                 if (itemID > 0)
+                {
                     BindAddressData(itemID);
+                }
             }
         }
     }
@@ -178,7 +180,8 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (itemID != default(int))
             {
                 var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", objAddress.AddressID).TopN(1).FirstOrDefault();
-                item.ItemID = shippingData.ItemID;
+                if (!DataHelper.DataSourceIsEmpty(shippingData) && shippingData != null)
+                    item.ItemID = shippingData.ItemID;
             }
             return item;
         }
@@ -353,7 +356,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             objCustomer.CustomerUserID = CurrentUser.UserID;
             objCustomer.CustomerEmail = CurrentUser.Email;
             objCustomer.CustomerFirstName = CurrentUser.FirstName;
-            objCustomer.CustomerLastName = CurrentUser.FirstName;
+            objCustomer.CustomerLastName = CurrentUser.LastName;
             objCustomer.CustomerSiteID = CurrentSite.SiteID;
             CustomerInfoProvider.SetCustomerInfo(objCustomer);
             return objCustomer.CustomerID;
