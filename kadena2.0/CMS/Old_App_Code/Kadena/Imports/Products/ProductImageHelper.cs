@@ -15,7 +15,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         /// Sets given <param name="imageUrl"></param> as SKUImagePath of product node
         /// </summary>
         public static void SetProductImage(SKUTreeNode product, string imageUrl)
-        {            
+        {
             product.SetValue("SKUImagePath", imageUrl);
         }
 
@@ -40,7 +40,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                         }
 
                         var stream = response.Content.ReadAsStreamAsync().Result;
-                        
+
                         var extension = Path.GetExtension(fromUrl);
 
                         if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
@@ -52,7 +52,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                         newAttachment = new AttachmentInfo()
                         {
                             InputStream = stream,
-                            AttachmentSiteID =  product.NodeSiteID,
+                            AttachmentSiteID = product.NodeSiteID,
                             AttachmentDocumentID = product.DocumentID,
                             AttachmentExtension = extension,
                             AttachmentName = $"Thumbnail{product.SKU.SKUNumber}.{extension}",
@@ -78,12 +78,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newAttachment;
         }
 
-        public static void AttachTumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
+        public static void AttachThumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
         {
             if (newAttachment != null)
             {
                 product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID);
             }
+        }
+
+        public static void AttachThumbnail(SKUTreeNode product, string fromUrl)
+        {
+            var newAttachment = DownloadAttachmentThumbnail(product, fromUrl);
+            AttachThumbnail(product, newAttachment);
         }
 
         public static void RemoveTumbnail(SKUTreeNode product, int siteId)

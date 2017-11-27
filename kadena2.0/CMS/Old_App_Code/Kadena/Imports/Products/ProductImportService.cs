@@ -270,8 +270,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ProductImageHelper.RemoveProductImage(product);
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
             ProductImageHelper.RemoveTumbnail(product, siteId);
-            var newAttachment = ProductImageHelper.DownloadAttachmentThumbnail(product, thumbnailUrl);
-            ProductImageHelper.AttachTumbnail(product, newAttachment);
+            ProductImageHelper.AttachThumbnail(product, thumbnailUrl);
         }
 
         private static void RemoveProductImages(SKUTreeNode product, int siteId)
