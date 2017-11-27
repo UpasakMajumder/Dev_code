@@ -1,10 +1,14 @@
 using System;
+using System.Web.UI.WebControls;
 using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.Base;
 using CMS.Membership;
 using CMS.EventLog;
+using CMS.CustomTables.Types.KDA;
+using CMS.CustomTables;
+using System.Linq;
 using System.Collections.Generic;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
@@ -752,9 +756,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     protected void filterUsers_OnFilterChanged()
     {
         filterUsers.InitDataProperties(srcUsers);
-
-
-        // Connects repeater with data source
         repUsers.DataSource = srcUsers.DataSource;
         repUsers.DataBind();
     }
@@ -775,9 +776,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             UserInfo user = null;
 
             if (userID > 0)
-            {
                 user = UserInfoProvider.GetUserInfo(userID);
-            }
 
             if (userID != 0)
             {
@@ -788,9 +787,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     formElem.AlternativeFormFullName = NewUserAlternativeForm;
                 }
                 else
-                {
                     formElem.AlternativeFormFullName = EditUserAlternativeForm;
-                }
 
                 formElem.Info = user;
 
@@ -975,11 +972,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
     }
 
-    /// <summary>
-    /// Save user form data
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void btnSave_Click(object sender, EventArgs e)
     {
         try
@@ -990,11 +982,21 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
 
                 if (user == null || (user != null && user.UserID <= 0))
                 {
+                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                    {
+                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                    }
                     CreateNewUser(user);
                     Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
                 }
                 else
                 {
+                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                    {
+                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                    }
                     formElem.SaveData("~/" + CurrentDocument.DocumentUrlPath);
                 }
             }
@@ -1058,5 +1060,88 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
         }
+    }
+
+    /// <summary>
+    /// Inserts user related business units 
+    /// </summary>
+    /// <param name="BusinessUnits">all busieness units</param>
+    /// <param name="UserID">user id</param>
+    private void BindBusinessUnitsToUser(string BusinessUnits, int UserID)
+    {
+        try
+        {
+            DeleteUserBusinessUnits(UserID);
+            var delimitBuinessUnits = BusinessUnits.Split(';');
+            foreach (var businessUnitID in delimitBuinessUnits)
+            {
+                if (string.IsNullOrEmpty(businessUnitID) && IsBusinessUnitExisted(ValidationHelper.GetInteger(businessUnitID, 0), UserID))
+                {
+                    UserBusinessUnitsItem newBu = new UserBusinessUnitsItem()
+                    {
+                        UserID = UserID,
+                        BusinessUnitID = ValidationHelper.GetInteger(businessUnitID, 0)
+                    };
+                    newBu.Insert();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "BindBusinessUnitsToUser()", ex);
+        }
+    }
+
+    /// <summary>
+    /// Checks whether the specifc business unit is assigned to the user
+    /// </summary>
+    /// <param name="BusinessUnitID">business unit item id</param>
+    /// <param name="UserID">user id</param>
+    /// <returns>true/false</returns>
+    private bool IsBusinessUnitExisted(int BusinessUnitID, int UserID)
+    {
+        try
+        {
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                        .WhereEquals("UserID", UserID)
+                        .And()
+                        .WhereEquals("BusinessUnitID", BusinessUnitID)
+                        .Columns("BusinessUnitID")
+                        .FirstOrDefault();
+            if (DataHelper.DataSourceIsEmpty(buData)) return true;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "IsBusinessUnitExisted()", ex);
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Deletes all the user related busienss units
+    /// </summary>
+    /// <param name="UserID"></param>
+    /// <returns></returns>
+    private bool DeleteUserBusinessUnits(int UserID)
+    {
+        try
+        {
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                        .WhereEquals("UserID", UserID)
+                        .Columns("ItemID")
+                        .ToList();
+            if (!DataHelper.DataSourceIsEmpty(buData))
+            {
+                buData.ForEach(b =>
+                {
+                    b.Delete();
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList.ascx.cs", "DeleteUserBusinessUnits()", ex);
+        }
+        return false;
     }
 }

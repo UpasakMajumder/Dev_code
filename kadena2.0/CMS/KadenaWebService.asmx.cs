@@ -144,7 +144,8 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (confirmPassword.Contains(" ")) {
+            if (confirmPassword.Contains(" "))
+            {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
             }
             if (newPassword != confirmPassword)
@@ -156,7 +157,7 @@
                 var errorMessage = string.Empty;
                 var customMessage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSPolicyViolationMessage");
                 if (!string.IsNullOrEmpty(customMessage))
-                {                    
+                {
                     errorMessage = ResHelper.LocalizeString(customMessage, LocalizationContext.CurrentCulture.CultureCode);
                 }
                 return new GeneralResultDTO { success = false, errorMessage = errorMessage };
@@ -209,7 +210,8 @@
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
-        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames) {
+        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames)
+        {
             #region Validation
 
             if (string.IsNullOrWhiteSpace(name))
@@ -377,7 +379,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.ForgottenPasswordRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
-        }        
+        }
 
         private GeneralResultDTO SubmitNewKitRequestInternal(string name, string description, int[] productIDs, string[] productNames)
         {
@@ -526,5 +528,87 @@
             }
         }
         #endregion
+
+
+        #region "TWE"
+        [WebMethod(EnableSession = true)]
+        public string GetUserBusinessUnitData(int userID)
+        {
+            QueryDataParameters parameters = new QueryDataParameters();
+            GeneralConnection cn = ConnectionHelper.GetConnection();
+            parameters.Add("@UserID", userID);
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.SiteID=@SiteID";
+            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
+            var userBUData = cn.ExecuteQuery(qp);
+            if (!DataHelper.DataSourceIsEmpty(userBUData))
+            {
+                var buData = userBUData.Tables[0];
+                var JSONString = ConvertDataTbaleToJson(buData);
+                return JSONString.ToString();
+            }
+            return string.Empty;
+        }
+
+
+        public System.Text.StringBuilder ConvertDataTbaleToJson(System.Data.DataTable table)
+        {
+            var JSONString = new System.Text.StringBuilder();
+            if (!DataHelper.DataSourceIsEmpty(table))
+            {
+                if (table.Rows.Count > 0)
+                {
+                    JSONString.Append("[");
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        JSONString.Append("{");
+                        for (int j = 0; j < table.Columns.Count; j++)
+                        {
+                            if (j < table.Columns.Count - 1)
+                            {
+                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
+                            }
+                            else if (j == table.Columns.Count - 1)
+                            {
+                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
+                            }
+                        }
+                        if (i == table.Rows.Count - 1)
+                        {
+                            JSONString.Append("}");
+                        }
+                        else
+                        {
+                            JSONString.Append("},");
+                        }
+                    }
+                    JSONString.Append("]");
+                }
+            }
+            return JSONString;
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public string GetAllActiveBusienssUnits()
+        {
+            QueryDataParameters parameters = new QueryDataParameters();
+            GeneralConnection cn = ConnectionHelper.GetConnection();
+            parameters.Add("@Status", 1);
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where  Status = @Status and SiteID=@SiteID";
+            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
+            var userBUData = cn.ExecuteQuery(qp);
+            if (!DataHelper.DataSourceIsEmpty(userBUData))
+            {
+                var buData = userBUData.Tables[0];
+                var JSONString = ConvertDataTbaleToJson(buData);
+                return JSONString.ToString();
+            }
+            return string.Empty;
+        }
+        #endregion
+
+
     }
 }
