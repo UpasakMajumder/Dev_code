@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using DryIoc;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Factories;
-using Kadena.WebAPI.Factories.Checkout;
+using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Helpers;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.Services;
+using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena.Helpers.Infrastructure;
 
 namespace Kadena.WebAPI
 {
@@ -74,7 +75,6 @@ namespace Kadena.WebAPI
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));            
-            //container.Register<IAmazonSecurityTokenService, AmazonSecurityTokenServiceClient>();
             return container;
         }
     }
