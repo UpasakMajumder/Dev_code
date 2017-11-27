@@ -401,12 +401,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             try
             {
                 int divisionID = ValidationHelper.GetInteger(parameters[0], 0);
-                string divisionName = string.Empty;
                 DivisionItem division = CustomTableItemProvider.GetItem<DivisionItem>(divisionID);
-                if (division!=null)
-                {
-                    divisionName = division.DivisionName;
-                }
+                string divisionName = division?.DivisionName ?? string.Empty;
                 return divisionName;
             }
             catch (Exception ex)
@@ -430,10 +426,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 int programID = ValidationHelper.GetInteger(parameters[0], 0);
                 string programName = string.Empty;
                 Program program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProgramID", programID).Columns("ProgramName").FirstObject;
-                if (program!=null)
-                {
-                    programName = program.ProgramName;
-                }
+                programName = program?.ProgramName ?? string.Empty;
                 return programName;
             }
             catch (Exception ex)
@@ -457,10 +450,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 int categoryID = ValidationHelper.GetInteger(parameters[0], 0);
                 string categoryName = string.Empty;
                 ProductCategory category = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProductCategoryID", categoryID).Columns("ProductCategoryTitle").FirstObject;
-                if (category!=null)
-                {
-                    categoryName = category.ProductCategoryTitle;
-                }
+                categoryName = category?.ProductCategoryTitle ?? string.Empty;
                 return categoryName;
             }
             catch (Exception ex)
@@ -482,9 +472,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 string campaignName = string.Empty;
                 var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
-                if (campaign!=null)
+                if (campaign != null)
                 {
-                    campaignName= ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
+                    campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
                 }
                 return campaignName;
             }

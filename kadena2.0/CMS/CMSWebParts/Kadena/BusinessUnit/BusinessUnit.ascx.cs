@@ -1,19 +1,14 @@
-using System;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.CustomTables.Types.KDA;
-using CMS.Helpers;
-using CMS.EventLog;
 using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.PortalEngine.Web.UI;
+using System;
 using System.Linq;
 using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractWebPart
 {
-    #region "Properties"
-    #endregion
-
-
     #region "Methods"
 
     /// <summary>
@@ -25,23 +20,20 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         SetupControl();
     }
 
-
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-            // Do not process
-        }
-        else
+        if (!this.StopProcessing)
         {
             BindResourceStrings();
             BindBusinessUnitStatus();
             var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
             if (itemID != default(int))
+            {
                 BindBusinessUnitData(itemID);
+            }
         }
     }
 
@@ -54,11 +46,12 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         SetupControl();
     }
 
-    #endregion
+    #endregion "Methods"
 
     #region "Custom methods"
+
     /// <summary>
-    /// Binds all the labels and error messages 
+    /// Binds all the labels and error messages
     /// </summary>
     private void BindResourceStrings()
     {
@@ -80,8 +73,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         }
     }
 
-
-
     /// <summary>
     /// binds the data to controls
     /// </summary>
@@ -89,7 +80,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     {
         try
         {
-            var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).TopN(1).FirstOrDefault();
+            var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(buData))
             {
                 txtBUNumber.Text = ValidationHelper.GetString(buData.BusinessUnitNumber, string.Empty);
@@ -140,7 +131,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     {
         try
         {
-            var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).Columns("BusinessUnitName,BusinessUnitNumber,Status,SiteID,ItemID").TopN(1).FirstOrDefault();
+            var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).Columns("BusinessUnitName,BusinessUnitNumber,Status,SiteID,ItemID").FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(buData))
             {
                 buData.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int));
@@ -156,7 +147,8 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         }
     }
 
-    #endregion
+    #endregion "Custom methods"
+
     /// <summary>
     /// Inserting and updating the business unit
     /// </summary>
@@ -170,9 +162,13 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             {
                 var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
                 if (itemID != default(int))
+                {
                     UpdateBusinessUnit(itemID);
+                }
                 else
+                {
                     InsertBusinessUnit();
+                }
                 URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
             }
         }
@@ -181,8 +177,6 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             EventLogProvider.LogException("BusinessUnit.ascx.cs", "InsertBusinessUnit()", ex);
         }
     }
-
-
 
     /// <summary>
     /// redirects to listing page
@@ -204,12 +198,12 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
             if (itemID != default(int))
             {
-                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).And().WhereNotEquals("ItemID", itemID).Columns("BusinessUnitNumber").TopN(1).FirstOrDefault();
+                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).And().WhereNotEquals("ItemID", itemID).Columns("BusinessUnitNumber").FirstOrDefault();
                 args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
             else
             {
-                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).Columns("BusinessUnitNumber").TopN(1).FirstOrDefault();
+                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).Columns("BusinessUnitNumber").FirstOrDefault();
                 args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
         }
@@ -219,6 +213,3 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         }
     }
 }
-
-
-
