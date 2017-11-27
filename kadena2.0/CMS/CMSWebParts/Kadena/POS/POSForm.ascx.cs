@@ -12,7 +12,7 @@ using CMS.EventLog;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
-    #region "Properties"
+    #region "Variables"
     int posId = 0;
 
 
@@ -46,15 +46,11 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-            // Do not process
-        }
-        else
+        if (!this.StopProcessing)
         {
             BindData();
             btnSave.Click += btnSave_SavePOS;
-          
+
             btnCancel.Click += btnCancel_Cancel;
             rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.BrandRequired");
             rfvYear.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.YearRequired");
@@ -138,34 +134,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm_BindDataToDropdowns", "BindData", ex.Message);
         }
     }
-    //Method to populate the pos form feilds for updating the record
-    //private void SetFeilds(int posId)
-    //{
-    //    // Prepares the code name (class name) of the custom table
-    //    string customTableClassName = "KDA.POSNumber";
-    //    try
-    //    {
-    //        // Gets the custom table
-    //        DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-    //        if (brandTable != null)
-    //        {
-    //            // Gets all data records from the POS table whose 'ItemId' field value equal to PosId
-    //            CustomTableItem customTableData = CustomTableItemProvider.GetItem(posId, customTableClassName);
-    //            if(customTableData!=null)
-    //            {
-    //                ddlBrand.SelectedValue = customTableData.GetValue("BrandID").ToString();
-    //                ddlYear.SelectedValue = customTableData.GetValue("Year").ToString();
-    //                ddlCategory.SelectedValue = customTableData.GetValue("POSCategoryID").ToString();
-    //                txtPOSCode.Text = customTableData.GetValue("POSCode").ToString();
-    //                txtPOSNumber.Text = customTableData.GetValue("POSNumber").ToString();
-    //            }
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm", "GetBrands", ex.Message);
-    //    }
-    //}
+   
     #endregion
     #region Events
     /// <summary>
@@ -219,38 +188,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         }
 
     }
-    //protected void btnEdit_EditPOS(object sender, EventArgs e)
-    //{
-    //    string customTableClassName = "KDA.POSNumber";
-    //    try
-    //    {
-    //        // Gets the custom table
-    //        DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-    //        if (brandTable != null)
-    //        {
-    //            // Gets all data records from the POS table whose 'ItemId' field value equal to PosId
-    //            CustomTableItem customTableData = CustomTableItemProvider.GetItem(posId, customTableClassName);
-    //            if(customTableData !=null)
-    //            {
-    //                customTableData.SetValue("BrandID", ValidationHelper.GetString(ddlBrand.SelectedValue, string.Empty));
-    //                customTableData.SetValue("Year", ValidationHelper.GetString(ddlYear.SelectedValue, string.Empty));
-    //                customTableData.SetValue("POSCategoryID", ValidationHelper.GetString(ddlCategory.SelectedValue, string.Empty));
-    //                customTableData.SetValue("POSCode", ValidationHelper.GetString(txtPOSCode.Text, string.Empty));
-    //                customTableData.SetValue("POSCategoryName", ValidationHelper.GetString(ddlCategory.SelectedItem.Text, string.Empty));
-    //                customTableData.SetValue("POSNumber", ValidationHelper.GetString(ddlCategory.SelectedValue, string.Empty));
-    //                customTableData.SetValue("BrandName", ValidationHelper.GetString(ddlBrand.SelectedItem.Text,string.Empty));
-    //                customTableData.Update();
-    //                lblError.Visible = false;
-    //                lblSuccess.Visible = true;
-    //            }
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm", "GetBrands", ex.Message);
-    //        lblError.Visible = true;
-    //    }
-    //}
+   
     protected void btnCancel_Cancel(object sender, EventArgs e)
     {
         try
@@ -262,14 +200,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             txtPOSNumber.Text = "";
             lblSuccess.Visible = false;
             lblError.Visible = false;
-            //var redirectUrl = RequestContext.CurrentURL;
-
-            //if (!String.IsNullOrEmpty(DefaultTargetUrl))
-            //{
-            //    redirectUrl = ResolveUrl(DefaultTargetUrl);
-            //}
-
-            //URLHelper.Redirect(redirectUrl);
+         
         }
         catch (Exception ex)
         {

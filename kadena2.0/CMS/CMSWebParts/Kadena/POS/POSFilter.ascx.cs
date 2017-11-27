@@ -47,9 +47,7 @@ namespace CMSApp.CMSWebParts.Kadena.POS
         private void SetFilter()
         {
             string where = null;
-            //string order = null;
-
-            // Generates a WHERE condition based on the selected product department
+             // Generates a WHERE condition based on the selected product department
             if (this.txtPOSSearch.Text != null)
             {
                 // Gets the ID of the selected department
