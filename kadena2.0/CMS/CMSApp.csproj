@@ -3908,8 +3908,6 @@
     <Content Include="CMSWebParts\Ecommerce\Checkout\InputFields\RegisterAfterCheckout.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerCompanyDetails.ascx" />
     <Content Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx" />
-    <Content Include="CMSWebParts\Kadena\POS\POSFilter.ascx" />
-    <Content Include="CMSWebParts\Kadena\POS\POSForm.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDataSourceV2.ascx" />
     <Content Include="CMSWebParts\Media\YouTubeVideo.ascx" />
@@ -15385,20 +15383,6 @@
     <Compile Include="CMSWebParts\Ecommerce\CustomerEditAddress.ascx.designer.cs">
       <DependentUpon>CustomerEditAddress.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\POS\POSFilter.ascx.cs">
-      <DependentUpon>POSFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\POS\POSFilter.ascx.designer.cs">
-      <DependentUpon>POSFilter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\POS\POSForm.ascx.cs">
-      <DependentUpon>POSForm.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\POS\POSForm.ascx.designer.cs">
-      <DependentUpon>POSForm.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSourceV2.ascx.cs">
       <DependentUpon>SharePointDataSourceV2.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -23295,7 +23279,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CMSWebParts\Kadena\" />
     <Folder Include="Old_App_Code\Kadena\CustomTableItems\KDA\" />
     <Folder Include="Old_App_Code\Kadena\Imports\Users\" />
   </ItemGroup>
