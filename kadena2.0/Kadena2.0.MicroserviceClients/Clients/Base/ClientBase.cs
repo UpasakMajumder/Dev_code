@@ -56,35 +56,42 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
+        protected async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        {
+            using (var client = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(method, url))
+                {
+                    var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+                    if (!string.IsNullOrEmpty(suppliantDomain))
+                    {
+                        AddHeader(client, "suppliantDomain", suppliantDomain);
+                    }
+                    
+                    if (body != null)
+                    {
+                        request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
+                    }
+                    
+                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
+                    {
+                        return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
+                    }
+                }
+            }
+        }
+
+        private void AddHeader(HttpClient httpClient, string headerName, string headerValue)
+        {
+            httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
+        }
+
         protected static string SerializeRequestContent(object body)
         {
             return JsonConvert.SerializeObject(body, camelCaseSerializer);
         }
 
-        protected virtual async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
-        {
-            using (var client = new HttpClient())
-            {
-                using (var response = await client.SendAsync(request).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
-                }
-            }
-        }
-
-        protected virtual HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
-        {
-            var request = new HttpRequestMessage(method, url);
-            AddSuppliantDomain(request);
-
-            if (body != null)
-            {
-                request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
-            }
-            return request;
-        }
-
-        protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;
@@ -134,23 +141,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     InnerError = innerError
                 }
             };
-        }
-
-        private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
-        {
-            using (var request = CreateRequest(method, url, body))
-            {
-                return await SendRequest<TResult>(request).ConfigureAwait(false);
-            }
-        }
-
-        private void AddSuppliantDomain(HttpRequestMessage request)
-        {
-            var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
-            if (!string.IsNullOrEmpty(suppliantDomain))
-            {
-                request.Headers.Add("suppliantDomain", suppliantDomain);
-            }
         }
     }
 }
