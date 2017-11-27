@@ -1042,7 +1042,7 @@
       <DependentUpon>POSFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-	<Compile Include="CMSWebParts\Kadena\POS\POSFilter.ascx.designer.cs">
+    <Compile Include="CMSWebParts\Kadena\POS\POSFilter.ascx.designer.cs">
       <DependentUpon>POSFilter.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\POS\POSForm.ascx.cs">
@@ -1147,6 +1147,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />

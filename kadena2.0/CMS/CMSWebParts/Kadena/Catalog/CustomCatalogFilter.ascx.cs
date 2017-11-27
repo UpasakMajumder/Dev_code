@@ -76,7 +76,9 @@ public partial class CMSWebParts_Kadena_Catalog_CustomCatalogFilter : CMSAbstrac
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
+        {
             SetFilter();
+        }
         base.OnPreRender(e);
     }
 
