@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class TaxEstimationServiceClient : SignedClientBase, ITaxEstimationServiceClient
+    public class TaxEstimationServiceClient : ClientBase, ITaxEstimationServiceClient
     {
         private const string _serviceUrlSettingKey = "KDA_TaxEstimationServiceEndpoint";
         private readonly IMicroProperties _properties;
