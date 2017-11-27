@@ -112,7 +112,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnAllowUpates.Enabled = false;
                         btnAllowUpates.CssClass = "disable btn-action";
                     }
-                    else if (gAdminNotified && !openCampaign && !closeCampaign)
+                    if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnNotifyAdmin.Enabled = false;
                         btnNotifyAdmin.Visible = false;
@@ -122,7 +122,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.Visible = true;
                         btnNewProduct.Enabled = true;
                     }
-                    else if (!gAdminNotified && !openCampaign && !closeCampaign)
+                    if (!gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = false;
@@ -157,7 +157,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNotifyAdmin.Enabled = false;
                         btnNotifyAdmin.CssClass = "disable btn-action";
                     }
-                    else if (gAdminNotified && !openCampaign && !closeCampaign)
+                    if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnNotifyAdmin.Visible = true;
                         btnNotifyAdmin.Enabled = false;
@@ -167,7 +167,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.Enabled = false;
                         btnNewProduct.CssClass = "disable btn-action";
                     }
-                    else if (openCampaign || closeCampaign)
+                    if (openCampaign || closeCampaign)
                     {
                         btnNotifyAdmin.Visible = true;
                         btnNotifyAdmin.Enabled = false;
@@ -241,7 +241,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     ddlPrograms.DataTextField = "ProgramName";
                     ddlPrograms.DataValueField = "ProgramID";
                     ddlPrograms.DataBind();
-                    string selectText = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_SelectProgramText");
+                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
                     ddlPrograms.Items.Insert(0, new ListItem(selectText, "0"));
                 }
             }
@@ -266,7 +266,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                 ddlProductcategory.DataTextField = "ProductCategoryTitle";
                 ddlProductcategory.DataValueField = "ProductCategoryID";
                 ddlProductcategory.DataBind();
-                string selectText = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_SelectCategoryText");
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectCategoryText"), string.Empty);
                 ddlProductcategory.Items.Insert(0, new ListItem(selectText, "0"));
             }
         }
@@ -366,12 +366,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         try
         {
-            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"),Guid.Empty);
+            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
             {
-                if(!nodeGUID.Equals(Guid.Empty))
+                if (!nodeGUID.Equals(Guid.Empty))
                 {
-                    var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture,CurrentSite.SiteName);
-                    if(document!=null)
+                    var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                    if (document != null)
                     {
                         Response.Redirect($"{document.DocumentUrlPath}?camp={CurrentDocument.NodeID}");
                     }
