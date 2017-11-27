@@ -544,7 +544,7 @@
             if (!DataHelper.DataSourceIsEmpty(userBUData))
             {
                 var buData = userBUData.Tables[0];
-                var JSONString = ConvertDataTbaleToJson(buData);//new System.Text.StringBuilder();
+                var JSONString = ConvertDataTbaleToJson(buData);
                 return JSONString.ToString();
             }
             return string.Empty;
@@ -602,7 +602,7 @@
             if (!DataHelper.DataSourceIsEmpty(userBUData))
             {
                 var buData = userBUData.Tables[0];
-                var JSONString = ConvertDataTbaleToJson(buData);//new System.Text.StringBuilder();
+                var JSONString = ConvertDataTbaleToJson(buData);
                 return JSONString.ToString();
             }
             return string.Empty;
