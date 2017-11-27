@@ -112,17 +112,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnAllowUpates.Enabled = false;
                         btnAllowUpates.CssClass = "disable btn-action";
                     }
-                    if (gAdminNotified && !openCampaign && !closeCampaign)
+                    else if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
-                        btnNotifyAdmin.Enabled = false;
                         btnNotifyAdmin.Visible = false;
-
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = true;
                         btnNewProduct.Visible = true;
                         btnNewProduct.Enabled = true;
                     }
-                    if (!gAdminNotified && !openCampaign && !closeCampaign)
+                    else if (!gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnAllowUpates.Visible = true;
                         btnAllowUpates.Enabled = false;
@@ -148,7 +146,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNotifyAdmin.Enabled = false;
                         btnNotifyAdmin.CssClass = "disable btn-action";
                     }
-                    if (!initiated)
+                    else if (!initiated)
                     {
                         btnNewProduct.Visible = true;
                         btnNewProduct.Enabled = false;
@@ -157,7 +155,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNotifyAdmin.Enabled = false;
                         btnNotifyAdmin.CssClass = "disable btn-action";
                     }
-                    if (gAdminNotified && !openCampaign && !closeCampaign)
+                    else if (gAdminNotified && !openCampaign && !closeCampaign)
                     {
                         btnNotifyAdmin.Visible = true;
                         btnNotifyAdmin.Enabled = false;
@@ -167,7 +165,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         btnNewProduct.Enabled = false;
                         btnNewProduct.CssClass = "disable btn-action";
                     }
-                    if (openCampaign || closeCampaign)
+                    else if (openCampaign || closeCampaign)
                     {
                         btnNotifyAdmin.Visible = true;
                         btnNotifyAdmin.Enabled = false;
