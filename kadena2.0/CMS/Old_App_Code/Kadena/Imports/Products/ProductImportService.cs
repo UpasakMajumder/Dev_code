@@ -260,7 +260,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             var library = new MediaLibraryHelper(siteId, "ProductImages");
             library.EnsureLibrary("Products", "Media library for storing product images");
-            MediaLibraryHelper.DeleteProductImage(product);
+            ProductImageHelper.RemoveProductImage(product);
             var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{sku.SKUNumber}", $"Product image for SKU {sku.SKUNumber}");
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
@@ -276,7 +276,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             var library = new MediaLibraryHelper(siteId, "ProductImages");
             library.EnsureLibrary("Products", "Media library for storing product images");
-            MediaLibraryHelper.DeleteProductImage(product);
+            ProductImageHelper.RemoveProductImage(product);
             ProductImageHelper.RemoveTumbnail(product, siteId);
         }
 
