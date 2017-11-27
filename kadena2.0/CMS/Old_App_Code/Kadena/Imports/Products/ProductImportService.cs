@@ -257,11 +257,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         // ready for potential use in Product upload
         private static void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
-            var library = MediaLibraryHelper.EnsureLibrary(siteId, "ProductImages");
-
-            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
-
-            var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, library.LibraryID, siteId);
+            var library = new MediaLibraryHelper(siteId, "ProductImages");
+            library.EnsureLibrary("Products", "Media library for storing product images");
+            MediaLibraryHelper.DeleteProductImage(product);
+            var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{sku.SKUNumber}", $"Product image for SKU {sku.SKUNumber}");
 
             ProductImageHelper.SetProductImage(product, libraryImageUrl);
 
@@ -274,8 +273,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private static void RemoveProductImages(SKUTreeNode product, int siteId)
         {
-            var library = MediaLibraryHelper.EnsureLibrary(siteId);
-            MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
+            var library = new MediaLibraryHelper(siteId, "ProductImages");
+            library.EnsureLibrary("Products", "Media library for storing product images");
+            MediaLibraryHelper.DeleteProductImage(product);
             ProductImageHelper.RemoveTumbnail(product, siteId);
         }
 
