@@ -23280,7 +23280,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CMSWebParts\Kadena\" />
+    <Folder Include="Old_App_Code\Kadena\CustomTableItems\KDA\" />
     <Folder Include="Old_App_Code\Kadena\Imports\Users\" />
   </ItemGroup>
   <PropertyGroup>
