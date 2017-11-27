@@ -1,4 +1,5 @@
-﻿using CMS.MediaLibrary;
+﻿using CMS.EventLog;
+using CMS.MediaLibrary;
 using CMS.SiteProvider;
 using System;
 using System.Drawing;
@@ -7,32 +8,28 @@ using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
-    public class MediaLibraryHelper
+    public class MediaLibrary
     {
         private MediaLibraryInfo _mediaLibrary;
 
-        private string _name;
-        private int _siteId;
+        public string LibraryName { get; set; }
+        public string LibraryFolder { get; set; }
+        public string LibraryDescription { get; set; }
+        public int SiteId { get; set; }
 
-        public MediaLibraryHelper(int siteId, string name)
+        private void EnsureLibrary()
         {
-            _siteId = siteId;
-            _name = name;
-        }
-
-        public void EnsureLibrary(string libraryFolder, string libraryDescription = null)
-        {
-            var siteName = SiteInfoProvider.GetSiteInfo(_siteId).SiteName;
-            _mediaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(_name, siteName);
+            var siteName = SiteInfoProvider.GetSiteInfo(SiteId).SiteName;
+            _mediaLibrary = MediaLibraryInfoProvider.GetMediaLibraryInfo(LibraryName, siteName);
             if (_mediaLibrary == null)
             {
                 _mediaLibrary = new MediaLibraryInfo()
                 {
-                    LibraryDisplayName = _name,
-                    LibraryName = _name,
-                    LibraryDescription = libraryDescription,
-                    LibraryFolder = libraryFolder,
-                    LibrarySiteID = _siteId,
+                    LibraryDisplayName = LibraryName,
+                    LibraryName = LibraryName,
+                    LibraryDescription = LibraryDescription,
+                    LibraryFolder = LibraryFolder,
+                    LibrarySiteID = SiteId,
                     Access = CMS.Helpers.SecurityAccessEnum.AuthenticatedUsers
                 };
 
@@ -41,7 +38,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         }
 
         public string DownloadImageToMedialibrary(string fromUrl, string imageName, string imageDescription = null)
-        {            
+        {
+            EnsureLibrary();
+            if (_mediaLibrary == null)
+            {
+                EventLogProvider.LogEvent(EventType.ERROR, this.GetType().Name, "ENSUREOBJ", "Media library failed to ensure");
+                return null;
+            }
             MediaFileInfo mediaFile = null;
 
             using (var client = new HttpClient())
@@ -76,10 +79,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             FileName = imageName,
                             FileTitle = imageName,
                             FileDescription = imageDescription,
-                            FilePath = $"{_name}/",
+                            FilePath = $"{LibraryName}/",
                             FileExtension = extension,
                             FileMimeType = mimetype,
-                            FileSiteID = _siteId,
+                            FileSiteID = SiteId,
                             FileLibraryID = _mediaLibrary.LibraryID,
                             FileSize = stream.Length,
                             FileImageHeight = img.Height,
