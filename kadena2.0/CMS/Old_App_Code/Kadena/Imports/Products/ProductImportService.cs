@@ -15,16 +15,12 @@ using System.Linq;
 using CMS.DataEngine;
 using CMS.SiteProvider;
 
+using static Kadena.Helpers.SerializerConfig;
+
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImportService : ImportServiceBase
     {
-        protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-        };
-
         public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
@@ -388,7 +384,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new ArgumentOutOfRangeException("DynamicPriceMinItems,DynamicPriceMaxItems", "All Dynamic Pricing definition ranges must have Min <= Max.");
             }
 
-            return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
+            return JsonConvert.SerializeObject(ranges, CamelCaseSerializer);
         }
 
         private TreeNode CreateProductCategory(string[] path, int siteId)

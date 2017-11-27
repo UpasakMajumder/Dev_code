@@ -1,12 +1,12 @@
 ﻿using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static Kadena.Helpers.SerializerConfig;
 
 namespace Kadena2.MicroserviceClients.Clients.Base
 {
@@ -24,12 +24,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         }
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
-
-        private static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
@@ -88,7 +82,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         protected static string SerializeRequestContent(object body)
         {
-            return JsonConvert.SerializeObject(body, camelCaseSerializer);
+            return JsonConvert.SerializeObject(body, CamelCaseSerializer);
         }
 
         protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)

@@ -16,6 +16,8 @@ using Kadena.Models.Product;
 using AutoMapper;
 using Kadena.WebAPI;
 
+using static Kadena.Helpers.SerializerConfig;
+
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
@@ -338,7 +340,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }
