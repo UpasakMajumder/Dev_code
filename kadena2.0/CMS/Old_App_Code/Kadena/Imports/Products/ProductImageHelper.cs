@@ -19,13 +19,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             product.SetValue("SKUImagePath", imageUrl);
         }
 
-        public static AttachmentInfo DownloadAttachmentThumbnail(string url, string skuNumber, int documentId, int siteId)
+        public static AttachmentInfo DownloadAttachmentThumbnail(SKUTreeNode product, string fromUrl)
         {
             AttachmentInfo newAttachment = null;
 
             using (var client = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, fromUrl))
                 {
 
                     var response = client.SendAsync(request).Result;
@@ -41,7 +41,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
                         var stream = response.Content.ReadAsStreamAsync().Result;
                         
-                        var extension = Path.GetExtension(url);
+                        var extension = Path.GetExtension(fromUrl);
 
                         if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
                         {
@@ -52,10 +52,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                         newAttachment = new AttachmentInfo()
                         {
                             InputStream = stream,
-                            AttachmentSiteID = siteId,
-                            AttachmentDocumentID = documentId,
+                            AttachmentSiteID =  product.NodeSiteID,
+                            AttachmentDocumentID = product.DocumentID,
                             AttachmentExtension = extension,
-                            AttachmentName = $"Thumbnail{skuNumber}.{extension}",
+                            AttachmentName = $"Thumbnail{product.SKU.SKUNumber}.{extension}",
                             AttachmentLastModified = DateTime.Now,
                             AttachmentMimeType = mimetype,
                             AttachmentSize = (int)stream.Length
