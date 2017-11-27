@@ -2,19 +2,19 @@
   <NewDataSet>
     <cms_info>
       <Key>machinename</Key>
-      <Value>LAPTOP-053</Value>
+      <Value>DESKTOP-QS0D35J</Value>
     </cms_info>
     <cms_info>
       <Key>domainname</Key>
-      <Value>localhost:8080</Value>
+      <Value>default.kadenatest.com</Value>
     </cms_info>
     <cms_info>
       <Key>currentuser</Key>
-      <Value>pavan.kumbhar</Value>
+      <Value>cvoqa2@gmail.com</Value>
     </cms_info>
     <cms_info>
       <Key>starttime</Key>
-      <Value>11/16/2017 12:44:46 AM</Value>
+      <Value>11/18/2017 12:12:39 PM</Value>
     </cms_info>
     <cms_info>
       <Key>systemversion</Key>
@@ -26,6 +26,10 @@
     </cms_info>
     <cms_info>
       <Key>webapplication</Key>
+      <Value>True</Value>
+    </cms_info>
+    <cms_info>
+      <Key>singleobject</Key>
       <Value>True</Value>
     </cms_info>
   </NewDataSet>

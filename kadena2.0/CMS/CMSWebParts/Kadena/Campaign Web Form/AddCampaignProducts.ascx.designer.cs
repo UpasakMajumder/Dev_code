@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     
     /// <summary>
+    /// hdnDatepickerUrl control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnDatepickerUrl;
+    
+    /// <summary>
     /// lblProgramName control.
     /// </summary>
     /// <remarks>

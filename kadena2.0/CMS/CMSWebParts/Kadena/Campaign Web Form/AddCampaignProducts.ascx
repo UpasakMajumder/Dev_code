@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
+<asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
 <div class="login__form-content js-login">
     <div class="css-login">
         <div class="form form_width100 formerrormsgs">
@@ -150,6 +151,3 @@
         </div>
     </div>
 </div>
-
-
-

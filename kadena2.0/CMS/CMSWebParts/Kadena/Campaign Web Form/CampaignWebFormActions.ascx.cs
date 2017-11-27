@@ -1,9 +1,11 @@
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using System;
 using System.Web.UI.WebControls;
@@ -135,7 +137,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
     public override void ReloadData()
     {
         base.ReloadData();
-
         BindActions();
         BindResourceStrings();
     }
@@ -167,7 +168,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 bool openCampaign = campaign.GetBooleanValue("OpenCampaign", false);
                 bool isGlobalAdminNotified = campaign.GetBooleanValue("GlobalAdminNotified", false);
                 bool closeCampaign = campaign.GetBooleanValue("CloseCampaign", false);
-
                 string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
 
@@ -202,7 +202,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkOpenCampaign.Visible = true;
                         lnkOpenCampaign.Enabled = true;
                     }
-                    if (openCampaign)
+                   else if (openCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
@@ -211,7 +211,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkCloseCampaign.Enabled = true;
                         lnkCloseCampaign.Visible = true;
                     }
-                    if (closeCampaign)
+                    else if (closeCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
@@ -268,8 +268,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            string url = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_CampaignCreatePageUrl ");
-            Response.Redirect($"{url}?ID={campaignID}");
+            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
+            {
+                if (!nodeGUID.Equals(Guid.Empty))
+                {
+                    var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                    if (document != null)
+                    {
+                        Response.Redirect($"{document.DocumentUrlPath}?ID={campaignID}");
+                    }
+                }
+            }
         }
         catch (Exception ex)
         {

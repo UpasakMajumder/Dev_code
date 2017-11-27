@@ -47,17 +47,15 @@ namespace CMSApp.CMSWebParts.Kadena.POS
         private void SetFilter()
         {
             string where = null;
-             // Generates a WHERE condition based on the selected product department
+         
+            // Generates a WHERE condition based on the selected product department
             if (this.txtPOSSearch.Text != null)
             {
                 // Gets the ID of the selected department
                 string posNo = ValidationHelper.GetString(this.txtPOSSearch.Text, "");
-
-
                 posNo = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(posNo));
-                where = "Year LIKE N'%" + posNo + "%' OR POSCode LIKE N'%" + posNo + "%' OR POSCategoryName LIKE N'%" + posNo + "%' OR POSNumber LIKE N'%" + posNo + "%' OR BrandName LIKE N'%" + posNo + "%'";
-
-            }
+                where = $"Year LIKE N'%  {posNo} %' OR POSCode LIKE N'% {posNo} %' OR POSCategoryName LIKE N'% {posNo} %' OR POSNumber LIKE N'% { posNo } %' OR BrandName LIKE N'% {posNo}%'";
+             }
 
             if (where != null)
             {
