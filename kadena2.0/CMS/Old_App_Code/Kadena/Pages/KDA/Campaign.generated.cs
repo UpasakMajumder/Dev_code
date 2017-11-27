@@ -98,6 +98,91 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool CampaignInitiate
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("CampaignInitiate"), false);
+			}
+			set
+			{
+				SetValue("CampaignInitiate", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool OpenCampaign
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("OpenCampaign"), false);
+			}
+			set
+			{
+				SetValue("OpenCampaign", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool GlobalAdminNotified
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("GlobalAdminNotified"), false);
+			}
+			set
+			{
+				SetValue("GlobalAdminNotified", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool AllowUpdates
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("AllowUpdates"), false);
+			}
+			set
+			{
+				SetValue("AllowUpdates", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool CloseCampaign
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("CloseCampaign"), false);
+			}
+			set
+			{
+				SetValue("CloseCampaign", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Gets an object that provides extended API for working with Campaign fields.
 		/// </summary>
 		[RegisterProperty]
@@ -176,6 +261,86 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.Description = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool Initiate
+			{
+				get
+				{
+					return mInstance.CampaignInitiate;
+				}
+				set
+				{
+					mInstance.CampaignInitiate = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool OpenCampaign
+			{
+				get
+				{
+					return mInstance.OpenCampaign;
+				}
+				set
+				{
+					mInstance.OpenCampaign = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool GlobalAdminNotified
+			{
+				get
+				{
+					return mInstance.GlobalAdminNotified;
+				}
+				set
+				{
+					mInstance.GlobalAdminNotified = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool AllowUpdates
+			{
+				get
+				{
+					return mInstance.AllowUpdates;
+				}
+				set
+				{
+					mInstance.AllowUpdates = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool CloseCampaign
+			{
+				get
+				{
+					return mInstance.CloseCampaign;
+				}
+				set
+				{
+					mInstance.CloseCampaign = value;
 				}
 			}
 		}
