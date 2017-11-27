@@ -61,9 +61,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         }
 
     }
-
-
-    /// <summary>
+     /// <summary>
     /// Reloads the control data.
     /// </summary>
     public override void ReloadData()
@@ -72,7 +70,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 
         SetupControl();
     }
-
     #endregion
     #region
     /// <summary>
@@ -81,7 +78,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     /// <returns>List of Brands</returns>
     private static ObjectQuery<CustomTableItem> GetBrands()
     {
-
         // Prepares the code name (class name) of the custom table
         ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
         string customTableClassName = "KDA.Brand";

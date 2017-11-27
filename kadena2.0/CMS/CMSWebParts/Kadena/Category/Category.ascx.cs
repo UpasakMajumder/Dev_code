@@ -93,8 +93,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     newPage.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
-                    txtName.Text = "";
-                    txtDescription.Text = "";
+                    txtName.Text = string.Empty;
+                    txtDescription.Text = string.Empty;
                 }
                 else
                 {
