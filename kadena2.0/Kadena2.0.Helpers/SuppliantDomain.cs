@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.KenticoProviders.Contracts;
+﻿ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena.Helpers

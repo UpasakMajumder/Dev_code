@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Threading;
-using Kadena.Helpers.Infrastructure;
+using Kadena.BusinessLogic.Infrastructure;
 
 namespace Kadena.Tests
 {

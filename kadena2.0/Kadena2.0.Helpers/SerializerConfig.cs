@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Kadena.WebAPI
+namespace Kadena.Helpers
 {
     public static class SerializerConfig
     {

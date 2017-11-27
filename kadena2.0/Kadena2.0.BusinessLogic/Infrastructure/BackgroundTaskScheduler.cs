@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 
-namespace Kadena.Helpers.Infrastructure
+namespace Kadena.BusinessLogic.Infrastructure
 {
     public class BackgroundTaskScheduler : IBackgroundTaskScheduler
     {

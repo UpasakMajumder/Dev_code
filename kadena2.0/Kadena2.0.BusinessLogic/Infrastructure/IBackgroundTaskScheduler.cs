@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kadena.Helpers.Infrastructure
+namespace Kadena.BusinessLogic.Infrastructure
 {
     public interface IBackgroundTaskScheduler
     {

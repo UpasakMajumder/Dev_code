@@ -114,7 +114,6 @@
   <ItemGroup>
     <Compile Include="App_Start\ContainerBuilder.cs" />
     <Compile Include="App_Start\MapperBuilder.cs" />
-    <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CreditCard3dsiController.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
@@ -158,7 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Infrastructure\Attributes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">

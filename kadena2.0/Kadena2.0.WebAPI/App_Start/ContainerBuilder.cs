@@ -11,7 +11,7 @@ using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using Kadena.Helpers.Infrastructure;
+using Kadena.BusinessLogic.Infrastructure;
 
 namespace Kadena.WebAPI
 {
@@ -51,7 +51,6 @@ namespace Kadena.WebAPI
 
         public static Container RegisterMicroservices(this Container container)
         {
-            //container.Register<IAwsV4Signer, DefaultAwsV4Signer>();
             container.Register<IMailingListClient, MailingListClient>();
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
             container.Register<IOrderViewClient, OrderViewClient>();

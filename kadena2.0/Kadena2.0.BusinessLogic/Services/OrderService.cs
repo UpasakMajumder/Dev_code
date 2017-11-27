@@ -12,7 +12,7 @@ using System.Security;
 using System.Threading.Tasks;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
-using Kadena.Helpers.Infrastructure;
+using Kadena.BusinessLogic.Infrastructure;
 using Kadena.Models.Product;
 
 namespace Kadena.BusinessLogic.Services
