@@ -9,17 +9,17 @@ using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
-    public static class ProductImageHelper
+    public static class SKUTreeNodeExtensions
     {
         /// <summary>
         /// Sets given <param name="imageUrl"></param> as SKUImagePath of product node
         /// </summary>
-        public static void SetProductImage(SKUTreeNode product, string imageUrl)
+        public static void SetImage(this SKUTreeNode product, string imageUrl)
         {
             product.SetValue("SKUImagePath", imageUrl);
         }
 
-        public static AttachmentInfo DownloadAttachmentThumbnail(SKUTreeNode product, string fromUrl)
+        public static AttachmentInfo DownloadAttachmentThumbnail(this SKUTreeNode product, string fromUrl)
         {
             AttachmentInfo newAttachment = null;
 
@@ -78,7 +78,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newAttachment;
         }
 
-        public static void AttachThumbnail(SKUTreeNode product, AttachmentInfo newAttachment)
+        public static void AttachThumbnail(this SKUTreeNode product, AttachmentInfo newAttachment)
         {
             if (newAttachment != null)
             {
@@ -86,13 +86,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
         }
 
-        public static void AttachThumbnail(SKUTreeNode product, string fromUrl)
+        public static void AttachThumbnail(this SKUTreeNode product, string fromUrl)
         {
             var newAttachment = DownloadAttachmentThumbnail(product, fromUrl);
             AttachThumbnail(product, newAttachment);
         }
 
-        public static void RemoveTumbnail(SKUTreeNode product, int siteId)
+        public static void RemoveTumbnail(this SKUTreeNode product, int siteId)
         {
             var oldAttachmentGuid = product.GetGuidValue("ProductThumbnail", Guid.Empty);
             var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
@@ -106,7 +106,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
         }
 
-        public static void RemoveProductImage(SKUTreeNode product)
+        public static void RemoveImage(this SKUTreeNode product)
         {
             var oldImageUrl = product?.GetValue("SKUImagePath", string.Empty);
 
