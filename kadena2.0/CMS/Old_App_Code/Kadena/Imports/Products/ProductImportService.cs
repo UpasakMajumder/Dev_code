@@ -33,7 +33,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
-            
+
             var currentItemNumber = 0;
             foreach (var productDto in products)
             {
@@ -135,7 +135,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 product.ProductType.Contains(ProductTypes.TemplatedProduct))
             {
                 decimal weight = 0.0m;
-                if(string.IsNullOrEmpty(product.PackageWeight) ||  !decimal.TryParse(product.PackageWeight, out weight))
+                if (string.IsNullOrEmpty(product.PackageWeight) || !decimal.TryParse(product.PackageWeight, out weight))
                 {
                     isValid = false;
                     validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
@@ -206,7 +206,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
             var sku = EnsureSKU(productDto, siteID);
-            AppendProduct(productParent, productDto, sku, siteID);            
+            AppendProduct(productParent, productDto, sku, siteID);
         }
 
         private void SetProductImage(ProductImageDto image, int siteId)
@@ -250,7 +250,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
         {
             var library = MediaLibraryHelper.EnsureLibrary(siteId);
-            
+
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
 
             var libraryImageUrl = MediaLibraryHelper.DownloadImageToMedialibrary(imageUrl, sku.SKUNumber, product.DocumentID, library.LibraryID, siteId);
@@ -270,7 +270,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             MediaLibraryHelper.DeleteProductImage(product, library.LibraryID, siteId);
             ProductImageHelper.RemoveTumbnail(product, siteId);
         }
-        
+
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
@@ -306,23 +306,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
             newProduct.SetValue("ProductBindery", product.Bindery);
 
-            DateTime publishFrom, publishTo;
-            if (DateTime.TryParse(product.PublishFrom, out publishFrom))
+            if (DateTime.TryParse(product.PublishFrom, out DateTime publishFrom))
             {
                 newProduct.DocumentPublishFrom = publishFrom;
             }
-            if (DateTime.TryParse(product.PublishTo, out publishTo))
+            if (DateTime.TryParse(product.PublishTo, out DateTime publishTo))
             {
                 newProduct.DocumentPublishTo = publishTo;
-            }
-
-            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
-            {
-                GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
-            }
-            else // todo discuss, remove existing images when new not specified ?
-            {
-                RemoveProductImages(newProduct, siteId); 
             }
 
             SetPageTemplate(newProduct, "_Kadena_Product_Detail");
@@ -331,10 +321,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 newProduct.Insert(parent);
             }
-            else
+
+            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
             {
-                newProduct.Update();
+                GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
             }
+            else // todo discuss, remove existing images when new not specified ?
+            {
+                RemoveProductImages(newProduct, siteId);
+            }
+
+            newProduct.Update();
 
             return newProduct;
         }
@@ -457,7 +454,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private SKUInfo EnsureSKU(ProductDto product, int siteID)
         {
-            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();            
+            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.Price);
