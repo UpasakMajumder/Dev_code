@@ -1,32 +1,15 @@
 using System;
-
-using System.Web.UI;
 using System.Web.UI.WebControls;
-
-
 using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using CMS.PortalEngine;
 using CMS.Base;
-using CMS.Base.Web.UI;
 using CMS.Membership;
-
-
-using System.Configuration;
-using System.Text;
-using System.Web;
-using System.Web.Security;
-
-using CMS.Activities.Loggers;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
 using CMS.EventLog;
-using CMS.MembershipProvider;
-using CMS.SiteProvider;
 using CMS.CustomTables.Types.KDA;
 using CMS.CustomTables;
 using System.Linq;
+using System.Collections.Generic;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -277,6 +260,21 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         set
         {
             SetValue("EditUserAlternativeForm", value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets New User's role
+    /// </summary>
+    public string NewUserRole
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("NewUserRole"), string.Empty);
+        }
+        set
+        {
+            SetValue("NewUserRole", value);
         }
     }
 
@@ -758,9 +756,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     protected void filterUsers_OnFilterChanged()
     {
         filterUsers.InitDataProperties(srcUsers);
-
-
-        // Connects repeater with data source
         repUsers.DataSource = srcUsers.DataSource;
         repUsers.DataBind();
     }
@@ -777,24 +772,24 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
         else
         {
-            int UserID = QueryHelper.GetInteger("userid", 0);
-            UserInfo User = null;
+            int userID = QueryHelper.GetInteger("userid", 0);
+            UserInfo user = null;
 
-            if (UserID > 0)
-                User = UserInfoProvider.GetUserInfo(UserID);
+            if (userID > 0)
+                user = UserInfoProvider.GetUserInfo(userID);
 
-            if (UserID != 0)
+            if (userID != 0)
             {
-                if (User == null)
+                if (user == null)
                 {
-                    User = new UserInfo();
+                    user = new UserInfo();
                     formElem.Mode = CMS.Base.Web.UI.FormModeEnum.Insert;
                     formElem.AlternativeFormFullName = NewUserAlternativeForm;
                 }
                 else
                     formElem.AlternativeFormFullName = EditUserAlternativeForm;
 
-                formElem.Info = User;
+                formElem.Info = user;
 
                 pnlUserForm.Visible = true;
                 pnlListView.Visible = false;
@@ -979,64 +974,92 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        UserInfo User = formElem.Info as UserInfo;
-
-        if (User == null || (User != null && User.UserID <= 0))
+        try
         {
-            User = new UserInfo()
+            if (formElem.ValidateData())
             {
-                FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
-                LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
-                Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
-                UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
-                Enabled = true
-            };
+                UserInfo user = formElem.Info as UserInfo;
 
-            if (!string.IsNullOrEmpty(User.Email))
-            {
-
-                User.UserSettings.UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty);
-                User.UserSettings.SetValue("UserMobile", ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty));
-                User.UserSettings.SetValue("UserTitle", ValidationHelper.GetString(formElem.GetFieldValue("UserTitle"), string.Empty));
-                User.UserSettings.SetValue("UserCountry", ValidationHelper.GetInteger(formElem.GetFieldValue("UserCountry"), 0));
-                User.UserSettings.SetValue("UserState", ValidationHelper.GetString(formElem.GetFieldValue("UserState"), string.Empty));
-                User.UserSettings.SetValue("UserCity", ValidationHelper.GetString(formElem.GetFieldValue("UserCity"), string.Empty));
-                User.UserSettings.SetValue("UserAddress", ValidationHelper.GetString(formElem.GetFieldValue("UserAddress"), string.Empty));
-                User.UserSettings.SetValue("UserDivisionID", ValidationHelper.GetInteger(formElem.GetFieldValue("UserDivisionID"), 0));
-                User.UserSettings.SetValue("SalesManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("SalesManagerID"), 0));
-                User.UserSettings.SetValue("TradeMarketingManagerID", ValidationHelper.GetInteger(formElem.GetFieldValue("TradeMarketingManagerID"), 0));
-                User.UserSettings.SetValue("UserFax", ValidationHelper.GetString(formElem.GetFieldValue("UserFax"), string.Empty));
-                User.UserSettings.SetValue("FYBudget", ValidationHelper.GetString(formElem.GetFieldValue("FYBudget"), string.Empty));
-                User.UserSettings.SetValue("PasswordHint", ValidationHelper.GetString(formElem.GetFieldValue("PasswordHint"), string.Empty));
-
-                string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
-                UserInfoProvider.SetUserInfo(User);
-                UserInfoProvider.SetPassword(User.UserName, Password);
-                UserInfoProvider.AddUserToSite(User.UserName, CurrentSiteName);
-
-
-                if (User != null && User.UserID > 0)
+                if (user == null || (user != null && user.UserID <= 0))
                 {
-                    //storing the busienss units data while creating user 
-
                     string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
-                    if (User != null && User.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
-                        BindBusinessUnitsToUser(BusinessUnits, User.UserID);
-                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath + "?userid=" + User.UserID);
+                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                    {
+                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                    }
+                    CreateNewUser(user);
+                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
+                }
+                else
+                {
+                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
+                    {
+                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                    }
+                    formElem.SaveData("~/" + CurrentDocument.DocumentUrlPath);
                 }
             }
             else
-                lblNewUserError.Visible = true;
+            {
+                formElem.ShowValidationErrorMessage = true;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            formElem.SaveData("", true);
-            //storing the busienss units data while updating user details
-            string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
-            if (User != null && User.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
-                BindBusinessUnitsToUser(BusinessUnits, User.UserID);
+            EventLogProvider.LogException("UsersList", "UserSave", ex);
         }
+    }
 
+    /// <summary>
+    /// Creates new user
+    /// </summary>
+    /// <param name="user"></param>
+    private void CreateNewUser(UserInfo user)
+    {
+        List<string> stringUserSettingKeys = new List<string>() {
+            "UserMobile",
+            "UserTitle",
+            "UserState",
+            "UserCity",
+            "UserAddress",
+            "UserFax",
+            "FYBudget",
+            "PasswordHint"
+        };
+        List<string> intUserSettingKeys = new List<string>() {
+            "UserCountry",
+            "UserDivisionID",
+            "SalesManagerID",
+            "TradeMarketingManagerID",
+        };
+        user = new UserInfo()
+        {
+            FirstName = ValidationHelper.GetString(formElem.GetFieldValue("FirstName"), string.Empty),
+            LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
+            Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+            UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
+            Enabled = true,
+            UserSettings = {
+                UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty)
+            }
+        };
+        foreach (string stringUserSettingKey in stringUserSettingKeys)
+        {
+            user.UserSettings.SetValue(stringUserSettingKey, ValidationHelper.GetString(formElem.GetFieldValue(stringUserSettingKey), string.Empty));
+        }
+        foreach (string intUserSettingKey in intUserSettingKeys)
+        {
+            user.UserSettings.SetValue(intUserSettingKey, ValidationHelper.GetInteger(formElem.GetFieldValue(intUserSettingKey), 0));
+        }
+        string Password = ValidationHelper.GetString(formElem.GetFieldValue("UserPassword"), string.Empty);
+        UserInfoProvider.SetUserInfo(user);
+        UserInfoProvider.SetPassword(user.UserName, Password);
+        UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
+        if (!string.IsNullOrEmpty(NewUserRole))
+        {
+            UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
+        }
     }
 
     /// <summary>
@@ -1050,17 +1073,16 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         {
             DeleteUserBusinessUnits(UserID);
             var delimitBuinessUnits = BusinessUnits.Split(';');
-            foreach (var s in delimitBuinessUnits)
+            foreach (var businessUnitID in delimitBuinessUnits)
             {
-                if (s != string.Empty)
+                if (string.IsNullOrEmpty(businessUnitID) && IsBusinessUnitExisted(ValidationHelper.GetInteger(businessUnitID, 0), UserID))
                 {
-                    if (IsBusinessUnitExisted(ValidationHelper.GetInteger(s, 0), UserID))
+                    UserBusinessUnitsItem newBu = new UserBusinessUnitsItem()
                     {
-                        UserBusinessUnitsItem newBu = new UserBusinessUnitsItem();
-                        newBu.UserID = UserID;
-                        newBu.BusinessUnitID = ValidationHelper.GetInteger(s, 0);
-                        newBu.Insert();
-                    }
+                        UserID = UserID,
+                        BusinessUnitID = ValidationHelper.GetInteger(businessUnitID, 0)
+                    };
+                    newBu.Insert();
                 }
             }
         }
@@ -1080,7 +1102,12 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         try
         {
-            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", UserID).And().WhereEquals("BusinessUnitID", BusinessUnitID).Columns("BusinessUnitID").FirstOrDefault();
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                        .WhereEquals("UserID", UserID)
+                        .And()
+                        .WhereEquals("BusinessUnitID", BusinessUnitID)
+                        .Columns("BusinessUnitID")
+                        .FirstOrDefault();
             if (DataHelper.DataSourceIsEmpty(buData)) return true;
         }
         catch (Exception ex)
@@ -1099,7 +1126,10 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         try
         {
-            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", UserID).Columns("ItemID").ToList();
+            var buData = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                        .WhereEquals("UserID", UserID)
+                        .Columns("ItemID")
+                        .ToList();
             if (!DataHelper.DataSourceIsEmpty(buData))
             {
                 buData.ForEach(b =>
