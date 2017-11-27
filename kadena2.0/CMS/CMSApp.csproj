@@ -21851,7 +21851,6 @@
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\CropImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Filters\ResizeImageFilter.cs" />
     <Compile Include="Old_App_Code\Demo\ResponsiveImages\Definitions\MediumSizeImageVariantDefinition.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -23281,6 +23280,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CMSWebParts\Kadena\" />
+    <Folder Include="Old_App_Code\Kadena\CustomTableItems\KDA\" />
     <Folder Include="Old_App_Code\Kadena\Imports\Users\" />
   </ItemGroup>
   <PropertyGroup>

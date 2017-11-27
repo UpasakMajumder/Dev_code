@@ -1,19 +1,17 @@
-using System;
-using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.Ecommerce;
-using CMS.CustomTables.Types.KDA;
-using CMS.Globalization;
-using System.Linq;
-using CMS.Membership;
 using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.Ecommerce;
 using CMS.EventLog;
+using CMS.Globalization;
+using CMS.Helpers;
+using CMS.Membership;
+using CMS.PortalEngine.Web.UI;
+using System;
+using System.Linq;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
-
     #region "Methods"
 
     /// <summary>
@@ -25,17 +23,12 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         SetupControl();
     }
 
-
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-            // Do not process
-        }
-        else
+        if (!this.StopProcessing)
         {
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
@@ -51,7 +44,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     }
 
     /// <summary>
-    ///  Binds all resource strings       
+    ///  Binds all resource strings
     /// </summary>
     private void BindResourceStrings()
     {
@@ -82,7 +75,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     }
 
     /// <summary>
-    ///  Updates the existing address data   
+    ///  Updates the existing address data
     /// </summary>
     /// <param name="itemID">item id of the address data</param>
     private void UpdateAddressData(int customerID)
@@ -114,7 +107,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var addressData = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", itemID).TopN(1).FirstOrDefault();
+            var addressData = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", itemID).FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(addressData))
             {
                 txtAddressLine1.Text = addressData.AddressLine1;
@@ -125,7 +118,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 txtTelephone.Text = addressData.AddressPhone;
                 ddlCountry.Value = $"{GetCountryName(addressData.AddressCountryID)};{GetStateName(addressData.AddressStateID)}";
                 ddlAddressType.Value = addressData.GetValue("AddressType", string.Empty);
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", addressData.AddressID).TopN(1).FirstOrDefault();
+                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", addressData.AddressID).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(shippingData))
                 {
                     txtEmail.Text = shippingData.GetStringValue("Email", string.Empty);
@@ -183,7 +176,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
             if (itemID != default(int))
             {
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", objAddress.AddressID).TopN(1).FirstOrDefault();
+                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", objAddress.AddressID).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(shippingData) && shippingData != null)
                 {
                     item.ItemID = shippingData.ItemID;
@@ -257,7 +250,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         return null;
     }
 
-
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -267,7 +259,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         SetupControl();
     }
 
-    #endregion
+    #endregion "Methods"
 
     #region methods
 
@@ -280,7 +272,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryDisplayName", countryName).TopN(1).FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryDisplayName", countryName).FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryID;
@@ -302,7 +294,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateDisplayName", stateName).TopN(1).FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates().WhereEquals("StateDisplayName", stateName).FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateID;
@@ -313,7 +305,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             EventLogProvider.LogException("CreateAddress.ascx.cs", "GetStateID()", ex);
         }
         return default(int);
-
     }
 
     /// <summary>
@@ -325,7 +316,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryID", countryID).Column("CountryDisplayName").TopN(1).FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryID", countryID).Column("CountryDisplayName").FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryDisplayName;
@@ -347,7 +338,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateID", stateID).Column("StateDisplayName").TopN(1).FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates().WhereEquals("StateID", stateID).Column("StateDisplayName").FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateDisplayName;
@@ -376,7 +367,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             objCustomer.CustomerLastName = CurrentUser.LastName;
             objCustomer.CustomerSiteID = CurrentSite.SiteID;
             CustomerInfoProvider.SetCustomerInfo(objCustomer);
-            return objCustomer!=null ? objCustomer.CustomerID : default(int);
+            return objCustomer != null ? objCustomer.CustomerID : default(int);
         }
         catch (Exception ex)
         {
@@ -384,8 +375,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
         return default(int);
     }
+
     /// <summary>
-    /// Checks whether the suer is already a customer or not 
+    /// Checks whether the suer is already a customer or not
     /// </summary>
     /// <param name="userID">user id</param>
     /// <returns>customer id</returns>
@@ -406,7 +398,8 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         return default(int);
     }
 
-    #endregion
+    #endregion methods
+
     /// <summary>
     /// Creates and updates address data
     /// </summary>
@@ -469,6 +462,3 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
     }
 }
-
-
-
