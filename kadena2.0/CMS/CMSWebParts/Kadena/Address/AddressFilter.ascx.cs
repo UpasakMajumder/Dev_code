@@ -15,7 +15,9 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     private void SetupControl()
     {
         if (this.StopProcessing)
+        {
             this.Visible = false;
+        }
     }
 
     /// <summary>
@@ -53,7 +55,9 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
+        {
             SetFilter();
+        }
         base.OnPreRender(e);
     }
     protected void txtSearchAddress_TextChanged(object sender, EventArgs e)
