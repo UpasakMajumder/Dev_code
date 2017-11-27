@@ -38,6 +38,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
         public void Clear()
         {
             list.Clear();
+            AllMessagesCount = 0;
         }
 
         public IEnumerator GetEnumerator()
