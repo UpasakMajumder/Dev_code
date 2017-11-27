@@ -7,7 +7,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class InventoryUpdateClient : SignedClientBase, IInventoryUpdateClient
+    public class InventoryUpdateClient : ClientBase, IInventoryUpdateClient
     {
         private const string _serviceUrlSettingKey = "KDA_InventoryUpdateServiceEndpoint";
         private readonly IMicroProperties _properties;

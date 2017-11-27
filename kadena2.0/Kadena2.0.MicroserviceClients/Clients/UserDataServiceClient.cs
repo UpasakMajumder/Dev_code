@@ -9,7 +9,7 @@ using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public sealed class UserDataServiceClient : SignedClientBase, IUserDataServiceClient
+    public class UserDataServiceClient : ClientBase, IUserDataServiceClient
     {
         private const string _serviceUrlSettingKey = "KDA_UserDataServiceUrl";
         private readonly IMicroProperties _properties;
