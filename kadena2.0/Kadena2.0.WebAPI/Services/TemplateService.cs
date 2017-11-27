@@ -4,10 +4,9 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.Models.TemplatedProduct;
-using Kadena.Models;
 using System.Linq;
 using System.Text;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using System.Web;
 using Kadena.Models.Product;
 

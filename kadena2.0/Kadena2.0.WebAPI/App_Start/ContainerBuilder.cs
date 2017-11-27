@@ -3,7 +3,7 @@ using DryIoc;
 using Kadena.WebAPI.Contracts;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Factories.Checkout;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;

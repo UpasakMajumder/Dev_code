@@ -1,7 +1,8 @@
 ﻿using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using System;
 
-namespace Kadena.WebAPI.Helpers
+namespace Kadena.Helpers
 {
     public class MicroProperties : IMicroProperties
     {
@@ -9,6 +10,11 @@ namespace Kadena.WebAPI.Helpers
 
         public MicroProperties(IKenticoResourceService kentico)
         {
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+
             _kentico = kentico;
         }
 

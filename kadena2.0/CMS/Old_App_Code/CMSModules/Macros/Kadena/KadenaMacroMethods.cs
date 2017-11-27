@@ -10,18 +10,22 @@ using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using System.Collections.Generic;
-using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Product;
-using Kadena.WebAPI;
 using AutoMapper;
+using Kadena.WebAPI;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
+        static KadenaMacroMethods()
+        {
+            MapperBuilder.InitializeAll();
+        }
+
         #region Public methods
 
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
@@ -319,8 +323,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
-            {
-                MapperBuilder.InitializeAll();
+            {                
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return kenticoService.GetDocumentUrl(aliasPath);
             }
@@ -334,7 +337,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                MapperBuilder.InitializeAll();
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
             }
