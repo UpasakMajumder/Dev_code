@@ -835,6 +835,20 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.designer.cs">
+      <DependentUpon>BusinessUnit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx.cs">
+      <DependentUpon>BusinessUnitFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx.designer.cs">
+      <DependentUpon>BusinessUnitFilter.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx.cs">
       <DependentUpon>AddCampaignProducts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1148,6 +1162,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
@@ -1249,6 +1264,8 @@
   <ItemGroup>
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
+    <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\CampaignWebFormActions.ascx" />

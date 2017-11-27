@@ -3,8 +3,12 @@ using CMS.DocumentEngine.Web.UI;
 using CMS.Helpers;
 using System;
 
-public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseFilterControl
+public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnitFilter : CMSAbstractBaseFilterControl
 {
+
+    #region "Properties"
+    #endregion
+
     /// <summary>
     /// Sets up the inner child controls.
     /// </summary>
@@ -20,22 +24,16 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     private void SetFilter()
     {
         string where = null;
-        string order = null;
-        if (!string.IsNullOrEmpty(txtSearchAddress.Text))
+        if (!string.IsNullOrEmpty(txtSearchBusinessUnit.Text))
         {
-            string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchAddress.Text));
-            where += $"AddressPersonalName like '%{filterText}'% or AddressTypeName like '%{filterText}'% or AddressName like '%{filterText}'% or CompanyName like '%{filterText}'% or Email like '%{filterText}'% or AddressPhone like '%{filterText}'%";
+            string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchBusinessUnit.Text));
+            where += $"BusinessUnitNumber like '% {filterText}%' or BusinessUnitName like'% {filterText} %'";
         }
         if (where != null)
-        {
             this.WhereCondition = where;
-        }
-        if (order != null)
-        {
-            this.OrderBy = order;
-        }
         this.RaiseOnFilterChanged();
     }
+
 
     /// <summary>
     /// Init event handler.
@@ -52,14 +50,17 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
-        {
             SetFilter();
-        }
         base.OnPreRender(e);
     }
-
-    protected void txtSearchAddress_TextChanged(object sender, EventArgs e)
+    /// <summary>
+    /// Filter the data based on the text entered in the textbox
+    /// </summary>
+    protected void txtSearchBusinessUnit_TextChanged(object sender, EventArgs e)
     {
         SetFilter();
     }
 }
+
+
+
