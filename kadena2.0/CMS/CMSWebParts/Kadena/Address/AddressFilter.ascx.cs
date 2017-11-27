@@ -24,7 +24,9 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     private void SetupControl()
     {
         if (this.StopProcessing)
+        {
             this.Visible = false;
+        }
     }
     /// <summary>
     /// Generates a WHERE condition and ORDER BY clause based on the current filtering selection.
@@ -57,7 +59,9 @@ public partial class CMSWebParts_Kadena_Address_AddressFilter : CMSAbstractBaseF
     protected override void OnPreRender(EventArgs e)
     {
         if (RequestHelper.IsPostBack())
+        {
             SetFilter();
+        }
         base.OnPreRender(e);
     }
     /// <summary>

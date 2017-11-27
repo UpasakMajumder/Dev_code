@@ -24,7 +24,7 @@
 
             <div class="mb-3 form_btns">
                 <div class="">
-                    <cms:LocalizedButton ID="btnSave" ValidationGroup="requiredValidation" CssClass="btn-action login__login-button btn--no-shadow" class="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary" CommandName="Login" EnableViewState="false"
+                    <cms:LocalizedButton ID="btnSave" ValidationGroup="requiredValidation" CssClass="btn-action login__login-button btn--no-shadow"  runat="server" ButtonStyle="Primary" CommandName="Login" EnableViewState="false"
                         ResourceString="Kadena.CampaignForm.SaveButton" />
                     <cms:LocalizedButton ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnCancel_Cancel" runat="server" ButtonStyle="Primary" CommandName="Login" EnableViewState="false"
                         ResourceString="Kadena.CampaignForm.CancelButton" />
