@@ -92,10 +92,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             AttachThumbnail(product, newAttachment);
         }
 
-        public static void RemoveTumbnail(this SKUTreeNode product, int siteId)
+        public static void RemoveTumbnail(this SKUTreeNode product)
         {
             var oldAttachmentGuid = product.GetGuidValue("ProductThumbnail", Guid.Empty);
-            var siteName = SiteInfoProvider.GetSiteInfo(siteId).SiteName;
+            var siteName = (product.Site ?? SiteInfoProvider.GetSiteInfo(product.NodeSiteID)).SiteName;
             if (oldAttachmentGuid != Guid.Empty)
             {
                 var oldAttachment = AttachmentInfoProvider.GetAttachmentInfo(oldAttachmentGuid, siteName);
