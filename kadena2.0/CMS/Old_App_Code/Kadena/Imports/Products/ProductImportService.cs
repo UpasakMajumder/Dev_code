@@ -269,14 +269,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             product.RemoveImage();
             product.SetImage(libraryImageUrl);
-            product.RemoveTumbnail(siteId);
+            product.RemoveTumbnail();
             product.AttachThumbnail(thumbnailUrl);
         }
 
         private static void RemoveProductImages(SKUTreeNode product, int siteId)
         {
             product.RemoveImage();
-            product.RemoveTumbnail(siteId);
+            product.RemoveTumbnail();
         }
 
         private static SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
