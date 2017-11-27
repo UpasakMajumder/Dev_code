@@ -375,7 +375,6 @@ public partial class CMSWebParts_Kadena_Campaign_CampaignList : CMSAbstractWebPa
         }
     }
 
-
     /// <summary>
     /// Gets or sets the pager query string key.
     /// </summary>
