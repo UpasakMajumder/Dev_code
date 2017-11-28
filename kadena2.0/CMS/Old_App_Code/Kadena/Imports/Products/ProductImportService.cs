@@ -314,14 +314,20 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.SetValue("ProductFinishedSize", product.FinishedSize);
             newProduct.SetValue("ProductBindery", product.Bindery);
 
-            DateTime publishFrom, publishTo;
-            if (DateTime.TryParse(product.PublishFrom, out publishFrom))
+            if (DateTime.TryParse(product.PublishFrom, out DateTime publishFrom))
             {
                 newProduct.DocumentPublishFrom = publishFrom;
             }
-            if (DateTime.TryParse(product.PublishTo, out publishTo))
+            if (DateTime.TryParse(product.PublishTo, out DateTime publishTo))
             {
                 newProduct.DocumentPublishTo = publishTo;
+            }
+
+            SetPageTemplate(newProduct, "_Kadena_Product_Detail");
+
+            if (existingProduct == null)
+            {
+                newProduct.Insert(parent);
             }
 
             if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
@@ -333,16 +339,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 RemoveProductImages(newProduct, siteId);
             }
 
-            SetPageTemplate(newProduct, "_Kadena_Product_Detail");
-
-            if (existingProduct == null)
-            {
-                newProduct.Insert(parent);
-            }
-            else
-            {
-                newProduct.Update();
-            }
+            newProduct.Update();
 
             return newProduct;
         }

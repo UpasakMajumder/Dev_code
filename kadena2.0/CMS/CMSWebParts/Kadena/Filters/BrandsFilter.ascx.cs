@@ -3,10 +3,6 @@ using CMS.Helpers;
 
 using CMS.DocumentEngine.Web.UI;
 using CMS.DataEngine;
-using CMS.Ecommerce;
-using System.Web.UI.WebControls;
-using CMS.EventLog;
-using System.Linq;
 
 
 namespace CMSApp.CMSWebParts.Kadena.Filters
@@ -18,17 +14,8 @@ namespace CMSApp.CMSWebParts.Kadena.Filters
         /// </summary>
         private void SetupControl()
         {
-            // Hides the filter if StopProcessing is enabled
             if (this.StopProcessing)
-            {
                 this.Visible = false;
-            }
-
-            // Initializes only if the current request is NOT a postback
-            else if (!RequestHelper.IsPostBack())
-            {
-                
-            }
         }
 
         /// <summary>
@@ -38,30 +25,15 @@ namespace CMSApp.CMSWebParts.Kadena.Filters
         {
             string where = null;
             string order = null;
-
-            
             if (!string.IsNullOrEmpty(txtSearchBrand.Text))
             {
                 string filterText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchBrand.Text));
-
-                where += "BrandName like '%" + filterText + "%' or BrandCode like '%" + filterText + "%'";
+                where += $"BrandName like '%{filterText}'% or BrandCode like '%{filterText}'%";
             }
-
-
-
             if (where != null)
-            {
-                // Sets the Where condition
                 this.WhereCondition = where;
-            }
-
             if (order != null)
-            {
-                // Sets the OrderBy clause
                 this.OrderBy = order;
-            }
-
-            // Raises the filter changed event
             this.RaiseOnFilterChanged();
         }
 
@@ -71,7 +43,6 @@ namespace CMSApp.CMSWebParts.Kadena.Filters
         /// </summary>
         protected override void OnInit(EventArgs e)
         {
-            // Creates the child controls
             SetupControl();
             base.OnInit(e);
         }
@@ -81,20 +52,16 @@ namespace CMSApp.CMSWebParts.Kadena.Filters
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {
-            // Checks if the current request is a postback
             if (RequestHelper.IsPostBack())
-            {
-                // Applies the filter to the displayed data
                 SetFilter();
-            }
-
             base.OnPreRender(e);
         }
-
+        /// <summary>
+        /// Filters the data based on text enterder in textbox
+        /// </summary>
         protected void txtSearchBrand_TextChanged(object sender, EventArgs e)
         {
             SetFilter();
-
         }
     }
 }
