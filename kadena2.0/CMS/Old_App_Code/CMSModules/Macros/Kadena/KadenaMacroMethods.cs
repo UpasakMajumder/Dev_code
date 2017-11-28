@@ -10,12 +10,16 @@ using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using System.Collections.Generic;
+using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Product;
 using AutoMapper;
 using Kadena.WebAPI;
-
+using AutoMapper;
+using CMS.EventLog;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.CustomTables.Types.KDA;
 using static Kadena.Helpers.SerializerConfig;
 using Kadena.BusinessLogic.Services;
 
@@ -388,5 +392,104 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
+
+        #region TWE macro methods
+        /// <summary>
+        /// Returns Division name based on Division ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Division name based on Division ID", 1)]
+        [MacroMethodParam(0, "DivisionID", typeof(int), "DivisionID")]
+        public static object GetDivisionName(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int divisionID = ValidationHelper.GetInteger(parameters[0], 0);
+                DivisionItem division = CustomTableItemProvider.GetItem<DivisionItem>(divisionID);
+                string divisionName = division?.DivisionName ?? string.Empty;
+                return divisionName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "GetDivisionName", ex.Message);
+                return string.Empty;
+            }
+        }
+        /// <summary>
+        /// Returns Program name based on Program ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Program name based on Program ID", 1)]
+        [MacroMethodParam(0, "ProgramID", typeof(int), "ProgramID")]
+        public static object GetProgramName(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int programID = ValidationHelper.GetInteger(parameters[0], 0);
+                string programName = string.Empty;
+                Program program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProgramID", programID).Columns("ProgramName").FirstObject;
+                programName = program?.ProgramName ?? string.Empty;
+                return programName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "GetProgramName", ex.Message);
+                return string.Empty;
+            }
+        }
+        /// <summary>
+        /// Returns Category name based on Category ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Category name based on Category ID", 1)]
+        [MacroMethodParam(0, "CategoryID", typeof(int), "CategoryID")]
+        public static object GetCategoryName(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int categoryID = ValidationHelper.GetInteger(parameters[0], 0);
+                string categoryName = string.Empty;
+                ProductCategory category = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).WhereEquals("ProductCategoryID", categoryID).Columns("ProductCategoryTitle").FirstObject;
+                categoryName = category?.ProductCategoryTitle ?? string.Empty;
+                return categoryName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "GetProgramName", ex.Message);
+                return string.Empty;
+            }
+        }
+        /// <summary>
+        /// Returns Currently opened campaign name
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Currently opened campaign name", 1)]
+        public static object GetCampaignName(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                string campaignName = string.Empty;
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
+                if (campaign != null)
+                {
+                    campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
+                }
+                return campaignName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return string.Empty;
+            }
+        }
+        #endregion
     }
 }
