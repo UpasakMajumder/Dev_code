@@ -250,22 +250,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            GetAndSaveProductImages(product, sku, siteId, image.ImageURL, image.ThumbnailURL);
+            GetAndSaveProductImages(product, image.ImageURL, image.ThumbnailURL);
 
             product.Update();
         }
 
         // ready for potential use in Product upload
-        private static void GetAndSaveProductImages(SKUTreeNode product, SKUInfo sku, int siteId, string imageUrl, string thumbnailUrl)
+        private static void GetAndSaveProductImages(SKUTreeNode product, string imageUrl, string thumbnailUrl)
         {
             var library = new MediaLibrary
             {
-                SiteId = siteId,
+                SiteId = product.NodeSiteID,
                 LibraryName = "ProductImages",
                 LibraryFolder = "Products",
                 LibraryDescription = "Media library for storing product images"
             };
-            var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{sku.SKUNumber}", $"Product image for SKU {sku.SKUNumber}");
+            var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{product.SKU.SKUNumber}", $"Product image for SKU {product.SKU.SKUNumber}");
 
             product.RemoveImage();
             product.SetImage(libraryImageUrl);
@@ -273,7 +273,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             product.AttachThumbnail(thumbnailUrl);
         }
 
-        private static void RemoveProductImages(SKUTreeNode product, int siteId)
+        private static void RemoveProductImages(SKUTreeNode product)
         {
             product.RemoveImage();
             product.RemoveTumbnail();
@@ -282,7 +282,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private static SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
+            {
                 return null;
+            }
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             SKUTreeNode existingProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeSKUID == sku.SKUID);
@@ -332,11 +334,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
             {
-                GetAndSaveProductImages(newProduct, sku, siteId, product.ImageURL, product.ThumbnailURL);
+                GetAndSaveProductImages(newProduct, product.ImageURL, product.ThumbnailURL);
             }
             else // todo discuss, remove existing images when new not specified ?
             {
-                RemoveProductImages(newProduct, siteId);
+                RemoveProductImages(newProduct);
             }
 
             newProduct.Update();
