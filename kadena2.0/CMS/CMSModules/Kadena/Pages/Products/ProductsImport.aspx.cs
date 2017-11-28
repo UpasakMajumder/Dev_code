@@ -120,7 +120,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnUploadProductCategories_Click(object sender, EventArgs e)
         {
-            var file = importFile.PostedFile;
+            var file = importProductCategories.PostedFile;
             var fileData = ReadBytes(file);
             if (fileData == null)
             {
