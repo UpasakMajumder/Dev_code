@@ -8,5 +8,6 @@
         public string ErpCustomerId { get; set; }
         public string OrderManagerEmail { get; set; }
         public string SiteDomain { get; set; }
+        public string DefaultCultureCode { get; set; }
     }
 }
