@@ -17,6 +17,7 @@ using AutoMapper;
 using Kadena.WebAPI;
 
 using static Kadena.Helpers.SerializerConfig;
+using Kadena.BusinessLogic.Services;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
@@ -27,8 +28,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             MapperBuilder.InitializeAll();
         }
-
-        #region Public methods
 
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
@@ -345,9 +344,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
-        #endregion
-
-        #region Private methods
+        [MacroMethod(typeof(string), "Returns unified date string in Kadena format", 1)]
+        [MacroMethodParam(0, "datetime", typeof(DateTime), "DateTime to format")]
+        public static object FormatDateTime(EvaluationContext context, params object[] parameters)
+        {
+            var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
+            return new DateTimeFormatter(new KenticoResourceService()).Format(datetime);
+        }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
         {
@@ -385,7 +388,5 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
-
-        #endregion
     }
 }
