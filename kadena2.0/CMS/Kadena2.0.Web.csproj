@@ -1271,6 +1271,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CMSScripts\Custom\Kadena\KadenaExtension.js" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
