@@ -407,7 +407,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         private static TreeNode AppendProductCategory(TreeNode parentPage, string[] subnodes)
         {
             if (parentPage == null || subnodes == null || subnodes.Length <= 0)
+            {
                 return parentPage;
+            }
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);

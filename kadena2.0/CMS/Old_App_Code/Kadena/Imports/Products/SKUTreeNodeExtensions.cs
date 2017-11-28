@@ -110,22 +110,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             var oldImageUrl = product?.GetValue("SKUImagePath", string.Empty);
 
-            if (string.IsNullOrEmpty(oldImageUrl) || !oldImageUrl.Contains("/"))
-            {
-                return;
-            }
-
-            var fileName = oldImageUrl.Substring(oldImageUrl.LastIndexOf('/') + 1);
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                var oldImages = MediaFileInfoProvider.GetMediaFiles().WhereEquals("FileName", fileName).ToList();
-
-                foreach (var oldImage in oldImages)
-                {
-                    MediaFileInfoProvider.DeleteMediaFile(oldImage.FileSiteID, oldImage.FileLibraryID, oldImage.FilePath);
-                    MediaFileInfoProvider.DeleteMediaFileInfo(oldImage);
-                }
-            }
+            MediaLibrary.RemoveMediaFile(oldImageUrl);
         }
     }
 }

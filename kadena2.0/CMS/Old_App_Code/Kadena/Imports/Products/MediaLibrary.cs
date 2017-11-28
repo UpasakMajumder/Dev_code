@@ -4,6 +4,7 @@ using CMS.SiteProvider;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
@@ -99,6 +100,26 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
 
             return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
+        }
+
+        public static void RemoveMediaFile(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url) || !url.Contains("/"))
+            {
+                return;
+            }
+
+            var fileName = url.Substring(url.LastIndexOf('/') + 1);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var oldImages = MediaFileInfoProvider.GetMediaFiles().WhereEquals("FileName", fileName).ToList();
+
+                foreach (var oldImage in oldImages)
+                {
+                    MediaFileInfoProvider.DeleteMediaFile(oldImage.FileSiteID, oldImage.FileLibraryID, oldImage.FilePath);
+                    MediaFileInfoProvider.DeleteMediaFileInfo(oldImage);
+                }
+            }
         }
     }
 }
