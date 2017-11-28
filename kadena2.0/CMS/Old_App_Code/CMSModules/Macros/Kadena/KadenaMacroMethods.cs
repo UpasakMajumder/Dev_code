@@ -350,10 +350,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
         [MacroMethod(typeof(string), "Returns unified date string in Kadena format", 1)]
         [MacroMethodParam(0, "datetime", typeof(DateTime), "DateTime to format")]
-        public static object FormatDateTime(EvaluationContext context, params object[] parameters)
+        public static object FormatDate(EvaluationContext context, params object[] parameters)
         {
             var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
             return new DateTimeFormatter(new KenticoResourceService()).Format(datetime);
+        }
+
+        [MacroMethod(typeof(string), "Returns unified date format string", 0)]
+        public static object GetDateFormatString(EvaluationContext context, params object[] parameters)
+        {
+            return new DateTimeFormatter(new KenticoResourceService()).GetFormatString();
         }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)

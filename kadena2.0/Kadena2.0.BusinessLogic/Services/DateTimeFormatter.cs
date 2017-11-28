@@ -26,7 +26,7 @@ namespace Kadena.BusinessLogic.Services
             this.resources = resources;
         }
 
-        public string Format(DateTime dt)
+        public string GetFormatString()
         {
             string formatString;
             var culture = resources.GetKenticoSite()?.DefaultCultureCode;
@@ -34,7 +34,12 @@ namespace Kadena.BusinessLogic.Services
             {
                 formatString = defaultFormatString;
             }
-            return dt.ToString(formatString);
+            return formatString;
+        }
+
+        public string Format(DateTime dt)
+        {
+            return dt.ToString(GetFormatString());
         }
     }
 }
