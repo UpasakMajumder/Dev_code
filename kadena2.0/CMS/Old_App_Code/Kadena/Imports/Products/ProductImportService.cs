@@ -25,7 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
         };
 
-        public ImportResult ProcessProductsImportFile(byte[] importFileData, ExcelType type, int siteID)
+        public override ImportResult Process(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
             statusMessages.Clear();
@@ -107,13 +107,19 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
-        public ImportResult ProcessProductCategories(byte[] importFileData, ExcelType type, int siteID)
+        protected TreeNode CreateProductCategory(string[] path, int siteId)
         {
-            return new ImportResult
-            {
-                AllMessagesCount = statusMessages.AllMessagesCount,
-                ErrorMessages = statusMessages.ToArray()
-            };
+            var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
+                            .Path("/", PathTypeEnum.Children)
+                            .WhereEquals("ClassName", "KDA.ProductsModule")
+                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                            .CheckPermissions()
+                            .NestingLevel(1)
+                            .OnSite(new SiteInfoIdentifier(siteId))
+                            .Published()
+                            .FirstObject;
+
+            return AppendProductCategory(root, path);
         }
 
         private static bool ValidateImportItem(ProductDto product, out List<string> validationErrors)
@@ -210,7 +216,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return isValid;
         }
 
-        private static void SaveProduct(ProductDto productDto, int siteID)
+        private void SaveProduct(ProductDto productDto, int siteID)
         {
             var categories = productDto.ProductCategory.Split('\n');
             var productParent = CreateProductCategory(categories, siteID);
@@ -396,21 +402,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
 
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
-        }
-
-        private static TreeNode CreateProductCategory(string[] path, int siteId)
-        {
-            var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
-                            .Path("/", PathTypeEnum.Children)
-                            .WhereEquals("ClassName", "KDA.ProductsModule")
-                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
-                            .CheckPermissions()
-                            .NestingLevel(1)
-                            .OnSite(new SiteInfoIdentifier(siteId))
-                            .Published()
-                            .FirstObject;
-
-            return AppendProductCategory(root, path);
         }
 
         private static TreeNode AppendProductCategory(TreeNode parentPage, string[] subnodes)

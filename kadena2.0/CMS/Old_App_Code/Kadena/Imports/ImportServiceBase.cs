@@ -38,5 +38,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
             return site;
         }
+
+        public abstract ImportResult Process(byte[] importFileData, ExcelType type, int siteId);
     }
 }

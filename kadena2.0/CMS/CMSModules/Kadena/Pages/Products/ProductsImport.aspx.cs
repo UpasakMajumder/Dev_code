@@ -30,7 +30,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
             try
             {
-                var result = new ProductImportService().ProcessProductsImportFile(fileData, excelType, SelectedSiteID);
+                var result = new ProductImportService().Process(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -131,7 +131,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
             try
             {
-                var result = new ProductImportService().ProcessProductCategories(fileData, excelType, SelectedSiteID);
+                var result = new ProductCategoryImporter().Process(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
