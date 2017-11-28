@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -38,8 +39,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 try
                 {
                     var createdCategory = CreateProductCategory(productCategory.ProductCategory, siteId);
-                    createdCategory.SetValue("ProductCategoryTitle", createdCategory.DocumentName);
-                    createdCategory.SetValue("ProductCategoryDescription", productCategory.Description);
+                    createdCategory.ProductCategoryTitle = createdCategory.DocumentName;
+                    createdCategory.ProductCategoryDescription = productCategory.Description;
                     ClearImage(createdCategory);
                     if (!string.IsNullOrWhiteSpace(productCategory.ImageURL))
                     {
@@ -77,20 +78,20 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 , $"Product image for SKU {createdCategory.GetValue("ProductCategoryTitle")}");
         }
 
-        private void ClearImage(BaseInfo category)
+        private void ClearImage(ProductCategory category)
         {
             MediaLibrary.RemoveMediaFile(GetImage(category));
             SetImage(category, string.Empty);
         }
 
-        private void SetImage(BaseInfo category, string image)
+        private void SetImage(ProductCategory category, string image)
         {
-            category.SetValue("ProductCategoryImage", image);
+            category.ProductCategoryImage = image;
         }
 
-        private string GetImage(BaseInfo category)
+        private string GetImage(ProductCategory category)
         {
-            return category?.GetValue("ProductCategoryImage")?.ToString();
+            return category?.ProductCategoryImage;
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CMS.DataEngine;
 using CMS.SiteProvider;
+using CMS.DocumentEngine.Types.KDA;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -107,7 +108,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
-        protected TreeNode CreateProductCategory(string[] path, int siteId)
+        protected ProductCategory CreateProductCategory(string[] path, int siteId)
         {
             var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
                             .Path("/", PathTypeEnum.Children)
@@ -404,16 +405,19 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
 
-        private static TreeNode AppendProductCategory(TreeNode parentPage, string[] subnodes)
+        private static ProductCategory AppendProductCategory(TreeNode parentPage, string[] subnodes)
         {
             if (parentPage == null || subnodes == null || subnodes.Length <= 0)
             {
-                return parentPage;
+                return ProductCategoryProvider
+                    .GetProductCategories()
+                    .WhereEquals(nameof(parentPage.DocumentID), parentPage.DocumentID)
+                    .FirstObject;
             }
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);
-
+            
             if (category == null)
             {
                 category = TreeNode.New("KDA.ProductCategory", tree);
@@ -422,7 +426,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
-
+            
             return AppendProductCategory(category, subnodes.Skip(1).ToArray());
         }
 
