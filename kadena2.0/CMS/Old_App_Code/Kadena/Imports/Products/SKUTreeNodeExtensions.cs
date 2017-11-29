@@ -27,46 +27,45 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, fromUrl))
                 {
-
-                    var response = client.SendAsync(request).Result;
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    using (var response = client.SendAsync(request).Result)
                     {
-                        var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
-
-                        if (!mimetype.StartsWith("image/"))
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            throw new Exception("Thumbnail is not of image MIME type");
+                            var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
+
+                            if (!mimetype.StartsWith("image/"))
+                            {
+                                throw new Exception("Thumbnail is not of image MIME type");
+                            }
+
+                            var stream = response.Content.ReadAsStreamAsync().Result;
+
+                            var extension = Path.GetExtension(fromUrl);
+
+                            if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                            {
+                                extension = mimetype.Split('/')[1];
+                            }
+
+                            // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
+                            newAttachment = new AttachmentInfo()
+                            {
+                                InputStream = stream,
+                                AttachmentSiteID = product.NodeSiteID,
+                                AttachmentDocumentID = product.DocumentID,
+                                AttachmentExtension = extension,
+                                AttachmentName = $"Thumbnail{product.SKU.SKUNumber}.{extension}",
+                                AttachmentLastModified = DateTime.Now,
+                                AttachmentMimeType = mimetype,
+                                AttachmentSize = (int)stream.Length
+                            };
+
                         }
-
-                        var stream = response.Content.ReadAsStreamAsync().Result;
-
-                        var extension = Path.GetExtension(fromUrl);
-
-                        if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                        else
                         {
-                            extension = mimetype.Split('/')[1];
+                            throw new Exception("Failed to download thumbnail image");
                         }
-
-                        // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
-                        newAttachment = new AttachmentInfo()
-                        {
-                            InputStream = stream,
-                            AttachmentSiteID = product.NodeSiteID,
-                            AttachmentDocumentID = product.DocumentID,
-                            AttachmentExtension = extension,
-                            AttachmentName = $"Thumbnail{product.SKU.SKUNumber}.{extension}",
-                            AttachmentLastModified = DateTime.Now,
-                            AttachmentMimeType = mimetype,
-                            AttachmentSize = (int)stream.Length
-                        };
-
                     }
-                    else
-                    {
-                        throw new Exception("Failed to download thumbnail image");
-                    }
-
                 }
             }
 

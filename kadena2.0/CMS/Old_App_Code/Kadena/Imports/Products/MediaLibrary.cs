@@ -52,49 +52,50 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, fromUrl))
                 {
-                    var response = client.SendAsync(request).Result;
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    using (var response = client.SendAsync(request).Result)
                     {
-                        var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
-
-                        if (!mimetype.StartsWith("image/"))
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            throw new Exception("Image is not of image MIME type");
+                            var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
+
+                            if (!mimetype.StartsWith("image/"))
+                            {
+                                throw new Exception("Image is not of image MIME type");
+                            }
+
+                            var stream = response.Content.ReadAsStreamAsync().Result;
+                            
+                            var img = Image.FromStream(stream);
+                            stream.Seek(0, SeekOrigin.Begin);
+                            var extension = Path.GetExtension(fromUrl);
+
+                            if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                            {
+                                extension = $".{mimetype.Split('/')[1]}";
+                            }
+
+                            mediaFile = new MediaFileInfo()
+                            {
+                                FileBinaryStream = stream,
+                                FileName = imageName,
+                                FileTitle = imageName,
+                                FileDescription = imageDescription,
+                                FilePath = $"{LibraryName}/",
+                                FileExtension = extension,
+                                FileMimeType = mimetype,
+                                FileSiteID = SiteId,
+                                FileLibraryID = _mediaLibrary.LibraryID,
+                                FileSize = stream.Length,
+                                FileImageHeight = img.Height,
+                                FileImageWidth = img.Width
+                            };
+
+                            MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
                         }
-
-                        var stream = response.Content.ReadAsStreamAsync().Result;
-
-                        var img = Image.FromStream(stream);
-                        stream.Seek(0, SeekOrigin.Begin);
-                        var extension = Path.GetExtension(fromUrl);
-
-                        if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
+                        else
                         {
-                            extension = $".{mimetype.Split('/')[1]}";
+                            throw new Exception("Failed to download product image");
                         }
-
-                        mediaFile = new MediaFileInfo()
-                        {
-                            FileBinaryStream = stream,
-                            FileName = imageName,
-                            FileTitle = imageName,
-                            FileDescription = imageDescription,
-                            FilePath = $"{LibraryName}/",
-                            FileExtension = extension,
-                            FileMimeType = mimetype,
-                            FileSiteID = SiteId,
-                            FileLibraryID = _mediaLibrary.LibraryID,
-                            FileSize = stream.Length,
-                            FileImageHeight = img.Height,
-                            FileImageWidth = img.Width
-                        };
-
-                        MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
-                    }
-                    else
-                    {
-                        throw new Exception("Failed to download product image");
                     }
                 }
             }
