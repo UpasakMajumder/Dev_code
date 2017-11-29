@@ -415,13 +415,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return selectorItems.ToArray();
         }
 
-        public class LanguageSelectorItem
-        {
-            public string Code { get; set; }
-            public string Language { get; set; }
-            public string Url { get; set; }
-        }
-
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
