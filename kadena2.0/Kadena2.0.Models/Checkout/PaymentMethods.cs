@@ -21,6 +21,13 @@ namespace Kadena.Models.Checkout
         {
             Items.ForEach(i => i.Checked = false);
 
+            var unpayableMethod = Items.Where(m => m.IsUnpayable && !m.Disabled).FirstOrDefault();
+            if (unpayableMethod != null)
+            {
+                unpayableMethod.Checked = true;
+                return;
+            }
+
             var defaultItem = Items.FirstOrDefault(i => i.Disabled == false);
 
             if (defaultItem != null)
