@@ -2,7 +2,6 @@
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine;
 using Kadena.Models;
@@ -20,6 +19,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImportService : ImportServiceBase
     {
+        private string _culture;
+
         protected static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,
@@ -32,6 +33,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             statusMessages.Clear();
 
             var site = GetSite(siteID);
+            _culture = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.CMSDefaultCultureCode");
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
 
@@ -72,6 +74,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             CacheHelper.ClearCache();
 
             var site = GetSite(siteID);
+            _culture = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.CMSDefaultCultureCode");
             var rows = GetExcelRows(importFileData, type);
             var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
             statusMessages.Clear();
@@ -113,7 +116,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var root = DocumentHelper.GetDocuments("KDA.ProductsModule")
                             .Path("/", PathTypeEnum.Children)
                             .WhereEquals("ClassName", "KDA.ProductsModule")
-                            .Culture(LocalizationContext.CurrentCulture.CultureCode)
+                            .Culture(_culture)
                             .CheckPermissions()
                             .NestingLevel(1)
                             .OnSite(new SiteInfoIdentifier(siteId))
@@ -286,7 +289,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             product.RemoveTumbnail();
         }
 
-        private static SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
+        private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
         {
             if (parent == null || product == null)
             {
@@ -301,7 +304,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.DocumentSKUName = product.ProductName;
             newProduct.NodeSKUID = sku.SKUID;
             newProduct.NodeName = product.ProductName;
-            newProduct.DocumentCulture = LocalizationContext.PreferredCultureCode;
+            newProduct.DocumentCulture = _culture;
             newProduct.SetValue("ProductType", product.ProductType);
             newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
             newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
@@ -405,7 +408,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return JsonConvert.SerializeObject(ranges, camelCaseSerializer);
         }
 
-        private static ProductCategory AppendProductCategory(TreeNode parentPage, string[] subnodes)
+        private ProductCategory AppendProductCategory(TreeNode parentPage, string[] subnodes)
         {
             if (parentPage == null || subnodes == null || subnodes.Length <= 0)
             {
@@ -422,7 +425,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 category = TreeNode.New("KDA.ProductCategory", tree);
                 category.DocumentName = subnodes[0];
-                category.DocumentCulture = LocalizationContext.PreferredCultureCode;
+                category.DocumentCulture = _culture;
                 SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
