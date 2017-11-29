@@ -268,7 +268,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
+            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_CampaignCreatePageUrl"), Guid.Empty);
             {
                 if (!nodeGUID.Equals(Guid.Empty))
                 {
