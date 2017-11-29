@@ -60,6 +60,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                                 AttachmentSize = (int)stream.Length
                             };
 
+                            AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
+
+                            return newAttachment;
                         }
                         else
                         {
@@ -68,13 +71,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     }
                 }
             }
-
-            if (newAttachment != null)
-            {
-                AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-            }
-
-            return newAttachment;
         }
 
         public static void AttachThumbnail(this SKUTreeNode product, AttachmentInfo newAttachment)
