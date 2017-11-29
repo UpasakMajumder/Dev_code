@@ -14,6 +14,18 @@
             <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
         </div>
 
+        <asp:PlaceHolder runat="server" ID="errorMessageContainer" Visible="false">
+            <div class="alert-dismissable alert-error alert">
+                <span class="alert-icon">
+                    <i class="icon-times-circle"></i>
+                    <span class="sr-only">Error</span>
+                </span>
+                <div class="alert-label">
+                    <asp:Literal runat="server" ID="errorMessage"></asp:Literal>
+                </div>
+            </div>
+        </asp:PlaceHolder>
+
         <asp:PlaceHolder runat="server" ID="successMessageContainer" Visible="false">
             <div class="alert-dismissable alert-info alert">
                 <span class="alert-icon">
@@ -82,19 +94,6 @@
                     OnClick="btnUploadProductList_Click" runat="server" />
             </div>
         </div>
-
-        <asp:PlaceHolder runat="server" ID="errorMessageContainer" Visible="false">
-            <div class="alert-dismissable alert-error alert">
-                <span class="alert-icon">
-                    <i class="icon-times-circle"></i>
-                    <span class="sr-only">Error</span>
-                </span>
-                <div class="alert-label">
-                    <asp:Literal runat="server" ID="errorMessage"></asp:Literal>
-                </div>
-            </div>
-        </asp:PlaceHolder>
-
         
     </div>
     <script>
