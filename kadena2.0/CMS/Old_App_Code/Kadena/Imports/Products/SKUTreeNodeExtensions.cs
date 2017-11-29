@@ -21,7 +21,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         public static AttachmentInfo DownloadAttachmentThumbnail(this SKUTreeNode product, string fromUrl)
         {
-            AttachmentInfo newAttachment = null;
+            if (product.SKU == null)
+            {
+                throw new ArgumentNullException(nameof(product.SKU));
+            }
 
             using (var client = new HttpClient())
             {
@@ -48,7 +51,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                             }
 
                             // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
-                            newAttachment = new AttachmentInfo()
+                            var newAttachment = new AttachmentInfo()
                             {
                                 InputStream = stream,
                                 AttachmentSiteID = product.NodeSiteID,
