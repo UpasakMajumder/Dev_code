@@ -2,6 +2,7 @@
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -28,9 +29,14 @@ namespace Kadena.BusinessLogic.Services
 
         public string GetFormatString()
         {
+            var culture = resources.GetContextCultureCode();
+            return GetFormatString(culture);
+        }
+
+        public string GetFormatString(string cultureCode)
+        {
             string formatString;
-            var culture = resources.GetKenticoSite()?.DefaultCultureCode;
-            if (!customFormatStrings.TryGetValue(culture, out formatString))
+            if (!customFormatStrings.TryGetValue(cultureCode, out formatString))
             {
                 formatString = defaultFormatString;
             }
@@ -39,7 +45,10 @@ namespace Kadena.BusinessLogic.Services
 
         public string Format(DateTime dt)
         {
-            return dt.ToString(GetFormatString());
+            var culture = resources.GetContextCultureCode();
+            var formatProvider =  new CultureInfo(culture);
+            var formatString = GetFormatString(culture);
+            return dt.ToString(formatString, formatProvider);
         }
     }
 }

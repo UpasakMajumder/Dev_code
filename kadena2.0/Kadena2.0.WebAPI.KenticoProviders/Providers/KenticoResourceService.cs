@@ -51,8 +51,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 DisplayName = site.DisplayName,
                 ErpCustomerId = GetSettingsKey(site.SiteName, "KDA_ErpCustomerId"),
                 SiteDomain = site.DomainName,
-                OrderManagerEmail = GetSettingsKey(site.SiteID, "KDA_OrderNotificationEmail"),
-                DefaultCultureCode = site.DefaultVisitorCulture
+                OrderManagerEmail = GetSettingsKey(site.SiteID, "KDA_OrderNotificationEmail")
             };
         }
 
@@ -102,6 +101,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetCurrentSiteDomain()
         {
             return RequestContext.CurrentDomain;
+        }
+
+        public string GetContextCultureCode()
+        {
+            return LocalizationContext.CurrentCulture.CultureCode;
         }
     }
 }
