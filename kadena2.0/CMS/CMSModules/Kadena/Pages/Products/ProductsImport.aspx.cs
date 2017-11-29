@@ -19,32 +19,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnUploadProductList_Click(object sender, EventArgs e)
         {
-            var file = importFile.PostedFile;
-            var fileData = ReadBytes(file);
-            if (fileData == null)
-            {
-                return;
-            }
-            var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
-
-            try
-            {
-                var result = new ProductImportService().Process(fileData, excelType, SelectedSiteID);
-                if (result.ErrorMessages.Length > 0)
-                {
-                    ShowErrorMessage(FormatImportResult(result));
-                }
-                else
-                {
-                    ShowSuccessMessage("Operation successfully completed");
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("Import products", "EXCEPTION", ex);
-                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
-            }
+            Import(importFile, new ProductImportService());
         }
 
         private string FormatImportResult(ImportResult result)
@@ -62,18 +37,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         private byte[] ReadBytes(HttpPostedFile fileRequest)
         {
-            if (string.IsNullOrWhiteSpace(fileRequest.FileName))
-            {
-                ShowErrorMessage("You need to choose the import file.");
-                return null;
-            }
-
-            if (SelectedSiteID == 0)
-            {
-                ShowErrorMessage("You need to choose the Site.");
-                return null;
-            }
-
             using (var binaryReader = new BinaryReader(fileRequest.InputStream))
             {
                 return binaryReader.ReadBytes(fileRequest.ContentLength);
@@ -119,18 +82,42 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnUploadProductCategories_Click(object sender, EventArgs e)
         {
-            var file = importProductCategories.PostedFile;
-            var fileData = ReadBytes(file);
-            if (fileData == null)
+            Import(importProductCategories, new ProductCategoryImporter());
+
+        }
+
+        private void Import(System.Web.UI.WebControls.FileUpload fileControl, ImportServiceBase importer)
+        {
+            if (fileControl == null || importer == null)
             {
+                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "IMPORT", "Improper usage of import method.");
                 return;
             }
 
+            if (SelectedSiteID == 0)
+            {
+                ShowErrorMessage("You need to choose the Site.");
+                return;
+            }
+
+            var file = fileControl.PostedFile;
+            if (string.IsNullOrWhiteSpace(file.FileName))
+            {
+                ShowErrorMessage("You need to choose the import file.");
+                return;
+            }
             var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
+
+            var fileData = ReadBytes(file);
+            if (fileData == null)
+            {
+                ShowErrorMessage("Selected file doesn't have any data.");
+                return;
+            }
 
             try
             {
-                var result = new ProductCategoryImporter().Process(fileData, excelType, SelectedSiteID);
+                var result = importer.Process(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -143,10 +130,9 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogException("Import product categories", "EXCEPTION", ex);
+                EventLogProvider.LogException(GetType().Name, "EXCEPTION", ex);
                 ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
             }
-
         }
     }
 }
