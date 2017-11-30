@@ -88,7 +88,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
             if (campaign != null)
             {
-                var products = campaign.AllChildren.WithAllData.Where(xx => xx.ClassName == CampaignProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID).ToList();
+                var products = campaign.AllChildren.WithAllData.Where(xx => xx.ClassName == CampaignsProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID).ToList();
                 bool initiated = campaign.CampaignInitiate;
                 bool gAdminNotified = campaign.GlobalAdminNotified;
                 bool openCampaign = campaign.OpenCampaign;

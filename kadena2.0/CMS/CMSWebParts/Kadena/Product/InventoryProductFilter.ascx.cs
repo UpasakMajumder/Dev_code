@@ -30,8 +30,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (!string.IsNullOrEmpty(txtProductSearch.Text))
             {
                 var searchText = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtProductSearch.Text.Trim()));
-              
-                where += "ProductName like '%" + searchText + "%' or ShortDescription like '%" + searchText + "%' or b.BrandName like '%" + searchText + "%' or pn.POSNumber like '%" + searchText + "%' or BundleQty like '%"+searchText+"%'";
+
+                where += $"SKUName like '% { searchText}%' or SKUDescription like '%{ searchText }%' or b.BrandName like '%{searchText }%' or s.SKUNumber like '%{ searchText }%' or BundleQty like '%{ searchText }%'";
             }
             if (where != null)
             {
