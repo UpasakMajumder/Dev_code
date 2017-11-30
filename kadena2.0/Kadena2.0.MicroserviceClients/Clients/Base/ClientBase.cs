@@ -138,9 +138,31 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
         {
-            using (var request = CreateRequest(method, url, body))
+            HttpRequestMessage request = null;
+            try
             {
+                request = CreateRequest(method, url, body);
                 return await SendRequest<TResult>(request).ConfigureAwait(false);
+            }
+            catch (Exception exc)
+            {
+                return new BaseResponseDto<TResult>
+                {
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new BaseErrorDto
+                    {
+                        Message = "Failed to request microservice.",
+                        InnerError = new BaseErrorDto
+                        {
+                            Message = exc.GetBaseException().Message
+                        }
+                    }
+                };
+            }
+            finally
+            {
+                request?.Dispose();
             }
         }
 
