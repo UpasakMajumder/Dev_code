@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
 /* helpers */
-import { divideBySlash } from 'app.helpers/time';
+import timeFormat from 'app.helpers/time';
 
 const PaymentInfo = ({ ui }) => {
   const { title, paymentIcon, paidBy, paymentDetail, date, datePrefix } = ui;
@@ -16,7 +16,7 @@ const PaymentInfo = ({ ui }) => {
       <div className="order-block__detail">
         <SVG name={paymentIcon}/>
         {paymentMethodInfo}
-        <p>{datePrefix}: <span className="weight--bold">{divideBySlash(date)}</span></p>
+        <p>{datePrefix}: <span className="weight--bold">{timeFormat(date)}</span></p>
       </div>
     </div>
   );

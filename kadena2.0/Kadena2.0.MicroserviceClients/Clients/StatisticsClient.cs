@@ -8,7 +8,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class StatisticsClient : ClientBase, IStatisticsClient
+    public sealed class StatisticsClient : SignedClientBase, IStatisticsClient
     {
         private const string _serviceUrlSettingKey = "KDA_OrderStatisticsServiceEndpoint";
         private readonly IMicroProperties _properties;
