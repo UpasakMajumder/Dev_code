@@ -37,7 +37,7 @@ namespace Kadena2.MicroserviceClients.Helpers
 
         private static AWSCredentials GetCredentialsDefault()
         {
-            return new StoredProfileAWSCredentials();
+            return FallbackCredentialsFactory.GetCredentials();
         }
 
         /// <summary>
