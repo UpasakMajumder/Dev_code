@@ -11,7 +11,7 @@ using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
 using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
