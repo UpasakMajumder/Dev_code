@@ -24,7 +24,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                     LibraryName = libraryName,
                     LibraryDescription = "Media library for storing product images",
                     LibraryFolder = "Products",
-                    LibrarySiteID = SiteContext.CurrentSiteID,
+                    LibrarySiteID = siteId,
                     Access = CMS.Helpers.SecurityAccessEnum.AuthenticatedUsers
                 };
                 
