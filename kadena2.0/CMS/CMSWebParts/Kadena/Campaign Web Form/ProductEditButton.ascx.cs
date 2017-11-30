@@ -3,7 +3,6 @@ using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.Localization;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using System;

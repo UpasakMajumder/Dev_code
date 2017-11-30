@@ -71,7 +71,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     }
                     BindUsers(1);
                 }
-                
+
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
                 hdnDatepickerUrl.Value = SettingsKeyInfoProvider.GetValue("KDA_DatePickerPath", CurrentSiteName);
@@ -107,7 +107,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
                 {
                     TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                    CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
+                    CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes()
+                        .Path(folderpath)
+                        .OnCurrentSite()
+                        .Culture(DocumentContext.CurrentDocument.DocumentCulture)
+                        .FirstObject;
                     if (parentPage != null)
                     {
                         CampaignsProduct products = new CampaignsProduct()
@@ -371,7 +375,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
                 if (customTable != null)
                 {
-                    var customTableData = CustomTableItemProvider.GetItems(customTableClassName).WhereStartsWith("ProductID", productID.ToString());
+                    var customTableData = CustomTableItemProvider.GetItems(customTableClassName)
+                        .WhereStartsWith("ProductID", productID.ToString());
                     foreach (CustomTableItem customitem in customTableData)
                     {
                         int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(customitem.GetValue("UserID"), 0));
@@ -414,7 +419,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 if (productID != 0)
                 {
-                    CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignsProductID", productID).FirstOrDefault();
+                    CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts()
+                        .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                        .WhereEquals("CampaignsProductID", productID)
+                        .FirstOrDefault();
                     if (product != null)
                     {
                         SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
@@ -481,7 +489,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private void BindUsers(int pageIndex)
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
-            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName").Skip(PageSize * (pageIndex - 1)).Take(PageSize);
+            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName")
+                .Skip(PageSize * (pageIndex - 1))
+                .Take(PageSize);
             foreach (UserInfo user in users)
             {
                 AllocateProduct objProduct = new AllocateProduct();
@@ -628,14 +638,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                var categories = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", CurrentSite.SiteID).Columns("ProductCategoryID,ProductCategoryTitle").ToList();
+                var categories = ProductCategoryProvider.GetProductCategories()
+                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                    .Columns("ProductCategoryID,ProductCategoryTitle")
+                    .ToList();
                 if (!DataHelper.DataSourceIsEmpty(categories))
                 {
                     ddlProdCategory.DataSource = categories;
                     ddlProdCategory.DataTextField = "ProductCategoryTitle";
                     ddlProdCategory.DataValueField = "ProductCategoryID";
                     ddlProdCategory.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.CategoryWaterMark"), string.Empty);
+                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.CategoryWaterMark"),
+                        string.Empty);
                     ddlProdCategory.Items.Insert(0, new ListItem(selectText, "0"));
                 }
             }

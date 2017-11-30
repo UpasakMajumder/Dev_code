@@ -476,10 +476,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
                     if (productID != 0)
                     {
-                        CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignsProductID", productID).FirstOrDefault();
+                        CampaignsProduct product = CampaignsProductProvider
+                            .GetCampaignsProducts()
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .WhereEquals("CampaignsProductID", productID)
+                            .FirstOrDefault();
                         if (product != null)
                         {
-                            SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
+                            SKUInfo skuDetails = SKUInfoProvider
+                                .GetSKUs()
+                                .WhereEquals("SKUID", product.SKUID)
+                                .FirstObject;
                             if (skuDetails != null)
                             {
                                 string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
@@ -537,7 +544,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     int campaignID = campaign.GetIntegerValue("CampaignID", default(int));
                     if (campaignID != default(int))
                     {
-                        var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).Columns("ProgramName,ProgramID").Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName }).ToList();
+                        var programs = ProgramProvider.GetPrograms()
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .WhereEquals("CampaignID", campaignID)
+                            .Columns("ProgramName,ProgramID")
+                            .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
+                            .ToList();
                         if (!DataHelper.DataSourceIsEmpty(programs))
                         {
                             ddlProgram.DataSource = programs;
@@ -564,7 +576,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     {
         try
         {
-            var categories = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", CurrentSite.SiteID).Columns("ProductCategoryID,ProductCategoryTitle").Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList();
+            var categories = ProductCategoryProvider.GetProductCategories()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .Columns("ProductCategoryID,ProductCategoryTitle")
+                .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
+                .ToList();
             if (!DataHelper.DataSourceIsEmpty(categories))
             {
                 ddlProductcategory.DataSource = categories;
@@ -588,7 +604,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     {
         try
         {
-            var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME).Columns("ItemID,POSNumber").ToList();
+            var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
+                .Columns("ItemID,POSNumber")
+                .ToList();
             if (!DataHelper.DataSourceIsEmpty(pos))
             {
                 ddlPos.DataSource = pos;
@@ -653,7 +671,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             {
                 Program program = new Program();
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                var programDoc = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).Columns("NodeID").WhereEquals("ProgramID", programID).FirstOrDefault();
+                var programDoc = ProgramProvider.GetPrograms()
+                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                    .Columns("NodeID")
+                    .WhereEquals("ProgramID", programID)
+                    .FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(programDoc))
                 {
                     int programNodeID = programDoc.NodeID;
@@ -765,7 +787,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 {
                     if (ValidationHelper.GetInteger(ViewState["ProgramID"], 0) != programID)
                     {
-                        var targetProgram = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", programID).Column("NodeID").FirstOrDefault();
+                        var targetProgram = ProgramProvider.GetPrograms()
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .WhereEquals("ProgramID", programID)
+                            .Column("NodeID")
+                            .FirstOrDefault();
                         if (targetProgram != null)
                         {
                             var tagetDocument = DocumentHelper.GetDocument(targetProgram.NodeID, CurrentDocument.DocumentCulture, tree);
@@ -826,7 +852,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             int programID = ValidationHelper.GetInteger(ddlProgram.SelectedValue, 0);
             if (programID != 0)
             {
-                var program = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", programID).FirstOrDefault();
+                var program = ProgramProvider.GetPrograms()
+                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                    .WhereEquals("ProgramID", programID)
+                    .FirstOrDefault();
                 if (program != null)
                 {
                     int brandItemID = program.BrandID;
