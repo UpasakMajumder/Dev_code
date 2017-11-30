@@ -454,6 +454,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="FakeBackgroundTaskScheduler.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
@@ -472,9 +473,17 @@
       <Project>{e6315b0e-21c7-499b-b249-f13ce913a51e}</Project>
       <Name>Kadena2.0.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
+      <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
+      <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>
       <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}</Project>

@@ -3,7 +3,7 @@ using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Product.Responses;
 
 namespace Kadena.WebAPI.Controllers
