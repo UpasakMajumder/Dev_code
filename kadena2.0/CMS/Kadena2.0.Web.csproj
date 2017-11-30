@@ -1241,9 +1241,17 @@
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
+      <Project>{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}</Project>
+      <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
@@ -1262,7 +1270,7 @@
       <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
-      <Project>{FB19606B-D327-4F43-AB3F-825000079B1A}</Project>
+      <Project>{fb19606b-d327-4f43-ab3f-825000079b1a}</Project>
       <Name>Kadena2.0.WebAPI</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">

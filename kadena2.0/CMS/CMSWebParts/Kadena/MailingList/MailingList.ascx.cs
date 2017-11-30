@@ -5,8 +5,8 @@ using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.SiteProvider;
 using CMS.DataEngine;
 using CMS.EventLog;
-using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.KenticoProviders;
+using Kadena.Helpers;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
