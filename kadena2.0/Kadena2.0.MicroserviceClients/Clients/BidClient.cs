@@ -8,7 +8,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class BidClient : ClientBase, IBidClient
+    public sealed class BidClient : SignedClientBase, IBidClient
     {
         private const string _serviceUrlSettingKey = "KDA_BidServiceUrl";
         private readonly IMicroProperties _properties;

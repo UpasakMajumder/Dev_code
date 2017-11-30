@@ -7,7 +7,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class ParsingClient : ClientBase, IParsingClient
+    public sealed class ParsingClient : SignedClientBase, IParsingClient
     {
         private const string _serviceUrlSettingKey = "KDA_ParsingServiceUrl";
         private readonly IMicroProperties _properties;

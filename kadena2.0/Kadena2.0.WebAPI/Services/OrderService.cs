@@ -274,6 +274,8 @@ namespace Kadena.WebAPI.Services
                     return await PayByCard(request);
 
                 case "KDA.PaymentMethods.PurchaseOrder":
+                case "KDA.PaymentMethods.MonthlyPayment":
+                case "NoPaymentRequired":
                     return await SubmitPOOrder(request);
 
                 case "KDA.PaymentMethods.PayPal":
