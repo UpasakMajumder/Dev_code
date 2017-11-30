@@ -45,7 +45,6 @@ export const loadProducts = () => {
             type: PRODUCTS_LOAD + FAILURE,
             alert: errorMessage
           });
-          alert(errorMessage); // eslint-disable-line no-alert
           return;
         }
 
