@@ -108,7 +108,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     {
         try
         {
-           
+
             // Adds the '(any)' and '(default)' filtering options
             ddlYear.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.FiscalYearWaterMark"), "0"));
             int currentYear = DateTime.Now.Year;
@@ -199,7 +199,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 
     }
     private void BindPOSCategories()
-        {
+    {
         var posCategories = CustomTableItemProvider.GetItems(POSCategoryItem.CLASS_NAME).Columns("PosCategoryName,ItemID").ToList();
         if (!DataHelper.DataSourceIsEmpty(posCategories))
         {
