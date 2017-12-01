@@ -1171,6 +1171,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
@@ -1205,9 +1206,9 @@
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProduct.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProductProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignsProduct.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignsProductProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategoryProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Program.generated.cs" />
