@@ -198,9 +198,9 @@
                                     <table class="show-table">
                                         <tbody>
                                             <tr>
-                                                <th>UserName</th>
-                                                <th>Email</th>
-                                                <th>Quantity</th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                             </tr>
                                 </HeaderTemplate>
                                 <ItemTemplate>
@@ -256,9 +256,9 @@
                                 <tbody>
                                     <tr>
                                         <th></th>
-                                        <th>UserName</th>
-                                        <th>Email</th>
-                                        <th>Quantity</th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                     </tr>
                         </HeaderTemplate>
                         <ItemTemplate>

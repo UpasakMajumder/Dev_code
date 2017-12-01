@@ -80,18 +80,14 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     /// <returns>List of Brands</returns>
     private static ObjectQuery<CustomTableItem> GetBrands()
     {
-        // Prepares the code name (class name) of the custom table
         ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
         string customTableClassName = "KDA.Brand";
         try
         {
-            // Gets the custom table
             DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
             if (brandTable != null)
             {
-                // Gets a custom table records 
                 items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("BrandName");
-
             }
         }
         catch (Exception ex)
@@ -108,8 +104,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     {
         try
         {
-
-            // Adds the '(any)' and '(default)' filtering options
             ddlYear.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.FiscalYearWaterMark"), "0"));
             int currentYear = DateTime.Now.Year;
             for (int NoOfYear = 0; NoOfYear < 3; NoOfYear++)
@@ -144,13 +138,11 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                 DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
                 if (customTable != null)
                 {
-                    //Validation for POSNumber
+
                     CustomTableItem customTableData = CustomTableItemProvider.GetItems(customTableClassName).WhereEquals("POSNumber", posNumber);
                     if (customTableData == null)
                     {
-                        // Creates a new custom table item
                         CustomTableItem newCustomTableItem = CustomTableItem.New(customTableClassName);
-                        // Sets the values for the fields of the custom table (ItemText in this case) 
                         newCustomTableItem.SetValue("BrandID", ValidationHelper.GetString(ddlBrand.SelectedValue, ""));
                         newCustomTableItem.SetValue("Year", ValidationHelper.GetString(ddlYear.SelectedValue, ""));
                         newCustomTableItem.SetValue("POSCode", ValidationHelper.GetString(txtPOSCode.Text, ""));
@@ -158,7 +150,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         newCustomTableItem.SetValue("POSCategoryName", ValidationHelper.GetString(ddlCategory.SelectedItem.Text, ""));
                         newCustomTableItem.SetValue("BrandName", ValidationHelper.GetString(ddlBrand.SelectedItem.Text, ""));
                         newCustomTableItem.SetValue("POSNumber", posNumber);
-                        // Save the new custom table record into the database
                         newCustomTableItem.Insert();
                         lblError.Visible = false;
                         lblSuccess.Visible = true;
@@ -213,12 +204,12 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     }
     private void BindBrands()
     {
-        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("ItemID,BrandName").ToList();
+        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").ToList();
         if (!DataHelper.DataSourceIsEmpty(brands))
         {
             ddlBrand.DataSource = brands;
             ddlBrand.DataTextField = "BrandName";
-            ddlBrand.DataValueField = "ItemID";
+            ddlBrand.DataValueField = "BrandCode";
             ddlBrand.DataBind();
             string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
             ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
