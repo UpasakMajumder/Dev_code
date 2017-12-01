@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Models.Checkout;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Threading.Tasks;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class TemplatedClient : ClientBase, ITemplatedClient
+    public sealed class TemplatedClient : SignedClientBase, ITemplatedClient
     {
         private const string _serviceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
         private readonly IMicroProperties _properties;
