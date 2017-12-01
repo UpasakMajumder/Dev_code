@@ -43,14 +43,12 @@ namespace Kadena.BusinessLogic.Services
 
             var fileInfo = order.Payload.Items[line].FileInfo;
 
-            // fileurl will disapead, there will be new property fileInfo : { module ,  key }
+            var linkResult = await fileClient.GetShortliveSecureLink(fileInfo.Key, fileInfo.Module);
 
-            var s3url = "http://www.pes.cz";
-            //todo var s3url = call File service to ask secure shortlive link (module, key)
+            return linkResult.Success ? linkResult.Payload : string.Empty;
 
-            // todo what to do if anything fails and no url is retrieved ? Redirect to some error page ?
-
-            return s3url;
+            // todo properly log if something fails
+            // todo redirect to some nice page in that case
         }
     }
 }
