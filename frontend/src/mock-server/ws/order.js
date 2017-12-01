@@ -365,7 +365,7 @@ module.exports.detail =  {
       },
       orderDate: {
         title: 'Order date',
-        value: '2017-08-07T09:12:08.108892Z'
+        value: '2017-02-01T09:12:08.108892Z'
       },
       shippingDate: {
         title: 'Shipping date',

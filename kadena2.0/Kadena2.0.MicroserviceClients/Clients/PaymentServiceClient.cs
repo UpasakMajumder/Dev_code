@@ -9,7 +9,7 @@ using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class PaymentServiceClient : ClientBase, IPaymentServiceClient
+    public sealed class PaymentServiceClient : SignedClientBase, IPaymentServiceClient
     {
         private const string _serviceUrlSettingKey = "KDA_PaymentServiceUrl";
         private readonly IMicroProperties _properties;

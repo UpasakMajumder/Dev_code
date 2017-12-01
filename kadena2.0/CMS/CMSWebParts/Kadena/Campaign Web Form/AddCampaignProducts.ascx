@@ -40,7 +40,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblState"></span>
                     <div class="input__inner">
-                        <asp:TextBox runat="server" ID="txtState" CssClass="input__text"></asp:TextBox>
+                        <asp:DropDownList runat="server" ID="ddlState"></asp:DropDownList>
                     </div>
                 </div>
             </div>

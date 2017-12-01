@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
 using System.Web.Http;
 using System;
 using Kadena.Dto.Checkout;
