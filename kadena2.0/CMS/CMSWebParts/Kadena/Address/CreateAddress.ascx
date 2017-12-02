@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Address_CreateAddress" CodeBehind="~/CMSWebParts/Kadena/Address/CreateAddress.ascx.cs" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>
+<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 <%@ Register Src="~/CMSFormControls/CountrySelector.ascx" TagPrefix="uc1" TagName="CountrySelector" %>
 
 
@@ -23,7 +23,7 @@
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblAddressType"></span>
                         <div class="input__inner">
-                            <uc1:UniSelector runat="server" ID="ddlAddressType" ObjectType="customtableitem.KDA.AddressType" ReturnColumnName="ItemID" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%AddressTypeName%}" AllowEmpty="false" />
+                            <cms:UniSelector runat="server" ID="ddlAddressType" ObjectType="customtableitem.KDA.AddressType" ReturnColumnName="ItemID" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%AddressTypeName%}" AllowEmpty="false" />
                         </div>
                     </div>
                 </div>
@@ -67,23 +67,29 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
-                    <div class="input__wrapper">
-                        <span class="input__label">State</span>
-                        <div class="input__inner">
-                            <asp:TextBox ID="txtState" runat="server" CssClass="input__text" placeholder="Enter State"></asp:TextBox>
+                <cms:CMSUpdatePanel runat="server">
+                    <ContentTemplate>
+                        <div class="mb-2 form_block">
+                            <div class="input__wrapper">
+                                <span class="input__label" runat="server" id="lblCountry"></span>
+                                <div class="input__inner">
+                                    <cms:UniSelector ID="uniSelectorCountry" runat="server" DisplayNameFormat="{%CountryDisplayName%}" ObjectType="cms.country" ResourcePrefix="countryselector" AllowAll="false" AllowEmpty="false" CssClass="input__select" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" OnOnSelectionChanged="uniSelectorCountry_OnSelectionChanged" HasDependingFields="true" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="mb-2 form_block">
-                    <div class="input__wrapper">
-                        <span class="input__label" runat="server" id="lblCountry"></span>
-                        <div class="input__inner">
-                            <uc1:CountrySelector runat="server" CssClass="input__select" ID="ddlCountry" AddNoneRecord="false" AddSelectCountryRecord="false" EnableStateSelection="false" />
+                        <div class="mb-2 form_block">
+                            <div class="input__wrapper">
+                                <span class="input__label">State</span>
+                                <cms:LocalizedLabel runat="server" ResourceString="Kadena.Address.State"></cms:LocalizedLabel>
+                                <div class="input__inner">
+                                    <cms:UniSelector ID="uniSelectorState" runat="server" DisplayNameFormat="{%StateDisplayName%}"
+                                        ObjectType="cms.state" ResourcePrefix="stateselector" DependsOnAnotherField="true" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" Enabled="false" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </ContentTemplate>
+                </cms:CMSUpdatePanel>
 
                 <div class="mb-2 form_block">
                     <div class="input__wrapper">
@@ -91,7 +97,6 @@
                         <div class="input__inner">
                             <asp:TextBox ID="txtZipcode" runat="server" CssClass="input__text" placeholder="Enter Zip/Postal code" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfZipcode" runat="server" ErrorMessage="Please enter Zip/Postal code" ControlToValidate="txtZipcode" CssClass="input__error"></asp:RequiredFieldValidator>
-
                         </div>
                     </div>
                 </div>
