@@ -168,9 +168,7 @@
                 <cms:LocalizedLabel ID="lblStatus" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblStatus" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True">
-                        <asp:ListItem Text="Enabled" Value="1"></asp:ListItem>
-                        <asp:ListItem Text="Disabled" Value="0"></asp:ListItem>
-                    </cms:CMSDropDownList>
+                          </cms:CMSDropDownList>
 
                 </div>
             </div>

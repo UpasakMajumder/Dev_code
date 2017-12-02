@@ -366,11 +366,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
                 SKUInfoProvider.SetSKUInfo(newSkuProduct);
                 products.NodeSKUID = newSkuProduct.SKUID;
-                PageTemplateInfo template = PageTemplateInfoProvider.GetPageTemplateInfo("_Campaign Products");
+                PageTemplateInfo template = PageTemplateInfoProvider.GetPageTemplateInfo("CampaignProducts");
                 if (template != null)
                 {
                     products.DocumentPageTemplateID = template.PageTemplateId;
                 }
+
                 products.Insert(parentPage, true);
                 var productID = ValidationHelper.GetInteger(products.CampaignsProductID, 0);
                 AllocateProductToUsers(productID);
@@ -514,6 +515,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
+            imgProduct.ImageUrl = string.Empty;
         }
 
         /// <summary>
@@ -608,6 +610,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
+                BindStatus();
                 GetBrandName();
                 var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME).Columns("POSNumber").WhereEquals("Enable", 1).ToList();
                 if (!DataHelper.DataSourceIsEmpty(pos))
@@ -691,6 +694,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 EventLogProvider.LogException("CMSWebParts_Kadena_Inventroy_Web_Products", "BindCategories", ex, CurrentSite.SiteID, ex.Message);
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void BindStatus()
+        {
+                ddlStatus.Items.Clear();
+                ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.Disable"), "0"));
+                ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("Kadena.InvProductForm.Enable"), "1"));
+           
         }
 
         #endregion PrivateMethods
