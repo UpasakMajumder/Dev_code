@@ -17,11 +17,7 @@ using System.Linq;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
-    #region "Variables"
-    int posId = 0;
-    #endregion
-
-
+  
     #region "Methods"
 
     /// <summary>

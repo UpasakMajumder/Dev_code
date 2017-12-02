@@ -386,7 +386,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
         }
         private void UpdateProduct(int productID)
         {
-            // CampaignsProduct product = CampaignsProductProvider.GetCampaignsProduct(ValidationHelper.GetInteger(productID, 0), CurrentDocument.DocumentCulture, CurrentSiteName);
             CampaignsProduct product = CampaignsProductProvider
                            .GetCampaignsProducts()
                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
@@ -456,7 +455,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         .FirstOrDefault();
                     if (product != null)
                     {
-                        SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
+                        SKUInfo skuDetails = SKUInfoProvider.GetSKUs()
+                            .WhereEquals("SKUID", product.SKUID)
+                            .FirstObject;
                         if (skuDetails != null)
                         {
                             string folderName = libraryFolderName;
@@ -612,7 +613,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 BindStatus();
                 GetBrandName();
-                var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME).Columns("POSNumber").WhereEquals("Enable", 1).ToList();
+                var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
+                    .Columns("POSNumber")
+                    .WhereEquals("Enable", 1)
+                    .ToList();
                 if (!DataHelper.DataSourceIsEmpty(pos))
                 {
                     ddlPosNo.DataSource = pos;
@@ -623,7 +627,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
                 }
                 BindCategories();
-                var states = StateInfoProvider.GetStates().Columns("StateID,StateName").ToList();
+                var states = StateInfoProvider.GetStates()
+                    .Columns("StateID,StateName")
+                    .ToList();
                 if (!DataHelper.DataSourceIsEmpty(states))
                 {
                     ddlState.DataSource = states;
@@ -650,7 +656,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
             string returnValue = string.Empty;
             try
             {
-                var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("ItemID,BrandName").ToList();
+                var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                    .Columns("ItemID,BrandName")
+                    .ToList();
                 if (!DataHelper.DataSourceIsEmpty(brands))
                 {
                     ddlBrand.DataSource = brands;
