@@ -8,6 +8,7 @@ using AutoMapper;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class FavoritesController : ApiControllerBase
     {
         private readonly IFavoritesService favorites;
@@ -31,7 +32,6 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPut]
         [Route("api/favorites/set/{productDocumentId}")]
-        [CustomerAuthorizationFilter]
         public IHttpActionResult SetFavorite(int productDocumentId)
         {
             favorites.SetFavoriteProduct(productDocumentId);
@@ -40,7 +40,6 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPut]
         [Route("api/favorites/unset/{productDocumentId}")]
-        [CustomerAuthorizationFilter]
         public IHttpActionResult UnsetFavorite(int productDocumentId)
         {
             favorites.UnsetFavoriteProduct(productDocumentId);
@@ -49,7 +48,6 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/favorites/{count}")]
-        [CustomerAuthorizationFilter]
         public IHttpActionResult GetFavorites(int count = 5)
         {
             var products = favorites.GetFavorites(count);
