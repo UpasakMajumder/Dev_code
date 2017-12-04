@@ -73,7 +73,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 LibraryDescription = "Media library for storing product categories images."
             };
             return library.DownloadImageToMedialibrary(imageURL
-                , $"Image{createdCategory.GetValue("ProductCategoryTitle")}"
+                , $"Image{createdCategory.NodeAlias}"
                 , $"Product image for SKU {createdCategory.GetValue("ProductCategoryTitle")}");
         }
 
