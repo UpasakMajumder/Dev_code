@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 
-using static Kadena.WebAPI.SerializerConfig;
+using static Kadena.Helpers.SerializerConfig;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {

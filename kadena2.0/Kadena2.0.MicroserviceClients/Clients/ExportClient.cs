@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class ExportClient : ClientBase, IExportClient
+    public sealed class ExportClient : SignedClientBase, IExportClient
     {
         private const string _serviceUrlSettingKey = "KDA_ExportServiceUrl";
         private readonly IMicroProperties _properties;
@@ -23,29 +23,25 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
-            using (var client = new HttpClient())
+            return await Get<Stream>(url).ConfigureAwait(false);
+        }
+
+        protected override async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        {
+            if (typeof(TResult).Equals(typeof(Stream)) && response.IsSuccessStatusCode)
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                var resultStream = new MemoryStream();
+                await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
+                return new BaseResponseDto<TResult>
                 {
-                    using (var message = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        if (message.IsSuccessStatusCode)
-                        {
-                            var contentStream = await message.Content.ReadAsStreamAsync();
-                            var resultStream = new MemoryStream();
-                            await contentStream.CopyToAsync(resultStream).ConfigureAwait(false);
-                            return new BaseResponseDto<Stream>
-                            {
-                                Success = true,
-                                Payload = resultStream
-                            };
-                        }
-                        else
-                        {
-                            return await ReadResponseJson<Stream>(message).ConfigureAwait(false);
-                        }
-                    }
-                }
+                    Success = true,
+                    Payload = (TResult)(object)resultStream
+                };
+            }
+            else
+            {
+                return await base.ReadResponseJson<TResult>(response).ConfigureAwait(false);
             }
         }
     }

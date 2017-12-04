@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class CreditCardManagerClient : ClientBase, ICreditCardManagerClient
+    public sealed class CreditCardManagerClient : SignedClientBase, ICreditCardManagerClient
     {
         private const string _serviceUrlSettingKey = "KDA_CreditCardManagerEndpoint";
         private readonly IMicroProperties _properties;
