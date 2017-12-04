@@ -12,6 +12,30 @@ using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
+
+    #region "Properties"
+
+    /// <summary>
+    /// Selected country ID.
+    /// </summary>
+    public int CountryID
+    {
+        get
+        {
+            return ValidationHelper.GetInteger(uniSelectorCountry.Value, 0);
+        }
+        set
+        {
+            if (value > 0)
+            {
+                uniSelectorCountry.Value = value;
+                uniSelectorState.WhereCondition = "CountryID = " + value;
+            }
+        }
+    }
+
+    #endregion
+
     #region "Methods"
 
     /// <summary>
@@ -32,7 +56,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         {
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
-                ddlCountry.Value = "USA";
                 BindResourceStrings();
                 int itemID = QueryHelper.GetInteger("id", 0);
                 if (itemID > 0)
@@ -107,7 +130,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var addressData = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", itemID).FirstOrDefault();
+            AddressInfo addressData = AddressInfoProvider.GetAddresses()
+                                                            .WhereEquals("AddressID", itemID)
+                                                            .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(addressData))
             {
                 txtAddressLine1.Text = addressData.AddressLine1;
@@ -116,13 +141,20 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 txtZipcode.Text = addressData.AddressZip;
                 txtName.Text = addressData.AddressPersonalName;
                 txtTelephone.Text = addressData.AddressPhone;
-                ddlCountry.Value = $"{GetCountryName(addressData.AddressCountryID)};{GetStateName(addressData.AddressStateID)}";
-                ddlAddressType.Value = addressData.GetValue("AddressType", string.Empty);
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", addressData.AddressID).FirstOrDefault();
+                uniSelectorCountry.Value = addressData.AddressCountryID;
+                uniSelectorState.Value = addressData.AddressStateID;
+                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>()
+                                                            .WhereEquals("COM_AddressID", addressData.AddressID)
+                                                            .FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(shippingData))
                 {
                     txtEmail.Text = shippingData.GetStringValue("Email", string.Empty);
                     txtComapnyName.Text = shippingData.GetStringValue("CompanyName", string.Empty);
+                    ddlAddressType.Value = shippingData.GetStringValue("AddressTypeID", string.Empty);
+                }
+                if (addressData.AddressStateID <= 0)
+                {
+                    uniSelectorState.Enabled = false;
                 }
             }
         }
@@ -176,7 +208,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
             if (itemID != default(int))
             {
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>().WhereEquals("COM_AddressID", objAddress.AddressID).FirstOrDefault();
+                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>()
+                                                            .WhereEquals("COM_AddressID", objAddress.AddressID)
+                                                            .FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(shippingData) && shippingData != null)
                 {
                     item.ItemID = shippingData.ItemID;
@@ -216,9 +250,8 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                         addressData.AddressName = string.Format("{0}{1}{2}", !string.IsNullOrEmpty(addressData.AddressLine1) ? addressData.AddressLine1 + "," : addressData.AddressLine1, !string.IsNullOrEmpty(addressData.AddressLine2) ? addressData.AddressLine2 + "," : addressData.AddressLine2, addressData.AddressCity);
                         addressData.AddressPhone = ValidationHelper.GetString(txtTelephone.Text, string.Empty);
                         addressData.AddressPersonalName = ValidationHelper.GetString(txtName.Text, string.Empty);
-                        var country = ddlCountry.Value != null ? ddlCountry.Value.ToString() : string.Empty;
-                        addressData.AddressCountryID = !string.IsNullOrEmpty(country) ? GetCountryID(country.Split(';').First()) : default(int);
-                        addressData.AddressStateID = !string.IsNullOrEmpty(country) ? GetStateID(country.Split(';').Last()) : default(int);
+                        addressData.AddressCountryID = ValidationHelper.GetInteger(uniSelectorCountry.Value, 0);
+                        addressData.AddressStateID = ValidationHelper.GetInteger(uniSelectorState.Value, 0);
                         addressData.SetValue("AddressTypeID", ddlAddressType.Value);
                         return addressData;
                     }
@@ -236,9 +269,8 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                     !string.IsNullOrEmpty(objAddress.AddressLine2) ? objAddress.AddressLine2 + "," : objAddress.AddressLine2, objAddress.AddressCity);
                 objAddress.AddressPhone = ValidationHelper.GetString(txtTelephone.Text, string.Empty);
                 objAddress.AddressPersonalName = ValidationHelper.GetString(txtName.Text, string.Empty);
-                var country = ddlCountry.Value != null ? ddlCountry.Value.ToString() : string.Empty;
-                objAddress.AddressCountryID = !string.IsNullOrEmpty(country) ? GetCountryID(country.Split(';').First()) : default(int);
-                objAddress.AddressStateID = !string.IsNullOrEmpty(country) ? GetStateID(country.Split(';').Last()) : default(int);
+                objAddress.AddressCountryID = ValidationHelper.GetInteger(uniSelectorCountry.Value, 0);
+                objAddress.AddressStateID = ValidationHelper.GetInteger(uniSelectorState.Value, 0);
                 objAddress.SetValue("AddressTypeID", ddlAddressType.Value);
                 return objAddress;
             }
@@ -459,6 +491,22 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         catch (Exception ex)
         {
             EventLogProvider.LogException("CreateAddress.ascx.cs", "cvTelephone_ServerValidate()", ex);
+        }
+    }
+
+    protected void uniSelectorCountry_OnSelectionChanged(object sender, EventArgs e)
+    {
+        if (CountryID > 0)
+        {
+            uniSelectorState.Enabled = true;
+            uniSelectorState.WhereCondition = "CountryID = " + CountryID;
+            uniSelectorState.StopProcessing = false;
+            uniSelectorState.Reload(true);
+        }
+        else
+        {
+            uniSelectorState.StopProcessing = true;
+            uniSelectorState.Enabled = false;
         }
     }
 }
