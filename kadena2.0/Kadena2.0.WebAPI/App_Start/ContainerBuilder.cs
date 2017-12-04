@@ -47,6 +47,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
+            container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             return container;
         }
 

@@ -328,9 +328,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
-            {                
-                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
-                return kenticoService.GetDocumentUrl(aliasPath);
+            {
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return documents.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
         }
@@ -342,7 +342,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), documents, Mapper.Instance);
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
