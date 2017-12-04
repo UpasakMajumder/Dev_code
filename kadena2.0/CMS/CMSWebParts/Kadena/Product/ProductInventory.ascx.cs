@@ -18,6 +18,9 @@ using CMS.MediaLibrary;
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
     #region "Properties"
+    /// <summary>
+    /// Get the Product type.
+    /// </summary>
     public int ProductType
     {
         get
@@ -32,7 +35,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     #endregion
 
-
     #region "Methods"
 
     /// <summary>
@@ -43,8 +45,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         base.OnContentLoaded();
         SetupControl();
     }
-
-
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
@@ -64,130 +64,181 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             }
         }
     }
-
-
     /// <summary>
     /// Reloads the control data.
     /// </summary>
     public override void ReloadData()
     {
         base.ReloadData();
-
         SetupControl();
     }
+    /// <summary>
+    /// Get product Image by Image path
+    /// </summary>
+    /// <param name="imagepath"></param>
+    /// <returns></returns>
     public string GetProductImage(object imagepath)
     {
-        string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-        return MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+        string returnValue = string.Empty;
+        try
+        {
+            string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+            folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+            if (imagepath != null && folderName != null)
+            {
+                returnValue = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
     }
+    /// <summary>
+    /// Bind the Products data to repeater
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <param name="categoryID"></param>
     public void BindData(int programID = default(int), int categoryID = default(int))
     {
-        List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
-        if (ProductType != default(int))
+        try
         {
-            if (ProductType == (int)ProductsType.InventoryProduct)
+            List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
+            if (ProductType != default(int))
             {
-                ddlCategory.Visible = true;
-                productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                  .WhereEquals("ProgramID", null)
-                                  .ToList();
-                if (categoryID != default(int))
+                if (ProductType == (int)ProductsType.InventoryProduct)
                 {
-                    productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
-                }
-            }
-            else
-            {
-                ddlProgram.Visible = true;
-                ddlCategory.Visible = true;
-                List<int> programIds = GetProgramIDs();
-                if (!DataHelper.DataSourceIsEmpty(programIds))
-                {
+                    ddlCategory.Visible = true;
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                      .WhereIn("ProgramID", programIds)
+                                      .WhereEquals("ProgramID", null)
                                       .ToList();
-                    if (programID != default(int))
-                    {
-                        productsDetails = productsDetails.Where(x => x.ProgramID == programID).ToList();
-                    }
                     if (categoryID != default(int))
                     {
                         productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
                     }
                 }
-            }
-            List<int> skuIds = new List<int>();
-            if (!DataHelper.DataSourceIsEmpty(productsDetails))
-            {
-                foreach (var product in productsDetails)
+                else
                 {
-                    skuIds.Add(product.NodeSKUID);
+                    ddlProgram.Visible = true;
+                    ddlCategory.Visible = true;
+                    List<int> programIds = GetProgramIDs();
+                    if (!DataHelper.DataSourceIsEmpty(programIds))
+                    {
+                        productsDetails = CampaignsProductProvider.GetCampaignsProducts()
+                                          .WhereIn("ProgramID", programIds)
+                                          .ToList();
+                        if (programID != default(int))
+                        {
+                            productsDetails = productsDetails.Where(x => x.ProgramID == programID).ToList();
+                        }
+                        if (categoryID != default(int))
+                        {
+                            productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
+                        }
+                    }
                 }
-            }
-            if (!DataHelper.DataSourceIsEmpty(skuIds))
-            {
-                var skuDetails = SKUInfoProvider.GetSKUs()
-                                .WhereIn("SKUID", skuIds)
-                                .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
-                                .ToList();
-                if (!DataHelper.DataSourceIsEmpty(skuDetails))
+                List<int> skuIds = new List<int>();
+                if (!DataHelper.DataSourceIsEmpty(productsDetails))
                 {
-                    var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
-                    rptProductList.DataSource = productAndSKUDetails;
-                    rptProductList.DataBind();
+                    foreach (var product in productsDetails)
+                    {
+                        skuIds.Add(product.NodeSKUID);
+                    }
+                }
+                if (!DataHelper.DataSourceIsEmpty(skuIds))
+                {
+                    var skuDetails = SKUInfoProvider.GetSKUs()
+                                    .WhereIn("SKUID", skuIds)
+                                    .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
+                                    .ToList();
+                    if (!DataHelper.DataSourceIsEmpty(skuDetails))
+                    {
+                        var productAndSKUDetails = productsDetails
+                              .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
+                        rptProductList.DataSource = productAndSKUDetails;
+                        rptProductList.DataBind();
+                    }
                 }
             }
         }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Bind products to repeater", "BindData()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
+    /// <summary>
+    /// Get the Program Ids in Open Campaign
+    /// </summary>
+    /// <returns></returns>
     public List<int> GetProgramIDs()
     {
-        Campaign campaign = CampaignProvider.GetCampaigns()
-                          .Columns("CampaignID")
-                          .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                          .FirstOrDefault();
         List<int> programIds = new List<int>();
-        if (campaign != null)
+        try
         {
-            var programs = ProgramProvider.GetPrograms()
-                   .WhereEquals("CampaignID", campaign.CampaignID)
-                   .Columns("ProgramID")
-                   .ToList();
-            if (!DataHelper.DataSourceIsEmpty(programs))
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                              .Columns("CampaignID")
+                              .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
+                              .FirstOrDefault();
+            if (campaign != null)
             {
-                foreach (var program in programs)
+                var programs = ProgramProvider.GetPrograms()
+                       .WhereEquals("CampaignID", campaign.CampaignID)
+                       .Columns("ProgramID")
+                       .ToList();
+                if (!DataHelper.DataSourceIsEmpty(programs))
                 {
-                    programIds.Add(program.ProgramID);
+                    foreach (var program in programs)
+                    {
+                        programIds.Add(program.ProgramID);
+                    }
                 }
             }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get ProgramsIDs from CVampaign", "GetProgramIDs()", ex, CurrentSite.SiteID, ex.Message);
         }
         return programIds;
     }
+    /// <summary>
+    /// Bind the Program to dropdown
+    /// </summary>
     public void BindPrograms()
     {
-        Campaign campaign = CampaignProvider.GetCampaigns()
-                         .Columns("CampaignID")
-                         .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                         .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                         .FirstOrDefault();
-        if (campaign.CampaignID != default(int))
+        try
         {
-            var programs = ProgramProvider.GetPrograms()
-                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .WhereEquals("CampaignID", campaign.CampaignID)
-                .Columns("ProgramName,ProgramID")
-                .ToList();
-            if (!DataHelper.DataSourceIsEmpty(programs))
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                             .Columns("CampaignID")
+                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                             .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
+                             .FirstOrDefault();
+            if (campaign.CampaignID != default(int))
             {
-                ddlProgram.DataSource = programs;
-                ddlProgram.DataTextField = "ProgramName";
-                ddlProgram.DataValueField = "ProgramID";
-                ddlProgram.DataBind();
-                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                var programs = ProgramProvider.GetPrograms()
+                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                    .WhereEquals("CampaignID", campaign.CampaignID)
+                    .Columns("ProgramName,ProgramID")
+                    .ToList();
+                if (!DataHelper.DataSourceIsEmpty(programs))
+                {
+                    ddlProgram.DataSource = programs;
+                    ddlProgram.DataTextField = "ProgramName";
+                    ddlProgram.DataValueField = "ProgramID";
+                    ddlProgram.DataBind();
+                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+                    ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                }
             }
         }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Bind Programs to dropdown", "BindPrograms()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
+    /// <summary>
+    /// Bind Categories to Dropdown
+    /// </summary>
     public void BindCategories()
     {
         try
@@ -209,22 +260,28 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("Bind Category", "BindCategories", ex, CurrentSite.SiteID, ex.Message);
+            EventLogProvider.LogException("Bind Categories to Dropdown", "BindCategories()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
-
-
-    #endregion
-
+    /// <summary>
+    /// Filter products by By selected program
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)));
     }
-
+    /// <summary>
+    /// Filter products by selected category 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)));
     }
+    #endregion
 }
 public enum ProductsType
 {

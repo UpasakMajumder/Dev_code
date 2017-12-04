@@ -3,8 +3,8 @@
 <div class="custom_section">
     <div class="custom_block">
         <div class="custom_select">
-           <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-           <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
     </div>
     <div class="custom_content">
@@ -12,13 +12,13 @@
             <ItemTemplate>
                 <div class="cus_content_block">
                     <div class="img_block">
-                       <img src='<%#GetProductImage(Eval("SKUImagePath"))%>'/>
+                        <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
                     </div>
                     <i class="fa fa-search" aria-hidden="true"></i>
                     <div class="custom_blockin">
                         <h4><%# Eval("SKUNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <span>$<%#Eval("SKUPrice") %>pack of <%#Eval("SKUAvailableItems") %></span>
+                        <span><%#ProductType==(int)ProductsType.PreBuyProduct? $"${Eval("SKUPrice")}":"" %></span>
                         <h6>Current Demand:</h6>
                         <a href="#">Add to Cart</a>
                     </div>
