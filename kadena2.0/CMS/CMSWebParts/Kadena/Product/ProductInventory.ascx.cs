@@ -1,23 +1,20 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.DocumentEngine.Types.KDA;
-using System.Linq;
-using CMS.Ecommerce;
-using System.Collections.Generic;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.Ecommerce;
 using CMS.EventLog;
+using CMS.Helpers;
 using CMS.MediaLibrary;
+using CMS.PortalEngine.Web.UI;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
     #region "Properties"
+
     /// <summary>
     /// Get the Product type.
     /// </summary>
@@ -33,7 +30,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
     }
 
-    #endregion
+    #endregion "Properties"
 
     #region "Methods"
 
@@ -45,6 +42,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         base.OnContentLoaded();
         SetupControl();
     }
+
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
@@ -64,6 +62,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             }
         }
     }
+
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -72,6 +71,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         base.ReloadData();
         SetupControl();
     }
+
     /// <summary>
     /// Get product Image by Image path
     /// </summary>
@@ -95,6 +95,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         return returnValue;
     }
+
     /// <summary>
     /// Bind the Products data to repeater
     /// </summary>
@@ -167,6 +168,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("Bind products to repeater", "BindData()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Get the Program Ids in Open Campaign
     /// </summary>
@@ -201,6 +203,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         return programIds;
     }
+
     /// <summary>
     /// Bind the Program to dropdown
     /// </summary>
@@ -236,6 +239,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("Bind Programs to dropdown", "BindPrograms()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Bind Categories to Dropdown
     /// </summary>
@@ -263,6 +267,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("Bind Categories to Dropdown", "BindCategories()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     /// <summary>
     /// Filter products by By selected program
     /// </summary>
@@ -272,8 +277,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)));
     }
+
     /// <summary>
-    /// Filter products by selected category 
+    /// Filter products by selected category
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -281,8 +287,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)));
     }
-    #endregion
+
+    #endregion "Methods"
 }
+
 public enum ProductsType
 {
     InventoryProduct = 1, PreBuyProduct = 2
