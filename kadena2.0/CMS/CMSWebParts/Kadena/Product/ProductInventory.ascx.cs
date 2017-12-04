@@ -13,6 +13,7 @@ using CMS.Ecommerce;
 using System.Collections.Generic;
 using CMS.DataEngine;
 using CMS.EventLog;
+using CMS.MediaLibrary;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
@@ -28,7 +29,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("ProductType", value);
         }
     }
-
 
     #endregion
 
@@ -74,6 +74,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         base.ReloadData();
 
         SetupControl();
+    }
+    public string GetProductImage(object imagepath)
+    {
+        string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+        return MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
     }
     public void BindData(int programID = default(int), int categoryID = default(int))
     {
@@ -162,7 +167,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         Campaign campaign = CampaignProvider.GetCampaigns()
                          .Columns("CampaignID")
-                         .WhereEquals("NodeSiteID",CurrentSite.SiteID)
+                         .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                          .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
                          .FirstOrDefault();
         if (campaign.CampaignID != default(int))

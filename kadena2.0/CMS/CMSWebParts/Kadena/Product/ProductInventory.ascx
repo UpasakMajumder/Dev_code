@@ -12,7 +12,7 @@
             <ItemTemplate>
                 <div class="cus_content_block">
                     <div class="img_block">
-                       <img src='<%#Eval("SKUImagePath")%>'/>
+                       <img src='<%#GetProductImage(Eval("SKUImagePath"))%>'/>
                     </div>
                     <i class="fa fa-search" aria-hidden="true"></i>
                     <div class="custom_blockin">
