@@ -11,6 +11,9 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.EventLog;
 using CMS.DataEngine;
+using CMS.PortalEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.SiteProvider;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
@@ -49,7 +52,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             {
                 btnSave.Click += btnSave_Save;
             }
-            //assigning resource string to watermark text
             Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
             Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
@@ -72,17 +74,15 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                 if (parentPage != null)
                 {
-                    // Creates a new page of the "CMS.MenuItem" page type
-                    CMS.DocumentEngine.TreeNode newPage = CMS.DocumentEngine.TreeNode.New("KDA.Campaign", tree);
-
-                    // Sets the properties of the new page
-                    newPage.DocumentName = campaignName;
-                    newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
-                    newPage.SetValue("Name", campaignName);
-                    newPage.SetValue("Description", campaignDes);
-
-                    // Inserts the new page as a child of the parent page
-                    newPage.Insert(parentPage);
+                    Campaign newCampaign = new Campaign()
+                    {
+                        Name = campaignName,
+                        DocumentName = campaignName,
+                        Description = campaignDes,
+                        DocumentCulture = CurrentDocument.DocumentCulture,
+                        DocumentPageTemplateID = DocumentPageTemplate()
+                    };
+                    newCampaign.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
                     Name.Text = "";
@@ -101,7 +101,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     }
     protected void btnCancel_Cancel(object sender, EventArgs e)
     {
-            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
     protected void btnSave_Edit(object sender, EventArgs e)
     {
@@ -115,22 +115,17 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, campaignId);
                 if (editPage != null)
                 {
-                    // Sets the properties of the new page
                     editPage.DocumentName = campaignName;
                     editPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     editPage.SetValue("Name", campaignName);
                     editPage.SetValue("Description", campaignDes);
-
-                    // update the  campaign
                     editPage.Update();
-
                     URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                 }
                 else
                 {
                     lblFailureText.Visible = true;
                 }
-
             }
         }
         catch (Exception ex)
@@ -138,9 +133,10 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
         }
     }
-
-    ///
-    /// 
+    /// <summary>
+    /// Set the Data 
+    /// </summary>
+    /// <param name="_campaignId"></param>
     private void SetFeild(int _campaignId)
     {
         try
@@ -149,8 +145,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, _campaignId);
             if (editPage != null)
             {
-                // get the properties of the page
-
                 Name.Text = editPage.GetValue("Name").ToString();
                 Description.Text = editPage.GetValue("Description").ToString();
 
@@ -171,6 +165,27 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         base.ReloadData();
 
         SetupControl();
+    }
+    /// <summary>
+    /// Get the Campaign Products Tempalte ID
+    /// </summary>
+    /// <returns>TemplateID</returns>
+    public static int DocumentPageTemplate()
+    {
+        try
+        {
+            string templteName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSite.SiteName + ".KDA_CampaignProductsTemplateName");
+            var pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templteName);
+            if (!DataHelper.DataSourceIsEmpty(pageTemplateInfo))
+                return pageTemplateInfo.PageTemplateId;
+            else
+                return default(int);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("Get DocumentPage Tempate", "DocumentPageTemplate", ex.Message);
+            return default(int); ;
+        }
     }
 
     #endregion

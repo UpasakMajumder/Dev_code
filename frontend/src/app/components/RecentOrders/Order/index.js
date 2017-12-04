@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 /* helpers */
-import { convertToWords } from 'app.helpers/time';
+import timeFormat from 'app.helpers/time';
 
 function Order(props) {
   const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn } = props;
@@ -31,10 +31,10 @@ function Order(props) {
   return (
     <tr>
       <td>{orderNumber}</td>
-      <td>{convertToWords(orderDate)}</td>
+      <td>{timeFormat(orderDate)}</td>
       {getItemsTd()}
       <td className="show-table__will-hide">{orderStatus}</td>
-      <td className="show-table__will-hide">{convertToWords(shippingDate)}</td>
+      <td className="show-table__will-hide">{timeFormat(shippingDate)}</td>
       <td className="show-table__will-appear">
         <a href={url} className="btn-action">{text}</a>
       </td>
