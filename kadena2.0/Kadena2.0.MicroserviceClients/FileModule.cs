@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Kadena2.MicroserviceClients
@@ -23,11 +24,16 @@ namespace Kadena2.MicroserviceClients
         public static implicit operator FileModule(string source)
         {
             var type = typeof(FileModule);
-            var moduleProperty = type.GetProperties(BindingFlags.Public | BindingFlags.Static)
-                .Where(p => p.PropertyType == typeof(FileModule))
-                .FirstOrDefault(p => (p.GetValue(null,null) as FileModule)._value.Equals( source, System.StringComparison.InvariantCultureIgnoreCase));
+            var modulePropertyMatching = type.GetProperties(BindingFlags.Public | BindingFlags.Static)
+                .Where(p => p.PropertyType == type)
+                .Any(p => (p.GetValue(null,null) as FileModule)._value.Equals( source, StringComparison.InvariantCultureIgnoreCase));
 
-            return moduleProperty == null ? null : new FileModule(source);
+            if (modulePropertyMatching)
+            {
+                return new FileModule(source);
+            }
+
+            throw new InvalidCastException($"Invalid file module string '{source}'");
         }
     }
 }

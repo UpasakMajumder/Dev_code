@@ -1,4 +1,5 @@
 ﻿using Kadena2.MicroserviceClients;
+using System;
 using Xunit;
 
 namespace Kadena.Tests.MicroserviceClients
@@ -8,6 +9,7 @@ namespace Kadena.Tests.MicroserviceClients
         [Theory]
         [InlineData("KList")]
         [InlineData("KProducts")]
+        [InlineData("kproducts")]
         [InlineData("KDesign")]
         public void ParseFileModuleOK(string source)
         {
@@ -25,11 +27,11 @@ namespace Kadena.Tests.MicroserviceClients
         [InlineData(null)]
         public void ParseFileModuleFail(string source)
         {
-            // Act
-            FileModule module = source;
+            // Arrange
+            Action casting = () => { var x = (FileModule)source; };
 
             // Assert
-            Assert.Null(module);
+            Assert.Throws<InvalidCastException>(casting);
         }
     }
 }
