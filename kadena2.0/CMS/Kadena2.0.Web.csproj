@@ -842,6 +842,13 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Brand\Brand.ascx.cs">
+      <DependentUpon>Brand.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Brand\Brand.ascx.designer.cs">
+      <DependentUpon>Brand.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.cs">
       <DependentUpon>BusinessUnit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1293,6 +1300,7 @@
     <Content Include="CMSScripts\Custom\Kadena\KadenaExtension.js" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Brand\Brand.ascx" />
     <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
     <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx" />

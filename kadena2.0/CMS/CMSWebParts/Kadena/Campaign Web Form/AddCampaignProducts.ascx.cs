@@ -485,7 +485,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         {
                             SKUInfo skuDetails = SKUInfoProvider
                                 .GetSKUs()
-                                .WhereEquals("SKUID", product.SKUID)
+                                .WhereEquals("SKUID", product.NodeSKUID)
                                 .FirstObject;
                             if (skuDetails != null)
                             {
@@ -715,7 +715,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             SKUProductType = SKUProductTypeEnum.EProduct
                         };
                         SKUInfoProvider.SetSKUInfo(newProduct);
-                        products.SKUID = newProduct.SKUID;
+                        products.NodeSKUID = newProduct.SKUID;
                         products.Insert(createNode, true);
                         int capaignNodeID = ValidationHelper.GetInteger(Request.QueryString["camp"], default(int));
                         var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
@@ -757,7 +757,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int));
                     product.ItemSpecs = ValidationHelper.GetInteger(txtItemSpecs.Text, default(int));
                     product.ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
-                    SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
+                    SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                     if (updateProduct != null)
                     {
                         if (productImage.HasFile)
