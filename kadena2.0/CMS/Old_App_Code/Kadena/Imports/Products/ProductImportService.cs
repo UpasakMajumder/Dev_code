@@ -29,7 +29,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             statusMessages.Clear();
 
             var site = GetSite(siteID);
-            _culture = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.CMSDefaultCultureCode");
+            EnsureCulture(site);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<ProductDto>(rows);
 
@@ -65,12 +65,17 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
+        protected void EnsureCulture(SiteInfo site)
+        {
+            _culture = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.CMSDefaultCultureCode");
+        }
+
         public ImportResult ProcessProductImagesImportFile(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
 
             var site = GetSite(siteID);
-            _culture = SettingsKeyInfoProvider.GetValue($"{site.SiteName}.CMSDefaultCultureCode");
+            EnsureCulture(site);
             var rows = GetExcelRows(importFileData, type);
             var productImages = GetDtosFromExcelRows<ProductImageDto>(rows);
             statusMessages.Clear();

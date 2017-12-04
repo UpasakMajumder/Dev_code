@@ -14,6 +14,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             CacheHelper.ClearCache();
 
+            var site = GetSite(siteId);
+            EnsureCulture(site);
+
             var rows = GetExcelRows(importFileData, type);
             var productCategories = GetDtosFromExcelRows<ProductCategoryImportDto>(rows)
                 .Select(pc => new
