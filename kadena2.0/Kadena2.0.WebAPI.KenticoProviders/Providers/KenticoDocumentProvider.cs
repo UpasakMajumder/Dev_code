@@ -11,9 +11,7 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoDocumentProvider : IKenticoDocumentProvider
     {
-        //private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger logger;
-        //private readonly IMapper _mapper;
 
         public KenticoDocumentProvider(IKenticoResourceService resources, IKenticoLogger logger, IMapper mapper)
         {
@@ -22,9 +20,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new ArgumentNullException(nameof(logger));
             }
 
-          //  this.resources = resources;
             this.logger = logger;
-  //          _mapper = mapper;
         }
 
         /// <summary>
