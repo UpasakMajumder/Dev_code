@@ -1,4 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Threading.Tasks;
@@ -9,8 +10,9 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IOrderViewClient orderViewClient;
         private readonly IFileClient fileClient;
+        private readonly IKenticoResourceService resources;
 
-        public PdfService(IOrderViewClient orderViewClient, IFileClient fileClient)
+        public PdfService(IOrderViewClient orderViewClient, IFileClient fileClient, IKenticoResourceService resources)
         {
             if (orderViewClient == null)
             {
@@ -20,13 +22,19 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(fileClient));
             }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
 
             this.orderViewClient = orderViewClient;
             this.fileClient = fileClient;
+            this.resources = resources;
         }
 
         public async Task<string> GetHiresPdfLink(string orderId, int line)
         {
+            var failedUrl =  resources.GetSettingsKey("KDA_HiresPdfLinkFail");
             var order = await orderViewClient.GetOrderByOrderId(orderId);
 
             if (!order.Success)
