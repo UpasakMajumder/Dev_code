@@ -26,11 +26,11 @@ namespace Kadena2.MicroserviceClients
             var type = typeof(FileModule);
             var modulePropertyMatching = type.GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Where(p => p.PropertyType == type)
-                .Any(p => (p.GetValue(null,null) as FileModule)._value.Equals( source, StringComparison.InvariantCultureIgnoreCase));
+                .FirstOrDefault(p => (p.GetValue(null,null) as FileModule)._value.Equals( source, StringComparison.InvariantCultureIgnoreCase));
 
-            if (modulePropertyMatching)
+            if (modulePropertyMatching != null)
             {
-                return new FileModule(source);
+                return modulePropertyMatching.GetValue(null, null) as FileModule;
             }
 
             throw new InvalidCastException($"Invalid file module string '{source}'");

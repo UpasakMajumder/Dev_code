@@ -343,8 +343,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
                 var logger = new KenticoLogger();
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), logger, Mapper.Instance);
-                var kenticoService = new KenticoProviderService(new KenticoResourceService(), logger, documents, Mapper.Instance);
+                var resources = new KenticoResourceService();
+                var documents = new KenticoDocumentProvider(resources, logger, Mapper.Instance);
+                var kenticoService = new KenticoProviderService(resources, logger, documents, Mapper.Instance);
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
