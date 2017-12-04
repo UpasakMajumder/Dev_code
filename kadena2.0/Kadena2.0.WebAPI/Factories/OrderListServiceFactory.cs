@@ -1,7 +1,7 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena.WebAPI.Services;
+using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.WebAPI.Factories

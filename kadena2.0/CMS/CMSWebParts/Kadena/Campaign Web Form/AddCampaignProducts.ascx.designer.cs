@@ -111,13 +111,13 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblState;
     
     /// <summary>
-    /// txtState control.
+    /// ddlState control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtState;
+    protected global::System.Web.UI.WebControls.DropDownList ddlState;
     
     /// <summary>
     /// lblLongDescription control.

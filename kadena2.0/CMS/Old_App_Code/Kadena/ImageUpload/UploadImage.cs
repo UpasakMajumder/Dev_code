@@ -15,9 +15,9 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
         /// </summary>
         /// <param name="productImage"></param>
         /// <returns></returns>
-        public static Guid UploadImageToMeadiaLibrary(FileUpload productImage, string folderName)
+        public static string UploadImageToMeadiaLibrary(FileUpload productImage, string folderName)
         {
-            Guid fileGuid = default(Guid);
+            string imagePath = string.Empty;
             try
             {
                 string folderPath = System.Web.HttpContext.Current.Server.MapPath("~/Uploads/");
@@ -48,14 +48,14 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
                     mediaFile.FileSize = file.Length;
                     MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
                     File.Delete(filePath);
-                    fileGuid = mediaFile.FileGUID;
+                    imagePath = mediaFile.FilePath;
                 }
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("UploadImage", "UploadImageToMeadiaLibrary", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
-            return fileGuid;
+            return imagePath;
         }
 
         /// <summary>
@@ -82,14 +82,14 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
         /// Delete Image by Guid
         /// </summary>
         /// <param name="imageGuid"></param>
-        public static void DeleteImage(Guid imageGuid, string folderName)
+        public static void DeleteImage(string imagePath, string folderName)
         {
             try
             {
                 MediaLibraryInfo library = MediaLibraryInfoProvider.GetMediaLibraryInfo(!string.IsNullOrEmpty(folderName) ? folderName : "CampaignProducts", SiteContext.CurrentSiteName);
                 if (!DataHelper.DataSourceIsEmpty(library))
                 {
-                    MediaFileInfo deleteFile = MediaFileInfoProvider.GetMediaFileInfo(imageGuid, SiteContext.CurrentSiteName);
+                    MediaFileInfo deleteFile = MediaFileInfoProvider.GetMediaFileInfo(SiteContext.CurrentSiteName, imagePath, !string.IsNullOrEmpty(folderName) ? folderName : "CampaignProducts");
                     if (!DataHelper.IsEmpty(deleteFile))
                     {
                         MediaFileInfoProvider.DeleteMediaFileInfo(deleteFile);
@@ -98,7 +98,7 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogException("UploadImage", "DeleteImage", ex,SiteContext.CurrentSite.SiteID, ex.Message);
+                EventLogProvider.LogException("UploadImage", "DeleteImage", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
         }
     }

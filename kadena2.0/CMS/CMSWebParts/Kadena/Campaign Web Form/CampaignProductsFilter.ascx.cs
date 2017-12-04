@@ -52,17 +52,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += $"ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
+                where += $"p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
                 int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
-                where += where != null ? $"and ProgramID={ programID}" : $"ProgramID={ programID}";
+                where += where != null ? $"and p.ProgramID={ programID}" : $"p.ProgramID={ programID}";
             }
             if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
             {
                 int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
-                where += where != null ? $"and CategoryID={ categoryID}" : $"CategoryID={ categoryID}";
+                where += where != null ? $"and p.CategoryID={ categoryID}" : $"p.CategoryID={ categoryID}";
             }
             if (where != null)
             {
@@ -88,7 +88,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
             if (campaign != null)
             {
-                var products = campaign.AllChildren.WithAllData.Where(xx => xx.ClassName == CampaignProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID).ToList();
+                var products = campaign.AllChildren.WithAllData
+                    .Where(xx => xx.ClassName == CampaignsProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID)
+                    .ToList();
                 bool initiated = campaign.CampaignInitiate;
                 bool gAdminNotified = campaign.GlobalAdminNotified;
                 bool openCampaign = campaign.OpenCampaign;
@@ -232,7 +234,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             int campaignID = CurrentDocument.GetIntegerValue("CampaignID", default(int));
             if (campaignID != default(int))
             {
-                var programs = ProgramProvider.GetPrograms().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).Columns("ProgramID,ProgramName").ToList();
+                var programs = ProgramProvider.GetPrograms()
+                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                    .WhereEquals("CampaignID", campaignID)
+                    .Columns("ProgramID,ProgramName")
+                    .ToList();
                 if (programs != null)
                 {
                     ddlPrograms.DataSource = programs;
@@ -257,7 +263,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         try
         {
-            var categories = ProductCategoryProvider.GetProductCategories().WhereEquals("NodeSiteID", CurrentSite.SiteID).Columns("ProductCategoryID,ProductCategoryTitle").Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle }).ToList();
+            var categories = ProductCategoryProvider.GetProductCategories()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .Columns("ProductCategoryID,ProductCategoryTitle")
+                .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
+                .ToList();
             if (categories != null)
             {
                 ddlProductcategory.DataSource = categories;
