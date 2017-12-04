@@ -979,20 +979,18 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             if (formElem.ValidateData())
             {
                 UserInfo user = formElem.Info as UserInfo;
-
+                string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
                 if (user == null || (user != null && user.UserID <= 0))
                 {
-                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+                    CreateNewUser(user);
                     if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
                     {
                         BindBusinessUnitsToUser(BusinessUnits, user.UserID);
                     }
-                    CreateNewUser(user);
                     Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
                 }
                 else
                 {
-                    string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
                     if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
                     {
                         BindBusinessUnitsToUser(BusinessUnits, user.UserID);
@@ -1075,7 +1073,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             var delimitBuinessUnits = BusinessUnits.Split(';');
             foreach (var businessUnitID in delimitBuinessUnits)
             {
-                if (string.IsNullOrEmpty(businessUnitID) && IsBusinessUnitExisted(ValidationHelper.GetInteger(businessUnitID, 0), UserID))
+                if (!string.IsNullOrEmpty(businessUnitID) && IsBusinessUnitExisted(ValidationHelper.GetInteger(businessUnitID, 0), UserID))
                 {
                     UserBusinessUnitsItem newBu = new UserBusinessUnitsItem()
                     {
