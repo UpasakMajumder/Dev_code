@@ -10,6 +10,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetDocumentUrl(string aliasPath);
 
-        string GetDocumentUrl(string aliasPath, string cultureCode);
+        string GetDocumentAbsoluteUrl(string aliasPath);
+
+        string GetDocumentUrl(string aliasPath, string cultureCode, bool absoluteUrl = false);
     }
 }

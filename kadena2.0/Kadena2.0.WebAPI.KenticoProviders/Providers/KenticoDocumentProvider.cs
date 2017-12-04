@@ -34,7 +34,13 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
         }
-        public string GetDocumentUrl(string aliasPath, string cultureCode)
+
+        public string GetDocumentAbsoluteUrl(string aliasPath)
+        {
+            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode, true);
+        }
+
+        public string GetDocumentUrl(string aliasPath, string cultureCode, bool absoluteUrl = false)
         {
             var document = DocumentHelper.GetDocument(
                 new NodeSelectionParameters
@@ -52,7 +58,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 return "/";
             }
 
-            return document.DocumentUrlPath;
+            return absoluteUrl ? document.AbsoluteURL : document.DocumentUrlPath;
         }
         public string GetDocumentUrl(int documentId)
         {
