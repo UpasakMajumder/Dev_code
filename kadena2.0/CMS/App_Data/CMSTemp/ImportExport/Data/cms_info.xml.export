@@ -2,19 +2,19 @@
   <NewDataSet>
     <cms_info>
       <Key>machinename</Key>
-      <Value>WMCL396</Value>
+      <Value>DESKTOP-QS0D35J</Value>
     </cms_info>
     <cms_info>
       <Key>domainname</Key>
-      <Value>localhost:56000</Value>
+      <Value>default.kadenatest.com</Value>
     </cms_info>
     <cms_info>
       <Key>currentuser</Key>
-      <Value>administrator</Value>
+      <Value>cvoqa2@gmail.com</Value>
     </cms_info>
     <cms_info>
       <Key>starttime</Key>
-      <Value>4/19/2017 11:09:05 AM</Value>
+      <Value>11/18/2017 12:12:39 PM</Value>
     </cms_info>
     <cms_info>
       <Key>systemversion</Key>
@@ -29,7 +29,7 @@
       <Value>True</Value>
     </cms_info>
     <cms_info>
-      <Key>siteincluded</Key>
+      <Key>singleobject</Key>
       <Value>True</Value>
     </cms_info>
   </NewDataSet>

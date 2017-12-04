@@ -1,24 +1,27 @@
 ﻿using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
 using Kadena.Dto.InventoryUpdate.MicroserviceResponses;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class InventoryUpdateClient : ClientBase, IInventoryUpdateClient
     {
-        public async Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string serviceEndpoint, string clientId)
+        private const string _serviceUrlSettingKey = "KDA_InventoryUpdateServiceEndpoint";
+        private readonly IMicroProperties _properties;
+
+        public InventoryUpdateClient(IMicroProperties properties)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var url = $"{serviceEndpoint.TrimEnd('/')}/api/Inventory?erpClientId={clientId}";
-                using (var response = await httpClient.GetAsync(url).ConfigureAwait(false))
-                {
-                    return await ReadResponseJson<InventoryDataItemDto[]>(response).ConfigureAwait(false);
-                }
-            }
+            _properties = properties;
+        }
+
+        public async Task<BaseResponseDto<InventoryDataItemDto[]>> GetInventoryItems(string clientId)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/Inventory?erpClientId={clientId}";
+            return await Get<InventoryDataItemDto[]>(url).ConfigureAwait(false);
         }
     }
 }

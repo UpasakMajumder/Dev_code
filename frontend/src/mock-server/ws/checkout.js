@@ -202,7 +202,7 @@ module.exports.ui = {
           "id": 1,
           "title": "Credit card",
           "icon": "credit-card",
-          "disabled": true,
+          "disabled": false,
           "checked": false,
           "hasInput": false,
           "inputPlaceholder": null

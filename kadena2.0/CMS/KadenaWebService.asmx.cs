@@ -18,6 +18,8 @@
     using System.Web.Security;
     using System.Web.Services;
     using System.Linq;
+    using CMS.CustomTables;
+    using CMS.EventLog;
 
     [WebService]
     [ScriptService]
@@ -142,7 +144,8 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (confirmPassword.Contains(" ")) {
+            if (confirmPassword.Contains(" "))
+            {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces", LocalizationContext.CurrentCulture.CultureCode) };
             }
             if (newPassword != confirmPassword)
@@ -154,7 +157,7 @@
                 var errorMessage = string.Empty;
                 var customMessage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSPolicyViolationMessage");
                 if (!string.IsNullOrEmpty(customMessage))
-                {                    
+                {
                     errorMessage = ResHelper.LocalizeString(customMessage, LocalizationContext.CurrentCulture.CultureCode);
                 }
                 return new GeneralResultDTO { success = false, errorMessage = errorMessage };
@@ -207,7 +210,8 @@
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
-        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames) {
+        public GeneralResultDTO SubmitNewKitRequest(string name, string description, int[] productIDs, string[] productNames)
+        {
             #region Validation
 
             if (string.IsNullOrWhiteSpace(name))
@@ -375,7 +379,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.ForgottenPasswordRepositoryNotFound", LocalizationContext.CurrentCulture.CultureCode) };
             }
-        }        
+        }
 
         private GeneralResultDTO SubmitNewKitRequestInternal(string name, string description, int[] productIDs, string[] productNames)
         {
@@ -444,6 +448,167 @@
             return match.Success;
         }
 
+        //Method for deleteting the product category
+        [WebMethod(EnableSession = true)]
+        public bool DeleteCategory(int CategoryID)
+        {
+            bool status = false;
+            if (CategoryID > 0)
+            {
+                CMS.DocumentEngine.TreeProvider tree = new CMS.DocumentEngine.TreeProvider(CMS.Membership.MembershipContext.AuthenticatedUser);
+
+                // Gets the culture version of the page that will be deleted
+                CMS.DocumentEngine.TreeNode page = tree.SelectNodes("KDA.ProductCategory").Where("ProductCategoryID", CMS.DataEngine.QueryOperator.Equals, CategoryID).OnCurrentSite();
+                if (page != null)
+                {
+                    // Deletes the page and moves it to the recycle bin (only the specified culture version)
+                    status = page.Delete();
+
+                    //  Creates search tasks that remove the deleted page from the content of related search indexes
+                    if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
+                    {
+                        CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskTypeEnum.Delete, CMS.DocumentEngine.TreeNode.OBJECT_TYPE, CMS.DataEngine.SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
+                    }
+                }
+            }
+            return status;
+
+        }
+
+
+        //Method for deleteting the campaign
+        [WebMethod(EnableSession = true)]
+        public bool DeleteCampaign(int CampaignID)
+        {
+            bool status = false;
+            if (CampaignID > 0)
+            {
+                CMS.DocumentEngine.TreeProvider tree = new CMS.DocumentEngine.TreeProvider(CMS.Membership.MembershipContext.AuthenticatedUser);
+
+                // Gets the culture version of the page that will be deleted
+                CMS.DocumentEngine.TreeNode page = tree.SelectNodes("KDA.Campaign").Where("CampaignID", CMS.DataEngine.QueryOperator.Equals, CampaignID).OnCurrentSite();
+                if (page != null)
+                {
+                    // Deletes the page and moves it to the recycle bin (only the specified culture version)
+                    status = page.Delete();
+
+                    //  Creates search tasks that remove the deleted page from the content of related search indexes
+                    if (CMS.Search.SearchIndexInfoProvider.SearchEnabled)
+                    {
+                        CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskTypeEnum.Delete, CMS.DocumentEngine.TreeNode.OBJECT_TYPE, CMS.DataEngine.SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
+                    }
+                }
+            }
+            return status;
+
+        }
+        [WebMethod(EnableSession = true)]
+        public void EditPOSNumber(int posId, bool status)
+        {
+            string customTableClassName = "KDA.POSNumber";
+            try
+            {
+                // Gets the custom table
+                DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (brandTable != null)
+                {
+                    // Gets all data records from the POS table whose 'ItemId' field value equal to PosId
+                    CustomTableItem customTableData = CustomTableItemProvider.GetItem(posId, customTableClassName);
+                    if (customTableData != null)
+                    {
+                        customTableData.SetValue("Enable", ValidationHelper.GetBoolean(status, false));
+                        customTableData.Update();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm", "GetBrands", ex.Message);
+            }
+        }
         #endregion
+
+
+        #region "TWE"
+        [WebMethod(EnableSession = true)]
+        public string GetUserBusinessUnitData(int userID)
+        {
+            QueryDataParameters parameters = new QueryDataParameters();
+            GeneralConnection cn = ConnectionHelper.GetConnection();
+            parameters.Add("@UserID", userID);
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.SiteID=@SiteID";
+            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
+            var userBUData = cn.ExecuteQuery(qp);
+            if (!DataHelper.DataSourceIsEmpty(userBUData))
+            {
+                var buData = userBUData.Tables[0];
+                var JSONString = ConvertDataTbaleToJson(buData);
+                return JSONString.ToString();
+            }
+            return string.Empty;
+        }
+
+
+        public System.Text.StringBuilder ConvertDataTbaleToJson(System.Data.DataTable table)
+        {
+            var JSONString = new System.Text.StringBuilder();
+            if (!DataHelper.DataSourceIsEmpty(table))
+            {
+                if (table.Rows.Count > 0)
+                {
+                    JSONString.Append("[");
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        JSONString.Append("{");
+                        for (int j = 0; j < table.Columns.Count; j++)
+                        {
+                            if (j < table.Columns.Count - 1)
+                            {
+                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
+                            }
+                            else if (j == table.Columns.Count - 1)
+                            {
+                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
+                            }
+                        }
+                        if (i == table.Rows.Count - 1)
+                        {
+                            JSONString.Append("}");
+                        }
+                        else
+                        {
+                            JSONString.Append("},");
+                        }
+                    }
+                    JSONString.Append("]");
+                }
+            }
+            return JSONString;
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = true)]
+        public string GetAllActiveBusienssUnits()
+        {
+            QueryDataParameters parameters = new QueryDataParameters();
+            GeneralConnection cn = ConnectionHelper.GetConnection();
+            parameters.Add("@Status", 1);
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
+            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where  Status = @Status and SiteID=@SiteID";
+            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
+            var userBUData = cn.ExecuteQuery(qp);
+            if (!DataHelper.DataSourceIsEmpty(userBUData))
+            {
+                var buData = userBUData.Tables[0];
+                var JSONString = ConvertDataTbaleToJson(buData);
+                return JSONString.ToString();
+            }
+            return string.Empty;
+        }
+        #endregion
+
+
     }
 }

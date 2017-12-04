@@ -5,16 +5,19 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Kadena.Old_App_Code.Kadena.Chili;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.DataEngine;
 using CMS.SiteProvider;
 using Kadena2.MicroserviceClients.Clients;
+using CMS.EventLog;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI.Helpers;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class MailingListSelector : CMSAbstractWebPart
     {
+        private KenticoResourceService _resources = new KenticoResourceService();
         public string NewMailingListUrl
         {
             get
@@ -25,10 +28,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_GetMailingListsUrl");
-            var client = new MailingListClient();
+            var client = new MailingListClient(new MicroProperties(_resources));
 
-            var mailingListData = client.GetMailingListsForCustomer(url, SiteContext.CurrentSiteName).Result.Payload
+            var mailingListData = client.GetMailingListsForCustomer().Result.Payload
                 .Where(l => l.AddressCount > 0);
 
             if (mailingListData.Count() > 0)
@@ -50,8 +52,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListExpired") };
                     }
 
-                    if (btnCell == null 
-                        && !d.State.Equals(MailingListState.AddressesVerified) 
+                    if (btnCell == null
+                        && !d.State.Equals(MailingListState.AddressesVerified)
                         && !d.State.Equals(MailingListState.AddressesNeedToBeVerified))
                     {
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
@@ -96,11 +98,16 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var containerId = btn.ID;
                 var templateId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "templateid");
                 var workspaceId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "workspaceid");
-                var use3d = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "use3d");
+                var use3d = string.IsNullOrWhiteSpace(url) ? false : bool.Parse(URLHelper.GetUrlParameter(url, "use3d"));
                 var quantity = btn.Attributes["quantity"];
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    new TemplateServiceHelper().SetMailingList(containerId, templateId, workspaceId, use3d.ToLower() == "true");
+                    var templateClient = new TemplatedClient(new SuppliantDomain(_resources), new MicroProperties(_resources));
+                    var setResult = templateClient.SetMailingList(containerId, templateId, workspaceId, use3d).Result;
+                    if (!setResult.Success)
+                    {
+                        EventLogProvider.LogEvent(EventType.ERROR, "SET MAILING LIST", "ERROR", setResult.ErrorMessages);
+                    }
                     url += $"&containerId={containerId}&quantity={quantity}";
                     Response.Redirect(url);
                 }

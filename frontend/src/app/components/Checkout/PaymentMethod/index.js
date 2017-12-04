@@ -6,6 +6,12 @@ import Alert from 'app.dump/Alert';
 import Method from './Method';
 
 class PaymentMethod extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { shownInput: props.ui.items.find(item => item.checked).id };
+  }
+
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
     changeShoppingData: PropTypes.func.isRequired,
@@ -26,6 +32,10 @@ class PaymentMethod extends Component {
     changeShoppingData('paymentMethod', 3, ' ');
   }
 
+  toggleInput = (shownInput) => {
+    this.setState({ shownInput });
+  };
+
   render() {
     const { ui, checkedObj, changeShoppingData, validationMessage } = this.props;
     const { title, description, items, isPayable, unPayableText } = ui;
@@ -39,6 +49,8 @@ class PaymentMethod extends Component {
       return (
         <Method changeShoppingData={changeShoppingData}
                 checkedObj={checkedObj}
+                toggleInput={this.toggleInput}
+                shownInput={this.state.shownInput}
                 {...item}
                 className={className}
                 validationMessage={validationMessage}

@@ -17,11 +17,11 @@ namespace Kadena.WebAPI.Services
     {
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
-        private readonly ITemplatedProductService _templateClient;
+        private readonly ITemplatedClient _templateClient;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedProductService templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
         {
             _resources = resources;
             _logger = logger;
@@ -32,8 +32,7 @@ namespace Kadena.WebAPI.Services
 
         public async Task<bool> SetName(Guid templateId, string name)
         {
-            string endpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
-            var result = await _templateClient.SetName(endpoint, templateId, name, _kentico.GetCurrentSiteDomain());
+            var result = await _templateClient.SetName(templateId, name);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -77,12 +76,8 @@ namespace Kadena.WebAPI.Services
                 return productTemplates;
             }
 
-            var clientEndpoint = _resources.GetSettingsKey("KDA_TemplatingServiceEndpoint");
             var requestResult = await _templateClient
-                .GetTemplates(clientEndpoint,
-                    _users.GetCurrentUser().UserId,
-                    product.ProductChiliTemplateID,
-                    _kentico.GetCurrentSiteDomain());
+                .GetTemplates(_users.GetCurrentUser().UserId, product.ProductChiliTemplateID);
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
@@ -100,7 +95,7 @@ namespace Kadena.WebAPI.Services
                     .Select(d => new ProductTemplate
                     {
                         EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(), 
-                            product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 0, d.MailingList?.ContainerId, d.Name),
+                            product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 1, d.MailingList?.ContainerId, d.Name),
                         TemplateId = d.TemplateId,
                         CreatedDate = DateTime.Parse(d.Created),
                         UpdatedDate = DateTime.Parse(d.Updated),

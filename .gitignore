@@ -267,3 +267,9 @@ kadena2.0/CMS/App_Data/CMSModules/SmartSearch/**
 !kadena2.0/CMS/App_Data/CMSModules/SmartSearch/*/
 !kadena2.0/CMS/App_Data/CMSModules/SmartSearch/_StopWords/**
 !kadena2.0/CMS/App_Data/CMSModules/SmartSearch/_Synonyms/**
+
+#ignore temporary files from these directories
+kadena2.0/CMS/App_Data/CMSTemp
+kadena2.0/CMS/App_Data/Persistent
+kadena2.0/CMS/CMSSiteUtils
+
