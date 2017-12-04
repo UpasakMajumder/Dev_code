@@ -35,16 +35,18 @@ namespace Kadena2.MicroserviceClients.Helpers
         {
             var requestDateTime = DateTime.UtcNow;
             var credentials = GetCredentialsDefault()?.GetCredentials();
-            if (credentials != null)
+            if (credentials == null)
             {
-                AddAwsHeaders(request, requestDateTime, credentials.Token);
-                var signedHeaders = GetSignedHeaders(request);
-                var canonicalRequest = await GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
-                var stringToSign = GetStringToSign(canonicalRequest, requestDateTime);
-                var signiture = GetSignature(stringToSign, requestDateTime, credentials.SecretKey);
-                var authHeader = GetAuthHeader(signiture, credentials.AccessKey, signedHeaders, requestDateTime);
-                request.Headers.Authorization = new AuthenticationHeaderValue(AwsSignAlgo, authHeader);
+                throw new InvalidOperationException("Failed to get AWS Credentials.");
             }
+
+            AddAwsHeaders(request, requestDateTime, credentials.Token);
+            var signedHeaders = GetSignedHeaders(request);
+            var canonicalRequest = await GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
+            var stringToSign = GetStringToSign(canonicalRequest, requestDateTime);
+            var signiture = GetSignature(stringToSign, requestDateTime, credentials.SecretKey);
+            var authHeader = GetAuthHeader(signiture, credentials.AccessKey, signedHeaders, requestDateTime);
+            request.Headers.Authorization = new AuthenticationHeaderValue(AwsSignAlgo, authHeader);
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
