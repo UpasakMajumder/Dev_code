@@ -19,7 +19,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
   
     #region "Methods"
-
     /// <summary>
     /// Content loaded event handler.
     /// </summary>
@@ -71,29 +70,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     #endregion
     #region
     /// <summary>
-    /// This method will return the Brand list 
-    /// </summary>
-    /// <returns>List of Brands</returns>
-    private static ObjectQuery<CustomTableItem> GetBrands()
-    {
-        ObjectQuery<CustomTableItem> items = new ObjectQuery<CustomTableItem>();
-        string customTableClassName = "KDA.Brand";
-        try
-        {
-            DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-            if (brandTable != null)
-            {
-                items = CustomTableItemProvider.GetItems(customTableClassName).OrderBy("BrandName");
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm", "GetBrands", ex.Message);
-        }
-
-        return items;
-    }
-    /// <summary>
     /// Method to bind the data to all the dropdowns
     /// </summary>
     private void BindData()
@@ -130,32 +106,30 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             string posNumber = ddlBrand.SelectedValue + ddlYear.SelectedValue.Substring(2) + txtPOSCode.Text;
             if (!string.IsNullOrEmpty(txtPOSCode.Text) && ddlBrand.SelectedIndex > 0 && ddlYear.SelectedIndex > 0)
             {
-                string customTableClassName = "KDA.POSNumber";
-                DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-                if (customTable != null)
+                CustomTableItem posData = CustomTableItemProvider.GetItems<POSNumberItem>().WhereEquals("POSNumber", posNumber).FirstOrDefault();
+                if (posData == null)
                 {
+                    POSNumberItem objPosNumber = new POSNumberItem
+                    {
+                        BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
+                        Year = ValidationHelper.GetInteger(ddlYear.SelectedValue, default(int)),
+                        POSCategoryName = ValidationHelper.GetString(ddlCategory.SelectedValue, ""),
+                        POSCode = ValidationHelper.GetInteger(txtPOSCode.Text, default(int)),
+                        POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedItem.Text, default(int)),
+                        BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
+                        POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
 
-                    CustomTableItem customTableData = CustomTableItemProvider.GetItems(customTableClassName).WhereEquals("POSNumber", posNumber);
-                    if (customTableData == null)
-                    {
-                        CustomTableItem newCustomTableItem = CustomTableItem.New(customTableClassName);
-                        newCustomTableItem.SetValue("BrandID", ValidationHelper.GetString(ddlBrand.SelectedValue, ""));
-                        newCustomTableItem.SetValue("Year", ValidationHelper.GetString(ddlYear.SelectedValue, ""));
-                        newCustomTableItem.SetValue("POSCode", ValidationHelper.GetString(txtPOSCode.Text, ""));
-                        newCustomTableItem.SetValue("POSCategoryID", ValidationHelper.GetString(ddlCategory.SelectedValue, ""));
-                        newCustomTableItem.SetValue("POSCategoryName", ValidationHelper.GetString(ddlCategory.SelectedItem.Text, ""));
-                        newCustomTableItem.SetValue("BrandName", ValidationHelper.GetString(ddlBrand.SelectedItem.Text, ""));
-                        newCustomTableItem.SetValue("POSNumber", posNumber);
-                        newCustomTableItem.Insert();
-                        lblError.Visible = false;
-                        lblSuccess.Visible = true;
-                        lblDuplicate.Visible = false;
-                    }
-                    else
-                    {
-                        lblDuplicate.Visible = true;
-                    }
+                    };
+                    objPosNumber.Insert();
+                    lblError.Visible = false;
+                    lblSuccess.Visible = true;
+                    lblDuplicate.Visible = false;
                 }
+                else
+                {
+                    lblDuplicate.Visible = true;
+                }
+            
             }
         }
         catch (Exception ex)
