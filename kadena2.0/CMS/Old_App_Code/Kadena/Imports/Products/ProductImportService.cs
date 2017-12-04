@@ -415,6 +415,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 return ProductCategoryProvider
                     .GetProductCategories()
+                    .Culture(_culture)
                     .WhereEquals(nameof(parentPage.DocumentID), parentPage.DocumentID)
                     .FirstObject;
             }
