@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.Dto.RecentOrders;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System.Threading.Tasks;
 using System.Web.Http;

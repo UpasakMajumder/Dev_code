@@ -3,7 +3,7 @@ using CMS.EventLog;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using Kadena.Dto.Payment.CreditCard.MicroserviceRequests;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;

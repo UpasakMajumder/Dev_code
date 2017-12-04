@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.WebAPI;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.Services;
+using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
@@ -11,7 +11,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using System.Collections.Generic;
 using System.Linq;
-using Kadena.WebAPI.Factories.Checkout;
+using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
 
 namespace Kadena.Tests.WebApi
