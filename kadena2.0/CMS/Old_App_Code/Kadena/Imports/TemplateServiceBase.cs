@@ -1,15 +1,25 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.IO;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
-    public abstract class TemplateServiceBase
+    public class TemplateServiceBase
     {
-        protected static readonly int MaxRowsPerSheet = 1024 * 1024;
+        private const int MaxRowsPerSheet = 1024 * 1024;
+        protected int _siteId;
 
-        protected static void CreateSheetHeader(List<Column> columns, ISheet sheet)
+        public byte[] GetTemplateFile<T>(int siteID) where T : class
+        {
+            _siteId = siteID;
+            var columns = GetImportColumns<T>();
+            var sheet = CreateSheet(columns);
+            return GetWorkbookBytes(sheet.Workbook);
+        }
+
+        private static void CreateSheetHeader(List<Column> columns, ISheet sheet)
         {
             var row = sheet.CreateRow(0);
             var standardStyle = CreateHeaderStyle(sheet.Workbook);
@@ -31,7 +41,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
         }
 
-        protected static ICellStyle CreateHeaderStyle(IWorkbook workbook)
+        private static ICellStyle CreateHeaderStyle(IWorkbook workbook)
         {
             var font = workbook.CreateFont();
             font.IsBold = true;
@@ -40,7 +50,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return style;
         }
 
-        protected static ICellStyle CreateHeaderMandatoryStyle(IWorkbook workbook)
+        private static ICellStyle CreateHeaderMandatoryStyle(IWorkbook workbook)
         {
             var font = workbook.CreateFont();
             font.IsBold = true;
@@ -51,12 +61,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return style;
         }
 
-        protected List<Column> GetImportColumns<T>() where T : class
+        private static List<Column> GetImportColumns<T>() where T : class
         {
             return ImportHelper.GetHeaderProperties<T>();
         }
 
-        protected byte[] GetWorkbookBytes(IWorkbook workbook)
+        private static byte[] GetWorkbookBytes(IWorkbook workbook)
         {
             using (var ms = new MemoryStream())
             {
@@ -85,6 +95,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             validation.ShowErrorBox = true;
             validation.CreateErrorBox("Validation failed", "Please choose a valid value.");
             sheet.AddValidationData(validation);
+        }
+
+        protected virtual ISheet CreateSheet(List<Column> headers)
+        {
+            IWorkbook workbook = new XSSFWorkbook();
+            var sheet = workbook.CreateSheet();
+            CreateSheetHeader(headers, sheet);
+            return sheet;
         }
     }
 }
