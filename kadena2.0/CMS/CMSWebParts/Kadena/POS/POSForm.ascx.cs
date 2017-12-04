@@ -17,7 +17,7 @@ using System.Linq;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
-  
+
     #region "Methods"
     /// <summary>
     /// Content loaded event handler.
@@ -118,7 +118,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedItem.Text, default(int)),
                         BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
                         POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
-
                     };
                     objPosNumber.Insert();
                     lblError.Visible = false;
@@ -129,7 +128,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                 {
                     lblDuplicate.Visible = true;
                 }
-            
             }
         }
         catch (Exception ex)
