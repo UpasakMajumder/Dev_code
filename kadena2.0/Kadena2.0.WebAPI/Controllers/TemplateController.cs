@@ -24,7 +24,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/template/setname")]
         public async Task<IHttpActionResult> SetName([FromBody] NewCartItem item)
         {
-            var result = await _templateService.SetName(item.TemplateId, item.CustomProductName);
+            var result = await _templateService.UpdateTemplate(item.TemplateId, item.CustomProductName, item.Quantity);
             if (result)
             {
                 return ResponseJson(result);

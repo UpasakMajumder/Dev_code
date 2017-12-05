@@ -31,9 +31,9 @@ namespace Kadena.BusinessLogic.Services
             this.documents = documents;
         }
 
-        public async Task<bool> SetName(Guid templateId, string name)
+        public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
         {
-            var result = await _templateClient.SetName(templateId, name);
+            var result = await _templateClient.UpdateTemplate(templateId, name, quantity);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);

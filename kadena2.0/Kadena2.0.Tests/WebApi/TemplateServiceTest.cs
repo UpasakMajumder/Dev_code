@@ -16,6 +16,7 @@ namespace Kadena.Tests.WebApi
     public class TemplateServiceTest
     {
         private string _currentName = "currentName";
+        private int _currentQuantity = 1;
 
         private TemplateService Create(Mock<ITemplatedClient> templateClient)
         {
@@ -29,9 +30,10 @@ namespace Kadena.Tests.WebApi
                 );
         }
 
-        private BaseResponseDto<bool?> SetNameSuccess(string name)
+        private BaseResponseDto<bool?> SetNameSuccess(string name, int quantity)
         {
             _currentName = name;
+            _currentQuantity = quantity;
             return new BaseResponseDto<bool?>
             {
                 Success = true,
@@ -53,28 +55,32 @@ namespace Kadena.Tests.WebApi
         public async Task SetNameSucceed()
         {
             var newName = "newName";
+            var newQuantity = 5;
             Assert.NotEqual(newName, _currentName);
+            Assert.NotEqual(newQuantity, _currentQuantity);
 
             var client = new Mock<ITemplatedClient>();
-            client.Setup(c => c.SetName(Guid.Empty, newName))
-                .Returns(Task.FromResult(SetNameSuccess(newName)));
+            client.Setup(c => c.UpdateTemplate(Guid.Empty, newName, newQuantity))
+                .Returns(Task.FromResult(SetNameSuccess(newName, newQuantity)));
             var service = Create(client);
 
-            var result = await service.SetName(Guid.Empty, newName);
+            var result = await service.UpdateTemplate(Guid.Empty, newName, newQuantity);
             Assert.True(result);
             Assert.Equal(newName, _currentName);
+            Assert.Equal(newQuantity, _currentQuantity);
         }
 
         [Fact(DisplayName = "SetNameFail")]
         public async Task SetNameFail()
         {
             var newName = "newName";
+            var newQuantity = 5;
 
             var client = new Mock<ITemplatedClient>();
-            client.Setup(c => c.SetName(Guid.Empty, newName))
+            client.Setup(c => c.UpdateTemplate(Guid.Empty, newName, newQuantity))
                 .Returns(Task.FromResult(SetNameFailed()));
             var service = Create(client);
-            var result = await service.SetName(Guid.Empty, newName);
+            var result = await service.UpdateTemplate(Guid.Empty, newName, newQuantity);
 
             Assert.False(result);
         }
