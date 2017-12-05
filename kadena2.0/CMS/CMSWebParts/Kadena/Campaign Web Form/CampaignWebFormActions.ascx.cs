@@ -205,7 +205,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkOpenCampaign.Visible = true;
                         lnkOpenCampaign.Enabled = true;
                     }
-                    else if (openCampaign)
+                    if (openCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
@@ -214,7 +214,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkCloseCampaign.Enabled = true;
                         lnkCloseCampaign.Visible = true;
                     }
-                    else if (closeCampaign)
+                    if (closeCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;

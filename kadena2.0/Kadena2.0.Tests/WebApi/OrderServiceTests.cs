@@ -67,6 +67,7 @@ namespace Kadena.Tests.WebApi
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedClient>();
+            var documents = new Mock<IKenticoDocumentProvider>();
 
             return new OrderService(mapper,
                 orderSubmitClient.Object,
@@ -78,7 +79,8 @@ namespace Kadena.Tests.WebApi
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
                 templateProductService.Object,
-                new FakeBackgroundTaskScheduler());
+                new FakeBackgroundTaskScheduler(),
+                documents.Object);
         }
 
         [Fact]
