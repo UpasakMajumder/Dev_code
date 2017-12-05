@@ -103,6 +103,7 @@ namespace Kadena.Tests.WebApi
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingService = new Mock<IKListService>();
             var checkoutFactory = new Mock<ICheckoutPageFactory>();
+            var documents = new Mock<IKenticoDocumentProvider>();
 
             return new ShoppingCartService(mapper,
                 kenticoProvider.Object,
@@ -110,6 +111,7 @@ namespace Kadena.Tests.WebApi
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,
+                documents.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 checkoutFactory.Object);
         }

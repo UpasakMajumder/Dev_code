@@ -95,6 +95,17 @@ namespace Kadena.WebAPI.KenticoProviders
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
+        public bool UserCanDownloadHiresPdf(int siteId, int userId)
+        {
+            var userinfo = UserInfoProvider.GetUserInfo(userId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+
+            if (userinfo == null || site == null)
+                return false;
+
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_CanDownloadHiresPdf", site.SiteName, userinfo);
+        }
+
         public User GetCurrentUser()
         {
             var user = MembershipContext.AuthenticatedUser;
