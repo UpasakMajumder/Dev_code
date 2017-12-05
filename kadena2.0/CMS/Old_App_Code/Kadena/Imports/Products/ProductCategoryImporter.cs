@@ -74,7 +74,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
             return library.DownloadImageToMedialibrary(imageURL
                 , $"Image{createdCategory.NodeAlias}"
-                , $"Product image for SKU {createdCategory.GetValue("ProductCategoryTitle")}");
+                , $"Product image for category {createdCategory.GetValue("ProductCategoryTitle")}");
         }
 
         private void ClearImage(ProductCategory category)
