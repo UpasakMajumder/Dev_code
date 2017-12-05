@@ -57,6 +57,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
+                CountryID = GetCountryID("USA");
+                uniSelectorCountry.Value = ValidationHelper.GetString(CountryID, string.Empty);
+                uniSelectorState.WhereCondition = "CountryID =" + CountryID;
+                uniSelectorState.Enabled = true;
                 int itemID = QueryHelper.GetInteger("id", 0);
                 if (itemID > 0)
                 {

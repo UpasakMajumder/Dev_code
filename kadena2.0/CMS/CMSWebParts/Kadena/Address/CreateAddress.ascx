@@ -3,7 +3,6 @@
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 <%@ Register Src="~/CMSFormControls/CountrySelector.ascx" TagPrefix="uc1" TagName="CountrySelector" %>
 
-
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form_section">
@@ -41,7 +40,7 @@
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblAddressLine1"></span>
                         <div class="input__inner">
-                            <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="input__text" placeholder="Enter Address Line1" MaxLength="50"></asp:TextBox>
+                            <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="input__text js-Address" placeholder="Enter Address Line1" MaxLength="50"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" ErrorMessage="Please enter Address Line1" CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
@@ -61,7 +60,7 @@
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblCity"></span>
                         <div class="input__inner">
-                            <asp:TextBox ID="txtCity" runat="server" CssClass="input__text" placeholder="Enter City" MaxLength="20"></asp:TextBox>
+                            <asp:TextBox ID="txtCity" runat="server" CssClass="input__text js-City" placeholder="Enter City" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator runat="server" ID="rfCity" ControlToValidate="txtCity" ErrorMessage="Please enter City" CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
@@ -73,21 +72,21 @@
                             <div class="input__wrapper">
                                 <span class="input__label" runat="server" id="lblCountry"></span>
                                 <div class="input__inner">
-                                    <cms:UniSelector ID="uniSelectorCountry" runat="server" DisplayNameFormat="{%CountryDisplayName%}" ObjectType="cms.country" ResourcePrefix="countryselector" AllowAll="false" AllowEmpty="false" CssClass="input__select" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" OnOnSelectionChanged="uniSelectorCountry_OnSelectionChanged" HasDependingFields="true" />
+                                    <cms:UniSelector ID="uniSelectorCountry" runat="server" DisplayNameFormat="{%CountryDisplayName%}" ObjectType="cms.country" ResourcePrefix="countryselector" AllowAll="false" AllowEmpty="false" CssClass="input__select js-Country" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" OnOnSelectionChanged="uniSelectorCountry_OnSelectionChanged" HasDependingFields="true" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-2 form_block">
                             <div class="input__wrapper">
-                                <span class="input__label">State</span>
                                 <cms:LocalizedLabel runat="server" ResourceString="Kadena.Address.State"></cms:LocalizedLabel>
                                 <div class="input__inner">
                                     <cms:UniSelector ID="uniSelectorState" runat="server" DisplayNameFormat="{%StateDisplayName%}"
-                                        ObjectType="cms.state" ResourcePrefix="stateselector" DependsOnAnotherField="true" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" Enabled="false" />
+                                        ObjectType="cms.state" ResourcePrefix="stateselector" DependsOnAnotherField="true" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" Enabled="false"  CssClass="input__select js-UniState" AllowAll="false"  AllowEmpty="false"/>
                                 </div>
                             </div>
                         </div>
+
                     </ContentTemplate>
                 </cms:CMSUpdatePanel>
 
@@ -95,7 +94,7 @@
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblZipcode"></span>
                         <div class="input__inner">
-                            <asp:TextBox ID="txtZipcode" runat="server" CssClass="input__text" placeholder="Enter Zip/Postal code" MaxLength="20"></asp:TextBox>
+                            <asp:TextBox ID="txtZipcode" runat="server" CssClass="input__text js-Zipcode" placeholder="Enter Zip/Postal code" MaxLength="20"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfZipcode" runat="server" ErrorMessage="Please enter Zip/Postal code" ControlToValidate="txtZipcode" CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
@@ -127,7 +126,7 @@
             </div>
             <div class="mb-3 form_btns">
                 <div class="">
-                    <asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" Text="Save" OnClick="btnSave_Click" />
+                    <asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" Text="Save" OnClick="btnSave_Click" />
                     <asp:Button runat="server" ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" Text="Cancel" OnClick="btnCancel_Click" CausesValidation="false" />
                 </div>
             </div>
