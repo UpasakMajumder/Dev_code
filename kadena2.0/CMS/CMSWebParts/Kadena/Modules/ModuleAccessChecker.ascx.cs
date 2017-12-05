@@ -42,9 +42,9 @@ namespace Kadena.CMSWebParts.Kadena.Modules
                         }
                         // module is not enabled - unauthorized accesss
                         MapperBuilder.InitializeAll();
-                        var kenticoProviderService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                        var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                         var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DisabledModuleUrl");
-                        url = kenticoProviderService.GetDocumentUrl(url);
+                        url = documents.GetDocumentUrl(url);
                         Response.Redirect(url);
                     }
                     currentDocument = currentDocument.Parent;
