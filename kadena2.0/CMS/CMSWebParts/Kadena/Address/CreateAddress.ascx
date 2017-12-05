@@ -41,7 +41,7 @@
                         <span class="input__label" runat="server" id="lblAddressLine1"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="input__text js-Address" placeholder="Enter Address Line1" MaxLength="50"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" ErrorMessage="Please enter Address Line1" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" ErrorMessage="Please enter Address Line1" CssClass="input__error js-errAddress"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                                 <cms:LocalizedLabel runat="server" ResourceString="Kadena.Address.State"></cms:LocalizedLabel>
                                 <div class="input__inner">
                                     <cms:UniSelector ID="uniSelectorState" runat="server" DisplayNameFormat="{%StateDisplayName%}"
-                                        ObjectType="cms.state" ResourcePrefix="stateselector" DependsOnAnotherField="true" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" Enabled="false"  CssClass="input__select js-UniState" AllowAll="false"  AllowEmpty="false"/>
+                                        ObjectType="cms.state" ResourcePrefix="stateselector" DependsOnAnotherField="true" MaxDisplayedItems="400" MaxDisplayedTotalItems="450" Enabled="false" CssClass="input__select js-UniState" AllowAll="false" AllowEmpty="false" />
                                 </div>
                             </div>
                         </div>
