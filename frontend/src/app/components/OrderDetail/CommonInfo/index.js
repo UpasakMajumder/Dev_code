@@ -6,7 +6,14 @@ import SVG from 'app.dump/SVG';
 import timeFormat from 'app.helpers/time';
 
 const CommonInfo = ({ ui }) => {
-  const { status, orderDate, shippingDate, totalCost } = ui;
+  const { status, orderDate, shippingDate, totalCost, dateTimeNAString } = ui;
+
+  const standardizeData = (value) => {
+    let date = dateTimeNAString;
+    if (value) date = timeFormat(value);
+
+    return date;
+  };
 
   const tiles = [
     {
@@ -16,12 +23,12 @@ const CommonInfo = ({ ui }) => {
     },
     {
       title: orderDate.title,
-      value: orderDate.value,
+      value: standardizeData(orderDate.value),
       icon: 'calendar'
     },
     {
       title: shippingDate.title,
-      value: shippingDate.value,
+      value: standardizeData(shippingDate.value),
       icon: 'truck'
     },
     {
@@ -38,7 +45,7 @@ const CommonInfo = ({ ui }) => {
         <SVG name={icon} className="icon-tile"/>
         <div>
           <p className="tile-bar__title">{title}</p>
-          <p className="tile-bar__description">{title.includes('date') ? timeFormat(value) : value}</p>
+          <p className="tile-bar__description">{value}</p>
         </div>
       </div>
     );
@@ -55,17 +62,18 @@ const CommonInfo = ({ ui }) => {
 
 CommonInfo.propTypes = {
   ui: PropTypes.shape({
+    dateTimeNAString: PropTypes.string.isRequired,
     status: PropTypes.shape({
       title: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
     }).isRequired,
     orderDate: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
+      value: PropTypes.string
     }).isRequired,
     shippingDate: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
+      value: PropTypes.string
     }).isRequired,
     totalCost: PropTypes.shape({
       title: PropTypes.string.isRequired,

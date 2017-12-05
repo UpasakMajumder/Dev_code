@@ -359,6 +359,7 @@ module.exports.detail =  {
   "errorMessage": null,
   "payload": {
     "commonInfo": {
+      dateTimeNAString: "N/A",
       status: {
         title: 'Status',
         value: 'In progress'
@@ -369,7 +370,7 @@ module.exports.detail =  {
       },
       shippingDate: {
         title: 'Shipping date',
-        value: 'N/A'
+        value: null
       },
       totalCost: {
         title: 'Total cost',
