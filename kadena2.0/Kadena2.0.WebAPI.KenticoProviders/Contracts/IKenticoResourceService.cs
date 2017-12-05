@@ -30,5 +30,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetSettingsKey(int siteId, string key);
 
         string GetCurrentSiteDomain();
+        string GetContextCultureCode();
     }
 }
