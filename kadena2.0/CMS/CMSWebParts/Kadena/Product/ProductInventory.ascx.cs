@@ -29,6 +29,34 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("ProductType", value);
         }
     }
+    /// <summary>
+    /// Add to cart Link text
+    /// </summary>
+    public string AddToCartLinkText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Product.AddToCartText"), string.Empty);
+        }
+        set
+        {
+            SetValue("AddToCartLinkText", value);
+        }
+    }
+    /// <summary>
+    /// Current Demand text
+    /// </summary>
+    public string CurrentDemandText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Product.CurrentdemandText"), string.Empty);
+        }
+        set
+        {
+            SetValue("CurrentDemandText", value);
+        }
+    }
 
     #endregion "Properties"
 
@@ -95,7 +123,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         return returnValue;
     }
-
     /// <summary>
     /// Bind the Products data to repeater
     /// </summary>
