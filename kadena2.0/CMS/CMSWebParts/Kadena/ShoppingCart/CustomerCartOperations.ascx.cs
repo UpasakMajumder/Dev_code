@@ -124,24 +124,21 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                                 }
                                 BindCustomersList(productSKU);
                             }
-                            if (customerShoppingCartID > 0 && quantityPlacing > 0)
+                            else if (customerShoppingCartID > 0 && quantityPlacing > 0)
                             {
                                 Updatingtheunitcountofcartitem(customerShoppingCartID, quantityPlacing, customerID);
                                 BindCustomersList(productSKU);
                             }
-                            if (customerShoppingCartID > 0 && quantityPlacing == 0)
+                            else if (customerShoppingCartID > 0 && quantityPlacing == 0)
                             {
                                 RemovingProductFromShoppingCart(customerShoppingCartID);
                                 BindCustomersList(productSKU);
                             }
                         }
-                        else
+                        else if (customerShoppingCartID > 0 && quantityPlacing > 0)
                         {
-                            if (customerShoppingCartID > 0 && quantityPlacing > 0)
-                            {
-                                RemovingProductFromShoppingCart(customerShoppingCartID);
-                                BindCustomersList(productSKU);
-                            }
+                            RemovingProductFromShoppingCart(customerShoppingCartID);
+                            BindCustomersList(productSKU);
                         }
                     }
                 }
