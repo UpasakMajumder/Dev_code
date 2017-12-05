@@ -25,7 +25,7 @@ export default {
       {
         "templateId": "d38b1fc7-73d0-48c2-916f-28f1645e5f4a",
         "productName": "d38b1fc7-73d0-48c2-916f-28f1645e5f4a",
-        "createdDate": "2017-08-28T13:01:51.193+00:00",
+        "createdDate": "2017-08-02T13:01:51.193+00:00",
         "updatedDate": "2017-08-28T13:01:51.193+00:00",
         "editorUrl": "/products/product-tools/product-editor?documentId=558&templateId=d38b1fc7-73d0-48c2-916f-28f1645e5f4a&workspaceid=4bdfd67c-44c1-4eff-8d44-ffa3780fdc1e&quantity=0&customName=d38b1fc7-73d0-48c2-916f-28f1645e5f4a"
       },

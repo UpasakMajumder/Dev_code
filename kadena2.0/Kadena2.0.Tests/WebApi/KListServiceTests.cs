@@ -6,11 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.WebAPI;
-using Kadena.WebAPI.Services;
+using Kadena.BusinessLogic.Services;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models;
 using Kadena.Dto.General;
 using Kadena.Models.Site;
 

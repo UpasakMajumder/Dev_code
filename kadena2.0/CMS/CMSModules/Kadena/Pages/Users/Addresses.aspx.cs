@@ -22,7 +22,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                     return values.Select(v => int.Parse(v)).ToArray();
                 }
 
-                return new int[0]; 
+                return new int[0];
             }
         }
 
@@ -63,7 +63,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
             try
             {
-                var result = new UserImportService().ProcessAddressImportFile(fileData, excelType, SelectedSiteID, selectedUsers);
+                var result = new AddressImporter { UserIds = selectedUsers }
+                    .Process(fileData, excelType, SelectedSiteID);
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -72,7 +73,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
                 {
                     ShowSuccessMessage("Operation completed successfully");
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -89,7 +90,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new UserTemplateService().GetAddressTemplateFile();
+            var bytes = new TemplateServiceBase().GetTemplateFile<AddressDto>(SelectedSiteID);
             var templateFileName = "addresses-upload-template.xlsx";
 
             WriteFileToResponse(templateFileName, bytes);
