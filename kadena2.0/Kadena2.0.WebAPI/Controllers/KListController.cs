@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.Dto.MailingList;
 using Kadena.Models;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Threading.Tasks;

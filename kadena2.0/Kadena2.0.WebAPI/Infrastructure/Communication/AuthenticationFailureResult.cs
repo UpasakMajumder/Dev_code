@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using static Kadena.Helpers.SerializerConfig;
+
 namespace Kadena.WebAPI.Infrastructure.Communication
 {
     public class AuthenticationFailureResult : IHttpActionResult
@@ -28,7 +30,7 @@ namespace Kadena.WebAPI.Infrastructure.Communication
         private HttpResponseMessage Execute()
         {
             var errorDto = new ErrorResponse(ReasonPhrase);
-            var requestBody = JsonConvert.SerializeObject(errorDto, SerializerConfig.CamelCaseSerializer);
+            var requestBody = JsonConvert.SerializeObject(errorDto, CamelCaseSerializer);
             var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
             return new HttpResponseMessage(HttpStatusCode.Unauthorized)

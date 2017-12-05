@@ -12,6 +12,8 @@ using CMS.EventLog;
 using CMS.DocumentEngine;
 using System.Collections.Generic;
 using CMS.Membership;
+using CMS.CustomTables.Types.KDA;
+using System.Linq;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
@@ -61,7 +63,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         }
 
     }
-     /// <summary>
+    /// <summary>
     /// Reloads the control data.
     /// </summary>
     public override void ReloadData()
@@ -106,14 +108,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
     {
         try
         {
-            //Binding data to Brand dropdownlist
-            ddlBrand.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.BrandWaterMark"), "0"));
-            ObjectQuery<CustomTableItem> brands = GetBrands();
-            int index = 1;
-            foreach (CustomTableItem brand in brands)
-            {
-                ddlBrand.Items.Insert(index++, new ListItem(brand.GetValue("BrandName").ToString(), brand.GetValue("BrandCode").ToString()));
-            }
+
             // Adds the '(any)' and '(default)' filtering options
             ddlYear.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.FiscalYearWaterMark"), "0"));
             int currentYear = DateTime.Now.Year;
@@ -122,39 +117,14 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                 string year = (currentYear + NoOfYear).ToString();
                 ddlYear.Items.Insert(NoOfYear + 1, new ListItem(year, year));
             }
-            //POS Category DropdownList
-            int PosCategoryindex = 1;
-            ddlCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.POSFrom.POSCategoryWaterMark"), "0"));
-            List<PosCategory> lstPoscategories = GetPOSCategory();
-            foreach (PosCategory lstPoscategory in lstPoscategories)
-            {
-                ddlCategory.Items.Insert(PosCategoryindex++, new ListItem(lstPoscategory.CategoryName, lstPoscategory.CategoryId.ToString()));
-            }
-           
+            BindPOSCategories();
+            BindBrands();
+
         }
         catch (Exception ex)
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_POS_POSForm_BindDataToDropdowns", "BindData", ex.Message);
         }
-    }
-    /// <summary>
-    /// Method to return the list of product categories
-    /// </summary>
-    /// <returns></returns>
-    private List<PosCategory> GetPOSCategory()
-    {
-        // Creates an instance of the Tree provider
-        List<PosCategory> lstProdcategroy = new List<PosCategory>();
-        TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-        var pages = tree.SelectNodes("KDA.POSCategory");
-        foreach (CMS.DocumentEngine.TreeNode page in pages)
-        {
-            PosCategory category = new PosCategory();
-            category.CategoryId = page.GetValue("PosCategoryID", 0);
-            category.CategoryName = page.GetValue("PosCategoryName", string.Empty);
-            lstProdcategroy.Add(category);
-        }
-        return lstProdcategroy;
     }
     #endregion
     #region Events
@@ -228,18 +198,31 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         }
 
     }
+    private void BindPOSCategories()
+    {
+        var posCategories = CustomTableItemProvider.GetItems(POSCategoryItem.CLASS_NAME).Columns("PosCategoryName,ItemID").ToList();
+        if (!DataHelper.DataSourceIsEmpty(posCategories))
+        {
+            ddlCategory.DataSource = posCategories;
+            ddlCategory.DataTextField = "PosCategoryName";
+            ddlCategory.DataValueField = "ItemID";
+            ddlCategory.DataBind();
+            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.POSFrom.POSCategoryWaterMark"), string.Empty);
+            ddlCategory.Items.Insert(0, new ListItem(selectText, "0"));
+        }
+    }
+    private void BindBrands()
+    {
+        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("ItemID,BrandName").ToList();
+        if (!DataHelper.DataSourceIsEmpty(brands))
+        {
+            ddlBrand.DataSource = brands;
+            ddlBrand.DataTextField = "BrandName";
+            ddlBrand.DataValueField = "ItemID";
+            ddlBrand.DataBind();
+            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
+            ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
+        }
+    }
     #endregion
 }
-#region class
-/// <summary>
-/// Properties for Product category
-/// </summary>
-public class PosCategory
-{
-    public string CategoryName { get; set; }
-    public int CategoryId { get; set; }
-}
-
-
-
-#endregion

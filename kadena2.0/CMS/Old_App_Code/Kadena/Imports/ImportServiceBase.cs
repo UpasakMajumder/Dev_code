@@ -11,14 +11,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports
 
         protected List<string[]> GetExcelRows(byte[] fileData, ExcelType type)
         {
-            var rows = new ExcelReader().ReadDataFromExcelFile(fileData, type);
+            var rows = ExcelReader.ReadDataFromExcelFile(fileData, type);
             if (rows.Count <= 1)
             {
                 throw new Exception("The file contains no data");
             }
             return rows;
         }
-
 
         protected List<T> GetDtosFromExcelRows<T>(List<string[]> rows) where T:class
         {
@@ -30,7 +29,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             return values;
         }
 
-
         protected SiteInfo GetSite(int siteID)
         {
             var site = SiteInfoProvider.GetSiteInfo(siteID);
@@ -40,5 +38,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
             return site;
         }
+
+        public abstract ImportResult Process(byte[] importFileData, ExcelType type, int siteId);
     }
 }

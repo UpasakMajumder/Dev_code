@@ -14,18 +14,24 @@ using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Product;
+using AutoMapper;
 using Kadena.WebAPI;
 using AutoMapper;
 using CMS.EventLog;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.CustomTables.Types.KDA;
+using static Kadena.Helpers.SerializerConfig;
+using Kadena.BusinessLogic.Services;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
-        #region Public methods
+        static KadenaMacroMethods()
+        {
+            MapperBuilder.InitializeAll();
+        }
 
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
@@ -35,7 +41,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
-
+            
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
@@ -322,8 +328,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
-            {
-                MapperBuilder.InitializeAll();
+            {                
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return kenticoService.GetDocumentUrl(aliasPath);
             }
@@ -337,16 +342,25 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                MapperBuilder.InitializeAll();
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), new Newtonsoft.Json.JsonSerializerSettings { ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver() });
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }
 
-        #endregion
+        [MacroMethod(typeof(string), "Returns unified date string in Kadena format", 1)]
+        [MacroMethodParam(0, "datetime", typeof(DateTime), "DateTime to format")]
+        public static object FormatDate(EvaluationContext context, params object[] parameters)
+        {
+            var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
+            return new DateTimeFormatter(new KenticoResourceService()).Format(datetime);
+        }
 
-        #region Private methods
+        [MacroMethod(typeof(string), "Returns unified date format string", 0)]
+        public static object GetDateFormatString(EvaluationContext context, params object[] parameters)
+        {
+            return new DateTimeFormatter(new KenticoResourceService()).GetFormatString();
+        }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
         {
@@ -384,8 +398,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
-
-        #endregion
 
         #region TWE macro methods
         /// <summary>
