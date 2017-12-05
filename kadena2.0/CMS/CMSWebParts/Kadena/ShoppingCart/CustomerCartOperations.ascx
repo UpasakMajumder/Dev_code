@@ -2,6 +2,8 @@
 
 <asp:Button Text="Add Items to  Cart" ID="btnDisplay" runat="server" OnClick="btmAddItemsToCart_Click" />
 <asp:Label Text="" ID="lblProductName" runat="server" />
+<asp:Label Text="" ID="lblError" runat="server" />
+<cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false" ResourceString="" ></cms:LocalizedLabel>
 
 <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false">
     <Columns>
@@ -21,7 +23,7 @@
         <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="hide" ItemStyle-CssClass="hide" />
     </Columns>
 </asp:GridView>
-<asp:Label runat="server" ID="lblSuccessMsg"></asp:Label>
+<asp:Label runat="server" ID="lblSuccessMsg" Text=""></asp:Label>
 <style>
     .hide {
         display: none;

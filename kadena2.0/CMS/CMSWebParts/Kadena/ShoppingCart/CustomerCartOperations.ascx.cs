@@ -5,6 +5,8 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using System;
 using System.Web.UI.WebControls;
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
 
 namespace Kadena.CMSWebParts.Kadena.ShoppingCart
 {
@@ -52,8 +54,21 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 productSKU = ValidationHelper.GetInteger(Request.QueryString["id"], default(int));
                 if (!this.IsPostBack)
                 {
-                    lblProductName.Text = ValidationHelper.GetString(Request.QueryString["skuname"], string.Empty);
-                    BindCustomersList(productSKU);
+                    var hasBusinessUnit = CheckPersonHasBusinessUnit();
+                    if (hasBusinessUnit)
+                    {
+                        lblErrorMsg.Visible = false;
+                        gvCustomersCart.Visible = true;
+                        btnDisplay.Visible = true;
+                        lblProductName.Text = ValidationHelper.GetString(Request.QueryString["skuname"], string.Empty);
+                        BindCustomersList(productSKU);
+                    }
+                    else
+                    {
+                        btnDisplay.Visible = false;
+                        lblErrorMsg.Visible = true;
+                        gvCustomersCart.Visible = false;
+                    }
                 }
             }
         }
@@ -148,6 +163,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 {
                     ShoppingCartItemInfo item = null;
                     ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppinCartID);
+                    cart.User = CurrentUser;
                     var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                     var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
                     var inventoryType = ValidationHelper.GetString(cart.GetValue("ShoppingCartInventoryType"), string.Empty);
@@ -195,6 +211,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 {
                     ShoppingCartItemInfo item = null;
                     ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartID);
+                    cart.User = CurrentUser;
                     foreach (ShoppingCartItemInfo cartItem in cart.CartItems)
                     {
                         if (cartItem.SKUID == product.SKUID)
@@ -241,6 +258,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     cart.SetValue("ShoppingCartProgramID", programID);
                     cart.SetValue("ShoppingCartDistributorID", customerID);
                     cart.SetValue("ShoppingCartInventoryType", inventoryType);
+                    cart.User = CurrentUser;
                     ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
                     ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
                     parameters.CustomParameters.Add("CartItemCustomerID", customerID);
@@ -257,10 +275,32 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "CreateShoppingCartByCustomer()", ex);
             }
         }
+        /// <summary>
+        /// Checks whether the current user has mapped to any business unit
+        /// </summary>
+        /// <returns>Boolean Value</returns>
+        private bool CheckPersonHasBusinessUnit()
+        {
+            var result = default(bool);
+            try
+            {
+                var personBusinessUnits = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", CurrentUser.UserID).TopN(2).Result.Tables[0];
+                if (!DataHelper.DataSourceIsEmpty(personBusinessUnits))
+                {
+                    result = personBusinessUnits.Rows.Count > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "RemovingProductFromShoppingCart()", ex);
+            }
+            return result;
+        }
         #endregion
     }
     public enum ProductsType
     {
-        GeneralInventory = 1, PreBuy = 2
+        GeneralInventory = 1,
+        PreBuy
     }
 }
