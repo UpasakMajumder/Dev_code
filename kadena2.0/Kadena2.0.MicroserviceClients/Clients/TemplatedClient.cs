@@ -41,10 +41,14 @@ namespace Kadena2.MicroserviceClients.Clients
             var body = new
             {
                 templateId = templateId,
-                name = name
+                name = name,
+                metaData = new
+                {
+                    quantity
+                }
             };
 
-            return await Put<bool?>(url, body).ConfigureAwait(false);
+            return await Patch<bool?>(url, body).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(int userId, Guid masterTemplateId)
