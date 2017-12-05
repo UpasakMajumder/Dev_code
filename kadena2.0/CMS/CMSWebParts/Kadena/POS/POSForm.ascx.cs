@@ -55,7 +55,11 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             rfvCatgory.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCategroyRequired");
             revPOSCodeLength.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSMaxLengthMsg");
             revPOSCode.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSNumberOnlyMsg");
-        }
+            if (Request.UrlReferrer != null)
+            {
+                ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
+            }
+         }
 
     }
     /// <summary>
@@ -118,11 +122,11 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedItem.Text, default(int)),
                         BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
                         POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
+                        Enable=true
                     };
                     objPosNumber.Insert();
-                    lblError.Visible = false;
-                    lblSuccess.Visible = true;
-                    lblDuplicate.Visible = false;
+                    var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
+                    Response.Redirect(redirectUrl, false);
                 }
                 else
                 {

@@ -53,9 +53,9 @@
                 <cms:LocalizedLabel ID="lblBundleQnt" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblBundleQnt" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtBundleQnt" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvBundleQnt" runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
+                    <asp:RequiredFieldValidator ID="rfvBundleQnt" CssClass="input__error"  runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revBundleQnt" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
+                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error"  runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
                      ControlToValidate="txtBundleQnt" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                 </div>
@@ -72,7 +72,6 @@
             </div>
         </div>
       
-
         <div class="mb-2 form_block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblEstPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblEstPrice" />
@@ -239,7 +238,7 @@
     <cms:LocalizedLabel ID="lblFailureText" runat="server" EnableViewState="False" CssClass="error-label input__error" Visible="false" ResourceString="Kadena.InvProductForm.FailureMsg" ForeColor="Red" />
 </div>
 
-<div class="modal_popup" style="display: none">
+<div class="modal_popup dialog" style="display: none">
     <div class="modal-content">
         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
