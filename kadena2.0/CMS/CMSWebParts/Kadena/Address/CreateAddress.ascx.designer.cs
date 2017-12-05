@@ -147,15 +147,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfCity;
     
     /// <summary>
-    /// txtState control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtState;
-    
-    /// <summary>
     /// lblCountry control.
     /// </summary>
     /// <remarks>
@@ -165,13 +156,22 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCountry;
     
     /// <summary>
-    /// ddlCountry control.
+    /// uniSelectorCountry control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSFormControls_CountrySelector ddlCountry;
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector uniSelectorCountry;
+    
+    /// <summary>
+    /// uniSelectorState control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector uniSelectorState;
     
     /// <summary>
     /// lblZipcode control.

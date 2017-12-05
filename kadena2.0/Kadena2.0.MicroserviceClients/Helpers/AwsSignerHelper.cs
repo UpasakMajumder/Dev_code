@@ -20,21 +20,6 @@ namespace Kadena2.MicroserviceClients.Helpers
         private const string awsService = "execute-api";
         private const string awsRegion = "us-east-1";
 
-        private static readonly string awsSecretKey;
-        private static readonly string awsAccessKey;
-        private static readonly string sessionToken;
-
-        static AwsSignerHelper()
-        {
-            var credentials = GetCredentialsDefault()?.GetCredentials();
-            if (credentials != null)
-            {
-                awsAccessKey = credentials.AccessKey;
-                awsSecretKey = credentials.SecretKey;
-                sessionToken = credentials.Token;
-            }
-        }
-
         private static AWSCredentials GetCredentialsDefault()
         {
             return FallbackCredentialsFactory.GetCredentials();
@@ -49,12 +34,18 @@ namespace Kadena2.MicroserviceClients.Helpers
         public static async Task Sign(HttpRequestMessage request)
         {
             var requestDateTime = DateTime.UtcNow;
-            AddAwsHeaders(request, requestDateTime);
+            var credentials = GetCredentialsDefault()?.GetCredentials();
+            if (credentials == null)
+            {
+                throw new InvalidOperationException("Failed to get AWS Credentials.");
+            }
+
+            AddAwsHeaders(request, requestDateTime, credentials.Token);
             var signedHeaders = GetSignedHeaders(request);
             var canonicalRequest = await GetCanonicalRequest(request, signedHeaders).ConfigureAwait(false);
             var stringToSign = GetStringToSign(canonicalRequest, requestDateTime);
-            var signiture = GetSignature(stringToSign, requestDateTime);
-            var authHeader = GetAuthHeader(signiture, signedHeaders, requestDateTime);
+            var signiture = GetSignature(stringToSign, requestDateTime, credentials.SecretKey);
+            var authHeader = GetAuthHeader(signiture, credentials.AccessKey, signedHeaders, requestDateTime);
             request.Headers.Authorization = new AuthenticationHeaderValue(AwsSignAlgo, authHeader);
         }
 
@@ -138,7 +129,7 @@ namespace Kadena2.MicroserviceClients.Helpers
             return stringToSign.ToString();
         }
 
-        private static string GetAuthHeader(string signiture, IEnumerable<string> signedHeaders, DateTime requestTime)
+        private static string GetAuthHeader(string signiture, string awsAccessKey, IEnumerable<string> signedHeaders, DateTime requestTime)
         {
             var dateStamp = requestTime.ToString(Iso8601DateFormat, CultureInfo.InvariantCulture);
             var scope = $"{dateStamp}/{awsRegion}/{awsService}/aws4_request";
@@ -149,13 +140,13 @@ namespace Kadena2.MicroserviceClients.Helpers
         }
 
         // http://docs.aws.amazon.com/general/latest/gr/sigv4-calculate-signature.html
-        private static string GetSignature(string stringToSign, DateTime requestTime)
+        private static string GetSignature(string stringToSign, DateTime requestTime, string awsSecretKey)
         {
-            var kSigning = GetSigningKey(requestTime);
+            var kSigning = GetSigningKey(requestTime, awsSecretKey);
             return Utils.ToHex(Utils.GetKeyedHash(kSigning, stringToSign));
         }
 
-        private static byte[] GetSigningKey(DateTime requestTime)
+        private static byte[] GetSigningKey(DateTime requestTime, string awsSecretKey)
         {
             var dateStamp = requestTime.ToString(Iso8601DateFormat, CultureInfo.InvariantCulture);
             var kDate = Utils.GetKeyedHash("AWS4" + awsSecretKey, dateStamp);
@@ -164,7 +155,7 @@ namespace Kadena2.MicroserviceClients.Helpers
             return Utils.GetKeyedHash(kService, "aws4_request");
         }
 
-        private static void AddAwsHeaders(HttpRequestMessage request, DateTime requestTime)
+        private static void AddAwsHeaders(HttpRequestMessage request, DateTime requestTime, string sessionToken)
         {
             request.Headers.Add("Host", request.RequestUri.Host);
             request.Headers.Add("X-Amz-Date", requestTime.ToString(Iso8601DateTimeFormat, CultureInfo.InvariantCulture));

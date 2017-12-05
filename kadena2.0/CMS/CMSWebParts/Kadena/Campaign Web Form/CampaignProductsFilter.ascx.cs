@@ -52,17 +52,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += $"ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
+                where += $"p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
                 int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
-                where += where != null ? $"and ProgramID={ programID}" : $"ProgramID={ programID}";
+                where += where != null ? $"and p.ProgramID={ programID}" : $"p.ProgramID={ programID}";
             }
             if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
             {
                 int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
-                where += where != null ? $"and CategoryID={ categoryID}" : $"CategoryID={ categoryID}";
+                where += where != null ? $"and p.CategoryID={ categoryID}" : $"p.CategoryID={ categoryID}";
             }
             if (where != null)
             {
