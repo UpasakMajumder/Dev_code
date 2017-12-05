@@ -59,6 +59,7 @@
     <Compile Include="Contracts\IOrderListService.cs" />
     <Compile Include="Contracts\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\IOrderService.cs" />
+    <Compile Include="Contracts\IPdfService.cs" />
     <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Services\MailTemplateService.cs" />
     <Compile Include="Services\OrderListService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\PdfService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\SettingsService.cs" />

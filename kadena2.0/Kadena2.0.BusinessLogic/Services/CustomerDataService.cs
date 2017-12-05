@@ -66,6 +66,9 @@ namespace Kadena.BusinessLogic.Services
             bool canSeePrices = kenticoUsers.UserCanSeePrices(siteId, userId);
             claims.Add("UserCanSeePrices", canSeePrices.ToString().ToLower());
 
+            bool canDownloadHiresPdf = kenticoUsers.UserCanDownloadHiresPdf(siteId, userId);
+            claims.Add("UserCanDownloadHiResPdf", canDownloadHiresPdf.ToString().ToLower());
+
             return claims;
         }
     }

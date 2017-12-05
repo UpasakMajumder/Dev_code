@@ -7,6 +7,7 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
     {
         public string Id { get; set; }
         public string Status { get; set; }
+        public int SiteId { get; set; }
         public DateTime OrderDate { get; set; }
         public ShippingInfoDTO ShippingInfo { get; set; }
         public PaymentInfoDTO PaymentInfo { get; set; }

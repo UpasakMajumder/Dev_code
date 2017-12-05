@@ -24,7 +24,8 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoLogger>(),
                 templateClient.Object,
                 Mock.Of<IKenticoProviderService>(),
-                Mock.Of<IKenticoUserProvider>()
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>()
                 );
         }
 
@@ -88,7 +89,8 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
-                Mock.Of<IKenticoUserProvider>()
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>()
             );
 
             var templates = await sut.GetTemplatesByProduct(invalidNodeId);
@@ -121,7 +123,8 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
-                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
+                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { }),
+                Mock.Of<IKenticoDocumentProvider>()
             );
 
             var templates = await sut.GetTemplatesByProduct(nodeId);
