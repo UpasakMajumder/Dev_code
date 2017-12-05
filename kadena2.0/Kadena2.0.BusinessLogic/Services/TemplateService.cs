@@ -92,15 +92,32 @@ namespace Kadena.BusinessLogic.Services
 
             if (requestResult.Success)
             {
+                var defaultQuantity = 1;
                 productTemplates.Data = requestResult.Payload
-                    .Select(d => new ProductTemplate
+                    .Select(d =>
                     {
-                        EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(), 
-                            product.ProductChiliWorkgroupID.ToString(), d.MailingList?.RowCount ?? 1, d.MailingList?.ContainerId, d.Name),
-                        TemplateId = d.TemplateId,
-                        CreatedDate = DateTime.Parse(d.Created),
-                        UpdatedDate = DateTime.Parse(d.Updated),
-                        ProductName = d.Name
+                        int quantity = defaultQuantity;
+                        if (d.MailingList != null)
+                        {
+                            quantity = d.MailingList.RowCount;
+                        }
+                        else
+                        {
+                            if (d.MetaData.ContainsKey(nameof(quantity)))
+                            {
+                                quantity = int.Parse(d.MetaData[nameof(quantity)].ToString());
+                            }
+                        }
+
+                        return new ProductTemplate
+                        {
+                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(),
+                                product.ProductChiliWorkgroupID.ToString(), quantity, d.MailingList?.ContainerId, d.Name),
+                            TemplateId = d.TemplateId,
+                            CreatedDate = DateTime.Parse(d.Created),
+                            UpdatedDate = DateTime.Parse(d.Updated),
+                            ProductName = d.Name
+                        };
                     })
                     .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
