@@ -73,24 +73,26 @@ namespace Kadena.BusinessLogic.Services
 
             var orderDetail = new OrderDetail()
             {
+                DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
+
                 CommonInfo = new CommonInfo()
                 {
-                    OrderDate = new TitleValuePair
+                    OrderDate = new TitleValuePair<DateTime>
                     {
                         Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
-                        Value = data.OrderDate.ToString("MM/dd/yyyy")
+                        Value = data.OrderDate
                     },
-                    ShippingDate = new TitleValuePair
+                    ShippingDate = new TitleValuePair<DateTime?>
                     {
                         Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
-                        Value = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue)
+                        Value = data.ShippingInfo?.ShippingDate ?? null
                     },
-                    Status = new TitleValuePair
+                    Status = new TitleValuePair<string>
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
                         Value = genericStatus
                     },
-                    TotalCost = new TitleValuePair
+                    TotalCost = new TitleValuePair<string>
                     {
                         Title = resources.GetResourceString("Kadena.Order.TotalCostPrefix"),
                         Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
@@ -98,7 +100,7 @@ namespace Kadena.BusinessLogic.Services
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = CheckedDateTimeString(DateTime.MinValue), // TODO payment date unknown
+                    Date = null, // TODO payment date unknown yet
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
@@ -189,8 +191,6 @@ namespace Kadena.BusinessLogic.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                // TODO Uncomment this when DownloadPDF will be developed.
-                // DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
@@ -530,11 +530,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
             }
-        }
-
-        private string CheckedDateTimeString(DateTime dt)
-        {
-            return dt == DateTime.MinValue ? resources.GetResourceString("Kadena.Order.ItemShippingDateNA") : dt.ToString("MM/dd/yyyy");
         }
 
         private string GetPaymentMethodIcon(string paymentMethod)
