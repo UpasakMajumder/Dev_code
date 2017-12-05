@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 /* globals */
 import { CHECKOUT } from 'app.globals';
+/* helpers */
+import { emailRegExp } from 'app.helpers/regexp';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
@@ -18,11 +20,72 @@ import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
+import EmailConfirmation from './EmailConfirmation';
 
 class Checkout extends Component {
-  state = {
-    agreeWithTandC: !CHECKOUT.tAndC.exists
+  constructor() {
+    super();
+    const defaultId = +new Date();
+    this.state = {
+      items: [
+        {
+          id: defaultId
+        }
+      ],
+      fields: {
+        [defaultId]: ''
+      },
+      agreeWithTandC: !CHECKOUT.tAndC.exists
+    };
+  }
+
+  changeInput = (id, value) => {
+    this.setState({
+      fields: {
+        ...this.state.fields,
+        [id]: value
+      }
+    });
   };
+
+  removeInput = (id) => {
+    const items = this.state.items.filter(item => item.id !== id);
+
+    const fields = Object.assign({}, this.state.fields);
+    delete fields[id];
+
+    this.setState({
+      items,
+      fields
+    });
+  };
+
+  addInput = () => {
+    const id = +new Date();
+
+    this.setState({
+      items: [...this.state.items, { id }],
+      fields: {
+        ...this.state.fields,
+        [id]: ''
+      }
+    });
+  };
+
+  static orginizeEmailConfirmation(emails) {
+    let invalid = false;
+    const list = Object.values(emails).filter((email) => {
+      if (!email) return false;
+      if (email.match(emailRegExp)) return true;
+      invalid = true;
+      return false;
+    });
+
+    return {
+      list,
+      invalid
+    };
+  }
 
   static fireNotification(fields) {
     let message = 'Please, select one of ';
@@ -46,6 +109,9 @@ class Checkout extends Component {
         break;
       case 'invoice':
         message += 'the PO number';
+        break;
+      case 'emailConfirmation':
+        message += 'the confirmation emails';
         break;
       default:
         break;
@@ -80,10 +146,14 @@ class Checkout extends Component {
       }
     }
 
+    const newEmailConfirmation = Checkout.orginizeEmailConfirmation(checkedData.emailConfirmation);
+
+    if (newEmailConfirmation.invalid) invalidFields.push('emailConfirmation');
+
     if (invalidFields.length) {
       Checkout.fireNotification(invalidFields);
     } else {
-      const data = { ...checkedData };
+      const data = { ...checkedData, emailConfirmation: newEmailConfirmation.list };
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
       if (checkedData.deliveryAddress === -1) {
@@ -148,6 +218,34 @@ class Checkout extends Component {
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
 
+  static getDeliveryMethodComponent = (
+    isDeliverable,
+    changeShoppingData,
+    deliveryMethod,
+    isSending,
+    deliveryMethods,
+    disableInteractivity
+  ) => {
+    if (!isDeliverable) return null;
+
+    if (!disableInteractivity) {
+      return (
+        <DeliveryMethod
+          changeShoppingData={changeShoppingData}
+          checkedId={deliveryMethod}
+          isSending={isSending}
+          ui={deliveryMethods}
+        />
+      );
+    }
+
+    return (
+      <div className="shopping-cart__block">
+        <Spinner/>
+      </div>
+    );
+  };
+
   render() {
     const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
     const { ui, checkedData, isSending, newAddress } = checkout;
@@ -170,7 +268,17 @@ class Checkout extends Component {
       : null;
 
     if (Object.keys(ui).length) {
-      const { emptyCart, submit, deliveryAddresses, deliveryMethods, products, paymentMethods, totals, validationMessage } = ui;
+      const {
+        emptyCart,
+        submit,
+        deliveryAddresses,
+        deliveryMethods,
+        products,
+        paymentMethods,
+        totals,
+        validationMessage,
+        emailConfirmation
+      } = ui;
       const { paymentMethod, deliveryMethod, deliveryAddress } = checkedData;
 
       // cart is empty
@@ -193,21 +301,12 @@ class Checkout extends Component {
 
       const { isDeliverable, unDeliverableText, title } = deliveryAddresses;
 
-      const deliveryMethodComponent = disableInteractivity
-        ? <Spinner/>
-        : <DeliveryMethod
-          changeShoppingData={changeShoppingData}
-          checkedId={deliveryMethod}
-          isSending={isSending}
-          ui={deliveryMethods}
-        />;
-
       const totalsComponent = disableInteractivity
         ? <Spinner/>
         : <Total ui={totals}/>;
 
-      const deliveryContent = isDeliverable
-        ? <div>
+      const deliveryAddressComponent = isDeliverable
+        ? (
           <div className="shopping-cart__block">
             <DeliveryAddress
               changeShoppingData={changeShoppingData}
@@ -218,15 +317,24 @@ class Checkout extends Component {
               newAddressObject={newAddress}
             />
           </div>
-
+        ) : (
           <div className="shopping-cart__block">
-            {deliveryMethodComponent}
+            <h2>{title}</h2>
+            <Alert type="grey" text={unDeliverableText}/>
           </div>
-        </div>
-        : <div className="shopping-cart__block">
-          <h2>{title}</h2>
-          <Alert type="grey" text={unDeliverableText}/>
-        </div>;
+        );
+
+      const emailConfirmationContent = emailConfirmation.exists
+        ? (
+          <EmailConfirmation
+            changeInput={this.changeInput}
+            removeInput={this.removeInput}
+            addInput={this.addInput}
+            items={this.state.items}
+            fields={this.state.fields}
+            {...emailConfirmation}
+          />
+        ) : null;
 
       content = <div>
         <div className="shopping-cart__block">
@@ -238,7 +346,16 @@ class Checkout extends Component {
           />
         </div>
 
-        {deliveryContent}
+        {deliveryAddressComponent}
+        {emailConfirmationContent}
+        {Checkout.getDeliveryMethodComponent(
+          isDeliverable,
+          changeShoppingData,
+          deliveryMethod,
+          isSending,
+          deliveryMethods,
+          disableInteractivity
+        )}
 
         <div className="shopping-cart__block">
           <PaymentMethod
@@ -261,7 +378,11 @@ class Checkout extends Component {
             type="action"
             disabled={!this.state.agreeWithTandC}
             isLoading={disableInteractivity}
-            onClick={() => this.placeOrder({ ...checkedData, agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC })}
+            onClick={() => this.placeOrder({
+              ...checkedData,
+              agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC,
+              emailConfirmation: this.state.fields
+            })}
           />
         </div>
       </div>;

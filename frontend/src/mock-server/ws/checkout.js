@@ -232,6 +232,16 @@ module.exports.ui = {
       "btnLabel": "Place order",
       "disabledText": "Order cannot be submited until all templated products receive design file from Chilli"
     },
+    "emailConfirmation": {
+      "exists": true,
+      "maxItems": 3,
+      "tooltipText": {
+        "add": "Add email address",
+        "remove": "Remove email address"
+      },
+      "title": "Title",
+      "description": "Description"
+    },
     "validationMessage": "Error"
   },
   "errorMessage": null
