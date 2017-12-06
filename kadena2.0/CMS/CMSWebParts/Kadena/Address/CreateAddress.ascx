@@ -13,7 +13,7 @@
                         <span class="input__label" runat="server" id="lblName"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtName" runat="server" CssClass="input__text" placeholder="Enter Name" MaxLength="50"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfName" runat="server" ControlToValidate="txtName" ErrorMessage="Please enter Name" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfName" runat="server" ControlToValidate="txtName"  CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <span class="input__label" runat="server" id="lblAddressLine1"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="input__text js-Address" placeholder="Enter Address Line1" MaxLength="50"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" ErrorMessage="Please enter Address Line1" CssClass="input__error js-errAddress"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" CssClass="input__error js-errAddress"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                         <span class="input__label" runat="server" id="lblCity"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtCity" runat="server" CssClass="input__text js-City" placeholder="Enter City" MaxLength="20"></asp:TextBox>
-                            <asp:RequiredFieldValidator runat="server" ID="rfCity" ControlToValidate="txtCity" ErrorMessage="Please enter City" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator runat="server" ID="rfCity" ControlToValidate="txtCity"  CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <span class="input__label" runat="server" id="lblZipcode"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtZipcode" runat="server" CssClass="input__text js-Zipcode" placeholder="Enter Zip/Postal code" MaxLength="20"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfZipcode" runat="server" ErrorMessage="Please enter Zip/Postal code" ControlToValidate="txtZipcode" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfZipcode" runat="server"  ControlToValidate="txtZipcode" CssClass="input__error"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                         <span class="input__label" runat="server" id="lblTelephone"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtTelephone" runat="server" CssClass="input__text" placeholder="Enter Telephone" MaxLength="25"></asp:TextBox>
-                            <asp:CustomValidator ID="cvTelephone" runat="server" CssClass="input__error" ErrorMessage="Telephone number should be in between 10 and 25 characters" ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate"></asp:CustomValidator>
+                            <asp:CustomValidator ID="cvTelephone" runat="server" CssClass="input__error"  ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate"></asp:CustomValidator>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                         <span class="input__label" runat="server" id="lblEmail"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="input__text" placeholder="your@email.com"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfEmail" ControlToValidate="txtEmail" runat="server" ErrorMessage="Please enter Email" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfEmail" ControlToValidate="txtEmail" runat="server" CssClass="input__error"></asp:RequiredFieldValidator>
 
                         </div>
                     </div>

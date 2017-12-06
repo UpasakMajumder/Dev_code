@@ -9,7 +9,7 @@ $(document).ready(function () {
     $('.js-btnSmarty').click(function (event) {
         if ($('.js-Address').val().trim() != '') {
             $.ajax({
-                url: 'https://us-street.api.smartystreets.com/street-address',
+                url: config.localization.smarty.url,
                 data: {
                     'auth-token': htmlKey,
                     'street': $('.js-Address').val().trim(),
@@ -17,7 +17,7 @@ $(document).ready(function () {
                     'zipcode': $('.js-Zipcode').val().trim(),
                     'state': $('.js-State').find("select option:selected").eq(0).text(),
                     'country': $('.js-Country').find("select option:selected").eq(0).text(),
-                    'candidates': 4
+                    'candidates': config.localization.smarty.candidateCount
                 },
                 type: 'GET',
                 dataType: 'json',
@@ -37,7 +37,7 @@ $(document).ready(function () {
                         event.preventDefault();
                         $('.smarty-popup').css('display', 'none');
                         $('.smarty-popup').parent().empty();
-                        $('.js-errAddress').html('Please enter valid address');
+                        $('.js-errAddress').html(config.localization.smarty.errorLabel);
                         $('.js-errAddress').css('display', 'block');
                     }
                 },
@@ -47,17 +47,17 @@ $(document).ready(function () {
             });
         }
         else {
-            $('.js-errAddress').html('Please enter  address');
+            $('.js-errAddress').html(config.localization.smarty.reqErrorLabel);
             $('.js-errAddress').css('display', 'block');
         }
     });
 });
-var htmlKey = '34982985215906425'
+var htmlKey = config.localization.smarty.key;
 var ss = jQuery.LiveAddress({
-    autocomplete: 5,
+    autocomplete: config.localization.smarty.autoCompleteCount,
     key: htmlKey,
-    missingInputMessage: "Not enough input<br>",
-    certifyMessage: "Use my address",
+    missingInputMessage: config.localization.smarty.missingInputLabel,
+    certifyMessage: config.localization.smarty.certifyMessageLabel,
     verifySecondary: true,
     waitForStreet: true,
     debug: false,
