@@ -85,7 +85,7 @@ namespace Kadena.BusinessLogic.Services
                     ShippingDate = new TitleValuePair<DateTime?>
                     {
                         Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
-                        Value = data.ShippingInfo?.ShippingDate ?? null
+                        Value = data.ShippingInfo?.ShippingDate
                     },
                     Status = new TitleValuePair<string>
                     {
@@ -163,12 +163,7 @@ namespace Kadena.BusinessLogic.Services
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
-                    Tracking = null, // TODO Track your package url unknown
-                    /*Tracking = new Tracking()
-                    {
-                        Text = "Track your packages",
-                        Url = string.Empty 
-                    }*/
+                    Tracking = null // TODO Track your package url unknown
                 };
                 orderDetail.ShippingInfo.Address.State = kenticoProvider
                     .GetStates()
