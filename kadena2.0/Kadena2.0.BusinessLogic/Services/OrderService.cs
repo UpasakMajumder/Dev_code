@@ -30,6 +30,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
+        private readonly IKenticoDocumentProvider documents;
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -41,7 +42,8 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IBackgroundTaskScheduler backgroundWorker)
+            IBackgroundTaskScheduler backgroundWorker,
+            IKenticoDocumentProvider documents)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -54,6 +56,7 @@ namespace Kadena.BusinessLogic.Services
             this.taxService = taxService;
             this.templateService = templateService;
             this.backgroundWorker = backgroundWorker;
+            this.documents = documents;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -73,24 +76,26 @@ namespace Kadena.BusinessLogic.Services
 
             var orderDetail = new OrderDetail()
             {
+                DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
+
                 CommonInfo = new CommonInfo()
                 {
-                    OrderDate = new TitleValuePair
+                    OrderDate = new TitleValuePair<DateTime>
                     {
                         Title = resources.GetResourceString("Kadena.Order.OrderDateTitle"),
-                        Value = data.OrderDate.ToString("MM/dd/yyyy")
+                        Value = data.OrderDate
                     },
-                    ShippingDate = new TitleValuePair
+                    ShippingDate = new TitleValuePair<DateTime?>
                     {
                         Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
-                        Value = CheckedDateTimeString(data.ShippingInfo?.ShippingDate ?? DateTime.MinValue)
+                        Value = data.ShippingInfo?.ShippingDate
                     },
-                    Status = new TitleValuePair
+                    Status = new TitleValuePair<string>
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
                         Value = genericStatus
                     },
-                    TotalCost = new TitleValuePair
+                    TotalCost = new TitleValuePair<string>
                     {
                         Title = resources.GetResourceString("Kadena.Order.TotalCostPrefix"),
                         Value = String.Format("$ {0:#,0.00}", data.PaymentInfo.Summary + data.PaymentInfo.Shipping + data.PaymentInfo.Tax)
@@ -98,7 +103,7 @@ namespace Kadena.BusinessLogic.Services
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = CheckedDateTimeString(DateTime.MinValue), // TODO payment date unknown
+                    Date = null, // TODO payment date unknown yet
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
@@ -161,12 +166,7 @@ namespace Kadena.BusinessLogic.Services
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
-                    Tracking = null, // TODO Track your package url unknown
-                    /*Tracking = new Tracking()
-                    {
-                        Text = "Track your packages",
-                        Url = string.Empty 
-                    }*/
+                    Tracking = null // TODO Track your package url unknown
                 };
                 orderDetail.ShippingInfo.Address.State = kenticoProvider
                     .GetStates()
@@ -189,8 +189,6 @@ namespace Kadena.BusinessLogic.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                // TODO Uncomment this when DownloadPDF will be developed.
-                // DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
@@ -295,7 +293,7 @@ namespace Kadena.BusinessLogic.Services
             return await Task.FromResult(new SubmitOrderResult
                 {
                     Success = true,
-                    RedirectURL = kenticoProvider.GetDocumentUrl(insertCardUrl)
+                    RedirectURL = documents.GetDocumentUrl(insertCardUrl)
                 }
             );
         }
@@ -325,7 +323,7 @@ namespace Kadena.BusinessLogic.Services
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
-            var redirectUrlBaseLocalized = kenticoProvider.GetDocumentUrl(redirectUrlBase);
+            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
             var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
             if (serviceResult.Success)
             {
@@ -530,11 +528,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
             }
-        }
-
-        private string CheckedDateTimeString(DateTime dt)
-        {
-            return dt == DateTime.MinValue ? resources.GetResourceString("Kadena.Order.ItemShippingDateNA") : dt.ToString("MM/dd/yyyy");
         }
 
         private string GetPaymentMethodIcon(string paymentMethod)

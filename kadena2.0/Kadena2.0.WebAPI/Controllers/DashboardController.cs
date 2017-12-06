@@ -4,9 +4,11 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Kadena.WebAPI.Infrastructure.Filters;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class DashboardController : ApiControllerBase
     {
         private readonly IMapper _mapper;

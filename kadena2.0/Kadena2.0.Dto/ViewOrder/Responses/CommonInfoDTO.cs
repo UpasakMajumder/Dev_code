@@ -1,10 +1,12 @@
-﻿namespace Kadena.Dto.ViewOrder.Responses
+﻿using System;
+
+namespace Kadena.Dto.ViewOrder.Responses
 {
     public class CommonInfoDTO
     {
-        public TitleValuePairDto Status { get; set; }
-        public TitleValuePairDto OrderDate { get; set; }
-        public TitleValuePairDto ShippingDate { get; set; }
-        public TitleValuePairDto TotalCost { get; set; }
+        public TitleValuePairDto<string> Status { get; set; }
+        public TitleValuePairDto<DateTime> OrderDate { get; set; }
+        public TitleValuePairDto<DateTime?> ShippingDate { get; set; }
+        public TitleValuePairDto<string> TotalCost { get; set; }
     }
 }
