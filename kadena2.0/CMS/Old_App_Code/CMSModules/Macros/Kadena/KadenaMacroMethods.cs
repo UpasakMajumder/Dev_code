@@ -496,6 +496,62 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
+        /// <summary>
+        /// Returns shopping cart items count
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(string), "InventoryType")]
+        public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                string inventoryType = ValidationHelper.GetString(parameters[2], string.Empty);
+                QueryDataParameters queryParams = new QueryDataParameters();
+                queryParams.Add("@ShoppingCartUserID", userID);
+                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                return ValidationHelper.GetInteger(countData, default(int));
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(int);
+            }
+        }
+        /// <summary>
+        /// Returns shopping cart total
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(string), "InventoryType")]
+        public static object GetCartTotalByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                string inventoryType = ValidationHelper.GetString(parameters[2], string.Empty);
+                QueryDataParameters queryParams = new QueryDataParameters();
+                queryParams.Add("@ShoppingCartUserID", userID);
+                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartTotal", queryParams, QueryTypeEnum.StoredProcedure, true);
+                return ValidationHelper.GetDouble(countData, default(double));
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(int);
+            }
+        }
+
         #endregion
     }
 }
