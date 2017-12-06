@@ -579,6 +579,13 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker">
+      <HintPath>C:\Users\Nagaraju\Desktop\itextsharp-all-5.5.10\itextsharp-dll-xmlworker\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
     <Reference Include="ITHit.WebDAV.Server, Version=2.1.1.170, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ITHit.WebDAV.Server.dll</HintPath>
@@ -904,6 +911,27 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.designer.cs">
       <DependentUpon>CreateCampaign.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.cs">
+      <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
+      <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx.cs">
+      <DependentUpon>RemoveItemFromCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx.designer.cs">
+      <DependentUpon>RemoveItemFromCart.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx.cs">
+      <DependentUpon>ShoppingCartCount.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx.designer.cs">
+      <DependentUpon>ShoppingCartCount.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx.cs">
       <DependentUpon>CustomCatalogFilter.ascx</DependentUpon>
@@ -1283,6 +1311,9 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
