@@ -1,5 +1,4 @@
 ﻿using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,19 +6,25 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserTemplateService : TemplateServiceBase
     {
-        public byte[] GetUserTemplateFile(int siteID)
+        /// <summary>
+        /// Creates xlsx file.
+        /// </summary>
+        /// <param name="headers">Columns to create. Expects last column to be role.</param>
+        /// <returns></returns>
+        protected override ISheet CreateSheet(List<Column> headers)
         {
-            var columns = GetImportColumns<UserDto>();
-            var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(siteID).Select(r => r.Description).ToArray());
-            var file = CreateTemplateFile(columns, roles);
-            return file;
-        }
+            var sheet = base.CreateSheet(headers);
 
-        public byte[] GetAddressTemplateFile()
-        {
-            var columns = GetImportColumns<AddressDto>();
-            var file = CreateTemplateFile(columns);
-            return file;
+            // Roles to add to role select box for last column.
+            var roles = OrderRolesByPriority(new RoleProvider().GetAllRoles(_siteId).Select(r => r.Description).ToArray());
+            // add validation for roles
+            if (roles != null)
+            {
+                var rolesColumnIndex = headers.Count - 1; // role column should be last
+                AddOneFromManyValidation(rolesColumnIndex, "Roles", roles, sheet);
+            }
+
+            return sheet;
         }
 
         private string[] OrderRolesByPriority(string[] roles)
@@ -41,28 +46,5 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 
             return sortedRoles.ToArray();
         }
-
-        /// <summary>
-        /// Creates xlsx file.
-        /// </summary>
-        /// <param name="columns">Columns to create. Expects last column to be role.</param>
-        /// <param name="roles">Roles to add to role select box for last column.</param>
-        /// <returns></returns>
-        private byte[] CreateTemplateFile(List<Column> columns, string[] roles = null)
-        {
-            // create workbook
-            IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("Users");
-            CreateSheetHeader(columns, sheet);
-
-            // add validation for roles
-            if (roles != null)
-            {
-                var rolesColumnIndex = columns.Count - 1; // role column should be last
-                AddOneFromManyValidation(rolesColumnIndex, "Roles", roles, sheet);
-            }
-
-            return GetWorkbookBytes(workbook);
-        }      
     }
 }

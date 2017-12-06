@@ -1,20 +1,19 @@
 ﻿using CMS.CustomTables;
-using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using static Kadena.Helpers.SerializerConfig;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -72,13 +71,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     FormInfo = CreateFormInfo()
                 };
 
-                var setting = new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                };
-
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(),
-                    "ui", $"<script>config.localization.modifyMailingList = {JsonConvert.SerializeObject(config, setting)}</script>");
+                    "ui", $"<script>config.localization.modifyMailingList = {JsonConvert.SerializeObject(config, CamelCaseSerializer)}</script>");
             }
         }
 

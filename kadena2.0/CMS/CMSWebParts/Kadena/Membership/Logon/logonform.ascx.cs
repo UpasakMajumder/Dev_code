@@ -777,7 +777,9 @@ function UpdateLabel_", ClientID, @"(content, context) {
     /// </summary>
     protected void lnkPasswdRetrieval_Click(object sender, EventArgs e)
     {
+        PnlPasswordHint.Visible = false;
         pnlPasswdRetrieval.Visible = !pnlPasswdRetrieval.Visible;
+        pnlUpdatePasswordHint.Update();
     }
 
 
@@ -845,7 +847,9 @@ function UpdateLabel_", ClientID, @"(content, context) {
 
     protected void lnkPasswordhint_Click(object sender, EventArgs e)
     {
+        pnlPasswdRetrieval.Visible = false;
         PnlPasswordHint.Visible = !PnlPasswordHint.Visible;
+        pnlUpdatePasswordRetrieval.Update();
     }
 
    

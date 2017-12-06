@@ -22,33 +22,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Products {
         protected global::CMSFormControls_Sites_SiteSelector siteSelector;
         
         /// <summary>
-        /// btnDownloadTemplate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDownloadTemplate;
-        
-        /// <summary>
-        /// importFile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload importFile;
-        
-        /// <summary>
-        /// btnUploadProductList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUploadProductList;
-        
-        /// <summary>
         /// errorMessageContainer control.
         /// </summary>
         /// <remarks>
@@ -83,5 +56,59 @@ namespace Kadena.CMSModules.Kadena.Pages.Products {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal successMessage;
+        
+        /// <summary>
+        /// btnDownloadProductCategoryTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDownloadProductCategoryTemplate;
+        
+        /// <summary>
+        /// importProductCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload importProductCategories;
+        
+        /// <summary>
+        /// btnUploadProductCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUploadProductCategories;
+        
+        /// <summary>
+        /// btnDownloadTemplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDownloadTemplate;
+        
+        /// <summary>
+        /// importFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload importFile;
+        
+        /// <summary>
+        /// btnUploadProductList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUploadProductList;
     }
 }

@@ -849,6 +849,13 @@
     <Compile Include="CMSWebParts\Kadena\Address\CreateAddress.ascx.designer.cs">
       <DependentUpon>CreateAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Brand\Brand.ascx.cs">
+      <DependentUpon>Brand.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Brand\Brand.ascx.designer.cs">
+      <DependentUpon>Brand.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx.cs">
       <DependentUpon>BusinessUnit.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1199,6 +1206,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
@@ -1215,15 +1223,18 @@
     <Compile Include="Old_App_Code\Kadena\Imports\ImportHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportResult.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportServiceBase.cs" />
-    <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibraryHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImageDto.cs" />
-    <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImageHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\SKUTreeNodeExtensions.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\TemplateServiceBase.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\AddressDto.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Users\AddressImporter.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\Role.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\RoleProvider.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserDto.cs" />
@@ -1233,9 +1244,9 @@
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProduct.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProductProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignsProduct.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignsProductProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\ProductCategoryProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Program.generated.cs" />
@@ -1269,9 +1280,17 @@
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
+      <Project>{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}</Project>
+      <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
@@ -1290,7 +1309,7 @@
       <Name>Kadena2.0.WebAPI.KenticoProviders</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
-      <Project>{FB19606B-D327-4F43-AB3F-825000079B1A}</Project>
+      <Project>{fb19606b-d327-4f43-ab3f-825000079b1a}</Project>
       <Name>Kadena2.0.WebAPI</Name>
     </ProjectReference>
     <ProjectReference Include="CMSApp.csproj">
@@ -1302,6 +1321,7 @@
     <Content Include="CMSScripts\Custom\Kadena\KadenaExtension.js" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Brand\Brand.ascx" />
     <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnit.ascx" />
     <Content Include="CMSWebParts\Kadena\BusinessUnit\BusinessUnitFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign Web Form\AddCampaignProducts.ascx" />
