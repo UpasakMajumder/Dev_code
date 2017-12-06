@@ -5,7 +5,7 @@
         private readonly string _value;
 
         public static FileFolder OriginalMailing { get; } = new FileFolder("original-mailing");
-        public static FileFolder Artworks { get; } = new FileFolder("artworks");
+        public static FileFolder Artworks { get; } = new FileFolder("artworks");        
 
         private FileFolder(string value)
         {

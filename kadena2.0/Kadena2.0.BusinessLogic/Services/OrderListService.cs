@@ -44,7 +44,7 @@ namespace Kadena.BusinessLogic.Services
         public bool EnablePaging { get; set; }
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
-            IKenticoResourceService kenticoResources, IKenticoProviderService kentico,
+            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoDocumentProvider documents,
             IKenticoLogger logger)
         {
             _mapper = mapper;
@@ -54,7 +54,7 @@ namespace Kadena.BusinessLogic.Services
             _kentico = kentico;
             _logger = logger;
 
-            _orderDetailUrl = kentico.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
+            _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
         }
 
         public async Task<OrderHead> GetHeaders()
@@ -73,7 +73,6 @@ namespace Kadena.BusinessLogic.Services
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
-                    //_kenticoResources.GetResourceString("Kadena.OrdersList.DeliveryDate"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
                     string.Empty
                 },

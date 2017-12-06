@@ -32,6 +32,7 @@ namespace Kadena.WebAPI
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
             container.Register<ICreditCardService, CreditCardService>();
+            container.Register<IPdfService, PdfService>();
             return container;
         }
 
@@ -46,6 +47,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
+            container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             return container;
         }
 
@@ -58,6 +60,7 @@ namespace Kadena.WebAPI
             container.Register<ITemplatedClient, TemplatedClient>();
             container.Register<IAddressValidationClient, AddressValidationClient>();
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
+            container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
             return container;
         }

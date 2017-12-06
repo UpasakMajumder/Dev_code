@@ -12,18 +12,18 @@
                     <cms:LocalizedLabel ID="lblPosNumber" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosNo" />
                 </span>
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlPosNo" runat="server" EnableViewState="false"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvPosNo" runat="server" CssClass="" InitialValue="0" ForeColor="Red" ControlToValidate="ddlPosNo">
+                    <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged"></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="rfvPosNo" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlPosNo">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
         <div class="mb-2 form_block">
             <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblBrand" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblBrand" />
+                <cms:LocalizedLabel ID="lblBrand" CssClass="input__label" runat="server" EnableViewState="false" ResourceString="Kadena.InvProductForm.lblBrand" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand">
+                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="True"></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <cms:LocalizedLabel ID="lblShortDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblShortDes" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtShortDes" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvShortDes" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtShortDes">
+                    <asp:RequiredFieldValidator ID="rfvShortDes" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtShortDes">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <cms:LocalizedLabel ID="lblLongDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblLongDes" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtLongDes" runat="server" EnableViewState="false" CssClass="input__text" Rows="5" Columns="5" TextMode="MultiLine"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvLongDes" runat="server" ForeColor="Red" ControlToValidate="txtLongDes">
+                    <asp:RequiredFieldValidator ID="rfvLongDes" CssClass="input__error" runat="server" ForeColor="Red" ControlToValidate="txtLongDes">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -53,9 +53,9 @@
                 <cms:LocalizedLabel ID="lblBundleQnt" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblBundleQnt" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtBundleQnt" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvBundleQnt" runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
+                    <asp:RequiredFieldValidator ID="rfvBundleQnt" CssClass="input__error"  runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revBundleQnt" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
+                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error"  runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
                      ControlToValidate="txtBundleQnt" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                 </div>
@@ -66,19 +66,18 @@
                 <cms:LocalizedLabel ID="lblExpDate" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblExpDate" />
                 <div class="input__inner date_picker">
                     <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text" TextMode="DateTime"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtExpDate">
+                    <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
       
-
         <div class="mb-2 form_block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblEstPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblEstPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtEstPrice">
+                    <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtEstPrice">
 
                     </asp:RequiredFieldValidator>
                 </div>
@@ -102,7 +101,7 @@
                 <cms:LocalizedLabel ID="lblActualPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblActualPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtActualPrice" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="" ForeColor="Red" ControlToValidate="txtActualPrice">
+                    <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtActualPrice">
 
                     </asp:RequiredFieldValidator>
                 </div>
@@ -113,7 +112,7 @@
                 <cms:LocalizedLabel ID="lblCVOProductId" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblCVOProductId" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtCVOProductId" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RegularExpressionValidator ID="revProductid" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
+                    <asp:RegularExpressionValidator ID="revProductid" CssClass="input__error" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
                      ControlToValidate="txtCVOProductId" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                 </div>
@@ -125,7 +124,7 @@
                     ResourceString="Kadena.InvProductForm.lblStoreFrontId" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtStroeFrontId" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                     <asp:RegularExpressionValidator ID="revStoreId" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
+                     <asp:RegularExpressionValidator ID="revStoreId" runat="server" CssClass="input__error" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
                      ControlToValidate="txtStroeFrontId" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                 </div>
@@ -137,7 +136,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtQuantity" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                      <asp:RegularExpressionValidator ID="revQuantity" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                     ControlToValidate="txtQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red" CssClass="input__error">
                           </asp:RegularExpressionValidator>
                 </div>
             </div>
@@ -146,8 +145,8 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblState" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblState" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="false"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="" InitialValue="0" ForeColor="Red" ControlToValidate="ddlState">
+                    <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="True"></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlState">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -157,8 +156,8 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblProdCategory" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblProdCategory" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlProdCategory" runat="server" EnableViewState="false"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvProdCategory" runat="server" CssClass="" InitialValue="0" ForeColor="Red" ControlToValidate="ddlProdCategory">
+                    <cms:CMSDropDownList ID="ddlProdCategory" runat="server" EnableViewState="True"></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="rfvProdCategory" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlProdCategory">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -167,10 +166,8 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblStatus" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblStatus" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="false">
-                        <asp:ListItem Text="Enabled" Value="1"></asp:ListItem>
-                        <asp:ListItem Text="Disabled" Value="0"></asp:ListItem>
-                    </cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True">
+                          </cms:CMSDropDownList>
 
                 </div>
             </div>
@@ -198,9 +195,9 @@
                                     <table class="show-table">
                                         <tbody>
                                             <tr>
-                                                <th>UserName</th>
-                                                <th>Email</th>
-                                                <th>Quantity</th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
+                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                             </tr>
                                 </HeaderTemplate>
                                 <ItemTemplate>
@@ -241,7 +238,7 @@
     <cms:LocalizedLabel ID="lblFailureText" runat="server" EnableViewState="False" CssClass="error-label input__error" Visible="false" ResourceString="Kadena.InvProductForm.FailureMsg" ForeColor="Red" />
 </div>
 
-<div class="modal_popup" style="display: none">
+<div class="modal_popup dialog" style="display: none">
     <div class="modal-content">
         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
@@ -256,9 +253,9 @@
                                 <tbody>
                                     <tr>
                                         <th></th>
-                                        <th>UserName</th>
-                                        <th>Email</th>
-                                        <th>Quantity</th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
+                                        <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                     </tr>
                         </HeaderTemplate>
                         <ItemTemplate>

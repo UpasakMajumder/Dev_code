@@ -19,14 +19,16 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITemplatedClient _templateClient;
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
+        private readonly IKenticoDocumentProvider documents;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users, IKenticoDocumentProvider documents)
         {
-            _resources = resources;
-            _logger = logger;
-            _templateClient = templateClient;
-            _kentico = kentico;
-            _users = users;
+            this._resources = resources;
+            this._logger = logger;
+            this._templateClient = templateClient;
+            this._kentico = kentico;
+            this._users = users;
+            this.documents = documents;
         }
 
         public async Task<bool> SetName(Guid templateId, string name)
@@ -85,7 +87,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                productEditorUrl = _kentico.GetDocumentUrl(productEditorUrl);
+                productEditorUrl = documents.GetDocumentUrl(productEditorUrl);
             }
 
             if (requestResult.Success)

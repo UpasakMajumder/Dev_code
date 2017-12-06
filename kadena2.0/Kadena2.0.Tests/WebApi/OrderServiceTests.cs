@@ -29,8 +29,9 @@ namespace Kadena.Tests.WebApi
                 {
                     Id = "1",
                     Items = new List<OrderItemDTO>(items ?? Enumerable.Empty<OrderItemDTO>()),
+                    OrderDate = DateTime.Now,
                     PaymentInfo = new PaymentInfoDTO(),
-                    ShippingInfo = new ShippingInfoDTO(),
+                    ShippingInfo = new ShippingInfoDTO() { ShippingDate = null },
                     Status = "Shipped"
                 }
             };
@@ -67,6 +68,7 @@ namespace Kadena.Tests.WebApi
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedClient>();
+            var documents = new Mock<IKenticoDocumentProvider>();
 
             return new OrderService(mapper,
                 orderSubmitClient.Object,
@@ -78,7 +80,8 @@ namespace Kadena.Tests.WebApi
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
                 templateProductService.Object,
-                new FakeBackgroundTaskScheduler());
+                new FakeBackgroundTaskScheduler(),
+                documents.Object);
         }
 
         [Fact]
@@ -183,6 +186,29 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             Assert.Null(result.ShippingInfo.Address);
+        }
+
+
+        [Fact]
+        public async Task NullDatetimeTests()
+        {
+            // Arrange
+            var orderId = "0010-0016-17-00006";
+            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderResponse = CreateOrderDetailDtoOK(new[]
+            {
+                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
+            });
+            orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
+                .Returns(Task.FromResult(orderResponse));
+            var sut = CreateOrderService(orderViewClient: orderViewClient);
+
+            // Act
+            var result = await sut.GetOrderDetail(orderId).ConfigureAwait(false);
+
+            // Assert
+            Assert.NotEqual(result.CommonInfo.OrderDate.Value, DateTime.MinValue);
+            Assert.Null(result.CommonInfo.ShippingDate.Value);
         }
     }
 }
