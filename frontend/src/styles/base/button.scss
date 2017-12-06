@@ -158,6 +158,11 @@ $colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, suc
   @extend .btn--circle;
 }
 
+.minus-btn {
+  @extend .bg-dangerous;
+  @extend .btn--circle;
+}
+
 .btn-group {
   $aligns: (left, right, center);
 

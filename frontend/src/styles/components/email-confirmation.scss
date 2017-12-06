@@ -1,0 +1,19 @@
+.email-confirmation {
+  width: 400px;
+
+  &__block {
+    @extend %flex--center--between;
+
+    &:not(:last-child) {
+      @extend .mb-2;
+    }
+  }
+
+  &__input {
+    width: 350px;
+  }
+
+  &__button {
+    padding: 10px;
+  }
+}

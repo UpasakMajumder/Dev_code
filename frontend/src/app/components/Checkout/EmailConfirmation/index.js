@@ -30,8 +30,8 @@ const EmailConfirmation = ({
             arrow
           >
             <Button
-              type="action"
-              btnClass="plus-btn"
+              type="common"
+              btnClass="plus-btn email-confirmation__button"
               onClick={addInput}
             >
               <SVG className="icon-modal" name="plus" />
@@ -49,8 +49,8 @@ const EmailConfirmation = ({
             arrow
           >
             <Button
-              type="action"
-              btnClass="plus-btn"
+              type="common"
+              btnClass="minus-btn email-confirmation__button"
               onClick={(e) => { removeInput(item.id); }}
             >
               <SVG className="icon-modal" name="minus" />
@@ -59,11 +59,13 @@ const EmailConfirmation = ({
         ) : null;
 
       return (
-        <div key={item.id}>
-          <TextInput
-            value={fields[item.id]}
-            onChange={(e) => { changeInput(item.id, e.target.value); }}
-          />
+        <div className="email-confirmation__block" key={item.id}>
+          <div className="email-confirmation__input">
+            <TextInput
+              value={fields[item.id]}
+              onChange={(e) => { changeInput(item.id, e.target.value); }}
+            />
+          </div>
           {addButton}
           {removeButton}
         </div>
@@ -79,7 +81,9 @@ const EmailConfirmation = ({
     <div className="shopping-cart__block">
       <h2>{title}</h2>
       {descriptionElement}
-      {getInputs()}
+      <div className="email-confirmation">
+        {getInputs()}
+      </div>
     </div>
   );
 };
