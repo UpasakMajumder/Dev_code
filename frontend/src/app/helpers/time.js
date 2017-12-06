@@ -4,7 +4,11 @@ import { LANGUAGES } from 'app.globals';
 
 if (LANGUAGES) moment.locale(LANGUAGES.locale || 'en-gb');
 
-export default (date) => {
+export default (date, devaultValue) => {
   const timestamp = Date.parse(date);
-  return isNaN(timestamp) ? date : moment(date).format('MMM DD, YYYY');
+
+  let result = devaultValue || date;
+  result = isNaN(timestamp) ? result : moment(date).format('MMM DD, YYYY');
+
+  return result;
 };

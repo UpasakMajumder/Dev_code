@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.OrderDetail
+﻿using System;
+
+namespace Kadena.Models.OrderDetail
 {
     public class PaymentInfo
     {
@@ -7,7 +9,7 @@
         public string PaidBy { get; set; }
         public string PaymentDetail { get; set; }
         public string DatePrefix { get; set; }
-        public string Date { get; set; }
+        public DateTime? Date { get; set; }
 
     }
 }
