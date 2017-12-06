@@ -30,6 +30,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IBackgroundTaskScheduler backgroundWorker;
+        private readonly IKenticoDocumentProvider documents;
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -41,7 +42,8 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IBackgroundTaskScheduler backgroundWorker)
+            IBackgroundTaskScheduler backgroundWorker,
+            IKenticoDocumentProvider documents)
         {
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
@@ -54,6 +56,7 @@ namespace Kadena.BusinessLogic.Services
             this.taxService = taxService;
             this.templateService = templateService;
             this.backgroundWorker = backgroundWorker;
+            this.documents = documents;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -189,8 +192,6 @@ namespace Kadena.BusinessLogic.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                // TODO Uncomment this when DownloadPDF will be developed.
-                // DownloadPdfURL = (i.Type ?? string.Empty).ToLower().Contains("template") ? i.FileUrl : string.Empty,
                 Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
@@ -295,7 +296,7 @@ namespace Kadena.BusinessLogic.Services
             return await Task.FromResult(new SubmitOrderResult
                 {
                     Success = true,
-                    RedirectURL = kenticoProvider.GetDocumentUrl(insertCardUrl)
+                    RedirectURL = documents.GetDocumentUrl(insertCardUrl)
                 }
             );
         }
@@ -325,7 +326,7 @@ namespace Kadena.BusinessLogic.Services
             var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
-            var redirectUrlBaseLocalized = kenticoProvider.GetDocumentUrl(redirectUrlBase);
+            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
             var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
             if (serviceResult.Success)
             {

@@ -116,6 +116,7 @@
     <Compile Include="App_Start\MapperBuilder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CreditCard3dsiController.cs" />
+    <Compile Include="Controllers\PdfController.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\MailTemplateController.cs" />

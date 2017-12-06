@@ -17,13 +17,15 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoSearchService kenticoSearch;
         private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoDocumentProvider documents;
 
-        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, IKenticoProviderService kenticoProvider)
+        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, IKenticoProviderService kenticoProvider, IKenticoDocumentProvider documents)
         {
             this.mapper = mapper;
             this.resources = resources;
             this.kenticoSearch = kenticoSearch;
             this.kenticoProvider = kenticoProvider;
+            this.documents = documents;
         }
 
         public SearchResultPage Search(string phrase, int results = 100)
@@ -43,7 +45,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var searchResultPages = SearchPages(phrase, results);
             var searchResultProducts = SearchProducts(phrase, results);
-            var serpUrl = kenticoProvider.GetDocumentUrl(resources.GetSettingsKey("KDA_SerpPageUrl"));
+            var serpUrl = documents.GetDocumentUrl(resources.GetSettingsKey("KDA_SerpPageUrl"));
 
             var result = new AutocompleteResponse()
             {
@@ -62,7 +64,7 @@ namespace Kadena.BusinessLogic.Services
                         Image = p.ImgUrl,
                         Stock = p.Stock,
                         Title = p.Title,
-                        Url = kenticoProvider.GetDocumentUrl(p.Id)
+                        Url = documents.GetDocumentUrl(p.Id)
                     }
                 ).ToList()
                 },
@@ -89,7 +91,7 @@ namespace Kadena.BusinessLogic.Services
                     Id = documentId,
                     Text = Regex.Replace(dr[5].ToString(), @"<[^>]+>|&nbsp;", "").Trim(),
                     Title = dr[4].ToString(),
-                    Url = kenticoProvider.GetDocumentUrl(documentId)
+                    Url = documents.GetDocumentUrl(documentId)
                 };
 
                 searchResultPages.Add(resultItem);
@@ -113,7 +115,7 @@ namespace Kadena.BusinessLogic.Services
                 {
                     Id = documentId,
                     Title = dr[4].ToString(),
-                    Breadcrumbs = kenticoProvider.GetBreadcrumbs(documentId),
+                    Breadcrumbs = documents.GetBreadcrumbs(documentId),
                     IsFavourite = false,
                     ImgUrl = kenticoProvider.GetProductTeaserImageUrl(documentId)
                 };
