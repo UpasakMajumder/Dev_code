@@ -22,6 +22,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
+        private readonly IKenticoDocumentProvider documents;
         private readonly ICheckoutPageFactory checkoutfactory;
 
         public ShoppingCartService(IMapper mapper,
@@ -30,6 +31,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
+                                   IKenticoDocumentProvider documents,
                                    IKenticoLogger kenticoLog,
                                    ICheckoutPageFactory checkoutfactory)
         {
@@ -39,6 +41,7 @@ namespace Kadena.BusinessLogic.Services
             this.resources = resources;
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
+            this.documents = documents;
             this.kenticoLog = kenticoLog;
             this.checkoutfactory = checkoutfactory;
         }
@@ -90,7 +93,7 @@ namespace Kadena.BusinessLogic.Services
                     NewAddress = new NewAddressButton()
                     {
                         Label = resources.GetResourceString("Kadena.Checkout.NewAddress"),
-                        Url = kenticoProvider.GetDocumentUrl(resources.GetSettingsKey("KDA_SettingsPageUrl")) + "?tab=t4"
+                        Url = documents.GetDocumentUrl(resources.GetSettingsKey("KDA_SettingsPageUrl")) + "?tab=t4"
                     },
                     Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                     Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
