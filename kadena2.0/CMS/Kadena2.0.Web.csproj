@@ -1126,6 +1126,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx.designer.cs">
       <DependentUpon>MailingListSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\ProductInventory.ascx.cs">
+      <DependentUpon>ProductInventory.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\ProductInventory.ascx.designer.cs">
+      <DependentUpon>ProductInventory.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.cs">
       <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1341,6 +1348,7 @@
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\InventoryProductFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\ProductInventory.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />

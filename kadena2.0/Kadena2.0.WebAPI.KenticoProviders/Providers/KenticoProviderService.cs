@@ -26,42 +26,15 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger logger;
+        private readonly IKenticoDocumentProvider documents;
         private readonly IMapper _mapper;
 
-        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger, IMapper mapper)
+        public KenticoProviderService(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper)
         {
             this.resources = resources;
             this.logger = logger;
-            _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Gets document URL with respect to current culture
-        /// </summary>
-        public string GetDocumentUrl(string aliasPath)
-        {
-            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
-        }
-
-        public string GetDocumentUrl(string aliasPath, string cultureCode)
-        {
-            var document = DocumentHelper.GetDocument(
-                new NodeSelectionParameters
-                {
-                    AliasPath = aliasPath,
-                    SiteName = SiteContext.CurrentSiteName,
-                    CultureCode = cultureCode,
-                    CombineWithDefaultCulture = false
-                },
-                new TreeProvider(MembershipContext.AuthenticatedUser)
-            );
-            if (document == null)
-            {
-                logger.LogInfo("GetDocumentUrl", "INFORMATION", $"Document not found for alias '{aliasPath}' and culture '{cultureCode}'");
-                return "/";
-            }
-
-            return document.DocumentUrlPath;
+            this.documents = documents;
+            this._mapper = mapper;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -330,7 +303,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 };
                 if (cartItem.IsTemplated)
                 {
-                    cartItem.EditorURL = $@"{GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
+                    cartItem.EditorURL = $@"{documents.GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
 ?nodeId={cartItem.ProductPageId}
 &templateId={cartItem.EditorTemplateId}
 &workspaceid={cartItem.ProductChiliWorkspaceId}
@@ -415,13 +388,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return selectorItems.ToArray();
         }
 
-        public class LanguageSelectorItem
-        {
-            public string Code { get; set; }
-            public string Language { get; set; }
-            public string Url { get; set; }
-        }
-
         public void SetCartItemQuantity(int id, int quantity)
         {
             var item = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == id).FirstOrDefault();
@@ -483,12 +449,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
-        }
-
-        public string GetDocumentUrl(int documentId)
-        {
-            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            return doc?.AbsoluteURL ?? "#";
         }
 
         public Product GetProductByDocumentId(int documentId)
@@ -642,21 +602,6 @@ namespace Kadena.WebAPI.KenticoProviders
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
-        }
-
-        public List<string> GetBreadcrumbs(int documentId)
-        {
-            var breadcrubs = new List<string>();
-            var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-
-            while (doc != null && doc.Parent != null)
-            {
-                breadcrubs.Add(doc.DocumentName);
-                doc = doc.Parent;
-            };
-
-            breadcrubs.Reverse();
-            return breadcrubs;
         }
 
         public string GetProductTeaserImageUrl(int documentId)
