@@ -1,29 +1,28 @@
-﻿using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using CMS.Helpers;
-using CMS.MacroEngine;
-using System;
-using System.Linq;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Localization;
-using CMS.SiteProvider;
-using CMS.DataEngine;
+﻿using AutoMapper;
 using CMS.CustomTables;
-using System.Collections.Generic;
-using Kadena.Models;
-using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.Models.Product;
-using AutoMapper;
-using Kadena.WebAPI;
-using AutoMapper;
-using CMS.EventLog;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.CustomTables.Types.KDA;
-using static Kadena.Helpers.SerializerConfig;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.MacroEngine;
+using CMS.Membership;
+using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
+using Kadena.Models.Product;
+using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI;
+using Kadena.WebAPI.KenticoProviders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Kadena.Helpers.SerializerConfig;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
+
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
@@ -41,7 +40,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
-            
+
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
@@ -217,7 +216,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
 
                 return "stock stock--available";
-
             }
 
             return string.Empty;
@@ -273,7 +271,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return result;
         }
 
-
         /// <summary>
         /// Checks if TreeNode's value "ProductType" contains any of given type strings
         /// </summary>
@@ -328,7 +325,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
-            {                
+            {
                 var kenticoService = new KenticoProviderService(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
                 return kenticoService.GetDocumentUrl(aliasPath);
             }
@@ -400,6 +397,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #region TWE macro methods
+
         /// <summary>
         /// Returns Division name based on Division ID
         /// </summary>
@@ -423,6 +421,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Program name based on Program ID
         /// </summary>
@@ -447,6 +446,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Category name based on Category ID
         /// </summary>
@@ -471,6 +471,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Currently opened campaign name
         /// </summary>
@@ -505,13 +506,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <returns></returns>
         [MacroMethod(typeof(string), "Returns cart items count", 1)]
         [MacroMethodParam(0, "userID", typeof(int), "UserID")]
-        [MacroMethodParam(1, "inventoryType", typeof(string), "InventoryType")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
         public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 int userID = ValidationHelper.GetInteger(parameters[1], default(int));
-                string inventoryType = ValidationHelper.GetString(parameters[2], string.Empty);
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
@@ -524,6 +525,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return default(int);
             }
         }
+
         /// <summary>
         /// Returns shopping cart total
         /// </summary>
@@ -532,13 +534,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <returns></returns>
         [MacroMethod(typeof(string), "Returns cart items count", 1)]
         [MacroMethodParam(0, "userID", typeof(int), "UserID")]
-        [MacroMethodParam(1, "inventoryType", typeof(string), "InventoryType")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
         public static object GetCartTotalByInventoryType(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 int userID = ValidationHelper.GetInteger(parameters[1], default(int));
-                string inventoryType = ValidationHelper.GetString(parameters[2], string.Empty);
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
@@ -548,10 +550,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
-                return default(int);
+                return default(double);
             }
         }
 
-        #endregion
+        #endregion TWE macro methods
     }
 }

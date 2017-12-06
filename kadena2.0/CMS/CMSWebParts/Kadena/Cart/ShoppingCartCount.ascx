@@ -6,6 +6,7 @@
         </svg>
         <asp:Label runat="server" ID="lblCartName"></asp:Label>
         <div data-reactroot="" class="nav-badge">
-            <asp:Label runat="server" CssClass="nav-badge__text" ID="lblCount"></asp:Label></div>
+            <asp:Label runat="server" CssClass="nav-badge__text" ID="lblCount"></asp:Label>
+        </div>
     </a>
 </li>

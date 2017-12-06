@@ -40,6 +40,51 @@ namespace Kadena.CMSWebParts.Kadena.Cart {
         protected global::CMS.DocumentEngine.Web.UI.QueryRepeater rptCartItems;
         
         /// <summary>
+        /// ddlShippingOption control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShippingOption;
+        
+        /// <summary>
+        /// lblShippingCharge control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblShippingCharge;
+        
+        /// <summary>
+        /// ddlBusinessUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBusinessUnits;
+        
+        /// <summary>
+        /// lblTotalUnits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalUnits;
+        
+        /// <summary>
+        /// lblTotalPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalPrice;
+        
+        /// <summary>
         /// lblCartUpdateSuccess control.
         /// </summary>
         /// <remarks>

@@ -1,11 +1,11 @@
 ﻿using CMS.Base.Web.UI;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using System;
 using System.Linq;
-using CMS.EventLog;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {

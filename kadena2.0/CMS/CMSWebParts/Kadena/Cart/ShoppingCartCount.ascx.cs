@@ -13,11 +13,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// <summary>
         /// Distributor Cart ID.
         /// </summary>
-        public string ShoppingCartInventoryType
+        public int ShoppingCartInventoryType
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("ShoppingCartInventoryType"), string.Empty);
+                return ValidationHelper.GetInteger(GetValue("ShoppingCartInventoryType"), default(int));
             }
             set
             {
