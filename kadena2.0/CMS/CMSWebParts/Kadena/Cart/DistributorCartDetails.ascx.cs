@@ -267,7 +267,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     BindRepeaterData();
                     rptCartItems.ReloadData(true);
                     Visible = rptCartItems.Visible && !StopProcessing;
-
                     if (DataHelper.DataSourceIsEmpty(rptCartItems.DataSource))
                     {
                         Visible = false;
@@ -304,7 +303,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Page events"
 
         #region "Event handling"
-
+        /// <summary>
+        /// Save Cart items event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSaveCartItems_Click(object sender, EventArgs e)
         {
             try

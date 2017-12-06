@@ -31,7 +31,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (mShoppingCartContent == null)
                 {
-                    // Gets the parent control
                     mShoppingCartContent = ControlsHelper.GetParentControl<CMSAbstractWebPart>(this);
                 }
                 return mShoppingCartContent;
@@ -47,7 +46,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (mShoppingCartItemInfoObject == null)
                 {
-                    // Gets the current displayed CartItemInfo by CartItemID
                     mShoppingCartItemInfoObject =
                         cart.CartItems.FirstOrDefault(i => i.CartItemID == CurrentCartItemID);
                 }
