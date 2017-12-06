@@ -96,6 +96,7 @@
     <Compile Include="KSource\NooshDto.cs" />
     <Compile Include="KSource\ProjectDto.cs" />
     <Compile Include="KSource\RuleDto.cs" />
+    <Compile Include="Logon\Requests\LogonUserRequestDTO.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
@@ -158,7 +159,7 @@
     <Compile Include="CustomerData\CustomerAddressDTO.cs" />
     <Compile Include="CustomerData\CustomerDataDTO.cs" />
     <Compile Include="General\GeneralResultDTO.cs" />
-    <Compile Include="Logon\LogonUserResultDTO.cs" />
+    <Compile Include="Logon\Responses\LogonUserResultDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Checkout\TotalsDTO.cs" />
     <Compile Include="Checkout\TotalDTO.cs" />
