@@ -1,11 +1,13 @@
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using System;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -57,7 +59,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
-                CountryID = GetCountryID("USA");
+                CountryID = GetCountryID(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".DefaultCountry"));
                 uniSelectorCountry.Value = ValidationHelper.GetString(CountryID, string.Empty);
                 uniSelectorState.WhereCondition = "CountryID =" + CountryID;
                 uniSelectorState.Enabled = true;
