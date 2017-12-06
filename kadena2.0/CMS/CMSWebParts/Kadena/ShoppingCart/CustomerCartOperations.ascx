@@ -23,13 +23,8 @@
                 <asp:TextBox runat="server" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" />
             </ItemTemplate>
         </asp:TemplateField>
-        <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="hide" ItemStyle-CssClass="hide" />
-        <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="hide" ItemStyle-CssClass="hide" />
+        <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
+        <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
     </Columns>
 </asp:GridView>
 <asp:Label runat="server" ID="lblSuccessMsg" Text=""></asp:Label>
-<style>
-    .hide {
-        display: none;
-    }
-</style>

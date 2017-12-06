@@ -15,6 +15,9 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
     public partial class CustomerCartOperations : CMSAbstractWebPart
     {
         #region Properties
+        /// <summary>
+        /// The property describe's inventory type
+        /// </summary>
         public int InventoryType
         {
             get
@@ -95,7 +98,6 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
         public override void ReloadData()
         {
             base.ReloadData();
-
             SetupControl();
         }
         /// <summary>
