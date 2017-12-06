@@ -15,7 +15,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramDescription"></span>
                     <div class="input__inner">
-                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
                     </div>
                 </div>
             </div>
