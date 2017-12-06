@@ -1,23 +1,14 @@
 using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
-using CMS.DataEngine;
 using CMS.CustomTables;
 using CMS.EventLog;
-using CMS.DocumentEngine;
-using System.Collections.Generic;
-using CMS.Membership;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
-
     #region "Methods"
     /// <summary>
     /// Content loaded event handler.
@@ -27,6 +18,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         base.OnContentLoaded();
         SetupControl();
     }
+
     public string DefaultTargetUrl
     {
         get
@@ -55,13 +47,9 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             rfvCatgory.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCategroyRequired");
             revPOSCodeLength.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSMaxLengthMsg");
             revPOSCode.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSNumberOnlyMsg");
-            if (Request.UrlReferrer != null)
-            {
-                ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
-            }
-         }
-
+        }
     }
+
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -72,6 +60,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         SetupControl();
     }
     #endregion
+
     #region
     /// <summary>
     /// Method to bind the data to all the dropdowns
@@ -89,7 +78,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             }
             BindPOSCategories();
             BindBrands();
-
         }
         catch (Exception ex)
         {
@@ -97,6 +85,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
         }
     }
     #endregion
+
     #region Events
     /// <summary>
     /// On button click it will save the POS Number to custom table
@@ -117,16 +106,15 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                     {
                         BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
                         Year = ValidationHelper.GetInteger(ddlYear.SelectedValue, default(int)),
-                        POSCategoryName = ValidationHelper.GetString(ddlCategory.SelectedValue, ""),
+                        POSCategoryName = ValidationHelper.GetString(ddlCategory.SelectedItem.Text, string.Empty),
                         POSCode = ValidationHelper.GetInteger(txtPOSCode.Text, default(int)),
-                        POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedItem.Text, default(int)),
+                        POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)),
                         BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
                         POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
-                        Enable=true
+                        Enable = true
                     };
                     objPosNumber.Insert();
-                    var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
-                    Response.Redirect(redirectUrl, false);
+                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
                 }
                 else
                 {
@@ -140,27 +128,13 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             lblError.Visible = true;
             lblSuccess.Visible = false;
         }
-
     }
+
     protected void btnCancel_Cancel(object sender, EventArgs e)
     {
-        try
-        {
-            ddlBrand.SelectedIndex = 0;
-            ddlCategory.SelectedIndex = 0;
-            ddlYear.SelectedIndex = 0;
-            txtPOSCode.Text = "";
-            txtPOSNumber.Text = "";
-            lblSuccess.Visible = false;
-            lblError.Visible = false;
-
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CancePOSFormButtonClick", "EXCEPTION", ex);
-        }
-
+        Response.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
+
     private void BindPOSCategories()
     {
         var posCategories = CustomTableItemProvider.GetItems(POSCategoryItem.CLASS_NAME).Columns("PosCategoryName,ItemID").ToList();
@@ -174,6 +148,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             ddlCategory.Items.Insert(0, new ListItem(selectText, "0"));
         }
     }
+
     private void BindBrands()
     {
         var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").ToList();
