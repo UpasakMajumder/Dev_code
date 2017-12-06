@@ -105,7 +105,8 @@ namespace Kadena.BusinessLogic.Services
             var site = resources.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
             var indexName = $"KDA_ProductsIndex.{site.Name}";
-            var datarowsResults = kenticoSearch.Search(phrase, indexName, "/Products/%", results, true);
+            var productsPath = resources.GetSettingsKey("KDA_ProductsPageUrl")?.TrimEnd('/');
+            var datarowsResults = kenticoSearch.Search(phrase, indexName, productsPath + "/%", results, true);
 
             foreach (DataRow dr in datarowsResults)
             {
