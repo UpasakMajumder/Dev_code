@@ -364,8 +364,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
                 string htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProductPdfHeader");
                 htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", GetOpenCampaign?.GetValue("Name", string.Empty) ?? string.Empty);
-                htmlTextheader = htmlTextheader.Replace("OrderStartDate", "");
-                htmlTextheader = htmlTextheader.Replace("OrderEndDate", "");
+                htmlTextheader = htmlTextheader.Replace("OrderStartDate", string.Empty);
+                htmlTextheader = htmlTextheader.Replace("OrderEndDate", string.Empty);
                 var programs = ProgramProvider.GetPrograms()
                                        .Columns("ProgramName,BrandID")
                                        .WhereEquals("CampaignID", GetOpenCampaign.CampaignID)
@@ -377,7 +377,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     string programContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProgramsContent");
                     brands.Add(program.BrandID);
                     programContent = programContent.Replace("ProgramBrandName", GetBrandName(program.BrandID));
-                    programContent = programContent.Replace("ProgramDate", "getprogramdate");
+                    programContent = programContent.Replace("ProgramDate", string.Empty);
                     programsContent += programContent;
                     programContent = string.Empty;
                 }
@@ -391,7 +391,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     {
                         var brandName = GetBrandName(brand);
                         string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrandHtml");
-                        productBrandHeader = productBrandHeader.Replace("BRANDNAME", !string.IsNullOrEmpty(brandName) ? brandName : "TestName");
+                        productBrandHeader = productBrandHeader.Replace("BRANDNAME", brandName);
                         var productItems = CampaignsProductProvider.GetCampaignsProducts().ToList();
                         var skuDetails = SKUInfoProvider.GetSKUs()
                                             .WhereIn("SKUNumber", selectedProducts)
@@ -424,7 +424,14 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PdfEndingTags");
                 string html = pdfProductContentHeader + pdfProductsContentWithBrands + pdfClosingDivs;
                 var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
-                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
+                string fileName = string.Empty;
+                if (ProductType == (int)ProductOfType.CampaignProduct)
+                {
+                    fileName = GetOpenCampaign.Name + DateTime.Today + ".pdf";
+                }
+                else {
+                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + DateTime.Today.ToString() + ".pdf";
+                }
                 Response.Clear();
                 MemoryStream ms = new MemoryStream(pdfBytes);
                 Response.ContentType = "application/pdf";
