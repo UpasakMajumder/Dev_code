@@ -56,7 +56,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion properties
-
+        /// <summary>
+        /// page load event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             try

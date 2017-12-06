@@ -15,8 +15,25 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class DistributorCartDetails : CMSCheckoutWebPart
     {
+        #region "Private Properties"
+
+        private List<BusinessUnitItem> BusinessUnits { get; set; }
+        private List<ShippingOptionInfo> ShippingOptions { get; set; }
+
+        #endregion "Private Properties"
+
         #region "Public properties"
 
+        public double ShippingCost { get; set; }
+        public bool ValidCart { get; set; }
+        public ShoppingCartInfo Cart { get; set; }
+        public object CustomtableItemProvider { get; private set; }
+
+        /// <summary>
+        ///  /// <summary>
+        /// Gets or sets the CartID.
+        /// </summary>
+        /// </summary>
         public int CartID
         {
             get
@@ -29,6 +46,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the ShoppingCartDistributorID.
+        /// </summary>
         public int ShoppingCartDistributorID
         {
             get
@@ -41,13 +61,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
-        private List<BusinessUnitItem> BusinessUnits { get; set; }
-        private List<ShippingOptionInfo> ShippingOptions { get; set; }
-
-        public bool ValidCart { get; set; }
-        public ShoppingCartInfo Cart { get; set; }
-        public object CustomtableItemProvider { get; private set; }
-
+        /// <summary>
+        /// Gets or sets the POSNumber.
+        /// </summary>
         public string POSNumber
         {
             get
@@ -60,6 +76,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the ProductName.
+        /// </summary>
         public string ProductName
         {
             get
@@ -72,6 +91,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Quantity.
+        /// </summary>
         public string Quantity
         {
             get
@@ -84,6 +106,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Price.
+        /// </summary>
         public string Price
         {
             get
@@ -96,6 +121,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Save.
+        /// </summary>
         public string Save
         {
             get
@@ -108,6 +136,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the SaveasPDF
+        /// </summary>
         public string SaveasPDF
         {
             get
@@ -120,6 +151,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Print
+        /// </summary>
         public string Print
         {
             get
@@ -132,6 +166,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Shipping
+        /// </summary>
         public string Shipping
         {
             get
@@ -144,6 +181,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Gets or sets the BusinessUnit
+        /// </summary>
         public string BusinessUnit
         {
             get
@@ -154,8 +194,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 SetValue("BusinessUnit", value);
             }
-        }
+        } /// <summary>
 
+          /// Gets or sets the SubTotal
+          /// </summary>
         public string SubTotal
         {
             get
@@ -168,12 +210,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
-        public double ShippingCost { get; set; }
-
         #endregion "Public properties"
 
         #region "Page events"
 
+        /// <summary>
+        /// Page load event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -264,7 +309,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                // var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                 foreach (Control item in rptCartItems.Items)
                 {
                     var txtQuantity = item.Controls[0].FindControl("txtUnits") as TextBox;
@@ -299,16 +343,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
-        /// <summary>
-        /// This event will change the shipping price
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void ddlShippingOption_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Need to write shipping carge
-        }
-
         #endregion "Event handling"
 
         #region "Private Methods"
@@ -323,8 +357,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (BusinessUnits == null)
                 {
                     BusinessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-            .Source(sourceItem => sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
-            .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID).WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
+                                    .Source(sourceItem =>sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
+                                    .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID)
+                                    .WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
                 }
             }
             catch (Exception ex)

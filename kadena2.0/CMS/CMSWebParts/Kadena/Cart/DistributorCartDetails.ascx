@@ -28,7 +28,7 @@
      <tr>
          <td colspan="2"><%= Shipping %></td>
          <td>
-             <asp:DropDownList runat="server" ID="ddlShippingOption" EnableViewState="true" AutoPostBack="true" OnSelectedIndexChanged="ddlShippingOption_SelectedIndexChanged"></asp:DropDownList>
+             <asp:DropDownList runat="server" ID="ddlShippingOption" EnableViewState="true" AutoPostBack="true" ></asp:DropDownList>
          </td>
          <td colspan="2">
              <asp:Label ID="lblShippingCharge" runat="server" />

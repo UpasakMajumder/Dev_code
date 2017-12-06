@@ -13,10 +13,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
     {
         #region "Variables"
 
-        public ShoppingCartInfo cart;
         private ShoppingCartItemInfo mShoppingCartItemInfoObject;
         private CMSAbstractWebPart mShoppingCartContent;
         private readonly EcommerceActivityLogger mActivityLogger = new EcommerceActivityLogger();
+        public ShoppingCartInfo cart;
 
         #endregion "Variables"
 
