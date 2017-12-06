@@ -358,8 +358,8 @@ module.exports.detail =  {
   "success": true,
   "errorMessage": null,
   "payload": {
+    "dateTimeNAString": "N/A",
     "commonInfo": {
-      dateTimeNAString: "N/A",
       status: {
         title: 'Status',
         value: 'In progress'

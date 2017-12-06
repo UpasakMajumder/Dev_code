@@ -5,15 +5,8 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const CommonInfo = ({ ui }) => {
-  const { status, orderDate, shippingDate, totalCost, dateTimeNAString } = ui;
-
-  const standardizeData = (value) => {
-    let date = dateTimeNAString;
-    if (value) date = timeFormat(value);
-
-    return date;
-  };
+const CommonInfo = ({ ui, dateTimeNAString }) => {
+  const { status, orderDate, shippingDate, totalCost } = ui;
 
   const tiles = [
     {
@@ -23,12 +16,12 @@ const CommonInfo = ({ ui }) => {
     },
     {
       title: orderDate.title,
-      value: standardizeData(orderDate.value),
+      value: timeFormat(orderDate.value, dateTimeNAString),
       icon: 'calendar'
     },
     {
       title: shippingDate.title,
-      value: standardizeData(shippingDate.value),
+      value: timeFormat(shippingDate.value, dateTimeNAString),
       icon: 'truck'
     },
     {
@@ -61,8 +54,8 @@ const CommonInfo = ({ ui }) => {
 };
 
 CommonInfo.propTypes = {
+  dateTimeNAString: PropTypes.string.isRequired,
   ui: PropTypes.shape({
-    dateTimeNAString: PropTypes.string.isRequired,
     status: PropTypes.shape({
       title: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
