@@ -39,6 +39,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     protected global::System.Web.UI.WebControls.DropDownList ddlProductTypes;
     
     /// <summary>
+    /// posNumber control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox posNumber;
+    
+    /// <summary>
     /// selectAllLabel control.
     /// </summary>
     /// <remarks>
