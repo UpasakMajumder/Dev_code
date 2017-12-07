@@ -47,14 +47,14 @@ namespace Kadena.Tests.WebApi
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
 
-            
+
             var kenticoClient = new Mock<IKenticoResourceService>();
             kenticoClient.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
-            
+
             return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
-                kenticoClient.Object, 
-                validationClient?.Object ?? new Mock<IAddressValidationClient>().Object, 
+                kenticoClient.Object,
+                validationClient?.Object ?? new Mock<IAddressValidationClient>().Object,
                 mapper);
         }
 
@@ -66,7 +66,7 @@ namespace Kadena.Tests.WebApi
                 Payload = _addresses.Where(a => a.ContainerId == _containerId)
             };
         }
-        
+
         private BaseResponseDto<string> ValidateSuccess()
         {
             return new BaseResponseDto<string>
@@ -147,7 +147,7 @@ namespace Kadena.Tests.WebApi
                 .Setup(c => c.GetAddresses(_containerId))
                 .Returns(Task.FromResult((BaseResponseDto<IEnumerable<MailingAddressDto>>)null));
             var srvs = Create(mailingClient);
-            Assert.ThrowsAsync(typeof(NullReferenceException), () => srvs.UseOnlyCorrectAddresses(_containerId));
+            Assert.ThrowsAsync<NullReferenceException>(() => srvs.UseOnlyCorrectAddresses(_containerId));
 
         }
 
@@ -202,7 +202,7 @@ namespace Kadena.Tests.WebApi
         public void UpdateTestEmptyChanges()
         {
             var srvs = Create();
-            Assert.ThrowsAsync(typeof(NullReferenceException), () => srvs.UpdateAddresses(_containerId, null));
+            Assert.ThrowsAsync<NullReferenceException>(() => srvs.UpdateAddresses(_containerId, null));
         }
     }
 }

@@ -127,7 +127,7 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Products.Items.Count);
+            Assert.Single(result.Products.Items);
             Assert.Equal(10, result.Products.Items[0].TotalPrice);
         }
 
@@ -152,7 +152,7 @@ namespace Kadena.Tests.WebApi
 
             Assert.NotNull(result);
             Assert.NotNull(result.Items);
-            Assert.Equal(0, result.Items.Count);
+            Assert.Empty(result.Items);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Kadena.Tests.WebApi
 
             Assert.NotNull(result);
             Assert.NotNull(result.CartPreview.Items);
-            Assert.Equal(1, result.CartPreview.Items.Count);
+            Assert.Single(result.CartPreview.Items);
         }
     }
 }
