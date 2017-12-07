@@ -1299,6 +1299,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSScripts\Custom\Kadena\KadenaExtension.js" />
+    <Content Include="CMSScripts\Custom\Kadena\SmartyStreet.js" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Brand\Brand.ascx" />
