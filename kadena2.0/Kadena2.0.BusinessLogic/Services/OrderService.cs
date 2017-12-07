@@ -29,7 +29,6 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
-        private readonly IBackgroundTaskScheduler backgroundWorker;
         private readonly IKenticoDocumentProvider documents;
 
         public OrderService(IMapper mapper,
@@ -42,7 +41,6 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IBackgroundTaskScheduler backgroundWorker,
             IKenticoDocumentProvider documents)
         {
             this.mapper = mapper;
@@ -55,7 +53,6 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
             this.templateService = templateService;
-            this.backgroundWorker = backgroundWorker;
             this.documents = documents;
         }
 
