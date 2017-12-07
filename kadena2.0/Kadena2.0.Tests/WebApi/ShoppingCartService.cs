@@ -91,7 +91,7 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreateDeliveryCarrier() });
             kenticoProvider.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
-            kenticoProvider.Setup(p => p.GetShoppingCartItems(true))
+            kenticoProvider.Setup(p => p.GetShoppingCartItems(It.IsAny<bool>()))
                 .Returns(() => GetItems().ToArray());
             kenticoProvider.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals());

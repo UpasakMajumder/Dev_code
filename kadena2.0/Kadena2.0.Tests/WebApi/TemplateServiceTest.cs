@@ -114,8 +114,8 @@ namespace Kadena.Tests.WebApi
                 Success = true,
                 Payload = new List<TemplateServiceDocumentResponse>
                 {
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime },
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime }
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() },
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() }
                 }
             };
 
