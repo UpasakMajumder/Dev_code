@@ -336,10 +336,6 @@ namespace Kadena.BusinessLogic.Services
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 kenticoProvider.RemoveCurrentItemsFromStock();
                 kenticoProvider.ClearCart();
-
-                // Temporary solution before microservices will implement better strategy for handling cold starts. 
-                var orderNumber = serviceResult.Payload;
-                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderNumber));
             }
             else
             {
