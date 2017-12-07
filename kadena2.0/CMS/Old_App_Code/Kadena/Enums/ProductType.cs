@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Kadena.Old_App_Code.Kadena.Enums
+﻿namespace Kadena.Old_App_Code.Kadena.Enums
 {
+    /// <summary>
+    /// Enum for Type of Product
+    /// </summary>
     public enum ProductType
     {
         GeneralInventory = 1,
