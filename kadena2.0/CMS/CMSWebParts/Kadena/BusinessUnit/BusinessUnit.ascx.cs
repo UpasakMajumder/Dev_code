@@ -99,8 +99,8 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     /// </summary>
     private void BindBusinessUnitStatus()
     {
-        ddlStatus.Items.Add(new ListItem("Deactivate", "0"));
-        ddlStatus.Items.Add(new ListItem("Activate", "1"));
+        ddlStatus.Items.Add(new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+        ddlStatus.Items.Add(new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
             BusinessUnitItem objBusinessUnit = new BusinessUnitItem();
             objBusinessUnit.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int)); ;
             objBusinessUnit.BusinessUnitName = ValidationHelper.GetString(txtBUName.Text, string.Empty);
-            objBusinessUnit.Status = ddlStatus.SelectedValue == "0" ? false : true;
+            objBusinessUnit.Status = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, true);
             objBusinessUnit.SiteID = CurrentSite.SiteID;
             objBusinessUnit.Insert();
         }
@@ -131,12 +131,12 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
     {
         try
         {
-            var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("ItemID", itemID).Columns("BusinessUnitName,BusinessUnitNumber,Status,SiteID,ItemID").FirstOrDefault();
+            var buData = CustomTableItemProvider.GetItem<BusinessUnitItem>(itemID);
             if (!DataHelper.DataSourceIsEmpty(buData))
             {
                 buData.BusinessUnitNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int));
                 buData.BusinessUnitName = ValidationHelper.GetString(txtBUName.Text, string.Empty);
-                buData.Status = ddlStatus.SelectedValue == "0" ? false : true;
+                buData.Status = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, true);
                 buData.SiteID = CurrentSite.SiteID;
                 buData.Update();
             }
@@ -160,8 +160,8 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         {
             if (Page.IsValid)
             {
-                var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
-                if (itemID != default(int))
+                int itemID = QueryHelper.GetInteger("itemID", 0);
+                if (itemID > 0)
                 {
                     UpdateBusinessUnit(itemID);
                 }
@@ -195,15 +195,23 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
         {
             BusinessUnitItem objBusinessUnit = new BusinessUnitItem();
             var buNumber = ValidationHelper.GetLong(txtBUNumber.Text, default(int));
-            var itemID = Request.QueryString["itemID"] != null ? ValidationHelper.GetInteger(Request.QueryString["itemID"], default(int)) : default(int);
-            if (itemID != default(int))
+            int itemID = QueryHelper.GetInteger("itemID", 0);
+            if (itemID > 0)
             {
-                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).And().WhereNotEquals("ItemID", itemID).Columns("BusinessUnitNumber").FirstOrDefault();
+                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>()
+                                                    .WhereEquals("BusinessUnitNumber", buNumber)
+                                                    .And()
+                                                    .WhereNotEquals("ItemID", itemID)
+                                                    .Columns("BusinessUnitNumber")
+                                                    .FirstOrDefault();
                 args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
             else
             {
-                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>().WhereEquals("BusinessUnitNumber", buNumber).Columns("BusinessUnitNumber").FirstOrDefault();
+                var buData = CustomTableItemProvider.GetItems<BusinessUnitItem>()
+                                                    .WhereEquals("BusinessUnitNumber", buNumber)
+                                                    .Columns("BusinessUnitNumber")
+                                                    .FirstOrDefault();
                 args.IsValid = DataHelper.DataSourceIsEmpty(buData);
             }
         }
