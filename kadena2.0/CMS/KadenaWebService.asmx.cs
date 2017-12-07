@@ -214,39 +214,6 @@
         #endregion
 
         #region Private methods
-
-        private object LogonUserInternal(string loginEmail, string password, bool isKeepMeLoggedIn)
-        {
-            // TODO Destroy this method
-
-            UserInfo user = null;
-            // cookies handling
-            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
-            if (isKeepMeLoggedIn)
-            {
-                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddYears(1), false);
-            }
-            else
-            {
-                // Extend the expiration of the authentication cookie if required
-                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
-                {
-                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddMinutes(Session.Timeout), false);
-                }
-            }
-            user = AuthenticationHelper.AuthenticateUser(loginEmail, password, SiteContext.CurrentSiteName);
-            if (user != null)
-            {
-                FormsAuthentication.SetAuthCookie(user.UserName, isKeepMeLoggedIn);
-                MembershipActivityLogger.LogLogin(user.UserName);
-                return null;// new LogonUserResultDTO { success = true };
-            }
-            else
-            {
-                return null;// new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-        }
-
         private GeneralResultDTO InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
         {
             var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
