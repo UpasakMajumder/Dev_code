@@ -14,7 +14,6 @@ using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
-
     #region "Properties"
 
     /// <summary>
@@ -36,7 +35,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
     }
 
-    #endregion
+    #endregion "Properties"
 
     #region "Methods"
 
@@ -59,7 +58,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
-                CountryID = GetCountryID(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".DefaultCountry"));
+                CountryID = GetCountryID(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"));
                 uniSelectorCountry.Value = ValidationHelper.GetString(CountryID, string.Empty);
                 uniSelectorState.WhereCondition = "CountryID =" + CountryID;
                 uniSelectorState.Enabled = true;
@@ -310,7 +309,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryDisplayName", countryName).FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries()
+                .WhereEquals("CountryDisplayName", countryName)
+                .Columns("CountryID")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryID;
@@ -332,7 +334,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateDisplayName", stateName).FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates()
+                .WhereEquals("StateDisplayName", stateName)
+                .Columns("StateID")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateID;
@@ -354,7 +359,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryID", countryID).Column("CountryDisplayName").FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries().
+                WhereEquals("CountryID", countryID)
+                .Column("CountryDisplayName")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryDisplayName;
@@ -376,7 +384,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateID", stateID).Column("StateDisplayName").FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates()
+                .WhereEquals("StateID", stateID)
+                .Column("StateDisplayName")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateDisplayName;
@@ -423,7 +434,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            CustomerInfo customer = CustomerInfoProvider.GetCustomers().WhereEquals("CustomerUserID", userID).FirstOrDefault();
+            CustomerInfo customer = CustomerInfoProvider.GetCustomers()
+                .WhereEquals("CustomerUserID", userID)
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(customer))
             {
                 return customer.CustomerID;
