@@ -48,5 +48,15 @@ namespace Kadena.WebAPI.Controllers
             var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
             return ResponseJson(result);
         }
+
+        
+        [HttpPost]
+        [Route("api/login/accepttac")]
+        public IHttpActionResult CheckTaC([FromBody] AcceptTaCRequestDTO request)
+        {
+            var loginRequestModel = mapper.Map<LoginRequest>(request);
+            service.AcceptTaC(loginRequestModel);
+            return ResponseJson<object>(null);
+        }
     }
 }

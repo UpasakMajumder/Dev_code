@@ -108,17 +108,16 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public User GetCurrentUser()
         {
-            var user = MembershipContext.AuthenticatedUser;
-            return new User
-            {
-                UserId = user.UserID
-            };
+            return CreateUser(MembershipContext.AuthenticatedUser);
         }
 
         public User GetUser(string mail)
         {
-            var user = UserInfoProvider.GetUserInfo(mail);
+            return CreateUser(UserInfoProvider.GetUserInfo(mail));
+        }
 
+        private User CreateUser(UserInfo user)
+        {
             if (user == null)
             {
                 return null;
@@ -127,10 +126,9 @@ namespace Kadena.WebAPI.KenticoProviders
             return new User
             {
                 UserId = user.UserID,
-                // TODO set Last TaC agreement date
+                TermsConditionsAccepted = user.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)
             };
         }
-
 
         public bool SaveLocalization(string code)
         {

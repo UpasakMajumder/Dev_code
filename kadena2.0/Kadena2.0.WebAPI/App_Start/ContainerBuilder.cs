@@ -63,6 +63,7 @@ namespace Kadena.WebAPI
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
+            container.Register<IKenticoLoginProvider, KenticoLoginProvider>();
             return container;
         }
 

@@ -2,33 +2,86 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Login;
 using System;
+using System.Security;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class LoginService : ILoginService
     {
-        private readonly IKenticoProviderService _kentico;
-        private readonly IKenticoUserProvider _kenticoUsers;
-        private readonly IKenticoResourceService _resources;
+        private readonly IKenticoProviderService kentico;
+        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoResourceService resources;
+        private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoLoginProvider login;
 
-        public LoginService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources)
+        public LoginService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
         {
-            //todo null checks
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (login == null)
+            {
+                throw new ArgumentNullException(nameof(login));
+            }
 
-            _kentico = kentico;
-            _kenticoUsers = kenticoUsers;
-            _resources = resources;
+            this.kentico = kentico;
+            this.kenticoUsers = kenticoUsers;
+            this.resources = resources;
+            this.documents = documents;
+            this.login = login;
         }
 
         public CheckTaCResult CheckTaC(LoginRequest request)
         {
-            var user = _kenticoUsers.GetUser(request.LoginEmail);
-            return null;
+            var user = kenticoUsers.GetUser(request.LoginEmail);
+
+            if (!login.CheckPasword(request.LoginEmail, request.Password))
+            {
+                throw new SecurityException("Invalid username or password");
+            }
+
+            var tacValidFrom = login.GetTaCValidFrom();
+            var result = new CheckTaCResult();
+
+            if (user.TermsConditionsAccepted < tacValidFrom)
+            {
+                var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
+                var tacUrl = documents.GetDocumentUrl(tacAliasPath);
+                result.ShowTaC = true;
+                result.Url = tacUrl;
+            }
+
+            return result;
+        }
+
+        public void AcceptTaC(LoginRequest request)
+        {
+            if (!login.CheckPasword(request.LoginEmail, request.Password))
+            {
+                throw new SecurityException("Invalid username or password");
+            }
+
+            login.AcceptTaC(request.LoginEmail);
         }
 
         public LoginResult Login(LoginRequest request)
         {
-            throw new NotImplementedException();
+            // todo validations in model
+
+            return login.Login(request);
         }
     }
 }
