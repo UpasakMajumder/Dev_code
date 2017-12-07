@@ -211,33 +211,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEstPrice;
         
         /// <summary>
-        /// lblImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblImage;
-        
-        /// <summary>
-        /// productImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload productImage;
-        
-        /// <summary>
-        /// imgProduct control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgProduct;
-        
-        /// <summary>
         /// lblActualPrice control.
         /// </summary>
         /// <remarks>
@@ -263,60 +236,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvActualPrice;
-        
-        /// <summary>
-        /// lblCVOProductId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblCVOProductId;
-        
-        /// <summary>
-        /// txtCVOProductId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtCVOProductId;
-        
-        /// <summary>
-        /// revProductid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revProductid;
-        
-        /// <summary>
-        /// lblStoreFrontId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblStoreFrontId;
-        
-        /// <summary>
-        /// txtStroeFrontId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtStroeFrontId;
-        
-        /// <summary>
-        /// revStoreId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revStoreId;
         
         /// <summary>
         /// lblQuantity control.
@@ -418,22 +337,31 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.CMSDropDownList ddlStatus;
         
         /// <summary>
-        /// lblCancel control.
+        /// lblImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblCancel;
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblImage;
         
         /// <summary>
-        /// chkcancel control.
+        /// productImage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkcancel;
+        protected global::System.Web.UI.WebControls.FileUpload productImage;
+        
+        /// <summary>
+        /// imgProduct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgProduct;
         
         /// <summary>
         /// lblProductAllcation control.
