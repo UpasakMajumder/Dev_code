@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
+using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
-using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Checkout;
-using Kadena.BusinessLogic.Infrastructure;
-using Kadena.Models.Product;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -340,19 +339,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return serviceResult;
-        }
-
-        private async Task FinishOrder(string orderNumber)
-        {
-            var finishOrderResult = await orderSubmitClient.FinishOrder(orderNumber);
-            if (finishOrderResult.Success)
-            {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order # {orderNumber} successfully finished");
-            }
-            else
-            {
-                kenticoLog.LogError("Submit order", $"Order # {orderNumber} error. {finishOrderResult?.Error?.Message}");
-            }
         }
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)

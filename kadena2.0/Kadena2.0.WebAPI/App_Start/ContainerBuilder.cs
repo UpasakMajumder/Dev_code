@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using DryIoc;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.WebAPI.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
+using Kadena.BusinessLogic.Services;
 using Kadena.Helpers;
+using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using Kadena.BusinessLogic.Infrastructure;
 
 namespace Kadena.WebAPI
 {

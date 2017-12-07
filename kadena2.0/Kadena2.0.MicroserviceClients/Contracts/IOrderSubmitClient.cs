@@ -13,13 +13,5 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// <param name="orderData"></param>
         /// <returns>Order number</returns>
         Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData);
-
-        /// <summary>
-        /// Marks the order as ready for further processing.
-        /// </summary>
-        /// <param name="serviceEndpoint"></param>
-        /// <param name="orderNumber"></param>
-        /// <returns>null</returns>
-        Task<BaseResponseDto<string>> FinishOrder(string orderNumber);
     }
 }

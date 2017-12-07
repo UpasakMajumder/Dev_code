@@ -453,7 +453,6 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
-    <Compile Include="FakeBackgroundTaskScheduler.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
