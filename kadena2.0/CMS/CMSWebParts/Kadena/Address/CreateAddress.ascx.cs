@@ -153,7 +153,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 {
                     txtEmail.Text = shippingData.GetStringValue("Email", string.Empty);
                     txtComapnyName.Text = shippingData.GetStringValue("CompanyName", string.Empty);
-                    //ddlAddressType.Value = shippingData.GetStringValue("AddressTypeID", string.Empty);
                 }
                 if (addressData.AddressStateID <= 0)
                 {
