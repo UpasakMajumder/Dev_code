@@ -12,7 +12,6 @@ using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPart
 {
-
     #region "Properties"
 
     /// <summary>
@@ -34,7 +33,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
         }
     }
 
-    #endregion
+    #endregion "Properties"
 
     #region "Methods"
 
@@ -255,7 +254,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                         addressData.AddressCountryID = ValidationHelper.GetInteger(uniSelectorCountry.Value, 0);
                         addressData.AddressStateID = ValidationHelper.GetInteger(uniSelectorState.Value, 0);
                         addressData.SetValue("AddressType", ddlAddressType.ValueDisplayName);
-                        addressData.SetValue("Email",txtEmail.Text.Trim());
+                        addressData.SetValue("Email", txtEmail.Text.Trim());
                         addressData.SetValue("CompanyName", txtComapnyName.Text.Trim());
                         addressData.SetValue("AddressTypeID", ddlAddressType.Value);
                         return addressData;
@@ -312,7 +311,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryDisplayName", countryName).Columns("CountryID").FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries()
+                .WhereEquals("CountryDisplayName", countryName)
+                .Columns("CountryID")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryID;
@@ -334,7 +336,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateDisplayName", stateName).Columns("StateID").FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates()
+                .WhereEquals("StateDisplayName", stateName)
+                .Columns("StateID")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateID;
@@ -356,7 +361,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var countryData = CountryInfoProvider.GetCountries().WhereEquals("CountryID", countryID).Column("CountryDisplayName").FirstOrDefault();
+            var countryData = CountryInfoProvider.GetCountries()
+                .WhereEquals("CountryID", countryID)
+                .Column("CountryDisplayName")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(countryData))
             {
                 return countryData.CountryDisplayName;
@@ -378,7 +386,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            var stateData = StateInfoProvider.GetStates().WhereEquals("StateID", stateID).Column("StateDisplayName").FirstOrDefault();
+            var stateData = StateInfoProvider.GetStates()
+                .WhereEquals("StateID", stateID)
+                .Column("StateDisplayName")
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(stateData))
             {
                 return stateData.StateDisplayName;
@@ -425,7 +436,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     {
         try
         {
-            CustomerInfo customer = CustomerInfoProvider.GetCustomers().WhereEquals("CustomerUserID", userID).FirstOrDefault();
+            CustomerInfo customer = CustomerInfoProvider.GetCustomers()
+                .WhereEquals("CustomerUserID", userID)
+                .FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(customer))
             {
                 return customer.CustomerID;
