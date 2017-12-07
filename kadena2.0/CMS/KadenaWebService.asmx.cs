@@ -44,39 +44,6 @@
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
-        public LogonUserResultDTO LogonUser(string loginEmail, string password, bool isKeepMeLoggedIn)
-        {
-            #region Validation
-
-            if (string.IsNullOrWhiteSpace(loginEmail))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LoginEmailEmpty", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "password", errorMessage = ResHelper.GetString("Kadena.Logon.PasswordEmpty", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (!IsEmailValid(loginEmail))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.InvalidEmail", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            UserInfo user = UserInfoProvider.GetUserInfo(loginEmail);
-            if (user == null)
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (!user.IsInSite(SiteContext.CurrentSiteName))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-
-            #endregion
-
-            return LogonUserInternal(loginEmail, password, isKeepMeLoggedIn);
-        }
-
-        [WebMethod(EnableSession = true)]
-        [ScriptMethod]
         public GeneralResultDTO InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)
         {
             #region Validation
@@ -248,8 +215,10 @@
 
         #region Private methods
 
-        private LogonUserResultDTO LogonUserInternal(string loginEmail, string password, bool isKeepMeLoggedIn)
+        private object LogonUserInternal(string loginEmail, string password, bool isKeepMeLoggedIn)
         {
+            // TODO Destroy this method
+
             UserInfo user = null;
             // cookies handling
             CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
@@ -270,11 +239,11 @@
             {
                 FormsAuthentication.SetAuthCookie(user.UserName, isKeepMeLoggedIn);
                 MembershipActivityLogger.LogLogin(user.UserName);
-                return new LogonUserResultDTO { success = true };
+                return null;// new LogonUserResultDTO { success = true };
             }
             else
             {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
+                return null;// new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
             }
         }
 

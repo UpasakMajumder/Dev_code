@@ -78,6 +78,9 @@
     <Compile Include="DynamicPricingRange.cs" />
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
+    <Compile Include="Login\CheckTaCResult.cs" />
+    <Compile Include="Login\LoginResult.cs" />
+    <Compile Include="Login\LoginRequest.cs" />
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />

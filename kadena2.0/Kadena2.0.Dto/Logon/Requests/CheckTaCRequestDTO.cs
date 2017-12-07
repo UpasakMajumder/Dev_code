@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Logon.Requests
 {
-    public class LogonUserRequestDTO
+    public class CheckTaCRequestDTO
     {
         [Required]
         public string LoginEmail { get; set; }

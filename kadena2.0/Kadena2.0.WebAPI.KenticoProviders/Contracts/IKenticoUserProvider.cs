@@ -17,7 +17,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool UserCanDownloadHiresPdf(int siteId, int userId);
         void SetDefaultShippingAddress(int addressId);
         User GetCurrentUser();
-
+        User GetUser(string mail);
         bool SaveLocalization(string code);
         void UnsetDefaultShippingAddress();
     }

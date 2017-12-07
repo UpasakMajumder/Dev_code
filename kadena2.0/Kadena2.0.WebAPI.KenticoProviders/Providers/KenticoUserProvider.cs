@@ -115,6 +115,23 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
+        public User GetUser(string mail)
+        {
+            var user = UserInfoProvider.GetUserInfo(mail);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new User
+            {
+                UserId = user.UserID,
+                // TODO set Last TaC agreement date
+            };
+        }
+
+
         public bool SaveLocalization(string code)
         {
             try

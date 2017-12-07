@@ -33,6 +33,7 @@ namespace Kadena.WebAPI
             container.Register<IProductsService, ProductsService>();
             container.Register<ICreditCardService, CreditCardService>();
             container.Register<IPdfService, PdfService>();
+            container.Register<ILoginService, LoginService>();
             return container;
         }
 
