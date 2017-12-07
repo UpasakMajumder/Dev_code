@@ -1,27 +1,25 @@
-﻿using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using CMS.Helpers;
-using CMS.MacroEngine;
-using System;
-using System.Linq;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Localization;
-using CMS.SiteProvider;
-using CMS.DataEngine;
+﻿using AutoMapper;
 using CMS.CustomTables;
-using System.Collections.Generic;
-using Kadena.Models;
-using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.Models.Product;
-using AutoMapper;
-using Kadena.WebAPI;
-using AutoMapper;
-using CMS.EventLog;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.CustomTables.Types.KDA;
-using static Kadena.Helpers.SerializerConfig;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.MacroEngine;
+using CMS.Membership;
+using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
+using Kadena.Models.Product;
+using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI;
+using Kadena.WebAPI.KenticoProviders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Kadena.Helpers.SerializerConfig;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
