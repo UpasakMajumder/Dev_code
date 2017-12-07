@@ -62,6 +62,8 @@
     <Compile Include="Checkout\DeliveryAddressesBoundsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\NewCartItemDto.cs" />
+    <Compile Include="Checkout\NotificationEmailDto.cs" />
+    <Compile Include="Checkout\NotificationEmailTooltipDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />
