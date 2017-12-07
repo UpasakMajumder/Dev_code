@@ -227,6 +227,7 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
                 config.CreateMap<LogonUserRequestDTO, LoginRequest>();
                 config.CreateMap<CheckTaCRequestDTO, LoginRequest>();
+                config.CreateMap<AcceptTaCRequestDTO, LoginRequest>();
                 config.CreateMap<LoginResult, LogonUserResultDTO>();
                 config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
             });
