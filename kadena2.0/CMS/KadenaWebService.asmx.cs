@@ -1,6 +1,5 @@
 ﻿namespace CMSApp
 {
-    using CMS.Activities.Loggers;
     using CMS.DataEngine;
     using CMS.EmailEngine;
     using CMS.Helpers;
@@ -10,14 +9,9 @@
     using CMS.OnlineForms;
     using CMS.SiteProvider;
     using Kadena.Dto.General;
-    using Kadena.Dto.Logon;
     using System;
-    using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.Script.Services;
-    using System.Web.Security;
     using System.Web.Services;
-    using System.Linq;
     using CMS.CustomTables;
     using CMS.EventLog;
     using Kadena.Helpers;

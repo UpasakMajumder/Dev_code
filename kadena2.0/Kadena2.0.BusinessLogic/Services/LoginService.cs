@@ -9,18 +9,13 @@ namespace Kadena.BusinessLogic.Services
 {
     public class LoginService : ILoginService
     {
-        private readonly IKenticoProviderService kentico;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoLoginProvider login;
 
-        public LoginService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
+        public LoginService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
         {
-            if (kentico == null)
-            {
-                throw new ArgumentNullException(nameof(kentico));
-            }
             if (kenticoUsers == null)
             {
                 throw new ArgumentNullException(nameof(kenticoUsers));
@@ -38,7 +33,6 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentNullException(nameof(login));
             }
 
-            this.kentico = kentico;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.documents = documents;
@@ -59,14 +53,8 @@ namespace Kadena.BusinessLogic.Services
             return new CheckTaCResult
             {
                 ShowTaC = !userHasAccepted,
-                Url = userHasAccepted ? GetTacPageUrl() : string.Empty
+                Url = userHasAccepted ? string.Empty : GetTacPageUrl()
             };
-        }
-
-        private string GetTacPageUrl()
-        {
-            var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
-            return documents.GetDocumentUrl(tacAliasPath);
         }
 
         public bool UserHasAcceptedTac(User user)
@@ -94,15 +82,24 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var user = kenticoUsers.GetUser(request.LoginEmail);
-
             if (user == null || !kenticoUsers.UserIsInCurrentSite(user.UserId))
             {
                 return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
 
             var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
+            if (tacEnabled && !UserHasAcceptedTac(user))
+            {
+                return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
+            }
 
             return login.Login(request);
+        }
+
+        private string GetTacPageUrl()
+        {
+            var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
+            return documents.GetDocumentUrl(tacAliasPath);
         }
 
         private LoginResult GetFailedLoginResult(string property, string error)
