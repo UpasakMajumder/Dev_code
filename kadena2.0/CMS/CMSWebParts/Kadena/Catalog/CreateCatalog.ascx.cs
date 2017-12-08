@@ -383,7 +383,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 string pdfProductsContentWithBrands = string.Empty;
                 string closingDiv = SettingsKeyInfoProvider.GetValue("ClosingDIV").ToString();
-                //string pdfProductContentHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFProductContentHeader");
                 List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
@@ -419,7 +418,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 pdfProductContent = string.Empty;
                                 selectedProducts.Remove(product.SKUNumber);
                             }
-                            pdfProductsContentWithBrands += productBrandHeader + pdfProductsContent + closingDiv;////add brand div closing tag;
+                            pdfProductsContentWithBrands += productBrandHeader + pdfProductsContent + closingDiv;
                             productBrandHeader = string.Empty;
                         }
                     }
