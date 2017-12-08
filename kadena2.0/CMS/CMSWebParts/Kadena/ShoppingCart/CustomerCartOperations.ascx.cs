@@ -1,14 +1,15 @@
-﻿using CMS.DataEngine;
+﻿using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Enums;
 using System;
-using System.Web.UI.WebControls;
-using CMS.CustomTables;
-using CMS.CustomTables.Types.KDA;
 using System.Collections.Generic;
 using System.Data;
+using System.Web.UI.WebControls;
 
 namespace Kadena.CMSWebParts.Kadena.ShoppingCart
 {
@@ -64,7 +65,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 if (!this.IsPostBack)
                 {
                     var product = SKUInfoProvider.GetSKUInfo(productSKU);
-                    if (!DataHelper.DataSourceIsEmpty(product) && InventoryType == (int)ProductsType.GeneralInventory)
+                    if (!DataHelper.DataSourceIsEmpty(product) && InventoryType == (int)ProductType.GeneralInventory)
                     {
                         lblProductName.Text = product.SKUName;
                         lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
@@ -153,7 +154,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                         var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[4].Text, default(int));
                         if (chkRow.Checked)
                         {
-                            if (InventoryType == (int)ProductsType.GeneralInventory)
+                            if (InventoryType == (int)ProductType.GeneralInventory)
                             {
                                 itemsPlaced += quantityPlacing;
                                 if (itemsPlaced < product.SKUAvailableItems)
@@ -255,7 +256,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     {
                         ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, unitCount);
                         parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                        parameters.Price = (InventoryType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
+                        parameters.Price = (InventoryType == (int)ProductType.GeneralInventory) ? default(double) : product.SKUPrice;
                         ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                         cartItem.SetValue("CartItemDistributorID", customerAddressID);
                         cartItem.SetValue("CartItemCampaignID", campaingnID);
@@ -331,7 +332,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
                     ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
                     parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                    parameters.Price = (InventoryType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
+                    parameters.Price = (InventoryType == (int)ProductType.GeneralInventory) ? default(double) : product.SKUPrice;
                     ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                     cartItem.SetValue("CartItemDistributorID", customerAddressID);
                     cartItem.SetValue("CartItemCampaignID", campaignID);
@@ -367,10 +368,5 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
             return result;
         }
         #endregion
-    }
-    public enum ProductsType
-    {
-        GeneralInventory = 1,
-        PreBuy
     }
 }
