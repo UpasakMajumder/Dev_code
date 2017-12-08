@@ -12,7 +12,7 @@
                     <cms:LocalizedLabel ID="lblPosNumber" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosNo" />
                 </span>
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged"></cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged" CssClass="input__select"></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvPosNo" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlPosNo">
                     </asp:RequiredFieldValidator>
                 </div>
@@ -53,10 +53,10 @@
                 <cms:LocalizedLabel ID="lblBundleQnt" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblBundleQnt" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtBundleQnt" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvBundleQnt" CssClass="input__error"  runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
+                    <asp:RequiredFieldValidator ID="rfvBundleQnt" CssClass="input__error" runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error"  runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtBundleQnt" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly"
+                        ControlToValidate="txtBundleQnt" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                 </div>
             </div>
@@ -71,62 +71,22 @@
                 </div>
             </div>
         </div>
-      
+
         <div class="mb-2 form_block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblEstPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblEstPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtEstPrice">
-
-                    </asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtEstPrice"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
-          <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
-                <div class="input__inner">
-                    <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
-                    <div class="product-img">
-                           <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false"  />
-                        </div>
-                    
-                </div>
-            </div>
-        </div>
-
         <div class="mb-2 form_block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblActualPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblActualPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtActualPrice" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtActualPrice">
-
-                    </asp:RequiredFieldValidator>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblCVOProductId" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblCVOProductId" />
-                <div class="input__inner">
-                    <cms:CMSTextBox ID="txtCVOProductId" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RegularExpressionValidator ID="revProductid" CssClass="input__error" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtCVOProductId" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                          </asp:RegularExpressionValidator>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form_block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblStoreFrontId" CssClass="input__label" runat="server" EnableViewState="False"
-                    ResourceString="Kadena.InvProductForm.lblStoreFrontId" />
-                <div class="input__inner">
-                    <cms:CMSTextBox ID="txtStroeFrontId" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                     <asp:RegularExpressionValidator ID="revStoreId" runat="server" CssClass="input__error" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtStroeFrontId" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                          </asp:RegularExpressionValidator>
+                    <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtActualPrice"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -135,9 +95,8 @@
                 <cms:LocalizedLabel ID="lblQuantity" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblQuantity" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtQuantity" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                     <asp:RegularExpressionValidator ID="revQuantity" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red" CssClass="input__error">
-                          </asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="revQuantity" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly"
+                        ControlToValidate="txtQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red" CssClass="input__error"></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -146,8 +105,7 @@
                 <cms:LocalizedLabel ID="lblState" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblState" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="True"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlState">
-                    </asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlState"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -157,8 +115,7 @@
                 <cms:LocalizedLabel ID="lblProdCategory" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblProdCategory" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlProdCategory" runat="server" EnableViewState="True"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvProdCategory" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlProdCategory">
-                    </asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="rfvProdCategory" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlProdCategory"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -166,18 +123,18 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblStatus" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblStatus" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True">
-                          </cms:CMSDropDownList>
-
+                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
                 </div>
             </div>
         </div>
         <div class="mb-2 form_block">
             <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblCancel" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblCancel" />
+                <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
-
-                    <asp:CheckBox ID="chkcancel" runat="server" EnableViewState="false" />
+                    <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
+                    <div class="product-img">
+                        <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,38 +145,39 @@
                 <a href="#" onclick="$('.modal_popup').show();"><i class="fa fa-plus" aria-hidden="true"></i>User</a>
             </div>
             <div class="Business_Assigned_user">
-                      <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            <asp:Repeater ID="RepSelectedUser" runat="server">
-                                <HeaderTemplate>
-                                    <table class="show-table">
-                                        <tbody>
-                                            <tr>
-                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
-                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
-                                                <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
-                                            </tr>
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr>
-                                        <td>
-                                            <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserID") %>' Style="display:none" />
-                                            <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
-                                        </td>
-                                        <td>
-                                            <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' /></td>
-                                        <td>
-                                            <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
-                                    </tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    </tbody>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                    <ContentTemplate>
+                        <asp:Repeater ID="RepSelectedUser" runat="server">
+                            <HeaderTemplate>
+                                <table class="show-table">
+                                    <tbody>
+                                        <tr>
+                                            <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.NameText") %></th>
+                                            <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.EmailText") %></th>
+                                            <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
+                                        </tr>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserID") %>' Style="display: none" />
+                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' /></td>
+                                    <td>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                                </tr>
+                            </ItemTemplate>
+                            <FooterTemplate>
+                                </tbody>
                                  </table>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                  </div>
+                               
+                            </FooterTemplate>
+                        </asp:Repeater>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
 
         </div>
         <div class="clearfix"></div>
@@ -244,7 +202,7 @@
             <ContentTemplate>
                 <div class="modal_header clearfix">
                     <cms:LocalizedButton ID="btnAllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ResourceString="Kadena.InvProductForm.AddUser" OnClientClick="$('.modal_popup').hide();" />
-                    <a href="#" class="btn_close"><i class="fa fa-close"></i></a>
+                    <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
                 </div>
                 <div class="modal_body Business_Assigned_user">
                     <asp:Repeater ID="RepterDetails" runat="server">
@@ -261,16 +219,16 @@
                         <ItemTemplate>
                             <tr>
                                 <td>
-                                    <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>'  /></td>
+                                    <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>' /></td>
                                 <td>
                                     <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserName") %>' />
                                     <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
                                 <td>
                                     <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' /></td>
                                 <td>
-                                    <asp:TextBox CssClass="input__text" ID="txtAllQuantity" runat="server" ></asp:TextBox>
-                                      <asp:RegularExpressionValidator ID="revAllQuantity" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly" 
-                     ControlToValidate="txtAllQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                                    <asp:TextBox CssClass="input__text" ID="txtAllQuantity" runat="server"></asp:TextBox>
+                                    <asp:RegularExpressionValidator ID="revAllQuantity" runat="server" ErrorMessage="Kadena.InvProductForm.NumberOnly"
+                                        ControlToValidate="txtAllQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red">
                           </asp:RegularExpressionValidator>
                                 </td>
                             </tr>
@@ -278,6 +236,7 @@
                         <FooterTemplate>
                             </tbody>
                                  </table>
+                       
                         </FooterTemplate>
                     </asp:Repeater>
                     <asp:Repeater ID="rptPager" runat="server">
