@@ -12,6 +12,33 @@
 public partial class CMSWebParts_Kadena_POSForm {
     
     /// <summary>
+    /// lblCategory control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblCategory;
+    
+    /// <summary>
+    /// ddlCategory control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlCategory;
+    
+    /// <summary>
+    /// rfvCatgory control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCatgory;
+    
+    /// <summary>
     /// lblBrand control.
     /// </summary>
     /// <remarks>
@@ -64,33 +91,6 @@ public partial class CMSWebParts_Kadena_POSForm {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvYear;
-    
-    /// <summary>
-    /// lblCategory control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblCategory;
-    
-    /// <summary>
-    /// ddlCategory control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSDropDownList ddlCategory;
-    
-    /// <summary>
-    /// rfvCatgory control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCatgory;
     
     /// <summary>
     /// lblPOSCode control.
