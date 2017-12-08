@@ -1,0 +1,69 @@
+.Summary_content {
+  margin-bottom: 15px;
+
+  span {
+    text-align: right;
+    display: block;
+    font-size: 14px;
+    background: #ddd;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .summary_block {
+    .summ_left {
+      display: inline-block;
+      width: 28%;
+      text-align: right;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+
+    .summ_right {
+      display: inline-block;
+      width: 70%;
+      text-align: right;
+    }
+  }
+
+  .note_block {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 15px;
+
+    p {
+      margin-bottom: 0;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.Inbound_track {
+  overflow-x: auto;
+
+  table {
+    tbody {
+      tr {
+        display: table-row;
+
+        th {
+          display: table-cell;
+        }
+
+        td {
+          display: table-cell;
+        }
+      }
+    }
+  }
+}

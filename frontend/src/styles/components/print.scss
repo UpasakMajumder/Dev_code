@@ -1,0 +1,185 @@
+.content_container {
+  width: 100%;
+  margin: 60px auto;
+
+  .treasure_content {
+    margin-bottom: 220px;
+
+    .treasure_heading {
+      text-align: center;
+
+      h2 {
+        color: #b5161a;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+      }
+
+      p {
+        font-size: 24px;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
+
+.clearfix {
+  clear: both;
+}
+
+.treasure_con {
+  text-align: center;
+
+  h2 {
+    font-size: 22px;
+    text-decoration: underline;
+    font-family: arial;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    font-size: 22px;
+    color: #333;
+
+    &.merch_con {
+      color: #b5161a;
+      padding: 0 180px;
+    }
+  }
+}
+
+.Crimes_section {
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+  }
+
+  .crime_block {
+    border-bottom: 1px solid #000;
+
+    &.product_selected {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .crime_leftsec {
+      width: 20%;
+      float: left;
+
+      .img_block {
+        width: 100%;
+        margin: 0 auto;
+
+        img {
+          padding: 30px 0;
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    }
+
+    .crime_rightsec {
+      width: 77%;
+      float: right;
+      margin: 20px 0 0;
+
+      .crime_topsec {
+        .details_sec {
+          margin-bottom: 10px;
+
+          .input_label {
+            width: 21%;
+            float: left;
+            display: inline-block;
+
+            label {
+              font-size: 20px;
+            }
+          }
+
+          .input_con {
+            width: 60%;
+            display: inline-block;
+
+            label {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+
+      .crime_btmSec {
+        margin-bottom: 10px;
+
+        .crime_btmSec_detail {
+          width: 30%;
+          display: inline-block;
+
+          .input_label {
+            display: inline-block;
+            width: auto;
+            float: none;
+          }
+
+          .input_con {
+            display: inline-block;
+            width: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.product_details {
+  .input_label {
+    width: auto;
+
+    label {
+      font-size: 18px;
+    }
+  }
+
+  .input_con {
+    width: auto;
+    padding-left: 5px;
+
+    label {
+      font-size: 18px;
+      display: block;
+    }
+  }
+}
+
+@media print {
+  .content_container {
+    width: 1000px;
+  }
+
+  .noprint {
+    display: none;
+  }
+
+  .printIt {
+    display: block;
+  }
+
+  .custom_block {
+    display: none;
+  }
+
+  .content {
+    padding-left: 0;
+  }
+
+  .crime_leftsec {
+    width: 20%;
+    float: left;
+  }
+
+  .cus_content_block {
+    width: 100%;
+  }
+}
