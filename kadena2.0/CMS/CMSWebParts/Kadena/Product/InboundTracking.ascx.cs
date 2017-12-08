@@ -13,6 +13,325 @@ using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
 {
+    #region Properties
+
+    /// <summary>
+    /// Refresh bustton resource string
+    /// </summary>
+    public string RefreshButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.RefreshButtonText"), string.Empty);
+        }
+        set
+        {
+            SetValue("RefreshButtonText", value);
+        }
+    }
+
+    /// <summary>
+    /// Export Button Resource string
+    /// </summary>
+    public string ExportButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ExportButtonText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ExportButtonText", value);
+        }
+    }
+
+    /// <summary>
+    /// SkuNumber Resource string
+    /// </summary>
+    public string SKUNumberHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.SKUNumberHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("SKUNumberHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Skuname resource string
+    /// </summary>
+    public string SKUNameheaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.SKUNameheaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("SKUNameheaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Qty ordered resource string
+    /// </summary>
+    public string QtyOrderedHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.QtyOrderedHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("QtyOrderedHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Demand resource string
+    /// </summary>
+    public string DemandHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.DemandHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("DemandHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Qty Recieved resource string
+    /// </summary>
+    public string QtyReceivedHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.QtyReceivedHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("QtyReceivedHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Qty Produced resource string
+    /// </summary>
+    public string QtyProdusedHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.QtyProdusedHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("QtyProdusedHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Overage resource string
+    /// </summary>
+    public string OverageHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.OverageHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("OverageHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Get Vendor resource string
+    /// </summary>
+    public string VendorHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.VendorHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("VendorHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// ExpArraival to cenveo resource string
+    /// </summary>
+    public string ExpArraivalToCenveoHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ExpArraivalToCenveoHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ExpArraivalToCenveoHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Deliver to dist by resource string
+    /// </summary>
+    public string DeliveryToDistByHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.DeliveryToDistByHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("DeliveryToDistByHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Shipped to dist resource string
+    /// </summary>
+    public string ShippedToDistHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ShippedToDistHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ShippedToDistHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Cenveo Comments resource string
+    /// </summary>
+    public string CenveoCommentsHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.CenveoCommentsHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("CenveoCommentsHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Twe Comments resource string
+    /// </summary>
+    public string TWECommentsHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.TWECommentsHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("TWECommentsHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Actual price resource string
+    /// </summary>
+    public string ActualPriceHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ActualPriceHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ActualPriceHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Status Resource string
+    /// </summary>
+    public string StatusHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.StatusHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("StatusHeaderText", value);
+        }
+    }
+
+    /// <summary>
+    /// Edit link resource string
+    /// </summary>
+    public string EditLinkText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.EditLinkText"), string.Empty);
+        }
+        set
+        {
+            SetValue("EditLinkText", value);
+        }
+    }
+
+    /// <summary>
+    /// Cancel link resource string
+    /// </summary>
+    public string CancelText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.CancelText"), string.Empty);
+        }
+        set
+        {
+            SetValue("CancelText", value);
+        }
+    }
+
+    /// <summary>
+    /// Update link resource string
+    /// </summary>
+    public string UpdateText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.UpdateText"), string.Empty);
+        }
+        set
+        {
+            SetValue("UpdateText", value);
+        }
+    }
+
+    /// <summary>
+    /// No Data resource string
+    /// </summary>
+    public string NoDataText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.NoDataText"), string.Empty);
+        }
+        set
+        {
+            SetValue("NoDataText", value);
+        }
+    }
+
+    #endregion Properties
+
     #region "Methods"
 
     /// <summary>
@@ -22,6 +341,30 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         base.OnContentLoaded();
         SetupControl();
+    }
+
+    /// <summary>
+    /// Bind Resource strings
+    /// </summary>
+    public void BindLabels()
+    {
+        gdvInboundProducts.Columns[0].HeaderText = SKUNumberHeaderText;
+        gdvInboundProducts.Columns[1].HeaderText = SKUNameheaderText;
+        gdvInboundProducts.Columns[2].HeaderText = QtyOrderedHeaderText;
+        gdvInboundProducts.Columns[3].HeaderText = DemandHeaderText;
+        gdvInboundProducts.Columns[4].HeaderText = QtyReceivedHeaderText;
+        gdvInboundProducts.Columns[5].HeaderText = QtyProdusedHeaderText;
+        gdvInboundProducts.Columns[6].HeaderText = OverageHeaderText;
+        gdvInboundProducts.Columns[7].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[8].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[9].HeaderText = DeliveryToDistByHeaderText;
+        gdvInboundProducts.Columns[10].HeaderText = ShippedToDistHeaderText;
+        gdvInboundProducts.Columns[11].HeaderText = CenveoCommentsHeaderText;
+        gdvInboundProducts.Columns[12].HeaderText = TWECommentsHeaderText;
+        gdvInboundProducts.Columns[13].HeaderText = ActualPriceHeaderText;
+        gdvInboundProducts.Columns[14].HeaderText = StatusHeaderText;
+        btnExport.Text = ExportButtonText;
+        btnRefresh.Text = RefreshButtonText;
     }
 
     /// <summary>
@@ -60,11 +403,13 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             var allDetails = GetAllData();
             if (allDetails != null)
             {
+                BindLabels();
                 gdvInboundProducts.DataSource = allDetails;
                 gdvInboundProducts.DataBind();
             }
             else
             {
+                BindLabels();
                 gdvInboundProducts.DataBind();
             }
         }
@@ -385,6 +730,12 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         GetProducts();
     }
+
+    protected void btnRefresh_Click(object sender, EventArgs e)
+    {
+        Response.Redirect(Request.RawUrl);
+    }
 }
 
 #endregion "Methods"
+

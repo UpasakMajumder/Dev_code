@@ -7,30 +7,30 @@
             <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
         <div class="custom_btns">
-            <button type="button" class="btn-action login__login-button btn--no-shadow">Refresh</button>
-            <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Text="Export" />
+            <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" OnClick="btnRefresh_Click" />
+            <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" />
         </div>
     </div>
     <div class="Inbound_track">
         <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" class="show-table show-table-right">
             <Columns>
-                <asp:TemplateField HeaderText="SKU">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblSkuNumber" Text='<%#Eval("SKUNumber") %>'></asp:Label>
                         <asp:HiddenField runat="server" ID="hfSKUID" Value='<%#Eval("SKUID") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="ITEM">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblItem" Text='<%#Eval("SKUName") %>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="QTY ORDERED">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblQtyOrdered" Text='<%#Eval("QtyOrdered") %>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="DEMAND GOAL">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblDemandGoal" Text='<%#Eval("DemandGoal") %>'></asp:Label>
                     </ItemTemplate>
@@ -38,7 +38,7 @@
                         <asp:TextBox runat="server" ID="txtDemandGoal" Text='<%#Eval("DemandGoal") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="QTY RECEIVED">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblQtyReceived" Text='<%#Eval("QtyReceived") %>'></asp:Label>
                     </ItemTemplate>
@@ -46,7 +46,7 @@
                         <asp:TextBox runat="server" ID="txtQtyReceived" Text='<%#Eval("QtyReceived") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="QTY PRODUCED">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblQtyProduced" Text='<%#Eval("QtyProduced") %>'></asp:Label>
                     </ItemTemplate>
@@ -54,7 +54,7 @@
                         <asp:TextBox runat="server" ID="txtQtyProduced" Text='<%#Eval("QtyProduced") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="OVERAGE">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblOverage" Text='<%#Eval("Overage") %>'></asp:Label>
                     </ItemTemplate>
@@ -62,7 +62,7 @@
                         <asp:TextBox runat="server" ID="txtOverage" ReadOnly="true" Text='<%#Eval("Overage") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="VENDOR">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblVendor" Text='<%#Eval("Vendor") %>'></asp:Label>
                     </ItemTemplate>
@@ -70,7 +70,7 @@
                         <asp:TextBox runat="server" ID="txtVendor" Text='<%#Eval("Vendor") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="EXP ARRIVAL TO CENVEO">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblExpArrivalToCenveo" Text='<%#Eval("ExpArrivalToCenveo") %>'></asp:Label>
                     </ItemTemplate>
@@ -78,7 +78,7 @@
                         <asp:TextBox runat="server" ID="txtExpArrivalToCenveo" Text='<%#Eval("ExpArrivalToCenveo") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="DELIVERY TO DIST BY">
+                <asp:TemplateField>
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblDeliveryToDistBy" Text='<%#Eval("DeliveryToDistBy") %>'></asp:Label>
                     </ItemTemplate>
@@ -86,7 +86,7 @@
                         <asp:TextBox runat="server" ID="txtDeliveryToDistBy" Text='<%#Eval("DeliveryToDistBy") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="SHIPPED TO DIST">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblShippedToDist" Text='<%#Eval("ShippedToDist") %>'></asp:Label>
                     </ItemTemplate>
@@ -94,7 +94,7 @@
                         <asp:TextBox runat="server" ID="txtShippedToDist" Text='<%#Eval("ShippedToDist") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="CENVEO COMMENTS">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblCenveoComments" Text='<%#Eval("CenveoComments") %>'></asp:Label>
                     </ItemTemplate>
@@ -102,7 +102,7 @@
                         <asp:TextBox runat="server" ID="txtCenveoComments" Text='<%#Eval("CenveoComments") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="TWE COMMENTS">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") %>'></asp:Label>
                     </ItemTemplate>
@@ -110,7 +110,7 @@
                         <asp:TextBox runat="server" ID="txtTweComments" Text='<%#Eval("TweComments") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="ACTUAL PRICE">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:Label>
                     </ItemTemplate>
@@ -118,7 +118,7 @@
                         <asp:TextBox runat="server" ID="txtActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="STATUS">
+                <asp:TemplateField >
                     <ItemTemplate>
                         <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("Status") %>'></asp:Label>
                     </ItemTemplate>
@@ -131,15 +131,15 @@
                 </asp:TemplateField>
                 <asp:TemplateField>
                     <ItemTemplate>
-                        <asp:LinkButton ID="lnkEdit" runat="server" CommandName="edit" Text="Edit"></asp:LinkButton>
+                        <asp:LinkButton ID="lnkEdit" runat="server" CommandName="edit" Text='<%#EditLinkText %>'></asp:LinkButton>
                     </ItemTemplate>
                     <EditItemTemplate>
-                        <asp:LinkButton ID="lnkUpdate" runat="server" CommandName="update" Text="Update"></asp:LinkButton>
-                        <asp:LinkButton ID="lnkCancel" runat="server" CommandName="cancel" Text="Cancel"></asp:LinkButton>
+                        <asp:LinkButton ID="lnkUpdate" runat="server" CommandName="update" Text='<%#UpdateText %>'></asp:LinkButton>
+                        <asp:LinkButton ID="lnkCancel" runat="server" CommandName="cancel" Text='<%#CancelText %>'></asp:LinkButton>
                     </EditItemTemplate>
                 </asp:TemplateField>
             </Columns>
-            <EmptyDataTemplate>No data available</EmptyDataTemplate>
+            <EmptyDataTemplate><%#NoDataText %></EmptyDataTemplate>
         </asp:GridView>
     </div>
 </div>
