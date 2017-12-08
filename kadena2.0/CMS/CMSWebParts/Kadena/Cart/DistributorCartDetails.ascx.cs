@@ -5,6 +5,7 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Old_App_Code.Kadena.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -196,8 +197,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         } /// <summary>
 
-          /// Gets or sets the SubTotal
-          /// </summary>
+        /// Gets or sets the SubTotal
+        /// </summary>
         public string SubTotal
         {
             get
@@ -270,7 +271,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     if (DataHelper.DataSourceIsEmpty(rptCartItems.DataSource))
                     {
                         Visible = false;
-                        lnkSaveCartItems.Visible = false;
+                        tblCartItems.Visible = false;
                         tblCartItems.Visible = false;
                     }
                     foreach (Control item in rptCartItems.Items)
@@ -281,7 +282,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         price += ValidationHelper.GetDouble(lblSKUPrice.Value, default(double));
                     }
                     var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
-                    if (inventoryType == (Int32)ProductsType.GeneralInventory)
+                    if (inventoryType == (Int32)ProductType.GeneralInventory)
                     {
                         ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
                         lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
@@ -303,6 +304,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Page events"
 
         #region "Event handling"
+
         /// <summary>
         /// Save Cart items event
         /// </summary>
@@ -360,7 +362,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (BusinessUnits == null)
                 {
                     BusinessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-                                    .Source(sourceItem =>sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
+                                    .Source(sourceItem => sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
                                     .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID)
                                     .WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
                 }
@@ -466,14 +468,5 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion "Private Methods"
-    }
-
-    /// <summary>
-    /// Enum for Inventory Type
-    /// </summary>
-    public enum ProductsType
-    {
-        GeneralInventory = 1,
-        PreBuy
     }
 }
