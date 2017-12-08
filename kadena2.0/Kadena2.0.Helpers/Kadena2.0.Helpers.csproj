@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MailValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializerConfig.cs" />
     <Compile Include="StringHelpers.cs" />

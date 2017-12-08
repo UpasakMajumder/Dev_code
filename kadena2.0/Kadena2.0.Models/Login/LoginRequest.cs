@@ -1,38 +1,29 @@
-﻿namespace Kadena.Models.Login
+﻿using Kadena.Helpers;
+
+namespace Kadena.Models.Login
 {
     public class LoginRequest
     {
         public string LoginEmail { get; set; }
-        public string Password{ get; set; }
+        public string Password { get; set; }
         public bool KeepLoggedIn { get; set; }
 
-        public void Validate()
+        public ValidationFieldResult Validate()
         {
-            #region Validation
-            /*
-            if (string.IsNullOrWhiteSpace(loginEmail))
+            if (string.IsNullOrWhiteSpace(LoginEmail))
             {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LoginEmailEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+                return new ValidationFieldResult { Name = "loginEmail", Error = "Kadena.Logon.LoginEmailEmpty" };
             }
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Password))
             {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "password", errorMessage = ResHelper.GetString("Kadena.Logon.PasswordEmpty", LocalizationContext.CurrentCulture.CultureCode) };
+                return new ValidationFieldResult { Name = "password", Error = "Kadena.Logon.LoginEmailEmpty" };
             }
-            if (!IsEmailValid(loginEmail))
+            if (!MailValidator.IsValid(LoginEmail))
             {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.InvalidEmail", LocalizationContext.CurrentCulture.CultureCode) };
+                return new ValidationFieldResult { Name = "loginEmail", Error = "Kadena.Logon.InvalidEmail" };
             }
-            UserInfo user = UserInfoProvider.GetUserInfo(loginEmail);
-            if (user == null)
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (!user.IsInSite(SiteContext.CurrentSiteName))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            */
-            #endregion
+
+            return null;
         }
     }
 }

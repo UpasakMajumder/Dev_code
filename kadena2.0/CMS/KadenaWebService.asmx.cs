@@ -20,6 +20,7 @@
     using System.Linq;
     using CMS.CustomTables;
     using CMS.EventLog;
+    using Kadena.Helpers;
 
     [WebService]
     [ScriptService]
@@ -145,7 +146,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (!IsEmailValid(email))
+            if (!MailValidator.IsValid(email))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
             }
@@ -165,7 +166,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (!IsEmailValid(email))
+            if (!MailValidator.IsValid(email))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
             }
@@ -373,17 +374,6 @@
             }
         }
 
-        private bool IsEmailValid(string email)
-        {
-            var regexText = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
-                            + "@"
-                            + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$";
-
-            Regex regex = new Regex(regexText);
-            Match match = regex.Match(email);
-            return match.Success;
-        }
-
         //Method for deleteting the product category
         [WebMethod(EnableSession = true)]
         public bool DeleteCategory(int CategoryID)
@@ -410,7 +400,6 @@
             return status;
 
         }
-
 
         //Method for deleteting the campaign
         [WebMethod(EnableSession = true)]

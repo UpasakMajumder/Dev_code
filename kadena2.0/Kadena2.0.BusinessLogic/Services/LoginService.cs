@@ -3,6 +3,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Login;
 using System;
 using System.Security;
+using Kadena.Models;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -53,18 +54,25 @@ namespace Kadena.BusinessLogic.Services
                 throw new SecurityException("Invalid username or password");
             }
 
-            var tacValidFrom = login.GetTaCValidFrom();
-            var result = new CheckTaCResult();
+            var userHasAccepted = UserHasAcceptedTac(user);
 
-            if (user.TermsConditionsAccepted < tacValidFrom)
+            return new CheckTaCResult
             {
-                var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
-                var tacUrl = documents.GetDocumentUrl(tacAliasPath);
-                result.ShowTaC = true;
-                result.Url = tacUrl;
-            }
+                ShowTaC = !userHasAccepted,
+                Url = userHasAccepted ? GetTacPageUrl() : string.Empty
+            };
+        }
 
-            return result;
+        private string GetTacPageUrl()
+        {
+            var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
+            return documents.GetDocumentUrl(tacAliasPath);
+        }
+
+        public bool UserHasAcceptedTac(User user)
+        {
+            var tacValidFrom = login.GetTaCValidFrom();
+            return user.TermsConditionsAccepted > tacValidFrom;
         }
 
         public void AcceptTaC(LoginRequest request)
@@ -79,9 +87,32 @@ namespace Kadena.BusinessLogic.Services
 
         public LoginResult Login(LoginRequest request)
         {
-            // todo validations in model
+            var validation = request.Validate();
+            if (validation != null)
+            {
+                return GetFailedLoginResult(validation.Name,  resources.GetResourceString(validation.Error));
+            }
+
+            var user = kenticoUsers.GetUser(request.LoginEmail);
+
+            if (user == null || !kenticoUsers.UserIsInCurrentSite(user.UserId))
+            {
+                return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
+            }
+
+            var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
 
             return login.Login(request);
+        }
+
+        private LoginResult GetFailedLoginResult(string property, string error)
+        {
+            return new LoginResult
+            {
+                LogonSuccess = false,
+                ErrorPropertyName = property,
+                ErrorMessage = error
+            };
         }
     }
 }

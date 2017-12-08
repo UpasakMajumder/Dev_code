@@ -145,9 +145,16 @@
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

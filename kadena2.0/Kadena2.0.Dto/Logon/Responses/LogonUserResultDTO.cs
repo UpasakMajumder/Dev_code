@@ -5,6 +5,5 @@
         public bool LogonSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public string ErrorPropertyName { get; set; }
-        public bool ShowTaC { get; set; }
     }
 }

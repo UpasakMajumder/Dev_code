@@ -165,5 +165,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             SetDefaultShippingAddress(0);
         }
+
+        public bool UserIsInCurrentSite(int userId)
+        {
+            var user = UserInfoProvider.GetUserInfo(userId);
+            return user?.IsInSite(SiteContext.CurrentSiteName) ?? false;
+        }
     }
 }

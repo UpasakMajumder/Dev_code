@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Login;
+﻿using Kadena.Models;
+using Kadena.Models.Login;
 
 namespace Kadena.BusinessLogic.Contracts
 {
@@ -6,6 +7,7 @@ namespace Kadena.BusinessLogic.Contracts
     {
         CheckTaCResult CheckTaC(LoginRequest request);
         void AcceptTaC(LoginRequest request);
+        bool UserHasAcceptedTac(User user);
         LoginResult Login(LoginRequest request);
     }
 }
