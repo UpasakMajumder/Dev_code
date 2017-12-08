@@ -730,7 +730,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         GetProducts();
     }
-
+    /// <summary>
+    /// Refresh the page
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnRefresh_Click(object sender, EventArgs e)
     {
         Response.Redirect(Request.RawUrl);
