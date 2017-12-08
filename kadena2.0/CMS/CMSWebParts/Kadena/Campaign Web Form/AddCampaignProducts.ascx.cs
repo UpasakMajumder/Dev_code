@@ -455,6 +455,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
         hdnDatepickerUrl.Value = CalenderIconPath;
+        ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+        ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
     }
 
     /// <summary>
