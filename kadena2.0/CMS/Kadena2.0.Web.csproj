@@ -1213,6 +1213,7 @@
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Kadena\EmailNotifications\ProductEmailNotifications.cs" />
     <Compile Include="Old_App_Code\Kadena\Email\EmailService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Enums\ProductType.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\FormsHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Forms\MediaMultiField.cs" />
     <Compile Include="Old_App_Code\Kadena\ImageUpload\UploadImage.cs" />
@@ -1319,6 +1320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSScripts\Custom\Kadena\KadenaExtension.js" />
+    <Content Include="CMSScripts\Custom\Kadena\SmartyStreet.js" />
     <Content Include="CMSWebParts\Kadena\Address\AddressFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Address\CreateAddress.ascx" />
     <Content Include="CMSWebParts\Kadena\Brand\Brand.ascx" />
