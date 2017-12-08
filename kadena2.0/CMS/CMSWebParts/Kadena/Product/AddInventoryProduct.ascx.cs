@@ -11,7 +11,6 @@ using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.ImageUpload;
 using System;
 using System.Collections.Generic;
@@ -51,11 +50,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             if (!this.StopProcessing)
             {
-
-                if (Request.QueryString["ID"] != null)
+                productId = QueryHelper.GetInteger("ID", 0);
+                if (productId > 0)
                 {
                     btnSave.Click += btnUpdate_Click;
-                    productId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
                 }
                 else
                 {
@@ -63,13 +61,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
                 if (!IsPostBack)
                 {
-                    if (Request.QueryString["ID"] != null)
+                    if (productId > 0)
                     {
                         SetFeild(productId);
-                    }
-                    if (Request.UrlReferrer != null)
-                    {
-                        ViewState["LastPageUrl"] = Request.UrlReferrer.ToString();
                     }
                     BindUsers(1);
                     BindData();
@@ -132,17 +126,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
         /// <param name="e"></param>
         protected void BtnCancel_Cancel(object sender, EventArgs e)
         {
-            try
-            {
-                EmptyFields(true);
-                lstUsers = new List<AllocateProduct>();
-                var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
-                Response.Redirect(redirectUrl, false);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("CancePOSFormButtonClick", "EXCEPTION", ex);
-            }
+            EmptyFields(true);
+            lstUsers = new List<AllocateProduct>();
+            Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
         }
 
         /// <summary>
@@ -342,9 +328,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     EstimatedPrice = ValidationHelper.GetDouble(txtEstPrice.Text, default(double)),
                     State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int)),
                     CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int)),
-                    Cancelled = ValidationHelper.GetBoolean(chkcancel.Checked, false),
-                    CVOProductID = ValidationHelper.GetInteger(txtCVOProductId.Text, default(int)),
-                    StoreFrontProductID = ValidationHelper.GetInteger(txtStroeFrontId.Text, default(int)),
                     ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty)
                 };
                 if (productImage.HasFile)
@@ -379,8 +362,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
-                Response.Redirect(redirectUrl, false);
+                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
             }
             else
             {
@@ -400,9 +382,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.QtyPerPack = ValidationHelper.GetInteger(txtBundleQnt.Text, default(int));
                 product.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int));
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
-                product.Cancelled = ValidationHelper.GetBoolean(chkcancel.Checked, false);
-                product.CVOProductID = ValidationHelper.GetInteger(txtCVOProductId.Text, default(int));
-                product.StoreFrontProductID = ValidationHelper.GetInteger(txtStroeFrontId.Text, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
@@ -434,8 +413,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                var redirectUrl = ValidationHelper.GetString(ViewState["LastPageUrl"], string.Empty);
-                Response.Redirect(redirectUrl, false);
+                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
             }
             else
             {
@@ -480,9 +458,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
-                        chkcancel.Checked = ValidationHelper.GetBoolean(product.Cancelled, false);
-                        txtCVOProductId.Text = ValidationHelper.GetString(product.CVOProductID, string.Empty);
-                        txtStroeFrontId.Text = ValidationHelper.GetString(product.StoreFrontProductID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
                     }
                 }
@@ -501,7 +476,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (IsChanged)
             {
                 ddlPosNo.SelectedIndex = 0;
-
             }
             ddlBrand.SelectedIndex = 0;
             ddlProdCategory.SelectedIndex = 0;
@@ -509,13 +483,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
             ddlStatus.SelectedIndex = 0;
             txtActualPrice.Text = string.Empty;
             txtBundleQnt.Text = string.Empty;
-            txtCVOProductId.Text = string.Empty;
             txtEstPrice.Text = string.Empty;
             txtExpDate.Text = string.Empty;
             txtLongDes.Text = string.Empty;
             txtQuantity.Text = string.Empty;
             txtShortDes.Text = string.Empty;
-            txtStroeFrontId.Text = string.Empty;
             RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
@@ -714,8 +686,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
         public void BindStatus()
         {
             ddlStatus.Items.Clear();
-            ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.Disable"), "0"));
-            ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("Kadena.InvProductForm.Enable"), "1"));
+            ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+            ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
         }
 
         #endregion PrivateMethods
@@ -724,7 +696,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-
                 string selectedPos = ddlPosNo.SelectedValue;
                 SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
                 if (skuDetails != null)
@@ -748,13 +719,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
-                        chkcancel.Checked = ValidationHelper.GetBoolean(product.Cancelled, false);
-                        txtCVOProductId.Text = ValidationHelper.GetString(product.CVOProductID, string.Empty);
-                        txtStroeFrontId.Text = ValidationHelper.GetString(product.StoreFrontProductID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
                         ViewState["ProductId"] = product.CampaignsProductID;
                     }
-
                 }
                 else
                 {
