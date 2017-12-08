@@ -22,7 +22,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Gets or sets the value of product type
     /// </summary>
-    public int ProductType
+    public int TypeOfProduct
     {
         get
         {
@@ -139,7 +139,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             if (!IsPostBack)
             {
                 List<CampaignsProduct> products = null;
-                if (ProductType == (int)ProductOfType.CampaignProduct)
+                if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
                     BindPrograms();
                     BindProductTypes();
@@ -161,7 +161,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     products = CampaignsProductProvider.GetCampaignsProducts()
                         .WhereIn("ProgramID", programIds).ToList();
                 }
-                else if (ProductType == (int)ProductOfType.InventoryProduct)
+                else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                 {
                     BindBrands();
                     BindProductTypes();
@@ -272,7 +272,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            if (ProductType == (int)ProductOfType.CampaignProduct)
+            if (TypeOfProduct == (int)ProductsType.PreBuy)
             {
                 var products = CampaignsProductProvider.GetCampaignsProducts().ToList();
                 if (programID != default(int) && !DataHelper.DataSourceIsEmpty(products))
@@ -428,7 +428,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string html = pdfProductsContentWithBrands + pdfClosingDivs;
                 var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
                 string fileName = string.Empty;
-                if (ProductType == (int)ProductOfType.CampaignProduct)
+                if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
                     fileName = GetOpenCampaign.Name + DateTime.Today + ".pdf";
                 }
@@ -472,12 +472,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             return string.Empty;
         }
     }
-
-    /// <summary>
-    /// Enum for products types
-    /// </summary>
-    public enum ProductOfType
-    { CampaignProduct = 1, InventoryProduct = 2 };
 
     /// <summary>
     /// saving full catalog to PDF
@@ -527,7 +521,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     {
                         catalogList = catalogList.Where(x => x.SKUNumber.Contains(posNum)).ToList();
                     }
-                    if (ProductType == (int)ProductOfType.CampaignProduct)
+                    if (TypeOfProduct == (int)ProductsType.PreBuy)
                     {
                         rptCatalogProducts.DataSource = catalogList;
                         rptCatalogProducts.DataBind();

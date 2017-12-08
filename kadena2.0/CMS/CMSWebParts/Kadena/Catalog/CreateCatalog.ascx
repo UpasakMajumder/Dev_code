@@ -34,7 +34,7 @@
                     </label>
                 </div>
                 <div class="input__wrapper">
-                    <label for="dom" class="input__label "><%#ProductType == (int)ProductOfType.InventoryProduct? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
+                    <label for="dom" class="input__label "><%#TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
                     <input type="checkbox" id="dom_<%# Eval("SKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" />
                     <label for="dom_<%# Eval("SKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
                 </div>
