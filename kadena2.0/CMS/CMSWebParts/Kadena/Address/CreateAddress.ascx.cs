@@ -309,36 +309,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
 
     #region methods
 
-    ///// <summary>
-    ///// Gets the country id from name
-    ///// </summary>
-    ///// <param name="countryName">name of the country</param>
-    ///// <returns>Country id</returns>
-    //private int GetCountryID(string countryName)
-    //{
-    //    try
-    //    {
-    //        var countryData = CountryInfoProvider.GetCountries()
-    //            .WhereEquals("CountryDisplayName", countryName)
-    //            .Columns("CountryID")
-    //            .FirstOrDefault();
-    //        if (!DataHelper.DataSourceIsEmpty(countryData))
-    //        {
-    //            return countryData.CountryID;
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EventLogProvider.LogException("CreateAddress.ascx.cs", "GetCountryID()", ex);
-    //    }
-    //    return default(int);
-    //}
-
-    /// <summary>
+   /// <summary>
     /// Create cusotmer based on  logged in user details
     /// </summary>
     /// <returns>Customer id</returns>
-
     private int CreateCustomer()
     {
         try
