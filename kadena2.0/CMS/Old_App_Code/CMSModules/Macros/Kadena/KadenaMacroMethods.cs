@@ -1,29 +1,28 @@
-﻿using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using CMS.Helpers;
-using CMS.MacroEngine;
-using System;
-using System.Linq;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Localization;
-using CMS.SiteProvider;
-using CMS.DataEngine;
+﻿using AutoMapper;
 using CMS.CustomTables;
-using System.Collections.Generic;
-using Kadena.Models;
-using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.Models.Product;
-using AutoMapper;
-using Kadena.WebAPI;
-using AutoMapper;
-using CMS.EventLog;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.CustomTables.Types.KDA;
-using static Kadena.Helpers.SerializerConfig;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.MacroEngine;
+using CMS.Membership;
+using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
+using Kadena.Models.Product;
+using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI;
+using Kadena.WebAPI.KenticoProviders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Kadena.Helpers.SerializerConfig;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
+
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
@@ -41,7 +40,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
-            
+
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
@@ -217,7 +216,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
 
                 return "stock stock--available";
-
             }
 
             return string.Empty;
@@ -272,7 +270,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
-
 
         /// <summary>
         /// Checks if TreeNode's value "ProductType" contains any of given type strings
@@ -403,6 +400,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #region TWE macro methods
+
         /// <summary>
         /// Returns Division name based on Division ID
         /// </summary>
@@ -426,6 +424,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Program name based on Program ID
         /// </summary>
@@ -450,6 +449,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Category name based on Category ID
         /// </summary>
@@ -474,6 +474,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Currently opened campaign name
         /// </summary>
@@ -499,6 +500,41 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
-        #endregion
+
+        /// <summary>
+        /// Returns Business unit name based on user id
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Business unit name based on user id", 1)]
+        [MacroMethodParam(0, "UserID", typeof(int), "UserID")]
+        public static object GetBusinessUnits(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[0], 0);
+                var data = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                    .WhereEquals("UserID", userID)
+                    .Columns("BusinessUnitID")
+                    .ToList();
+                var buList = new List<string>();
+                if (!DataHelper.DataSourceIsEmpty(data))
+                {
+                    data.ForEach(x =>
+                    {
+                        var unitName = CustomTableItemProvider.GetItem<BusinessUnitItem>(x.BusinessUnitID);
+                        buList.Add(unitName?.GetStringValue("BusinessUnitName", string.Empty) ?? string.Empty);
+                    });
+                }
+                return String.Join(",",buList);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "GetBusinessUnits", ex.Message);
+                return string.Empty;
+            }
+        }
+        #endregion TWE macro methods
     }
 }
