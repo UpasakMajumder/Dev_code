@@ -1,28 +1,40 @@
-﻿using CMS.CustomTables;
-using CMS.DataEngine;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class POSController : ApiControllerBase
     {
+        private readonly IPOSService posService;
+        private readonly IMapper mapper;
+
+        public POSController(IPOSService posService, IMapper mapper)
+        {
+            if (posService == null)
+            {
+                throw new ArgumentNullException(nameof(posService));
+            }
+
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
+            this.posService = posService;
+        }
+
         [HttpGet]
         [Route("api/pos/{posID}")]
-        public void TogglePOSStatus(int posID)
+        public IHttpActionResult TogglePOSStatus(int posID)
         {
-            string customTableClassName = "KDA.POSNumber";
-            DataClassInfo brandTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
-            if (brandTable != null)
-            {
-                // Gets all data records from the POS table whose 'ItemId' field value equal to PosId
-                CustomTableItem customTableData = CustomTableItemProvider.GetItem(posID, customTableClassName);
-                if (customTableData != null)
-                {
-                    customTableData.SetValue("Enable", !customTableData.GetBooleanValue("Enable", false));
-                    customTableData.Update();
-                }
-            }
+            posService.TogglePOSStatus(posID);
+            return ResponseJson<string>("OK");
         }
     }
 }

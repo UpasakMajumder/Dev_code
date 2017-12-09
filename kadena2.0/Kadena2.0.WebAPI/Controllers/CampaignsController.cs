@@ -1,33 +1,40 @@
-﻿using CMS.DataEngine;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Search;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class CampaignsController : ApiControllerBase
     {
+        private readonly ICampaignsService campaignsService;
+        private readonly IMapper mapper;
+
+        public CampaignsController(ICampaignsService campaignsService, IMapper mapper)
+        {
+            if (campaignsService == null)
+            {
+                throw new ArgumentNullException(nameof(campaignsService));
+            }
+
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
+            this.campaignsService = campaignsService;
+        }
+
         [HttpDelete]
         [Route("api/campaigns/{CampaignID}")]
-        public bool DeleteCampaign(int CampaignID)
+        public IHttpActionResult DeleteCampaign(int campaignID)
         {
-            bool status = false;
-            if (CampaignID > 0)
-            {
-                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                TreeNode page = tree.SelectNodes("KDA.Campaign").Where("CampaignID", QueryOperator.Equals, CampaignID).OnCurrentSite();
-                if (page != null)
-                {
-                    status = page.Delete();
-                    if (SearchIndexInfoProvider.SearchEnabled)
-                    {
-                        SearchTaskInfoProvider.CreateTask(SearchTaskTypeEnum.Delete, TreeNode.OBJECT_TYPE, SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
-                    }
-                }
-            }
-            return status;
+            campaignsService.DeleteCampaign(campaignID);
+            return ResponseJson<string>("OK");
         }
     }
 }

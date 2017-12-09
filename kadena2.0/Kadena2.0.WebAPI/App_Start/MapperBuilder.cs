@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
@@ -18,6 +19,7 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models;
+using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.OrderDetail;
@@ -222,6 +224,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateCode))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
+                config.CreateMap<BusinessUnit, BusinessUnitDto>();
             });
         }
     }

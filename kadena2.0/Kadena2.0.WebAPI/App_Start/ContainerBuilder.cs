@@ -33,6 +33,10 @@ namespace Kadena.WebAPI
             container.Register<IProductsService, ProductsService>();
             container.Register<ICreditCardService, CreditCardService>();
             container.Register<IPdfService, PdfService>();
+            container.Register<IBusinessUnitsService, BusinessUnitService>();
+            container.Register<ICampaignsService, CampaignsService>();
+            container.Register<IPOSService, POSService>();
+            container.Register<IProductCategoryService, ProductCategoryService>();
             return container;
         }
 
@@ -48,6 +52,10 @@ namespace Kadena.WebAPI
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
+            container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
+            container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
+            container.Register<IKenticoPOSProvider, KenticoPOSProvider>();
+            container.Register<IKenticoProductCategoryProvider, KenticoProductCategoryProvider>();
             return container;
         }
 

@@ -1,33 +1,40 @@
-﻿using CMS.DataEngine;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Search;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class ProductCategoryController : ApiControllerBase
     {
-        [HttpDelete]
-        [Route("api/productcategory/{CategoryID}")]
-        public bool DeleteCategory(int CategoryID)
+        private readonly IProductCategoryService productCategoryService;
+        private readonly IMapper mapper;
+
+        public ProductCategoryController(IProductCategoryService productCategoryService, IMapper mapper)
         {
-            bool status = false;
-            if (CategoryID > 0)
+            if (productCategoryService == null)
             {
-                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                TreeNode page = tree.SelectNodes("KDA.ProductCategory").Where("ProductCategoryID", QueryOperator.Equals, CategoryID).OnCurrentSite();
-                if (page != null)
-                {
-                    status = page.Delete();
-                    if (SearchIndexInfoProvider.SearchEnabled)
-                    {
-                        SearchTaskInfoProvider.CreateTask(SearchTaskTypeEnum.Delete, TreeNode.OBJECT_TYPE, SearchFieldsConstants.ID, page.GetSearchID(), page.DocumentID);
-                    }
-                }
+                throw new ArgumentNullException(nameof(productCategoryService));
             }
-            return status;
+
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
+            this.productCategoryService = productCategoryService;
+        }
+
+        [HttpDelete]
+        [Route("api/deleteproductcategory/{categoryID}")]
+        public IHttpActionResult DeleteCategory(int categoryID)
+        {
+            productCategoryService.DeleteCategory(categoryID);
+            return ResponseJson<string>("OK");
         }
     }
 }

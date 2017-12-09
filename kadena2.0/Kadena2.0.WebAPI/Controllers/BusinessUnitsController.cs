@@ -1,48 +1,51 @@
-﻿using CMS.DataEngine;
-using CMS.Helpers;
-using CMS.SiteProvider;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.BusinessUnits;
 using Kadena.WebAPI.Infrastructure;
-using Newtonsoft.Json;
+using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class BusinessUnitsController : ApiControllerBase
     {
-        [HttpGet]
-        [Route("api/businessunits")]
-        public string GetAllActiveBusienssUnits()
+        private readonly IBusinessUnitsService businessUnits;
+        private readonly IMapper mapper;
+
+        public BusinessUnitsController(IBusinessUnitsService businessUnits, IMapper mapper)
         {
-            QueryDataParameters parameters = new QueryDataParameters();
-            GeneralConnection cn = ConnectionHelper.GetConnection();
-            parameters.Add("@Status", 1);
-            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
-            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where Status = @Status and SiteID=@SiteID";
-            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
-            var userBUData = cn.ExecuteQuery(qp);
-            if (!DataHelper.DataSourceIsEmpty(userBUData))
+            if (businessUnits == null)
             {
-                return JsonConvert.SerializeObject(userBUData.Tables[0], Formatting.Indented);
+                throw new ArgumentNullException(nameof(businessUnits));
             }
-            return string.Empty;
+
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
+            this.businessUnits = businessUnits;
         }
 
         [HttpGet]
-        [Route("api/businessunits/{userID}")]
-        public string GetUserBusinessUnitData(int userID)
+        [Route("api/businessunits")]
+        public IHttpActionResult GetAllActiveBusienssUnits()
         {
-            QueryDataParameters parameters = new QueryDataParameters();
-            GeneralConnection cn = ConnectionHelper.GetConnection();
-            parameters.Add("@UserID", userID);
-            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
-            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.SiteID=@SiteID";
-            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
-            var userBUData = cn.ExecuteQuery(qp);
-            if (!DataHelper.DataSourceIsEmpty(userBUData))
-            {
-                return JsonConvert.SerializeObject(userBUData.Tables[0], Formatting.Indented);
-            }
-            return string.Empty;
+            var activeBusinessUnits = businessUnits.GetBusinessUnits();
+            var activeBusinessUnitsDto = mapper.Map<BusinessUnitDto[]>(activeBusinessUnits);
+            return ResponseJson(activeBusinessUnitsDto);
+        }
+
+        [HttpGet]
+        [Route("api/userbusinessunits/{userID}")]
+        public IHttpActionResult GetUserBusinessUnitData(int userID)
+        {
+            var userBusinessUnits = businessUnits.GetUserBusinessUnits(userID);
+            var userBusinessUnitsDto = mapper.Map<BusinessUnitDto[]>(userBusinessUnits);
+            return ResponseJson(userBusinessUnitsDto);
         }
     }
 }
