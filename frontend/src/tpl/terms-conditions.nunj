@@ -45,8 +45,6 @@
 
       <h2 class="text-center">Paragraph 12</h2>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
-
-      <button type="type" class="btn-action">Accept</button>
     </div>
   </div>
 {% endblock %}

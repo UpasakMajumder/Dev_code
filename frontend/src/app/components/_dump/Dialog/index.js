@@ -6,7 +6,7 @@ import SVG from 'app.dump/SVG';
 /* flow-types */
 
 type Props = {
-  closeDialog: () => void,
+  closeDialog: ?() => void,
   hasCloseBtn: ?boolean,
   title: string,
   body: ?{},
@@ -45,7 +45,7 @@ const Dialog = (props: Props) => {
 };
 
 Dialog.propTypes = {
-  closeDialog: PropTypes.func.isRequired,
+  closeDialog: PropTypes.func,
   title: PropTypes.string.isRequired,
   hasCloseBtn: PropTypes.bool,
   footer: PropTypes.object,
