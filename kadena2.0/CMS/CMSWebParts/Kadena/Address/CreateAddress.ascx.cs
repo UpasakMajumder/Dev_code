@@ -58,11 +58,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
-                var countryInfo = CountryInfoProvider.GetCountryInfo((SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry")));
-                CountryID = countryInfo != null ? countryInfo.CountryID : 0;
-                uniSelectorCountry.Value = ValidationHelper.GetString(CountryID, string.Empty);
-                uniSelectorState.WhereCondition = "CountryID =" + CountryID;
-                uniSelectorState.Enabled = true;
+                CountryID = ValidationHelper.GetInteger(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"), 0);
+                if (CountryID > 0)
+                {
+                    uniSelectorCountry.Value = CountryID;
+                    uniSelectorState.WhereCondition = "CountryID =" + CountryID;
+                    uniSelectorState.Enabled = true;
+                }
                 int itemID = QueryHelper.GetInteger("id", 0);
                 if (itemID > 0)
                 {
@@ -309,7 +311,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
 
     #region methods
 
-   /// <summary>
+    /// <summary>
     /// Create cusotmer based on  logged in user details
     /// </summary>
     /// <returns>Customer id</returns>
