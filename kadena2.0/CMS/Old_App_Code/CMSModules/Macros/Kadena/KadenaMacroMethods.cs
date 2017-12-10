@@ -527,13 +527,26 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         buList.Add(unitName?.GetStringValue("BusinessUnitName", string.Empty) ?? string.Empty);
                     });
                 }
-                return String.Join(",", buList);
+                return String.Join(",",buList);
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena Macro methods", "GetBusinessUnits", ex.Message);
                 return string.Empty;
             }
+        }
+
+        [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "GUID of the document.")]
+        public static object GetLocalizedDocumentUrlByGUID(EvaluationContext context, params object[] parameters)
+        {
+            Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
+            if (!pageGUID.Equals(Guid.Empty))
+            {
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return documents.GetDocumentUrl(pageGUID);
+            }
+            return string.Empty;
         }
 
         /// <summary>
