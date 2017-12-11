@@ -46,7 +46,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             rfvPOSCode.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCodeRequired");
             rfvCatgory.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCategroyRequired");
             revPOSCodeLength.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSMaxLengthMsg");
-            revPOSCode.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSNumberOnlyMsg");
         }
     }
 
