@@ -1,7 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_POSForm" CodeBehind="~/CMSWebParts/Kadena/POS/POSForm.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="uc1" TagName="UniSelector" %>
 
-
 <div class="css-login changepwd_block">
     <div class="form">
         <div class="mb-2">
@@ -9,7 +8,7 @@
                 <cms:LocalizedLabel ID="lblCategory" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSCategoryLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlCategory" runat="server" EnableViewState="false" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvCatgory" InitialValue="0" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvCatgory" InitialValue="0" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -18,7 +17,7 @@
                 <cms:LocalizedLabel ID="lblBrand" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.BrandLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false" onchange="brandChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -27,7 +26,7 @@
                 <cms:LocalizedLabel ID="lblYear" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.FiscalYearLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlYear" runat="server" EnableViewState="false" onchange="yearChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvYear" runat="server" InitialValue="0" ForeColor="Red" ControlToValidate="ddlYear" CssClass="input__error"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvYear" runat="server" InitialValue="0" ForeColor="Red" ControlToValidate="ddlYear" CssClass="input__error"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -35,13 +34,11 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblPOSCode" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSLabel" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtPOSCode" runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvPOSCode" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtPOSCode">
+                    <cms:CMSTextBox ID="txtPOSCode"  runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;" CssClass="input__text"></cms:CMSTextBox>
+                    <asp:RequiredFieldValidator ID="rfvPOSCode" Display="Dynamic" CssClass="input__error" runat="server"  ForeColor="Red" ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revPOSCode" runat="server" ControlToValidate="txtPOSCode"
-                        ForeColor="Red" ValidationExpression="^\d+$" CssClass="input__error"></asp:RegularExpressionValidator>
-                    <asp:RegularExpressionValidator ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
-                        ForeColor="Red" ValidationExpression="^[\s\S]{4}$" CssClass="input__error"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator Display="Dynamic" CssClass="input__error" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
+                        ForeColor="Red" ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
