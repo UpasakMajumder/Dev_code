@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
@@ -400,12 +401,85 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            var allDetails = GetAllData();
-            if (allDetails != null)
+            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = true;
+
+            List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
+            List<int> programIds = new List<int>();
+            if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
             {
-                BindLabels();
-                gdvInboundProducts.DataSource = allDetails;
-                gdvInboundProducts.DataBind();
+                programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+            }
+            else
+            {
+                programIds = GetProgramIDs(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+            }
+            if (!DataHelper.DataSourceIsEmpty(programIds))
+            {
+                productsDetails = CampaignsProductProvider.GetCampaignsProducts()
+                                  .WhereIn("ProgramID", programIds)
+                                  .ToList();
+            }
+            List<int> skuIds = new List<int>();
+            if (!DataHelper.DataSourceIsEmpty(productsDetails))
+            {
+                foreach (var product in productsDetails)
+                {
+                    skuIds.Add(product.NodeSKUID);
+                }
+            }
+            if (!DataHelper.DataSourceIsEmpty(skuIds))
+            {
+                var skuDetails = SKUInfoProvider.GetSKUs()
+                                .WhereIn("SKUID", skuIds)
+                                .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUID")
+                                .ToList();
+
+                if (!DataHelper.DataSourceIsEmpty(skuIds) && !DataHelper.DataSourceIsEmpty(productsDetails))
+                {
+                    var productAndSKUDetails = productsDetails
+                                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
+                    var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
+                    var allDetails = from product in productAndSKUDetails
+                                     join inbound in inboundDetails
+                                     on product.SKUID equals inbound.SKUID into alldata
+                                     from newData in alldata.DefaultIfEmpty()
+                                     select new
+                                     {
+                                         SKUID = product.SKUID,
+                                         SKUNumber = product.SKUNumber,
+                                         SKUName = product.SKUName,
+                                         QtyOrdered = newData?.QtyOrdered ?? default(int),
+                                         DemandGoal = newData?.DemandGoal ?? default(int),
+                                         QtyReceived = newData?.QtyReceived ?? default(int),
+                                         QtyProduced = newData?.QtyProduced ?? default(int),
+                                         Overage = newData?.Overage ?? default(int),
+                                         Vendor = newData?.Vendor ?? string.Empty,
+                                         ExpArrivalToCenveo = newData?.ExpArrivalToCenveo ?? string.Empty,
+                                         DeliveryToDistBy = newData?.DeliveryToDistBy ?? string.Empty,
+                                         ShippedToDist = newData?.ShippedToDist ?? string.Empty,
+                                         CenveoComments = newData?.CenveoComments ?? string.Empty,
+                                         TweComments = newData?.TweComments ?? string.Empty,
+                                         ActualPrice = newData?.ActualPrice ?? default(double),
+                                         Status = product.SKUEnabled
+                                     };
+                    allDetails = allDetails.ToList();
+                    if(!DataHelper.DataSourceIsEmpty(allDetails))
+                    {
+                        BindLabels();
+                        gdvInboundProducts.DataSource = allDetails;
+                        gdvInboundProducts.DataBind();
+                    }
+                    else
+                    {
+                        BindLabels();
+                        gdvInboundProducts.DataBind();
+                    }
+                }
+                else
+                {
+                    BindLabels();
+                    gdvInboundProducts.DataBind();
+                }
             }
             else
             {
@@ -417,74 +491,6 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         {
             EventLogProvider.LogException("Get Products", "GetProducts()", ex, CurrentSite.SiteID, ex.Message);
         }
-    }
-
-    public object GetAllData()
-    {
-        List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
-        List<int> programIds = new List<int>();
-        if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
-        {
-            programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
-        }
-        else
-        {
-            programIds = GetProgramIDs(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
-        }
-        if (!DataHelper.DataSourceIsEmpty(programIds))
-        {
-            productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                              .WhereIn("ProgramID", programIds)
-                              .ToList();
-        }
-        List<int> skuIds = new List<int>();
-        if (!DataHelper.DataSourceIsEmpty(productsDetails))
-        {
-            foreach (var product in productsDetails)
-            {
-                skuIds.Add(product.NodeSKUID);
-            }
-        }
-        if (!DataHelper.DataSourceIsEmpty(skuIds))
-        {
-            var skuDetails = SKUInfoProvider.GetSKUs()
-                            .WhereIn("SKUID", skuIds)
-                            .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUID")
-                            .ToList();
-
-            if (!DataHelper.DataSourceIsEmpty(skuIds) && !DataHelper.DataSourceIsEmpty(productsDetails))
-            {
-                var productAndSKUDetails = productsDetails
-                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
-                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
-                var allDetails = from product in productAndSKUDetails
-                                 join inbound in inboundDetails
-                                 on product.SKUID equals inbound.SKUID into alldata
-                                 from newData in alldata.DefaultIfEmpty()
-                                 select new
-                                 {
-                                     SKUID = product.SKUID,
-                                     SKUNumber = product.SKUNumber,
-                                     SKUName = product.SKUName,
-                                     QtyOrdered = newData?.QtyOrdered ?? default(int),
-                                     DemandGoal = newData?.DemandGoal ?? default(int),
-                                     QtyReceived = newData?.QtyReceived ?? default(int),
-                                     QtyProduced = newData?.QtyProduced ?? default(int),
-                                     Overage = newData?.Overage ?? default(int),
-                                     Vendor = newData?.Vendor ?? string.Empty,
-                                     ExpArrivalToCenveo = newData?.ExpArrivalToCenveo ?? string.Empty,
-                                     DeliveryToDistBy = newData?.DeliveryToDistBy ?? string.Empty,
-                                     ShippedToDist = newData?.ShippedToDist ?? string.Empty,
-                                     CenveoComments = newData?.CenveoComments ?? string.Empty,
-                                     TweComments = newData?.TweComments ?? string.Empty,
-                                     ActualPrice = newData?.ActualPrice ?? default(double),
-                                     Status = product.SKUEnabled
-                                 };
-                return allDetails;
-            }
-            return null;
-        }
-        return null;
     }
 
     /// <summary>
@@ -738,6 +744,34 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     protected void btnRefresh_Click(object sender, EventArgs e)
     {
         Response.Redirect(Request.RawUrl);
+    }
+    /// <summary>
+    /// Export Products data to Excel
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void btnExport_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Response.Clear();
+            Response.AddHeader("content-disposition", "attachment;filename=Contact.xls");
+            Response.Charset = "";
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            System.IO.StringWriter stringWrite = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
+            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = false;
+            System.Web.UI.HtmlControls.HtmlForm form = new System.Web.UI.HtmlControls.HtmlForm();
+            Controls.Add(form);
+            form.Controls.Add(gdvInboundProducts);
+            form.RenderControl(htmlWrite);
+            Response.Write(stringWrite.ToString());
+            Response.End();
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Export data to excel", "btnExport_Click()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 }
 

@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Product_InboundTracking {
     
     /// <summary>
+    /// UniPager control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSWebParts_Viewers_Basic_UniPager UniPager;
+    
+    /// <summary>
     /// ddlCampaign control.
     /// </summary>
     /// <remarks>
@@ -55,4 +64,13 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.GridView gdvInboundProducts;
+    
+    /// <summary>
+    /// pager control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSWebParts_Viewers_Basic_UniPager pager;
 }
