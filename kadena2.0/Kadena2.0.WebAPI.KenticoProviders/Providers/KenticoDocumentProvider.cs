@@ -56,6 +56,18 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return absoluteUrl ? document.AbsoluteURL : document.DocumentUrlPath;
         }
+
+        public string GetDocumentUrl(Guid documentGUID)
+        {
+            TreeNode document = new TreeProvider().SelectSingleNode(documentGUID, LocalizationContext.CurrentCulture.CultureCode, SiteContext.CurrentSiteName);
+            if (document == null)
+            {
+                logger.LogInfo("GetDocumentUrl", "INFORMATION", $"Document not found for document guid '{documentGUID.ToString()}' and culture '{LocalizationContext.CurrentCulture.CultureCode}'");
+                return "/";
+            }
+            return document.DocumentUrlPath;
+        }
+
         public string GetDocumentUrl(int documentId)
         {
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));

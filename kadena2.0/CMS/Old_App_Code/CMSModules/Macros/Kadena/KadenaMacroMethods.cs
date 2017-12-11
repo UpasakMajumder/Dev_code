@@ -535,6 +535,52 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
+        [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "GUID of the document.")]
+        public static object GetLocalizedDocumentUrlByGUID(EvaluationContext context, params object[] parameters)
+        {
+            Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
+            if (!pageGUID.Equals(Guid.Empty))
+            {
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return documents.GetDocumentUrl(pageGUID);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns Category name based on Category ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Checks uniqueness of value in custom table", 3)]
+        [MacroMethodParam(0, "CustomTableClassName", typeof(string), "CustomTableClassName")]
+        [MacroMethodParam(1, "ItemID", typeof(int), "ItemID")]
+        [MacroMethodParam(2, "UniqueValueFieldName", typeof(string), "UniqueValueFieldName")]
+        [MacroMethodParam(3, "FieldValue", typeof(string), "FieldValue")]
+        public static object CheckUniqueInMyTable(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                string customTableClassName = ValidationHelper.GetString(parameters[0], string.Empty);
+                int itemID = ValidationHelper.GetInteger(parameters[1], 0);
+                string uniqueValueFieldName = ValidationHelper.GetString(parameters[2], string.Empty);
+                string fieldValue = ValidationHelper.GetString(parameters[3], string.Empty);
+                DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (customTable != null)
+                {
+                    return CustomTableItemProvider.GetItems(customTableClassName, uniqueValueFieldName + "='" + fieldValue + "' AND ItemID!=" + itemID).Count <= 0;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "CheckUniqueInMyTable", ex.Message);
+                return false;
+            }
+        }
         #endregion TWE macro methods
     }
 }
