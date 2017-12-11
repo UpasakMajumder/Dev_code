@@ -3,7 +3,7 @@
 
 
 <div class="css-login changepwd_block">
-    <div class="form">
+    <div class="form form_width100">
         <div class="mb-2">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblCategory" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSCategoryLabel" />

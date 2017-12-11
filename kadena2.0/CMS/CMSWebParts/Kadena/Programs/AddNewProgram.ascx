@@ -15,7 +15,8 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramDescription"></span>
                     <div class="input__inner">
-                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
+                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea" MaxLength="140" ClientIDMode="Static"></asp:TextBox>
+                        <asp:CustomValidator runat="server" ID="cvDesc" ControlToValidate="txtProgramDescription" CssClass="input__error" OnServerValidate="cvDesc_ServerValidate"></asp:CustomValidator>
                     </div>
                 </div>
             </div>
