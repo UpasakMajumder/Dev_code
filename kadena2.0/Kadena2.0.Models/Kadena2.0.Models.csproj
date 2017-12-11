@@ -79,6 +79,9 @@
     <Compile Include="DynamicPricingRange.cs" />
     <Compile Include="Favorites\FavoriteProduct.cs" />
     <Compile Include="InventoryUpdate\InventoryDataItem.cs" />
+    <Compile Include="Login\CheckTaCResult.cs" />
+    <Compile Include="Login\LoginResult.cs" />
+    <Compile Include="Login\LoginRequest.cs" />
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
@@ -143,9 +146,16 @@
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

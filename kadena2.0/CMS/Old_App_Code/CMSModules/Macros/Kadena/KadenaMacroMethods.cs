@@ -11,16 +11,18 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
-using Kadena.Models.Product;
+using Kadena.Models;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
-using Kadena.WebAPI.KenticoProviders;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
+using Kadena.Models.Product;
+using Kadena.WebAPI.KenticoProviders;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 

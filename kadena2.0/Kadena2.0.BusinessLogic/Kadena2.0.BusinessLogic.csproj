@@ -69,6 +69,7 @@
     <Compile Include="Contracts\IPdfService.cs" />
     <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
+    <Compile Include="Contracts\ILoginService.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Services\PdfService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\SearchService.cs" />
+    <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\SiteDataService.cs" />
