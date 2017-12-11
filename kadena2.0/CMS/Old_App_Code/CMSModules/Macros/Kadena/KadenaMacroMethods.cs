@@ -499,6 +499,32 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+        /// <summary>
+        /// Returns if any campaign is open
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(bool), "Returns if any campaign is open", 0)]
+        public static object IsCampaignOpen(EvaluationContext context, params object[] parameters)
+        {
+            bool IsOpen = false;
+            try
+            {
+                var campaign = CampaignProvider.GetCampaigns()
+                    .Columns("Name")
+                    .WhereEquals("OpenCampaign", true)
+                    .WhereEquals("CloseCampaign", false)
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
+                    .FirstOrDefault();
+                return IsOpen = campaign != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "IsCampaignOpen", ex.Message);
+                return IsOpen;
+            }
+        }
         #endregion
     }
 }
