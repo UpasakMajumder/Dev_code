@@ -48,12 +48,15 @@ namespace Kadena.BusinessLogic.Services
                 throw new SecurityException("Invalid username or password");
             }
 
+            var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
             var userHasAccepted = UserHasAcceptedTac(user);
+
+            var showTaC = tacEnabled && !userHasAccepted;
 
             return new CheckTaCResult
             {
-                ShowTaC = !userHasAccepted,
-                Url = userHasAccepted ? string.Empty : GetTacPageUrl()
+                ShowTaC = showTaC,
+                Url = showTaC ? GetTacPageUrl() : string.Empty
             };
         }
 
