@@ -2,6 +2,8 @@
 using CMS.Globalization;
 using CMS.Ecommerce;
 using Kadena.Models;
+using CMS.Membership;
+using System;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -47,6 +49,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.ShippingOptionDisplayName))
                 .ForMember(dest => dest.Service, opt => opt.MapFrom(src => src.ShippingOptionCarrierServiceName))
                 .ForMember(dest => dest.SAPName, opt => opt.MapFrom(src => src.GetStringValue("ShippingOptionSAPName", string.Empty)));
+            CreateMap<UserInfo, User>()
+                .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)));
         }
     }
 }
