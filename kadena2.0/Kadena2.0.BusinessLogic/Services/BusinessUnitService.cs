@@ -2,6 +2,7 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.BusinessUnit;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -11,6 +12,10 @@ namespace Kadena.BusinessLogic.Services
 
         public BusinessUnitService(IKenticoBusinessUnitsProvider kenticoBusinessUnits)
         {
+            if (kenticoBusinessUnits == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoBusinessUnits));
+            }
             this.kenticoBusinessUnits = kenticoBusinessUnits;
         }
 

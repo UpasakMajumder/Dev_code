@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -9,6 +10,10 @@ namespace Kadena.BusinessLogic.Services
 
         public CampaignsService(IKenticoCampaignsProvider kenticoCampaigns)
         {
+            if (kenticoCampaigns == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoCampaigns));
+            }
             this.kenticoCampaigns = kenticoCampaigns;
         }
 
