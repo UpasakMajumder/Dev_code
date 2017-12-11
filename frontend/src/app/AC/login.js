@@ -15,6 +15,39 @@ import { LOGIN } from 'app.globals';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
 
+const isValid = (body, dispatch) => {
+  const { loginEmail, password } = body;
+
+  if (!loginEmail.match(emailRegExp)) {
+    dispatch({
+      type: LOG_IN + VALIDATION_ERROR,
+      isLoading: false,
+      payload: {
+        logonSuccess: false,
+        errorMessage: LOGIN.emailValidationMessage,
+        errorPropertyName: 'loginEmail'
+      }
+    });
+    return false;
+  }
+
+  if (password.length === 0) {
+    dispatch({
+      type: LOG_IN + VALIDATION_ERROR,
+      isLoading: false,
+      payload: {
+        logonSuccess: false,
+        errorMessage: LOGIN.passwordValidationMessage,
+        errorPropertyName: 'password'
+      }
+    });
+
+    return false;
+  }
+
+  return true;
+};
+
 export const changeCredentinals = (field, value) => {
   return {
     type: CREDENTINALS_CHANGE,
@@ -27,6 +60,8 @@ export const changeCredentinals = (field, value) => {
 
 export const checkTaC = (url, body) => {
   return (dispatch) => {
+    if (!isValid(body, dispatch)) return;
+
     dispatch({ type: TAC_CHECK + FETCH });
 
     axios.post(url, body)
@@ -51,6 +86,8 @@ export const checkTaC = (url, body) => {
 
 export const acceptTaC = (url, body) => {
   return (dispatch) => {
+    if (!isValid(body, dispatch)) return;
+
     axios.post(url, body)
       .then((response) => {
         const { success } = response.data;
@@ -68,34 +105,7 @@ export const acceptTaC = (url, body) => {
 
 export const loginSubmit = (url, body) => {
   return (dispatch) => {
-    const { loginEmail, password } = body;
-
-    if (!loginEmail.match(emailRegExp)) {
-      dispatch({
-        type: LOG_IN + VALIDATION_ERROR,
-        isLoading: false,
-        payload: {
-          logonSuccess: false,
-          errorMessage: LOGIN.emailValidationMessage,
-          errorPropertyName: 'loginEmail'
-        }
-      });
-      return;
-    }
-
-    if (password.length === 0) {
-      dispatch({
-        type: LOG_IN + VALIDATION_ERROR,
-        isLoading: false,
-        payload: {
-          logonSuccess: false,
-          errorMessage: LOGIN.passwordValidationMessage,
-          errorPropertyName: 'password'
-        }
-      });
-
-      return;
-    }
+    if (!isValid(body, dispatch)) return;
 
     axios.post(url, body)
       .then((response) => {
