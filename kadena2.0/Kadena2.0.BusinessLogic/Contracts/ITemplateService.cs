@@ -6,7 +6,7 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface ITemplateService
     {
-        Task<bool> SetName(Guid templateId, string name);
+        Task<bool> UpdateTemplate(Guid templateId, string name, int quantity);
         Task<ProductTemplates> GetTemplatesByProduct(int documentId);
     }
 }
