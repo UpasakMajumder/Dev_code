@@ -13,6 +13,7 @@ using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
 using Kadena.WebAPI.KenticoProviders;
@@ -502,6 +503,66 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         /// <summary>
+        /// Returns shopping cart items count
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                QueryDataParameters queryParams = new QueryDataParameters();
+                queryParams.Add("@ShoppingCartUserID", userID);
+                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                return ValidationHelper.GetInteger(countData, default(int));
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(int);
+            }
+        }
+
+        /// <summary>
+        /// Returns shopping cart total
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        public static object GetCartTotalByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                if (inventoryType == (Int32)ProductType.PreBuy)
+                {
+                    QueryDataParameters queryParams = new QueryDataParameters();
+                    queryParams.Add("@ShoppingCartUserID", userID);
+                    queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                    var cartTotal = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartTotal", queryParams, QueryTypeEnum.StoredProcedure, true);
+                    return ValidationHelper.GetDouble(cartTotal, default(double));
+                }
+                return default(double);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(double);
+            }
+        }
+
+        /// <summary>
         /// Returns Business unit name based on user id
         /// </summary>
         /// <param name="context"></param>
@@ -527,7 +588,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         buList.Add(unitName?.GetStringValue("BusinessUnitName", string.Empty) ?? string.Empty);
                     });
                 }
-                return String.Join(",",buList);
+                return String.Join(",", buList);
             }
             catch (Exception ex)
             {
@@ -581,6 +642,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return false;
             }
         }
+
         #endregion TWE macro methods
     }
 }
