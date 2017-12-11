@@ -49,6 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IProgramsService.cs" />
+    <Compile Include="Contracts\IAddressBookService.cs" />
+    <Compile Include="Contracts\IBrandsService.cs" />
+    <Compile Include="Contracts\IProductCategoryService.cs" />
+    <Compile Include="Contracts\IPOSService.cs" />
+    <Compile Include="Contracts\ICampaignsService.cs" />
+    <Compile Include="Contracts\IBusinessUnitsService.cs" />
     <Compile Include="Contracts\ICache.cs" />
     <Compile Include="Contracts\ICreditCardService.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
@@ -73,9 +80,16 @@
     <Compile Include="Infrastructure\BackgroundTaskScheduler.cs" />
     <Compile Include="Infrastructure\IBackgroundTaskScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProgramsService.cs" />
+    <Compile Include="Services\AddressBookService.cs" />
+    <Compile Include="Services\BrandsService.cs" />
+    <Compile Include="Services\ProductCategoryService.cs" />
+    <Compile Include="Services\POSService.cs" />
+    <Compile Include="Services\CampaignsService.cs" />
     <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\DateTimeFormatter.cs" />
+    <Compile Include="Services\BusinessUnitService.cs" />
     <Compile Include="Services\FavoritesService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
