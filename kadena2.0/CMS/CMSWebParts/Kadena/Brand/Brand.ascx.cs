@@ -67,35 +67,26 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
     /// <param name="e"></param>
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        if (QueryHelper.GetInteger("ItemID", 0) > 0)
+        if (form.ValidateData())
         {
-            var brandData = CustomTableItemProvider.GetItem<BrandItem>(QueryHelper.GetInteger("ItemID", 0));
-            brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
-            if (IsBrandCodeValid(brandData.BrandCode, brandData.ItemID))
+            if (QueryHelper.GetInteger("ItemID", 0) > 0)
             {
+                var brandData = CustomTableItemProvider.GetItem<BrandItem>(QueryHelper.GetInteger("ItemID", 0));
+                brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
                 form.SaveData(CurrentDocument.Parent.AbsoluteURL);
             }
             else
             {
-                form.ShowError(ResHelper.GetString("Kadena.Brands.UniqueError"));
-                form.ShowValidationErrorMessage = true;
+                var brandData = new BrandItem();
+                brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
+                brandData.BrandName = ValidationHelper.GetString(form.GetFieldValue("BrandName"), string.Empty);
+                brandData.BrandDescription = ValidationHelper.GetString(form.GetFieldValue("BrandDescription"), string.Empty);
+                form.SaveData(CurrentDocument.Parent.AbsoluteURL);
             }
         }
         else
         {
-            var brandData = new BrandItem();
-            brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
-            brandData.BrandName = ValidationHelper.GetString(form.GetFieldValue("BrandName"), string.Empty);
-            brandData.BrandDescription = ValidationHelper.GetString(form.GetFieldValue("BrandDescription"), string.Empty);
-            if (IsBrandCodeValid(brandData.BrandCode, 0))
-            {
-                form.SaveData(CurrentDocument.Parent.AbsoluteURL);
-            }
-            else
-            {
-                form.ShowError(ResHelper.GetString("Kadena.Brands.UniqueError"));
-                form.ShowValidationErrorMessage = true;
-            }
+            form.ShowValidationErrorMessage = true;
         }
     }
 

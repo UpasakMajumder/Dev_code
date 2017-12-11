@@ -58,10 +58,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
-                CountryID = GetCountryID(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"));
-                uniSelectorCountry.Value = ValidationHelper.GetString(CountryID, string.Empty);
-                uniSelectorState.WhereCondition = "CountryID =" + CountryID;
-                uniSelectorState.Enabled = true;
+                CountryID = ValidationHelper.GetInteger(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"), 0);
+                if (CountryID > 0)
+                {
+                    uniSelectorCountry.Value = CountryID;
+                    uniSelectorState.WhereCondition = "CountryID =" + CountryID;
+                    uniSelectorState.Enabled = true;
+                }
                 int itemID = QueryHelper.GetInteger("id", 0);
                 if (itemID > 0)
                 {
@@ -309,110 +312,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     #region methods
 
     /// <summary>
-    /// Gets the country id from name
-    /// </summary>
-    /// <param name="countryName">name of the country</param>
-    /// <returns>Country id</returns>
-    private int GetCountryID(string countryName)
-    {
-        try
-        {
-            var countryData = CountryInfoProvider.GetCountries()
-                .WhereEquals("CountryDisplayName", countryName)
-                .Columns("CountryID")
-                .FirstOrDefault();
-            if (!DataHelper.DataSourceIsEmpty(countryData))
-            {
-                return countryData.CountryID;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "GetCountryID()", ex);
-        }
-        return default(int);
-    }
-
-    /// <summary>
-    /// Gets the state id from name
-    /// </summary>
-    /// <param name="stateName">name of the state</param>
-    /// <returns>State id id</returns>
-    private int GetStateID(string stateName)
-    {
-        try
-        {
-            var stateData = StateInfoProvider.GetStates()
-                .WhereEquals("StateDisplayName", stateName)
-                .Columns("StateID")
-                .FirstOrDefault();
-            if (!DataHelper.DataSourceIsEmpty(stateData))
-            {
-                return stateData.StateID;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "GetStateID()", ex);
-        }
-        return default(int);
-    }
-
-    /// <summary>
-    /// Gets the country name
-    /// </summary>
-    /// <param name="countryID">id of the country</param>
-    /// <returns>Country anme</returns>
-    private string GetCountryName(int countryID)
-    {
-        try
-        {
-            var countryData = CountryInfoProvider.GetCountries()
-                .WhereEquals("CountryID", countryID)
-                .Column("CountryDisplayName")
-                .FirstOrDefault();
-            if (!DataHelper.DataSourceIsEmpty(countryData))
-            {
-                return countryData.CountryDisplayName;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "GetCountryName()", ex);
-        }
-        return string.Empty;
-    }
-
-    /// <summary>
-    /// Gets the state name from id
-    /// </summary>
-    /// <param name="stateID">state id</param>
-    /// <returns>state name</returns>
-    private string GetStateName(int stateID)
-    {
-        try
-        {
-            var stateData = StateInfoProvider.GetStates()
-                .WhereEquals("StateID", stateID)
-                .Column("StateDisplayName")
-                .FirstOrDefault();
-            if (!DataHelper.DataSourceIsEmpty(stateData))
-            {
-                return stateData.StateDisplayName;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "GetStateName()", ex);
-        }
-        return string.Empty;
-    }
-
-    /// <summary>
     /// Create cusotmer based on  logged in user details
     /// </summary>
     /// <returns>Customer id</returns>
-
     private int CreateCustomer()
     {
         try
