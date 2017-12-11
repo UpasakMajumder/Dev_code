@@ -1157,6 +1157,13 @@
     <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.designer.cs">
       <DependentUpon>ProgramFilter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx.cs">
+      <DependentUpon>CustomerCartOperations.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx.designer.cs">
+      <DependentUpon>CustomerCartOperations.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx.cs">
       <DependentUpon>ReletedDocumentsWithPermissions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1342,6 +1349,7 @@
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx" />
     <Content Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx" />
     <Content Include="DeleteAddressWebService.asmx" />
     <Content Include="ProgramWebservice.asmx" />
