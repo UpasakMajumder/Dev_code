@@ -52,7 +52,7 @@ namespace Kadena.WebAPI.Controllers
         
         [HttpPost]
         [Route("api/login/accepttac")]
-        public IHttpActionResult CheckTaC([FromBody] AcceptTaCRequestDTO request)
+        public IHttpActionResult AcceptTaC([FromBody] AcceptTaCRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
             service.AcceptTaC(loginRequestModel);
