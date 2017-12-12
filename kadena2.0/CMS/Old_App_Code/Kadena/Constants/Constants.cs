@@ -18,7 +18,7 @@
         public const string shoppingCartCartItems = "Ecommerce.Shoppingcart.GetCartItems";
     }
     /// <summary>
-    /// This Class represents Transformations used.
+    /// This Class represents Transformations used .
     /// </summary>
     public static class TransformationNames
     {
