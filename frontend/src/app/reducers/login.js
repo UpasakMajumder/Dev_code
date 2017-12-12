@@ -57,8 +57,15 @@ export default function login(state = defaultState, action = {}) {
     return {
       ...state,
       checkTaC: {
-        ...payload.checkTaC,
+        showTaC: payload.showTaC,
+        url: payload.url,
         isAsked: true
+      },
+      submit: {
+        logonSuccess: payload.logonSuccess,
+        errorPropertyName: payload.errorPropertyName,
+        errorMessage: payload.errorMessage,
+        isAsked: false
       }
     };
 
@@ -84,7 +91,9 @@ export default function login(state = defaultState, action = {}) {
     return {
       ...defaultState,
       submit: {
-        ...payload,
+        logonSuccess: payload.logonSuccess,
+        errorPropertyName: payload.errorPropertyName,
+        errorMessage: payload.errorMessage,
         isAsked: false
       }
     };
