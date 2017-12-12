@@ -1,29 +1,31 @@
-﻿using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using CMS.Helpers;
-using CMS.MacroEngine;
-using System;
-using System.Linq;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.Localization;
-using CMS.SiteProvider;
-using CMS.DataEngine;
+﻿using AutoMapper;
 using CMS.CustomTables;
-using System.Collections.Generic;
+using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.MacroEngine;
+using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.BusinessLogic.Services;
 using Kadena.Models;
+using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.Models.Product;
-using AutoMapper;
 using Kadena.WebAPI;
 using AutoMapper;
-using CMS.EventLog;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.CustomTables.Types.KDA;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
-using Kadena.BusinessLogic.Services;
+using Kadena.Models.Product;
+using Kadena.WebAPI.KenticoProviders;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
+
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
@@ -41,7 +43,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
-            
+
             var productTypes = ValidationHelper.GetString(parameters[0], "");
             var product = new Product { ProductType = productTypes };
             var isWeightRequired = new ProductValidator().IsSKUWeightRequired(product);
@@ -217,7 +219,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
 
                 return "stock stock--available";
-
             }
 
             return string.Empty;
@@ -272,7 +273,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return result;
         }
-
 
         /// <summary>
         /// Checks if TreeNode's value "ProductType" contains any of given type strings
@@ -403,6 +403,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #region TWE macro methods
+
         /// <summary>
         /// Returns Division name based on Division ID
         /// </summary>
@@ -426,6 +427,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Program name based on Program ID
         /// </summary>
@@ -450,6 +452,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Category name based on Category ID
         /// </summary>
@@ -474,6 +477,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
+
         /// <summary>
         /// Returns Currently opened campaign name
         /// </summary>
@@ -499,6 +503,175 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return string.Empty;
             }
         }
-        #endregion
+
+        /// <summary>
+        /// Returns shopping cart items count
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                QueryDataParameters queryParams = new QueryDataParameters();
+                queryParams.Add("@ShoppingCartUserID", userID);
+                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                return ValidationHelper.GetInteger(countData, default(int));
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(int);
+            }
+        }
+
+        /// <summary>
+        /// Returns shopping cart total
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns cart items count", 1)]
+        [MacroMethodParam(0, "userID", typeof(int), "UserID")]
+        [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        public static object GetCartTotalByInventoryType(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                if (inventoryType == (Int32)ProductType.PreBuy)
+                {
+                    QueryDataParameters queryParams = new QueryDataParameters();
+                    queryParams.Add("@ShoppingCartUserID", userID);
+                    queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                    var cartTotal = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartTotal", queryParams, QueryTypeEnum.StoredProcedure, true);
+                    return ValidationHelper.GetDouble(cartTotal, default(double));
+                }
+                return default(double);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return default(double);
+            }
+        }
+
+        /// <summary>
+        /// Returns Business unit name based on user id
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns Business unit name based on user id", 1)]
+        [MacroMethodParam(0, "UserID", typeof(int), "UserID")]
+        public static object GetBusinessUnits(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int userID = ValidationHelper.GetInteger(parameters[0], 0);
+                var data = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>()
+                    .WhereEquals("UserID", userID)
+                    .Columns("BusinessUnitID")
+                    .ToList();
+                var buList = new List<string>();
+                if (!DataHelper.DataSourceIsEmpty(data))
+                {
+                    data.ForEach(x =>
+                    {
+                        var unitName = CustomTableItemProvider.GetItem<BusinessUnitItem>(x.BusinessUnitID);
+                        buList.Add(unitName?.GetStringValue("BusinessUnitName", string.Empty) ?? string.Empty);
+                    });
+                }
+                return String.Join(",", buList);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "GetBusinessUnits", ex.Message);
+                return string.Empty;
+            }
+        }
+
+        [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "GUID of the document.")]
+        public static object GetLocalizedDocumentUrlByGUID(EvaluationContext context, params object[] parameters)
+        {
+            Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
+            if (!pageGUID.Equals(Guid.Empty))
+            {
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                return documents.GetDocumentUrl(pageGUID);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns Category name based on Category ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Checks uniqueness of value in custom table", 3)]
+        [MacroMethodParam(0, "CustomTableClassName", typeof(string), "CustomTableClassName")]
+        [MacroMethodParam(1, "ItemID", typeof(int), "ItemID")]
+        [MacroMethodParam(2, "UniqueValueFieldName", typeof(string), "UniqueValueFieldName")]
+        [MacroMethodParam(3, "FieldValue", typeof(string), "FieldValue")]
+        public static object CheckUniqueInMyTable(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                string customTableClassName = ValidationHelper.GetString(parameters[0], string.Empty);
+                int itemID = ValidationHelper.GetInteger(parameters[1], 0);
+                string uniqueValueFieldName = ValidationHelper.GetString(parameters[2], string.Empty);
+                string fieldValue = ValidationHelper.GetString(parameters[3], string.Empty);
+                DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
+                if (customTable != null)
+                {
+                    return CustomTableItemProvider.GetItems(customTableClassName, uniqueValueFieldName + "='" + fieldValue + "' AND ItemID!=" + itemID).Count <= 0;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "CheckUniqueInMyTable", ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns if any campaign is open
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(bool), "Returns if any campaign is open", 0)]
+        public static object IsCampaignOpen(EvaluationContext context, params object[] parameters)
+        {
+            bool IsOpen = false;
+            try
+            {
+                var campaign = CampaignProvider.GetCampaigns()
+                    .Columns("Name")
+                    .WhereEquals("OpenCampaign", true)
+                    .WhereEquals("CloseCampaign", false)
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
+                    .FirstOrDefault();
+                return IsOpen = campaign != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "IsCampaignOpen", ex.Message);
+                return IsOpen;
+            }
+        }
+
+        #endregion TWE macro methods
     }
 }

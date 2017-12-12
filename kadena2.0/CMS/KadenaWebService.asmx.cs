@@ -1,6 +1,5 @@
 ﻿namespace CMSApp
 {
-    using CMS.Activities.Loggers;
     using CMS.DataEngine;
     using CMS.EmailEngine;
     using CMS.Helpers;
@@ -10,16 +9,12 @@
     using CMS.OnlineForms;
     using CMS.SiteProvider;
     using Kadena.Dto.General;
-    using Kadena.Dto.Logon;
     using System;
-    using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.Script.Services;
-    using System.Web.Security;
     using System.Web.Services;
-    using System.Linq;
     using CMS.CustomTables;
     using CMS.EventLog;
+    using Kadena.Helpers;
 
     [WebService]
     [ScriptService]
@@ -40,39 +35,6 @@
         public void SignOut()
         {
             AuthenticationHelper.SignOut();
-        }
-
-        [WebMethod(EnableSession = true)]
-        [ScriptMethod]
-        public LogonUserResultDTO LogonUser(string loginEmail, string password, bool isKeepMeLoggedIn)
-        {
-            #region Validation
-
-            if (string.IsNullOrWhiteSpace(loginEmail))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LoginEmailEmpty", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "password", errorMessage = ResHelper.GetString("Kadena.Logon.PasswordEmpty", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (!IsEmailValid(loginEmail))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.InvalidEmail", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            UserInfo user = UserInfoProvider.GetUserInfo(loginEmail);
-            if (user == null)
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-            if (!user.IsInSite(SiteContext.CurrentSiteName))
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-
-            #endregion
-
-            return LogonUserInternal(loginEmail, password, isKeepMeLoggedIn);
         }
 
         [WebMethod(EnableSession = true)]
@@ -178,7 +140,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (!IsEmailValid(email))
+            if (!MailValidator.IsValid(email))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.ForgottenPassword.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
             }
@@ -198,7 +160,7 @@
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsEmpty", LocalizationContext.CurrentCulture.CultureCode) };
             }
-            if (!IsEmailValid(email))
+            if (!MailValidator.IsValid(email))
             {
                 return new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.RequestAccess.EmailIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
             }
@@ -247,37 +209,6 @@
         #endregion
 
         #region Private methods
-
-        private LogonUserResultDTO LogonUserInternal(string loginEmail, string password, bool isKeepMeLoggedIn)
-        {
-            UserInfo user = null;
-            // cookies handling
-            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
-            if (isKeepMeLoggedIn)
-            {
-                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddYears(1), false);
-            }
-            else
-            {
-                // Extend the expiration of the authentication cookie if required
-                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
-                {
-                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddMinutes(Session.Timeout), false);
-                }
-            }
-            user = AuthenticationHelper.AuthenticateUser(loginEmail, password, SiteContext.CurrentSiteName);
-            if (user != null)
-            {
-                FormsAuthentication.SetAuthCookie(user.UserName, isKeepMeLoggedIn);
-                MembershipActivityLogger.LogLogin(user.UserName);
-                return new LogonUserResultDTO { success = true };
-            }
-            else
-            {
-                return new LogonUserResultDTO { success = false, errorPropertyName = "loginEmail", errorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode) };
-            }
-        }
-
         private GeneralResultDTO InitialPasswordSettingInternal(string password, string confirmPassword, Guid userGUID)
         {
             var ui = UserInfoProvider.GetUserInfoByGUID(userGUID);
@@ -437,17 +368,6 @@
             }
         }
 
-        private bool IsEmailValid(string email)
-        {
-            var regexText = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
-                            + "@"
-                            + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$";
-
-            Regex regex = new Regex(regexText);
-            Match match = regex.Match(email);
-            return match.Success;
-        }
-
         //Method for deleteting the product category
         [WebMethod(EnableSession = true)]
         public bool DeleteCategory(int CategoryID)
@@ -474,7 +394,6 @@
             return status;
 
         }
-
 
         //Method for deleteting the campaign
         [WebMethod(EnableSession = true)]
