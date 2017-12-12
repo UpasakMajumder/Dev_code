@@ -21,6 +21,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
 
         public ShoppingCartService(IMapper mapper,
@@ -31,8 +32,11 @@ namespace Kadena.BusinessLogic.Services
                                    IKListService mailingService,
                                    IKenticoDocumentProvider documents,
                                    IKenticoLogger kenticoLog,
+                                   IShoppingCartProvider shoppingCart,
                                    ICheckoutPageFactory checkoutfactory)
         {
+            // TODO null checks. Reject CR if not done
+
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.kenticoUsers = kenticoUsers;
@@ -41,15 +45,16 @@ namespace Kadena.BusinessLogic.Services
             this.mailingService = mailingService;
             this.documents = documents;
             this.kenticoLog = kenticoLog;
+            this.shoppingCart = shoppingCart;
             this.checkoutfactory = checkoutfactory;
         }
 
         public CheckoutPage GetCheckoutPage()
         {
             var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
-            var paymentMethods = kenticoProvider.GetPaymentMethods();
-            var cartItems = kenticoProvider.GetShoppingCartItems();
-            var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
+            var paymentMethods = shoppingCart.GetPaymentMethods();
+            var cartItems = shoppingCart.GetShoppingCartItems();
+            var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             var userNotificationString = GetUserNotificationString();
             var otherAddressEnabled = GetOtherAddressSettingsValue();            
@@ -74,9 +79,9 @@ namespace Kadena.BusinessLogic.Services
         
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
-            var deliveryAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
 
-            var isShippingApplicable = kenticoProvider.GetShoppingCartItems()
+            var isShippingApplicable = shoppingCart.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
             {
@@ -104,7 +109,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
         {
-            kenticoProvider.SetShoppingCartAddress(deliveryAddress);
+            shoppingCart.SetShoppingCartAddress(deliveryAddress);
             return await GetDeliveryAndTotals();
         }
 
@@ -116,7 +121,7 @@ namespace Kadena.BusinessLogic.Services
                 return defaultDeliveryMethods;
             }
 
-            var carriers = kenticoProvider.GetShippingCarriers();
+            var carriers = shoppingCart.GetShippingCarriers();
             var deliveryMethods = new DeliveryCarriers()
             {
                 Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
@@ -142,7 +147,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
-            var shoppingCartTotals = kenticoProvider.GetShoppingCartTotals();
+            var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
             shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
             totals.Items = new Total[]
             {
@@ -181,7 +186,7 @@ namespace Kadena.BusinessLogic.Services
                 return;
             }
 
-            var currentAddressId = kenticoProvider.GetCurrentCartAddresId();
+            var currentAddressId = shoppingCart.GetCurrentCartAddresId();
             if (currentAddressId != 0 && page.DeliveryAddresses.items.Any(a => a.Id == currentAddressId))
             {
                 page.DeliveryAddresses.CheckAddress(currentAddressId);
@@ -194,7 +199,7 @@ namespace Kadena.BusinessLogic.Services
                     defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
                 }
 
-                kenticoProvider.SetShoppingCartAddress(defaultAddressId);
+                shoppingCart.SetShoppingCartAddress(defaultAddressId);
                 page.DeliveryAddresses.CheckAddress(defaultAddressId);
             }
         }
@@ -212,7 +217,7 @@ namespace Kadena.BusinessLogic.Services
 
         private void CheckCurrentOrDefaultShipping(DeliveryCarriers deliveryMethods)
         {
-            int currentShipping = kenticoProvider.GetCurrentCartShippingOptionId();
+            int currentShipping = shoppingCart.GetCurrentCartShippingOptionId();
 
             if (deliveryMethods.IsPresent(currentShipping) && !deliveryMethods.IsDisabled(currentShipping))
             {
@@ -227,13 +232,13 @@ namespace Kadena.BusinessLogic.Services
         private void SetDefaultShipping(DeliveryCarriers deliveryMethods)
         {
             int defaultMethodId = deliveryMethods.GetDefaultMethodId();
-            kenticoProvider.SelectShipping(defaultMethodId);
+            shoppingCart.SelectShipping(defaultMethodId);
             deliveryMethods.CheckMethod(defaultMethodId);
         }
 
         private void UnsetShipping()
         {
-            kenticoProvider.SelectShipping(0);
+            shoppingCart.SelectShipping(0);
         }
 
         private void SetPricesVisibility(CheckoutPage page)
@@ -254,13 +259,13 @@ namespace Kadena.BusinessLogic.Services
        
         public CheckoutPage SelectShipipng(int id)
         {
-            kenticoProvider.SelectShipping(id);
+            shoppingCart.SelectShipping(id);
             return GetCheckoutPage();
         }
 
         public CheckoutPage SelectAddress(int id)
         {
-            kenticoProvider.SetShoppingCartAddress(id);
+            shoppingCart.SetShoppingCartAddress(id);
             var checkoutPage = GetCheckoutPage();
             checkoutPage.DeliveryAddresses.CheckAddress(id);
             return checkoutPage;
@@ -268,17 +273,17 @@ namespace Kadena.BusinessLogic.Services
 
         public CheckoutPage ChangeItemQuantity(int id, int quantity)
         {
-            kenticoProvider.SetCartItemQuantity(id, quantity);
+            shoppingCart.SetCartItemQuantity(id, quantity);
             return GetCheckoutPage();
         }
 
         public CheckoutPage RemoveItem(int id)
         {
-            kenticoProvider.RemoveCartItem(id);
+            shoppingCart.RemoveCartItem(id);
             var itemsCount = kenticoProvider.GetShoppingCartItemsCount();
             if (itemsCount == 0)
             {
-                kenticoProvider.ClearCart();
+                shoppingCart.ClearCart();
             }
 
             return GetCheckoutPage();
@@ -287,7 +292,7 @@ namespace Kadena.BusinessLogic.Services
         public CartItemsPreview ItemsPreview()
         {
             bool userCanSeePrices = kenticoUsers.UserCanSeePrices();
-            var cartItems = kenticoProvider.GetShoppingCartItems(userCanSeePrices);
+            var cartItems = shoppingCart.GetShoppingCartItems(userCanSeePrices);
 
             var preview = new CartItemsPreview
             {
@@ -299,7 +304,7 @@ namespace Kadena.BusinessLogic.Services
 
             if (userCanSeePrices)
             {
-                var cartItemsTotals = kenticoProvider.GetShoppingCartTotals();
+                var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
                 preview.SummaryPrice = new CartPrice()
                 {
                     PricePrefix = resources.GetResourceString("Kadena.Checkout.ItemPricePrefix"),
@@ -313,7 +318,7 @@ namespace Kadena.BusinessLogic.Services
         public async Task<AddToCartResult> AddToCart(NewCartItem item)
         {
             var mailingList = await mailingService.GetMailingList(item.ContainerId);
-            var addedItem = kenticoProvider.AddCartItem(item, mailingList);
+            var addedItem = shoppingCart.AddCartItem(item, mailingList);
             var result = new AddToCartResult
             {
                 CartPreview = ItemsPreview(),

@@ -126,6 +126,7 @@
     <Compile Include="Contracts\IKenticoProductsProvider.cs" />
     <Compile Include="Contracts\IKenticoDocumentProvider.cs" />
     <Compile Include="Contracts\IKenticoLoginProvider.cs" />
+    <Compile Include="Contracts\IShoppingCartProvider.cs" />
     <Compile Include="Contracts\IKenticoUserProvider.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Providers\KenticoMailProvider.cs" />
     <Compile Include="Providers\KenticoDocumentProvider.cs" />
     <Compile Include="Providers\KenticoLoginProvider.cs" />
+    <Compile Include="Providers\ShoppingCartProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />

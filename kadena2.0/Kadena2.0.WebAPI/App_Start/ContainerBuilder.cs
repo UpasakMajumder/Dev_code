@@ -62,6 +62,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoAddressBookProvider, KenticoAddressBookProvider>();
             container.Register<IKenticoBrandsProvider, KenticoBrandsProvider>();
             container.Register<IKenticoProgramsProvider, KenticoProgramsProvider>();
+            container.Register<IShoppingCartProvider, ShoppingCartProvider>();
             return container;
         }
 
