@@ -264,11 +264,11 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.Button btnSave;
     
     /// <summary>
-    /// btnCancel control.
+    /// lnkCancel control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Button btnCancel;
+    protected global::System.Web.UI.WebControls.LinkButton lnkCancel;
 }

@@ -77,6 +77,9 @@
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="input__error" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="input__error"
+                            ControlToValidate="txtEstimatedprice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                        </asp:RegularExpressionValidator>
                     </div>
                 </div>
             </div>
@@ -85,6 +88,9 @@
                     <span class="input__label" runat="server" id="lblActualPrice"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtActualPrice" class="input__text"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="revActualPrice" CssClass="input__error" runat="server"
+                            ControlToValidate="txtActualPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                        </asp:RegularExpressionValidator>
                     </div>
                 </div>
             </div>
@@ -103,6 +109,9 @@
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtQty" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqQty" CssClass="input__error" runat="server" ControlToValidate="txtQty"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revQty" runat="server" CssClass="input__error"
+                            ControlToValidate="txtQty" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                        </asp:RegularExpressionValidator>
                     </div>
                 </div>
             </div>
