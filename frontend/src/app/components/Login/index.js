@@ -78,10 +78,10 @@ class Login extends Component {
     const { login: loginNextProps } = nextProps;
 
     // if necessary not to show TaC
-    if (loginNextProps.checkTaC.isAsked && !loginNextProps.submit.isAsked) {
-      if (!loginNextProps.checkTaC.showTaC) {
-        this.loginSubmit();
-      }
+    if (loginProps.checkTaC.isAsked !== loginNextProps.checkTaC.isAsked
+      && !loginNextProps.submit.isAsked
+      && !loginNextProps.checkTaC.showTaC) {
+      this.loginSubmit();
     }
 
     // if TaC accepted
@@ -90,7 +90,9 @@ class Login extends Component {
     }
 
     // if logged in
-    if (loginProps.submit.logonSuccess !== loginNextProps.submit.logonSuccess && loginNextProps.submit.logonSuccess) {
+    if (loginProps.submit.isAsked !== loginNextProps.submit.isAsked
+      && loginNextProps.submit.logonSuccess
+      && loginNextProps.submit.isAsked) {
       const query = getSearchObj();
       if (query.returnurl) {
         location.assign(decodeURIComponent(query.returnurl));

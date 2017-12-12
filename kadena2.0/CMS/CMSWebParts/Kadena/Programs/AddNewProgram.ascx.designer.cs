@@ -81,7 +81,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_UniSelector_UniSelector ddlBrand;
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlBrand;
     
     /// <summary>
     /// ddlBrandRequired control.
@@ -108,7 +108,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_UniSelector_UniSelector ddlCampaign;
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlCampaign;
     
     /// <summary>
     /// ddlCampaignRequired control.
