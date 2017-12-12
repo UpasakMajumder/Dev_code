@@ -55,9 +55,9 @@
                     <cms:CMSTextBox ID="txtBundleQnt" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvBundleQnt" CssClass="input__error" runat="server" ForeColor="Red" ControlToValidate="txtBundleQnt">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error" runat="server" 
+                    <asp:RegularExpressionValidator ID="revBundleQnt" CssClass="input__error" runat="server"
                         ControlToValidate="txtBundleQnt" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                          </asp:RegularExpressionValidator>
+                    </asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -78,9 +78,9 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtEstPrice"></asp:RequiredFieldValidator>
-                 <asp:RegularExpressionValidator ID="revEstPrice" runat="server" 
-                               ControlToValidate="txtEstPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                     </asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="revEstPrice" runat="server"
+                        ControlToValidate="txtEstPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                    </asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -90,9 +90,9 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtActualPrice" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtActualPrice"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revActualPrice" runat="server" 
-                                   ControlToValidate="txtActualPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                          </asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="revActualPrice" runat="server"
+                        ControlToValidate="txtActualPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                    </asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
                 <cms:LocalizedLabel ID="lblQuantity" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblQuantity" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtQuantity" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RegularExpressionValidator ID="revQuantity" runat="server" 
+                    <asp:RegularExpressionValidator ID="revQuantity" runat="server"
                         ControlToValidate="txtQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red" CssClass="input__error"></asp:RegularExpressionValidator>
                 </div>
             </div>
@@ -233,10 +233,10 @@
                                     <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' /></td>
                                 <td>
                                     <asp:TextBox ID="txtAllQuantity" runat="server"></asp:TextBox>
-                                    <asp:RegularExpressionValidator ID="revAllQuantity" runat="server" 
-                                        ErrorMessage='<%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductForm.NumberOnly") %>' 
+                                    <asp:RegularExpressionValidator ID="revAllQuantity" runat="server"
+                                        ErrorMessage='<%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductForm.NumberOnly") %>'
                                         ControlToValidate="txtAllQuantity" ValidationExpression="^[0-9]*$" ForeColor="Red">
-                          </asp:RegularExpressionValidator>
+                                    </asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                         </ItemTemplate>
@@ -260,3 +260,20 @@
         </asp:UpdatePanel>
     </div>
 </div>
+<style type="text/css">
+    select {
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+        select option {
+            white-space: nowrap;
+            width: 100% border-bottom: 1px red solid; /* This doesn't work. */
+        }
+
+    option {
+        width: 400px !important;
+        word-break: break-word !important;
+    }
+</style>
