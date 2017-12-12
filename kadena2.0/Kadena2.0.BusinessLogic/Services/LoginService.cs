@@ -41,20 +41,24 @@ namespace Kadena.BusinessLogic.Services
 
         public CheckTaCResult CheckTaC(LoginRequest request)
         {
-            var user = kenticoUsers.GetUser(request.LoginEmail);
-
             if (!login.CheckPasword(request.LoginEmail, request.Password))
             {
-                throw new SecurityException("Invalid username or password");
+                return CheckTaCResult.GetFailedResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
 
             var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
-            var userHasAccepted = UserHasAcceptedTac(user);
 
-            var showTaC = tacEnabled && !userHasAccepted;
+            var showTaC = false;
+
+            if (tacEnabled)
+            {
+                var user = kenticoUsers.GetUser(request.LoginEmail);
+                showTaC = !UserHasAcceptedTac(user);
+            }
 
             return new CheckTaCResult
             {
+                LogonSuccess = true,
                 ShowTaC = showTaC,
                 Url = showTaC ? GetTacPageUrl() : string.Empty
             };
