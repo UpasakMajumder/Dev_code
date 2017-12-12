@@ -5,17 +5,13 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
-using Kadena.Helpers;
 using Kadena.Old_App_Code.Kadena.Enums;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena2.MicroserviceClients.Clients;
+using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -373,6 +369,23 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// PDF click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CreateProductPDF();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "lnkSaveasPDF_Click", ex.Message);
+            }
+        }
+
         #endregion "Event handling"
 
         #region "Private Methods"
@@ -492,81 +505,32 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
-        #endregion "Private Methods"
-
-        /// <summary>
-        /// PDF click event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
-        {
-            CreateProductPDF();
-        }
         /// <summary>
         /// Used to create PDF
         /// </summary>
-        public void CreateProductPDF()
+        private void CreateProductPDF()
         {
-            DataTable distributorCartData = GetDistributorCartData();
-            var html = CreateCarOuterContent(distributorCartData.Rows[0]);
-            html = html.Replace("{INNERCONTENT}", CreateCartInnerContent(distributorCartData));
-            var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
-            string fileName = "test" + DateTime.Now.Ticks + ".pdf";
-            Response.Clear();
-            MemoryStream ms = new MemoryStream(pdfBytes);
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-            Response.Buffer = true;
-            ms.WriteTo(Response.OutputStream);
-            Response.End();
-        }
-        /// <summary>
-        /// This will returns distributor cart items
-        /// </summary>
-        /// <returns></returns>
-        private DataTable GetDistributorCartData()
-        {
-            QueryDataParameters queryParams = new QueryDataParameters();
-            queryParams.Add("@ShoppingCartUserID", CartID);
-            queryParams.Add("@ShoppingCartInventoryType", InventoryType);
-            var cartDataSet = ConnectionHelper.ExecuteQuery("Proc_Custom_DistributorCartData", queryParams, QueryTypeEnum.StoredProcedure, true);
-            return cartDataSet.Tables[0];
-        }
-        /// <summary>
-        /// This methods returns inner HTML for pdf
-        /// </summary>
-        /// <param name="distributorCartData"></param>
-        /// <returns></returns>
-        private string CreateCartInnerContent(DataTable distributorCartData)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (DataRow row in distributorCartData.Rows)
+            try
             {
-                string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
-                pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}", row["SKUName"].ToString());
-                pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
-                pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
-                pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
-                sb.Append(pdfProductContent);
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+                var html = CartPDFHelper.CreateCarOuterContent(distributorCartData.Rows[0], CurrentSiteName);
+                html = html.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(distributorCartData, CurrentSiteName));
+                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
+                Response.Clear();
+                MemoryStream ms = new MemoryStream(pdfBytes);
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                Response.Buffer = true;
+                ms.WriteTo(Response.OutputStream);
+                Response.End();
             }
-            return sb.ToString();
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "CreateProductPDF", ex.Message);
+            }
         }
-        /// <summary>
-        /// This methods returns Outer HTML for pdf
-        /// </summary>
-        /// <param name="distributorCartData"></param>
-        /// <returns></returns>
-        private string CreateCarOuterContent(DataRow distributor)
-        {
-            StringBuilder sb = new StringBuilder();
-            string personData = $"{distributor["AddressPersonalName"].ToString()} | {distributor["AddressCity"].ToString()} | {distributor["StateDisplayName"].ToString()}";
-            string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFOuterBodyHTML");
-            pdfProductContent = pdfProductContent.Replace("{DISTRIBUTORDETAILS}", personData);
-            pdfProductContent = pdfProductContent.Replace("{PDFNAME}", distributor["AddressPersonalName"].ToString());
-            sb.Append(pdfProductContent);
-            return sb.ToString();
-        }
-    
+
+        #endregion "Private Methods"
     }
 }

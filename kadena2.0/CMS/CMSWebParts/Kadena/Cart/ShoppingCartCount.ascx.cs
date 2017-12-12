@@ -56,6 +56,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion properties
+
         /// <summary>
         /// page load event
         /// </summary>
