@@ -484,7 +484,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetPriceByShippingOption", ex.Message);
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetPriceByShippingOption ", ex.Message);
                 return default(double);
             }
         }
