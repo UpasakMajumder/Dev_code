@@ -78,6 +78,9 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtEstPrice"></asp:RequiredFieldValidator>
+                 <asp:RegularExpressionValidator ID="revEstPrice" runat="server" 
+                               ControlToValidate="txtEstPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                     </asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -87,6 +90,9 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtActualPrice" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvActualPrice" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="txtActualPrice"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revActualPrice" runat="server" 
+                                   ControlToValidate="txtActualPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                          </asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
