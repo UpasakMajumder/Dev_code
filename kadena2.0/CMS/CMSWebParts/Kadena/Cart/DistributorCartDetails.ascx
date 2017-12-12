@@ -8,7 +8,9 @@
     <a href="#" class="btn-action"><i class="fa fa-print" aria-hidden="true"></i><%= Print %></a>
 </div>
 <div class="add_btn">
-    <a href="#" class="btn-action"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><%= SaveasPDF %></a>
+    <asp:LinkButton runat="server" ID="lnkSaveasPDF" OnClick="lnkSaveasPDF_Click" class="btn-action">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i><%=SaveasPDF %>
+    </asp:LinkButton>
 </div>
 </div>
  <div runat="server" id="tblCartItems" class="js-cartItems">

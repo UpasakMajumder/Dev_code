@@ -5,10 +5,17 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Helpers;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -59,6 +66,21 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             set
             {
                 SetValue("ShoppingCartDistributorID", value);
+            }
+        }
+
+        /// <summary>
+        /// gets or sets Inventory Type
+        /// </summary>
+        public int InventoryType
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("InventoryType"), default(int));
+            }
+            set
+            {
+                SetValue("InventoryType", value);
             }
         }
 
@@ -282,6 +304,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         price += ValidationHelper.GetDouble(lblSKUPrice.Value, default(double));
                     }
                     var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
+                    var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                     if (inventoryType == (Int32)ProductType.GeneralInventory)
                     {
                         ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
@@ -293,6 +316,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         ddlShippingOption.Attributes["disabled"] = "disabled";
                         lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(price, CurrentSite.SiteID);
                     }
+                    ddlBusinessUnits.SelectedValue = businessUnitID;
                 }
             }
             catch (Exception ex)
@@ -339,6 +363,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                 }
                 Cart.ShoppingCartShippingOptionID = ValidationHelper.GetValue<int>(ddlShippingOption.SelectedValue);
+                Cart.SetValue("BusinessUnitIDForDistributor", ddlBusinessUnits.SelectedValue);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                 lblCartUpdateSuccess.Text = ResHelper.GetString("KDA.DistributorCart.CartUpdateSuccessMessage");
             }
@@ -468,5 +493,80 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion "Private Methods"
+
+        /// <summary>
+        /// PDF click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
+        {
+            CreateProductPDF();
+        }
+        /// <summary>
+        /// Used to create PDF
+        /// </summary>
+        public void CreateProductPDF()
+        {
+            DataTable distributorCartData = GetDistributorCartData();
+            var html = CreateCarOuterContent(distributorCartData.Rows[0]);
+            html = html.Replace("{INNERCONTENT}", CreateCartInnerContent(distributorCartData));
+            var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+            string fileName = "test" + DateTime.Now.Ticks + ".pdf";
+            Response.Clear();
+            MemoryStream ms = new MemoryStream(pdfBytes);
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+            Response.Buffer = true;
+            ms.WriteTo(Response.OutputStream);
+            Response.End();
+        }
+        /// <summary>
+        /// This will returns distributor cart items
+        /// </summary>
+        /// <returns></returns>
+        private DataTable GetDistributorCartData()
+        {
+            QueryDataParameters queryParams = new QueryDataParameters();
+            queryParams.Add("@ShoppingCartUserID", CartID);
+            queryParams.Add("@ShoppingCartInventoryType", InventoryType);
+            var cartDataSet = ConnectionHelper.ExecuteQuery("Proc_Custom_DistributorCartData", queryParams, QueryTypeEnum.StoredProcedure, true);
+            return cartDataSet.Tables[0];
+        }
+        /// <summary>
+        /// This methods returns inner HTML for pdf
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        /// <returns></returns>
+        private string CreateCartInnerContent(DataTable distributorCartData)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (DataRow row in distributorCartData.Rows)
+            {
+                string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
+                pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}", row["SKUName"].ToString());
+                pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
+                pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
+                pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                sb.Append(pdfProductContent);
+            }
+            return sb.ToString();
+        }
+        /// <summary>
+        /// This methods returns Outer HTML for pdf
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        /// <returns></returns>
+        private string CreateCarOuterContent(DataRow distributor)
+        {
+            StringBuilder sb = new StringBuilder();
+            string personData = $"{distributor["AddressPersonalName"].ToString()} | {distributor["AddressCity"].ToString()} | {distributor["StateDisplayName"].ToString()}";
+            string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFOuterBodyHTML");
+            pdfProductContent = pdfProductContent.Replace("{DISTRIBUTORDETAILS}", personData);
+            pdfProductContent = pdfProductContent.Replace("{PDFNAME}", distributor["AddressPersonalName"].ToString());
+            sb.Append(pdfProductContent);
+            return sb.ToString();
+        }
+    
     }
 }

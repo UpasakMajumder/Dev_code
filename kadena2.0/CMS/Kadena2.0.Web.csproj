@@ -660,6 +660,10 @@
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NuGet.Core, Version=2.8.50506.491, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\NuGet.Core.dll</HintPath>
@@ -918,6 +922,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.designer.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx.cs">
       <DependentUpon>RemoveItemFromCart.ascx</DependentUpon>
@@ -1207,6 +1218,7 @@
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Kadena\Constants\Constants.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
@@ -1262,6 +1274,7 @@
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
+    <Compile Include="Old_App_Code\Kadena\PDFHelpers\CartPDFHelper.cs" />
     <Compile Include="ProgramWebservice.asmx.cs">
       <DependentUpon>ProgramWebservice.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1341,6 +1354,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx" />
