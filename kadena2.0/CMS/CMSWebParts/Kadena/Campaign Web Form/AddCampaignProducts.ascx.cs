@@ -350,6 +350,20 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             SetValue("BrandNameError", value);
         }
     }
+    /// <summary>
+    /// Numeric Field only error resource string
+    /// </summary>
+    public string NumberOnlyError
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.NumbericFieldError"), string.Empty);
+        }
+        set
+        {
+            SetValue("NumberOnlyError", value);
+        }
+    }
 
     /// <summary>
     /// Save button resource string
@@ -452,6 +466,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProgram.ErrorMessage = ProgramNameError;
         rqEstimatePrice.ErrorMessage = EstimatedPriceError;
         rqBrand.ErrorMessage = BrandNameError;
+        revActualPrice.ErrorMessage = NumberOnlyError;
+        revEstPrice.ErrorMessage = NumberOnlyError;
+        revQty.ErrorMessage = NumberOnlyError;
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
         hdnDatepickerUrl.Value = CalenderIconPath;

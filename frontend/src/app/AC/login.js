@@ -66,16 +66,26 @@ export const checkTaC = (url, body) => {
 
     axios.post(url, body)
       .then((response) => {
-        const { payload, success } = response.data;
-        if (success) {
-          dispatch({
-            type: TAC_CHECK + SUCCESS,
-            payload: {
-              checkTaC: payload
-            }
-          });
+        const { payload, success, errorMessage } = response.data;
+
+        if (success && payload) {
+          if (payload.logonSuccess) {
+            dispatch({
+              type: TAC_CHECK + SUCCESS,
+              payload
+            });
+          } else {
+            dispatch({
+              type: LOG_IN + FAILURE,
+              alert: false,
+              payload
+            });
+          }
         } else {
-          dispatch({ type: TAC_CHECK + FAILURE });
+          dispatch({
+            type: TAC_CHECK + FAILURE,
+            alert: errorMessage
+          });
         }
       })
       .catch((error) => {
@@ -90,11 +100,14 @@ export const acceptTaC = (url, body) => {
 
     axios.post(url, body)
       .then((response) => {
-        const { success } = response.data;
+        const { success, errorMessage } = response.data;
         if (success) {
           dispatch({ type: TAC_ACCEPT + SUCCESS });
         } else {
-          dispatch({ type: TAC_ACCEPT + FAILURE });
+          dispatch({
+            type: TAC_ACCEPT + FAILURE,
+            alert: errorMessage
+          });
         }
       })
       .catch((error) => {
@@ -109,17 +122,22 @@ export const loginSubmit = (url, body) => {
 
     axios.post(url, body)
       .then((response) => {
-        const { success, payload } = response.data;
+        const { success, payload, errorMessage } = response.data;
         if (success && payload.logonSuccess) {
           dispatch({
             type: LOG_IN + SUCCESS,
             payload
           });
-        } else {
+        } else if (!payload.logonSuccess) {
           dispatch({
             type: LOG_IN + FAILURE,
             alert: false,
             payload
+          });
+        } else {
+          dispatch({
+            type: LOG_IN + FAILURE,
+            alert: errorMessage
           });
         }
       })

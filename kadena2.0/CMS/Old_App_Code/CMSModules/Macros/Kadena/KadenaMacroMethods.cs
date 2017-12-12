@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 
-[assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
+[assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
