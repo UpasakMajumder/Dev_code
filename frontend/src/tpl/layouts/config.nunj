@@ -87,7 +87,14 @@
         passwordHide: 'HIDE',
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
-        login: 'Log in'
+        login: 'Log in',
+        loginUrl: PATH + 'login',
+        acceptTaCUrl: PATH + 'accepttac',
+        checkTaCUrl: PATH + 'checktac'
+      },
+      tac: {
+        title: 'Title',
+        submitTexT: 'Accept'
       },
       checkout: {
         initRenderUIURL: PATH + 'checkout/ui',

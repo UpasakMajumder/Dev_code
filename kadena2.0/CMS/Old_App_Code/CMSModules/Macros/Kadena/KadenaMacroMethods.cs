@@ -11,16 +11,18 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
-using Kadena.Models.Product;
+using Kadena.Models;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
-using Kadena.WebAPI.KenticoProviders;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
+using Kadena.Models.Product;
+using Kadena.WebAPI.KenticoProviders;
 
 [assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -640,6 +642,33 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 EventLogProvider.LogInformation("Kadena Macro methods", "CheckUniqueInMyTable", ex.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns if any campaign is open
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(bool), "Returns if any campaign is open", 0)]
+        public static object IsCampaignOpen(EvaluationContext context, params object[] parameters)
+        {
+            bool IsOpen = false;
+            try
+            {
+                var campaign = CampaignProvider.GetCampaigns()
+                    .Columns("Name")
+                    .WhereEquals("OpenCampaign", true)
+                    .WhereEquals("CloseCampaign", false)
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
+                    .FirstOrDefault();
+                return IsOpen = campaign != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "IsCampaignOpen", ex.Message);
+                return IsOpen;
             }
         }
 
