@@ -369,24 +369,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
             }
         }
-
-        /// <summary>
-        /// PDF click event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                CreateProductPDF();
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "lnkSaveasPDF_Click", ex.Message);
-            }
-        }
-
+        
         #endregion "Event handling"
 
         #region "Private Methods"
@@ -505,33 +488,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 return default(double);
             }
         }
-
-        /// <summary>
-        /// Used to create PDF
-        /// </summary>
-        private void CreateProductPDF()
-        {
-            try
-            {
-                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
-                var html = CartPDFHelper.CreateCarOuterContent(distributorCartData.Rows[0], CurrentSiteName);
-                html = html.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(distributorCartData, CurrentSiteName));
-                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
-                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
-                Response.Clear();
-                MemoryStream ms = new MemoryStream(pdfBytes);
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-                Response.Buffer = true;
-                ms.WriteTo(Response.OutputStream);
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "CreateProductPDF", ex.Message);
-            }
-        }
-
         #endregion "Private Methods"
     }
 }
