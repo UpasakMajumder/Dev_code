@@ -114,6 +114,13 @@
   <ItemGroup>
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
+    <Compile Include="Contracts\IKenticoProgramsProvider.cs" />
+    <Compile Include="Contracts\IKenticoAddressBookProvider.cs" />
+    <Compile Include="Contracts\IKenticoBusinessUnitsProvider.cs" />
+    <Compile Include="Contracts\IKenticoBrandsProvider.cs" />
+    <Compile Include="Contracts\IKenticoProductCategoryProvider.cs" />
+    <Compile Include="Contracts\IKenticoPOSProvider.cs" />
+    <Compile Include="Contracts\IKenticoCampaignsProvider.cs" />
     <Compile Include="Contracts\IKenticoLogger.cs" />
     <Compile Include="Contracts\IKenticoFavoritesProvider.cs" />
     <Compile Include="Contracts\IKenticoProductsProvider.cs" />
@@ -131,6 +138,13 @@
     <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KenticoProgramsProvider.cs" />
+    <Compile Include="Providers\KenticoAddressBookProvider.cs" />
+    <Compile Include="Providers\KenticoBusinessUnitsProvider.cs" />
+    <Compile Include="Providers\KenticoBrandsProvider.cs" />
+    <Compile Include="Providers\KenticoProductCategoryProvider.cs" />
+    <Compile Include="Providers\KenticoPOSProvider.cs" />
+    <Compile Include="Providers\KenticoCampaignsProvider.cs" />
     <Compile Include="Providers\KenticoLogger.cs" />
     <Compile Include="Providers\KenticoFavoritesProvider.cs" />
     <Compile Include="Providers\KenticoProductsProvider.cs" />

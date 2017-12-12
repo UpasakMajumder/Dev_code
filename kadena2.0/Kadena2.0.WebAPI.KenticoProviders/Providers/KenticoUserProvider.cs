@@ -108,26 +108,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public User GetCurrentUser()
         {
-            return CreateUser(MembershipContext.AuthenticatedUser);
+            return _mapper.Map<User>(MembershipContext.AuthenticatedUser);
         }
 
         public User GetUser(string mail)
         {
-            return CreateUser(UserInfoProvider.GetUserInfo(mail));
-        }
-
-        private User CreateUser(UserInfo user)
-        {
-            if (user == null)
-            {
-                return null;
-            }
-
-            return new User
-            {
-                UserId = user.UserID,
-                TermsConditionsAccepted = user.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)
-            };
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public bool SaveLocalization(string code)
