@@ -147,11 +147,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
                                       .WhereEquals("ProgramID", null)
                                       .ToList();
-                    if (categoryID != default(int))
+                    if (!DataHelper.DataSourceIsEmpty(productsDetails))
                     {
-                        productsDetails = productsDetails
-                            .Where(x => x.CategoryID == categoryID)
-                            .ToList();
+                        if (categoryID != default(int))
+                        {
+                            productsDetails = productsDetails
+                                .Where(x => x.CategoryID == categoryID)
+                                .ToList();
+                        }
                     }
                 }
                 else
