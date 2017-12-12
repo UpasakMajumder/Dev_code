@@ -1122,6 +1122,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.designer.cs">
       <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\InboundTracking.ascx.cs">
+      <DependentUpon>InboundTracking.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\InboundTracking.ascx.designer.cs">
+      <DependentUpon>InboundTracking.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\InventoryProductFilter.ascx.cs">
       <DependentUpon>InventoryProductFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1213,6 +1220,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\InboundTracking.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
@@ -1367,6 +1375,7 @@
     <Content Include="CMSWebParts\Kadena\POS\POSForm.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddInventoryProduct.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\InboundTracking.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\InventoryProductFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\ProductInventory.ascx" />
