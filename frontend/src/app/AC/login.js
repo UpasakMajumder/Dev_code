@@ -1,75 +1,130 @@
 import axios from 'axios';
 /* constants */
-import { LOG_IN, VALIDATION_ERROR, FETCH, SUCCESS, FAILURE } from 'app.consts';
-/* helpers */
-import { callAC } from 'app.helpers/ac';
+import {
+  LOG_IN,
+  VALIDATION_ERROR,
+  CREDENTINALS_CHANGE,
+  FETCH,
+  SUCCESS,
+  FAILURE,
+  TAC_CHECK,
+  TAC_ACCEPT
+} from 'app.consts';
 /* globals */
 import { LOGIN } from 'app.globals';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
 
-export default (loginEmail, password, isKeepMeLoggedIn) => {
-  return (dispatch) => {
-    if (!loginEmail.match(emailRegExp)) {
-      dispatch({
-        type: LOG_IN + VALIDATION_ERROR,
-        data: {
-          isLoading: false,
-          response: {
-            success: false,
-            errorMessage: LOGIN.emailValidationMessage,
-            errorPropertyName: 'loginEmail'
-          }
-        }
-      });
+const isValid = (body, dispatch) => {
+  const { loginEmail, password } = body;
 
-      return;
-    }
-
-    if (password.length === 0) {
-      dispatch({
-        type: LOG_IN + VALIDATION_ERROR,
-        data: {
-          isLoading: false,
-          response: {
-            success: false,
-            errorMessage: LOGIN.passwordValidationMessage,
-            errorPropertyName: 'password'
-          }
-        }
-      });
-
-      return;
-    }
-
+  if (!loginEmail.match(emailRegExp)) {
     dispatch({
-      type: LOG_IN + FETCH,
-      isLoading: true
+      type: LOG_IN + VALIDATION_ERROR,
+      isLoading: false,
+      payload: {
+        logonSuccess: false,
+        errorMessage: LOGIN.emailValidationMessage,
+        errorPropertyName: 'loginEmail'
+      }
+    });
+    return false;
+  }
+
+  if (password.length === 0) {
+    dispatch({
+      type: LOG_IN + VALIDATION_ERROR,
+      isLoading: false,
+      payload: {
+        logonSuccess: false,
+        errorMessage: LOGIN.passwordValidationMessage,
+        errorPropertyName: 'password'
+      }
     });
 
-    // ToDo: Change to POST and URL
-    axios.post('/KadenaWebService.asmx/LogonUser', { loginEmail, password, isKeepMeLoggedIn })
+    return false;
+  }
+
+  return true;
+};
+
+export const changeCredentinals = (field, value) => {
+  return {
+    type: CREDENTINALS_CHANGE,
+    payload: {
+      field,
+      value
+    }
+  };
+};
+
+export const checkTaC = (url, body) => {
+  return (dispatch) => {
+    if (!isValid(body, dispatch)) return;
+
+    dispatch({ type: TAC_CHECK + FETCH });
+
+    axios.post(url, body)
       .then((response) => {
-        const data = response.data.d ? response.data.d : response.data; // d prop is because of .NET
-        if (data.success) {
+        const { payload, success } = response.data;
+        if (success) {
+          dispatch({
+            type: TAC_CHECK + SUCCESS,
+            payload: {
+              checkTaC: payload
+            }
+          });
+        } else {
+          dispatch({ type: TAC_CHECK + FAILURE });
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: TAC_CHECK + FAILURE });
+      });
+  };
+};
+
+export const acceptTaC = (url, body) => {
+  return (dispatch) => {
+    if (!isValid(body, dispatch)) return;
+
+    axios.post(url, body)
+      .then((response) => {
+        const { success } = response.data;
+        if (success) {
+          dispatch({ type: TAC_ACCEPT + SUCCESS });
+        } else {
+          dispatch({ type: TAC_ACCEPT + FAILURE });
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: TAC_ACCEPT + FAILURE });
+      });
+  };
+};
+
+export const loginSubmit = (url, body) => {
+  return (dispatch) => {
+    if (!isValid(body, dispatch)) return;
+
+    axios.post(url, body)
+      .then((response) => {
+        const { success, payload } = response.data;
+        if (success && payload.logonSuccess) {
           dispatch({
             type: LOG_IN + SUCCESS,
-            data
+            payload
           });
         } else {
           dispatch({
             type: LOG_IN + FAILURE,
-            isLoading: false,
-            data,
-            alert: false
+            alert: false,
+            payload
           });
         }
       })
       .catch((error) => {
-        dispatch({
-          type: LOG_IN + FAILURE,
-          isLoading: false
-        });
+        dispatch({ type: LOG_IN + FAILURE });
       });
   };
 };

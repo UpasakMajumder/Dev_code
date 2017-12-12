@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
+using Kadena.Dto.Logon.Requests;
+using Kadena.Dto.Logon.Responses;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
@@ -18,8 +21,10 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models;
+using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
+using Kadena.Models.Login;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
@@ -222,6 +227,12 @@ namespace Kadena.WebAPI
                 config.CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
                     .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateCode))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
+                config.CreateMap<LogonUserRequestDTO, LoginRequest>();
+                config.CreateMap<LoginResult, LogonUserResultDTO>();
+                config.CreateMap<CheckTaCRequestDTO, LoginRequest>();
+                config.CreateMap<AcceptTaCRequestDTO, LoginRequest>();
+                config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
+				config.CreateMap<BusinessUnit, BusinessUnitDto>();
             });
         }
     }
