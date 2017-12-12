@@ -5,6 +5,7 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using System;
@@ -421,7 +422,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (ShippingOptions == null)
                 {
                     ShippingOptions = ShippingOptionInfoProvider.GetShippingOptions()
-                                                .OnSite(CurrentSite.SiteID).ToList();
+                                                .OnSite(CurrentSite.SiteID).Where(x=>x.ShippingOptionEnabled==true).ToList();
                 }
             }
             catch (Exception ex)
@@ -441,8 +442,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
                 rptCartItems.QueryParameters = parameters;
-                rptCartItems.QueryName = "Ecommerce.Shoppingcart.GetCartItems";
-                rptCartItems.TransformationName = "KDA.Transformations.xCartItems";
+                rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
+                rptCartItems.TransformationName = TransformationNames.cartItems;
             }
             catch (Exception ex)
             {

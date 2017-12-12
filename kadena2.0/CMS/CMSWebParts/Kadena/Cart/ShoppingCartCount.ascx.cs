@@ -2,6 +2,7 @@
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
@@ -70,7 +71,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", ShoppingCartInventoryType);
-                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                var countData = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartCount, queryParams, QueryTypeEnum.StoredProcedure, true);
                 var count = ValidationHelper.GetInteger(countData, default(int));
                 linkCheckoutPage.HRef = URL;
                 lblCartName.Text = CartDisplayName;
