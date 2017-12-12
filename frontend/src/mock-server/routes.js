@@ -5,6 +5,9 @@ const Settings = require('./controllers/settings');
 const Products = require('./controllers/products');
 const Orders = require('./controllers/order');
 const MailingList = require('./controllers/mailingList');
+const Login = require('./controllers/login');
+const CheckTaC = require('./controllers/checkTaC');
+const AcceptTaC = require('./controllers/acceptTaC');
 
 const apiRouter = require('express').Router();
 
@@ -14,6 +17,9 @@ apiRouter.use((req, res, next) => {
   next();
 });
 
+apiRouter.post('/login', Login);
+apiRouter.post('/accepttac', AcceptTaC);
+apiRouter.post('/checktac', CheckTaC);
 
 apiRouter.get('/cartPreview', CartPreview);
 
