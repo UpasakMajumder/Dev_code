@@ -84,6 +84,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
                 revBundleQnt.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+                revEstPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+                revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
                 libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
             }
