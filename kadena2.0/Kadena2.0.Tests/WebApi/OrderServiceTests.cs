@@ -80,7 +80,6 @@ namespace Kadena.Tests.WebApi
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
                 templateProductService.Object,
-                new FakeBackgroundTaskScheduler(),
                 documents.Object);
         }
 
