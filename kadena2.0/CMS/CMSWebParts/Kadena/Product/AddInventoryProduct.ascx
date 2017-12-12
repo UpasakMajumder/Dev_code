@@ -260,7 +260,7 @@
         </asp:UpdatePanel>
     </div>
 </div>
-<style type="text/css">
+<%--<style type="text/css">
     select {
         width: 150px;
         overflow: hidden;
@@ -276,4 +276,4 @@
         width: 400px !important;
         word-break: break-word !important;
     }
-</style>
+</style>--%>
