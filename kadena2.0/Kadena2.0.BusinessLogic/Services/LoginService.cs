@@ -49,9 +49,8 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
-            var userHasAccepted = UserHasAcceptedTac(user);
-
-            var showTaC = tacEnabled && !userHasAccepted;
+            
+            var showTaC = tacEnabled && !UserHasAcceptedTac(user);
 
             return new CheckTaCResult
             {
