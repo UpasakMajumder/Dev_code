@@ -994,6 +994,11 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
                     {
                         BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                        NewUserRole = ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
+                        if (!string.IsNullOrEmpty(NewUserRole))
+                        {
+                            UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
+                        }
                     }
                     formElem.SaveData("~/" + CurrentDocument.DocumentUrlPath);
                 }
@@ -1023,7 +1028,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             "UserAddress",
             "UserFax",
             "FYBudget",
-            "PasswordHint"
+            "PasswordHint",
+            "UserCompanyName",
         };
         List<string> intUserSettingKeys = new List<string>() {
             "UserCountry",
@@ -1037,7 +1043,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             LastName = ValidationHelper.GetString(formElem.GetFieldValue("LastName"), string.Empty),
             Email = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
             UserName = ValidationHelper.GetString(formElem.GetFieldValue("Email"), string.Empty),
-            Enabled = true,
+            Enabled = ValidationHelper.GetBoolean(formElem.GetFieldValue("UserEnabled"), false),
             UserSettings = {
                 UserPhone = ValidationHelper.GetString(formElem.GetFieldValue("UserMobile"), string.Empty)
             }
@@ -1054,6 +1060,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         UserInfoProvider.SetUserInfo(user);
         UserInfoProvider.SetPassword(user.UserName, Password);
         UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
+        NewUserRole=ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
         if (!string.IsNullOrEmpty(NewUserRole))
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);

@@ -24,7 +24,7 @@ function poscodeChange(thiselem) {
 }
 //Calendar js
 $(function () {
-  var datepickerpath='';
+   var datepickerpath='';
   var datePicker=$('[id$=hdnDatepickerUrl]');
   if(typeof datePicker !="undefined")
   {
@@ -34,7 +34,8 @@ $(function () {
   $('[id$=txtExpDate]').datepicker({
     showOn: "both",
     buttonImage: datepickerpath,
-    buttonImageOnly: false
+    buttonImageOnly: false,
+    minDate: 0
   });
 });
 
@@ -44,7 +45,7 @@ $('[id$=productImage]').on('change', function () {
 //end
 //Product Campaign js https://png.icons8.com/?id=3344&size=280
 $(function () {
-   var datepickerpath='';
+  var datepickerpath = '';
   var datePicker=$('[id$=hdnDatepickerUrl]');
   if(typeof datePicker !="undefined")
   {
@@ -54,7 +55,8 @@ $(function () {
   $('[id$=txtExpireDate]').datepicker({
     showOn: "both",
     buttonImage: datepickerpath,
-    buttonImageOnly: false
+    buttonImageOnly: false,
+    minDate: 0
   });
 });
 

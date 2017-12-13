@@ -350,6 +350,20 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             SetValue("BrandNameError", value);
         }
     }
+    /// <summary>
+    /// Numeric Field only error resource string
+    /// </summary>
+    public string NumberOnlyError
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.NumbericFieldError"), string.Empty);
+        }
+        set
+        {
+            SetValue("NumberOnlyError", value);
+        }
+    }
 
     /// <summary>
     /// Save button resource string
@@ -452,6 +466,9 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProgram.ErrorMessage = ProgramNameError;
         rqEstimatePrice.ErrorMessage = EstimatedPriceError;
         rqBrand.ErrorMessage = BrandNameError;
+        revActualPrice.ErrorMessage = NumberOnlyError;
+        revEstPrice.ErrorMessage = NumberOnlyError;
+        revQty.ErrorMessage = NumberOnlyError;
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
         hdnDatepickerUrl.Value = CalenderIconPath;
@@ -474,7 +491,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     BindCategories();
                     BindResorceStrings();
                     BindPOS();
-                    BindStates();
+                    GetStateGroup();
                     int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
                     if (productID != 0)
                     {
@@ -625,30 +642,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         }
     }
 
-    /// <summary>
-    /// Bind States
-    /// </summary>
-    public void BindStates()
-    {
-        try
-        {
-            var states = StateInfoProvider.GetStates().Columns("StateID,StateName").ToList();
-            if (!DataHelper.DataSourceIsEmpty(states))
-            {
-                ddlState.DataSource = states;
-                ddlState.DataTextField = "StateName";
-                ddlState.DataValueField = "StateID";
-                ddlState.DataBind();
-                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectStateText"), string.Empty);
-                ddlState.Items.Insert(0, new ListItem(selectText, "0"));
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindStates", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
-
+  
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -892,6 +886,34 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         catch (Exception ex)
         {
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
+    /// <summary>
+    /// Get the State list
+    /// </summary>
+    /// <returns></returns>
+    public string GetStateGroup()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var states = CustomTableItemProvider.GetItems(StatesGroupItem.CLASS_NAME)
+                .Columns("ItemID,States")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(states))
+            {
+                ddlState.DataSource = states;
+                ddlState.DataTextField = "States";
+                ddlState.DataValueField = "ItemID";
+                ddlState.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.StateStateText"), string.Empty);
+                ddlState.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetStateGroup", ex, CurrentSite.SiteID, ex.Message);
         }
         return returnValue;
     }
