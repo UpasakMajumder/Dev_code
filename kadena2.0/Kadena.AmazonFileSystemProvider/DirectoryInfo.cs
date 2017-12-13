@@ -60,14 +60,8 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         public override DateTime LastWriteTime
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
 
@@ -86,14 +80,8 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         public override DateTime CreationTime
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
 
