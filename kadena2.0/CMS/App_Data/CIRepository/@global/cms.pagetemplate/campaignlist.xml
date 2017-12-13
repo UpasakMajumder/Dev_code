@@ -299,7 +299,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
 <![CDATA[
-<a class="btn-action" href='{% Settings.KDA_CampaignCreatePageUrl |(user)cvoqa2@gmail.com|(hash)256f362dd11039f9fc6e41ef6afcd40099511cd3d96ba534a826544a6d5074b0%}
+<a class="btn-action" href='{% KadenaNamespace.GetLocalizedDocumentUrlByGUID(Settings.KDA_CampaignCreatePageUrl) |(user)cvoqa2@gmail.com|(hash)0722e110dd54d18ba3eb52da4b07b960a5a8c84dca3680deb82d5e7858dd962c%}
 '><i class="fa fa-plus" aria-hidden="true"></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
 ]]>
           </property>

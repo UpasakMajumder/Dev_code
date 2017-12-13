@@ -358,79 +358,79 @@ Select ItemID,DivisionName from KDA_Division
 <![CDATA[
 <div class="form form-lg form_width100">
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}:</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}:</span>$$input:LastName$$ <span class="input__error">$$validation:LastName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$ <span class="input__error">$$validation:LastName$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserTitle$}: </span>$$input:UserTitle$$<span class="input__error">$$validation:UserTitle$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserTitle$}&nbsp;</span>$$input:UserTitle$$<span class="input__error">$$validation:UserTitle$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}: </span>$$input:Email$$<span class="input__error">$$validation:Email$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}&nbsp;</span>$$input:Email$$<span class="input__error">$$validation:Email$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}:</span>$$input:UserMobile$$<span class="input__error">$$validation:UserMobile$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$<span class="input__error">$$validation:UserMobile$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}:</span>$$input:UserCountry$$<span class="input__error">$$validation:UserCountry$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$<span class="input__error">$$validation:UserCountry$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}: </span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}&nbsp;</span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}:</span>$$input:UserCity$$<span class="input__error">$$validation:UserCity$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$<span class="input__error">$$validation:UserCity$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}:</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Role$}:</span>$$input:UserRole$$<span class="input__error">$$validation:UserRole$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Role$}</span>$$input:UserRole$$<span class="input__error">$$validation:UserRole$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Comapany$}:</span>$$input:UserCompanyName$$<span class="input__error">$$validation:UserCompanyName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Comapany$}</span>$$input:UserCompanyName$$<span class="input__error">$$validation:UserCompanyName$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}:</span>$$input:UserFax$$<span class="input__error ">$$validation:UserFax$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$<span class="input__error ">$$validation:UserFax$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}: </span>$$input:FYBudget$$<span class="input__error">$$validation:FYBudget$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}&nbsp;</span>$$input:FYBudget$$<span class="input__error">$$validation:FYBudget$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.DivisionID$}: </span>$$input:UserDivisionID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.DivisionID$}&nbsp;</span>$$input:UserDivisionID$$</div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}: </span>$$input:SalesManagerID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}&nbsp;</span>$$input:SalesManagerID$$</div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$}: </span>$$input:TradeMarketingManagerID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$}&nbsp;</span>$$input:TradeMarketingManagerID$$</div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}:</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserEnabled$}:</span>$$input:UserEnabled$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserEnabled$}</span>$$input:UserEnabled$$</div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}:</span>$$input:BusinessUnit$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$</div>
 </div>
 
 <div class="clearfix">&nbsp;</div>

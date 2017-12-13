@@ -288,38 +288,37 @@ select ItemID,DivisionName from KDA_Division
 <div class="form">
 <p>Enter your personal details below:</p>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}:</span>$$input:FirstName$$ $$validation:FirstName$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$ $$validation:FirstName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}:</span>$$input:LastName$$ $$validation:LastName$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$ $$validation:LastName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}:</span>$$input:UserMobile$$$$validation:UserMobile$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$$$validation:UserMobile$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}:</span>$$input:UserCountry$$$$validation:UserCountry$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$$$validation:UserCountry$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}: </span>$$input:UserState$$$$validation:UserState$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}</span>$$input:UserState$$$$validation:UserState$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}:</span>$$input:UserCity$$$$validation:UserCity$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$$$validation:UserCity$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}:</span>$$input:UserAddress$$$$validation:UserAddress$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$$$validation:UserAddress$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}:</span>$$input:UserFax$$$$validation:UserFax$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$$$validation:UserFax$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}: </span>$$input:FYBudget$$$$validation:FYBudget$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}&nbsp;</span>$$input:FYBudget$$$$validation:FYBudget$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}: </span>$$input:SalesManagerID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}&nbsp;</span>$$input:SalesManagerID$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnits$}: </span>
-<input class="form-control input__text" value="{%KadenaNamespace.GetBusinessUnits(CurrentUser.UserID)|(user)cvoqa2@gmail.com|(hash)655cd0e897fb8a9197b65ff1da6a72e9a9f38f714b16c869951a1272f1b553fc%}" disabled="disabled" type="text" /> </div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnits$}&nbsp;</span><input class="form-control input__text" disabled="disabled" type="text" value="{%KadenaNamespace.GetBusinessUnits(CurrentUser.UserID)|(user)cvoqa2@gmail.com|(hash)655cd0e897fb8a9197b65ff1da6a72e9a9f38f714b16c869951a1272f1b553fc%}" /></div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.DivisionID$}: </span>$$input:UserDivisionID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.DivisionID$}&nbsp;</span>$$input:UserDivisionID$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$}: </span>$$input:TradeMarketingManagerID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$}&nbsp;</span>$$input:TradeMarketingManagerID$$</div>
 
 <p>Enter your account details below:</p>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}: </span>$$input:Email$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}&nbsp;</span>$$input:Email$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}:</span>$$input:PasswordHint$$$$validation:PasswordHint$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$$$validation:PasswordHint$$</div>
 $$submitbutton$$</div>
 
 ]]>
