@@ -13,6 +13,7 @@ using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
@@ -520,7 +521,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                var countData = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartCount, queryParams, QueryTypeEnum.StoredProcedure, true);
                 return ValidationHelper.GetInteger(countData, default(int));
             }
             catch (Exception ex)
@@ -550,7 +551,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     QueryDataParameters queryParams = new QueryDataParameters();
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                    var cartTotal = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartTotal", queryParams, QueryTypeEnum.StoredProcedure, true);
+                    var cartTotal = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartTotal, queryParams, QueryTypeEnum.StoredProcedure, true);
                     return ValidationHelper.GetDouble(cartTotal, default(double));
                 }
                 return default(double);
