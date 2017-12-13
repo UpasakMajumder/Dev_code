@@ -376,7 +376,7 @@ namespace Kadena.BusinessLogic.Services
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
-            if (string.IsNullOrWhiteSpace((string)customer.Company))
+            if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
             }
