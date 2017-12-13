@@ -21,17 +21,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to directory</param>
         public DirectoryInfo(string path)
         {
-            var trimmedPath = path?.Trim('/');
-            if (string.IsNullOrWhiteSpace(trimmedPath))
-            {
-                _path = "/";
-                this.Name = string.Empty;
-            }
-            else
-            {
-                _path = $"/{Path.GetDirectoryName(trimmedPath)}";
-                this.Name = Path.GetFileName(trimmedPath);
-            }
+            this.FullName = path;
         }
 
         #endregion
@@ -46,11 +36,21 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                throw new NotImplementedException();
+                return $"{_path}{Name}";
             }
             set
             {
-                throw new NotImplementedException();
+                var trimmedPath = value?.Trim('/');
+                if (string.IsNullOrWhiteSpace(trimmedPath))
+                {
+                    _path = "/";
+                    this.Name = string.Empty;
+                }
+                else
+                {
+                    _path = $"/{Path.GetDirectoryName(trimmedPath)}/";
+                    this.Name = Path.GetFileName(trimmedPath);
+                }
             }
         }
 
