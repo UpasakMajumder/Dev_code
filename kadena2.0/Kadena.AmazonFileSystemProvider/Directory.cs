@@ -108,7 +108,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>  
         public override string GetCurrentDirectory()
         {
-            throw new NotImplementedException();
+            return AppContext.BaseDirectory;
         }
 
 
