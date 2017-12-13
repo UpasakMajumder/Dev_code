@@ -492,6 +492,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     BindResorceStrings();
                     BindPOS();
                     GetStateGroup();
+                    GetBrandName();
                     int productID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
                     if (productID != 0)
                     {
@@ -522,7 +523,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             }
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
                             ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
-                            txtBrand.Text = GetBrandName(product.BrandID);
+                            ddlBrand.SelectedValue = product.BrandID.ToString();
                             ddlProductcategory.SelectedValue = product.CategoryID.ToString();
                             txtQty.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                             txtItemSpecs.Text = ValidationHelper.GetString(product.ItemSpecs, string.Empty);
@@ -641,8 +642,36 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindPOS", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+    /// <summary>
+    /// Get the brand list
+    /// </summary>
+    /// <param name="brandItemID"></param>
+    /// <returns></returns>
+    public string GetBrandName()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                .Columns("ItemID,BrandName")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(brands))
+            {
+                ddlBrand.DataSource = brands;
+                ddlBrand.DataTextField = "BrandName";
+                ddlBrand.DataValueField = "ItemID";
+                ddlBrand.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
+                ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
 
-  
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -857,8 +886,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     int brandItemID = program.BrandID;
                     if (brandItemID != 0)
                     {
-                        string brandName = GetBrandName(brandItemID);
-                        txtBrand.Text = brandName;
+                        ddlBrand.SelectedValue = brandItemID.ToString();
                         hfBrandItemID.Value = brandItemID.ToString();
                     }
                 }
@@ -875,20 +903,20 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     /// </summary>
     /// <param name="brandItemID"></param>
     /// <returns></returns>
-    public string GetBrandName(int brandItemID)
-    {
-        string returnValue = string.Empty;
-        try
-        {
-            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).WhereEquals("ItemID", brandItemID).Column("BrandName").Select(x => new BrandItem { BrandName = x.Field<string>("BrandName") }).FirstOrDefault();
-            returnValue = brand.BrandName;
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
-        }
-        return returnValue;
-    }
+    //public string GetBrandName(int brandItemID)
+    //{
+    //    string returnValue = string.Empty;
+    //    try
+    //    {
+    //        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).WhereEquals("ItemID", brandItemID).Column("BrandName").Select(x => new BrandItem { BrandName = x.Field<string>("BrandName") }).FirstOrDefault();
+    //        returnValue = brand.BrandName;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
+    //    }
+    //    return returnValue;
+    //}
     /// <summary>
     /// Get the State list
     /// </summary>
