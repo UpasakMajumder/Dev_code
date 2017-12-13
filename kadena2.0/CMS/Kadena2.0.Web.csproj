@@ -1214,6 +1214,7 @@
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
+    <Compile Include="Old_App_Code\Kadena\Constants\Constants.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
@@ -1271,6 +1272,7 @@
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PurchaseOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
+    <Compile Include="Old_App_Code\Kadena\PDFHelpers\CartPDFHelper.cs" />
     <Compile Include="ProgramWebservice.asmx.cs">
       <DependentUpon>ProgramWebservice.asmx</DependentUpon>
       <SubType>Component</SubType>
