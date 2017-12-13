@@ -10,6 +10,8 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     class DirectoryInfo : CMS.IO.DirectoryInfo
     {
+        private string _path;
+
 
         #region "Constructors"
 
@@ -19,6 +21,17 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to directory</param>
         public DirectoryInfo(string path)
         {
+            var trimmedPath = path?.Trim('/');
+            if (string.IsNullOrWhiteSpace(trimmedPath))
+            {
+                _path = "/";
+                this.Name = string.Empty;
+            }
+            else
+            {
+                _path = $"/{Path.GetDirectoryName(trimmedPath)}";
+                this.Name = Path.GetFileName(trimmedPath);
+            }
         }
 
         #endregion
@@ -63,14 +76,8 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         public override string Name
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
 
@@ -139,7 +146,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             throw new NotImplementedException();
         }
-        
+
 
         /// <summary>
         /// Returns an enumerable collection of directory information that matches a specified search pattern and search subdirectory option.
