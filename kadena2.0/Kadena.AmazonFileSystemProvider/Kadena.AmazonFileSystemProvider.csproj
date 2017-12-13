@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmazonS3Helper.cs" />
     <Compile Include="Directory.cs" />
     <Compile Include="DirectoryInfo.cs" />
     <Compile Include="File.cs" />
