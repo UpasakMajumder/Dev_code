@@ -1,5 +1,3 @@
-using CMS.CustomTables;
-using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;

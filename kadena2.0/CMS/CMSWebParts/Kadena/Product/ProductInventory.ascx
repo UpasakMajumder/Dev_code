@@ -32,4 +32,4 @@
         </cms:CMSRepeater>
     </div>
 </div>
-<Cart:CustomerCart runat="server" ID="crtCustomerCart" InventoryType='<%# ProductType %>'  />
+<Cart:CustomerCart runat="server" ID="crtCustomerCart" InventoryType='<%# ProductType %>' Visible="true" />

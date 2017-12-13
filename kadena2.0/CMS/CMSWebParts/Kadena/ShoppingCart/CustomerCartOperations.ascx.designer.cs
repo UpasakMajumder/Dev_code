@@ -13,15 +13,6 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart {
     public partial class CustomerCartOperations {
         
         /// <summary>
-        /// btnDisplay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDisplay;
-        
-        /// <summary>
         /// lblProductName control.
         /// </summary>
         /// <remarks>
@@ -74,5 +65,14 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSuccessMsg;
+        
+        /// <summary>
+        /// btnDisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplay;
     }
 }
