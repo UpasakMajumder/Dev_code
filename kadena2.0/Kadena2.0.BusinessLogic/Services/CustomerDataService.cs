@@ -11,13 +11,11 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoProviderService kenticoProvider;
-        private readonly IKenticoResourceService kenticoResource;
 
-        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResource)
+        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoProviderService kenticoProvider)
         {
             this.kenticoUsers = kenticoUsers;
             this.kenticoProvider = kenticoProvider;
-            this.kenticoResource = kenticoResource;
         }
 
         public CustomerData GetCustomerData(int siteId, int customerId)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models;
@@ -13,38 +12,29 @@ namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
-        private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
-        private readonly IKenticoDocumentProvider documents;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
 
-        public ShoppingCartService(IMapper mapper,
-                                   IKenticoProviderService kenticoProvider,
+        public ShoppingCartService(IKenticoProviderService kenticoProvider,
                                    IKenticoUserProvider kenticoUsers,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
-                                   IKenticoDocumentProvider documents,
-                                   IKenticoLogger kenticoLog,
                                    IShoppingCartProvider shoppingCart,
                                    ICheckoutPageFactory checkoutfactory)
         {
             // TODO null checks. Reject CR if not done
 
-            this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
-            this.documents = documents;
-            this.kenticoLog = kenticoLog;
             this.shoppingCart = shoppingCart;
             this.checkoutfactory = checkoutfactory;
         }

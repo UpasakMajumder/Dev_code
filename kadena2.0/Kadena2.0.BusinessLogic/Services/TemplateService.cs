@@ -17,23 +17,21 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
         private readonly ITemplatedClient _templateClient;
-        private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
-        private readonly IKenticoDocumentProvider documents;
-        private readonly IShoppingCartProvider _shoppingCart;
+        private readonly IKenticoDocumentProvider _documents;
+        private readonly IKenticoProductsProvider _products;
 
         public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, 
-            IKenticoProviderService kentico, IKenticoUserProvider users, IKenticoDocumentProvider documents, IShoppingCartProvider shoppingCart)
+            IKenticoUserProvider users, IKenticoDocumentProvider documents, IKenticoProductsProvider products)
         {
             // TODO check null, reject CR if not done
 
             this._resources = resources;
             this._logger = logger;
             this._templateClient = templateClient;
-            this._kentico = kentico;
             this._users = users;
-            this.documents = documents;
-            this._shoppingCart = shoppingCart;
+            this._documents = documents;
+            this._products = products;
         }
 
         public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
@@ -76,7 +74,7 @@ namespace Kadena.BusinessLogic.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _shoppingCart.GetProductByNodeId(nodeId);
+            var product = _products.GetProductByNodeId(nodeId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -92,7 +90,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                productEditorUrl = documents.GetDocumentUrl(productEditorUrl);
+                productEditorUrl = _documents.GetDocumentUrl(productEditorUrl);
             }
 
             if (requestResult.Success)

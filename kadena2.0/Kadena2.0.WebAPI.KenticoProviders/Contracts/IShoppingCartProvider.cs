@@ -1,6 +1,5 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
-using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -51,19 +50,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SaveShippingAddress(DeliveryAddress address);
 
         string GetShippingProviderIcon(string title);
-
-        string GetSkuImageUrl(int skuid);
-
-        Product GetProductByDocumentId(int documentId);
-
-        Product GetProductByNodeId(int nodeId);
-
-        string GetProductTeaserImageUrl(int documentId);
-        
+                
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string MapOrderStatus(string microserviceStatus);
-
-        void SetSkuAvailableQty(string skunumber, int availableItems);
     }
 }

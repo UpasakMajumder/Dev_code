@@ -68,9 +68,6 @@ namespace Kadena.Tests.WebApi
         // TODO Refactor to use different setups
         private ShoppingCartService CreateShoppingCartService(Mock<IKenticoLogger> kenticoLogger = null, Mock<IShoppingCartProvider> shoppingCart = null )
         {
-            MapperBuilder.InitializeAll();
-            var mapper = Mapper.Instance;
-
             var kenticoUser = new Mock<IKenticoUserProvider>();
             kenticoUser.Setup(p => p.GetCustomerAddresses(AddressType.Shipping))
                 .Returns(new[] { CreateDeliveryAddress() });
@@ -90,20 +87,16 @@ namespace Kadena.Tests.WebApi
 
             var kenticoProvider = new Mock<IKenticoProviderService>();
             var kenticoResource = new Mock<IKenticoResourceService>();
-            var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingService = new Mock<IKListService>();
             var checkoutFactory = new Mock<ICheckoutPageFactory>();
-            var documents = new Mock<IKenticoDocumentProvider>();
 
-            return new ShoppingCartService(mapper,
+            return new ShoppingCartService(
                 kenticoProvider.Object,
                 kenticoUser.Object,
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,
-                documents.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 shoppingCart.Object,
                 checkoutFactory.Object);
         }

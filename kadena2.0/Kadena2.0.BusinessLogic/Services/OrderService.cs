@@ -21,6 +21,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
         private readonly IShoppingCartProvider shoppingCart;
+        private readonly IKenticoProductsProvider products;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
@@ -37,6 +38,7 @@ namespace Kadena.BusinessLogic.Services
             IMailingListClient mailingClient,
             IKenticoProviderService kenticoProvider,
             IShoppingCartProvider shoppingCart,
+            IKenticoProductsProvider products,
             IKenticoUserProvider kenticoUsers,
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
@@ -49,6 +51,7 @@ namespace Kadena.BusinessLogic.Services
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
             this.shoppingCart = shoppingCart;
+            this.products = products;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.orderSubmitClient = orderSubmitClient;
@@ -190,7 +193,7 @@ namespace Kadena.BusinessLogic.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                Image = shoppingCart.GetSkuImageUrl(i.SkuId),
+                Image = products.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,

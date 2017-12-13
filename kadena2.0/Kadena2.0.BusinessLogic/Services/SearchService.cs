@@ -16,18 +16,18 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoSearchService kenticoSearch;
-        private readonly IShoppingCartProvider shoppingCart;
+        private readonly IKenticoProductsProvider products;
         private readonly IKenticoDocumentProvider documents;
 
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, 
-            IKenticoProviderService kenticoProvider, IShoppingCartProvider shoppingCart,IKenticoDocumentProvider documents)
+            IKenticoProviderService kenticoProvider, IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
             // TODO null check, decline CR if not done
 
             this.mapper = mapper;
             this.resources = resources;
             this.kenticoSearch = kenticoSearch;
-            this.shoppingCart = shoppingCart;
+            this.products = products;
             this.documents = documents;
         }
 
@@ -120,10 +120,10 @@ namespace Kadena.BusinessLogic.Services
                     Title = dr[4].ToString(),
                     Breadcrumbs = documents.GetBreadcrumbs(documentId),
                     IsFavourite = false,
-                    ImgUrl = shoppingCart.GetProductTeaserImageUrl(documentId) 
+                    ImgUrl = products.GetProductTeaserImageUrl(documentId) 
                 };
 
-                var product = shoppingCart.GetProductByDocumentId(documentId);
+                var product = products.GetProductByDocumentId(documentId);
                 if (product != null)
                 {
                     // fill in SKU image if teaser is empty

@@ -13,13 +13,13 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
         private readonly IKenticoProviderService kenticoProvider;
-        private readonly IShoppingCartProvider shoppingCart;
+        private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoLogger kenticoLog;
 
         public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
                                           IInventoryUpdateClient microserviceInventory, 
                                           IKenticoProviderService kenticoProvider,
-                                          IShoppingCartProvider shoppingCart,
+                                          IKenticoProductsProvider productsProvider,
                                           IKenticoLogger kenticoLog)
         {
             if (configurationProvider == null)
@@ -34,9 +34,9 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             {
                 throw new ArgumentOutOfRangeException(nameof(kenticoProvider));
             }
-            if (shoppingCart == null)
+            if (productsProvider == null)
             {
-                throw new ArgumentNullException(nameof(shoppingCart));
+                throw new ArgumentNullException(nameof(productsProvider));
             }
             if (kenticoLog == null)
             {
@@ -46,7 +46,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             this.configurationProvider = configurationProvider;
             this.microserviceInventory = microserviceInventory;
             this.kenticoProvider = kenticoProvider;
-            this.shoppingCart = shoppingCart;
+            this.productsProvider = productsProvider;
             this.kenticoLog = kenticoLog;
         }
 
@@ -85,7 +85,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
             {
-                shoppingCart.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
+                productsProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
             }
 
             return $"Customer with ErpId {customerErpId} done successfully";
