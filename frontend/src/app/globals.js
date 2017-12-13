@@ -21,7 +21,8 @@ const {
   languages,
   pagination,
   staticFields,
-  tac
+  tac,
+  filteredRecentOrder
 } = localization;
 
 export const LOGIN = login;
@@ -45,3 +46,4 @@ export const LANGUAGES = languages;
 export const PAGINATION = pagination;
 export const STATIC_FIELDS = staticFields;
 export const TAC = tac;
+export const FILTERED_RECENT_ORDERS = filteredRecentOrder;

@@ -153,6 +153,17 @@
         getHeaders: PATH + 'order/recent/ui',
         getPageItems: PATH + 'order/recent/page'
       },
+      filteredRecentOrders: {
+        orderTypes: {
+          placeholder: 'Order Type',
+          items: [
+            { id: '0', value: 'Pre-But Orders' },
+            { id: '1', value: 'General Inventory Orders' }
+          ]
+        },
+        getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
+        getOrdersUrl: PATH + 'order/recent/filtered/orders'
+      },
       modifyMailingList: {
         errorList: {
           header: "We have found 8 errors in your file",
