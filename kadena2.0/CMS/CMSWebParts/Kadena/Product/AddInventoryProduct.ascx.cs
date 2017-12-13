@@ -606,18 +606,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
                 }
                 BindCategories();
-                var states = StateInfoProvider.GetStates()
-                    .Columns("StateID,StateName")
-                    .ToList();
-                if (!DataHelper.DataSourceIsEmpty(states))
-                {
-                    ddlState.DataSource = states;
-                    ddlState.DataTextField = "StateName";
-                    ddlState.DataValueField = "StateID";
-                    ddlState.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), string.Empty);
-                    ddlState.Items.Insert(0, new ListItem(selectText, "0"));
-                }
+                GetStateGroup();
             }
             catch (Exception ex)
             {
@@ -654,7 +643,34 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
             return returnValue;
         }
-
+        /// <summary>
+        /// Get the State list
+        /// </summary>
+        /// <returns></returns>
+        public string GetStateGroup()
+        {
+            string returnValue = string.Empty;
+            try
+            {
+                var states = CustomTableItemProvider.GetItems(StatesGroupItem.CLASS_NAME)
+                    .Columns("ItemID,States")
+                    .ToList();
+                if (!DataHelper.DataSourceIsEmpty(states))
+                {
+                    ddlState.DataSource = states;
+                    ddlState.DataTextField = "States";
+                    ddlState.DataValueField = "ItemID";
+                    ddlState.DataBind();
+                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), string.Empty);
+                    ddlState.Items.Insert(0, new ListItem(selectText, "0"));
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetStateGroup", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return returnValue;
+        }
         /// <summary>
         /// Bind categories to dropdown
         /// </summary>

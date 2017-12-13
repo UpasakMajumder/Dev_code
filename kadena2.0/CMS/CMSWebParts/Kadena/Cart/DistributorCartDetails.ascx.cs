@@ -5,9 +5,13 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -59,6 +63,21 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             set
             {
                 SetValue("ShoppingCartDistributorID", value);
+            }
+        }
+
+        /// <summary>
+        /// gets or sets Inventory Type
+        /// </summary>
+        public int InventoryType
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("InventoryType"), default(int));
+            }
+            set
+            {
+                SetValue("InventoryType", value);
             }
         }
 
@@ -282,6 +301,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         price += ValidationHelper.GetDouble(lblSKUPrice.Value, default(double));
                     }
                     var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
+                    var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                     if (inventoryType == (Int32)ProductType.GeneralInventory)
                     {
                         ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
@@ -293,6 +313,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         ddlShippingOption.Attributes["disabled"] = "disabled";
                         lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(price, CurrentSite.SiteID);
                     }
+                    ddlBusinessUnits.SelectedValue = businessUnitID;
                 }
             }
             catch (Exception ex)
@@ -339,6 +360,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                 }
                 Cart.ShoppingCartShippingOptionID = ValidationHelper.GetValue<int>(ddlShippingOption.SelectedValue);
+                Cart.SetValue("BusinessUnitIDForDistributor", ddlBusinessUnits.SelectedValue);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                 lblCartUpdateSuccess.Text = ResHelper.GetString("KDA.DistributorCart.CartUpdateSuccessMessage");
             }
@@ -347,7 +369,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
             }
         }
-
+        
         #endregion "Event handling"
 
         #region "Private Methods"
@@ -383,7 +405,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (ShippingOptions == null)
                 {
                     ShippingOptions = ShippingOptionInfoProvider.GetShippingOptions()
-                                                .OnSite(CurrentSite.SiteID).ToList();
+                                                .OnSite(CurrentSite.SiteID).Where(x=>x.ShippingOptionEnabled==true).ToList();
                 }
             }
             catch (Exception ex)
@@ -403,8 +425,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
                 rptCartItems.QueryParameters = parameters;
-                rptCartItems.QueryName = "Ecommerce.Shoppingcart.GetCartItems";
-                rptCartItems.TransformationName = "KDA.Transformations.xCartItems";
+                rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
+                rptCartItems.TransformationName = TransformationNames.cartItems;
             }
             catch (Exception ex)
             {
@@ -462,11 +484,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetPriceByShippingOption", ex.Message);
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetPriceByShippingOption ", ex.Message);
                 return default(double);
             }
         }
-
         #endregion "Private Methods"
     }
 }
