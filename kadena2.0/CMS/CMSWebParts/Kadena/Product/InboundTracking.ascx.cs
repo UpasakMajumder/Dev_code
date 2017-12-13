@@ -572,7 +572,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (campaignID != default(int))
             {
                 campaigns = CampaignProvider.GetCampaigns()
-                    //.WhereEquals("CloseCampaign",true)
+                    .WhereEquals("CloseCampaign", true)
                     .Columns("CampaignID")
                     .WhereEquals("CampaignID", campaignID)
                     .ToList();
@@ -581,8 +581,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             {
                 campaigns = CampaignProvider.GetCampaigns()
                              .Columns("CampaignID")
-                             //.WhereEquals("CloseCampaign",true)
-                             .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
+                             .WhereEquals("CloseCampaign",true)
                              .ToList();
             }
             if (!DataHelper.DataSourceIsEmpty(campaigns))
