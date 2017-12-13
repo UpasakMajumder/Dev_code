@@ -74,10 +74,11 @@ namespace Kadena.BusinessLogic.Services
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             var userNotificationString = GetUserNotificationString();
-            var otherAddressEnabled = GetOtherAddressSettingsValue();            
+            var otherAddressEnabled = GetOtherAddressSettingsValue();
 
             var checkoutPage = new CheckoutPage()
             {
+                Message = resources.GetResourceString("Kadena.Checkout.TopMessage"),
                 EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
                 Products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString),
                 DeliveryAddresses = checkoutfactory.CreateDeliveryAddresses(addresses.ToList(), userNotificationString, otherAddressEnabled),

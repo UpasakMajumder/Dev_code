@@ -240,6 +240,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
             var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            var displayProductionAndShipping = resources.GetSettingsKey("KDA_Checkout_ShowProductionAndShipping").ToLower() == "true";
 
             var result = items
             .Where(cartItem => !cartItem.IsProductOption)
@@ -275,7 +276,9 @@ namespace Kadena.WebAPI.KenticoProviders
                     SKUID = i.SKUID,
                     StockQuantity = i.SKU.SKUAvailableItems,
                     MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
-                    TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel")
+                    TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
+                    ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
+                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null
                 };
                 if (cartItem.IsTemplated)
                 {
@@ -646,6 +649,8 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
             cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
+            cartItem.SetValue("ProductProductionTime", document.GetStringValue("ProductProductionTime", string.Empty));
+            cartItem.SetValue("ProductShipTime", document.GetStringValue("ProductShipTime", string.Empty));
 
             return cartItem;
         }
