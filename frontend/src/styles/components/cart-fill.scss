@@ -13,18 +13,11 @@
     }
 
     &-input-wrapper {
-      input[type="radio"]:checked ~ .input__wrapper {
-        visibility: visible;
-      }
-
-      label {
-        float: left;
-      }
+      display: flex;
 
       .input__wrapper {
         @include rem(left, 16px);
         @include rem(margin-bottom, 0);
-        visibility: hidden;
         position: relative;
 
         input {
