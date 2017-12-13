@@ -1,8 +1,8 @@
-.main_content {
+.main__content {
   width: 100%;
   display: inline-block;
 
-  .main_left {
+  .main__left {
     float: left;
     display: inline-block;
     width: 67.5%;
@@ -13,13 +13,13 @@
       height: auto;
     }
 
-    .banner_con {
+    .banner__con {
       position: absolute;
       top: 0;
 
       h2 {
-        color: #fff;
-        border-bottom: 1px solid #fff;
+        color: $brand-white;
+        border-bottom: 1px solid $brand-white;
         padding: 10px 15px;
       }
 
@@ -30,7 +30,7 @@
       }
     }
 
-    .order_dates {
+    .order__dates {
       position: absolute;
       bottom: 0;
       background: rgba(0, 0, 0, 0.5);
@@ -39,7 +39,7 @@
       padding: 20px 0;
 
       h6 {
-        color: #fff;
+        color: $brand-white;
         line-height: 16px;
         margin: 0;
         padding: 0 15px;
@@ -47,7 +47,7 @@
     }
   }
 
-  .main_right {
+  .main__right {
     float: right;
     background: #ffd0c8;
     border-radius: 5px;
@@ -56,7 +56,7 @@
 
     .scroll_block {
       overflow-y: auto;
-      max-height: 262px;
+      max-height: 219px;
 
       p {
         padding-right: 10px;
@@ -65,22 +65,17 @@
   }
 }
 
-.product_sec {
+.product__sec {
   h4 {
     margin-bottom: 15px;
   }
 
-  .product_inner {
-    .product_block {
-      float: left;
-      display: inline-block;
-      width: 23%;
+  .product__inner {
+    .product__block {
       margin-bottom: 15px;
-      margin-right: 1%;
-      margin-left: 1%;
 
       a {
-        color: #404040;
+        color: $brand-dark;
 
         img {
           width: 100%;
@@ -88,11 +83,9 @@
           margin-bottom: 15px;
         }
 
-        h5 {
-          span {
-            display: block;
-            font-size: 14px;
-          }
+        span {
+          display: block;
+          font-size: $font-xs;
         }
       }
 
@@ -103,12 +96,12 @@
   }
 }
 
-.admin_access {
+.admin__access {
   background: #edf1f5;
   padding: 20px 2%;
   border-radius: 5px;
 
-  .admin_inner {
+  .admin__inner {
     width: 30%;
 
     img {

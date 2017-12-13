@@ -1,48 +1,39 @@
-.video_section {
-  .video_block {
-    width: 25%;
-    float: left;
-    display: inline-block;
+.video__section {
+  .video__block {
     padding: 10px;
     margin-bottom: 15px;
   }
 }
 
-.faq_contentblock {
+.faq__contentblock {
   padding: 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid $form-bg;
 
-  .faq_section {
-    width: 70%;
-    float: left;
-    display: inline-block;
-    border-right: 1px solid #ddd;
+  .faq__section {
+    border-right: 1px solid $form-bg;
     padding: 20px;
 
-    .question_block {
+    .question__block {
       h5 {
         font-weight: bold;
       }
     }
 
-    .faq_content {
+    .faq__content {
       scroll-behavior: smooth;
     }
   }
 }
 
-.support_sec {
-  float: left;
-  width: 30%;
-  display: inline-block;
+.support__sec {
   padding: 20px;
 
-  .support_block {
+  .support__block {
     h6 {
       font-weight: 700;
 
-      .phone_icon,
-      .mail_icon {
+      .phone__icon,
+      .mail__icon {
         position: relative;
         top: 5px;
         margin-right: 10px;

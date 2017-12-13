@@ -1,8 +1,8 @@
-.custom_section {
-  .custom_block {
+.custom__section {
+  .custom__block {
     margin-bottom: 30px;
 
-    .custom_select {
+    .custom__select {
       display: inline-block;
 
       select {
@@ -11,7 +11,7 @@
       }
     }
 
-    .custom_check {
+    .custom__check {
       display: inline-block;
       vertical-align: top;
       margin: 6px 5px;
@@ -28,7 +28,7 @@
       }
     }
 
-    .custom_btns {
+    .custom__btns {
       display: inline-block;
 
       .btn-action {
@@ -45,16 +45,14 @@
   display: none;
 }
 
-.custom_content {
+.custom__content {
   position: relative;
 
-  .cus_content_block {
-    display: inline-block;
+  .cus__content__block {
+    margin: 0 0 30px;
     vertical-align: top;
-    width: 22.7%;
-    margin: 0 2% 30px 0;
 
-    .img_block {
+    .img__block {
       width: 50px;
       margin: 0 auto 15px;
 
@@ -76,7 +74,7 @@
     }
 
     .fa-search {
-      color: #a5a3a3;
+      color: $brand-darkgrey;
       text-align: center;
       display: inline-block;
       width: 100%;
@@ -86,7 +84,7 @@
       .input__label--checkbox {
         padding-left: 0;
         font-weight: 700;
-        font-size: 14px;
+        font-size: $font-xs;
 
         &:before {
           left: inherit;
@@ -108,7 +106,7 @@
       font-size: $font-xs;
     }
 
-    .custom_blockin {
+    .custom__blockin {
       h4 {
         font-weight: 700;
         font-size: $font-xs;
@@ -128,7 +126,7 @@
 
       h6 {
         font-weight: 700;
-        font-size: 14px;
+        font-size: $font-xs;
         margin-bottom: 10px;
       }
 
@@ -140,37 +138,36 @@
   }
 }
 
-.cart_section {
+.cart__section {
   position: absolute;
   width: 50%;
   height: 100%;
-  background: #fff;
+  background: $brand-white;
   top: 0;
   right: 0;
-  border-left: 1px solid #dadada;
+  border-left: 1px solid $cart_border;
   padding: 15px;
 
-  .cart_btns {
+  .cart__btns {
     padding: 0 0 15px;
   }
 
-  .cart_content {
-    border-bottom: 1px solid #dadada;
-    border-top: 1px solid #dadada;
+  .cart__content {
+    border-bottom: 1px solid $cart_border;
+    border-top: 1px solid $cart_border;
     padding: 15px 0;
     margin-bottom: 20px;
 
-    .cart_person {
+    .cart__person {
       text-align: center;
       margin-bottom: 15px;
 
       ul {
-        list-style: none;
         margin: 0;
         padding: 0;
 
         li {
-          border-left: 1px solid #000;
+          border-left: 1px solid $brand-black;
           display: inline-block;
           vertical-align: middle;
           line-height: $font-xs;
@@ -183,10 +180,10 @@
       }
     }
 
-    .cart_details {
+    .cart__details {
       margin-bottom: 10px;
 
-      .cart_pic {
+      .cart__pic {
         float: left;
         display: inline-block;
         width: 35%;
@@ -202,7 +199,7 @@
         }
       }
 
-      .cart_block {
+      .cart__block {
         float: right;
         width: 65%;
         display: inline-block;
@@ -242,28 +239,28 @@
       }
     }
 
-    .cart_total {
+    .cart__total {
       margin-bottom: 10px;
 
-      .control_label {
+      .control__label {
         width: 35%;
         display: inline-block;
         float: left;
       }
 
-      .control_input {
+      .control__input {
         width: 65%;
         display: inline-block;
         float: right;
       }
     }
 
-    .cart_btns {
+    .cart__btns {
       padding: 5px;
     }
   }
 
-  .cart_count {
+  .cart__count {
     background: #f1f1f1;
     padding: 15px;
 

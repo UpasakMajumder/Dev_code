@@ -9,13 +9,13 @@
       text-align: center;
 
       h2 {
-        color: #b5161a;
+        color: $print_heading;
         text-transform: uppercase;
         margin-bottom: 40px;
       }
 
       p {
-        font-size: 24px;
+        font-size: $font-l;
         margin-bottom: 40px;
       }
     }
@@ -30,19 +30,19 @@
   text-align: center;
 
   h2 {
-    font-size: 22px;
+    font-size: $font-xm;
     text-decoration: underline;
     font-family: arial;
     font-weight: 600;
-    color: #333;
+    color: $brand-lightblack;
   }
 
   p {
-    font-size: 22px;
-    color: #333;
+    font-size: $font-xm;
+    color: $brand-lightblack;
 
     &.merch_con {
-      color: #b5161a;
+      color: $print_heading;
       padding: 0 180px;
     }
   }
@@ -58,10 +58,10 @@
   }
 
   .crime_block {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid $brand-black;
 
     &.product_selected {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $brand-black;
     }
 
     .crime_leftsec {
@@ -95,7 +95,7 @@
             display: inline-block;
 
             label {
-              font-size: 20px;
+              font-size: $font-m;
             }
           }
 
@@ -104,7 +104,7 @@
             display: inline-block;
 
             label {
-              font-size: 20px;
+              font-size: $font-m;
             }
           }
         }
@@ -138,7 +138,7 @@
     width: auto;
 
     label {
-      font-size: 18px;
+      font-size: $font-s;
     }
   }
 
@@ -147,7 +147,7 @@
     padding-left: 5px;
 
     label {
-      font-size: 18px;
+      font-size: $font-s;
       display: block;
     }
   }
