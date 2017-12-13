@@ -1,4 +1,4 @@
-.show-table-bottom {
+.show__table-bottom {
   margin-bottom: 20px;
 }
 
@@ -24,7 +24,7 @@
   }
 }
 
-.form_btns {
+.form__btns {
   width: 100%;
   padding: 15px 0;
 
@@ -33,11 +33,7 @@
   }
 }
 
-.clearfix {
-  clear: both;
-}
-
-.webform_title {
+.webform__title {
   padding-bottom: 20px;
 
   h4 {
@@ -45,7 +41,7 @@
   }
 }
 
-.form_block {
+.form__block {
   float: left;
   width: 50%;
   margin-right: 0%;
@@ -53,17 +49,10 @@
   padding: 0 15px;
 }
 
-.required:after {
-  content: "*";
-  color: red;
-  position: absolute;
-  font-weight: 700;
-}
-
-.prebuy-distdata {
+.prebuy__distdata {
   margin-bottom: 20px;
 
-  .custom_select {
+  .custom__select {
     padding-left: 0;
   }
 
@@ -74,7 +63,7 @@
   }
 }
 
-.Distributor-name {
+.Distributor__name {
   display: inline;
 
   h4 {
@@ -87,30 +76,10 @@
   margin-bottom: 10px;
 }
 
-.mb30 {
-  margin-bottom: 50px;
-}
-
-select[disabled] {
-  cursor: not-allowed;
-}
-
-.btn-view button {
-  background: transparent;
-  color: transparent;
-  border: 0;
-  box-shadow: none;
-}
-
-.modalcontent-custom {
+.modalcontent__custom {
   margin: 10px;
 
-  .add_btn {
+  .add__btn {
     margin-bottom: 10px;
   }
 }
-
-.mr5 {
-  margin-right: 5px;
-}
-

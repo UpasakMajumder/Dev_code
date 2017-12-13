@@ -41,14 +41,10 @@
   }
 }
 
-.Notdisplay {
-  display: none;
-}
-
 .custom__content {
   position: relative;
 
-  .cus__content__block {
+  .cus__content--block {
     margin: 0 0 30px;
     vertical-align: top;
 
@@ -208,7 +204,7 @@
           font-weight: 700;
         }
 
-        .my-account__table_cart {
+        .my-account__table-cart {
           margin-bottom: 10px;
 
           tbody {
@@ -261,7 +257,7 @@
   }
 
   .cart__count {
-    background: #f1f1f1;
+    background: $brand-darkwhite;
     padding: 15px;
 
     .btn-action {

@@ -27,11 +27,11 @@
         padding: 0.1rem 0.5rem;
       }
 
-      .btn_close {
+      .btn__close {
         float: right;
         display: inline-block;
         border: none;
-        color: #999;
+        color: $font-grey;
       }
     }
 
