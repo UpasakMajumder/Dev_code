@@ -1,13 +1,17 @@
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -331,6 +335,55 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
+    /// <summary>
+    /// Get the No Access Page
+    /// </summary>
+    public string NoAccessPage
+    {
+        get
+        {
+            string noAccessPath = string.Empty;
+            try
+            {
+                Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_NoAccessPage"), Guid.Empty);
+                {
+                    if (!nodeGUID.Equals(Guid.Empty))
+                    {
+                        var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                        if (document != null)
+                        {
+                            noAccessPath = document.DocumentUrlPath;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Get no Access Page", "NoAccessPage", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return noAccessPath;
+        }
+        set
+        {
+            SetValue("NoAccessPage", value);
+        }
+    }
+
+    /// <summary>
+    /// Get Action resource string
+    /// </summary>
+    public string ActionsText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ActionsText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ActionsText", value);
+        }
+    }
+
     #endregion Properties
 
     #region "Methods"
@@ -357,13 +410,14 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         gdvInboundProducts.Columns[5].HeaderText = QtyProdusedHeaderText;
         gdvInboundProducts.Columns[6].HeaderText = OverageHeaderText;
         gdvInboundProducts.Columns[7].HeaderText = VendorHeaderText;
-        gdvInboundProducts.Columns[8].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[8].HeaderText = ExpArraivalToCenveoHeaderText;
         gdvInboundProducts.Columns[9].HeaderText = DeliveryToDistByHeaderText;
         gdvInboundProducts.Columns[10].HeaderText = ShippedToDistHeaderText;
         gdvInboundProducts.Columns[11].HeaderText = CenveoCommentsHeaderText;
         gdvInboundProducts.Columns[12].HeaderText = TWECommentsHeaderText;
         gdvInboundProducts.Columns[13].HeaderText = ActualPriceHeaderText;
         gdvInboundProducts.Columns[14].HeaderText = StatusHeaderText;
+        gdvInboundProducts.Columns[15].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
     }
@@ -375,12 +429,27 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         if (!this.StopProcessing)
         {
-            if (!IsPostBack)
+            string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+            if (!string.IsNullOrEmpty(gAdminRoleName) && !string.IsNullOrWhiteSpace(gAdminRoleName))
             {
-                BindCampaigns();
-                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                GetProducts();
+                if (CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+                {
+                    if (!IsPostBack)
+                    {
+                        BindCampaigns();
+                        string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+                        ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                        GetProducts();
+                    }
+                }
+                else
+                {
+                    Response.Redirect(NoAccessPage);
+                }
+            }
+            else
+            {
+                Response.Redirect(NoAccessPage);
             }
         }
     }
@@ -401,8 +470,6 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = true;
-
             List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
             List<int> programIds = new List<int>();
             if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
@@ -433,7 +500,6 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                 .WhereIn("SKUID", skuIds)
                                 .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUID")
                                 .ToList();
-
                 if (!DataHelper.DataSourceIsEmpty(skuIds) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
@@ -463,7 +529,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                          Status = product.SKUEnabled
                                      };
                     allDetails = allDetails.ToList();
-                    if(!DataHelper.DataSourceIsEmpty(allDetails))
+                    if (!DataHelper.DataSourceIsEmpty(allDetails))
                     {
                         BindLabels();
                         gdvInboundProducts.DataSource = allDetails;
@@ -506,6 +572,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (campaignID != default(int))
             {
                 campaigns = CampaignProvider.GetCampaigns()
+                    //.WhereEquals("CloseCampaign",true)
                     .Columns("CampaignID")
                     .WhereEquals("CampaignID", campaignID)
                     .ToList();
@@ -514,6 +581,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             {
                 campaigns = CampaignProvider.GetCampaigns()
                              .Columns("CampaignID")
+                             //.WhereEquals("CloseCampaign",true)
                              .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
                              .ToList();
             }
@@ -736,6 +804,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         GetProducts();
     }
+
     /// <summary>
     /// Refresh the page
     /// </summary>
@@ -745,6 +814,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         Response.Redirect(Request.RawUrl);
     }
+
     /// <summary>
     /// Export Products data to Excel
     /// </summary>
@@ -754,26 +824,40 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            Response.Clear();
-            Response.AddHeader("content-disposition", "attachment;filename=Contact.xls");
-            Response.Charset = "";
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            System.IO.StringWriter stringWrite = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
             gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = false;
+            gdvInboundProducts.AllowPaging = false;
+            gdvInboundProducts.EditIndex = -1;
+            GetProducts();
+            Response.Clear();
+            Response.AddHeader("content-disposition", "attachment;filename=InboudTracking.xls");
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            StringWriter stringWrite = new StringWriter();
+            HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
             System.Web.UI.HtmlControls.HtmlForm form = new System.Web.UI.HtmlControls.HtmlForm();
             Controls.Add(form);
             form.Controls.Add(gdvInboundProducts);
             form.RenderControl(htmlWrite);
             Response.Write(stringWrite.ToString());
             Response.End();
+            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = true;
+            gdvInboundProducts.AllowPaging = true;
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Export data to excel", "btnExport_Click()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
+    /// <summary>
+    /// Adding the pagination for products
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gdvInboundProducts_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gdvInboundProducts.PageIndex = e.NewPageIndex;
+        GetProducts();
+    }
 }
 
 #endregion "Methods"
-
