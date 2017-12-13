@@ -897,28 +897,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "ddlProgram_SelectedIndexChanged ", ex, CurrentSite.SiteID, ex.Message);
         }
     }
-
     /// <summary>
-    /// Get the brand name by brandItemId
-    /// </summary>
-    /// <param name="brandItemID"></param>
-    /// <returns></returns>
-    //public string GetBrandName(int brandItemID)
-    //{
-    //    string returnValue = string.Empty;
-    //    try
-    //    {
-    //        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).WhereEquals("ItemID", brandItemID).Column("BrandName").Select(x => new BrandItem { BrandName = x.Field<string>("BrandName") }).FirstOrDefault();
-    //        returnValue = brand.BrandName;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
-    //    }
-    //    return returnValue;
-    //}
-    /// <summary>
-    /// Get the State list
+    /// Get all The State Groups
     /// </summary>
     /// <returns></returns>
     public string GetStateGroup()
