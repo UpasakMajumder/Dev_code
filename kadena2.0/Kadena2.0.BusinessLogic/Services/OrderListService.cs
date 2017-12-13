@@ -9,6 +9,7 @@ using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -48,7 +49,38 @@ namespace Kadena.BusinessLogic.Services
             IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents,
             IKenticoLogger logger)
         {
-            // TODO null checks, decline CR if not done
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (orderClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderClient));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (kenticoResources == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResources));
+            }
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
 
             _mapper = mapper;
             _orderClient = orderClient;

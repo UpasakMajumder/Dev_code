@@ -4,6 +4,7 @@ using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -14,6 +15,15 @@ namespace Kadena.BusinessLogic.Services
 
         public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoProviderService kenticoProvider)
         {
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+
             this.kenticoUsers = kenticoUsers;
             this.kenticoProvider = kenticoProvider;
         }

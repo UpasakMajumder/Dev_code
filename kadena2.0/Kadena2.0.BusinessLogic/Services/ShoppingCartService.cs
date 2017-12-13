@@ -28,7 +28,34 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartProvider shoppingCart,
                                    ICheckoutPageFactory checkoutfactory)
         {
-            // TODO null checks. Reject CR if not done
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (taxCalculator == null)
+            {
+                throw new ArgumentNullException(nameof(taxCalculator));
+            }
+            if (mailingService == null)
+            {
+                throw new ArgumentNullException(nameof(mailingService));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (checkoutfactory == null)
+            {
+                throw new ArgumentNullException(nameof(checkoutfactory));
+            }
 
             this.kenticoProvider = kenticoProvider;
             this.kenticoUsers = kenticoUsers;

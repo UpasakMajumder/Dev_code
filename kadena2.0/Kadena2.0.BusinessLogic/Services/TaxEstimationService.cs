@@ -5,6 +5,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -26,6 +27,31 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (taxCalculator == null)
+            {
+                throw new ArgumentNullException(nameof(taxCalculator));
+            }
+            if (kenticoLog == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLog));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (cache == null)
+            {
+                throw new ArgumentNullException(nameof(cache));
+            }
+
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            

@@ -4,6 +4,7 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -16,7 +17,22 @@ namespace Kadena.BusinessLogic.Services
 
         public SettingsService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IShoppingCartProvider shoppingCart)
         {
-            // TODO null check, decline CD if not done
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
 
             _kentico = kentico;
             _kenticoUsers = kenticoUsers;

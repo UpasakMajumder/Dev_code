@@ -46,7 +46,58 @@ namespace Kadena.BusinessLogic.Services
             ITemplatedClient templateService,
             IKenticoDocumentProvider documents)
         {
-            // TODO create null checks, reject CR if not resolved
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (orderSubmitClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderSubmitClient));
+            }
+            if (orderViewClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderViewClient));
+            }
+            if (mailingClient == null)
+            {
+                throw new ArgumentNullException(nameof(mailingClient));
+            }
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (kenticoLog == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLog));
+            }
+            if (taxService == null)
+            {
+                throw new ArgumentNullException(nameof(taxService));
+            }
+            if (templateService == null)
+            {
+                throw new ArgumentNullException(nameof(templateService));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
 
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;

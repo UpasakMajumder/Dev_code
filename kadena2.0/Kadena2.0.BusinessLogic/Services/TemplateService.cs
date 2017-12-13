@@ -24,7 +24,30 @@ namespace Kadena.BusinessLogic.Services
         public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, 
             IKenticoUserProvider users, IKenticoDocumentProvider documents, IKenticoProductsProvider products)
         {
-            // TODO check null, reject CR if not done
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+            if (templateClient == null)
+            {
+                throw new ArgumentNullException(nameof(templateClient));
+            }
+            if (users == null)
+            {
+                throw new ArgumentNullException(nameof(users));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
 
             this._resources = resources;
             this._logger = logger;

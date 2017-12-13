@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using System.Web;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -20,9 +21,28 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoDocumentProvider documents;
 
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, 
-            IKenticoProviderService kenticoProvider, IKenticoProductsProvider products, IKenticoDocumentProvider documents)
+            IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
-            // TODO null check, decline CR if not done
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (kenticoSearch == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoSearch));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
 
             this.mapper = mapper;
             this.resources = resources;
