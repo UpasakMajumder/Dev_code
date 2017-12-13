@@ -14,6 +14,14 @@
             <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" IsLiveSite="false" AllowAll="false" />
         </div>
 
+        <div class="form-group" style="margin-bottom: 3rem">
+            <label class="control-label" for="siteSelector" style="text-align: left">Product Page Type:</label>
+            <cms:CMSDropDownList runat="server" ID="ddlProductPageType">
+                <asp:ListItem Value="KDA.Product" Text="KDA Product"></asp:ListItem>
+                <asp:ListItem Value="KDA.CampaignsProduct" Text="KDA Campaign Product"></asp:ListItem>
+            </cms:CMSDropDownList>
+        </div>
+
         <h4>Download template sheet for Product images</h4>
         <div class="form-group" style="margin-bottom: 3rem">
             <asp:Button Text="Download" CssClass="btn btn-primary" ClientIDMode="Static" ID="btnDownloadTemplate" OnClick="btnDownloadTemplate_Click" runat="server" />
