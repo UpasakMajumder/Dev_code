@@ -20,15 +20,20 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IShoppingCartProvider _shoppingCart;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users, IKenticoDocumentProvider documents)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, 
+            IKenticoProviderService kentico, IKenticoUserProvider users, IKenticoDocumentProvider documents, IShoppingCartProvider shoppingCart)
         {
+            // TODO check null, reject CR if not done
+
             this._resources = resources;
             this._logger = logger;
             this._templateClient = templateClient;
             this._kentico = kentico;
             this._users = users;
             this.documents = documents;
+            this._shoppingCart = shoppingCart;
         }
 
         public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
@@ -71,7 +76,7 @@ namespace Kadena.BusinessLogic.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _kentico.GetProductByNodeId(nodeId);
+            var product = _shoppingCart.GetProductByNodeId(nodeId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;

@@ -66,7 +66,7 @@ namespace Kadena.Tests.WebApi
         }
 
         // TODO Refactor to use different setups
-        private ShoppingCartService CreateShoppingCartService(Mock<IKenticoLogger> kenticoLogger = null, Mock<IKenticoProviderService> kenticoProvider = null )
+        private ShoppingCartService CreateShoppingCartService(Mock<IKenticoLogger> kenticoLogger = null, Mock<IShoppingCartProvider> shoppingCart = null )
         {
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
@@ -75,19 +75,20 @@ namespace Kadena.Tests.WebApi
             kenticoUser.Setup(p => p.GetCustomerAddresses(AddressType.Shipping))
                 .Returns(new[] { CreateDeliveryAddress() });
 
-            if(kenticoProvider == null)
-                kenticoProvider = new Mock<IKenticoProviderService>();            
-            kenticoProvider.Setup(p => p.GetShippingCarriers())
+            if(shoppingCart == null)
+                shoppingCart = new Mock<IShoppingCartProvider>();
+            shoppingCart.Setup(p => p.GetShippingCarriers())
                 .Returns(new[] { CreateDeliveryCarrier() });
-            kenticoProvider.Setup(p => p.GetPaymentMethods())
+            shoppingCart.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
-            kenticoProvider.Setup(p => p.GetShoppingCartItems(true))
+            shoppingCart.Setup(p => p.GetShoppingCartItems(true))
                 .Returns(() => new[] { CreateCartitem(1), CreateCartitem(2) });
-            kenticoProvider.Setup(p => p.GetShoppingCartTotals())
+            shoppingCart.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals(100));
-            kenticoProvider.Setup(p => p.AddCartItem(It.IsAny<NewCartItem>(), null))
+            shoppingCart.Setup(p => p.AddCartItem(It.IsAny<NewCartItem>(), null))
                 .Returns(() => CreateCartitem(1));
 
+            var kenticoProvider = new Mock<IKenticoProviderService>();
             var kenticoResource = new Mock<IKenticoResourceService>();
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
             var taxCalculator = new Mock<ITaxEstimationService>();
@@ -103,6 +104,7 @@ namespace Kadena.Tests.WebApi
                 mailingService.Object,
                 documents.Object,
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
+                shoppingCart.Object,
                 checkoutFactory.Object);
         }
 
@@ -127,14 +129,14 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var cartItems = new []{ CreateCartitem(1), CreateCartitem(2) };
-            var mockProvider = new Mock<IKenticoProviderService>();
-            mockProvider.Setup(m => m.GetShoppingCartItems(true))
+            var mockShoppingCart = new Mock<IShoppingCartProvider>();
+            mockShoppingCart.Setup(m => m.GetShoppingCartItems(true))
                 .Returns(cartItems);
-            mockProvider.Setup(m => m.GetShoppingCartTotals())
+            mockShoppingCart.Setup(m => m.GetShoppingCartTotals())
                 .Returns(new ShoppingCartTotals() { TotalItemsPrice = 1, TotalShipping = 2, TotalTax = 3});
-            mockProvider.Setup(m => m.SetCartItemQuantity(1, 10))
+            mockShoppingCart.Setup(m => m.SetCartItemQuantity(1, 10))
                 .Callback(() => cartItems.First(i => i.Id == 1).Quantity = 10);
-            var sut = CreateShoppingCartService(null, mockProvider);
+            var sut = CreateShoppingCartService(null, mockShoppingCart);
 
             // Act
             var result = sut.ChangeItemQuantity(1, 10);

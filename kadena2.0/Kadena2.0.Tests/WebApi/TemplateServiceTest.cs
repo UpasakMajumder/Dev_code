@@ -27,7 +27,8 @@ namespace Kadena.Tests.WebApi
                 templateClient.Object,
                 Mock.Of<IKenticoProviderService>(),
                 Mock.Of<IKenticoUserProvider>(),
-                Mock.Of<IKenticoDocumentProvider>()
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IShoppingCartProvider>()
                 );
         }
         
@@ -46,7 +47,8 @@ namespace Kadena.Tests.WebApi
                 logger.Object, templateClient.Object,
                 Mock.Of<IKenticoProviderService>(),
                 Mock.Of<IKenticoUserProvider>(),
-                Mock.Of<IKenticoDocumentProvider>());
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IShoppingCartProvider>());
 
             var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
@@ -71,7 +73,8 @@ namespace Kadena.Tests.WebApi
                 logger.Object, templateClient.Object,
                 Mock.Of<IKenticoProviderService>(),
                 Mock.Of<IKenticoUserProvider>(),
-                Mock.Of<IKenticoDocumentProvider>());
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IShoppingCartProvider>());
 
             var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
@@ -89,9 +92,10 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
+                Mock.Of<IKenticoProviderService>(),
                 Mock.Of<IKenticoUserProvider>(),
-                Mock.Of<IKenticoDocumentProvider>()
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IShoppingCartProvider>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct })
             );
 
             var templates = await sut.GetTemplatesByProduct(invalidNodeId);
@@ -123,9 +127,10 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
-                Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
+                Mock.Of<IKenticoProviderService>(),
                 Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { }),
-                Mock.Of<IKenticoDocumentProvider>()
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IShoppingCartProvider>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct })
             );
 
             var templates = await sut.GetTemplatesByProduct(nodeId);

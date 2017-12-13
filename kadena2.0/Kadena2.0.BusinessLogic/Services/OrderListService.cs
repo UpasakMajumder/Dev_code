@@ -19,6 +19,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
+        private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoLogger _logger;
 
         private readonly string _orderDetailUrl;
@@ -44,14 +45,17 @@ namespace Kadena.BusinessLogic.Services
         public bool EnablePaging { get; set; }
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
-            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoDocumentProvider documents,
+            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents,
             IKenticoLogger logger)
         {
+            // TODO null checks, decline CR if not done
+
             _mapper = mapper;
             _orderClient = orderClient;
             _kenticoUsers = kenticoUsers;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
+            _shoppingCart = shoppingCart;
             _logger = logger;
 
             _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
@@ -112,7 +116,7 @@ namespace Kadena.BusinessLogic.Services
 
             foreach (var o in orders)
             {
-                o.Status = _kentico.MapOrderStatus(o.Status);
+                o.Status = _shoppingCart.MapOrderStatus(o.Status);
             }
         }
 

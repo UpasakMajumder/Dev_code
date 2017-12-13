@@ -280,7 +280,7 @@ namespace Kadena.BusinessLogic.Services
         public CheckoutPage RemoveItem(int id)
         {
             shoppingCart.RemoveCartItem(id);
-            var itemsCount = kenticoProvider.GetShoppingCartItemsCount();
+            var itemsCount = shoppingCart.GetShoppingCartItemsCount();
             if (itemsCount == 0)
             {
                 shoppingCart.ClearCart();

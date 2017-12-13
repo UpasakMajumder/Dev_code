@@ -12,12 +12,16 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _resources;
+        private readonly IShoppingCartProvider  _shoppingCart;
 
-        public SettingsService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources)
+        public SettingsService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IShoppingCartProvider shoppingCart)
         {
+            // TODO null check, decline CD if not done
+
             _kentico = kentico;
             _kenticoUsers = kenticoUsers;
             _resources = resources;
+            _shoppingCart = shoppingCart;
         }
 
         public SettingsAddresses GetAddresses()
@@ -159,7 +163,7 @@ namespace Kadena.BusinessLogic.Services
 
         public void SaveShippingAddress(DeliveryAddress address)
         {
-            _kentico.SaveShippingAddress(address);
+            _shoppingCart.SaveShippingAddress(address);
         }
 
         public void SetDefaultShippingAddress(int addressId)
