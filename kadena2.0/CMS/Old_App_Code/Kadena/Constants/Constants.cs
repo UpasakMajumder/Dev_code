@@ -3,19 +3,23 @@
     /// <summary>
     /// This Class represents Stored Procedures used.
     /// </summary>
-    public static class StoredProcedures
-    {
-        public const string distributorCartData = "Proc_Custom_DistributorCartData";
-        public const string loggedInUserCartData = "Proc_Custom_LoggedInUserCartData";
-        public const string getShoppingCartCount = "Proc_Custom_GetShoppingCartCount";
-        public const string getShoppingCartTotal = "Proc_Custom_GetShoppingCartTotal";
-    }
+    //public static class StoredProcedures
+    //{
+    //    public const string distributorCartData = "Proc_Custom_DistributorCartData";
+    //    public const string loggedInUserCartData = "Proc_Custom_LoggedInUserCartData";
+    //    public const string getShoppingCartCount = "Proc_Custom_GetShoppingCartCount";
+    //    public const string getShoppingCartTotal = "Proc_Custom_GetShoppingCartTotal";
+    //}
     /// <summary>
     /// This Class represents SQl Queries used.
     /// </summary>
     public static class SQLQueries
     {
         public const string shoppingCartCartItems = "Ecommerce.Shoppingcart.GetCartItems";
+        public const string distributorCartData = "Ecommerce.Shoppingcart.DistributorCartData";
+        public const string loggedInUserCartData = "Ecommerce.Shoppingcart.LoggedInUserCartData";
+        public const string getShoppingCartCount = "Ecommerce.Shoppingcart.GetShoppingCartCount";
+        public const string getShoppingCartTotal = "Ecommerce.Shoppingcart.GetShoppingCartTotal";
     }
     /// <summary>
     /// This Class represents Transformations used .
