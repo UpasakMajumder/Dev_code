@@ -20,10 +20,11 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         {
             try
             {
+                var query = new DataQuery(SQLQueries.distributorCartData);
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", cartID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                var cartDataSet = ConnectionHelper.ExecuteQuery(StoredProcedures.distributorCartData, queryParams, QueryTypeEnum.StoredProcedure, true);
+                var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
             catch (Exception ex)
@@ -41,10 +42,11 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         {
             try
             {
+                var query = new DataQuery(SQLQueries.loggedInUserCartData);
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                var cartDataSet = ConnectionHelper.ExecuteQuery(StoredProcedures.loggedInUserCartData, queryParams, QueryTypeEnum.StoredProcedure, true);
+                var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
             catch (Exception ex)
