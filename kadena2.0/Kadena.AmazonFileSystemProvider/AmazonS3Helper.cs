@@ -21,5 +21,10 @@ namespace Kadena.AmazonFileSystemProvider
             }
             return null;
         }
+
+        public static string GetBucketName()
+        {
+            return "kadena-objects";
+        }
     }
 }
