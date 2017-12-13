@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.AccessControl;
-
+using Amazon.S3;
+using Amazon.S3.Model;
 using CMS.IO;
 
 namespace Kadena.AmazonFileSystemProvider
@@ -29,7 +30,26 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to create.</param> 
         public override CMS.IO.DirectoryInfo CreateDirectory(string path)
         {
-            throw new NotImplementedException();
+            var bucketName = AmazonS3Helper.GetBucketName();
+            var key = AmazonS3Helper.EnsureKey(path);
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return null;
+            }
+
+            using (var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1))
+            {
+                PutObjectRequest putRequest = new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = key
+                };
+
+                var response = client.PutObject(putRequest);
+
+                return new DirectoryInfo(path);
+            }
         }
 
 
