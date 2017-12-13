@@ -97,7 +97,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             rfEmail.ErrorMessage = ResHelper.GetString("Kadena.Address.EmailRequired");
             rfZipcode.ErrorMessage = ResHelper.GetString("Kadena.Address.ZipcodeRequired");
             btnSave.Text = Request.QueryString["id"] != null ? ResHelper.GetString("Kadena.Address.Update") : ResHelper.GetString("Kadena.Address.Save");
-            btnCancel.Text = ResHelper.GetString("Kadena.Address.Cancel");
+            lnkCancel.Text = ResHelper.GetString("Kadena.Address.Cancel");
         }
         catch (Exception ex)
         {

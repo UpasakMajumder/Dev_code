@@ -126,8 +126,8 @@
             </div>
             <div class="mb-3 form_btns">
                 <div class="">
-                    <asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" Text="Save" OnClick="btnSave_Click" />
-                    <asp:Button runat="server" ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" Text="Cancel" OnClick="btnCancel_Click" CausesValidation="false" />
+                    <asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty"  OnClick="btnSave_Click" />
+                    <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
                 </div>
             </div>
             <div class="clearfix"></div>

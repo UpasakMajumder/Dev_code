@@ -1,3 +1,5 @@
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
@@ -143,7 +145,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         else
         {
-            // Assign localization text to labels
             lblProgramName.InnerText = ProgramNameText;
             lblProgramDescription.InnerText = ProgramDescriptionText;
             lblBrandName.InnerText = BrandNameText;
@@ -153,7 +154,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnUpdateProgram.Text = UpdateButtonText;
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
             cvDesc.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
-            //get program details by program id.
+            GetBrandName();
+            GetCampaign();
             int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
             if (programID != 0)
             {
@@ -162,8 +164,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 {
                     txtProgramName.Text = program.ProgramName;
                     txtProgramDescription.Text = program.ProgramDescription;
-                    ddlBrand.Value = program.BrandID.ToString();
-                    ddlCampaign.Value = program.CampaignID;
+                    ddlBrand.SelectedValue = program.BrandID.ToString();
+                    ddlCampaign.SelectedValue = program.CampaignID.ToString();
                     btnAddProgram.Visible = false;
                     btnUpdateProgram.Visible = true;
                     ViewState["CampaignID"] = program.CampaignID;
@@ -178,6 +180,64 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
     }
 
+    /// <summary>
+    /// Get the brand list
+    /// </summary>
+    /// <param name="brandItemID"></param>
+    /// <returns></returns>
+    public string GetBrandName()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                .Columns("ItemID,BrandName")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(brands))
+            {
+                ddlBrand.DataSource = brands;
+                ddlBrand.DataTextField = "BrandName";
+                ddlBrand.DataValueField = "ItemID";
+                ddlBrand.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
+                ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
+    /// <summary>
+    /// Get the brand list
+    /// </summary>
+    /// <param name="brandItemID"></param>
+    /// <returns></returns>
+    public string GetCampaign()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var Campaigns = CampaignProvider.GetCampaigns()
+                .Columns("CampaignID,Name")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(Campaigns))
+            {
+                ddlCampaign.DataSource = Campaigns;
+                ddlCampaign.DataTextField = "Name";
+                ddlCampaign.DataValueField = "CampaignID";
+                ddlCampaign.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.ProgramForm.CampaignWaterMark"), string.Empty);
+                ddlCampaign.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetCampaignName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -199,7 +259,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     {
         try
         {
-            int campaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
             if (campaignID != 0)
             {
                 Campaign campaign = new Campaign();
@@ -214,8 +274,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                         program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
                         program.ProgramName = txtProgramName.Text;
                         program.ProgramDescription = txtProgramDescription.Text;
-                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
-                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
                         program.Insert(CampaignNode, true);
 
                         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
@@ -248,7 +308,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     {
         try
         {
-            int campaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             if (Page.IsValid)
             {
@@ -261,8 +321,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                         program.DocumentName = txtProgramName.Text;
                         program.ProgramName = txtProgramName.Text;
                         program.ProgramDescription = txtProgramDescription.Text;
-                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
-                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
                         program.Update();
                     }
                     if (ViewState["CampaignID"] != null)

@@ -17,13 +17,6 @@ namespace Kadena2.MicroserviceClients.Clients
             _properties = properties;
         }
 
-        public async Task<BaseResponseDto<string>> FinishOrder(string orderNumber)
-        {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/order";
-            return await Patch<string>(url, orderNumber).ConfigureAwait(false);
-        }
-
         public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);

@@ -1,0 +1,50 @@
+{% extends "layouts/default-noheader.nunj" %}
+
+{% set title = "Terms and Conditions" %}
+
+{% block content %}
+  <div class="content__inner">
+    <div class="content-header">
+      <div class="content-header__inner">
+        <h1 class="content-header__page-name">Terms and Conditions</h1>
+      </div>
+    </div>
+    <div class="content-block">
+      <h2 class="text-center">Paragraph 1</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 2</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 3</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 4</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 5</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 6</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 7</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 8</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 9</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 10</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 11</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+
+      <h2 class="text-center">Paragraph 12</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id iure exercitationem sint officia? Recusandae nostrum, accusantium ducimus a veritatis sint fugiat nemo aperiam architecto ipsa voluptatibus eveniet veniam possimus earum!</p>
+    </div>
+  </div>
+{% endblock %}

@@ -13,6 +13,7 @@ using CMS.SiteProvider;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
@@ -22,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 
-[assembly: CMS.RegisterExtension(typeof(Kadena.Old_App_Code.CMSModules.Macros.Kadena.KadenaMacroMethods), typeof(KadenaMacroNamespace))]
+[assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
 namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
@@ -520,7 +521,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                var countData = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartCount, queryParams, QueryTypeEnum.StoredProcedure, true);
                 return ValidationHelper.GetInteger(countData, default(int));
             }
             catch (Exception ex)
@@ -550,7 +551,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     QueryDataParameters queryParams = new QueryDataParameters();
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                    var cartTotal = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartTotal", queryParams, QueryTypeEnum.StoredProcedure, true);
+                    var cartTotal = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartTotal, queryParams, QueryTypeEnum.StoredProcedure, true);
                     return ValidationHelper.GetDouble(cartTotal, default(double));
                 }
                 return default(double);
@@ -640,6 +641,33 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 EventLogProvider.LogInformation("Kadena Macro methods", "CheckUniqueInMyTable", ex.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns if any campaign is open
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(bool), "Returns if any campaign is open", 0)]
+        public static object IsCampaignOpen(EvaluationContext context, params object[] parameters)
+        {
+            bool IsOpen = false;
+            try
+            {
+                var campaign = CampaignProvider.GetCampaigns()
+                    .Columns("Name")
+                    .WhereEquals("OpenCampaign", true)
+                    .WhereEquals("CloseCampaign", false)
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
+                    .FirstOrDefault();
+                return IsOpen = campaign != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "IsCampaignOpen", ex.Message);
+                return IsOpen;
             }
         }
 

@@ -7,115 +7,174 @@ import TextInput from 'app.dump/Form/TextInput';
 import PasswordInput from 'app.dump/Form/PasswordInput';
 import CheckboxInput from 'app.dump/Form/CheckboxInput';
 /* ac */
-import requestLogin from 'app.ac/login';
+import {
+  checkTaC,
+  loginSubmit,
+  changeCredentinals
+} from 'app.ac/login';
 /* utilities */
 import { LOGIN } from 'app.globals';
 import { getSearchObj } from 'app.helpers/location';
 
 class Login extends Component {
-  state = {
-    loginEmail: '',
-    password: '',
-    isKeepMeLoggedIn: false
-  };
-
   static defaultProps = {
     emailText: LOGIN.email,
     emailPlaceholder: LOGIN.emailPlaceholder,
     keepMeLoggedInText: LOGIN.keepMeLoggedIn,
     loginText: LOGIN.login,
     passwordPlaceholder: LOGIN.passwordPlaceholder,
-    passwordText: LOGIN.password
+    passwordText: LOGIN.password,
+    loginUrl: LOGIN.loginUrl,
+    acceptTaCUrl: LOGIN.acceptTaCUrl,
+    checkTaCUrl: LOGIN.checkTaCUrl
   };
 
   static propTypes = {
     keepMeLoggedInText: PropTypes.string.isRequired,
     passwordText: PropTypes.string.isRequired,
-    requestLogin: PropTypes.func.isRequired,
+    checkTaC: PropTypes.func.isRequired,
+    loginSubmit: PropTypes.func.isRequired,
     emailText: PropTypes.string.isRequired,
     loginText: PropTypes.string.isRequired,
     passwordPlaceholder: PropTypes.string,
     emailPlaceholder: PropTypes.string,
     login: PropTypes.shape({
-      isLoading: PropTypes.bool.isRequired,
-      response: PropTypes.shape({
-        errorPropertyName: PropTypes.string.isRequired
-      })
-    }).isRequired
+      credentinals: PropTypes.shape({
+        loginEmail: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired,
+        isKeepMeLoggedIn: PropTypes.bool.isRequired
+      }).isRequired,
+      checkTaC: PropTypes.shape({
+        showTaC: PropTypes.bool.isRequired,
+        url: PropTypes.string.isRequired,
+        isAsked: PropTypes.bool.isRequired
+      }).isRequired,
+      acceptTaC: PropTypes.bool.isRequired,
+      submit: PropTypes.shape({
+        logonSuccess: PropTypes.bool.isRequired,
+        errorPropertyName: PropTypes.string,
+        errorMessage: PropTypes.string,
+        isAsked: PropTypes.bool.isRequired
+      }).isRequired,
+      isLoading: PropTypes.bool.isRequired
+    }).isRequired,
+    loginUrl: PropTypes.string.isRequired
   };
 
-  submit = () => {
-    const { loginEmail, password, isKeepMeLoggedIn } = this.state;
-    const { requestLogin } = this.props;
-    requestLogin(loginEmail.trim(), password, isKeepMeLoggedIn);
+  checkTaCSubmit = () => {
+    const { checkTaCUrl } = LOGIN;
+    const { loginEmail, password } = this.props.login.credentinals;
+    this.props.checkTaC(checkTaCUrl, { loginEmail, password });
   };
+
+  loginSubmit = () => {
+    const { loginUrl } = LOGIN;
+    const { loginEmail, password, isKeepMeLoggedIn } = this.props.login.credentinals;
+    this.props.loginSubmit(loginUrl, { loginEmail, password, isKeepMeLoggedIn });
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { login: loginProps } = this.props;
+    const { login: loginNextProps } = nextProps;
+
+    // if necessary not to show TaC
+    if (loginProps.checkTaC.isAsked !== loginNextProps.checkTaC.isAsked
+      && !loginNextProps.submit.isAsked
+      && !loginNextProps.checkTaC.showTaC) {
+      this.loginSubmit();
+    }
+
+    // if TaC accepted
+    if (loginProps.acceptTaC !== loginNextProps.acceptTaC && loginNextProps.acceptTaC) {
+      this.loginSubmit();
+    }
+
+    // if logged in
+    if (loginProps.submit.isAsked !== loginNextProps.submit.isAsked
+      && loginNextProps.submit.logonSuccess
+      && loginNextProps.submit.isAsked) {
+      const query = getSearchObj();
+      if (query.returnurl) {
+        location.assign(decodeURIComponent(query.returnurl));
+      } else {
+        location.assign('/');
+      }
+    }
+  }
 
   componentDidMount() {
     document.querySelector('body').addEventListener('keypress', (event) => {
-      if (event.keyCode === 13) this.submit();
+      if (event.keyCode === 13) this.checkTaCSubmit();
     });
   }
 
-  handleLoginEmailChange = e => this.setState({ loginEmail: e.target.value });
-  handlePasswordChange = e => this.setState({ password: e.target.value });
-  handleIsKeepMeLoggedIn = e => this.setState({ isKeepMeLoggedIn: e.target.checked });
+  changeCredentinals = (field, value) => {
+    this.props.changeCredentinals(field, value);
+  };
 
-  static getErrorMessage(propertyName, failureResponse) {
-    let errorMessage = null;
-
-    if (failureResponse !== null && failureResponse.errorPropertyName === propertyName) {
-      errorMessage = failureResponse.errorMessage;
-    }
-
-    return errorMessage;
+  static getErrorMessage(propertyName, invalids) {
+    if (!invalids) return '';
+    if (invalids.errorPropertyName === propertyName) return invalids.errorMessage;
+    return '';
   }
 
   render() {
-    const { login, emailText, emailPlaceholder, keepMeLoggedInText,
-      loginText, passwordPlaceholder, passwordText, requestLogin } = this.props;
-    const { loginEmail, password, isKeepMeLoggedIn } = this.state;
-    const { response, isLoading } = login;
+    const {
+      login,
+      emailText,
+      emailPlaceholder,
+      keepMeLoggedInText,
+      loginText,
+      passwordPlaceholder,
+      passwordText
+    } = this.props;
+
+    const { credentinals } = login;
 
     return (
-      <div className="css-login">
-        <div className="mb-2">
-          <TextInput label={emailText}
-                     placeholder={emailPlaceholder}
-                     value={loginEmail}
-                     onChange={e => this.handleLoginEmailChange(e)}
-                     error={Login.getErrorMessage('loginEmail', response)}
-          />
-        </div>
-
-        <div className="mb-2">
-          <PasswordInput label={passwordText}
-                         placeholder={passwordPlaceholder}
-                         value={password}
-                         onChange={e => this.handlePasswordChange(e)}
-                         error={Login.getErrorMessage('password', response)}
-          />
-        </div>
-
-        <div className="mb-3">
-          <div className="input__wrapper">
-            <CheckboxInput
-              id="dom-1"
-              type="checkbox"
-              label={keepMeLoggedInText}
-              value={isKeepMeLoggedIn}
-              onChange={e => this.handleIsKeepMeLoggedIn(e)}
+      <div>
+        <div className="css-login">
+          <div className="mb-2">
+            <TextInput
+              label={emailText}
+              placeholder={emailPlaceholder}
+              value={credentinals.loginEmail}
+              onChange={e => this.changeCredentinals('loginEmail', e.target.value)}
+              error={Login.getErrorMessage('loginEmail', login.submit)}
             />
           </div>
-        </div>
 
-        <div className="mb-3">
-          <div className="text-center">
-            <Button text={loginText}
-                    type="action"
-                    btnClass="login__login-button btn--no-shadow"
-                    isLoading={isLoading}
-                    onClick={this.submit}
+          <div className="mb-2">
+            <PasswordInput
+              label={passwordText}
+              placeholder={passwordPlaceholder}
+              value={credentinals.password}
+              onChange={e => this.changeCredentinals('password', e.target.value)}
+              error={Login.getErrorMessage('password', login.submit)}
             />
+          </div>
+
+          <div className="mb-3">
+            <div className="input__wrapper">
+              <CheckboxInput
+                id="dom-1"
+                type="checkbox"
+                label={keepMeLoggedInText}
+                value={credentinals.isKeepMeLoggedIn}
+                onChange={e => this.changeCredentinals('isKeepMeLoggedIn', !credentinals.isKeepMeLoggedIn)}
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <div className="text-center">
+              <Button text={loginText}
+                      type="action"
+                      btnClass="login__login-button btn--no-shadow"
+                      isLoading={login.isLoading}
+                      onClick={this.checkTaCSubmit}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -125,17 +184,9 @@ class Login extends Component {
 
 export default connect((state) => {
   const { login } = state;
-
-  if (login.response && login.response.success) {
-    const query = getSearchObj();
-    if (query.returnurl) {
-      location.assign(decodeURIComponent(query.returnurl));
-    } else {
-      location.assign('/');
-    }
-  }
-
   return { login };
 }, {
-  requestLogin
+  checkTaC,
+  loginSubmit,
+  changeCredentinals
 })(Login);
