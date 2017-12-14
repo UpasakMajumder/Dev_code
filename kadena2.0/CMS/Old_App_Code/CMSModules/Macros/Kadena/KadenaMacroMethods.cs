@@ -10,16 +10,16 @@ using CMS.Localization;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
+using System.Collections.Generic;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
-using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.WebAPI;
-using Kadena.WebAPI.KenticoProviders;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 
@@ -515,10 +515,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 int userID = ValidationHelper.GetInteger(parameters[1], default(int));
                 int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                var query = new DataQuery(SQLQueries.getShoppingCartCount);
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                var countData = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartCount, queryParams, QueryTypeEnum.StoredProcedure, true);
+                var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return ValidationHelper.GetInteger(countData, default(int));
             }
             catch (Exception ex)
@@ -545,10 +546,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
                 if (inventoryType == (Int32)ProductType.PreBuy)
                 {
+                    var query = new DataQuery(SQLQueries.getShoppingCartTotal);
                     QueryDataParameters queryParams = new QueryDataParameters();
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                    var cartTotal = ConnectionHelper.ExecuteScalar(StoredProcedures.getShoppingCartTotal, queryParams, QueryTypeEnum.StoredProcedure, true);
+                    var cartTotal = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                     return ValidationHelper.GetDouble(cartTotal, default(double));
                 }
                 return default(double);

@@ -1,10 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AutoMapper;
-using Kadena.WebAPI;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services;
-using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
 using Kadena.Models;
@@ -78,7 +75,7 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreateDeliveryCarrier() });
             shoppingCart.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
-            shoppingCart.Setup(p => p.GetShoppingCartItems(true))
+            shoppingCart.Setup(p => p.GetShoppingCartItems(It.IsAny<bool>()))
                 .Returns(() => new[] { CreateCartitem(1), CreateCartitem(2) });
             shoppingCart.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals(100));
@@ -113,7 +110,7 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Products.Items.Count == 1);
+            Assert.Single(result.Products.Items);
             Assert.Equal(10, result.Products.Items[0].TotalPrice);
         }
 
@@ -146,7 +143,7 @@ namespace Kadena.Tests.WebApi
 
             Assert.NotNull(result);
             Assert.NotNull(result.Items);
-            Assert.Equal(0, result.Items.Count);
+            Assert.Empty(result.Items);
         }
 
         [Fact]
@@ -157,7 +154,7 @@ namespace Kadena.Tests.WebApi
 
             Assert.NotNull(result);
             Assert.NotNull(result.CartPreview.Items);
-            Assert.Equal(1, result.CartPreview.Items.Count);
+            Assert.Single(result.CartPreview.Items);
         }
     }
 }

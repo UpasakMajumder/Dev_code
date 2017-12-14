@@ -323,7 +323,7 @@ namespace Kadena.BusinessLogic.Services
             var paymentMethods = shoppingCart.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
 
-            switch(selectedPayment?.ClassName ?? string.Empty)
+            switch (selectedPayment?.ClassName ?? string.Empty)
             {
                 case "KDA.PaymentMethods.CreditCard":
                     return await PayByCard(request);
@@ -346,28 +346,32 @@ namespace Kadena.BusinessLogic.Services
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 
             return await Task.FromResult(new SubmitOrderResult
-                {
-                    Success = true,
-                    RedirectURL = documents.GetDocumentUrl(insertCardUrl)
-                }
+            {
+                Success = true,
+                RedirectURL = documents.GetDocumentUrl(insertCardUrl)
+            }
             );
         }
 
         public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            Customer customer = null;
+            Customer customer = kenticoUsers.GetCurrentCustomer();
+
+            var emails = request.EmailConfirmation.Union(new[] { customer.Email });
+
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
                 shoppingCart.SetShoppingCartAddress(request.DeliveryAddress);
-                customer = kenticoUsers.GetCurrentCustomer();
                 customer.FirstName = request.DeliveryAddress.CustomerName;
                 customer.LastName = string.Empty;
                 customer.Email = request.DeliveryAddress.Email;
                 customer.Phone = request.DeliveryAddress.Phone;
             }
 
-            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice, request.AgreeWithTandC);
+
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id,
+                request.PaymentMethod.Invoice, request.AgreeWithTandC, emails);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -416,11 +420,11 @@ namespace Kadena.BusinessLogic.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice, bool termsAndConditionsExplicitlyAccepted)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customer, int deliveryMethodId, int paymentMethodId, string invoice,
+            bool termsAndConditionsExplicitlyAccepted, IEnumerable<string> notificationEmails)
         {
             // TODO: add to order request. need confirmation on the name of the property from microservice side.
 
-            var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
             shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
@@ -430,7 +434,7 @@ namespace Kadena.BusinessLogic.Services
             var currency = resources.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
-            
+
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
@@ -515,7 +519,12 @@ namespace Kadena.BusinessLogic.Services
                 TotalPrice = totals.TotalItemsPrice,
                 TotalShipping = totals.TotalShipping,
                 TotalTax = totals.TotalTax,
-                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item))
+                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item)),
+                NotificationsData = notificationEmails.Select(e => new NotificationInfoDto
+                {
+                    Email = e,
+                    Language = customer.PreferredLanguage
+                })
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
