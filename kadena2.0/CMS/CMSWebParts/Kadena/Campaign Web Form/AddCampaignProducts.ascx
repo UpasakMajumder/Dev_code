@@ -79,7 +79,7 @@
                         <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="input__error" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="input__error"
-                            ControlToValidate="txtEstimatedprice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                            ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$" ForeColor="Red">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtActualPrice" class="input__text"></asp:TextBox>
                         <asp:RegularExpressionValidator ID="revActualPrice" CssClass="input__error" runat="server"
-                            ControlToValidate="txtActualPrice" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                            ControlToValidate="txtActualPrice" ValidationExpression="((\d+)((\.\d{1,100})?))$" ForeColor="Red">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
