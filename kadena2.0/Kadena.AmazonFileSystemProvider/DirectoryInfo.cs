@@ -40,15 +40,15 @@ namespace Kadena.AmazonFileSystemProvider
             }
             set
             {
-                var trimmedPath = value?.Trim('/');
+                var trimmedPath = value?.TrimEnd('/');
                 if (string.IsNullOrWhiteSpace(trimmedPath))
                 {
-                    _path = "/";
+                    _path = string.Empty;
                     this.Name = string.Empty;
                 }
                 else
                 {
-                    _path = $"/{Path.GetDirectoryName(trimmedPath)}/";
+                    _path = $"{Path.GetDirectoryName(trimmedPath)}";
                     this.Name = Path.GetFileName(trimmedPath);
                 }
             }
@@ -90,14 +90,8 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         public override bool Exists
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
 
