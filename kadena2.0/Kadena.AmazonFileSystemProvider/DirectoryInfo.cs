@@ -36,20 +36,20 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return $"{_path}{Name}";
+                return Path.EnsureSlashes(Path.EnsureEndBackslash(Path.Combine(_path, Name)));
             }
             set
             {
-                var trimmedPath = value?.TrimEnd('/');
+                var trimmedPath = value?.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
                 if (string.IsNullOrWhiteSpace(trimmedPath))
                 {
                     _path = string.Empty;
-                    this.Name = string.Empty;
+                    Name = string.Empty;
                 }
                 else
                 {
-                    _path = $"{Path.GetDirectoryName(trimmedPath)}";
-                    this.Name = Path.GetFileName(trimmedPath);
+                    _path = Path.GetDirectoryName(trimmedPath);
+                    Name = Path.GetFileName(trimmedPath);
                 }
             }
         }
