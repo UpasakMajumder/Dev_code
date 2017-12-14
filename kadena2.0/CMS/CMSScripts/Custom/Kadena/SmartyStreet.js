@@ -14,7 +14,7 @@ $(document).ready(function () {
                     'auth-token': htmlKey,
                     'street': $('.js-Address').val().trim(),
                     'city': $('.js-City').val().trim(),
-                    'zipcode': $('.js-Zipcode').val().trim(),
+                    'zipcode': $('.js-Zipcode').is(':visible') ? $('.js-Zipcode').val().trim() : '',
                     'state': $('.js-State').find("select option:selected").eq(0).text(),
                     'country': $('.js-Country').find("select option:selected").eq(0).text(),
                     'candidates': config.localization.smarty.candidateCount
@@ -42,7 +42,6 @@ $(document).ready(function () {
                     }
                 },
                 fail: function (error, status, xhr) {
-                    console.log(error);
                 }
             });
         }
