@@ -58,9 +58,7 @@ export const getOrders = (url, selectedOrderType, selectedCampaign) => {
         if (success) {
           dispatch({
             type: FILTERED_RECENT_ORDERS_GET_ORDERS + SUCCESS,
-            payload: {
-              orders: payload.orders
-            }
+            payload
           });
         } else {
           dispatch({

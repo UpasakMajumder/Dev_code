@@ -5,14 +5,22 @@ import { removeProps } from 'app.helpers/object';
 import { STATIC_FIELDS } from 'app.globals';
 
 const Select = (props) => {
-  const { label, error, disabled, isOptional, options, onChange, value } = props;
+  const { label, error, disabled, isOptional, options, onChange, value, placeholder } = props;
 
   const labelElement = label ? <span className="input__label">{label}</span> : null;
   const className = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
   const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
   const errorClass = error ? 'input--error' : '';
   const optionalLabel = isOptional ? <span className="input__right-label">{STATIC_FIELDS.validation.optionalLabel}</span> : null;
-  const placeholer = label ? <option disabled={true} selected={!value}>{label}</option> : null;
+
+  let placeholderElement = null;
+
+  if (placeholder) {
+    placeholderElement = <option disabled={true} selected={!value}>{placeholder}</option>;
+  } else {
+    placeholderElement = label ? <option disabled={true} selected={!value}>{label}</option> : null;
+  }
+
 
   const optionList = options.map((option) => {
     return typeof option === 'string'
@@ -30,8 +38,9 @@ const Select = (props) => {
           className={errorClass}
           required={!isOptional}
           onChange={onChange}
+          disabled={disabled}
         >
-          {placeholer}
+          {placeholderElement}
           {optionList}
         </select>
       </div>

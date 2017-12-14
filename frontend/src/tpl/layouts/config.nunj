@@ -157,8 +157,8 @@
         orderTypes: {
           placeholder: 'Order Type',
           items: [
-            { id: '0', value: 'Pre-But Orders' },
-            { id: '1', value: 'General Inventory Orders' }
+            { id: '0', name: 'Pre-But Orders' },
+            { id: '1', name: 'General Inventory Orders' }
           ]
         },
         getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',

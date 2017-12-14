@@ -92,7 +92,7 @@ export default (state = defaultState, action) => {
         isFetching: false, // hide spinner
         isBlocked: false // unblock
       },
-      orders: payload.orders // render table
+      orders: payload // render table
     };
 
   case FILTERED_RECENT_ORDERS_GET_ORDERS + FAILURE:
