@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.AccessControl;
+using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using CMS.IO;
@@ -20,7 +22,32 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to test.</param>  
         public override bool Exists(string path)
         {
-            throw new NotImplementedException();
+            var bucketName = AmazonS3Helper.GetBucketName();
+            var key = AmazonS3Helper.EnsureKey(path);
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return false;
+            }
+
+            var client = new AmazonS3Client(RegionEndpoint.USEast1);
+            try
+            {
+                var response = client.GetObjectMetadata(bucketName, key);
+                return true;
+            }
+            catch (AmazonS3Exception exc)
+            {
+                if (exc.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return false;
+                }
+                throw;
+            }
+            finally
+            {
+                client.Dispose();
+            }
         }
 
 
