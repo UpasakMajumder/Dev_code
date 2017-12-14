@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<table class="show-table" id="reptable">
+  <tbody>
+    <tr>
+      <th>{$Kadena.POSFrom.BrandText$}</th>
+      <th>{$Kadena.POSFrom.YearText$}</th>
+      <th>{$Kadena.POSFrom.POSNumber$}</th>
+      <th>{$Kadena.POSFrom.CategoryText$}</th>
+      <th>
+        <div class="text-center">{$KDA.Common.Actions$}</div>
+      </th>
+    </tr>
+	
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>ccbf56f8-a758-43cd-b3a0-df88ac6a2dbc</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>PosHeader</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

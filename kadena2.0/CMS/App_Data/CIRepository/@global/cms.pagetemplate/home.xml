@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>Home</PageTemplateCodeName>
+  <PageTemplateDisplayName>_Home</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>25a28205-658d-45d4-a710-3fa6a1ceb992</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content__inner">
+  <div class="content-header">
+    <div class="breadcrumbs">
+      <!--Bread crumbs Zone--> 
+      {^WebPartZone|(id)ZoneBreadCrumbs^}
+    </div>
+  </div>
+  <div class="content-block">
+    <div class="main_content">
+      <div class="main_left">
+        <!--Header left Zone-->
+        {^WebPartZone|(id)ZoneHeaderLeft^}  
+      </div>
+      <div class="main_right">
+        <div class="scroll_block">
+          <!--Header right Zone-->                            
+          {^WebPartZone|(id)ZoneHeaderRight^}
+        </div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="product_sec">
+      <!--Admin area header Zone-->
+         {^WebPartZone|(id)AdminFeatures^}
+      </div>
+    </div>
+    <div class="admin_access">
+      <!--Global admin header zone-->
+     {^WebPartZone|(id)GlobalAdminFeatures^}
+    </div>
+  </div>
+
+
+
+
+
+
+
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>html</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneHeaderLeft" v="1" widgetzonetype="editor">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+        <webpart controlid="HomeContentBlock" guid="7be51a9d-6394-4766-8ae8-63bfb2f605c6" iswidget="true" type="HomeContentBlock" v="1">
+          <property name="bannerimage">
+            <![CDATA[~/TWE/media/CampaignProducts/Images/banner.jpg?ext=.jpg]]>
+          </property>
+          <property name="container">HomeContent</property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">HomeContentBlock</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="footertextone">Order Dates: Sep 1 - 17</property>
+          <property name="footertexttwo">Delivering to Distributor: February 1, 2018</property>
+          <property name="headertext">F18 Summer, Holiday, and Spring</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">7be51a9d-6394-4766-8ae8-63bfb2f605c6</property>
+          <property name="iswidget">True</property>
+          <property name="outputconverttablestodivs"></property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="subheadertextone">F18 SPRING</property>
+          <property name="subheadertexttwo">BERINGER BASEBALL REGIONAL PREBUY</property>
+          <property name="text"></property>
+          <property name="timezonetype"></property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">HomeContentBlock</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneBannerZone" v="1" />
+      <webpartzone id="ZoneHeaderRight" v="1">
+        <webpart controlid="RightHeader" guid="09d96e3d-80bc-479d-8a50-847ddec39f48" type="editabletext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="checkpermissions">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">RightHeader</property>
+          <property name="customtimezone"></property>
+          <property name="defaulttext" ismacro="true">
+            <![CDATA[<p>Welcome to the TWE POS Pre Buy, Supplemental Pre Buy and Pos Inventory Ordering Site. This will be your one stop shop for ordering National and supplemental pre buy POS and also ordering items in inventory. The POS ordering System is all new and reflects Sales input to be more intuitive and easier for you to order plus will control your Address book so you be able to make any changes.</p>]]>
+          </property>
+          <property name="dialogheight"></property>
+          <property name="dialogwidth"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="htmlareatoolbar"></property>
+          <property name="htmlareatoolbarlocation">In</property>
+          <property name="imageautoresize">
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </property>
+          <property name="instanceguid">09d96e3d-80bc-479d-8a50-847ddec39f48</property>
+          <property name="maxlength"></property>
+          <property name="minlength"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="regiontitle"></property>
+          <property name="regiontype">HtmlEditor</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="selectonlypublished">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useparentcontent">False</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">editabletext</property>
+          <property name="wordwrap">True</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneAdminHeader" v="1" />
+      <webpartzone id="ZoneContent" v="1" />
+      <webpartzone id="GlobalAdminFeatures" v="1">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles">GlobalAdmin</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+        <webpart controlid="GlobalAdminHeader" guid="42bca65d-9fec-49c7-b32c-b6bce17640af" type="editabletext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="checkpermissions">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+            <![CDATA[</h4>]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[<h4>	]]>
+          </property>
+          <property name="controlid">GlobalAdminHeader</property>
+          <property name="customtimezone"></property>
+          <property name="defaulttext"></property>
+          <property name="dialogheight"></property>
+          <property name="dialogwidth"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="htmlareatoolbar"></property>
+          <property name="htmlareatoolbarlocation">In</property>
+          <property name="imageautoresize">
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </property>
+          <property name="instanceguid">42bca65d-9fec-49c7-b32c-b6bce17640af</property>
+          <property name="maxlength"></property>
+          <property name="minlength"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="regiontitle"></property>
+          <property name="regiontype">HtmlEditor</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="selectonlypublished">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useparentcontent">False</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">editabletext</property>
+          <property name="wordwrap">True</property>
+        </webpart>
+        <webpart controlid="rptGlobalAdminFeatures" guid="f054acb4-e2a6-4210-a670-5dc50ff03437" type="repeater" v="1">
+          <property name="alternatingtransformationname"></property>
+          <property name="backnextlocation">split</property>
+          <property name="cachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="cacheitemname"></property>
+          <property name="cacheminutes"></property>
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="categoryname"></property>
+          <property name="checkpermissions">False</property>
+          <property name="classnames">KDA.Feature</property>
+          <property name="columns">
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+          </property>
+          <property name="combinewithdefaultculture"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">rptGlobalAdminFeatures</property>
+          <property name="culturecode"></property>
+          <property name="customtimezone"></property>
+          <property name="datasourcename"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="enablepaging">False</property>
+          <property name="filtername"></property>
+          <property name="filteroutduplicates">False</property>
+          <property name="hidecontrolforzerorows">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">f054acb4-e2a6-4210-a670-5dc50ff03437</property>
+          <property name="itemseparator"></property>
+          <property name="loadpagesindividually">False</property>
+          <property name="maxrelativelevel">-1</property>
+          <property name="nestedcontrolsid"></property>
+          <property name="newbuttontext"></property>
+          <property name="orderby"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagenumbersseparator">-</property>
+          <property name="pagerhtmlafter"></property>
+          <property name="pagerhtmlbefore"></property>
+          <property name="pagerposition">bottom</property>
+          <property name="pagesize">10</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="path">/Home/%</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="querystringkey"></property>
+          <property name="relatednodeisontheleftside">False</property>
+          <property name="relationshipname">KDA.HasAddOn</property>
+          <property name="relationshipwithnodeguid">00000000-0000-0000-0000-000000000000</property>
+          <property name="resultsposition">top</property>
+          <property name="selecteditemtransformationname"></property>
+          <property name="selectonlypublished">True</property>
+          <property name="selecttopn"></property>
+          <property name="showdeletebutton">False</property>
+          <property name="showeditbutton">False</property>
+          <property name="showeditdeletebuttons">False</property>
+          <property name="showfirstlast">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="shownewbutton">False</property>
+          <property name="sitename"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="transformationname">KDA.Feature.xGlobalAdminFeaturesList</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">repeater</property>
+          <property name="wherecondition">VisibleRole=2</property>
+          <property name="zerorowstext">No data found</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="AdminFeatures" v="1">
+        <webpart controlid="AdminHeader" guid="c649bd11-fe6d-4402-a33c-e011d93dac8b" type="editabletext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="checkpermissions">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+            <![CDATA[</h4>]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[<h4>	]]>
+          </property>
+          <property name="controlid">AdminHeader</property>
+          <property name="customtimezone"></property>
+          <property name="defaulttext"></property>
+          <property name="dialogheight"></property>
+          <property name="dialogwidth"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="htmlareatoolbar"></property>
+          <property name="htmlareatoolbarlocation">In</property>
+          <property name="imageautoresize">
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </property>
+          <property name="instanceguid">c649bd11-fe6d-4402-a33c-e011d93dac8b</property>
+          <property name="maxlength"></property>
+          <property name="minlength"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="regiontitle"></property>
+          <property name="regiontype">HtmlEditor</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="selectonlypublished">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useparentcontent">False</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">editabletext</property>
+          <property name="wordwrap">True</property>
+        </webpart>
+        <webpart controlid="rptAdminFeatures" guid="0ab9c120-9b95-4afa-8bb7-373ebf7c66f9" type="repeater" v="1">
+          <property name="alternatingtransformationname"></property>
+          <property name="backnextlocation">split</property>
+          <property name="cachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="cacheitemname"></property>
+          <property name="cacheminutes"></property>
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="categoryname"></property>
+          <property name="checkpermissions">False</property>
+          <property name="classnames">KDA.Feature</property>
+          <property name="columns">
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+          </property>
+          <property name="combinewithdefaultculture"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+<![CDATA[
+    <div class="clearfix"></div>
+</div>
+]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[<div class="product_inner">   ]]>
+          </property>
+          <property name="controlid">rptAdminFeatures</property>
+          <property name="culturecode"></property>
+          <property name="customtimezone"></property>
+          <property name="datasourcename"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="enablepaging">False</property>
+          <property name="filtername"></property>
+          <property name="filteroutduplicates">False</property>
+          <property name="hidecontrolforzerorows">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">0ab9c120-9b95-4afa-8bb7-373ebf7c66f9</property>
+          <property name="itemseparator"></property>
+          <property name="loadpagesindividually">False</property>
+          <property name="maxrelativelevel">-1</property>
+          <property name="nestedcontrolsid"></property>
+          <property name="newbuttontext"></property>
+          <property name="orderby"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagenumbersseparator">-</property>
+          <property name="pagerhtmlafter"></property>
+          <property name="pagerhtmlbefore"></property>
+          <property name="pagerposition">bottom</property>
+          <property name="pagesize">10</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="path">/Home/%</property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="querystringkey"></property>
+          <property name="relatednodeisontheleftside">False</property>
+          <property name="relationshipname">KDA.HasAddOn</property>
+          <property name="relationshipwithnodeguid">00000000-0000-0000-0000-000000000000</property>
+          <property name="resultsposition">top</property>
+          <property name="selecteditemtransformationname"></property>
+          <property name="selectonlypublished">True</property>
+          <property name="selecttopn"></property>
+          <property name="showdeletebutton">False</property>
+          <property name="showeditbutton">False</property>
+          <property name="showeditdeletebuttons">False</property>
+          <property name="showfirstlast">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="shownewbutton">False</property>
+          <property name="sitename"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="transformationname">KDA.Feature.xAdminFeaturesList</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">repeater</property>
+          <property name="wherecondition">VisibleRole=1</property>
+          <property name="zerorowstext">No data found</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneBreadCrumbs" v="1">
+        <webpart controlid="BreadCrumbs" guid="19d3430c-f60b-4b93-8dc1-7a406b9c112e" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">BreadCrumbs</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">19d3430c-f60b-4b93-8dc1-7a406b9c112e</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text" ismacro="true">
+<![CDATA[
+{%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+iteratedDocument = iteratedDocument.Parent;
+};
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

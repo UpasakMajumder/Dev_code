@@ -77,11 +77,15 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
                 rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
                 rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
+                revQuantity.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
                 rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
                 rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
                 rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
+                revBundleQnt.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+                revEstPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+                revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
                 libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
             }
@@ -602,18 +606,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
                 }
                 BindCategories();
-                var states = StateInfoProvider.GetStates()
-                    .Columns("StateID,StateName")
-                    .ToList();
-                if (!DataHelper.DataSourceIsEmpty(states))
-                {
-                    ddlState.DataSource = states;
-                    ddlState.DataTextField = "StateName";
-                    ddlState.DataValueField = "StateID";
-                    ddlState.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), string.Empty);
-                    ddlState.Items.Insert(0, new ListItem(selectText, "0"));
-                }
+                GetStateGroup();
             }
             catch (Exception ex)
             {
@@ -650,7 +643,34 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
             return returnValue;
         }
-
+        /// <summary>
+        /// Get the State list
+        /// </summary>
+        /// <returns></returns>
+        public string GetStateGroup()
+        {
+            string returnValue = string.Empty;
+            try
+            {
+                var states = CustomTableItemProvider.GetItems(StatesGroupItem.CLASS_NAME)
+                    .Columns("ItemID,States")
+                    .ToList();
+                if (!DataHelper.DataSourceIsEmpty(states))
+                {
+                    ddlState.DataSource = states;
+                    ddlState.DataTextField = "States";
+                    ddlState.DataValueField = "ItemID";
+                    ddlState.DataBind();
+                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), string.Empty);
+                    ddlState.Items.Insert(0, new ListItem(selectText, "0"));
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetStateGroup", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return returnValue;
+        }
         /// <summary>
         /// Bind categories to dropdown
         /// </summary>
@@ -727,6 +747,22 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     ViewState["ProductId"] = null;
                     EmptyFields(false);
+                    var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
+                        .WhereEquals("POSNumber", selectedPos)
+                         .FirstOrDefault();
+                    if(pos!=null)
+                    {
+                        if(pos.GetValue("BrandID")!=null)
+                        {
+                            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                           .WhereEquals("BrandCode", pos.GetValue("BrandID"))
+                           .FirstOrDefault();
+                            if (brand != null)
+                            {
+                                ddlBrand.SelectedValue = brand.GetValue("ItemID").ToString();
+                            }
+                        }
+                    }
                 }
                 BindData();
                 ddlPosNo.SelectedValue = selectedPos;

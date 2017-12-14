@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>TermsAndConditions</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="TermsAndConditionsID" columnprecision="0" columntype="integer" guid="ff5359db-ee25-46a8-a7d0-543db2776272" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>TermsAndConditionsID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ValidFrom" columnprecision="7" columntype="datetime" guid="1a598bfd-bff8-45b1-b2f0-d9a3e8f3899c" publicfield="false" visible="true">
+        <properties>
+          <explanationtext>
+            <![CDATA[If user logs in and his las accepted T&C are none or older than this date, he will be prompted to accept this version of T&C. WARNING: Changing this value may cause displaing T&C prompt to users]]>
+          </explanationtext>
+          <fieldcaption>Valid From</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>18e1390a-dac5-4767-9809-49c4706e8491</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassName>KDA.TermsAndConditions</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="45f2ca32-5fe5-4ef9-974a-57bc4539ca44" name="ValidFrom" searchable="True" tokenized="False" />
+      <item content="False" id="ca01ce38-48b3-4629-8ee5-116789a9d874" name="TermsAndConditionsID" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassTableName>KDA_TermsAndConditions</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

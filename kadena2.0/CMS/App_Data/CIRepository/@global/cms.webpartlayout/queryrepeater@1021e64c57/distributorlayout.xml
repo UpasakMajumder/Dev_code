@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpartlayout>
+  <WebPartLayoutCode>
+<![CDATA[
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Viewers_Query_queryrepeater"  Codebehind="~/CMSWebParts/Viewers/Query/queryrepeater.ascx.cs" %>
+  
+  <cms:queryrepeater id="repItems" runat="server"  /> 
+  
+]]>
+  </WebPartLayoutCode>
+  <WebPartLayoutCodeName>DistributorLayout</WebPartLayoutCodeName>
+  <WebPartLayoutDisplayName>DistributorLayout</WebPartLayoutDisplayName>
+  <WebPartLayoutGUID>a536a52b-46c9-4f7b-86e7-d8452386a3ec</WebPartLayoutGUID>
+  <WebPartLayoutIsDefault>False</WebPartLayoutIsDefault>
+  <WebPartLayoutWebPartID>
+    <CodeName>queryrepeater</CodeName>
+    <GUID>ad0c5f56-abbc-4f0b-b8e8-ec978fb42fec</GUID>
+    <ObjectType>cms.webpart</ObjectType>
+  </WebPartLayoutWebPartID>
+</cms.webpartlayout>

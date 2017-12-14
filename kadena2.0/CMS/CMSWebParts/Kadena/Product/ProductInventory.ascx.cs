@@ -147,9 +147,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
                                       .WhereEquals("ProgramID", null)
                                       .ToList();
-                    if (categoryID != default(int))
+                    if (!DataHelper.DataSourceIsEmpty(productsDetails))
                     {
-                        productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
+                        if (categoryID != default(int))
+                        {
+                            productsDetails = productsDetails
+                                .Where(x => x.CategoryID == categoryID)
+                                .ToList();
+                        }
                     }
                 }
                 else
@@ -162,13 +167,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         productsDetails = CampaignsProductProvider.GetCampaignsProducts()
                                           .WhereIn("ProgramID", programIds)
                                           .ToList();
-                        if (programID != default(int))
+                        if (!DataHelper.DataSourceIsEmpty(productsDetails))
                         {
-                            productsDetails = productsDetails.Where(x => x.ProgramID == programID).ToList();
-                        }
-                        if (categoryID != default(int))
-                        {
-                            productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
+                            if (programID != default(int))
+                            {
+                                productsDetails = productsDetails
+                                    .Where(x => x.ProgramID == programID)
+                                    .ToList();
+                            }
+                            if (categoryID != default(int))
+                            {
+                                productsDetails = productsDetails
+                                    .Where(x => x.CategoryID == categoryID)
+                                    .ToList();
+                            }
                         }
                     }
                 }
@@ -186,11 +198,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                     .WhereIn("SKUID", skuIds)
                                     .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
                                     .ToList();
-                    if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber))
+                    if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
                     {
-                        skuDetails = skuDetails.Where(x => x.SKUNumber.Contains(posNumber)).ToList();
+                        skuDetails = skuDetails
+                            .Where(x => x.SKUNumber.Contains(posNumber))
+                            .ToList();
                     }
-                    if (!DataHelper.DataSourceIsEmpty(skuDetails))
+                    if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                     {
                         var productAndSKUDetails = productsDetails
                               .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID,x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
@@ -253,21 +267,24 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                              .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                              .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
                              .FirstOrDefault();
-            if (campaign.CampaignID != default(int))
+            if (campaign != null)
             {
-                var programs = ProgramProvider.GetPrograms()
-                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                    .WhereEquals("CampaignID", campaign.CampaignID)
-                    .Columns("ProgramName,ProgramID")
-                    .ToList();
-                if (!DataHelper.DataSourceIsEmpty(programs))
+                if (campaign.CampaignID != default(int))
                 {
-                    ddlProgram.DataSource = programs;
-                    ddlProgram.DataTextField = "ProgramName";
-                    ddlProgram.DataValueField = "ProgramID";
-                    ddlProgram.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                    ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                    var programs = ProgramProvider.GetPrograms()
+                        .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                        .WhereEquals("CampaignID", campaign.CampaignID)
+                        .Columns("ProgramName,ProgramID")
+                        .ToList();
+                    if (!DataHelper.DataSourceIsEmpty(programs))
+                    {
+                        ddlProgram.DataSource = programs;
+                        ddlProgram.DataTextField = "ProgramName";
+                        ddlProgram.DataValueField = "ProgramID";
+                        ddlProgram.DataBind();
+                        string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+                        ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                    }
                 }
             }
         }

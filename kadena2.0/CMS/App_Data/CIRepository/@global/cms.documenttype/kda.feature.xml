@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Feature</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="FeatureID" columnprecision="0" columntype="integer" guid="b57a8a45-645e-42d2-9640-793f3a77ff79" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>FeatureID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="FeatureName" columnsize="200" columntype="text" guid="e7b1ab89-a9ee-48fc-9c7e-ac5f45289ba3" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Feature Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="HeaderTextOne" columnsize="200" columntype="text" guid="e0eb535d-8fe5-40fc-a1a1-8e29e3f4a41a" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Text 1</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="HeaderTextTwo" columnsize="200" columntype="text" guid="429fe1d3-d441-4889-898e-38a8d6be215d" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Text 2</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="DisplayImage" columnsize="400" columntype="text" guid="5c9eb784-3ec8-46da-8e59-4782482c3648" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Display Image</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="TargetURL" columnsize="200" columntype="text" guid="f943a450-aeb9-4359-ac35-8b206b3f78ba" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Target URL</fieldcaption>
+        </properties>
+        <settings>
+          <Autoresize>
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </Autoresize>
+          <Configuration>True</Configuration>
+          <controlname>URLSelector</controlname>
+          <Dialogs_Attachments_Hide>True</Dialogs_Attachments_Hide>
+          <Dialogs_Content_Hide>False</Dialogs_Content_Hide>
+          <Dialogs_Content_Site>##all##</Dialogs_Content_Site>
+          <Dialogs_Libraries_Hide>True</Dialogs_Libraries_Hide>
+          <Dialogs_Libraries_Site>##all##</Dialogs_Libraries_Site>
+        </settings>
+      </field>
+      <field allowempty="true" column="VisibleRole" columnsize="400" columntype="text" guid="760ca5b4-6729-4cb5-b9ca-666bd37fdf7b" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Select role</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;Admin
+2;Global Admin
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassName>KDA.Feature</ClassName>
+  <ClassNodeNameSource>FeatureName</ClassNodeNameSource>
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="3f0c66b8-3aa4-4722-be68-74537654c8a5" name="FeatureID" searchable="True" tokenized="False" />
+      <item content="True" id="6318dbff-139f-42bc-a7ed-e73014ad6d25" name="FeatureName" searchable="False" tokenized="True" />
+      <item content="True" id="92fa7758-2c64-4053-b2c0-f933e3b492ba" name="HeaderTextOne" searchable="False" tokenized="True" />
+      <item content="True" id="9e988517-9cc4-4e62-b0d6-f2dcf28eb648" name="TargetURL" searchable="False" tokenized="True" />
+      <item content="True" id="ac9cc404-66a0-4ebe-a8ca-fea82e54ec29" name="HeaderTextTwo" searchable="False" tokenized="True" />
+      <item content="True" id="c42fae32-cb40-4be2-963d-52ca5b7b3bb7" name="DisplayImage" searchable="False" tokenized="True" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassTableName>KDA_Feature</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

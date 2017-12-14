@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using DryIoc;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.WebAPI.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
+using Kadena.BusinessLogic.Services;
 using Kadena.Helpers;
+using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using Kadena.BusinessLogic.Infrastructure;
 
 namespace Kadena.WebAPI
 {
@@ -28,11 +27,19 @@ namespace Kadena.WebAPI
             container.Register<IOrderService, OrderService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
-            container.Register<IMailTemplateService, MailTemplateService>();			
+            container.Register<IMailTemplateService, MailTemplateService>();
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
             container.Register<ICreditCardService, CreditCardService>();
             container.Register<IPdfService, PdfService>();
+            container.Register<IBusinessUnitsService, BusinessUnitService>();
+            container.Register<ICampaignsService, CampaignsService>();
+            container.Register<IPOSService, POSService>();
+            container.Register<IProductCategoryService, ProductCategoryService>();
+            container.Register<IAddressBookService, AddressBookService>();
+            container.Register<IBrandsService, BrandsService>();
+            container.Register<IProgramsService, ProgramsService>();
+		    container.Register<ILoginService, LoginService>();
             return container;
         }
 
@@ -43,11 +50,18 @@ namespace Kadena.WebAPI
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoSearchService, KenticoSearchService>();
             container.Register<IKenticoLogger, KenticoLogger>();
-            container.Register<IKenticoMailProvider, KenticoMailProvider>();			
+            container.Register<IKenticoMailProvider, KenticoMailProvider>();
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
+            container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
+            container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
+            container.Register<IKenticoPOSProvider, KenticoPOSProvider>();
+            container.Register<IKenticoProductCategoryProvider, KenticoProductCategoryProvider>();
+            container.Register<IKenticoAddressBookProvider, KenticoAddressBookProvider>();
+            container.Register<IKenticoBrandsProvider, KenticoBrandsProvider>();
+            container.Register<IKenticoProgramsProvider, KenticoProgramsProvider>();
             return container;
         }
 
@@ -62,6 +76,7 @@ namespace Kadena.WebAPI
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
+            container.Register<IKenticoLoginProvider, KenticoLoginProvider>();
             return container;
         }
 
@@ -75,8 +90,7 @@ namespace Kadena.WebAPI
         public static Container RegisterInfrastructure(this Container container)
         {
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
-            container.Register<IBackgroundTaskScheduler, BackgroundTaskScheduler>();
-            container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));            
+            container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }
     }

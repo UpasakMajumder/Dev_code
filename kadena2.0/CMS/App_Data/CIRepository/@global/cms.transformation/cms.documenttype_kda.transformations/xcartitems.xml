@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<%@ Register Src="~/CMSWebParts/Kadena/Cart/RemoveItemFromCart.ascx" TagName="RemoveItemFromCart"
+   TagPrefix="cms" %>
+<%@ Register Src="~/CMSModules/Ecommerce/Controls/Checkout/CartItemPriceDetail.ascx" TagName="CartItemPriceDetail"
+    TagPrefix="cms" %>
+<tr>
+  <td><%# Eval("SKUNumber") %></td>
+  <td><%# Eval("SKUName") %> </td>
+  <td><asp:TextBox runat="server" TextMode="Number"  ID="txtUnits" Text='<%# Eval("SKUUnits") %>'/>
+<asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' /></td>
+  <td>
+    <%# (EvalInteger("ShoppingCartInventoryType")==1) ? (FormatPrice(0)) :(FormatPrice( EvalInteger("SKUUnits")*EvalDouble("SKUPrice"))) %>
+    <asp:HiddenField runat="server" ID="hdnSKUPrice" Value='<%# (EvalInteger("ShoppingCartInventoryType")==1) ? 0 : EvalInteger("SKUUnits")*EvalDouble("SKUPrice") %>' />
+  </td>
+  <td><cms:RemoveItemFromCart runat="server" ID="btnRemove"    CartID='<%# Eval("ShoppingCartID")%>' CurrentCartItemID='<%# Eval("CartItemID")%>'  /></td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>d62ed0fa-3b1f-4223-8ae7-524030b0eb82</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xCartItems</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

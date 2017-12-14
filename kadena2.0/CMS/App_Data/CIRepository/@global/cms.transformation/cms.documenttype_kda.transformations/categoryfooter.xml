@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+</tbody>
+</table>
+
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>f451592c-d6bf-408f-8498-763c29475981</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>categoryFooter</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Feature</CodeName>
+    <GUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<div class="product_block"> 
+  {% If(HeaderTextOne.ToLower().Contains("pre-buy")) {%}
+  {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}'> {% } else { %}<a href='#'>{%}%}
+    {%} else { %}  <a href='{%TargetURL%}'>  {%}|(user)cvoqa2@gmail.com|(hash)64f6ae5ea51a58cbc2523911f8aab5243fb2bdb56def9e0cdc2dd02777b2ae57%}      
+      <img src="{%DisplayImage%}" alt="{%FeatureName%}"/>
+      <h5><span>{%HeaderTextOne%}</span>{%HeaderTextTwo%}</h5></a>
+    </div>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>8bd23b61-8231-42c8-9a8d-7afc72e73bcb</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xAdminFeaturesList</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

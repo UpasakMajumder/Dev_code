@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>ShoppingCart</CodeName>
+    <GUID>ae2427e8-df05-4a45-9d52-5193a34ed19f</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>_Customer Carts</WebPartDisplayName>
+  <WebPartFileName>Kadena/ShoppingCart/CustomerCartOperations.ascx</WebPartFileName>
+  <WebPartGUID>03618f52-faa1-4f96-9e78-3f719caa3d94</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>CustomerCartsOperations</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field column="InventoryType" columntype="integer" guid="ef9861bc-cc5a-4afe-a71f-2dd1da091df6" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>InventoryType</fieldcaption>
+          <fielddescription>The product belongs to which inventory type</fielddescription>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;General Inventory
+2;Pre-Buy Inventory
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<div class="video_block">
+  <h6>{%VideoName%}</h6>
+  <div class="iframe-video iframe-video--fixed iframeWrapper" onclick="Showpopup('{%VideoUrl%}');" >
+    <iframe id="theiframe" src="{%VideoUrl%}" 
+    width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+  </div>
+</div>
+
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>6ba99e61-5e27-4d43-88f6-9ebf496a7fe6</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>FaqVideo</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

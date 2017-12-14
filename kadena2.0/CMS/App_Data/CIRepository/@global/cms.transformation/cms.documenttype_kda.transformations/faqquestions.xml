@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<a name="FAQ<%# Eval("FAQID") %>"></a><strong><%# Eval("FAQQuestion",true) %></strong><br />
+<%# Eval("FAQAnswer") %><br/>
+<br />&nbsp;<br />
+
+<asp:PlaceHolder runat="server" ID="plsquestions">
+    <cms:CMSRepeater ID="repQuestions" runat="server" Path="{%# Eval('NodeAliasPath') %}" ClassNames="CMS.FAQ" TransformationName="CMS.Faq.QuestionAnswer"
+  ></cms:CMSRepeater>
+</asp:PlaceHolder>
+<div>
+<asp:Label runat="server" ID="lblUrl"></asp:Label>
+</div>
+<script runat="server">
+   protected override void OnInit(EventArgs e)
+    {
+      string Url="'"+ Eval("NodeAliasPath") +"'";
+      int index = Url.IndexOf(',', Url.IndexOf(',') + 1);
+     lblUrl.Text= Url.Substring(index);
+      
+      repQuestions.Path = Eval("NodeAliasPath") + "/%";
+      repQuestions.ReloadData(true);
+    }
+  </script>
+  
+  
+  
+
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>0d241cd1-8c06-49bb-9800-731ad0932f94</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>FaqQuestions</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>
