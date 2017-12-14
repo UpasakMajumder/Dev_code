@@ -110,6 +110,8 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
 
                 config.CreateMap<CheckoutPage, CheckoutPageDTO>();
+                config.CreateMap<NotificationEmail, NotificationEmailDto>();
+                config.CreateMap<NotificationEmailTooltip, NotificationEmailTooltipDto>();
                 config.CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
                 config.CreateMap<SubmitButton, SubmitButtonDTO>();
                 config.CreateMap<SubmitRequestDto, SubmitOrderRequest>();
