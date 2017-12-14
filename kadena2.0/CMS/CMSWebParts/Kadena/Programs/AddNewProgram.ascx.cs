@@ -1,24 +1,21 @@
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Membership;
+using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using System;
-using System.Data;
-using System.Collections;
-using System.Web;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using System.Linq;
-using CMS.SiteProvider;
-using CMS.EventLog;
-using CMS.DocumentEngine.Types.KDA;
 
 public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebPart
 {
     #region "Properties"
-   
+
     /// <summary>
     /// Program name localization string
     /// </summary>
@@ -33,6 +30,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("ProgramNameText", value);
         }
     }
+
     /// <summary>
     /// Program description localization string
     /// </summary>
@@ -47,6 +45,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("ProgramDescriptionText", value);
         }
     }
+
     /// <summary>
     /// BrandName localization string
     /// </summary>
@@ -61,6 +60,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("BrandNameText", value);
         }
     }
+
     /// <summary>
     /// Campaign name localization string
     /// </summary>
@@ -75,6 +75,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("CampaignNameText", value);
         }
     }
+
     /// <summary>
     /// SaveButton localization string
     /// </summary>
@@ -89,6 +90,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("SaveButtonText", value);
         }
     }
+
     /// <summary>
     /// UpdateButton localization string
     /// </summary>
@@ -103,6 +105,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("UpdateButtonText", value);
         }
     }
+
     /// <summary>
     /// CancelButton localization string
     /// </summary>
@@ -117,8 +120,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("CancelButtonText", value);
         }
     }
-    #endregion
 
+    #endregion "Properties"
 
     #region "Methods"
 
@@ -131,7 +134,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         SetupControl();
     }
 
-
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
@@ -143,7 +145,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         else
         {
-            // Assign localization text to labels
             lblProgramName.InnerText = ProgramNameText;
             lblProgramDescription.InnerText = ProgramDescriptionText;
             lblBrandName.InnerText = BrandNameText;
@@ -152,7 +153,9 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
-            //get program details by program id.
+            cvDesc.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            GetBrandName();
+            GetCampaign();
             int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
             if (programID != 0)
             {
@@ -161,8 +164,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 {
                     txtProgramName.Text = program.ProgramName;
                     txtProgramDescription.Text = program.ProgramDescription;
-                    ddlBrand.Value = program.BrandID.ToString();
-                    ddlCampaign.Value = program.CampaignID;
+                    ddlBrand.SelectedValue = program.BrandID.ToString();
+                    ddlCampaign.SelectedValue = program.CampaignID.ToString();
                     btnAddProgram.Visible = false;
                     btnUpdateProgram.Visible = true;
                     ViewState["CampaignID"] = program.CampaignID;
@@ -178,6 +181,64 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     }
 
     /// <summary>
+    /// Get the brand list
+    /// </summary>
+    /// <param name="brandItemID"></param>
+    /// <returns></returns>
+    public string GetBrandName()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                .Columns("ItemID,BrandName")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(brands))
+            {
+                ddlBrand.DataSource = brands;
+                ddlBrand.DataTextField = "BrandName";
+                ddlBrand.DataValueField = "ItemID";
+                ddlBrand.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
+                ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetBrandName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
+    /// <summary>
+    /// Get the brand list
+    /// </summary>
+    /// <param name="brandItemID"></param>
+    /// <returns></returns>
+    public string GetCampaign()
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            var Campaigns = CampaignProvider.GetCampaigns()
+                .Columns("CampaignID,Name")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(Campaigns))
+            {
+                ddlCampaign.DataSource = Campaigns;
+                ddlCampaign.DataTextField = "Name";
+                ddlCampaign.DataValueField = "CampaignID";
+                ddlCampaign.DataBind();
+                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.ProgramForm.CampaignWaterMark"), string.Empty);
+                ddlCampaign.Items.Insert(0, new ListItem(selectText, "0"));
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetCampaignName", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return returnValue;
+    }
+    /// <summary>
     /// Reloads the control data.
     /// </summary>
     public override void ReloadData()
@@ -187,7 +248,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         SetupControl();
     }
 
-    #endregion
+    #endregion "Methods"
+
     /// <summary>
     /// Create New Program
     /// </summary>
@@ -197,24 +259,27 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     {
         try
         {
-            int campaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
             if (campaignID != 0)
             {
                 Campaign campaign = new Campaign();
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
                 Campaign CampaignNode = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
-                if (CampaignNode != null)
+                if (Page.IsValid)
                 {
-                    Program program = new Program();
-                    program.DocumentName = txtProgramName.Text;
-                    program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
-                    program.ProgramName = txtProgramName.Text;
-                    program.ProgramDescription = txtProgramDescription.Text;
-                    program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
-                    program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
-                    program.Insert(CampaignNode, true);
+                    if (CampaignNode != null)
+                    {
+                        Program program = new Program();
+                        program.DocumentName = txtProgramName.Text;
+                        program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
+                        program.ProgramName = txtProgramName.Text;
+                        program.ProgramDescription = txtProgramDescription.Text;
+                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                        program.Insert(CampaignNode, true);
 
-                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                    }
                 }
             }
         }
@@ -222,8 +287,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         {
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "btnAddProgram_Click", ex.Message);
         }
-
     }
+
     /// <summary>
     /// Back to Programs list page
     /// </summary>
@@ -233,6 +298,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     {
         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
+
     /// <summary>
     /// Update Program
     /// </summary>
@@ -242,31 +308,34 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     {
         try
         {
-            int campaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            if (ViewState["programNodeID"] != null)
+            if (Page.IsValid)
             {
-                Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
-                if (program != null)
+                if (ViewState["programNodeID"] != null)
                 {
-                    program.DocumentName = txtProgramName.Text;
-                    program.ProgramName = txtProgramName.Text;
-                    program.ProgramDescription = txtProgramDescription.Text;
-                    program.BrandID = ValidationHelper.GetInteger(ddlBrand.Value, 0);
-                    program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.Value, 0);
-                    program.Update();
-                }
-                if (ViewState["CampaignID"] != null)
-                {
-                    if (Convert.ToInt32(ViewState["CampaignID"]) != campaignID)
-                    {
-                        Campaign targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
-                        if (targetCampaign != null && program != null)
-                            DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
-                    }
-                }
+                    Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
 
-                URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                    if (program != null)
+                    {
+                        program.DocumentName = txtProgramName.Text;
+                        program.ProgramName = txtProgramName.Text;
+                        program.ProgramDescription = txtProgramDescription.Text;
+                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                        program.Update();
+                    }
+                    if (ViewState["CampaignID"] != null)
+                    {
+                        if (Convert.ToInt32(ViewState["CampaignID"]) != campaignID)
+                        {
+                            Campaign targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
+                            if (targetCampaign != null && program != null)
+                                DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
+                        }
+                    }
+                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                }
             }
         }
         catch (Exception ex)
@@ -274,7 +343,21 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "btnUpdateProgram_Click", ex.Message);
         }
     }
+
+    /// <summary>
+    /// Validates description
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="args"></param>
+    protected void cvDesc_ServerValidate(object source, ServerValidateEventArgs args)
+    {
+        try
+        {
+            args.IsValid = string.IsNullOrEmpty(txtProgramDescription.Text.Trim()) ? false : txtProgramDescription.Text.Trim().Length <= 140 && txtProgramDescription.Text.Trim().Length >= 1 ? true : false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "cvDesc_ServerValidate", ex.Message);
+        }
+    }
 }
-
-
-

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>InBoundTracking</PageTemplateCodeName>
+  <PageTemplateDisplayName>_In-Bound Tracking</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>b5ee6dbf-4573-4222-941f-696938e95915</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content-header">
+  <div class="content-header__inner">
+    <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
+  </div>
+  <div class="breadcrumbs">
+    <cms:CMSWebPartZone ZoneID="ZoneBreadCrumbs" runat="server" />
+  </div>
+</div>
+<div class="content-block">
+  <div class="custom_section">
+    <cms:CMSWebPartZone ZoneID="ZoneProducts" runat="server" />
+     
+  </div>
+</div>
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneBreadCrumbs" v="1">
+        <webpart controlid="Breadcrubs" guid="9b27ce82-a196-48bf-a6ec-42dd5982c889" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">Breadcrubs</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">9b27ce82-a196-48bf-a6ec-42dd5982c889</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+ {%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+iteratedDocument = iteratedDocument.Parent;
+};
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneHeader" v="1">
+        <webpart controlid="HeaderText" guid="0e2d935f-e4fd-4cea-b2f9-2af70f6695f8" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">HeaderText</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">0e2d935f-e4fd-4cea-b2f9-2af70f6695f8</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Inbound.HeaderText")|(user)cvoqa2@gmail.com|(hash)69baa899e51c432205555c0d1b4bb6500da419b1333d77f0806d846d3d91683b%}</h1>]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneProducts" v="1">
+        <webpart controlid="In_BoundTracking" guid="724d4225-ec0e-4d11-9f2b-ab863f500684" type="InboundTracking" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">In_BoundTracking</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">724d4225-ec0e-4d11-9f2b-ab863f500684</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">InboundTracking</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZonePager" v="1">
+        <webpart controlid="Pager" guid="f88ca02b-5a43-472a-802a-91f2957c0e14" type="UniPager" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+            <![CDATA[</ul>]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[ <ul class="pagination">]]>
+          </property>
+          <property name="controlid">Pager</property>
+          <property name="currentpage">KDA.Transformations.General-CurrentPage</property>
+          <property name="customtimezone"></property>
+          <property name="directpage"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displayfirstlastautomatically">False</property>
+          <property name="displaypreviousnextautomatically">True</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="firstpage">CMS.PagerTransformations.General-FirstPage</property>
+          <property name="groupsize">10</property>
+          <property name="hideonsubpages">False</property>
+          <property name="hidepagerforsinglepage">True</property>
+          <property name="instanceguid">f88ca02b-5a43-472a-802a-91f2957c0e14</property>
+          <property name="lastpage">CMS.PagerTransformations.General-LastPage</property>
+          <property name="nextgroup">CMS.PagerTransformations.General-NextGroup</property>
+          <property name="nextpage">KDA.Transformations.General-NextPage</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagerlayout">KDA.Transformations.Kadena-PagerLayout</property>
+          <property name="pages">KDA.Transformations.General-Pages</property>
+          <property name="pageseparator">CMS.PagerTransformations.General-PageSeparator</property>
+          <property name="pagesize">1</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="previousgroup">CMS.PagerTransformations.General-PreviousGroup</property>
+          <property name="previouspage">KDA.Transformations.General-PreviousPage</property>
+          <property name="querystringkey">page</property>
+          <property name="resetscrollpositiononpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="targetcontrolname">In_BoundTracking</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">UniPager</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.resource>
+  <ResourceDisplayName>FaqVideos</ResourceDisplayName>
+  <ResourceGUID>74fff80a-3931-438e-b100-0eb421c0766d</ResourceGUID>
+  <ResourceHasFiles>False</ResourceHasFiles>
+  <ResourceIsInDevelopment>True</ResourceIsInDevelopment>
+  <ResourceName>FaqVideos</ResourceName>
+  <ShowInDevelopment>False</ShowInDevelopment>
+</cms.resource>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>ecommerce.shoppingcart</CodeName>
+    <GUID>c8a865c2-df9e-4f10-9b9e-f78bc0926f15</GUID>
+    <ObjectType>cms.systemtable</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>db6d3693-cbca-466f-a65b-0e0db6e113d8</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetCartDistributors</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+SELECT AddressPersonalName,AddressName,AddressZip,AddressCity,AddressPhone,states.StateDisplayName,country.CountryDisplayName,ShoppingCartID,ShoppingCartDistributorID,ShoppingCartInventoryType
+ FROM COM_Address customer
+ INNER JOIN COM_ShoppingCart cart ON customer.AddressID =cart.ShoppingCartDistributorID 
+ LEFT JOIN CMS_Country country ON customer.AddressCountryID=country.CountryID 
+ LEFT JOIN  CMS_State states ON customer.AddressStateID=states.StateID WHERE ##WHERE## 
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

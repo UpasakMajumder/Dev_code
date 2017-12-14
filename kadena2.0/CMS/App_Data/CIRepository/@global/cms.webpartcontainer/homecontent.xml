@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpartcontainer>
+  <ContainerDisplayName>Home Content</ContainerDisplayName>
+  <ContainerGUID>19386b8f-9059-4d8f-b60e-4dd2a61e11ed</ContainerGUID>
+  <ContainerName>HomeContent</ContainerName>
+  <ContainerTextAfter />
+  <ContainerTextBefore>
+<![CDATA[
+<img src='{%BannerImage%}'>
+<div class="banner_con">
+<h2>{%HeaderText%}</h2>
+<h4>{%SubHeaderTextOne%}</h4>
+<h4>{%SubHeaderTextTwo%}</h4>
+</div>
+<div class="order_dates">
+<h6>{%FooterTextOne%}</h6>
+<h6>{%FooterTextTwo%}</h6>
+</div>
+
+]]>
+  </ContainerTextBefore>
+</cms.webpartcontainer>

@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
+using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
-using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Checkout;
-using Kadena.BusinessLogic.Infrastructure;
-using Kadena.Models.Product;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -29,7 +28,6 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
-        private readonly IBackgroundTaskScheduler backgroundWorker;
         private readonly IKenticoDocumentProvider documents;
 
         public OrderService(IMapper mapper,
@@ -42,7 +40,6 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IBackgroundTaskScheduler backgroundWorker,
             IKenticoDocumentProvider documents)
         {
             this.mapper = mapper;
@@ -55,7 +52,6 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
             this.templateService = templateService;
-            this.backgroundWorker = backgroundWorker;
             this.documents = documents;
         }
 
@@ -268,7 +264,7 @@ namespace Kadena.BusinessLogic.Services
             var paymentMethods = kenticoProvider.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
 
-            switch(selectedPayment?.ClassName ?? string.Empty)
+            switch (selectedPayment?.ClassName ?? string.Empty)
             {
                 case "KDA.PaymentMethods.CreditCard":
                     return await PayByCard(request);
@@ -291,28 +287,32 @@ namespace Kadena.BusinessLogic.Services
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 
             return await Task.FromResult(new SubmitOrderResult
-                {
-                    Success = true,
-                    RedirectURL = documents.GetDocumentUrl(insertCardUrl)
-                }
+            {
+                Success = true,
+                RedirectURL = documents.GetDocumentUrl(insertCardUrl)
+            }
             );
         }
 
         public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
         {
             string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-            Customer customer = null;
+            Customer customer = kenticoUsers.GetCurrentCustomer();
+
+            var emails = request.EmailConfirmation.Union(new[] { customer.Email });
+
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
                 kenticoProvider.SetShoppingCartAddress(request.DeliveryAddress);
-                customer = kenticoUsers.GetCurrentCustomer();
                 customer.FirstName = request.DeliveryAddress.CustomerName;
                 customer.LastName = string.Empty;
                 customer.Email = request.DeliveryAddress.Email;
                 customer.Phone = request.DeliveryAddress.Phone;
             }
 
-            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id, request.PaymentMethod.Invoice, request.AgreeWithTandC);
+
+            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id,
+                request.PaymentMethod.Invoice, request.AgreeWithTandC, emails);
 
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
@@ -336,10 +336,6 @@ namespace Kadena.BusinessLogic.Services
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
                 kenticoProvider.RemoveCurrentItemsFromStock();
                 kenticoProvider.ClearCart();
-
-                // Temporary solution before microservices will implement better strategy for handling cold starts. 
-                var orderNumber = serviceResult.Payload;
-                backgroundWorker.ScheduleBackgroundTask((cancelToken) => FinishOrder(orderNumber));
             }
             else
             {
@@ -347,19 +343,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return serviceResult;
-        }
-
-        private async Task FinishOrder(string orderNumber)
-        {
-            var finishOrderResult = await orderSubmitClient.FinishOrder(orderNumber);
-            if (finishOrderResult.Success)
-            {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order # {orderNumber} successfully finished");
-            }
-            else
-            {
-                kenticoLog.LogError("Submit order", $"Order # {orderNumber} error. {finishOrderResult?.Error?.Message}");
-            }
         }
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
@@ -378,11 +361,11 @@ namespace Kadena.BusinessLogic.Services
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(Customer customerInfo, int deliveryMethodId, int paymentMethodId, string invoice, bool termsAndConditionsExplicitlyAccepted)
+        private async Task<OrderDTO> GetSubmitOrderData(Customer customer, int deliveryMethodId, int paymentMethodId, string invoice,
+            bool termsAndConditionsExplicitlyAccepted, IEnumerable<string> notificationEmails)
         {
             // TODO: add to order request. need confirmation on the name of the property from microservice side.
 
-            var customer = customerInfo ?? kenticoUsers.GetCurrentCustomer();
             var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
             shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             var billingAddress = kenticoProvider.GetDefaultBillingAddress();
@@ -392,7 +375,7 @@ namespace Kadena.BusinessLogic.Services
             var currency = resources.GetSiteCurrency();
             var totals = kenticoProvider.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
-            
+
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = resources.GetDefaultCustomerCompanyName();
@@ -477,7 +460,12 @@ namespace Kadena.BusinessLogic.Services
                 TotalPrice = totals.TotalItemsPrice,
                 TotalShipping = totals.TotalShipping,
                 TotalTax = totals.TotalTax,
-                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item))
+                Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item)),
+                NotificationsData = notificationEmails.Select(e => new NotificationInfoDto
+                {
+                    Email = e,
+                    Language = customer.PreferredLanguage
+                })
             };
 
             // If only mailing list items in cart, we are not picking any delivery option

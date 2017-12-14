@@ -12,7 +12,7 @@ const Button = (props: {
   onClick: ?() => void,
   isLoading: ?boolean
 }) => {
-  const { text, type, disabled, isLoading, onClick, btnClass } = props;
+  const { text, type, disabled, isLoading, onClick, btnClass, children } = props;
   const isDisabled: boolean = !!isLoading || !!disabled;
 
   const spinner: ?{} = isLoading
@@ -32,12 +32,13 @@ const Button = (props: {
             className={className}>
       {spinner}
       {text}
+      {children}
     </button>
   );
 };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   type: PropTypes.string.isRequired,
   btnClass: PropTypes.string,
   disabled: PropTypes.bool,

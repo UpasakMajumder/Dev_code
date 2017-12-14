@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>CMS.Folder</CodeName>
+    <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>{%DocumentName%}</TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>c7cefd4a-0d19-4f6f-9479-bf5fb7dae5d4</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xCategoryType</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

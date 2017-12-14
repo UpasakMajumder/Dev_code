@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+</tbody>
+</table>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>bf4a1487-5de1-4e8b-abac-e954200dd9f6</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>CampaignFooter</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

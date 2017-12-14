@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>TermsAndConditions</PageTemplateCodeName>
+  <PageTemplateDisplayName>_Terms and conditions</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>3d210053-5a93-4241-88ec-6948ad2e4fe0</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
+<cms:CMSWebPartZone ZoneID="ZoneText" runat="server" />
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneHeader" v="1">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+        <webpart controlid="editabletext" guid="33842291-9005-49ee-b554-1d321683bfb4" type="editabletext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="checkpermissions">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+            <![CDATA[</h1>]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[<h1>]]>
+          </property>
+          <property name="controlid">editabletext</property>
+          <property name="customtimezone"></property>
+          <property name="defaulttext">Terms and conditions</property>
+          <property name="dialogheight"></property>
+          <property name="dialogwidth"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="htmlareatoolbar"></property>
+          <property name="htmlareatoolbarlocation">In</property>
+          <property name="imageautoresize">
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </property>
+          <property name="instanceguid">33842291-9005-49ee-b554-1d321683bfb4</property>
+          <property name="maxlength"></property>
+          <property name="minlength"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="regiontitle"></property>
+          <property name="regiontype">HtmlEditor</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="selectonlypublished">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useparentcontent">False</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">editabletext</property>
+          <property name="wordwrap">True</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneText" v="1" widgetzonetype="editor">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

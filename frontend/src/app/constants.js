@@ -60,6 +60,9 @@ export const CARD_VALIDATION_ERROR = 'CARD_VALIDATION_ERROR';
 export const SUBMIT_CARD = 'SUBMIT_CARD';
 export const SET_ADDRESS_DEFAULT = 'SET_ADDRESS_DEFAULT';
 export const UNSET_ADDRESS_DEFAULT = 'UNSET_ADDRESS_DEFAULT';
+export const TAC_CHECK = 'TaC_CHECK';
+export const TAC_ACCEPT = 'TaC_ACCEPT';
+export const CREDENTINALS_CHANGE = 'CREDENTINALS_CHANGE';
 
 /* config */
 export const isDevelopment = process.env.NODE_ENV === 'development';

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Feature</CodeName>
+    <GUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<a href="{%TargetURL%}">
+  <img src="{%DisplayImage%}">
+  <h5>{%FeatureName%}</h5>
+</a>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>fb9f586e-2ab6-4cc1-bbda-adb50733c719</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xGlobalAdminFeaturesList</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Support</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="SupportID" columnprecision="0" columntype="integer" guid="88288cd5-776d-40eb-8fb9-3d3066acab59" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>SupportID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="Supporttype" columnsize="200" columntype="text" guid="5f582ac8-bca8-42b8-8022-b1b625be2ca4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Support Type</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ContactName" columnsize="200" columntype="text" guid="587d8f46-596d-4674-8ca1-78b0f9482396" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Contact Persone Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ContactNo" columnsize="200" columntype="text" guid="a3f8f38c-0c84-47cd-a5d1-2df3aacf4da2" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Contact Person Phone No</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="Email" columnsize="200" columntype="text" guid="465dd40d-3182-4e23-98c4-280d1e3d7b88" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Contact Email</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>7c5ca4d4-05d8-4963-9d6a-874acf3e721f</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassName>KDA.Support</ClassName>
+  <ClassNodeNameSource>Supporttype</ClassNodeNameSource>
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="True" id="7d74d3ae-012f-45cb-946a-ab0dc681a25c" name="ContactNo" searchable="False" tokenized="True" />
+      <item content="True" id="c8eec5e8-1a47-4298-82b8-4e00b620d1eb" name="Supporttype" searchable="False" tokenized="True" />
+      <item content="False" id="cb631c95-4585-4e92-ad48-5a8a97cb70e6" name="SupportID" searchable="True" tokenized="False" />
+      <item content="True" id="ec932d94-f5bc-4008-92ef-7d333178a658" name="Email" searchable="False" tokenized="True" />
+      <item content="True" id="fceb83fc-d29c-4d74-98c6-2da4cc89e546" name="ContactName" searchable="False" tokenized="True" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassTableName>KDA_Support</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

@@ -21,5 +21,6 @@
       {{ svg('logo', 'logo') }}
     </div>
   </div>
+  <div class="r-tac"></div>
 
 {% endblock %}

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>TWECart</CodeName>
+    <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>Remove Item From Cart</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/RemoveItemFromCart.ascx</WebPartFileName>
+  <WebPartGUID>1015e358-0751-4c7c-9756-e66bd39af962</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>RemoveItemFromCart</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field allowempty="true" column="CartID" columntype="integer" guid="4913c6fa-c226-482a-af36-0b1f80e7b894" publicfield="false" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Cart ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="CurrentCartItemID" columntype="integer" guid="dec81cd4-79d3-4169-959d-e931738757c7" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Current Cart Item ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

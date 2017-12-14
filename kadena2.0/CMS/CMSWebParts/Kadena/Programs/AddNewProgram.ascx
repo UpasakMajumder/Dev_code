@@ -15,22 +15,23 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramDescription"></span>
                     <div class="input__inner">
-                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
+                        <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea" MaxLength="140" ClientIDMode="Static"></asp:TextBox>
+                        <asp:CustomValidator runat="server" ID="cvDesc" ControlToValidate="txtProgramDescription" CssClass="input__error" OnServerValidate="cvDesc_ServerValidate"></asp:CustomValidator>
                     </div>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" id="lblBrandName" runat="server"></span>
-                    <uc1:UniSelector runat="server" ID="ddlBrand" ObjectType="customtableitem.KDA.Brand" ReturnColumnName="ItemID" SelectionMode="SingleDropDownList" CssClass="input__select" DisplayNameFormat="{%BrandName%}" AllowEmpty="false" />
-                    <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="" ErrorMessage="Please select Brand" InitialValue="0" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
+                    <cms:CMSDropDownList ID="ddlBrand" CssClass="input__select" runat="server" EnableViewState="True"></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="input__error" ErrorMessage="Please select Brand" InitialValue="0" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" id="lblCampaignName" runat="server"></span>
-                    <uc1:UniSelector runat="server" ID="ddlCampaign" ObjectType="cms.document.KDA.Campaign" ReturnColumnName="CampaignID" SelectionMode="SingleDropDownList" CssClass="input__select" AllowEmpty="false" />
-                    <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="" ErrorMessage="Please select Campaign" InitialValue="0" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
+                    <cms:CMSDropDownList id="ddlCampaign" CssClass="input__select" runat="server" ></cms:CMSDropDownList>
+                    <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="input__error" ErrorMessage="Please select Campaign" InitialValue="0" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>

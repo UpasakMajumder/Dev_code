@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>CMS.Faq</CodeName>
+    <GUID>bcd29a46-35c2-4f22-86b1-ada293df6ee6</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode />
+  <TransformationGUID>f423e4fc-b2cb-444e-adc3-f0941a658b04</TransformationGUID>
+  <TransformationHierarchicalXML>
+<![CDATA[
+<Items>
+  <Item ApplyToSublevels="False" ID="47ae4771-df88-455a-bd50-105b0421f111" Level="5" TransformationName="CMS.Faq.QuestionAnswer" Type="item" Value="" />
+  <Item ApplyToSublevels="False" ID="6003de95-1850-490e-8771-219b65167e48" Level="5" TransformationName="CMS.Faq.QuestionAnswer" Type="separator" Value="" />
+  <Item ApplyToSublevels="True" ID="97be8dbf-569a-4d76-b0f9-c4947e3e3b90" Level="1" TransformationName="CMS.Faq.xTopFAQ" Type="item" Value="CMS.Faq" />
+  <Item ApplyToSublevels="False" ID="ae37764c-9b9d-400c-ab84-dc91488ad330" Level="0" TransformationName="CMS.Folder.xFaqCategory" Type="item" Value="" />
+</Items>
+]]>
+  </TransformationHierarchicalXML>
+  <TransformationIsHierarchical>True</TransformationIsHierarchical>
+  <TransformationName>xQuestionAnswer</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>
