@@ -747,6 +747,22 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     ViewState["ProductId"] = null;
                     EmptyFields(false);
+                    var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
+                        .WhereEquals("POSNumber", selectedPos)
+                         .FirstOrDefault();
+                    if(pos!=null)
+                    {
+                        if(pos.GetValue("BrandID")!=null)
+                        {
+                            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                           .WhereEquals("BrandCode", pos.GetValue("BrandID"))
+                           .FirstOrDefault();
+                            if (brand != null)
+                            {
+                                ddlBrand.SelectedValue = brand.GetValue("ItemID").ToString();
+                            }
+                        }
+                    }
                 }
                 BindData();
                 ddlPosNo.SelectedValue = selectedPos;
