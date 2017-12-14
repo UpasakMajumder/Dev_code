@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Kadena.AmazonFileSystemProvider
 {
@@ -8,18 +9,22 @@ namespace Kadena.AmazonFileSystemProvider
 
         private static string GetKey(string objectPath)
         {
+            if (objectPath == null)
+            {
+                throw new ArgumentNullException(nameof(objectPath), "Cannot get key for null value.");
+            }
             return $"{kenticoFolder}{objectPath.TrimStart('/')}";
         }
 
         public static string EnsureKey(string objectPath)
         {
-            var avoidSymbols = @"[\x00-\x20%`~^\[\]\\#\{\}<>" + "'\"]";
             var key = GetKey(objectPath);
+            var avoidSymbols = @"[\x00-\x20%`~^\[\]\\#\{\}<>" + "'\"]";
             if (!Regex.IsMatch(key, avoidSymbols))
             {
                 return key;
             }
-            return null;
+            throw new InvalidOperationException("Key is not valid to use in Amazon S3.");
         }
 
         public static string GetBucketName()
