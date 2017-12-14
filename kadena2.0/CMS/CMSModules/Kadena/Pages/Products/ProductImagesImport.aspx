@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group" style="margin-bottom: 3rem">
-            <label class="control-label" for="siteSelector" style="text-align: left">Product Page Type:</label>
+            <label class="control-label" for="ddlProductPageType" style="text-align: left">Product Page Type:</label>
             <cms:CMSDropDownList runat="server" ID="ddlProductPageType">
                 <asp:ListItem Value="KDA.Product" Text="KDA Product"></asp:ListItem>
                 <asp:ListItem Value="KDA.CampaignsProduct" Text="KDA Campaign Product"></asp:ListItem>
