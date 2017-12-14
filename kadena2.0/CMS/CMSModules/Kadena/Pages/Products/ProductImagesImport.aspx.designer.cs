@@ -22,6 +22,15 @@ namespace Kadena.CMSModules.Kadena.Pages.Products {
         protected global::CMSFormControls_Sites_SiteSelector siteSelector;
         
         /// <summary>
+        /// ddlProductPageType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSDropDownList ddlProductPageType;
+        
+        /// <summary>
         /// btnDownloadTemplate control.
         /// </summary>
         /// <remarks>
