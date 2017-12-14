@@ -88,14 +88,7 @@
           <property name="contentafter">
 <![CDATA[
 </table>
-<script type="text/javascript">
-$( document ).ready(function() {  
-if($('#reptable tr').length==1)
-{
-$('#reptable').hide();
-}
-});
-</script>
+
 ]]>
           </property>
           <property name="contentbefore">
@@ -110,7 +103,7 @@ $('#reptable').hide();
 ]]>
           </property>
           <property name="controlid">BrandsList</property>
-          <property name="customtable">KDA.Brand</property>
+          <property name="customtable">KDA.AddressErrors</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -168,7 +161,16 @@ AND
 {%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)01b4fe34cb67ccfefbe1fadd2b87ef2bfbb6d9f0b0bddd2a1da21e3fdda9dbc2%}
 ]]>
           </property>
-          <property name="zerorowstext">{$Kadena.ItemList.NoDataFoundText$}</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+{$Kadena.ItemList.NoDataFoundText$}
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
+]]>
+          </property>
         </webpart>
         <webpart controlid="Javascript" guid="07a39f85-62df-428f-b78c-4a9d8aa01d56" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
