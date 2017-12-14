@@ -466,7 +466,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProgram.ErrorMessage = ProgramNameError;
         rqEstimatePrice.ErrorMessage = EstimatedPriceError;
         rqBrand.ErrorMessage = BrandNameError;
-        revActualPrice.ErrorMessage = NumberOnlyError;
         revEstPrice.ErrorMessage = NumberOnlyError;
         revQty.ErrorMessage = NumberOnlyError;
         rqProductCategory.ErrorMessage = CategoryError;
