@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.AccessControl;
 using Amazon;
@@ -93,7 +94,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="searchPattern">Search pattern.</param>
         public override string[] GetFiles(string path, string searchPattern)
         {
-            throw new NotImplementedException();
+            return this.EnumerateFiles(path, searchPattern).ToArray();
         }
 
 
@@ -120,7 +121,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="searchOption">Specifies whether to search the current directory, or the current directory and all subdirectories.</param>
         public override string[] GetDirectories(string path, string searchPattern, SearchOption searchOption)
         {
-            throw new NotImplementedException();
+            return this.EnumerateDirectories(path, searchPattern, searchOption).ToArray();
         }
 
 
