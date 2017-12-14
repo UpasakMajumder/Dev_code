@@ -36,7 +36,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return Path.EnsureSlashes(Path.EnsureEndBackslash(Path.Combine(_path, Name)));
+                return Path.EnsureBackslashes(Path.EnsureEndBackslash(Path.Combine(_path, Name)));
             }
             set
             {
@@ -48,7 +48,7 @@ namespace Kadena.AmazonFileSystemProvider
                 }
                 else
                 {
-                    _path = Path.GetDirectoryName(trimmedPath);
+                    _path = Path.EnsureBackslashes(Path.GetDirectoryName(trimmedPath));
                     Name = Path.GetFileName(trimmedPath);
                 }
             }

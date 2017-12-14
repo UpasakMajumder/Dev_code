@@ -15,6 +15,16 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public class Directory : AbstractDirectory
     {
+        private static string EnsureDirectory(string path)
+        {
+            return $"{EnsureFile(path)}/";
+        }
+
+        private static string EnsureFile(string path)
+        {
+            return path.TrimEnd('/');
+        }
+
         #region "Public override methods"
 
         /// <summary>
@@ -23,8 +33,10 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to test.</param>  
         public override bool Exists(string path)
         {
+            var ensuredPath = EnsureDirectory(path);
+
             var bucketName = AmazonS3Helper.GetBucketName();
-            var key = AmazonS3Helper.EnsureKey(path);
+            var key = AmazonS3Helper.EnsureKey(ensuredPath);
 
             var client = new AmazonS3Client(RegionEndpoint.USEast1);
             try
@@ -53,15 +65,18 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to create.</param> 
         public override CMS.IO.DirectoryInfo CreateDirectory(string path)
         {
+
             if (Exists(path))
             {
                 throw new InvalidOperationException("Directory already exists.");
             }
 
-            var bucketName = AmazonS3Helper.GetBucketName();
-            var key = AmazonS3Helper.EnsureKey(path);
+            var ensuredPath = EnsureDirectory(path);
 
-            using (var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1))
+            var bucketName = AmazonS3Helper.GetBucketName();
+            var key = AmazonS3Helper.EnsureKey(ensuredPath);
+
+            using (var client = new AmazonS3Client(RegionEndpoint.USEast1))
             {
                 PutObjectRequest putRequest = new PutObjectRequest
                 {
@@ -70,7 +85,7 @@ namespace Kadena.AmazonFileSystemProvider
                 };
 
                 client.PutObject(putRequest);
-                return new DirectoryInfo(path);
+                return new DirectoryInfo(ensuredPath);
             }
         }
 
