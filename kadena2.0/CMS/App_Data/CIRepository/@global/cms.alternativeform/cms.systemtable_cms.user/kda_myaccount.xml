@@ -156,16 +156,17 @@
       </field>
       <field column="UserCompanyName" guid="b99e4b90-5eda-45b7-a0b5-3ebe79e91126" visible="" />
       <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" visible="" />
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" reftype="Required">
         <settings>
           <AddSelectCountryRecord>True</AddSelectCountryRecord>
           <EnableStateSelection>False</EnableStateSelection>
         </settings>
         <properties>
           <controlcssclass>input__select js-Country</controlcssclass>
+          <defaultvalue>271</defaultvalue>
         </properties>
       </field>
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be">
         <properties>
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
