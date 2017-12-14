@@ -718,50 +718,37 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         try
         {
             string skuid = ((HiddenField)gdvInboundProducts.Rows[e.RowIndex].FindControl("hfSKUID")).Value;
-            var inboundData = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereEquals("SKUID", ValidationHelper.GetInteger(skuid, default(int))).FirstOrDefault();
-            if (inboundData != null)
+            bool isExist = true;
+            InboundTrackingItem inboundData = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereEquals("SKUID", ValidationHelper.GetInteger(skuid, default(int))).FirstOrDefault();
+            if (inboundData == null)
             {
-                inboundData.SKUID = ValidationHelper.GetInteger(skuid, default(int));
-                inboundData.QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int));
-                inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
-                inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
-                inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-                inboundData.Overage = inboundData.QtyOrdered - inboundData.QtyProduced;
-                inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
-                inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
-                inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
-                inboundData.ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty);
-                inboundData.CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty);
-                inboundData.TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty);
-                inboundData.ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double));
-                inboundData.Update();
-                UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
-                gdvInboundProducts.EditIndex = -1;
-                GetProducts();
+                inboundData = new InboundTrackingItem();
+                isExist = false;
+            }
+            inboundData.SKUID = ValidationHelper.GetInteger(skuid, default(int));
+            inboundData.QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int));
+            inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
+            inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
+            inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
+            inboundData.Overage = inboundData.QtyOrdered - inboundData.QtyProduced;
+            inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
+            inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
+            inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
+            inboundData.ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty);
+            inboundData.CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty);
+            inboundData.TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty);
+            inboundData.ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double));
+            if (!isExist)
+            {
+                inboundData.Insert();
             }
             else
             {
-                InboundTrackingItem item = new InboundTrackingItem()
-                {
-                    SKUID = ValidationHelper.GetInteger(skuid, default(int)),
-                    QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int)),
-                    DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int)),
-                    QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int)),
-                    QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int)),
-                    Overage = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int)) - ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int)),
-                    Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty),
-                    ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty),
-                    DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty),
-                    ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty),
-                    CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty),
-                    TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty),
-                    ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double))
-                };
-                item.Insert();
-                UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
-                gdvInboundProducts.EditIndex = -1;
-                GetProducts();
+                inboundData.Update();
             }
+            UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
+            gdvInboundProducts.EditIndex = -1;
+            GetProducts();
         }
         catch (Exception ex)
         {
