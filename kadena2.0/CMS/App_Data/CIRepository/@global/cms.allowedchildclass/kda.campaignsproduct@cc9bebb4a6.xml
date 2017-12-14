@@ -20,6 +20,13 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.ProductsModule">
+      <ParentClassID>
+        <CodeName>KDA.ProductsModule</CodeName>
+        <GUID>aba96492-ba9e-4302-b541-9b4235cde1a5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
     <Binding id="cms.documenttype_KDA.Program">
       <ParentClassID>
         <CodeName>KDA.Program</CodeName>
