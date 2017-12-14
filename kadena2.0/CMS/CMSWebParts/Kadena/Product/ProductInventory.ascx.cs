@@ -158,17 +158,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (ProductType == (int)ProductsType.GeneralInventory)
                 {
                     ddlCategory.Visible = true;
-                    productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                      .WhereEquals("ProgramID", null)
-                                      .ToList();
-                    if (!DataHelper.DataSourceIsEmpty(productsDetails))
+                    productsDetails = CampaignsProductProvider.GetCampaignsProducts().WhereNull("ProgramID").ToList();
+                    if (!DataHelper.DataSourceIsEmpty(productsDetails) && categoryID != default(int))
                     {
-                        if (categoryID != default(int))
-                        {
-                            productsDetails = productsDetails
-                                .Where(x => x.CategoryID == categoryID)
-                                .ToList();
-                        }
+                        productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
                     }
                 }
                 else
@@ -178,45 +171,29 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     List<int> programIds = GetProgramIDs();
                     if (!DataHelper.DataSourceIsEmpty(programIds))
                     {
-                        productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                          .WhereIn("ProgramID", programIds)
-                                          .ToList();
+                        productsDetails = CampaignsProductProvider.GetCampaignsProducts().WhereIn("ProgramID", programIds).ToList();
                         if (!DataHelper.DataSourceIsEmpty(productsDetails))
                         {
                             if (programID != default(int))
                             {
-                                productsDetails = productsDetails
-                                    .Where(x => x.ProgramID == programID)
-                                    .ToList();
+                                productsDetails = productsDetails.Where(x => x.ProgramID == programID).ToList();
                             }
                             if (categoryID != default(int))
                             {
-                                productsDetails = productsDetails
-                                    .Where(x => x.CategoryID == categoryID)
-                                    .ToList();
+                                productsDetails = productsDetails.Where(x => x.CategoryID == categoryID).ToList();
                             }
                         }
                     }
                 }
                 List<int> skuIds = new List<int>();
-                if (!DataHelper.DataSourceIsEmpty(productsDetails))
-                {
-                    foreach (var product in productsDetails)
-                    {
-                        skuIds.Add(product.NodeSKUID);
-                    }
-                }
+                skuIds = productsDetails?.Select(g => g.NodeSKUID).ToList();
                 if (!DataHelper.DataSourceIsEmpty(skuIds))
                 {
-                    var skuDetails = SKUInfoProvider.GetSKUs()
-                                    .WhereIn("SKUID", skuIds)
-                                    .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
-                                    .ToList();
+                    var skuDetails = SKUInfoProvider.GetSKUs().WhereIn("SKUID", skuIds)
+                                    .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription").ToList();
                     if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
                     {
-                        skuDetails = skuDetails
-                            .Where(x => x.SKUNumber.Contains(posNumber))
-                            .ToList();
+                        skuDetails = skuDetails.Where(x => x.SKUNumber.Contains(posNumber)).ToList();
                     }
                     if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                     {
@@ -244,22 +221,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             Campaign campaign = CampaignProvider.GetCampaigns()
-                              .Columns("CampaignID")
-                              .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                              .FirstOrDefault();
-            if (campaign != null)
+                              .Columns("CampaignID").WhereTrue("OpenCampaign").WhereFalse("CloseCampaign").FirstOrDefault();
+            if (!DataHelper.DataSourceIsEmpty(campaign))
             {
                 var programs = ProgramProvider.GetPrograms()
-                       .WhereEquals("CampaignID", campaign.CampaignID)
-                       .Columns("ProgramID")
-                       .ToList();
-                if (!DataHelper.DataSourceIsEmpty(programs))
-                {
-                    foreach (var program in programs)
-                    {
-                        programIds.Add(program.ProgramID);
-                    }
-                }
+                       .WhereEquals("CampaignID", campaign.CampaignID).Columns("ProgramID").ToList();
+                programIds = programs?.Select(g => g.ProgramID).ToList();
             }
         }
         catch (Exception ex)
@@ -279,8 +246,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             Campaign campaign = CampaignProvider.GetCampaigns()
                              .Columns("CampaignID")
                              .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                             .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                             .FirstOrDefault();
+                             .WhereTrue("OpenCampaign").WhereFalse("CloseCampaign").FirstOrDefault();
             if (campaign != null)
             {
                 if (campaign.CampaignID != default(int))

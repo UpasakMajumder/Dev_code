@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
+using System.Linq;
 
 namespace Kadena.CMSWebParts.Kadena.ShoppingCart
 {
@@ -245,14 +246,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                     var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
                     var inventoryType = ValidationHelper.GetString(cart.GetValue("ShoppingCartInventoryType"), string.Empty);
-                    foreach (ShoppingCartItemInfo cartItem in cart.CartItems)
-                    {
-                        if (cartItem.SKUID == product.SKUID)
-                        {
-                            item = cartItem;
-                            break;
-                        }
-                    }
+                    item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
                     if (!DataHelper.DataSourceIsEmpty(item))
                     {
                         item.CartItemPrice = product.SKUPrice;
@@ -290,14 +284,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     ShoppingCartItemInfo item = null;
                     ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartID);
                     cart.User = CurrentUser;
-                    foreach (ShoppingCartItemInfo cartItem in cart.CartItems)
-                    {
-                        if (cartItem.SKUID == product.SKUID)
-                        {
-                            item = cartItem;
-                            break;
-                        }
-                    }
+                    item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
                     if (!DataHelper.DataSourceIsEmpty(item))
                     {
                         ShoppingCartInfoProvider.RemoveShoppingCartItem(cart, item.CartItemID);
