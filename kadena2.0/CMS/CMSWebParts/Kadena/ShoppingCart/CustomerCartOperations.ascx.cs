@@ -120,13 +120,33 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 var customer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
                 if (!DataHelper.DataSourceIsEmpty(customer))
                 {
-                    var distributors = new List<DataRow>();
-                    var customers = new DataQuery().From(new QuerySource(new QuerySourceTable("COM_Address", "C1"))
-                        .LeftJoin("COM_ShoppingCart C2", "C1.AddressID", "C2.ShoppingCartDistributorID")
-                        .LeftJoin("COM_ShoppingCartSKU C3", "C2.ShoppingCartID", "C3.ShoppingCartID"))
-                        .Columns("AddressID", "AddressPersonalName", "CASE WHEN SKUUnits IS NULL THEN 0 ELSE 1 END IsSelected ", " ISNULL(SKUUnits,0) SKUUnits ", "C2.ShoppingCartID", "C3.SKUID SKUID", "C2.ShoppingCartInventoryType")
-                        .WhereEquals("C1.AddressCustomerID", customer.CustomerID).WhereEqualsOrNull("ShoppingCartInventoryType", InventoryType);
-                    gvCustomersCart.DataSource = customers.Result;
+                    var finalDistributors = new List<DistributorData>();
+                    var distributorsAddress = AddressInfoProvider.GetAddresses(customer.CustomerID).Columns("AddressID", "AddressPersonalName").ToList();
+                    if (distributorsAddress.Count > 0)
+                    {
+                        var distributorsCarts = ShoppingCartInfoProvider.GetShoppingCarts().WhereIn("ShoppingCartDistributorID", distributorsAddress.Select(g => g.AddressID).ToList())
+                                                                     .WhereEquals("ShoppingCartInventoryType", InventoryType)
+                                                                     .Columns("ShoppingCartID", "ShoppingCartDistributorID").Distinct().ToList();
+                        var distributorsCartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("CartItemDistributorID", distributorsAddress.Select(g => g.AddressID).ToList())
+                                                                     .WhereIn("ShoppingCartID", distributorsCarts.Select(g => g.ShoppingCartID).ToList()).ToList();
+                        distributorsAddress.ForEach(g =>
+                        {
+                            var cartItem = distributorsCartItems.Where(k => k.GetValue<int>("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID).FirstOrDefault();
+                            var existingItem = finalDistributors.Where(k => k.SKUID == cartItem?.SKUID && k.AddressID == g.AddressID).FirstOrDefault();
+                            if (DataHelper.DataSourceIsEmpty(existingItem))
+                            {
+                                var distributor = new DistributorData();
+                                distributor.AddressID = g.AddressID;
+                                distributor.AddressPersonalName = g.AddressPersonalName;
+                                distributor.IsSelected = cartItem != null ? cartItem.CartItemUnits > 0 ? true : false : false;
+                                distributor.ShoppingCartID = cartItem != null ? cartItem.ShoppingCartID : 0;
+                                distributor.SKUID = cartItem != null ? cartItem.SKUID : 0;
+                                distributor.SKUUnits = cartItem != null ? cartItem.CartItemUnits : 0;
+                                finalDistributors.Add(distributor);
+                            }
+                        });
+                    }
+                    gvCustomersCart.DataSource = finalDistributors;
                     gvCustomersCart.DataBind();
                 }
                 else
@@ -366,5 +386,17 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
             return result;
         }
         #endregion
+    }
+    /// <summary>
+    /// DistributorData object only for binding data to gridview
+    /// </summary>
+    public class DistributorData
+    {
+        public int AddressID { get; set; }
+        public string AddressPersonalName { get; set; }
+        public bool IsSelected { get; set; }
+        public int ShoppingCartID { get; set; }
+        public int SKUID { get; set; }
+        public int SKUUnits { get; set; }
     }
 }
