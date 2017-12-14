@@ -25,11 +25,6 @@ namespace Kadena.AmazonFileSystemProvider
             var bucketName = AmazonS3Helper.GetBucketName();
             var key = AmazonS3Helper.EnsureKey(path);
 
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                return false;
-            }
-
             var client = new AmazonS3Client(RegionEndpoint.USEast1);
             try
             {
@@ -57,13 +52,13 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to create.</param> 
         public override CMS.IO.DirectoryInfo CreateDirectory(string path)
         {
+            if (Exists(path))
+            {
+                throw new InvalidOperationException("Directory already exists.");
+            }
+
             var bucketName = AmazonS3Helper.GetBucketName();
             var key = AmazonS3Helper.EnsureKey(path);
-
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                return null;
-            }
 
             using (var client = new AmazonS3Client(Amazon.RegionEndpoint.USEast1))
             {
@@ -73,8 +68,7 @@ namespace Kadena.AmazonFileSystemProvider
                     Key = key
                 };
 
-                var response = client.PutObject(putRequest);
-
+                client.PutObject(putRequest);
                 return new DirectoryInfo(path);
             }
         }
