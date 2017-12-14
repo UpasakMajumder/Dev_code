@@ -223,5 +223,24 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 IsDisabled = false
             };
         }
+
+        public NotificationEmail CreateNotificationEmail(bool emailConfirmationEnabled)
+        {
+            int maxitems = 0;
+            int.TryParse(resources.GetSettingsKey("KDA_MaximumNotificationEmailsOnCheckout"), out maxitems);
+
+            return new NotificationEmail
+            {
+                Exists = emailConfirmationEnabled,
+                MaxItems = maxitems,
+                TooltipText = new NotificationEmailTooltip
+                {
+                    Add = resources.GetResourceString("Kadena.Checkout.AddEmail"),
+                    Remove = resources.GetResourceString("Kadena.Checkout.RemoveEmail")
+                },
+                Title = resources.GetResourceString("Kadena.Checkout.EmailTitle"),
+                Description = resources.GetResourceString("Kadena.Checkout.EmailDescription")
+            };
+        }
     }
 }

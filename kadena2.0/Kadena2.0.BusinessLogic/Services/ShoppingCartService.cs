@@ -75,6 +75,7 @@ namespace Kadena.BusinessLogic.Services
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             var userNotificationString = GetUserNotificationString();
             var otherAddressEnabled = GetOtherAddressSettingsValue();
+            var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
 
             var checkoutPage = new CheckoutPage()
             {
@@ -85,18 +86,7 @@ namespace Kadena.BusinessLogic.Services
                 PaymentMethods = checkoutfactory.CreatePaymentMethods(paymentMethods),
                 Submit = checkoutfactory.CreateSubmitButton(),
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError"),
-                EmailConfirmation = new NotificationEmail
-                {
-                    Exists = bool.Parse(resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout")),
-                    MaxItems = int.Parse(resources.GetSettingsKey("KDA_MaximumNotificationEmailsOnCheckout")),
-                    TooltipText = new NotificationEmailTooltip
-                    {
-                        Add = resources.GetResourceString("Kadena.Checkout.AddEmail"),
-                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveEmail")
-                    },
-                    Title = resources.GetResourceString("Kadena.Checkout.EmailTitle"),
-                    Description = resources.GetResourceString("Kadena.Checkout.EmailDescription")
-                }
+                EmailConfirmation = checkoutfactory.CreateNotificationEmail(emailConfirmationEnabled)
             };
 
             CheckCurrentOrDefaultAddress(checkoutPage);
@@ -211,7 +201,7 @@ namespace Kadena.BusinessLogic.Services
 
         private void CheckCurrentOrDefaultAddress(CheckoutPage page)
         {
-            if (page.DeliveryAddresses.items.Count == 0)
+            if ((page?.DeliveryAddresses?.items?.Count ?? 0) == 0)
             {
                 return;
             }

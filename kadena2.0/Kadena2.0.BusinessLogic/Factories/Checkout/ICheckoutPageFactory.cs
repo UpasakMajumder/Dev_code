@@ -13,5 +13,6 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         AddressDialog GetOtherAddressDialog();
         PaymentMethods CreatePaymentMethods(PaymentMethod[] paymentMethods);
         SubmitButton CreateSubmitButton();
+        NotificationEmail CreateNotificationEmail(bool emailConfirmationEnabled);        
     }
 }
