@@ -157,7 +157,7 @@ $('#reptable').hide();
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
-          <property name="wherecondition"></property>
+          <property name="wherecondition">p.ProgramID is null</property>
           <property name="zerorowstext">{$Kadena.ItemList.NoDataFoundText$}</property>
         </webpart>
       </webpartzone>
