@@ -65,8 +65,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblBrand"></span>
                     <div class="input__inner">
-                        <cms:CMSDropDownList ID="ddlBrand" runat="server" class="input__select" ReadOnly="true"></cms:CMSDropDownList>
-                       <%-- <asp:TextBox runat="server" ID="txtBrand" class="input__text" ReadOnly="true"></asp:TextBox>--%>
+                        <cms:CMSDropDownList ID="ddlBrand" runat="server" class="input__select" Enabled="false"></cms:CMSDropDownList>
                         <asp:HiddenField runat="server" ID="hfBrandItemID" />
                         <asp:RequiredFieldValidator ID="rqBrand" CssClass="input__error" runat="server" ControlToValidate="ddlBrand" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
@@ -88,10 +87,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblActualPrice"></span>
                     <div class="input__inner">
-                        <asp:TextBox runat="server" ID="txtActualPrice" class="input__text"></asp:TextBox>
-                        <asp:RegularExpressionValidator ID="revActualPrice" CssClass="input__error" runat="server"
-                            ControlToValidate="txtActualPrice" ValidationExpression="((\d+)((\.\d{1,100})?))$" ForeColor="Red">
-                        </asp:RegularExpressionValidator>
+                        <asp:TextBox runat="server" ID="txtActualPrice" class="input__text" ReadOnly="true"></asp:TextBox>
                     </div>
                 </div>
             </div>

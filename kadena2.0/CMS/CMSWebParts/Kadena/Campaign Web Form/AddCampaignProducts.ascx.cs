@@ -466,7 +466,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProgram.ErrorMessage = ProgramNameError;
         rqEstimatePrice.ErrorMessage = EstimatedPriceError;
         rqBrand.ErrorMessage = BrandNameError;
-        revActualPrice.ErrorMessage = NumberOnlyError;
         revEstPrice.ErrorMessage = NumberOnlyError;
         revQty.ErrorMessage = NumberOnlyError;
         rqProductCategory.ErrorMessage = CategoryError;
@@ -732,12 +731,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty),
                             SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty),
                             SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
-                            SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double)),
                             SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date),
                             SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
                             SKUImagePath = imagePath,
                             SKUSiteID = CurrentSite.SiteID,
-                            SKUProductType = SKUProductTypeEnum.EProduct
+                            SKUProductType = SKUProductTypeEnum.EProduct,
+                            SKUPrice=0
                         };
                         SKUInfoProvider.SetSKUInfo(newProduct);
                         products.NodeSKUID = newProduct.SKUID;
@@ -798,11 +797,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         updateProduct.SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty);
                         updateProduct.SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
-                        updateProduct.SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double));
                         updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date);
                         updateProduct.SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false;
                         updateProduct.SKUSiteID = CurrentSite.SiteID;
                         updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
+                        updateProduct.SKUPrice =0;
                         SKUInfoProvider.SetSKUInfo(updateProduct);
                     }
                     product.Update();
@@ -888,6 +887,25 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     {
                         ddlBrand.SelectedValue = brandItemID.ToString();
                         hfBrandItemID.Value = brandItemID.ToString();
+                        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                       .WhereEquals("ItemID", brandItemID)
+                       .Columns("ItemID,BrandCode").FirstOrDefault();
+                        if (brand != null)
+                        {
+                            var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
+                  .WhereEquals("BrandID",ValidationHelper.GetInteger(brand.GetValue("BrandCode"),0))
+                  .Columns("ItemID,POSNumber")
+                  .ToList();
+                            if (!DataHelper.DataSourceIsEmpty(pos))
+                            {
+                                ddlPos.DataSource = pos;
+                                ddlPos.DataTextField = "POSNumber";
+                                ddlPos.DataValueField = "POSNumber";
+                                ddlPos.DataBind();
+                                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectPOSText"), string.Empty);
+                                ddlPos.Items.Insert(0, new ListItem(selectText, "0"));
+                            }
+                        }
                     }
                 }
             }

@@ -1,0 +1,35 @@
+.allocated__block {
+  padding: 30px 0 15px;
+
+  span {
+    display: inline-block;
+    margin-right: 15px;
+  }
+}
+
+.business__assigned-user {
+  table {
+    td,
+    th {
+      padding: 5px;
+    }
+  }
+}
+
+.checkbox__sec {
+  .input__label--checkbox {
+    padding-left: 0;
+    text-transform: uppercase;
+
+    &:before {
+      left: 150px;
+      right: inherit;
+      top: 0;
+      margin-right: 0;
+    }
+  }
+
+  .input__checkbox:checked + label:after {
+    left: 155px;
+  }
+}

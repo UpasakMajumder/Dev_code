@@ -61,8 +61,8 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>You have {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2)|(user)cvoqa2@gmail.com|(hash)1ed0b9f55354b1b931890394450dc4c6e24f10198d4a3d42cf10c0f6016e2a5f%} items in your cart. </label>
-  <label>Total : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2))|(user)cvoqa2@gmail.com|(hash)40cf89191d47fb4689766db2d7285df93a797c7491aba7095f7be4f3d366ae6b%}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2)|(user)cvoqa2@gmail.com|(hash)1ed0b9f55354b1b931890394450dc4c6e24f10198d4a3d42cf10c0f6016e2a5f%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2))|(user)cvoqa2@gmail.com|(hash)40cf89191d47fb4689766db2d7285df93a797c7491aba7095f7be4f3d366ae6b%}</label>
 </div>
 ]]>
           </property>
@@ -119,6 +119,33 @@
             <![CDATA[ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
           </property>
           <property name="zerorowstext">No cart items found</property>
+        </webpart>
+        <webpart controlid="Javascript" guid="4b4cc245-d040-4a96-8e1d-743b38234c5e" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+$(".js-CloseMesaage").on("click",function(){
+$(this).closest(".dialog").removeClass("active");
+})
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">4b4cc245-d040-4a96-8e1d-743b38234c5e</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZonePrint" v="1" />

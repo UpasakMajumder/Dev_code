@@ -4,14 +4,21 @@ using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
+using CMS.Globalization;
 using CMS.Helpers;
+using CMS.SiteProvider;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
+using Kadena.Dto.General;
+using Kadena.Helpers;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
-using Kadena.Old_App_Code.Kadena.PDFHelpers;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -20,6 +27,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class DistributorCartDetails : CMSCheckoutWebPart
     {
+        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
+        private readonly IMicroProperties _properties;
+
         #region "Private Properties"
 
         private List<BusinessUnitItem> BusinessUnits { get; set; }
@@ -281,8 +291,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (ValidCart)
                 {
-                    var quantity = 0;
-                    double price = 0;
+
                     base.OnPreRender(e);
                     BindRepeaterData();
                     rptCartItems.ReloadData(true);
@@ -293,28 +302,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                         tblCartItems.Visible = false;
                     }
-                    foreach (Control item in rptCartItems.Items)
-                    {
-                        var txtQuantity = item.Controls[0].FindControl("txtUnits") as TextBox;
-                        quantity += ValidationHelper.GetInteger(txtQuantity.Text, default(int));
-                        var lblSKUPrice = item.Controls[0].FindControl("hdnSKUPrice") as HiddenField;
-                        price += ValidationHelper.GetDouble(lblSKUPrice.Value, default(double));
-                    }
-                    var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
-                    var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
-                    if (inventoryType == (Int32)ProductType.GeneralInventory)
-                    {
-                        ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
-                        lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
-                    }
-                    else
-                    {
-                        ddlShippingOption.Items[0].Selected = true;
-                        ddlShippingOption.Attributes["disabled"] = "disabled";
-                        lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(price, CurrentSite.SiteID);
-                    }
-                    ddlBusinessUnits.SelectedValue = businessUnitID;
                 }
+                var txtQuantity = Cart.CartItems.Sum(x => x.CartItemUnits);
+                var estimation = CallEstimationService(GetEstimationDTO());
+                var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
+                SelectShippingoption(inventoryType, estimatedPrice);
+                ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
+                var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
+                ddlBusinessUnits.SelectedValue = businessUnitID;
+                lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
             }
             catch (Exception ex)
             {
@@ -355,6 +352,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     else
                     {
                         lblCartError.Text = ResHelper.GetString("KDA.DistributorCart.QuantityError");
+                        divDailogue.Attributes.Add("class", "dialog active");
                         ValidCart = false;
                         return;
                     }
@@ -363,25 +361,58 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 Cart.SetValue("BusinessUnitIDForDistributor", ddlBusinessUnits.SelectedValue);
                 ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                 lblCartUpdateSuccess.Text = ResHelper.GetString("KDA.DistributorCart.CartUpdateSuccessMessage");
+                divDailogue.Attributes.Add("class", "dialog active");
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
             }
         }
-        /// <summary>
-        /// Save pdf click event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
-        {
-            DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
-            CreateDistributorCartPDF(distributorCartData);
-        }
+
         #endregion "Event handling"
 
         #region "Private Methods"
+        private double EstimateSubTotal(int inventoryType)
+        {
+            double price = 0;
+            try
+            {
+                if (inventoryType == (Int32)ProductType.PreBuy)
+                {
+                    foreach (Control item in rptCartItems.Items)
+                    {
+                        var lblSKUPrice = item.Controls[0].FindControl("hdnSKUPrice") as HiddenField;
+                        price += ValidationHelper.GetDouble(lblSKUPrice.Value, default(double));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "EstimateSubTotal", ex.Message);
+            }
+            return price;
+        }
+        private void SelectShippingoption(int inventoryType, double estimatedPrice)
+        {
+            try
+            {
+                if (inventoryType == (Int32)ProductType.GeneralInventory)
+                {
+                    ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
+                    lblShippingCharge.Text = CurrencyInfoProvider.GetFormattedPrice(estimatedPrice, CurrentSite.SiteID);
+                }
+                else
+                {
+                    ddlShippingOption.Items[0].Selected = true;
+                    ddlShippingOption.Attributes["disabled"] = "disabled";
+                    lblShippingCharge.Text = CurrencyInfoProvider.GetFormattedPrice(estimatedPrice, CurrentSite.SiteID);
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "SelectShippingoption", ex.Message);
+            }
+        }
 
         /// <summary>
         /// This will get Business Units
@@ -414,7 +445,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (ShippingOptions == null)
                 {
                     ShippingOptions = ShippingOptionInfoProvider.GetShippingOptions()
-                                                .OnSite(CurrentSite.SiteID).Where(x=>x.ShippingOptionEnabled==true).ToList();
+                                                .OnSite(CurrentSite.SiteID).Where(x => x.ShippingOptionEnabled == true).ToList();
                 }
             }
             catch (Exception ex)
@@ -480,58 +511,136 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         /// <summary>
-        /// This will returns Shipping price based on Shipping option
+        /// Calling shipping estimation service
         /// </summary>
+        /// <param name="requestBody"></param>
         /// <returns></returns>
-        private double GetPriceByShippingOption()
+        private BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(EstimateDeliveryPriceRequestDto requestBody)
         {
             try
             {
-                var shippingOption = ShippingOptions.Where(x => x.ShippingOptionID == ValidationHelper.GetValue<int>(ddlShippingOption.SelectedValue)).FirstOrDefault();
-                var costs = ShippingCostInfoProvider.GetShippingCosts().WhereEquals("ShippingCostShippingOptionID", ValidationHelper.GetValue<int>(ddlShippingOption.SelectedValue)).ToList();
-                return default(double);
+                var microserviceClient = new ShippingCostServiceClient(new MicroProperties(new KenticoResourceService()));
+                var response = microserviceClient.EstimateShippingCost(requestBody).Result;
+
+                if (!response.Success || response.Payload == null)
+                {
+                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider to service URL '{_properties.GetServiceUrl(_serviceUrlSettingKey)}' resulted with error {response.Error?.Message ?? string.Empty}");
+                }
+                return response;
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetPriceByShippingOption ", ex.Message);
-                return default(double);
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "CallEstimationService", ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// getting total weight
+        /// </summary>
+        /// <returns></returns>
+        private WeightDto GetWeight()
+        {
+            try
+            {
+                var weight = Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+                var weight2 = Cart.TotalItemsWeight; ;
+                return new WeightDto { Unit = "Kg", Value = weight };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetWeight", ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// creating estimation DTO
+        /// </summary>
+        /// <returns></returns>
+        private EstimateDeliveryPriceRequestDto GetEstimationDTO()
+        {
+            try
+            {
+                return new EstimateDeliveryPriceRequestDto
+                {
+                    SourceAddress = GetSourceAddressFromConfig(),
+                    TargetAddress = GetTargetAddress(),
+                    Weight = GetWeight(),
+                    Provider = Cart.ShippingOption.ShippingOptionName,
+                    ProviderService = Cart.ShippingOption.ShippingOptionCarrierServiceName
+                };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetEstimationDTO", ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets target shipping address
+        /// </summary>
+        /// <returns></returns>
+        private AddressDto GetTargetAddress()
+        {
+            try
+            {
+                var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
+                var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
+                var addressLines = new[]{
+                                            distributorAddress.GetStringValue("AddressLine1",string.Empty),
+                                            distributorAddress.GetStringValue("AddressLine2",string.Empty)
+                                        }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+                var country = CountryInfoProvider.GetCountries().WhereEquals("CountryID", distributorAddress.GetStringValue("AddressCountryID", string.Empty))
+                                    .Column("CountryTwoLetterCode").FirstOrDefault();
+                var state = StateInfoProvider.GetStates().WhereEquals("StateID", distributorAddress.GetStringValue("AddressStateID", string.Empty)).Column("StateCode").FirstOrDefault();
+                return new AddressDto()
+                {
+                    City = distributorAddress.GetStringValue("AddressCity", string.Empty),
+                    Country = country.CountryTwoLetterCode,
+                    Postal = distributorAddress.GetStringValue("AddressZip", string.Empty),
+                    State = state.StateCode,
+                    StreetLines = addressLines
+                };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetTargetAddress", ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets source  address
+        /// </summary>
+        /// <returns></returns>
+        private AddressDto GetSourceAddressFromConfig()
+        {
+            try
+            {
+                var addressLines = new[]
+                                    {
+                                        SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                                        SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
+                                    }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+
+                return new AddressDto()
+                {
+                    City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
+                    Country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
+                    Postal = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
+                    State = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
+                    StreetLines = addressLines
+                };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetSourceAddressFromConfig", ex.Message);
+                return null;
             }
         }
 
         #endregion "Private Methods"
-        /// <summary>
-        /// This will create cart Pdf o download
-        /// </summary>
-        /// <param name="distributorCartData"></param>
-        private void CreateDistributorCartPDF(DataTable distributorCartData)
-        {
-            try
-            {
-                var html = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTML");
-                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
-                var PDFBody = "";
-                foreach (var cart in groupCart)
-                {
-                    PDFBody += CartPDFHelper.CreateCarOuterContent(cart.FirstOrDefault(), CurrentSiteName);
-                    var cartData = cart.ToList();
-                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(cartData, CurrentSiteName));
-                   html= html.Replace("{PDFNAME}", $"{(cart.FirstOrDefault())["AddressPersonalName"].ToString()}");
-                }
-                html = html.Replace("{OUTERCONTENT}", PDFBody);
-                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
-                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
-                Response.Clear();
-                MemoryStream ms = new MemoryStream(pdfBytes);
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-                Response.Buffer = true;
-                ms.WriteTo(Response.OutputStream);
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("CartPDFHelper", "CreateCarOuterContent", ex.Message);
-            }
-        }
     }
 }
