@@ -7,15 +7,10 @@ import {
 } from 'app.consts';
 
 const defaultState = {
-  orderType: {
-    isFetching: false,
-    isBlocked: false,
-    selected: null
-  },
+  isFetching: false,
+  orderType: null,
   campaign: {
-    isFetching: false,
-    isBlocked: false,
-    selected: null,
+    value: null,
     placeholder: null,
     items: []
   },
@@ -28,14 +23,11 @@ export default (state = defaultState, action) => {
   switch (type) {
   case FILTERED_RECENT_ORDERS_GET_CAMPAIGNS + FETCH:
     return {
-      orderType: {
-        isFetching: true, // show spinned
-        isBlocked: true, // block
-        selected: payload.selected // set the value
-      },
+      isFetching: true, // show spinner/block
+      orderType: payload.value,
       campaign: {
         ...state.campaign,
-        selected: null, // clear list
+        value: null, // clear list
         items: [] // clear list
       },
       orders: {} // clear table
@@ -44,11 +36,8 @@ export default (state = defaultState, action) => {
   case FILTERED_RECENT_ORDERS_GET_CAMPAIGNS + SUCCESS:
     return {
       ...state,
-      orderType: {
-        ...state.orderType,
-        isFetching: false, // hide spinner
-        isBlocked: false // unblock
-      },
+      isFetching: false, // hide spinner/unblock
+      orderType: state.orderType,
       campaign: {
         ...state.campaign,
         placeholder: payload.placeholder,
@@ -59,54 +48,38 @@ export default (state = defaultState, action) => {
   case FILTERED_RECENT_ORDERS_GET_CAMPAIGNS + FAILURE:
     return {
       ...state,
-      orderType: {
-        isFetching: false,
-        isBlocked: false,
-        selected: null
-      }
+      isFetching: false,
+      orderType: null
     };
 
   case FILTERED_RECENT_ORDERS_GET_ORDERS + FETCH:
     return {
-      orderType: {
-        ...state.orderType,
-        isBlocked: true // block
-      },
+      isFetching: true, // show spinner/block
+      orderType: payload.selectedOrderType,
       campaign: {
         ...state.campaign,
-        isFetching: true, // show spinner
-        isBlocked: true, // block
-        selected: payload.selected
+        items: payload.selectedCampaign ? state.campaign.items : [],
+        value: payload.selectedCampaign
       },
       orders: {} // clear table
     };
 
   case FILTERED_RECENT_ORDERS_GET_ORDERS + SUCCESS:
     return {
-      orderType: {
-        ...state.orderType,
-        isBlocked: false // unblock
-      },
-      campaign: {
-        ...state.campaign,
-        isFetching: false, // hide spinner
-        isBlocked: false // unblock
-      },
+      isFetching: false,
+      orderType: state.orderType,
+      campaign: state.campaign,
       orders: payload // render table
     };
 
   case FILTERED_RECENT_ORDERS_GET_ORDERS + FAILURE:
     return {
       ...state,
-      orderType: {
-        ...state.orderType,
-        isBlocked: false
-      },
+      isFetching: false,
+      orderType: state.orderType,
       campaign: {
         ...state.campaign,
-        isFetching: false,
-        isBlocked: false,
-        selected: null
+        value: null
       }
     };
 

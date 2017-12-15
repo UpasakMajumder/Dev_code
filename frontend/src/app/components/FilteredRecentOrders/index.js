@@ -11,10 +11,14 @@ import Spinner from 'app.dump/Spinner';
 import Orders from './Orders';
 
 class FilteredRecentOrders extends Component {
-  getOrders = (selectedCampaign) => {
+  methodsToggler = (value) => {
+    const valueObj = FILTERED_RECENT_ORDERS.orderTypes.items.filter(item => item.id === value)[0];
+    valueObj.campaigns ? this.getCampaigns(value) : this.getOrders(null, value);
+  }
+
+  getOrders = (selectedCampaign, selectedOrderType) => {
     const url = FILTERED_RECENT_ORDERS.getOrdersUrl;
-    const selectedOrderType = this.props.filteredRecentOrders.orderType.selected;
-    this.props.getOrders(url, selectedOrderType, selectedCampaign);
+    this.props.getOrders(url, selectedOrderType || this.props.filteredRecentOrders.orderType, selectedCampaign);
   };
 
   getCampaigns = (selectedOrderType) => {
@@ -23,37 +27,36 @@ class FilteredRecentOrders extends Component {
   };
 
   getCampaignElement = () => {
-    const { campaign, orderType } = this.props.filteredRecentOrders;
-    if (orderType.isFetching) return <Spinner />;
+    const { campaign, isFetching } = this.props.filteredRecentOrders;
     if (!campaign.items.length) return null;
     return (
       <Select
-        disabled={campaign.isBlocked}
+        disabled={isFetching}
         options={campaign.items}
         onChange={(e) => { this.getOrders(e.target.value); }}
-        value={campaign.selected}
+        value={campaign.value}
         placeholder={campaign.placeholder}
       />
     );
   };
 
   getOrdersElement = () => {
-    const { campaign, orders } = this.props.filteredRecentOrders;
-    if (campaign.isFetching) return <Spinner />;
+    const { orders, isFetching } = this.props.filteredRecentOrders;
+    if (isFetching) return <Spinner />;
     if (!Object.keys(orders).length) return null;
     return <Orders orders={orders} />;
   };
 
   render() {
-    const { orderType } = this.props.filteredRecentOrders;
+    const { orderType, isFetching } = this.props.filteredRecentOrders;
 
     return (
       <div>
         <Select
-          disabled={orderType.isBlocked}
+          disabled={isFetching}
           options={FILTERED_RECENT_ORDERS.orderTypes.items}
-          onChange={(e) => { this.getCampaigns(e.target.value); }}
-          value={orderType.selected}
+          onChange={(e) => { this.methodsToggler(e.target.value); }}
+          value={orderType}
           placeholder={FILTERED_RECENT_ORDERS.orderTypes.placeholder}
         />
         {this.getCampaignElement()}
@@ -67,15 +70,10 @@ FilteredRecentOrders.propTypes = {
   getCampaigns: PropTypes.func.isRequired,
   getOrders: PropTypes.func.isRequired,
   filteredRecentOrders: PropTypes.shape({
-    orderType: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      isBlocked: PropTypes.bool.isRequired,
-      selected: PropTypes.string
-    }).isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    orderType: PropTypes.string,
     campaign: PropTypes.shape({
-      isFetching: PropTypes.bool.isRequired,
-      isBlocked: PropTypes.bool.isRequired,
-      selected: PropTypes.string,
+      value: PropTypes.string,
       placeholder: PropTypes.string,
       items: PropTypes.array.isRequired
     }).isRequired,

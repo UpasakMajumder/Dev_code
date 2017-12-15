@@ -1,6 +1,4 @@
 import React from 'react';
-/* utilities */
-import { removeProps } from 'app.helpers/object';
 /* globals */
 import { STATIC_FIELDS } from 'app.globals';
 
@@ -34,7 +32,7 @@ const Select = (props) => {
       {optionalLabel}
       <div className={`input__select ${errorClass}`}>
         <select
-          value={value}
+          value={value || undefined}
           className={errorClass}
           required={!isOptional}
           onChange={onChange}

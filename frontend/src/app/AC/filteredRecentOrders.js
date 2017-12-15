@@ -8,16 +8,16 @@ import {
   SUCCESS
 } from 'app.consts';
 
-export const getCampaigns = (url, selectedOrderType) => {
+export const getCampaigns = (apiUrl, selectedOrderType) => {
   return (dispatch) => {
     dispatch({
       type: FILTERED_RECENT_ORDERS_GET_CAMPAIGNS + FETCH,
       payload: {
-        selected: selectedOrderType
+        value: selectedOrderType
       }
     });
 
-    axios.get(`${url}/${selectedOrderType}`)
+    axios.get(`${apiUrl}/${selectedOrderType}`)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
@@ -42,16 +42,19 @@ export const getCampaigns = (url, selectedOrderType) => {
   };
 };
 
-export const getOrders = (url, selectedOrderType, selectedCampaign) => {
+export const getOrders = (apiUrl, selectedOrderType, selectedCampaign) => {
   return (dispatch) => {
     dispatch({
       type: FILTERED_RECENT_ORDERS_GET_ORDERS + FETCH,
       payload: {
-        selected: selectedCampaign
+        selectedOrderType,
+        selectedCampaign
       }
     });
 
-    axios.get(`${url}/${selectedOrderType}/${selectedCampaign}`)
+    const parametres = selectedCampaign ? `${selectedOrderType}/${selectedCampaign}` : selectedOrderType;
+
+    axios.get(`${apiUrl}/${parametres}`)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
