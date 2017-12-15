@@ -703,7 +703,7 @@ config.localization.languages = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%((Settings.KDA_OrdersModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))) && ECommerceContext.CurrentCustomer != null|(user)michal.machacek@actum.cz|(hash)39d48888eeaa0477a593ba9f09cd3e6b2d0c83d1fc9dddf5d7e87844af7a8676%}]]>
+            <![CDATA[{%((Settings.KDA_OrdersModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))) && ECommerceContext.CurrentCustomer != null && !Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)294fdec0c7d4943cc9831c4209757520e79278fb146618ccef87fc3156ede2bf%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
@@ -753,7 +753,7 @@ config.localization.languages = {
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%if (CurrentSite.SiteName=="TWE") {true}else{false}|(user)cvoqa2@gmail.com|(hash)854cac9b8e2b8767830dc08f41afbe7a173c96c29b07cb08493e67244d4513f6%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)2e4a40e729d4eef5258b9d214aedf69b64c60d286638b8dd57f8dfea6d46bc7b%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>
@@ -803,7 +803,7 @@ config.localization.languages = {
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%CurrentSite.SiteName=="TWE"{true}else{false}|(user)cvoqa2@gmail.com|(hash)9497fcf33e0157ce19932021e65cea7c3a1b832860bad96bec637c69bf3556e4%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)2e4a40e729d4eef5258b9d214aedf69b64c60d286638b8dd57f8dfea6d46bc7b%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>
