@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.StatesGroup</CodeName>
+    <GUID>3154c27d-8951-45c1-a625-7f9b49f75357</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.create$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.create$}</PermissionDisplayName>
+  <PermissionGUID>746c4b26-7cca-4b47-b21d-ad77844f3a70</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

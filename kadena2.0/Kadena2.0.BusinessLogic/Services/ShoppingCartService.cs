@@ -121,7 +121,19 @@ namespace Kadena.BusinessLogic.Services
                     DisabledText = resources.GetResourceString("Kadena.Checkout.ButtonWaitingForTemplateService"),
                     IsDisabled = false
                 },
-                ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError")
+                ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError"),
+                EmailConfirmation = new NotificationEmail
+                {
+                    Exists = bool.Parse(resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout")),
+                    MaxItems = int.Parse(resources.GetSettingsKey("KDA_MaximumNotificationEmailsOnCheckout")),
+                    TooltipText = new NotificationEmailTooltip
+                    {
+                        Add = resources.GetResourceString("Kadena.Checkout.AddEmail"),
+                        Remove = resources.GetResourceString("Kadena.Checkout.RemoveEmail")
+                    },
+                    Title = resources.GetResourceString("Kadena.Checkout.EmailTitle"),
+                    Description = resources.GetResourceString("Kadena.Checkout.EmailDescription")
+                }
             };
 
             CheckCurrentOrDefaultAddress(checkoutPage);

@@ -2,7 +2,9 @@
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
+using System.Data;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -56,6 +58,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion properties
+
         /// <summary>
         /// page load event
         /// </summary>
@@ -66,13 +69,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 int userID = CurrentUser.UserID;
+                linkCheckoutPage.HRef = URL;
+                lblCartName.Text = CartDisplayName;
+                var query = new DataQuery(SQLQueries.getShoppingCartCount);
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", ShoppingCartInventoryType);
-                var countData = ConnectionHelper.ExecuteScalar("Proc_Custom_GetShoppingCartCount", queryParams, QueryTypeEnum.StoredProcedure, true);
+                var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 var count = ValidationHelper.GetInteger(countData, default(int));
-                linkCheckoutPage.HRef = URL;
-                lblCartName.Text = CartDisplayName;
                 lblCount.Text = count == 0 ? "" : $"{count}";
             }
             catch (Exception ex)
