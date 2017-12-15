@@ -13,12 +13,14 @@ using Kadena.Dto.General;
 using Kadena.Helpers;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -291,7 +293,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (ValidCart)
                 {
-
                     base.OnPreRender(e);
                     BindRepeaterData();
                     rptCartItems.ReloadData(true);
@@ -369,9 +370,26 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Save pdf click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
+        {
+            DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+            CreateDistributorCartPDF(distributorCartData);
+        }
+
         #endregion "Event handling"
 
         #region "Private Methods"
+
+        /// <summary>
+        /// Estimates subtotal
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
         private double EstimateSubTotal(int inventoryType)
         {
             double price = 0;
@@ -392,6 +410,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             return price;
         }
+
+        /// <summary>
+        /// Selectd shipping method will be displayed
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <param name="estimatedPrice"></param>
         private void SelectShippingoption(int inventoryType, double estimatedPrice)
         {
             try
@@ -638,6 +662,41 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetSourceAddressFromConfig", ex.Message);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// This will create cart Pdf o download
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        private void CreateDistributorCartPDF(DataTable distributorCartData)
+        {
+            try
+            {
+                var html = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTML");
+                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
+                var PDFBody = "";
+                foreach (var cart in groupCart)
+                {
+                    PDFBody += CartPDFHelper.CreateCarOuterContent(cart.FirstOrDefault(), CurrentSiteName);
+                    var cartData = cart.ToList();
+                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(cartData, CurrentSiteName));
+                    html = html.Replace("{PDFNAME}", $"{(cart.FirstOrDefault())["AddressPersonalName"].ToString()}");
+                }
+                html = html.Replace("{OUTERCONTENT}", PDFBody);
+                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
+                Response.Clear();
+                MemoryStream ms = new MemoryStream(pdfBytes);
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                Response.Buffer = true;
+                ms.WriteTo(Response.OutputStream);
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "CreateCarOuterContent", ex.Message);
             }
         }
 
