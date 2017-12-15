@@ -1,6 +1,6 @@
 ﻿using CMS.Base;
+using CMS.DataEngine;
 using CMS.Helpers;
-using System.Globalization;
 
 namespace Kadena.AmazonFileSystemProvider
 {
@@ -9,8 +9,8 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class AmazonHelper
     {
-        private static bool? mPublicAccess = new bool?();
-        private static string mEndPoint = (string)null;
+        private static bool? mPublicAccess;
+        private static string mEndPoint;
         /// <summary>Path to azure file page.</summary>
         public const string AMAZON_FILE_PAGE = "~/CMSPages/GetAmazonFile.aspx";
 
@@ -21,13 +21,15 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                if (!AmazonHelper.mPublicAccess.HasValue)
-                    AmazonHelper.GetEndPointAndAccess();
-                return AmazonHelper.mPublicAccess.Value;
+                if (!mPublicAccess.HasValue)
+                {
+                    GetEndPointAndAccess();
+                }
+                return mPublicAccess.Value;
             }
             set
             {
-                AmazonHelper.mPublicAccess = new bool?(value);
+                mPublicAccess = new bool?(value);
             }
         }
 
@@ -36,16 +38,15 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                if (AmazonHelper.mEndPoint == null)
+                if (mEndPoint == null)
                 {
-                    AmazonHelper.mEndPoint = ValidationHelper.GetString((object)SettingsHelper.AppSettings["CMSAmazonEndPoint"], (string)null, (CultureInfo)null);
-                    AmazonHelper.GetEndPointAndAccess();
+                    GetEndPointAndAccess();
                 }
-                return AmazonHelper.mEndPoint;
+                return mEndPoint;
             }
             set
             {
-                AmazonHelper.mEndPoint = value;
+                mEndPoint = value;
             }
         }
 
@@ -54,8 +55,10 @@ namespace Kadena.AmazonFileSystemProvider
         public static string GetDownloadPath(string path)
         {
             if (!string.IsNullOrEmpty(path))
-                return "~/CMSPages/GetAmazonFile.aspx?path=" + URLHelper.EscapeSpecialCharacters(path);
-            return (string)null;
+            {
+                return $"{AMAZON_FILE_PAGE}?path={URLHelper.EscapeSpecialCharacters(path)}";
+            }
+            return null;
         }
 
         /// <summary>
@@ -63,16 +66,16 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         private static void GetEndPointAndAccess()
         {
-            AmazonHelper.mEndPoint = ValidationHelper.GetString((object)SettingsHelper.AppSettings["CMSAmazonEndPoint"], (string)null, (CultureInfo)null);
-            if (AmazonHelper.mEndPoint == null)
+            mEndPoint = ValidationHelper.GetString(SettingsHelper.AppSettings["CMSAmazonEndPoint"], null);
+            if (mEndPoint == null)
             {
-                AmazonHelper.mEndPoint = "http://" + SettingsHelper.AppSettings["CMSAmazonBucketName"] + ".s3.amazonaws.com";
-                AmazonHelper.mPublicAccess = new bool?(ValidationHelper.GetBoolean((object)SettingsHelper.AppSettings["CMSAmazonPublicAccess"], false, (CultureInfo)null));
+                mEndPoint = $"http://{SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName)}.s3.amazonaws.com";
+                mPublicAccess = new bool?(ValidationHelper.GetBoolean(SettingsHelper.AppSettings["CMSAmazonPublicAccess"], false));
             }
             else
             {
-                AmazonHelper.mEndPoint = URLHelper.AddHTTPToUrl(AmazonHelper.mEndPoint);
-                AmazonHelper.mPublicAccess = new bool?(ValidationHelper.GetBoolean((object)SettingsHelper.AppSettings["CMSAmazonPublicAccess"], true, (CultureInfo)null));
+                mEndPoint = URLHelper.AddHTTPToUrl(mEndPoint);
+                mPublicAccess = new bool?(ValidationHelper.GetBoolean(SettingsHelper.AppSettings["CMSAmazonPublicAccess"], true));
             }
         }
     }
