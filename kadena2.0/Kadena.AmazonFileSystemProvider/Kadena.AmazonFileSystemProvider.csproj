@@ -85,6 +85,7 @@
     <Compile Include="S3ObjectFactory.cs" />
     <Compile Include="S3ObjectInfo.cs" />
     <Compile Include="S3ObjectInfoProvider.cs" />
+    <Compile Include="SettingsKeyNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
