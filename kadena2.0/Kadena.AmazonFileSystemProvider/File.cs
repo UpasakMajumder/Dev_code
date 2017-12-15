@@ -3,7 +3,6 @@ using CMS.Globalization;
 using CMS.Helpers;
 using CMS.IO;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Security.AccessControl;
 using System.Text;
@@ -20,13 +19,15 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                if (File.mProvider == null)
-                    File.mProvider = S3ObjectFactory.Provider;
-                return File.mProvider;
+                if (mProvider == null)
+                {
+                    mProvider = S3ObjectFactory.Provider;
+                }
+                return mProvider;
             }
             set
             {
-                File.mProvider = value;
+                mProvider = value;
             }
         }
 
@@ -35,7 +36,9 @@ namespace Kadena.AmazonFileSystemProvider
         public override bool Exists(string path)
         {
             if (!this.ExistsInFileSystem(path))
+            {
                 return this.ExistsInS3Storage(path);
+            }
             return true;
         }
 
@@ -45,14 +48,15 @@ namespace Kadena.AmazonFileSystemProvider
         {
             if (this.ExistsInS3Storage(path))
             {
-                System.IO.Stream objectContent = File.Provider.GetObjectContent(S3ObjectFactory.GetInfo(path), System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096);
-                if (objectContent != null)
-                    return CMS.IO.StreamReader.New(objectContent);
-                return (CMS.IO.StreamReader)null;
+                System.IO.Stream objectContent = Provider
+                    .GetObjectContent(S3ObjectFactory.GetInfo(path), System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096);
+                return objectContent == null ? null : CMS.IO.StreamReader.New(objectContent);
             }
             if (this.ExistsInFileSystem(path))
+            {
                 return CMS.IO.StreamReader.New(System.IO.File.OpenText(path));
-            throw File.GetFileNotFoundException(path);
+            }
+            throw GetFileNotFoundException(path);
         }
 
         /// <summary>
@@ -62,19 +66,25 @@ namespace Kadena.AmazonFileSystemProvider
         public override void Delete(string path)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
-            IS3ObjectInfo info1 = S3ObjectFactory.GetInfo(path);
-            if (File.Provider.ObjectExists(info1))
             {
-                File.Provider.DeleteObject(info1);
+                throw GetFileNotFoundException(path);
+            }
+            IS3ObjectInfo info1 = S3ObjectFactory.GetInfo(path);
+            if (Provider.ObjectExists(info1))
+            {
+                Provider.DeleteObject(info1);
                 IS3ObjectInfo info2 = S3ObjectFactory.GetInfo(CMS.IO.Path.GetDirectoryName(path));
-                info2.Key = info2.Key + "/";
-                if (!File.Provider.ObjectExists(info2))
-                    File.Provider.CreateEmptyObject(info2);
+                info2.Key = $"{info2.Key}/";
+                if (!Provider.ObjectExists(info2))
+                {
+                    Provider.CreateEmptyObject(info2);
+                }
                 info2.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
             }
             else
-                throw new InvalidOperationException("File '" + path + "' cannot be deleted because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '" + path + "' was created in the local file system. To fix this issue remove specified file or directory.");
+            {
+                throw new InvalidOperationException($"File '{path}' cannot be deleted because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '{path}' was created in the local file system. To fix this issue remove specified file or directory.");
+            }
         }
 
         /// <summary>
@@ -96,32 +106,44 @@ namespace Kadena.AmazonFileSystemProvider
         public override void Copy(string sourceFileName, string destFileName, bool overwrite)
         {
             if (!this.Exists(sourceFileName))
-                throw File.GetFileNotFoundException(sourceFileName);
-            bool flag = CMS.IO.File.Exists(destFileName);
-            if (flag && !overwrite)
+            {
+                throw GetFileNotFoundException(sourceFileName);
+            }
+            bool destExists = CMS.IO.File.Exists(destFileName);
+            if (destExists && !overwrite)
+            {
                 return;
+            }
             if (!StorageHelper.IsSameStorageProvider(sourceFileName, destFileName))
             {
                 StorageHelper.CopyFileAcrossProviders(sourceFileName, destFileName);
             }
             else
             {
-                IS3ObjectInfo info1 = S3ObjectFactory.GetInfo(sourceFileName);
-                IS3ObjectInfo info2 = S3ObjectFactory.GetInfo(destFileName);
-                if (flag)
-                    File.Provider.DeleteObject(info2);
-                if (File.Provider.ObjectExists(info1))
-                    File.Provider.CopyObjects(info1, info2);
+                IS3ObjectInfo sourceInfo = S3ObjectFactory.GetInfo(sourceFileName);
+                IS3ObjectInfo destInfo = S3ObjectFactory.GetInfo(destFileName);
+                if (destExists)
+                {
+                    Provider.DeleteObject(destInfo);
+                }
+                if (Provider.ObjectExists(sourceInfo))
+                {
+                    Provider.CopyObjects(sourceInfo, destInfo);
+                }
                 else
-                    File.Provider.PutFileToObject(info2, sourceFileName);
-                IS3ObjectInfo info3 = S3ObjectFactory.GetInfo(CMS.IO.Path.GetDirectoryName(destFileName));
-                info3.Key = info3.Key + "/";
-                if (!File.Provider.ObjectExists(info3))
-                    File.Provider.CreateEmptyObject(info3);
-                DateTime now = DateTime.Now;
-                info3.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now));
-                info2.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now), false);
-                info2.SetMetadata("CreationTime", S3ObjectInfoProvider.GetDateTimeString(now));
+                {
+                    Provider.PutFileToObject(destInfo, sourceFileName);
+                }
+                IS3ObjectInfo destDirectoryInfo = S3ObjectFactory.GetInfo(CMS.IO.Path.GetDirectoryName(destFileName));
+                destDirectoryInfo.Key = $"{destDirectoryInfo.Key}/";
+                if (!Provider.ObjectExists(destDirectoryInfo))
+                {
+                    Provider.CreateEmptyObject(destDirectoryInfo);
+                }
+                var now = DateTime.Now;
+                destDirectoryInfo.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now));
+                destInfo.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now), false);
+                destInfo.SetMetadata("CreationTime", S3ObjectInfoProvider.GetDateTimeString(now));
             }
         }
 
@@ -132,14 +154,19 @@ namespace Kadena.AmazonFileSystemProvider
         public override byte[] ReadAllBytes(string path)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             if (!File.Provider.ObjectExists(info))
+            {
                 return System.IO.File.ReadAllBytes(path);
-            System.IO.Stream objectContent = File.Provider.GetObjectContent(info, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096);
+            }
+            System.IO.Stream objectContent = Provider
+                .GetObjectContent(info, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096);
             byte[] buffer = new byte[objectContent.Length];
             objectContent.Seek(0L, SeekOrigin.Begin);
-            objectContent.Read(buffer, 0, ValidationHelper.GetInteger((object)objectContent.Length, 0, (CultureInfo)null));
+            objectContent.Read(buffer, 0, ValidationHelper.GetInteger(objectContent.Length, 0));
             objectContent.Close();
             return buffer;
         }
@@ -176,12 +203,21 @@ namespace Kadena.AmazonFileSystemProvider
         public override string ReadAllText(string path)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
-            if (!File.Provider.ObjectExists(info))
+            if (!Provider.ObjectExists(info))
+            {
                 return System.IO.File.ReadAllText(path);
-            using (CMS.IO.StreamReader streamReader = CMS.IO.StreamReader.New(File.Provider.GetObjectContent(info, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096)))
+            }
+            using (CMS.IO.StreamReader streamReader =
+                CMS.IO.StreamReader.New(Provider
+                .GetObjectContent(info, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read, 4096)
+                ))
+            {
                 return streamReader.ReadToEnd();
+            }
         }
 
         /// <summary>
@@ -203,7 +239,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             string directoryName = CMS.IO.Path.GetDirectoryName(path);
             if (!CMS.IO.Directory.Exists(directoryName))
-                throw File.GetDirectoryNotFoundException(directoryName);
+            {
+                throw GetDirectoryNotFoundException(directoryName);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             File.Provider.PutTextToObject(info, contents);
             info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
@@ -230,7 +268,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             string directoryName = CMS.IO.Path.GetDirectoryName(path);
             if (!CMS.IO.Directory.Exists(directoryName))
-                throw File.GetDirectoryNotFoundException(directoryName);
+            {
+                throw GetDirectoryNotFoundException(directoryName);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             File.Provider.AppendTextToObject(info, contents);
             info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
@@ -257,10 +297,12 @@ namespace Kadena.AmazonFileSystemProvider
         {
             string directoryName = CMS.IO.Path.GetDirectoryName(path);
             if (!CMS.IO.Directory.Exists(directoryName))
-                throw File.GetDirectoryNotFoundException(directoryName);
-            System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(bytes);
+            {
+                throw GetDirectoryNotFoundException(directoryName);
+            }
+            var memoryStream = new System.IO.MemoryStream(bytes);
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
-            File.Provider.PutDataFromStreamToObject(info, (System.IO.Stream)memoryStream);
+            Provider.PutDataFromStreamToObject(info, memoryStream);
             info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
         }
 
@@ -269,7 +311,9 @@ namespace Kadena.AmazonFileSystemProvider
         public override CMS.IO.FileStream OpenRead(string path)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             return this.GetFileStream(path, CMS.IO.FileMode.Open, CMS.IO.FileAccess.Read);
         }
 
@@ -281,15 +325,19 @@ namespace Kadena.AmazonFileSystemProvider
         public override void SetAttributes(string path, CMS.IO.FileAttributes fileAttributes)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             if (File.Provider.ObjectExists(info))
             {
-                info.SetMetadata("Attributes", ValidationHelper.GetString((object)ValidationHelper.GetInteger((object)fileAttributes, 0, (CultureInfo)null), string.Empty, (CultureInfo)null), false);
+                info.SetMetadata("Attributes", ValidationHelper.GetString(ValidationHelper.GetInteger(fileAttributes, 0), string.Empty), false);
                 info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
             }
             else
-                throw new InvalidOperationException("Cannot set attributes to file '" + path + "' because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '" + path + "' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            {
+                throw new InvalidOperationException($"Cannot set attributes to file '{path}' because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '{path}' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            }
         }
 
         /// <summary>
@@ -300,7 +348,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="access">File access.</param>
         public override CMS.IO.FileStream Open(string path, CMS.IO.FileMode mode, CMS.IO.FileAccess access)
         {
-            return (CMS.IO.FileStream)new FileStream(path, mode, access);
+            return new FileStream(path, mode, access);
         }
 
         /// <summary>
@@ -318,7 +366,7 @@ namespace Kadena.AmazonFileSystemProvider
         public override CMS.IO.StreamWriter CreateText(string path)
         {
             S3ObjectFactory.GetInfo(path);
-            return CMS.IO.StreamWriter.New((System.IO.Stream)this.GetFileStream(path, CMS.IO.FileMode.Create));
+            return CMS.IO.StreamWriter.New(this.GetFileStream(path, CMS.IO.FileMode.Create));
         }
 
         /// <summary>
@@ -337,10 +385,14 @@ namespace Kadena.AmazonFileSystemProvider
         public override DateTime GetLastWriteTime(string path)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
-            if (File.Provider.ObjectExists(info))
+            if (Provider.ObjectExists(info))
+            {
                 return S3ObjectInfoProvider.GetStringDateTime(info.GetMetadata("LastWriteTime"));
+            }
             return System.IO.File.GetLastAccessTime(path);
         }
 
@@ -352,12 +404,18 @@ namespace Kadena.AmazonFileSystemProvider
         public override void SetLastWriteTime(string path, DateTime lastWriteTime)
         {
             if (!this.Exists(path))
-                throw File.GetFileNotFoundException(path);
+            {
+                throw GetFileNotFoundException(path);
+            }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
-            if (File.Provider.ObjectExists(info))
+            if (Provider.ObjectExists(info))
+            {
                 info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(lastWriteTime));
+            }
             else
-                throw new InvalidOperationException("Cannot last write time to file '" + path + "' because is located only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '" + path + "' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            {
+                throw new InvalidOperationException($"Cannot last write time to file '{path}' because is located only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '{path}' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            }
         }
 
         /// <summary>
@@ -368,10 +426,14 @@ namespace Kadena.AmazonFileSystemProvider
         public override string GetFileUrl(string path, string siteName)
         {
             if (!this.ExistsInS3Storage(path))
-                return (string)null;
+            {
+                return null;
+            }
             string objectKeyFromPath = PathHelper.GetObjectKeyFromPath(path);
             if (AmazonHelper.PublicAccess)
-                return string.Format("{0}/{1}", (object)AmazonHelper.EndPoint, (object)objectKeyFromPath).ToLowerCSafe();
+            {
+                return $"{AmazonHelper.EndPoint}/{objectKeyFromPath}".ToLowerCSafe();
+            }
             string downloadPath = AmazonHelper.GetDownloadPath("~\\" + CMS.IO.Path.EnsureBackslashes(objectKeyFromPath, false));
             string hashString = this.GetHashString(URLHelper.GetQuery(downloadPath));
             return this.ResolveUrl(URLHelper.AddParameterToUrl(downloadPath, "hash", hashString));
@@ -379,12 +441,12 @@ namespace Kadena.AmazonFileSystemProvider
 
         private static FileNotFoundException GetFileNotFoundException(string path)
         {
-            return new FileNotFoundException("Path " + path + " does not exist.");
+            return new FileNotFoundException($"Path {path} does not exist.");
         }
 
         private static DirectoryNotFoundException GetDirectoryNotFoundException(string directoryPath)
         {
-            return new DirectoryNotFoundException("Directory '" + directoryPath + "' does not exist.");
+            return new DirectoryNotFoundException($"Directory '{directoryPath}' does not exist.");
         }
 
         /// <summary>Returns whether given file exist in file system.</summary>
@@ -398,7 +460,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path to file.</param>
         private bool ExistsInS3Storage(string path)
         {
-            return File.Provider.ObjectExists(S3ObjectFactory.GetInfo(path));
+            return Provider.ObjectExists(S3ObjectFactory.GetInfo(path));
         }
 
         /// <summary>Returns new instance of FileStream class.</summary>
@@ -406,7 +468,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="mode">File mode.</param>
         protected virtual CMS.IO.FileStream GetFileStream(string path, CMS.IO.FileMode mode)
         {
-            return (CMS.IO.FileStream)new FileStream(path, mode);
+            return new FileStream(path, mode);
         }
 
         /// <summary>Returns new instance of FileStream class.</summary>
@@ -415,7 +477,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="access">File access.</param>
         protected virtual CMS.IO.FileStream GetFileStream(string path, CMS.IO.FileMode mode, CMS.IO.FileAccess access)
         {
-            return (CMS.IO.FileStream)new FileStream(path, mode, access);
+            return new FileStream(path, mode, access);
         }
 
         /// <summary>
