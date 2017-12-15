@@ -1,0 +1,9 @@
+.required {
+  &:after {
+    content: "*";
+    color: $brand-red;
+    position: absolute;
+    font-weight: 700;
+  }
+}
+
