@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.Brands;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
@@ -35,6 +36,24 @@ namespace Kadena.WebAPI.Controllers
         {
             brandsService.DeleteBrand(brandID);
             return ResponseJson<string>("OK");
+        }
+
+        [HttpGet]
+        [Route("api/getbrands")]
+        public IHttpActionResult GetBrands()
+        {
+            var brands = brandsService.GetBrands();
+            var brandsDto = mapper.Map<BrandDto[]>(brands);
+            return ResponseJson(brands);
+        }
+
+        [HttpPost]
+        [Route("api/getaddressbrands/{addressID}")]
+        public IHttpActionResult GetAddressBrands(int addressID)
+        {
+            var addressBrands = brandsService.GetAddressBrands(addressID);
+            var brandsDto = mapper.Map<BrandDto[]>(addressBrands);
+            return ResponseJson(addressBrands);
         }
     }
 }

@@ -114,11 +114,21 @@
                     </div>
                 </div>
 
+                <div class="mb-2 form_block">
+                    <div class="input__wrapper">
+                        <span class="input__label" runat="server" id="lblBrand">Brands</span>
+                        <div class="input__inner">
+                            <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand"><i class="fa fa-plus" aria-hidden="true"></i>Brand</a>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="clearfix"></div>
             </div>
             <div class="mb-3 form_btns">
                 <div class="">
-                    <asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click" />
+                    <%--<asp:Button runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click" />--%>
+                    <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click"></asp:LinkButton>
                     <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
                 </div>
             </div>
@@ -126,3 +136,40 @@
         </div>
     </div>
 </div>
+<asp:HiddenField ID="hdnBrand" runat="server" ClientIDMode="Static"/>
+
+<!--pop up html-->
+<div class="modal_popup modal_brand" id="myModal_brand" style="display: none">
+    <div class="modal-content">
+        <div class="modal_header clearfix">
+            <a href="#" class="btn-action js-btn js-btnSaveBrand">Add Brands</a>
+            <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="modal_body">
+            <table class="show-table" id="brands">
+                <tbody id="brandsbody">
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="js-chkAll" id="selectAll">
+                        </td>
+                        <td>Brand Name</td>
+                        <td>Brand Code</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--Bind Brands-->
+<div class="Business_Assigned_user">
+    <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display:none">
+        <tbody id="AddressBrandsTablebody">
+            <tr>
+                <td>Brand Name</td>
+                <td>Brand Code</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
