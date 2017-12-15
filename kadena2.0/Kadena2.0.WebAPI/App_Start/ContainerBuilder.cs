@@ -40,6 +40,7 @@ namespace Kadena.WebAPI
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
 		    container.Register<ILoginService, LoginService>();
+            container.Register<IDashboardStatisticsService, DashboardStatisticsService>();
             return container;
         }
 
@@ -62,6 +63,7 @@ namespace Kadena.WebAPI
             container.Register<IKenticoAddressBookProvider, KenticoAddressBookProvider>();
             container.Register<IKenticoBrandsProvider, KenticoBrandsProvider>();
             container.Register<IKenticoProgramsProvider, KenticoProgramsProvider>();
+            container.Register<IKenticoDashboardStatisticsProvider, KenticoDashboardStatisticsProvider>();
             return container;
         }
 

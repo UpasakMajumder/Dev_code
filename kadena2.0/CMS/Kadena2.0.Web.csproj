@@ -993,6 +993,13 @@
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.designer.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx.cs">
+      <DependentUpon>GlobalAdminDashboard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx.designer.cs">
+      <DependentUpon>GlobalAdminDashboard.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.cs">
       <DependentUpon>SpotfireControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1383,6 +1390,7 @@
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
+    <Content Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />

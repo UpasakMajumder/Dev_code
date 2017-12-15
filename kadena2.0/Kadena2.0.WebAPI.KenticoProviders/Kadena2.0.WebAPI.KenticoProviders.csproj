@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
+    <Compile Include="Contracts\IKenticoDashboardStatisticsProvider.cs" />
     <Compile Include="Contracts\IKenticoProgramsProvider.cs" />
     <Compile Include="Contracts\IKenticoAddressBookProvider.cs" />
     <Compile Include="Contracts\IKenticoBusinessUnitsProvider.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KenticoDashboardStatisticsProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />
     <Compile Include="Providers\KenticoAddressBookProvider.cs" />
     <Compile Include="Providers\KenticoBusinessUnitsProvider.cs" />
