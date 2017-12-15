@@ -42,6 +42,18 @@
     <Reference Include="CMS.Core">
       <HintPath>..\Lib\CMS.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.DataEngine">
+      <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.EventLog">
+      <HintPath>..\Lib\CMS.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Globalization">
+      <HintPath>..\Lib\CMS.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Helpers">
+      <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.IO">
       <HintPath>..\Lib\CMS.IO.dll</HintPath>
     </Reference>
@@ -55,13 +67,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmazonS3Helper.cs" />
+    <Compile Include="AccountInfo.cs" />
+    <Compile Include="AmazonHelper.cs" />
+    <Compile Include="AmazonS3ClientFactory.cs" />
     <Compile Include="Directory.cs" />
     <Compile Include="DirectoryInfo.cs" />
     <Compile Include="File.cs" />
     <Compile Include="FileInfo.cs" />
     <Compile Include="FileStream.cs" />
+    <Compile Include="IS3ObjectInfo.cs" />
+    <Compile Include="IS3ObjectInfoExtensionMethods.cs" />
+    <Compile Include="IS3ObjectInfoProvider.cs" />
+    <Compile Include="ObjectTypeEnum.cs" />
+    <Compile Include="PathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="S3MultiPartUploader.cs" />
+    <Compile Include="S3ObjectFactory.cs" />
+    <Compile Include="S3ObjectInfo.cs" />
+    <Compile Include="S3ObjectInfoProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
