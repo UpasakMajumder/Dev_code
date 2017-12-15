@@ -369,7 +369,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
             }
         }
-        
+        /// <summary>
+        /// Save pdf click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
+        {
+            DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+            CreateDistributorCartPDF(distributorCartData);
+        }
         #endregion "Event handling"
 
         #region "Private Methods"
@@ -488,6 +497,41 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 return default(double);
             }
         }
+
         #endregion "Private Methods"
+        /// <summary>
+        /// This will create cart Pdf o download
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        private void CreateDistributorCartPDF(DataTable distributorCartData)
+        {
+            try
+            {
+                var html = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTML");
+                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
+                var PDFBody = "";
+                foreach (var cart in groupCart)
+                {
+                    PDFBody += CartPDFHelper.CreateCarOuterContent(cart.FirstOrDefault(), CurrentSiteName);
+                    var cartData = cart.ToList();
+                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(cartData, CurrentSiteName));
+                   html= html.Replace("{PDFNAME}", $"{(cart.FirstOrDefault())["AddressPersonalName"].ToString()}");
+                }
+                html = html.Replace("{OUTERCONTENT}", PDFBody);
+                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
+                Response.Clear();
+                MemoryStream ms = new MemoryStream(pdfBytes);
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                Response.Buffer = true;
+                ms.WriteTo(Response.OutputStream);
+                Response.End();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "CreateCarOuterContent", ex.Message);
+            }
+        }
     }
 }

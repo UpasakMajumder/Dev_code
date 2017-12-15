@@ -930,6 +930,13 @@
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.designer.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx.cs">
       <DependentUpon>RemoveItemFromCart.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1374,6 +1381,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CreateCatalog.ascx" />

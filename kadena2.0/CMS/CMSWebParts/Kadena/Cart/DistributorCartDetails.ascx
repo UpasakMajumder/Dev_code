@@ -8,7 +8,7 @@
     <a href="#" class="btn-action"><i class="fa fa-print" aria-hidden="true"></i><%= Print %></a>
 </div>
 <div class="add_btn">
-    <asp:LinkButton runat="server" ID="lnkSaveasPDF"  class="btn-action">
+    <asp:LinkButton runat="server" ID="lnkSaveasPDF"  class="btn-action" OnClick="lnkSaveasPDF_Click">
         <i class="fa fa-file-pdf-o" aria-hidden="true"></i><%=SaveasPDF %>
     </asp:LinkButton>
 </div>

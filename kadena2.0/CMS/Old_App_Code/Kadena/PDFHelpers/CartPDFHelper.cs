@@ -73,6 +73,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", row["SKUImagePath"].ToString());
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -101,6 +102,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", row["SKUImagePath"].ToString());
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
