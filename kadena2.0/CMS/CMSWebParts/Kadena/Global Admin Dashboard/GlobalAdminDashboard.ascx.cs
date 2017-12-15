@@ -1,11 +1,9 @@
 using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using System;
-using CMS.Membership;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CMS.Helpers;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Kadena.Dto.General;
 using Kadena.DTO.Dashboard;
@@ -38,10 +36,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// </summary>
     protected void SetupControl()
     {
-        if (this.StopProcessing)
-        {
-        }
-        else if (!RequestHelper.IsPostBack())
+        if (!this.StopProcessing && !RequestHelper.IsPostBack())
         {
             GetUserDetails();
         }
@@ -59,7 +54,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// <summary>
     /// Get user details using services
     /// </summary>
-    public async Task<bool> GetUserDetails()
+    public async void GetUserDetails()
     {
         try
         {
@@ -91,33 +86,11 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
                 lblCurrentMonthOrdersPlacedMoney.InnerText = "$" + ordersPlaced?.Month.Cost ?? "0";
                 lblcurrentYearordersPlacedMoneyCount.InnerText = ordersPlaced?.Year?.Count.ToString() ?? "0";
                 lblcurrentYearordersPlacedMoney.InnerText = "$" + ordersPlaced?.Year?.Cost??"0";
-                return true;
             }
-            else
-            {
-                lblCurrentWeekUserCount.InnerText = "0";
-                lblCurrentMonthUserCount.InnerText = "0";
-                lblCurrentYearUserCount.InnerText = "0";
-                lblCurrentWeekOpenOrder.InnerText = "0";
-                lblCurrentWeekOpenMoney.InnerText = "0";
-                lblCurrentMonthOpenOrder.InnerText = "0";
-                lblCurrentMonthOpenMoney.InnerText = "0";
-                lblCurrentYearOpenOrdersCount.InnerText = "0";
-                lblCurrentYearOpenOrdersMoney.InnerText = "0";
-                lblCurrentWeekOrdersPlacedCount.InnerText = "0";
-                lblCurrentWeekOrdersPlacedMoney.InnerText = "0";
-                lblCurrentMonthOrdersPlacedCount.InnerText = "0";
-                lblCurrentMonthOrdersPlacedMoney.InnerText = "0";
-                lblcurrentYearordersPlacedMoneyCount.InnerText = "0";
-                lblcurrentYearordersPlacedMoney.InnerText = "0";
-                return true;
-            }
-
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Getting users from database", ex.Message, ex);
-            return false;
         }
     }
 

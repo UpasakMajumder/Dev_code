@@ -15,20 +15,20 @@
             <td><cms:LocalizedLabel runat="server" ID="lblOpenordersHeading" ResourceString="KDA.Dashboard.OpenOrdersSideHeading"></cms:LocalizedLabel></td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label runat="server"  id="lblCurrentWeekOpenOrder"></label></a></div>
-                    <div class="summ_right"><a href="#"><label runat="server" id="lblCurrentWeekOpenMoney"></label></a></div>
+                    <div class="summ_left"><a href="#"><label runat="server"  id="lblCurrentWeekOpenOrder">0</label></a></div>
+                    <div class="summ_right"><a href="#"><label runat="server" id="lblCurrentWeekOpenMoney">0</label></a></div>
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label id="lblCurrentMonthOpenOrder" runat="server"></label></a></div>
-                    <div class="summ_right"><a href="#"><label id="lblCurrentMonthOpenMoney" runat="server"></label></a></div>
+                    <div class="summ_left"><a href="#"><label id="lblCurrentMonthOpenOrder" runat="server">0</label></a></div>
+                    <div class="summ_right"><a href="#"><label id="lblCurrentMonthOpenMoney" runat="server">0</label></a></div>
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label id="lblCurrentYearOpenOrdersCount" runat="server"></label></a></div>
-                    <div class="summ_right"><a href="#"><label id="lblCurrentYearOpenOrdersMoney" runat="server"></label></a></div>
+                    <div class="summ_left"><a href="#"><label id="lblCurrentYearOpenOrdersCount" runat="server">0</label></a></div>
+                    <div class="summ_right"><a href="#"><label id="lblCurrentYearOpenOrdersMoney" runat="server">0</label></a></div>
                 </div>
             </td>
         </tr>
@@ -36,23 +36,23 @@
             <td><cms:LocalizedLabel runat="server" ID="LocalizedLabel2" ResourceString="KDA.Dashboard.OrdersPlacedHeading"></cms:LocalizedLabel></td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label id="lblCurrentWeekOrdersPlacedCount" runat="server"></label></a></div>
-                    <div class="summ_right"><span><label id="lblCurrentWeekOrdersPlacedMoney" runat="server"></label></span></div>
+                    <div class="summ_left"><a href="#"><label id="lblCurrentWeekOrdersPlacedCount" runat="server">0</label></a></div>
+                    <div class="summ_right"><span><label id="lblCurrentWeekOrdersPlacedMoney" runat="server">0</label></span></div>
 
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label id="lblCurrentMonthOrdersPlacedCount" runat="server"></label></a></div>
+                    <div class="summ_left"><a href="#"><label id="lblCurrentMonthOrdersPlacedCount" runat="server">0</label></a></div>
                     <div class="summ_right">
-                        <span><label id="lblCurrentMonthOrdersPlacedMoney" runat="server"></label></span>
+                        <span><label id="lblCurrentMonthOrdersPlacedMoney" runat="server">0</label></span>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><a href="#"><label id="lblcurrentYearordersPlacedMoneyCount" runat="server"></label></a></div>
-                    <div class="summ_right"><span><label id="lblcurrentYearordersPlacedMoney" runat="server"></label></span></div>
+                    <div class="summ_left"><a href="#"><label id="lblcurrentYearordersPlacedMoneyCount" runat="server">0</label></a></div>
+                    <div class="summ_right"><span><label id="lblcurrentYearordersPlacedMoney" runat="server">0</label></span></div>
                 </div>
             </td>
         </tr>
@@ -60,19 +60,19 @@
             <td><cms:LocalizedLabel runat="server" ID="lbluserCount" ResourceString="KDA.Dashboard.UsersHeading"></cms:LocalizedLabel></td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><span><label runat="server" id="lblCurrentWeekUserCount"></label></span></div>
+                    <div class="summ_left"><span><label runat="server" id="lblCurrentWeekUserCount">0</label></span></div>
                     <div class="summ_right"><span>&nbsp;</span></div>
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><span><label runat="server" id="lblCurrentMonthUserCount"></label></span></div>
+                    <div class="summ_left"><span><label runat="server" id="lblCurrentMonthUserCount">0</label></span></div>
                     <div class="summ_right"><span>&nbsp;</span></div>
                 </div>
             </td>
             <td>
                 <div class="summary_block">
-                    <div class="summ_left"><span><label runat="server" id="lblCurrentYearUserCount"></label></span></div>
+                    <div class="summ_left"><span><label runat="server" id="lblCurrentYearUserCount">0</label></span></div>
                     <div class="summ_right"><span>&nbsp;</span></div>
                 </div>
             </td>
