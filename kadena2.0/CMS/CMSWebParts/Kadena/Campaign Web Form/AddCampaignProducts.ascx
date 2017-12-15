@@ -65,7 +65,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblBrand"></span>
                     <div class="input__inner">
-                        <cms:CMSDropDownList ID="ddlBrand" runat="server" class="input__select" ReadOnly="true"></cms:CMSDropDownList>
+                        <cms:CMSDropDownList ID="ddlBrand" runat="server" class="input__select" Enabled="false"></cms:CMSDropDownList>
                         <asp:HiddenField runat="server" ID="hfBrandItemID" />
                         <asp:RequiredFieldValidator ID="rqBrand" CssClass="input__error" runat="server" ControlToValidate="ddlBrand" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
