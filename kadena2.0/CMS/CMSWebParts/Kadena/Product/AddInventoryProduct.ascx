@@ -22,7 +22,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblBrand" CssClass="input__label" runat="server" EnableViewState="false" ResourceString="Kadena.InvProductForm.lblBrand" />
                 <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="True"></cms:CMSDropDownList>
+                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="True" Enabled="false"></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand">
                     </asp:RequiredFieldValidator>
                 </div>

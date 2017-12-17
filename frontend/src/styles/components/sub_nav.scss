@@ -1,0 +1,22 @@
+.nav__submenu {
+  text-align: left;
+  position: relative;
+  padding-left: 0;
+  display: none;
+
+  li {
+    padding-left: 25px;
+
+    a {
+      color: $font-grey;
+      font-size: $font-size-default;
+    }
+
+    &:before {
+      content: "\f105";
+      font-family: FontAwesome;
+      margin-right: 10px;
+      color: $font-grey;
+    }
+  }
+}
