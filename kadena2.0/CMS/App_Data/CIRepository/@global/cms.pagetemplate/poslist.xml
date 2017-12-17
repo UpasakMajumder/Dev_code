@@ -220,20 +220,15 @@ BrandName LIKE '%{?searchtext?}%'
 function ChangePOSStatus(PosID,thiselem)
 {
 var x = confirm('{$Kadena.CampaignDelete.Alert$}');
-//if($(thiselem).val() == "True")
-var status=$(thiselem).val();
-//else
-//status=0;
 if (x)
 {
 if(PosID !='')
 {
 $.ajax({
-type: "POST",
-url: '/KadenaWebService.asmx/EditPOSNumber',
+type: "GET",
+url: '/api/pos/'+ PosID,
 contentType: "application/json; charset=utf-8",
 dataType: "json",
-data: "{'posId':" + PosID + ",'status':'"+status+"'}",
 success: function (data) {
 location.reload();
 },
