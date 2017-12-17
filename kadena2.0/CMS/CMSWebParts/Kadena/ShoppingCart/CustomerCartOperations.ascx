@@ -18,10 +18,10 @@
                             <asp:CheckBox Text="" ID="chkSelected" runat="server" Checked='<%# ValidationHelper.GetBoolean(Eval("IsSelected"),default(bool)) %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="AddressID" HeaderText="Store ID" />
-                    <asp:BoundField DataField="AddressPersonalName" HeaderText="Customer Name" />
+                    <asp:BoundField DataField="AddressID" HeaderText='<%# ResHelper.GetString("KDA.ShoppingCart.StoreID") %>' />
+                    <asp:BoundField DataField="AddressPersonalName" HeaderText='<%# ResHelper.GetString("KDA.ShoppingCart.CustomerName") %>' />
                     <asp:TemplateField>
-                        <HeaderTemplate>Quantity</HeaderTemplate>
+                        <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
                         <ItemTemplate>
                             <asp:TextBox runat="server" CssClass="input__text" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" ClientIDMode="Static" />
                         </ItemTemplate>
@@ -30,12 +30,12 @@
                     <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
                 </Columns>
             </asp:GridView>
-            <asp:Label runat="server" ID="lblSuccessMsg" Text=""></asp:Label>
+            <asp:Label runat="server" ID="lblSuccessMsg"></asp:Label>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose">Discard changes</button>
-                <asp:Button Text="Add Items to  Cart" ID="btnDisplay" runat="server" CssClass="btn-action" OnClick="btmAddItemsToCart_Click" />
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose"><%# ResHelper.GetString("KDA.ShoppingCart.DiscardChanges") %></button>
+                <cms:LocalizedLinkButton runat="server" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn__action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
     </div>
