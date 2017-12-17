@@ -4,22 +4,25 @@ using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
+using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
-using System.Collections.Generic;
-using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.BusinessLogic.Services;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI;
+using Kadena.WebAPI.KenticoProviders;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 
@@ -554,9 +557,21 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
                     var cartTotal = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-                    return ValidationHelper.GetDouble(cartTotal, default(double));
+                    return ValidationHelper.GetDecimal(cartTotal, default(decimal));
                 }
-                return default(double);
+                else
+                {
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(userID, ProductType.GeneralInventory);
+                    decimal cartTotal = 0;
+                    loggedInUSerCartIDs.ForEach(care =>
+                    {
+                        var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
+                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
+                        cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                    });
+                    return ValidationHelper.GetDecimal(cartTotal, default(decimal));
+                }
             }
             catch (Exception ex)
             {
