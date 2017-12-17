@@ -1,0 +1,51 @@
+.video__section {
+  .video__block {
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+}
+
+.faq__contentblock {
+  padding: 0;
+  border-top: 1px solid $form-bg;
+
+  .faq__section {
+    border-right: 1px solid $form-bg;
+    padding: 20px;
+
+    .question__block {
+      h5 {
+        font-weight: bold;
+      }
+    }
+
+    .faq__content {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+.support__sec {
+  padding: 20px;
+
+  .support__block {
+    h6 {
+      font-weight: 700;
+
+      .phone__icon,
+      .mail__icon {
+        position: relative;
+        top: 5px;
+        margin-right: 10px;
+      }
+    }
+
+    p {
+      padding-left: 33px;
+
+      span {
+        display: block;
+      }
+    }
+  }
+}

@@ -174,13 +174,13 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblBrand;
     
     /// <summary>
-    /// txtBrand control.
+    /// ddlBrand control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtBrand;
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlBrand;
     
     /// <summary>
     /// hfBrandItemID control.
@@ -253,15 +253,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.TextBox txtActualPrice;
-    
-    /// <summary>
-    /// revActualPrice control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.RegularExpressionValidator revActualPrice;
     
     /// <summary>
     /// lblProductCategory control.

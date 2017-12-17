@@ -660,6 +660,10 @@
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NuGet.Core, Version=2.8.50506.491, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\NuGet.Core.dll</HintPath>
@@ -762,6 +766,13 @@
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx.designer.cs">
       <DependentUpon>ProductImagesImport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx.cs">
+      <DependentUpon>CampaignProductsImport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx.designer.cs">
+      <DependentUpon>CampaignProductsImport.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx.cs">
       <DependentUpon>ProductsImport.aspx</DependentUpon>
@@ -932,6 +943,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx.designer.cs">
       <DependentUpon>ShoppingCartCount.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\CreateCatalog.ascx.cs">
+      <DependentUpon>CreateCatalog.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Catalog\CreateCatalog.ascx.designer.cs">
+      <DependentUpon>CreateCatalog.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx.cs">
       <DependentUpon>CustomCatalogFilter.ascx</DependentUpon>
@@ -1244,7 +1262,10 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImageDto.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImagesTemplateService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\SKUTreeNodeExtensions.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductDto.cs" />
@@ -1290,6 +1311,7 @@
     <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx" />
+    <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Addresses.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
@@ -1354,6 +1376,7 @@
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
+    <Content Include="CMSWebParts\Kadena\Catalog\CreateCatalog.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CustomCatalogFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />

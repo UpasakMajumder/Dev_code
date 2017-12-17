@@ -1,0 +1,117 @@
+.main__content {
+  width: 100%;
+  display: inline-block;
+
+  .main__left {
+    float: left;
+    display: inline-block;
+    width: 67.5%;
+    position: relative;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .banner__con {
+      position: absolute;
+      top: 0;
+
+      h2 {
+        color: $brand-white;
+        border-bottom: 1px solid $brand-white;
+        padding: 10px 15px;
+      }
+
+      h4 {
+        color: $brand-white;
+        text-transform: uppercase;
+        padding: 10px 15px;
+      }
+    }
+
+    .order__dates {
+      position: absolute;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      width: 100%;
+      border-radius: 0 0 3px 3px;
+      padding: 20px 0;
+
+      h6 {
+        color: $brand-white;
+        line-height: 16px;
+        margin: 0;
+        padding: 0 15px;
+      }
+    }
+  }
+
+  .main__right {
+    float: right;
+    background: $main-right-bg;
+    border-radius: 5px;
+    width: 30%;
+    padding: 15px 15px 20px;
+
+    .scroll_block {
+      overflow-y: auto;
+      max-height: 219px;
+
+      p {
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+.product__sec {
+  h4 {
+    margin-bottom: 15px;
+  }
+
+  .product__inner {
+    .product__block {
+      margin-bottom: 15px;
+
+      a {
+        color: $brand-dark;
+
+        img {
+          width: 100%;
+          height: auto;
+          margin-bottom: 15px;
+        }
+
+        span {
+          display: block;
+          font-size: $font-xs;
+        }
+      }
+
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.admin__access {
+  background: $form-bg;
+  padding: 20px 2%;
+  border-radius: 5px;
+
+  .admin__inner {
+    width: 30%;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    a {
+      color: $brand-dark;
+    }
+  }
+}

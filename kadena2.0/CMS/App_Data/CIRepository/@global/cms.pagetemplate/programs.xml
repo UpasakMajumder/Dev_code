@@ -72,11 +72,14 @@
 <![CDATA[
 </tbody>
 </table>
+
+
+
 ]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table class="show-table">
+<table id="reptable" class="show-table">
   <tbody>
     <tr>
       <th>{$KDA.ProgramsList.ProgramName$}</th>
@@ -95,7 +98,7 @@
           <property name="enableoutputfilter">False</property>
           <property name="enablepaging">False</property>
           <property name="filtername">programFilter</property>
-          <property name="hidecontrolforzerorows">True</property>
+          <property name="hidecontrolforzerorows">False</property>
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">2effb0ed-4ea4-4669-b6cf-e63f18c65879</property>
           <property name="itemseparator"></property>
@@ -150,7 +153,16 @@ Name LIKE '%{?searchtext?}%'
 {%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)8581306ddd6d15da5925a4fd77eee99c94d5c5485b0cdf6f989fae51c3ebb443%}
 ]]>
           </property>
-          <property name="zerorowstext">No data found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+{$Kadena.ItemList.NoDataFoundText$}
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
+]]>
+          </property>
         </webpart>
         <webpart controlid="DeleteProgram" guid="bcf743f8-50cc-4ddd-9030-5d2ebaa79291" type="javascript" v="1">
           <property name="cat_open_behavior"></property>

@@ -364,7 +364,9 @@ iteratedDocument = iteratedDocument.Parent;
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
-    
+    if($('.ConfirmationSeparator').is(':visible')){
+      $('.ConfirmationSeparator').next().addClass('input__label').text('{%GetResourceString("Kadena.MyAccount.ConfirmPassword")|(user)cvoqa2@gmail.com|(hash)4d0d90a14d6450a1a67865f49af7c5beda7f599b7b288aaf5b474bc8bfd07ef6%}');
+    }
     //Bind already existed  business units
     function BindBUData() {
       var currentUserID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('userid=')[1]));
@@ -429,11 +431,11 @@ iteratedDocument = iteratedDocument.Parent;
             } 
             if($('#hdnbuid').val()!=''){
               var arr=$('#hdnbuid').val().split(';');
-                      $('.js-chk:checkbox', buinessunits).each(function(){
-                        if(jQuery.inArray($(this).val(), arr) >= 0)
-                          $(this).prop("checked", true);
-                      });
-                    }
+              $('.js-chk:checkbox', buinessunits).each(function(){
+                if(jQuery.inArray($(this).val(), arr) >= 0)
+                  $(this).prop("checked", true);
+              });
+            }
             
           } else {
             //alert('failed');
