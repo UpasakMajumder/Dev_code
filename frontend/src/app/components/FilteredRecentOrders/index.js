@@ -52,15 +52,23 @@ class FilteredRecentOrders extends Component {
 
     return (
       <div>
-        <Select
-          disabled={isFetching}
-          options={FILTERED_RECENT_ORDERS.orderTypes.items}
-          onChange={(e) => { this.methodsToggler(e.target.value); }}
-          value={orderType}
-          placeholder={FILTERED_RECENT_ORDERS.orderTypes.placeholder}
-        />
-        {this.getCampaignElement()}
-        {this.getOrdersElement()}
+        <div className="filtered-recent-orders">
+          <div className="filtered-recent-orders__input">
+            <Select
+              disabled={isFetching}
+              options={FILTERED_RECENT_ORDERS.orderTypes.items}
+              onChange={(e) => { this.methodsToggler(e.target.value); }}
+              value={orderType}
+              placeholder={FILTERED_RECENT_ORDERS.orderTypes.placeholder}
+            />
+          </div>
+          <div className="ml-3 filtered-recent-orders__input">
+            {this.getCampaignElement()}
+          </div>
+        </div>
+        <div className="mt-3">
+          {this.getOrdersElement()}
+        </div>
       </div>
     );
   }

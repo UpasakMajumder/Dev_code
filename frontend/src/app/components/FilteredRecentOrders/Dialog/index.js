@@ -28,7 +28,7 @@ const getBodyTable = (table) => {
 const getBody = (distributor, pdf, table) => {
   return (
     <div>
-      <div>
+      <div className="mb-3 filtered-recent-orders__dialog-subtitle">
         <div>
           {`${distributor.label}: ${distributor.value}`}
         </div>
