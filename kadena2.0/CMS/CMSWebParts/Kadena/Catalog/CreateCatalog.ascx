@@ -1,12 +1,12 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Catalog_CreateCatalog" CodeBehind="~/CMSWebParts/Kadena/Catalog/CreateCatalog.ascx.cs" %>
-<div class="custom_block">
-    <div class="custom_select clearfix">
+<div class="custom__block">
+    <div class="custom__select clearfix">
         <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <label id="errorLabel"></label>
     </div>
-    <div class="search_block">
+    <div class="search__block">
         <asp:TextBox ID="posNumber" CssClass="input__text" runat="server" AutoPostBack="true" OnTextChanged="posNumber_TextChanged"></asp:TextBox>
     </div>
     <div class="custom_check">
@@ -15,14 +15,14 @@
             <label for="allCheck-<%# Eval("SKUID") %>" class="input__label input__label--checkbox selectAll" id="selectAllLabel"></label>
         </div>
     </div>
-    <div class="custom_btns">
+    <div class="custom__btns">
         <cms:LocalizedLinkButton runat="server" ID="llbPrintSelection" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.PrintSelection" OnClientClick="printselected();return false;"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveSelection" CssClass="saveSelection btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.SaveSelection" OnClick="llbSaveSelection_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbPrintFull" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.PrintFull" Enabled="false" OnClientClick="Printfull();return false;"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveFull" CssClass="btn-action login__login-button btn--no-shadow saveAllCatalog" ResourceString="KDA.CustomCatalog.Filters.SaveFull" OnClick="llbSaveFull_Click" ></cms:LocalizedLinkButton>
     </div>
 </div>
-<div class="custom_content">
+<div class="custom__content">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts">
          <HeaderTemplate>
              <div class="Crimes_section Notdisplay  printIt">
@@ -30,9 +30,9 @@
                </div>
         </HeaderTemplate>
         <ItemTemplate>
-           <div class="cus_content_block">
+           <div class="cus__content_block">
                <div class="noprint ">
-                <div class="img_block">
+                <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("SKUID")%>" />
                     <label for="zoomCheck_<%# Eval("SKUID")%>">
                         <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
@@ -47,7 +47,7 @@
                </div>
                 <div class="crime_block enablePrint Notdisplay">
                     <div class="crime_leftsec">
-                        <div class="img_block"><p><%# Eval("SKUImagePath")%></p>
+                        <div class="img__block"><p><%# Eval("SKUImagePath")%></p>
                             <img src="<%#GetProductImage(Eval("SKUImagePath"))%>" />
                         </div>
                     </div>
