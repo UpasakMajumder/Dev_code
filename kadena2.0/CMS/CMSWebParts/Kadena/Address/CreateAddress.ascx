@@ -5,10 +5,10 @@
 
 <div class="content-block">
     <div class="login__form-content js-login">
-        <div class="css-login form_section">
+        <div class="css-login form__section">
             <div class="form signup_form form_width100">
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblName"></span>
                         <div class="input__inner">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblAddressType"></span>
                         <div class="input__inner">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblCompany"></span>
                         <div class="input__inner">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblTelephone"></span>
                         <div class="input__inner">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblCountry"></span>
                         <div class="input__inner">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblAddressLine1"></span>
                         <div class="input__inner">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblAddressLine2"></span>
                         <div class="input__inner">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblCity"></span>
                         <div class="input__inner">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <cms:LocalizedLabel runat="server" ResourceString="Kadena.Address.State" CssClass="input__label"></cms:LocalizedLabel>
                         <div class="input__inner">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblZipcode"></span>
                         <div class="input__inner">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
+                <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblEmail"></span>
                         <div class="input__inner">

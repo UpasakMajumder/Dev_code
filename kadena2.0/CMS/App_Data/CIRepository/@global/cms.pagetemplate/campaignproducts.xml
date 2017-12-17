@@ -75,7 +75,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
- <table class="show-table">
+ <table class="table show__table-buttom">
                                     <tbody>
                                         <tr>
                                             <th>{% GetResourceString("Kadena.Products.POSHearder") |(user)cvoqa2@gmail.com|(hash)0a3b0a49b3ad64b2cdc3727fa76795debe29d365ba4c68f093d018952df47703%}</th>

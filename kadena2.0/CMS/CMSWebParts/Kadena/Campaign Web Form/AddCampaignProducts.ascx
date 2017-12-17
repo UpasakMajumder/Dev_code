@@ -7,7 +7,7 @@
 <div class="login__form-content js-login">
     <div class="css-login">
         <div class="form form_width100 formerrormsgs">
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <div class="input__inner">
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProductName"></span>
                     <div class="input__inner">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblState"></span>
                     <div class="input__inner">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
                     <div class="input__inner">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblBrand"></span>
                     <div class="input__inner">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblEstimatedPrice"></span>
                     <div class="input__inner">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblActualPrice"></span>
                     <div class="input__inner">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProductCategory"></span>
                     <div class="input__inner">
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblQtyPerPack"></span>
                     <div class="input__inner">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblStatus"></span>
                     <div class="input__inner">
@@ -121,7 +121,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblItemSpecs"></span>
                     <div class="input__inner">
@@ -130,7 +130,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblImage"></span>
                     <div class="input__inner">
