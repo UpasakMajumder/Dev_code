@@ -1,0 +1,64 @@
+.modal__popup {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  background: rgba(255, 255, 255, 0);
+  height: 100%;
+
+  .modal__content {
+    width: 600px;
+    margin: 0 auto;
+    background: $brand-white;
+    border: 2px solid #949292;
+    max-height: 522px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 9999;
+    top: calc(50% - 261px);
+
+    .modal__header {
+      padding: 15px;
+
+      .btn-action {
+        float: left;
+        font-size: 14px;
+        width: auto;
+        display: inline-block;
+        padding: 0.1rem 0.5rem;
+      }
+
+      .btn__close {
+        float: right;
+        display: inline-block;
+        border: none;
+        color: $font-grey;
+      }
+    }
+
+    .modal__body {
+      td {
+        span {
+          display: block;
+        }
+
+        .input__text {
+          width: 45px;
+          height: 30px;
+          line-height: 30px;
+        }
+      }
+    }
+  }
+}
+
+.modal__dialogblock {
+  position: relative;
+}
+
+.pop__closeicon {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  text-align: right;
+  font-size: 25px;
+}
