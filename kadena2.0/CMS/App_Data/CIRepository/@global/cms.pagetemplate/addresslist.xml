@@ -30,7 +30,7 @@
 </div>
 <div class="content-block">
   
-  <div class="search_block">
+  <div class="search__block">
     <!-- <input type="text" class="input__text" placeholder="Search" value="">-->
     <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
   </div>
@@ -89,7 +89,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table class="show-table js-tblAddress">
+<table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.MyAddresses.Name$}</th>
@@ -169,11 +169,12 @@ AddressPhone LIKE '%{?searchtext?}%'
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.Address.NoDataFoundText$}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-  $('.js-tblAddress').hide();
-</script>
+{$Kadena.ItemList.NoDataFoundText$}
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
 ]]>
           </property>
         </webpart>
@@ -393,7 +394,7 @@ if (confirm("Are you sure?")) {
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="add_btn">
+<div class="add__btn">
   <a class="btn-action" href="{% Settings.KDA_CreateAddressURL |(user)cvoqa2@gmail.com|(hash)0e9ef208a37fad94bd8b306cdcabe7b7117fe7381b58993c34b8d6a02ef6e9cb%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Address.AddNewText$}</a>
 </div>
 ]]>
