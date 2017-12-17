@@ -285,7 +285,11 @@ Select ItemID,DivisionName from KDA_Division
       <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" visible="" order="90" />
       <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" visible="" order="91" />
       <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" visible="" order="92" />
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required" order="93" />
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required" order="93">
+        <properties>
+          <controlcssclass>input__text</controlcssclass>
+        </properties>
+      </field>
       <field column="TermsConditionsAccepted" guid="6c08a46b-8d40-44ba-bf72-8fde63aa8efc" visible="" order="94" />
     </form>
   </FormDefinition>
