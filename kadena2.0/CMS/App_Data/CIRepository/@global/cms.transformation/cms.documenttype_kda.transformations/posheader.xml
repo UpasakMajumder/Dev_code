@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<table class="show-table" id="reptable">
+<table class="table show__table-buttom" id="reptable">
   <tbody>
     <tr>
       <th>{$Kadena.POSFrom.BrandText$}</th>
