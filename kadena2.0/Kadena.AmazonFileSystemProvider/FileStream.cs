@@ -1,5 +1,4 @@
 ﻿using Amazon.S3.Model;
-using CMS.Core;
 using CMS.EventLog;
 using CMS.IO;
 using System;

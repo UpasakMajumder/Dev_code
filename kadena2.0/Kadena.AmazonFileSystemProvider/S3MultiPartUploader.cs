@@ -1,6 +1,5 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CMS.Core;
 using CMS.EventLog;
 using System;
 using System.Collections.Generic;
