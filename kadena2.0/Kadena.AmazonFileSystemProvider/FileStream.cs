@@ -5,6 +5,7 @@ using CMS.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Kadena.AmazonFileSystemProvider
 {
@@ -43,7 +44,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.mMultiPartUploader == null)
+                {
                     this.mMultiPartUploader = new S3MultiPartUploader(AccountInfo.Current.S3Client, this.MinimalPartSize, this.MaximalPartSize);
+                }
                 return this.mMultiPartUploader;
             }
         }
@@ -108,7 +111,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.fsStream != null)
+                {
                     return this.fsStream.CanRead;
+                }
                 return this.fsTemp.CanRead;
             }
         }
@@ -122,7 +127,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.fsStream != null)
+                {
                     return this.fsStream.CanSeek;
+                }
                 return this.fsTemp.CanSeek;
             }
         }
@@ -135,7 +142,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.fsStream != null)
+                {
                     return this.fsStream.CanWrite;
+                }
                 return this.fsTemp.CanWrite;
             }
         }
@@ -146,7 +155,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.fsStream != null)
+                {
                     return this.fsStream.Length;
+                }
                 return this.fsTemp.Length;
             }
         }
@@ -157,15 +168,21 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.fsStream != null)
+                {
                     return this.fsStream.Position;
+                }
                 return this.fsTemp.Position;
             }
             set
             {
                 if (this.fsStream != null)
+                {
                     this.fsStream.Position = value;
+                }
                 else
+                {
                     this.fsTemp.Position = value;
+                }
             }
         }
 
@@ -203,9 +220,13 @@ namespace Kadena.AmazonFileSystemProvider
                 this.mReadSize = count;
             }
             else
+            {
                 this.mReadSize += count;
+            }
             if (this.fsStream != null)
+            {
                 return this.fsStream.Read(array, offset, count);
+            }
             return this.fsTemp.Read(array, offset, count);
         }
 
@@ -240,8 +261,11 @@ namespace Kadena.AmazonFileSystemProvider
             }
             else
             {
-                if (this.fsTemp == null || !this.fsTemp.CanWrite || this.fileAccess == CMS.IO.FileAccess.Read && this.fileMode == CMS.IO.FileMode.Open)
+                if (this.fsTemp == null || !this.fsTemp.CanWrite
+                    || this.fileAccess == CMS.IO.FileAccess.Read && this.fileMode == CMS.IO.FileMode.Open)
+                {
                     return;
+                }
                 this.fsTemp.Flush();
             }
         }
@@ -253,7 +277,9 @@ namespace Kadena.AmazonFileSystemProvider
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (this.fsStream != null)
-                throw new Exception("Cannot write into file because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '" + this.mPath + "' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            {
+                throw new Exception($"Cannot write into file because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '{this.mPath}' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            }
             this.fsTemp.Write(buffer, offset, count);
             this.LogFileOperation(this.mPath, nameof(Write), count);
         }
@@ -266,7 +292,9 @@ namespace Kadena.AmazonFileSystemProvider
         public override long Seek(long offset, SeekOrigin loc)
         {
             if (this.fsStream != null)
+            {
                 return this.fsStream.Seek(offset, loc);
+            }
             return this.fsTemp.Seek(offset, loc);
         }
 
@@ -282,7 +310,9 @@ namespace Kadena.AmazonFileSystemProvider
         public override void WriteByte(byte value)
         {
             if (this.fsStream != null)
-                throw new Exception("Cannot write into file because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '" + this.mPath + "' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            {
+                throw new Exception($"Cannot write into file because it exists only in application file system. \r\n                    This exception typically occurs when file system is mapped to Amazon S3 storage after the file or directory\r\n                    '{this.mPath}' was created in the local file system. To fix this issue move given file to Amazon S3 storage.");
+            }
             this.fsTemp.WriteByte(value);
             this.LogFileOperation(this.mPath, "Write", 1);
         }
@@ -311,19 +341,21 @@ namespace Kadena.AmazonFileSystemProvider
         public IEnumerable<string> UploadStreamContentAsMultiPart(string uploadSessionId, int nextPartNumber)
         {
             if (this.Length > this.MaximalPartSize)
-                throw new Exception("Maximal size of part for upload to Amazon S3 storage is " + (object)this.MaximalPartSize + " current stream has length " + (object)this.Length + ".");
+            {
+                throw new Exception($"Maximal size of part for upload to Amazon S3 storage is {this.MaximalPartSize} current stream has length {this.Length}.");
+            }
             this.mMultiPartUploadMode = true;
             if (this.obj.IsLocked)
-                throw new Exception("Couldn't upload part of the object " + this.obj.Key + " because it is used by another process.");
+            {
+                throw new Exception($"Couldn't upload part of the object {this.obj.Key} because it is used by another process.");
+            }
             this.obj.Lock();
             this.obj.Length += this.Length;
-            List<string> stringList = new List<string>()
-      {
-        this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.GetBucketName(), nextPartNumber, (System.IO.Stream) this)
-      };
+            List<string> stringList = new List<string>();
+            this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.GetBucketName(), nextPartNumber, this);
             this.obj.UnLock();
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
-            return (IEnumerable<string>)stringList;
+            return stringList;
         }
 
         /// <summary>
@@ -336,18 +368,18 @@ namespace Kadena.AmazonFileSystemProvider
         public string CompleteMultiPartUploadProcess(string uploadSessionId, IEnumerable<string> partIdentifiers)
         {
             this.mMultiPartUploadMode = true;
-            List<UploadPartResponse> uploadPartResponseList = new List<UploadPartResponse>();
-            int num = 0;
-            foreach (string partIdentifier in partIdentifiers)
-                uploadPartResponseList.Add(new UploadPartResponse()
-                {
-                    PartNumber = ++num,
-                    ETag = partIdentifier
-                });
+            List<UploadPartResponse> uploadPartResponseList = partIdentifiers.Select((id, index) => new UploadPartResponse
+            {
+                PartNumber = index + 1,
+                ETag = id
+            }).ToList();
+
             if (this.obj.IsLocked)
-                throw new Exception("Couldn't upload part of the object " + this.obj.Key + " because it is used by another process.");
+            {
+                throw new Exception($"Couldn't upload part of the object {this.obj.Key} because it is used by another process.");
+            }
             this.obj.Lock();
-            this.obj.ETag = this.MultiPartUploader.CompleteMultiPartUploadProcess(this.obj.Key, this.obj.GetBucketName(), uploadSessionId, (IEnumerable<UploadPartResponse>)uploadPartResponseList).ETag;
+            this.obj.ETag = this.MultiPartUploader.CompleteMultiPartUploadProcess(this.obj.Key, this.obj.GetBucketName(), uploadSessionId, uploadPartResponseList).ETag;
             this.obj.UnLock();
             this.SetLastWriteTimeAndCreationTimeToS3Object();
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
@@ -374,7 +406,9 @@ namespace Kadena.AmazonFileSystemProvider
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)
+            {
                 return;
+            }
             if (disposing)
             {
                 if (this.fsStream != null)
@@ -386,25 +420,19 @@ namespace Kadena.AmazonFileSystemProvider
                     try
                     {
                         this.Flush();
-                        if (this.fileAccess != CMS.IO.FileAccess.Read)
+                        if (this.fileAccess != CMS.IO.FileAccess.Read
+                            && this.fileMode != CMS.IO.FileMode.Open
+                            && this.fsTemp.CanWrite
+                            && !this.mMultiPartUploadMode)
                         {
-                            if (this.fileMode != CMS.IO.FileMode.Open)
-                            {
-                                if (this.fsTemp.CanWrite)
-                                {
-                                    if (!this.mMultiPartUploadMode)
-                                    {
-                                        this.fsTemp.Seek(0L, SeekOrigin.Begin);
-                                        this.Provider.PutDataFromStreamToObject(this.obj, (System.IO.Stream)this.fsTemp);
-                                        this.SetLastWriteTimeAndCreationTimeToS3Object();
-                                    }
-                                }
-                            }
+                            this.fsTemp.Seek(0L, SeekOrigin.Begin);
+                            this.Provider.PutDataFromStreamToObject(this.obj, this.fsTemp);
+                            this.SetLastWriteTimeAndCreationTimeToS3Object();
                         }
                     }
                     catch (Exception ex)
                     {
-                        EventLogProvider.LogException("Amazon", "STREAMDISPOSE", ex, 0, (string)null, (LoggingPolicy)null);
+                        EventLogProvider.LogException("Custom Amazon", "STREAMDISPOSE", ex, 0);
                     }
                     finally
                     {
@@ -431,22 +459,35 @@ namespace Kadena.AmazonFileSystemProvider
             if (this.Provider.ObjectExists(this.obj))
             {
                 if (this.fileMode == CMS.IO.FileMode.CreateNew)
+                {
                     throw new Exception("Cannot create a new file, the file is already exist.");
-                this.fsTemp = (System.IO.FileStream)this.Provider.GetObjectContent(this.obj, (System.IO.FileMode)this.fileMode, (System.IO.FileAccess)this.fileAccess, (System.IO.FileShare)this.fileShare, this.bufferSize);
+                }
+                this.fsTemp = (System.IO.FileStream)this.Provider.GetObjectContent(this.obj, (System.IO.FileMode)this.fileMode,
+                    (System.IO.FileAccess)this.fileAccess, (System.IO.FileShare)this.fileShare, this.bufferSize);
                 if (this.fileMode == CMS.IO.FileMode.Append)
+                {
                     this.fsTemp.Position = this.fsTemp.Length;
+                }
             }
-            else if (System.IO.File.Exists(this.mPath))
-                this.fsStream = new System.IO.FileStream(this.mPath, (System.IO.FileMode)this.fileMode, (System.IO.FileAccess)this.fileAccess, (System.IO.FileShare)this.fileShare, this.bufferSize);
-            if (this.fsTemp != null)
+            else
+            {
+                if (System.IO.File.Exists(this.mPath))
+                {
+                    this.fsStream = new System.IO.FileStream(this.mPath, (System.IO.FileMode)this.fileMode, 
+                        (System.IO.FileAccess)this.fileAccess, (System.IO.FileShare)this.fileShare, this.bufferSize);
+                }
+            }
+            if (this.fsTemp != null
+                || this.fsStream != null)
+            {
                 return;
-            if (this.fsStream != null)
-                return;
+            }
             try
             {
-                this.fsTemp = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite, (System.IO.FileShare)this.fileShare, this.bufferSize);
+                this.fsTemp = new System.IO.FileStream(path, System.IO.FileMode.Create, 
+                    System.IO.FileAccess.ReadWrite, (System.IO.FileShare)this.fileShare, this.bufferSize);
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
             }
         }
@@ -456,7 +497,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             string dateTimeString = S3ObjectInfoProvider.GetDateTimeString(DateTime.Now);
             if (this.obj.GetMetadata("CreationTime") == null)
+            {
                 this.obj.SetMetadata("CreationTime", dateTimeString, false);
+            }
             this.obj.SetMetadata("LastWriteTime", dateTimeString);
         }
     }
