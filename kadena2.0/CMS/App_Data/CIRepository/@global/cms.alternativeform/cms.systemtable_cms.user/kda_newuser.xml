@@ -193,6 +193,11 @@
           <defaultvalue>271</defaultvalue>
         </properties>
       </field>
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required">
+        <properties>
+          <controlcssclass>input__text</controlcssclass>
+        </properties>
+      </field>
       <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae">
         <settings>
           <controlname>DropDownListControl</controlname>
@@ -224,20 +229,6 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           </rule>
         </rules>
       </field>
-      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401">
-        <properties>
-          <controlcssclass>input__text js-City</controlcssclass>
-          <fieldcaption>City/Town</fieldcaption>
-        </properties>
-        <rules>
-          <rule errormsg="Please enter City">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
-          </rule>
-          <rule errormsg="City should not be more than 20 characters">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
-          </rule>
-        </rules>
-      </field>
       <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" order="86">
         <properties>
           <controlcssclass>input__text</controlcssclass>
@@ -256,6 +247,11 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <FilterMode>False</FilterMode>
           <Trim>False</Trim>
         </settings>
+      </field>
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" order="88">
+        <properties>
+          <controlcssclass>input__select</controlcssclass>
+        </properties>
       </field>
       <field column="UserDivisionID" guid="0d969aaa-c832-46f6-bb19-9e0653e2966a">
         <settings>
@@ -303,11 +299,6 @@ Select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__select</controlcssclass>
         </properties>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e">
-        <properties>
-          <controlcssclass>input__select</controlcssclass>
-        </properties>
-      </field>
       <field column="UserFax" guid="d55367d7-d9af-4aa4-bd9f-f8c8c9f60910" order="91">
         <properties>
           <controlcssclass>input__text</controlcssclass>
@@ -331,7 +322,7 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field allowempty="true" column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" reftype="Required" visible="true" order="94">
+      <field allowempty="true" column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" visible="true" order="94">
         <properties>
           <controlcssclass>input__select</controlcssclass>
           <fieldcaption>User Role</fieldcaption>
@@ -345,6 +336,20 @@ Select ItemID,DivisionName from KDA_Division
           </Query>
           <SortItems>False</SortItems>
         </settings>
+      </field>
+      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" order="95">
+        <properties>
+          <controlcssclass>input__text js-City</controlcssclass>
+          <fieldcaption>City/Town</fieldcaption>
+        </properties>
+        <rules>
+          <rule errormsg="Please enter City">
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+          </rule>
+          <rule errormsg="City should not be more than 20 characters">
+            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+          </rule>
+        </rules>
       </field>
     </form>
   </FormDefinition>
@@ -392,6 +397,10 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserZipCode$} </span>$$input:UserZipCode$$<span class="input__error">$$validation:UserZipCode$$</span></div>
+</div>
+
+<div class="mb-2 form_block">
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Role$}</span>$$input:UserRole$$<span class="input__error">$$validation:UserRole$$</span></div>
 </div>
 
@@ -416,7 +425,11 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$} </span>$$input:TradeMarketingManagerID$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.TradeMarketingManagerID$}</span>$$input:TradeMarketingManagerID$$</div>
+</div>
+
+<div class="mb-2 form_block">
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserEnabled$}</span>$$input:UserEnabled$$<span class="input__error">$$validation:UserEnabled$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
@@ -425,10 +438,6 @@ Select ItemID,DivisionName from KDA_Division
 
 <div class="mb-2 form_block">
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
-</div>
-
-<div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserEnabled$}</span>$$input:UserEnabled$$<span class="input__error">$$validation:UserEnabled$$</span></div>
 </div>
 
 <div class="mb-2 form_block">

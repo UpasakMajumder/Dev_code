@@ -1,0 +1,12 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Recent orders' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="recent-orders">
+    <div class="r-filtered-recent-orders"></div>
+  </div>
+{% endblock %}
