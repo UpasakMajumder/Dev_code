@@ -17,11 +17,11 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return PathHelper.mTempPath ?? (PathHelper.mTempPath = PathHelper.GetPathToTempDirectory(SettingsHelper.AppSettings["CMSAmazonTempPath"], "AmazonTemp"));
+                return mTempPath ?? (mTempPath = GetPathToTempDirectory(SettingsHelper.AppSettings["CMSAmazonTempPath"], "AmazonTemp"));
             }
             set
             {
-                PathHelper.mTempPath = value;
+                mTempPath = value;
             }
         }
 
@@ -30,11 +30,11 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return PathHelper.mCachePath ?? (PathHelper.mCachePath = PathHelper.GetPathToTempDirectory(SettingsHelper.AppSettings["CMSAmazonCachePath"], "AmazonCache"));
+                return mCachePath ?? (mCachePath = GetPathToTempDirectory(SettingsHelper.AppSettings["CMSAmazonCachePath"], "AmazonCache"));
             }
             set
             {
-                PathHelper.mCachePath = value;
+                mCachePath = value;
             }
         }
 
@@ -43,13 +43,15 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                if (string.IsNullOrEmpty(PathHelper.mCurrentDirectory))
-                    PathHelper.mCurrentDirectory = Directory.CurrentDirectory;
-                return PathHelper.mCurrentDirectory;
+                if (string.IsNullOrEmpty(mCurrentDirectory))
+                {
+                    mCurrentDirectory = Directory.CurrentDirectory;
+                }
+                return mCurrentDirectory;
             }
             set
             {
-                PathHelper.mCurrentDirectory = value;
+                mCurrentDirectory = value;
             }
         }
 
@@ -62,9 +64,13 @@ namespace Kadena.AmazonFileSystemProvider
         private static string GetPathToTempDirectory(string tempAbsolutePath, string relativeDirectoryPath)
         {
             if (string.IsNullOrEmpty(tempAbsolutePath))
-                tempAbsolutePath = SystemContext.WebApplicationPhysicalPath + "\\App_Data\\" + relativeDirectoryPath;
+            {
+                tempAbsolutePath = $"{SystemContext.WebApplicationPhysicalPath}\\App_Data\\{relativeDirectoryPath}";
+            }
             if (!System.IO.Directory.Exists(tempAbsolutePath))
+            {
                 System.IO.Directory.CreateDirectory(tempAbsolutePath);
+            }
             return tempAbsolutePath.TrimEnd('\\');
         }
 
@@ -74,7 +80,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path</param>
         public static string GetValidPath(string path)
         {
-            return PathHelper.GetValidPath(path, true);
+            return GetValidPath(path, true);
         }
 
         /// <summary>
@@ -85,10 +91,14 @@ namespace Kadena.AmazonFileSystemProvider
         public static string GetValidPath(string path, bool lower)
         {
             if (path == null)
-                return (string)null;
+            {
+                return null;
+            }
             path = CMS.IO.Path.EnsureBackslashes(path, true);
             if (lower)
+            {
                 path = path.ToLowerCSafe();
+            }
             return path;
         }
 
@@ -97,7 +107,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="absolute">Indicates whether returned path is absolute</param>
         public static string GetPathFromObjectKey(string objectKey, bool absolute)
         {
-            return PathHelper.GetPathFromObjectKey(objectKey, absolute, false);
+            return GetPathFromObjectKey(objectKey, absolute, false);
         }
 
         /// <summary>Returns path from given object key.</summary>
@@ -106,7 +116,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="directory">Specifies whether object is directory.</param>
         public static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory)
         {
-            return PathHelper.GetPathFromObjectKey(objectKey, absolute, directory, true);
+            return GetPathFromObjectKey(objectKey, absolute, directory, true);
         }
 
         /// <summary>Returns path from given object key.</summary>
@@ -117,13 +127,19 @@ namespace Kadena.AmazonFileSystemProvider
         public static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
         {
             if (objectKey == null)
-                return (string)null;
-            string str1 = PathHelper.GetValidPath(objectKey, lower);
-            string str2 = lower ? PathHelper.CurrentDirectory.ToLowerInvariant() : PathHelper.CurrentDirectory;
+            {
+                return null;
+            }
+            string str1 = GetValidPath(objectKey, lower);
+            string str2 = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
             if (absolute)
-                str1 = str2 + "\\" + str1;
+            {
+                str1 = $"{str2}\\{str1}";
+            }
             if (directory)
+            {
                 str1 += "\\";
+            }
             return str1;
         }
 
@@ -131,7 +147,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path.</param>
         public static string GetObjectKeyFromPath(string path)
         {
-            return PathHelper.GetObjectKeyFromPath(path, true);
+            return GetObjectKeyFromPath(path, true);
         }
 
         /// <summary>Returns object key from given path.</summary>
@@ -140,16 +156,24 @@ namespace Kadena.AmazonFileSystemProvider
         public static string GetObjectKeyFromPath(string path, bool lower)
         {
             if (path == null)
-                return (string)null;
+            {
+                return null;
+            }
             bool flag = path.EndsWith("\\", StringComparison.Ordinal) || path.EndsWith("/", StringComparison.Ordinal);
-            path = PathHelper.GetValidPath(path, lower);
-            string str = lower ? PathHelper.CurrentDirectory.ToLowerInvariant() : PathHelper.CurrentDirectory;
+            path = GetValidPath(path, lower);
+            string str = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
             if (path.StartsWith(str, StringComparison.Ordinal))
+            {
                 path = path.Substring(str.Length);
+            }
             if (path.StartsWith("~\\", StringComparison.Ordinal))
+            {
                 path = path.Substring(2);
+            }
             if (flag)
+            {
                 path += "/";
+            }
             path = CMS.IO.Path.EnsureSlashes(path, false);
             return path.TrimStart('/');
         }
@@ -158,8 +182,10 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="absolute">Absolute path to process</param>
         public static string GetRelativePath(string absolute)
         {
-            if (absolute.StartsWith(PathHelper.CurrentDirectory, StringComparison.OrdinalIgnoreCase))
-                absolute = absolute.Substring(PathHelper.CurrentDirectory.Length);
+            if (absolute.StartsWith(CurrentDirectory, StringComparison.OrdinalIgnoreCase))
+            {
+                absolute = absolute.Substring(CurrentDirectory.Length);
+            }
             return absolute.TrimStart('\\');
         }
     }
