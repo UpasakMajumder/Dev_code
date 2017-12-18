@@ -294,7 +294,9 @@ namespace Kadena.AmazonFileSystemProvider
                     AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Exists", false, false);
                 }
                 else
+                {
                     throw;
+                }
             }
         }
 

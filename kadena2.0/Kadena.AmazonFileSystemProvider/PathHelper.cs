@@ -159,7 +159,7 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return null;
             }
-            bool flag = path.EndsWith("\\", StringComparison.Ordinal) || path.EndsWith("/", StringComparison.Ordinal);
+            bool isDirectory = path.EndsWith("\\", StringComparison.Ordinal) || path.EndsWith("/", StringComparison.Ordinal);
             path = GetValidPath(path, lower);
             string str = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
             if (path.StartsWith(str, StringComparison.Ordinal))
@@ -170,7 +170,7 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 path = path.Substring(2);
             }
-            if (flag)
+            if (isDirectory)
             {
                 path += "/";
             }

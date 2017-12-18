@@ -16,7 +16,7 @@ namespace Kadena.AmazonFileSystemProvider
             this.BucketName = SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName);
             if (string.IsNullOrEmpty(this.BucketName))
             {
-                throw new InvalidOperationException("Amazon S3 bucket name could not be found. You must specify it in web.config file by CMSAmazonBucketName application setting key.");
+                throw new InvalidOperationException($"Amazon S3 bucket name could not be found. You must specify it in Settings by {SettingsKeyNames.AmazonS3BucketName} setting key.");
             }
             this.mS3Client = new AmazonS3ClientFactory().Create(this.BucketName);
         }
