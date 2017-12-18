@@ -60,7 +60,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("CartPDFHelper", "CreateProductPDF", ex.Message);
+                EventLogProvider.LogInformation("CartPDFHelper", "WriteresponseToPDF", ex.Message);
             }
         }
 
