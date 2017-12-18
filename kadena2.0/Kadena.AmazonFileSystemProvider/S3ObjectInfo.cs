@@ -46,7 +46,7 @@ namespace Kadena.AmazonFileSystemProvider
         }
 
         /// <summary>Returns bucket name.</summary>
-        private string BucketName
+        public string BucketName
         {
             get
             {

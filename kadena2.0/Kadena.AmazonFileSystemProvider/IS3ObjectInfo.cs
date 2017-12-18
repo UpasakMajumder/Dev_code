@@ -3,6 +3,9 @@
     /// <summary>Interface of the S3ObjectInfo object.</summary>
     public interface IS3ObjectInfo
     {
+        /// <summary>Returns bucket name.</summary>
+        string BucketName { get; }
+
         /// <summary>Gets or sets object key.</summary>
         string Key { get; set; }
 

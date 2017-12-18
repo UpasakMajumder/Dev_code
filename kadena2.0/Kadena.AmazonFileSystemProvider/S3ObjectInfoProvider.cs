@@ -204,7 +204,7 @@ namespace Kadena.AmazonFileSystemProvider
                 }
                 using (GetObjectResponse getObjectResponse = this.S3Client.GetObject(new GetObjectRequest()
                 {
-                    BucketName = obj.GetBucketName(),
+                    BucketName = obj.BucketName,
                     Key = obj.Key
                 }))
                     getObjectResponse.WriteResponseStreamToFile(str1);
@@ -238,7 +238,7 @@ namespace Kadena.AmazonFileSystemProvider
             if (obj.IsLocked)
                 throw new Exception("[IS3ObjectInfoProvider.PutFileToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
             obj.Lock();
-            string bucketName = obj.GetBucketName();
+            string bucketName = obj.BucketName;
             long length = new System.IO.FileInfo(pathToSource).Length;
             if (length >= 15728640L)
             {
@@ -265,7 +265,7 @@ namespace Kadena.AmazonFileSystemProvider
             if (obj.IsLocked)
                 throw new Exception("[IS3ObjectInfoProvider.PutDataFromStreamToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
             obj.Lock();
-            string bucketName = obj.GetBucketName();
+            string bucketName = obj.BucketName;
             long length = stream.Length;
             if (length > 15728640L)
             {
@@ -316,7 +316,7 @@ namespace Kadena.AmazonFileSystemProvider
                 string str = (string)null;
                 using (CMS.IO.StreamReader streamReader = CMS.IO.StreamReader.New(objectContent))
                     str = streamReader.ReadToEnd();
-                PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, obj.GetBucketName());
+                PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, obj.BucketName);
                 putRequest.ContentBody = str + content;
                 PutObjectResponse response = this.S3Client.PutObject(putRequest);
                 this.SetS3ObjectMetadaFromResponse(obj, response, 0L);
@@ -334,7 +334,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             this.S3Client.DeleteObject(new DeleteObjectRequest()
             {
-                BucketName = obj.GetBucketName(),
+                BucketName = obj.BucketName,
                 Key = obj.Key
             });
             obj.DeleteMetadataFile();
@@ -358,7 +358,7 @@ namespace Kadena.AmazonFileSystemProvider
             string pathFromObjectKey = PathHelper.GetPathFromObjectKey(destObject.Key, true);
             CopyObjectRequest request = new CopyObjectRequest()
             {
-                SourceBucket = sourceObject.GetBucketName(),
+                SourceBucket = sourceObject.BucketName,
                 DestinationBucket = S3ObjectInfoProvider.GetBucketName(pathFromObjectKey),
                 SourceKey = sourceObject.Key,
                 DestinationKey = destObject.Key

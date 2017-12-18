@@ -325,7 +325,7 @@ namespace Kadena.AmazonFileSystemProvider
         public string InitMultiPartUpload()
         {
             this.mMultiPartUploadMode = true;
-            return this.MultiPartUploader.InitMultiPartUpload(this.obj.Key, this.obj.GetBucketName());
+            return this.MultiPartUploader.InitMultiPartUpload(this.obj.Key, this.obj.BucketName);
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Kadena.AmazonFileSystemProvider
             this.obj.Lock();
             this.obj.Length += this.Length;
             List<string> stringList = new List<string>();
-            this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.GetBucketName(), nextPartNumber, this);
+            this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.BucketName, nextPartNumber, this);
             this.obj.UnLock();
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
             return stringList;
@@ -379,7 +379,7 @@ namespace Kadena.AmazonFileSystemProvider
                 throw new Exception($"Couldn't upload part of the object {this.obj.Key} because it is used by another process.");
             }
             this.obj.Lock();
-            this.obj.ETag = this.MultiPartUploader.CompleteMultiPartUploadProcess(this.obj.Key, this.obj.GetBucketName(), uploadSessionId, uploadPartResponseList).ETag;
+            this.obj.ETag = this.MultiPartUploader.CompleteMultiPartUploadProcess(this.obj.Key, this.obj.BucketName, uploadSessionId, uploadPartResponseList).ETag;
             this.obj.UnLock();
             this.SetLastWriteTimeAndCreationTimeToS3Object();
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
@@ -396,7 +396,7 @@ namespace Kadena.AmazonFileSystemProvider
         public void AbortMultiPartUpload(string uploadSessionId)
         {
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
-            this.MultiPartUploader.AbortMultiPartUpload(this.obj.Key, this.obj.GetBucketName(), uploadSessionId);
+            this.MultiPartUploader.AbortMultiPartUpload(this.obj.Key, this.obj.BucketName, uploadSessionId);
         }
 
         /// <summary>

@@ -29,7 +29,8 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="fileAccess">File access.</param>
         /// <param name="fileShare">Sharing permissions.</param>
         /// <param name="bufferSize">Buffer size.</param>
-        Stream GetObjectContent(IS3ObjectInfo obj, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read, int bufferSize = 4096);
+        Stream GetObjectContent(IS3ObjectInfo obj, FileMode fileMode = FileMode.Open, 
+            FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read, int bufferSize = 4096);
 
         /// <summary>Puts file to Amazon S3 storage.</summary>
         /// <param name="obj">Object info.</param>

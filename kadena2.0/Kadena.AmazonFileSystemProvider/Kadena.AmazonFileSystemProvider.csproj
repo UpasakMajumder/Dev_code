@@ -76,7 +76,6 @@
     <Compile Include="FileInfo.cs" />
     <Compile Include="FileStream.cs" />
     <Compile Include="IS3ObjectInfo.cs" />
-    <Compile Include="IS3ObjectInfoExtensionMethods.cs" />
     <Compile Include="IS3ObjectInfoProvider.cs" />
     <Compile Include="ObjectTypeEnum.cs" />
     <Compile Include="PathHelper.cs" />
