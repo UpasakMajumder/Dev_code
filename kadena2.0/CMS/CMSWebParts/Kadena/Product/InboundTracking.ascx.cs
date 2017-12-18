@@ -461,6 +461,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         base.ReloadData();
         SetupControl();
     }
+
     /// <summary>
     /// Get the Campaign Closed or not
     /// </summary>
@@ -492,8 +493,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
         return isClosed;
     }
+
     /// <summary>
-    /// Get All products
+    /// Get Product details
     /// </summary>
     /// <returns></returns>
     public List<CampaignsProduct> GetProductDetails()
@@ -527,6 +529,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         return productsDetails;
     }
 
+    /// <summary>
+    /// Get Sku Details
+    /// </summary>
+    /// <param name="productsDetails"></param>
+    /// <returns></returns>
     public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
     {
         List<SKUInfo> skuDetails = new List<SKUInfo>();
