@@ -47,6 +47,36 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
         /// Product Shipping id of the product if it product type is pre-buy
         /// </summary>
         public int ProductShippingID { get; set; }
+        /// <summary>
+        /// Loads the addressid column heading
+        /// </summary>
+        public string AddressIDText
+        {
+            get
+            {
+                return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.StoreID"), string.Empty);
+            }
+        }
+        /// <summary>
+        /// Loads the AddressPersonalName column heading
+        /// </summary>
+        public string AddressPersonalNameText
+        {
+            get
+            {
+                return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.CustomerName"), string.Empty);
+            }
+        }
+        /// <summary>
+        /// Loads the CartCloseText button text
+        /// </summary>
+        public string CartCloseText
+        {
+            get
+            {
+                return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.DiscardChanges"), string.Empty);
+            }
+        }
         #endregion
 
         #region "Methods"
@@ -131,25 +161,21 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                                                                                        .ToList();
                     myAddressList.ForEach(g =>
                     {
-                        var existingItem = distributorList.Where(k => k.SKUID == productID && k.AddressID == g.AddressID).FirstOrDefault();
-                        if (DataHelper.DataSourceIsEmpty(existingItem))
+                        ShoppingCartItemInfo cartItem = cartItems.Where(k => k.GetValue<int>("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID).FirstOrDefault();
+                        distributorList.Add(new CartDistributorItem()
                         {
-                            ShoppingCartItemInfo cartItem = cartItems.Where(k => k.GetValue<int>("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID).FirstOrDefault();
-                            if (cartItem != null)
-                            {
-                                distributorList.Add(new CartDistributorItem()
-                                {
-                                    AddressID = g.AddressID,
-                                    AddressPersonalName = g.AddressPersonalName,
-                                    IsSelected = cartItem.CartItemUnits > 0 ? true : false,
-                                    ShoppingCartID = cartItem.ShoppingCartID,
-                                    SKUID = cartItem.SKUID,
-                                    SKUUnits = cartItem.CartItemUnits
-                                });
-                            }
-                        }
+                            AddressID = g.AddressID,
+                            AddressPersonalName = g.AddressPersonalName,
+                            IsSelected = cartItem?.CartItemUnits > 0 ? true : false,
+                            ShoppingCartID = cartItem != null ? cartItem.ShoppingCartID : default(int),
+                            SKUID = cartItem != null ? cartItem.SKUID : default(int),
+                            SKUUnits = cartItem != null ? cartItem.CartItemUnits : default(int)
+                        });
+
                     });
-                    gvCustomersCart.DataSource = distributorList;
+                    gvCustomersCart.DataSource = distributorList.Distinct().ToList();
+                    gvCustomersCart.Columns[1].HeaderText = AddressIDText;
+                    gvCustomersCart.Columns[2].HeaderText = AddressPersonalNameText;
                     gvCustomersCart.DataBind();
                 }
                 else

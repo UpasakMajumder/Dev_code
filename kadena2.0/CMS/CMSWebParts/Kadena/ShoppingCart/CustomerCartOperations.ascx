@@ -18,8 +18,8 @@
                             <asp:CheckBox Text="" ID="chkSelected" runat="server" Checked='<%# ValidationHelper.GetBoolean(Eval("IsSelected"),default(bool)) %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="AddressID" HeaderText='<%# ResHelper.GetString("KDA.ShoppingCart.StoreID") %>' />
-                    <asp:BoundField DataField="AddressPersonalName" HeaderText='<%# ResHelper.GetString("KDA.ShoppingCart.CustomerName") %>' />
+                    <asp:BoundField DataField="AddressID" />
+                    <asp:BoundField DataField="AddressPersonalName" />
                     <asp:TemplateField>
                         <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
                         <ItemTemplate>
@@ -34,7 +34,7 @@
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose"><%# ResHelper.GetString("KDA.ShoppingCart.DiscardChanges") %></button>
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose"><%= CartCloseText %></button>
                 <cms:LocalizedLinkButton runat="server" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn__action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
