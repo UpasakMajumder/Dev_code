@@ -1,0 +1,11 @@
+.filtered-recent-orders {
+  @extend %flex--center--start;
+
+  &__input {
+    width: 250px;
+  }
+
+  &__dialog-subtitle {
+    @extend %flex--center--between;
+  }
+}
