@@ -1,4 +1,4 @@
-.Summary_content {
+.summary_content {
   margin-bottom: 15px;
 
   span {
@@ -13,40 +13,41 @@
   p {
     margin-bottom: 0;
   }
+}
 
-  .summary_block {
-    .summ_left {
-      display: inline-block;
-      width: 28%;
-      text-align: right;
+.summary_block {
+  .summ_left {
+    display: inline-block;
+    width: 28%;
+    text-align: right;
 
-      a {
-        text-decoration: underline;
-      }
-    }
-
-    .summ_right {
-      display: inline-block;
-      width: 70%;
-      text-align: right;
+    a {
+      text-decoration: underline;
     }
   }
 
-  .note_block {
-    text-align: center;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-top: 15px;
+  .summ_right {
+    display: inline-block;
+    width: 70%;
+    text-align: right;
+  }
+}
 
-    p {
-      margin-bottom: 0;
+.note_block {
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-top: 15px;
 
-      a {
-        text-decoration: underline;
-      }
+  p {
+    margin-bottom: 0;
+
+    a {
+      text-decoration: underline;
     }
   }
 }
+
 
 .Inbound_track {
   overflow-x: auto;
