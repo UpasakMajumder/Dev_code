@@ -1,4 +1,4 @@
-.summary_content {
+.summary__content {
   margin-bottom: 15px;
 
   span {
@@ -15,8 +15,8 @@
   }
 }
 
-.summary_block {
-  .summ_left {
+.summary__block {
+  .summ__left {
     display: inline-block;
     width: 28%;
     text-align: right;
@@ -26,14 +26,14 @@
     }
   }
 
-  .summ_right {
+  .summ__right {
     display: inline-block;
     width: 70%;
     text-align: right;
   }
 }
 
-.note_block {
+.note__block {
   text-align: center;
   border: 1px solid #ddd;
   padding: 10px;
@@ -48,8 +48,7 @@
   }
 }
 
-
-.Inbound_track {
+.Inbound__track {
   overflow-x: auto;
 
   table {

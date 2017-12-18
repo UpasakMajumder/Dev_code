@@ -2,30 +2,10 @@
   .custom__block {
     margin-bottom: 30px;
 
-    .custom__select {
-      display: inline-block;
-
-      select {
-        width: auto;
-        display: inline-block;
-      }
-    }
-
     .custom__check {
       display: inline-block;
       vertical-align: top;
       margin: 6px 5px;
-
-      .input__wrapper {
-        .input__checkbox:checked + label:after {
-          content: "\f00c";
-          font-family: fontawesome;
-          left: 5px;
-          top: 3px;
-          transform: rotate(0deg);
-          font-size: $font-xs;
-        }
-      }
     }
 
     .custom__btns {
@@ -38,6 +18,15 @@
         width: auto;
       }
     }
+  }
+}
+
+.custom__select {
+  display: inline-block;
+
+  select {
+    width: auto;
+    display: inline-block;
   }
 }
 
@@ -85,15 +74,15 @@
         &:before {
           left: inherit;
           right: 0;
-          top: 5px;
+          top: -3px;
           margin-right: 0;
         }
       }
 
       .input__checkbox:checked + label:after {
         left: inherit;
-        top: -1px;
-        right: -4px;
+        top: -6px;
+        right: -6px;
         margin-right: 10px;
       }
     }
@@ -146,6 +135,13 @@
 
   .cart__btns {
     padding: 0 0 15px;
+
+    .btn-action {
+      font-size: 14px;
+      width: auto;
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+    }
   }
 
   .cart__content {
@@ -256,12 +252,46 @@
     }
   }
 
-  .cart__count {
+  .cart__coun {
     background: $brand-darkwhite;
     padding: 15px;
 
     .btn-action {
       width: auto;
     }
+  }
+}
+
+.checkbox__sec {
+  padding: 0;
+
+  .input__label--checkbox {
+    padding-left: 0;
+    text-transform: uppercase;
+
+    &:before {
+      left: 150px;
+      right: inherit;
+      top: 0;
+      margin-right: 0;
+    }
+
+    .input__checkbox:checked + label:after {
+      left: 155px;
+    }
+  }
+}
+
+.check__box {
+  .input__label--checkbox {
+    padding-left: 15px;
+
+    &:before {
+      top: -15px;
+    }
+  }
+
+  .input__checkbox:checked + label:after {
+    top: -19px;
   }
 }
