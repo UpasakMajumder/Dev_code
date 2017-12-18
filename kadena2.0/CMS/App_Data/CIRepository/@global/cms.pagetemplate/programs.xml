@@ -29,7 +29,7 @@
   </div>
   <div class="content-block">
     
-    <div class="search_block">
+    <div class="search__block">
      <!-- <input type="text" class="input__text" placeholder="Search" value="">-->
       <cms:CMSWebPartZone ZoneID="ZoneFilter" runat="server" />
     </div> 
@@ -79,7 +79,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="show-table">
+<table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.ProgramsList.ProgramName$}</th>
@@ -382,7 +382,7 @@ function deleteProgram(programID) {
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="add_btn">
+<div class="add__btn">
       <a class="btn-action" href="{% Settings.KDA_CreateProgramURL |(user)cvoqa2@gmail.com|(hash)72ca8ff86960817e3ce040d6ce89e39e0b6e84627c53c20794824ad0da26fd99%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Programs.AddNewText$}</a>
     </div>
 ]]>

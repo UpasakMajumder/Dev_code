@@ -31,5 +31,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetCurrentSiteDomain();
         string GetContextCultureCode();
+
+        string ResolveMacroString(string macroString);
     }
 }

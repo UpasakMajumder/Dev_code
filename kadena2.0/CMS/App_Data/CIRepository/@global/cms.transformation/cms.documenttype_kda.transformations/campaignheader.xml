@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<table id="reptable"  class="show-table">
+<table id="reptable"  class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{% GetResourceString("Kadena.Campaignlst.NameHearder") |(user)cvoqa2@gmail.com|(hash)ac1e778e9c8f4794c642c671d69e83a64f20ee9fec8260c0e6217196b79eccee%}</th>

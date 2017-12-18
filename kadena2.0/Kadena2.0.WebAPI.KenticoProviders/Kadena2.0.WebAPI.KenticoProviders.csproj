@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
+    <Compile Include="Contracts\IKenticoLocalizationProvider.cs" />
     <Compile Include="Contracts\IKenticoProgramsProvider.cs" />
     <Compile Include="Contracts\IKenticoAddressBookProvider.cs" />
     <Compile Include="Contracts\IKenticoBusinessUnitsProvider.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Contracts\IKenticoProductsProvider.cs" />
     <Compile Include="Contracts\IKenticoDocumentProvider.cs" />
     <Compile Include="Contracts\IKenticoLoginProvider.cs" />
+    <Compile Include="Contracts\IShoppingCartProvider.cs" />
     <Compile Include="Contracts\IKenticoUserProvider.cs" />
     <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KenticoLocalizationProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />
     <Compile Include="Providers\KenticoAddressBookProvider.cs" />
     <Compile Include="Providers\KenticoBusinessUnitsProvider.cs" />
@@ -151,6 +154,7 @@
     <Compile Include="Providers\KenticoMailProvider.cs" />
     <Compile Include="Providers\KenticoDocumentProvider.cs" />
     <Compile Include="Providers\KenticoLoginProvider.cs" />
+    <Compile Include="Providers\ShoppingCartProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />
     <Compile Include="Providers\KenticoProviderService.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />
