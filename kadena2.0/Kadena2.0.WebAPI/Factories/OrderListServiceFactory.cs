@@ -13,25 +13,29 @@ namespace Kadena.WebAPI.Factories
         private readonly IKenticoUserProvider _kenticoUser;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
+        private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoDocumentProvider _documents;
         private readonly IKenticoLogger _logger;
 
         public OrderListServiceFactory(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUser,
-            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoDocumentProvider documents,
-            IKenticoLogger logger)
+            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IShoppingCartProvider shoppingCart,
+            IKenticoDocumentProvider documents, IKenticoLogger logger)
         {
+            // TODO null checks
+
             _mapper = mapper;
             _orderClient = orderClient;
             _kenticoUser = kenticoUser;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
+            _shoppingCart = shoppingCart;
             _documents = documents;
             _logger = logger;
         }
 
         public IOrderListService GetDashboard()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _documents, _logger)
+            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _shoppingCart, _documents, _logger)
             {
                 PageCapacityKey = "KDA_DashboardOrdersPageCapacity"
             };
@@ -39,7 +43,7 @@ namespace Kadena.WebAPI.Factories
 
         public IOrderListService GetRecentOrders()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _documents, _logger)
+            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _kentico, _shoppingCart, _documents, _logger)
             {
                 PageCapacityKey = "KDA_RecentOrdersPageCapacity",
                 EnablePaging = true
