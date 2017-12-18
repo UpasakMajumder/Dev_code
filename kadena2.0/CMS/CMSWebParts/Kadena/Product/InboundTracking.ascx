@@ -1,20 +1,19 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Product_InboundTracking" CodeBehind="~/CMSWebParts/Kadena/Product/InboundTracking.ascx.cs" %>
-<%@ Register Src="~/CMSWebParts/Viewers/Basic/UniPager.ascx" TagPrefix="uc1" TagName="UniPager" %>
 
-
-<div class="custom_block">
-    <uc1:UniPager runat="server" ID="UniPager" />
-    <div class="custom_select">
+<div class="custom__block">
+    <div class="custom__select">
         <asp:DropDownList ID="ddlCampaign" runat="server" OnSelectedIndexChanged="ddlCampaign_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
     </div>
-    <div class="custom_btns">
+    <div class="custom__btns">
         <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" OnClick="btnRefresh_Click" />
         <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnExport_Click" />
     </div>
 </div>
 <div class="Inbound_track">
-    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" class="show-table show-table-right">
+    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" 
+        OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast" 
+        class="table show__table-buttom">
         <Columns>
             <asp:TemplateField>
                 <ItemTemplate>
@@ -122,12 +121,12 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblStatus" Text='<%#Eval("Status") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblStatus" Text='<%#ValidationHelper.GetBoolean(Eval("Status"),false)==true?"Active":"In-Active" %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:DropDownList runat="server" ID="ddlStatus">
                         <asp:ListItem Value="1" Selected="True">Active</asp:ListItem>
-                        <asp:ListItem Value="0">De-Active</asp:ListItem>
+                        <asp:ListItem Value="0">In-Active</asp:ListItem>
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -143,11 +142,4 @@
         </Columns>
         <EmptyDataTemplate><%#NoDataText %></EmptyDataTemplate>
     </asp:GridView>
-</div>
-<div class="data_footer">
-    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-        <uc1:UniPager ID="pager" runat="server" TargetControlName="In_BoundTracking" PageSize="1" DisplayPreviousNextAutomatically="true"
-            HidePagerForSinglePage="true" Pages="KDA.Transformations.General-Pages" CurrentPage="KDA.Transformations.General-CurrentPage"
-            PreviousPage="KDA.Transformations.General-PreviousPage" NextPage="KDA.Transformations.General-NextPage" PagerLayout="KDA.Transformations.Kadena-PagerLayout" ContentBefore="<ul class='pagination'>" ContentAfter="</ul>" />
-    </div>
 </div>

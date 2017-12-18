@@ -1,5 +1,3 @@
-using CMS.CustomTables;
-using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
@@ -130,15 +128,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     }
 
     /// <summary>
-    /// Bind the Products data to repeater
+    /// Get Product details
     /// </summary>
     /// <param name="programID"></param>
     /// <param name="categoryID"></param>
-    public void BindData(int programID = default(int), int categoryID = default(int), string posNumber = null)
+    /// <param name="posNumber"></param>
+    /// <returns></returns>
+    public List<CampaignsProduct> GetProductsDetails(int programID = default(int), int categoryID = default(int), string posNumber = null)
     {
+        List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
         try
         {
-            List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
             if (ProductType != default(int))
             {
                 if (ProductType == (int)ProductsType.GeneralInventory)
@@ -184,34 +184,73 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         }
                     }
                 }
-                List<int> skuIds = new List<int>();
-                if (!DataHelper.DataSourceIsEmpty(productsDetails))
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Product Details", "GetProductsDetails()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return productsDetails;
+    }
+
+    /// <summary>
+    /// Get Skudetails
+    /// </summary>
+    /// <param name="productsDetails"></param>
+    /// <returns></returns>
+    public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
+    {
+        List<SKUInfo> skuDetails = new List<SKUInfo>();
+        try
+        {
+            List<int> skuIds = new List<int>();
+            if (!DataHelper.DataSourceIsEmpty(productsDetails))
+            {
+                foreach (var product in productsDetails)
                 {
-                    foreach (var product in productsDetails)
-                    {
-                        skuIds.Add(product.NodeSKUID);
-                    }
+                    skuIds.Add(product.NodeSKUID);
                 }
-                if (!DataHelper.DataSourceIsEmpty(skuIds))
-                {
-                    var skuDetails = SKUInfoProvider.GetSKUs()
-                                    .WhereIn("SKUID", skuIds)
-                                    .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
-                                    .ToList();
-                    if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
-                    {
-                        skuDetails = skuDetails
-                            .Where(x => x.SKUNumber.Contains(posNumber))
-                            .ToList();
-                    }
-                    if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
-                    {
-                        var productAndSKUDetails = productsDetails
-                              .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID,x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
-                        rptProductList.DataSource = productAndSKUDetails;
-                        rptProductList.DataBind();
-                    }
-                }
+            }
+            if (!DataHelper.DataSourceIsEmpty(skuIds))
+            {
+                skuDetails = SKUInfoProvider.GetSKUs()
+                               .WhereIn("SKUID", skuIds)
+                               .And()
+                               .WhereEquals("SKUEnabled", true)
+                               .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
+                               .ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Sku Details", "GetSkuDetails()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return skuDetails;
+    }
+
+    /// <summary>
+    /// Bind the Products data to repeater
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <param name="categoryID"></param>
+    public void BindData(int programID = default(int), int categoryID = default(int), string posNumber = null)
+    {
+        try
+        {
+            List<CampaignsProduct> productsDetails = GetProductsDetails(programID, categoryID, posNumber);
+            List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
+            if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
+            {
+                skuDetails = skuDetails
+                             .Where(x => x.SKUNumber.Contains(posNumber))
+                             .ToList();
+            }
+            if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
+            {
+                var productAndSKUDetails = productsDetails
+                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
+                rptProductList.DataSource = productAndSKUDetails;
+                rptProductList.DataBind();
             }
         }
         catch (Exception ex)
@@ -230,15 +269,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             Campaign campaign = CampaignProvider.GetCampaigns()
-                              .Columns("CampaignID")
-                              .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                              .FirstOrDefault();
+                                .Columns("CampaignID")
+                                .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
+                                .FirstOrDefault();
             if (campaign != null)
             {
                 var programs = ProgramProvider.GetPrograms()
-                       .WhereEquals("CampaignID", campaign.CampaignID)
-                       .Columns("ProgramID")
-                       .ToList();
+                               .WhereEquals("CampaignID", campaign.CampaignID)
+                               .Columns("ProgramID")
+                               .ToList();
                 if (!DataHelper.DataSourceIsEmpty(programs))
                 {
                     foreach (var program in programs)
@@ -302,10 +341,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var categories = ProductCategoryProvider.GetProductCategories()
-                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .Columns("ProductCategoryID,ProductCategoryTitle")
-                .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
-                .ToList();
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .Columns("ProductCategoryID,ProductCategoryTitle")
+                            .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
+                            .ToList();
             if (!DataHelper.DataSourceIsEmpty(categories))
             {
                 ddlCategory.DataSource = categories;
@@ -341,6 +380,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
     }
+
     /// <summary>
     /// Filter products by POS Number
     /// </summary>
@@ -352,7 +392,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     }
 
     #endregion "Methods"
-
 }
 
 public enum ProductsType

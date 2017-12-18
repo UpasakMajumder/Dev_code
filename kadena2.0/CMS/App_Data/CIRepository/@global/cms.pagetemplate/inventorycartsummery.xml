@@ -108,7 +108,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="transformationname">KDA.Transformations.XDistributors</property>
-          <property name="useupdatepanel">False</property>
+          <property name="useupdatepanel">True</property>
           <property name="visible">True</property>
           <property name="webpartlayout"></property>
           <property name="webparttitle"></property>
@@ -117,6 +117,31 @@
             <![CDATA[ShoppingCartUserID={% CurrentUser.UserID |(user)cvoqa2@gmail.com|(hash)77ec86f07b172b78715c47205a47e068d2f315366fe5e368d91ccb69ec7271db%} AND ShoppingCartInventoryType=1 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
           </property>
           <property name="zerorowstext">No cart items found</property>
+        </webpart>
+        <webpart controlid="Javascript" guid="1c20c491-68e3-4649-a85b-e3ec36faff1d" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+$(".js-CloseMesaage").on("click",function(){
+$(this).closest(".dialog").removeClass("active");
+})
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">1c20c491-68e3-4649-a85b-e3ec36faff1d</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
     </page>

@@ -1,13 +1,16 @@
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -331,6 +334,55 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
+    /// <summary>
+    /// Get the No Access Page
+    /// </summary>
+    public string NoAccessPage
+    {
+        get
+        {
+            string noAccessPath = string.Empty;
+            try
+            {
+                Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_NoAccessPage"), Guid.Empty);
+                {
+                    if (!nodeGUID.Equals(Guid.Empty))
+                    {
+                        var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                        if (document != null)
+                        {
+                            noAccessPath = document.DocumentUrlPath;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Get no Access Page", "NoAccessPage", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return noAccessPath;
+        }
+        set
+        {
+            SetValue("NoAccessPage", value);
+        }
+    }
+
+    /// <summary>
+    /// Get Action resource string
+    /// </summary>
+    public string ActionsText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ActionsText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ActionsText", value);
+        }
+    }
+
     #endregion Properties
 
     #region "Methods"
@@ -357,13 +409,14 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         gdvInboundProducts.Columns[5].HeaderText = QtyProdusedHeaderText;
         gdvInboundProducts.Columns[6].HeaderText = OverageHeaderText;
         gdvInboundProducts.Columns[7].HeaderText = VendorHeaderText;
-        gdvInboundProducts.Columns[8].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[8].HeaderText = ExpArraivalToCenveoHeaderText;
         gdvInboundProducts.Columns[9].HeaderText = DeliveryToDistByHeaderText;
         gdvInboundProducts.Columns[10].HeaderText = ShippedToDistHeaderText;
         gdvInboundProducts.Columns[11].HeaderText = CenveoCommentsHeaderText;
         gdvInboundProducts.Columns[12].HeaderText = TWECommentsHeaderText;
         gdvInboundProducts.Columns[13].HeaderText = ActualPriceHeaderText;
         gdvInboundProducts.Columns[14].HeaderText = StatusHeaderText;
+        gdvInboundProducts.Columns[15].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
     }
@@ -375,12 +428,27 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         if (!this.StopProcessing)
         {
-            if (!IsPostBack)
+            string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+            if (!string.IsNullOrEmpty(gAdminRoleName) && !string.IsNullOrWhiteSpace(gAdminRoleName))
             {
-                BindCampaigns();
-                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                GetProducts();
+                if (CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+                {
+                    if (!IsPostBack)
+                    {
+                        BindCampaigns();
+                        string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+                        ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                        GetProducts();
+                    }
+                }
+                else
+                {
+                    Response.Redirect(NoAccessPage);
+                }
+            }
+            else
+            {
+                Response.Redirect(NoAccessPage);
             }
         }
     }
@@ -394,16 +462,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         SetupControl();
     }
 
-    /// <summary>
-    /// Get Products
-    /// </summary>
-    public void GetProducts()
+    public List<CampaignsProduct> GetProductDetails()
     {
+        List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
         try
         {
-            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = true;
-
-            List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
             List<int> programIds = new List<int>();
             if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
             {
@@ -419,6 +482,19 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                   .WhereIn("ProgramID", programIds)
                                   .ToList();
             }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Product Details", "GetProductDetails()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return productsDetails;
+    }
+
+    public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
+    {
+        List<SKUInfo> skuDetails = new List<SKUInfo>();
+        try
+        {
             List<int> skuIds = new List<int>();
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
@@ -429,51 +505,62 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             }
             if (!DataHelper.DataSourceIsEmpty(skuIds))
             {
-                var skuDetails = SKUInfoProvider.GetSKUs()
-                                .WhereIn("SKUID", skuIds)
-                                .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUID")
-                                .ToList();
+                skuDetails = SKUInfoProvider.GetSKUs()
+                               .WhereIn("SKUID", skuIds)
+                               .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUID")
+                               .ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Sku details", "GetSkuDetails()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return skuDetails;
+    }
 
-                if (!DataHelper.DataSourceIsEmpty(skuIds) && !DataHelper.DataSourceIsEmpty(productsDetails))
+    /// <summary>
+    /// Get Products
+    /// </summary>
+    public void GetProducts()
+    {
+        try
+        {
+            List<CampaignsProduct> productsDetails = GetProductDetails();
+            List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
+            if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
+            {
+                var productAndSKUDetails = productsDetails
+                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
+                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
+                var allDetails = from product in productAndSKUDetails
+                                 join inbound in inboundDetails
+                                 on product.SKUID equals inbound.SKUID into alldata
+                                 from newData in alldata.DefaultIfEmpty()
+                                 select new
+                                 {
+                                     SKUID = product.SKUID,
+                                     SKUNumber = product.SKUNumber,
+                                     SKUName = product.SKUName,
+                                     QtyOrdered = newData?.QtyOrdered ?? default(int),
+                                     DemandGoal = newData?.DemandGoal ?? default(int),
+                                     QtyReceived = newData?.QtyReceived ?? default(int),
+                                     QtyProduced = newData?.QtyProduced ?? default(int),
+                                     Overage = newData?.Overage ?? default(int),
+                                     Vendor = newData?.Vendor ?? string.Empty,
+                                     ExpArrivalToCenveo = newData?.ExpArrivalToCenveo ?? string.Empty,
+                                     DeliveryToDistBy = newData?.DeliveryToDistBy ?? string.Empty,
+                                     ShippedToDist = newData?.ShippedToDist ?? string.Empty,
+                                     CenveoComments = newData?.CenveoComments ?? string.Empty,
+                                     TweComments = newData?.TweComments ?? string.Empty,
+                                     ActualPrice = newData?.ActualPrice ?? default(double),
+                                     Status = product.SKUEnabled
+                                 };
+                allDetails = allDetails.ToList();
+                if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
-                    var productAndSKUDetails = productsDetails
-                                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
-                    var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
-                    var allDetails = from product in productAndSKUDetails
-                                     join inbound in inboundDetails
-                                     on product.SKUID equals inbound.SKUID into alldata
-                                     from newData in alldata.DefaultIfEmpty()
-                                     select new
-                                     {
-                                         SKUID = product.SKUID,
-                                         SKUNumber = product.SKUNumber,
-                                         SKUName = product.SKUName,
-                                         QtyOrdered = newData?.QtyOrdered ?? default(int),
-                                         DemandGoal = newData?.DemandGoal ?? default(int),
-                                         QtyReceived = newData?.QtyReceived ?? default(int),
-                                         QtyProduced = newData?.QtyProduced ?? default(int),
-                                         Overage = newData?.Overage ?? default(int),
-                                         Vendor = newData?.Vendor ?? string.Empty,
-                                         ExpArrivalToCenveo = newData?.ExpArrivalToCenveo ?? string.Empty,
-                                         DeliveryToDistBy = newData?.DeliveryToDistBy ?? string.Empty,
-                                         ShippedToDist = newData?.ShippedToDist ?? string.Empty,
-                                         CenveoComments = newData?.CenveoComments ?? string.Empty,
-                                         TweComments = newData?.TweComments ?? string.Empty,
-                                         ActualPrice = newData?.ActualPrice ?? default(double),
-                                         Status = product.SKUEnabled
-                                     };
-                    allDetails = allDetails.ToList();
-                    if(!DataHelper.DataSourceIsEmpty(allDetails))
-                    {
-                        BindLabels();
-                        gdvInboundProducts.DataSource = allDetails;
-                        gdvInboundProducts.DataBind();
-                    }
-                    else
-                    {
-                        BindLabels();
-                        gdvInboundProducts.DataBind();
-                    }
+                    BindLabels();
+                    gdvInboundProducts.DataSource = allDetails;
+                    gdvInboundProducts.DataBind();
                 }
                 else
                 {
@@ -506,6 +593,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (campaignID != default(int))
             {
                 campaigns = CampaignProvider.GetCampaigns()
+                    .WhereEquals("CloseCampaign", true)
                     .Columns("CampaignID")
                     .WhereEquals("CampaignID", campaignID)
                     .ToList();
@@ -514,7 +602,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             {
                 campaigns = CampaignProvider.GetCampaigns()
                              .Columns("CampaignID")
-                             .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
+                             .WhereEquals("CloseCampaign", true)
                              .ToList();
             }
             if (!DataHelper.DataSourceIsEmpty(campaigns))
@@ -630,50 +718,37 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         try
         {
             string skuid = ((HiddenField)gdvInboundProducts.Rows[e.RowIndex].FindControl("hfSKUID")).Value;
-            var inboundData = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereEquals("SKUID", ValidationHelper.GetInteger(skuid, default(int))).FirstOrDefault();
-            if (inboundData != null)
+            bool isExist = true;
+            InboundTrackingItem inboundData = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereEquals("SKUID", ValidationHelper.GetInteger(skuid, default(int))).FirstOrDefault();
+            if (inboundData == null)
             {
-                inboundData.SKUID = ValidationHelper.GetInteger(skuid, default(int));
-                inboundData.QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int));
-                inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
-                inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
-                inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-                inboundData.Overage = inboundData.QtyOrdered - inboundData.QtyProduced;
-                inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
-                inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
-                inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
-                inboundData.ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty);
-                inboundData.CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty);
-                inboundData.TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty);
-                inboundData.ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double));
-                inboundData.Update();
-                UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
-                gdvInboundProducts.EditIndex = -1;
-                GetProducts();
+                inboundData = new InboundTrackingItem();
+                isExist = false;
+            }
+            inboundData.SKUID = ValidationHelper.GetInteger(skuid, default(int));
+            inboundData.QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int));
+            inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
+            inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
+            inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
+            inboundData.Overage = inboundData.QtyOrdered - inboundData.QtyProduced;
+            inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
+            inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
+            inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
+            inboundData.ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty);
+            inboundData.CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty);
+            inboundData.TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty);
+            inboundData.ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double));
+            if (!isExist)
+            {
+                inboundData.Insert();
             }
             else
             {
-                InboundTrackingItem item = new InboundTrackingItem()
-                {
-                    SKUID = ValidationHelper.GetInteger(skuid, default(int)),
-                    QtyOrdered = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int)),
-                    DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int)),
-                    QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int)),
-                    QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int)),
-                    Overage = ValidationHelper.GetInteger(((Label)gdvInboundProducts.Rows[e.RowIndex].FindControl("lblQtyOrdered")).Text, default(int)) - ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int)),
-                    Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty),
-                    ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty),
-                    DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty),
-                    ShippedToDist = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtShippedToDist")).Text, string.Empty),
-                    CenveoComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtCenveoComments")).Text, string.Empty),
-                    TweComments = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtTweComments")).Text, string.Empty),
-                    ActualPrice = ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double))
-                };
-                item.Insert();
-                UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
-                gdvInboundProducts.EditIndex = -1;
-                GetProducts();
+                inboundData.Update();
             }
+            UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
+            gdvInboundProducts.EditIndex = -1;
+            GetProducts();
         }
         catch (Exception ex)
         {
@@ -736,6 +811,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         GetProducts();
     }
+
     /// <summary>
     /// Refresh the page
     /// </summary>
@@ -745,6 +821,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         Response.Redirect(Request.RawUrl);
     }
+
     /// <summary>
     /// Export Products data to Excel
     /// </summary>
@@ -754,26 +831,40 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            Response.Clear();
-            Response.AddHeader("content-disposition", "attachment;filename=Contact.xls");
-            Response.Charset = "";
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            System.IO.StringWriter stringWrite = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
             gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = false;
+            gdvInboundProducts.AllowPaging = false;
+            gdvInboundProducts.EditIndex = -1;
+            GetProducts();
+            Response.Clear();
+            Response.AddHeader("content-disposition", "attachment;filename=InboudTracking.xls");
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            StringWriter stringWrite = new StringWriter();
+            HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
             System.Web.UI.HtmlControls.HtmlForm form = new System.Web.UI.HtmlControls.HtmlForm();
             Controls.Add(form);
             form.Controls.Add(gdvInboundProducts);
             form.RenderControl(htmlWrite);
             Response.Write(stringWrite.ToString());
             Response.End();
+            gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = true;
+            gdvInboundProducts.AllowPaging = true;
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Export data to excel", "btnExport_Click()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
+    /// <summary>
+    /// Adding the pagination for products
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gdvInboundProducts_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gdvInboundProducts.PageIndex = e.NewPageIndex;
+        GetProducts();
+    }
 }
 
 #endregion "Methods"
-
