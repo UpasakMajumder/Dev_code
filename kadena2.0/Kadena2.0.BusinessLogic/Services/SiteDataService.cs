@@ -11,6 +11,11 @@ namespace Kadena.BusinessLogic.Services
 
         public SiteDataService(IKenticoResourceService kentico)
         {
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+
             _kentico = kentico;
         }  
 

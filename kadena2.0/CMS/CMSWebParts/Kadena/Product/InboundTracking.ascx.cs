@@ -462,6 +462,42 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         SetupControl();
     }
 
+    /// <summary>
+    /// Get the Campaign Closed or not
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <returns></returns>
+    public bool IsCampaignClosed(int programID)
+    {
+        bool isClosed = false;
+        try
+        {
+            Program program = ProgramProvider.GetPrograms()
+                 .WhereEquals("ProgramID", programID)
+                 .Columns("CampaignID")
+                 .FirstOrDefault();
+            if (program != null)
+            {
+                Campaign campaign = CampaignProvider.GetCampaigns()
+                    .WhereEquals("CampaignID", program.CampaignID).Columns("CloseCampaign")
+                    .FirstOrDefault();
+                if (campaign != null)
+                {
+                    isClosed = campaign.CloseCampaign;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Checking campaign Closed", "IsCampaignClosed()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return isClosed;
+    }
+
+    /// <summary>
+    /// Get Product details
+    /// </summary>
+    /// <returns></returns>
     public List<CampaignsProduct> GetProductDetails()
     {
         List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
@@ -470,7 +506,10 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             List<int> programIds = new List<int>();
             if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
             {
-                programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+                if (IsCampaignClosed(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int))))
+                {
+                    programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+                }
             }
             else
             {
@@ -490,6 +529,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         return productsDetails;
     }
 
+    /// <summary>
+    /// Get Sku Details
+    /// </summary>
+    /// <param name="productsDetails"></param>
+    /// <returns></returns>
     public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
     {
         List<SKUInfo> skuDetails = new List<SKUInfo>();
