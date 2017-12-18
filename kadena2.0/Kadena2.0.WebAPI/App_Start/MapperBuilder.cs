@@ -242,8 +242,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<Brand, BrandDto>();
                 config.CreateMap<DashboardStatistics, DashboardStatisticsDTO>()
               .ForMember(dest => dest.OpenOrders, opt => opt.MapFrom(src => src.OpenOrders))
-              .ForMember(dest => dest.OrdersPlaced, opt => opt.MapFrom(src => src.OrdersPlaced))
-              .ForMember(dest => dest.NewSalespersons, opt => opt.MapFrom(src => src.NewSalespersons));
+              .ForMember(dest => dest.OrdersPlaced, opt => opt.MapFrom(src => src.OrdersPlaced));
                 config.CreateMap<StatisticBlock, StatisticBlockDTO>()
                 .ForMember(dest => dest.Week, opt => opt.MapFrom(src => src.Week))
                 .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.Month))

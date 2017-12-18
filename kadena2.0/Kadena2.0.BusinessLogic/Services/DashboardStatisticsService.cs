@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.General;
+using Kadena.DTO.Dashboard;
 using Kadena.Dto.Order;
 using Kadena.Helpers;
 using Kadena.Models.Dashboard;
@@ -14,35 +15,25 @@ namespace Kadena.BusinessLogic.Services
 {
     public class DashboardStatisticsService : IDashboardStatisticsService
     {
-        private readonly IKenticoDashboardStatisticsProvider kenticoDashboardStatistics;
         private readonly IKenticoResourceService _kenticoResources;
 
-        public DashboardStatisticsService(IKenticoDashboardStatisticsProvider kenticoDashboardStatistics, IKenticoResourceService kenticoResources)
+        public DashboardStatisticsService(IKenticoResourceService kenticoResources)
         {
-            this.kenticoDashboardStatistics = kenticoDashboardStatistics;
             this._kenticoResources = kenticoResources;
         }
 
         public DashboardStatistics GetDashboardStatistics()
         {
-            DashboardStatistics statistics = new DashboardStatistics()
-            {
-                NewSalespersons = GetSalespersonStatistics()
-            };
+            DashboardStatistics statistics = new DashboardStatistics();
             var siteName = _kenticoResources.GetKenticoSite().Name;
             var statisticClient = new OrderViewClient(new MicroProperties(new KenticoResourceService()));
             BaseResponseDto<OrderListDto> response = statisticClient.GetOrders(siteName, 1, 1000).Result;
             if (response.Success)
             {
-                statistics.OpenOrders = GetOrdersBlock(response.Payload.Orders, "Submission in progress");
-                statistics.OrdersPlaced = GetOrdersBlock(response.Payload.Orders, "Submitted");
+                statistics.OpenOrders = GetOrdersBlock(response.Payload.Orders, OrderStatusConstantsDTO.OrderInProgress);
+                statistics.OrdersPlaced = GetOrdersBlock(response.Payload.Orders, OrderStatusConstantsDTO.OrderPlaced);
             }
             return statistics;
-        }
-
-        private StatisticBlock GetSalespersonStatistics()
-        {
-            return kenticoDashboardStatistics.GetSalespersonStatistics();
         }
 
         private StatisticBlock GetOrdersBlock(IEnumerable<OrderDto> ordersList, string orderStatus)

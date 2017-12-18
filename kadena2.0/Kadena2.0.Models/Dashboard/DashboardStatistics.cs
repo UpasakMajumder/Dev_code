@@ -4,6 +4,6 @@
     {
         public StatisticBlock OpenOrders { get; set; }
         public StatisticBlock OrdersPlaced { get; set; }
-        public StatisticBlock NewSalespersons { get; set; }
+        
     }
 }

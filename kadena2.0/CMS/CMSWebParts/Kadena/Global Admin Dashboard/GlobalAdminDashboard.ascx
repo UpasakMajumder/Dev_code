@@ -3,13 +3,13 @@
 <div class="Summary_content">
     <span><label runat="server" id="lblTimeHeader"></label></span>
 </div>
-<table class="show-table">
+<table class="table show__table-right">
     <tbody>
         <tr>
             <th></th>
             <th><cms:LocalizedLabel runat="server" ID="lblWeekHeading" ResourceString="KDA.Dashboard.WeekHeading"></cms:LocalizedLabel></th>
-            <th><cms:LocalizedLabel runat="server" ID="lblMonthHeading" ResourceString="KDA.Dashboard.WeekHeading"></cms:LocalizedLabel></th>
-            <th><cms:LocalizedLabel runat="server" ID="lblYearHeading" ResourceString="KDA.Dashboard.WeekHeading"></cms:LocalizedLabel></th>
+            <th><cms:LocalizedLabel runat="server" ID="lblMonthHeading" ResourceString="KDA.Dashboard.MonthHeading"></cms:LocalizedLabel></th>
+            <th><cms:LocalizedLabel runat="server" ID="lblYearHeading" ResourceString="KDA.Dashboard.YearHeading"></cms:LocalizedLabel></th>
         </tr>
         <tr>
             <td><cms:LocalizedLabel runat="server" ID="lblOpenordersHeading" ResourceString="KDA.Dashboard.OpenOrdersSideHeading"></cms:LocalizedLabel></td>
