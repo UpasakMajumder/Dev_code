@@ -17,8 +17,37 @@ namespace Kadena.CMSWebParts.Kadena.Cart
     public partial class CartCheckout : CMSAbstractWebPart
     {
         private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
+        #region properties
         private ShoppingCartInfo Cart { get; set; }
-
+        /// <summary>
+        /// Checkout button text
+        /// </summary>
+        public string CheckoutButtonText
+        {
+            get
+            {
+                return ResHelper.GetString("KDA.CartCheckout.CheckoutButtonText");
+            }
+            set
+            {
+                SetValue("CheckoutButtonText", value);
+            }
+        }
+        /// <summary>
+        /// popup close button text
+        /// </summary>
+        public string PopupCloseButtonText
+        {
+            get
+            {
+                return ResHelper.GetString("KDA.CartCheckout.PopupCloseButtonText");
+            }
+            set
+            {
+                SetValue("PopupCloseButtonText", value);
+            }
+        }
+        #endregion
         #region Events
 
         /// <summary>
@@ -51,9 +80,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 else
                 {
-                    lblCartError.Text = ResHelper.GetString("KDA.Checkout.OrderError");
                     var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs).Column("AddressPersonalName").ToList().Select(x => x?.AddressPersonalName).ToList();
-                    ShowError(distributors);
+                    ShowOrderErrorList(distributors);
                 }
                 divDailogue.Attributes.Add("class", "dialog active");
             }
@@ -84,11 +112,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 return null;
             }
         }
-
-        private void ShowError(List<string> addresses)
+        /// <summary>
+        /// displays the unprocessed order distributors names
+        /// </summary>
+        /// <param name="addresses"></param>
+        private void ShowOrderErrorList(List<string> addresses)
         {
             try
             {
+                lblCartError.Text = ResHelper.GetString("KDA.Checkout.OrderError");
                 lstErrors.DataSource = addresses;
                 lstErrors.DataBind();
             }
