@@ -6,7 +6,7 @@
 <asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
 <div class="login__form-content js-login">
     <div class="css-login">
-        <div class="form form_width100 formerrormsgs">
+        <div class="form form__lg">
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
@@ -117,7 +117,6 @@
                     <span class="input__label" runat="server" id="lblStatus"></span>
                     <div class="input__inner">
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="input__select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rqStatus" CssClass="input__error" runat="server" ControlToValidate="ddlStatus" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
