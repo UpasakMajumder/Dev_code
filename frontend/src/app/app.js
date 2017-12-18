@@ -65,6 +65,7 @@ const app = {
     render('Products/Favorites', document.querySelectorAll('.r-products-favorites'));
     render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
     render('TaC', document.querySelectorAll('.r-tac'));
+    render('FilteredRecentOrders', document.querySelectorAll('.r-filtered-recent-orders'));
   }
 };
 
