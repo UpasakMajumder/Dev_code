@@ -74,7 +74,6 @@
     <Compile Include="CreditCard\Submission.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="Customer.cs" />
-    <Compile Include="CustomerData\CartDistributorItem.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
     <Compile Include="CustomerData\CustomerData.cs" />
     <Compile Include="DeliveryAddress.cs" />
