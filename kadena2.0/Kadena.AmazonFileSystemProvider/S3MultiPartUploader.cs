@@ -23,13 +23,15 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="maximalPartSize">Maximal possible size of the part sent in one request to Amazon S3 storage.</param>
         internal S3MultiPartUploader(AmazonS3Client s3Client, long minimalPartSize, long maximalPartSize)
         {
-            if (s3Client == null)
-                throw new ArgumentNullException(nameof(s3Client));
+            this.mS3Client = s3Client ?? throw new ArgumentNullException(nameof(s3Client));
             if (minimalPartSize < 1L)
+            {
                 throw new ArgumentOutOfRangeException(nameof(minimalPartSize), "minimalPartSize cannot be smaller than 1.");
+            }
             if (maximalPartSize <= minimalPartSize)
+            {
                 throw new ArgumentOutOfRangeException(nameof(maximalPartSize), "maximalPartSize cannot be smaller than minimalPartSize.");
-            this.mS3Client = s3Client;
+            }
             this.mMinimalPartSize = minimalPartSize;
             this.mMaximalPartSize = maximalPartSize;
         }
@@ -46,7 +48,9 @@ namespace Kadena.AmazonFileSystemProvider
         public string InitMultiPartUpload(string key, string bucket)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(bucket))
+            {
                 throw new ArgumentException("key and bucket cannot be empty.");
+            }
             return this.mS3Client.InitiateMultipartUpload(new InitiateMultipartUploadRequest()
             {
                 Key = key,
@@ -69,7 +73,9 @@ namespace Kadena.AmazonFileSystemProvider
         public string UploadPartFromStream(string uploadId, string key, string bucket, int partNumber, Stream stream)
         {
             if (stream.Length > this.mMaximalPartSize)
-                throw new ArgumentException("stream's length exceeds maximal part size (" + (object)this.mMaximalPartSize + "B) that can be uploaded to Amazon S3 storage.");
+            {
+                throw new ArgumentException($"stream's length exceeds maximal part size ({this.mMaximalPartSize}B) that can be uploaded to Amazon S3 storage.");
+            }
             UploadPartRequest uploadPartRequest = this.CreateUploadPartRequest(key, bucket, uploadId);
             stream.Seek(0L, SeekOrigin.Begin);
             uploadPartRequest.PartSize = stream.Length;
@@ -88,7 +94,9 @@ namespace Kadena.AmazonFileSystemProvider
         public CompleteMultipartUploadResponse UploadFromStream(string key, string bucket, Stream stream)
         {
             if (stream == null)
+            {
                 throw new ArgumentNullException(nameof(stream));
+            }
             return this.MultiPartUploadFromStream(key, bucket, stream);
         }
 
@@ -102,9 +110,13 @@ namespace Kadena.AmazonFileSystemProvider
         public CompleteMultipartUploadResponse UploadFromFilePath(string key, string bucket, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
+            {
                 throw new ArgumentException("filePath cannot be null or empty.");
-            using (System.IO.FileStream fileStream = new System.IO.FileStream(filePath, FileMode.Open))
-                return this.UploadFromStream(key, bucket, (Stream)fileStream);
+            }
+            using (var fileStream = new System.IO.FileStream(filePath, FileMode.Open))
+            {
+                return this.UploadFromStream(key, bucket, fileStream);
+            }
         }
 
         /// <summary>
@@ -118,7 +130,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <returns>Response from Amazon S3 storage after finishing the multipart upload.</returns>
         public CompleteMultipartUploadResponse CompleteMultiPartUploadProcess(string key, string bucket, string uploadId, IEnumerable<UploadPartResponse> uploadedPartResponses)
         {
-            CompleteMultipartUploadRequest request = new CompleteMultipartUploadRequest()
+            var request = new CompleteMultipartUploadRequest
             {
                 Key = key,
                 BucketName = bucket,
@@ -156,7 +168,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// </returns>
         private CompleteMultipartUploadResponse MultiPartUploadFromStream(string key, string bucket, Stream stream)
         {
-            List<UploadPartResponse> uploadPartResponseList = new List<UploadPartResponse>();
+            var uploadPartResponseList = new List<UploadPartResponse>();
             string uploadId = this.InitMultiPartUpload(key, bucket);
             UploadPartRequest uploadPartRequest = this.CreateUploadPartRequest(key, bucket, uploadId);
             stream.Seek(0L, SeekOrigin.Begin);
@@ -171,11 +183,12 @@ namespace Kadena.AmazonFileSystemProvider
                     uploadPartRequest.FilePosition += uploadPartRequest.PartSize;
                     ++uploadPartRequest.PartNumber;
                 }
-                return this.CompleteMultiPartUploadProcess(uploadPartRequest.Key, uploadPartRequest.BucketName, uploadPartRequest.UploadId, (IEnumerable<UploadPartResponse>)uploadPartResponseList);
+                return this.CompleteMultiPartUploadProcess(uploadPartRequest.Key, uploadPartRequest.BucketName, 
+                    uploadPartRequest.UploadId, uploadPartResponseList);
             }
             catch (AmazonS3Exception ex)
             {
-                EventLogProvider.LogException("AmazonStorage", "MULTIPARTUPLOAD", (Exception)ex, 0, (string)null, (LoggingPolicy)null);
+                EventLogProvider.LogException("AmazonStorage", "MULTIPARTUPLOAD", ex, 0);
                 this.AbortMultiPartUpload(uploadPartRequest.Key, uploadPartRequest.BucketName, uploadPartRequest.UploadId);
                 throw;
             }
@@ -189,7 +202,9 @@ namespace Kadena.AmazonFileSystemProvider
         private UploadPartRequest CreateUploadPartRequest(string key, string bucket, string uploadId)
         {
             if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(bucket) || string.IsNullOrEmpty(uploadId))
+            {
                 throw new ArgumentException("key, bucket and uploadId cannot be empty.");
+            }
             return new UploadPartRequest()
             {
                 Key = key,
