@@ -98,9 +98,10 @@ namespace Kadena.AmazonFileSystemProvider
             set
             {
                 this.mLastWriteTime = value;
-                if (!this.existsInS3Storage)
-                    return;
-                this.obj.SetMetadata(nameof(LastWriteTime), S3ObjectInfoProvider.GetDateTimeString(this.mLastWriteTime));
+                if (this.existsInS3Storage)
+                {
+                    this.obj.SetMetadata(nameof(LastWriteTime), S3ObjectInfoProvider.GetDateTimeString(this.mLastWriteTime));
+                }
             }
         }
 
@@ -123,9 +124,10 @@ namespace Kadena.AmazonFileSystemProvider
             set
             {
                 this.mCreationTime = value;
-                if (!this.existsInS3Storage)
-                    return;
-                this.obj.SetMetadata(nameof(CreationTime), S3ObjectInfoProvider.GetDateTimeString(this.mCreationTime));
+                if (this.existsInS3Storage)
+                {
+                    this.obj.SetMetadata(nameof(CreationTime), S3ObjectInfoProvider.GetDateTimeString(this.mCreationTime));
+                }
             }
         }
 
@@ -134,7 +136,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return (CMS.IO.DirectoryInfo)this.mDirectory;
+                return this.mDirectory;
             }
         }
 
@@ -151,9 +153,11 @@ namespace Kadena.AmazonFileSystemProvider
             set
             {
                 this.mAttributes = value;
-                if (!this.existsInS3Storage)
-                    return;
-                this.obj.SetMetadata(nameof(Attributes), ValidationHelper.GetString((object)ValidationHelper.GetInteger((object)this.mAttributes, 0, (CultureInfo)null), string.Empty, (CultureInfo)null));
+                if (this.existsInS3Storage)
+                {
+                    this.obj.SetMetadata(nameof(Attributes), ValidationHelper.GetString(
+                        ValidationHelper.GetInteger(this.mAttributes, 0), string.Empty));
+                }
             }
         }
 
@@ -175,9 +179,10 @@ namespace Kadena.AmazonFileSystemProvider
             }
             set
             {
-                if (!this.existsInS3Storage)
-                    return;
-                this.obj.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(value));
+                if (this.existsInS3Storage)
+                {
+                    this.obj.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(value));
+                }
             }
         }
 
@@ -186,7 +191,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             this.mExists = true;
             this.existsInS3Storage = true;
-            return CMS.IO.StreamWriter.New((System.IO.Stream)CMS.IO.FileStream.New(this.FullName, CMS.IO.FileMode.Create));
+            return CMS.IO.StreamWriter.New(CMS.IO.FileStream.New(this.FullName, CMS.IO.FileMode.Create));
         }
 
         /// <summary>Deletes file.</summary>
@@ -200,7 +205,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <summary>Creates a read-only ICMSFileStream.</summary>
         protected override CMS.IO.FileStream OpenReadInternal()
         {
-            return (CMS.IO.FileStream)new FileStream(this.FullName, CMS.IO.FileMode.Open);
+            return new FileStream(this.FullName, CMS.IO.FileMode.Open);
         }
 
         /// <summary>Copies current file to destination.</summary>
@@ -209,7 +214,7 @@ namespace Kadena.AmazonFileSystemProvider
         protected override CMS.IO.FileInfo CopyToInternal(string destFileName, bool overwrite)
         {
             CMS.IO.File.Copy(this.FullName, destFileName, overwrite);
-            return CMS.IO.FileInfo.New(destFileName);
+            return New(destFileName);
         }
 
         /// <summary>Moves an existing file to a new file.</summary>
