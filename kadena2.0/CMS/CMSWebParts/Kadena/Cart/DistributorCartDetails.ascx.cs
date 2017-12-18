@@ -20,7 +20,6 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -377,8 +376,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// <param name="e"></param>
         protected void lnkSaveasPDF_Click(object sender, EventArgs e)
         {
-            DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
-            CreateDistributorCartPDF(distributorCartData);
+            try
+            {
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData);
+                CartPDFHelper.WriteresponseToPDF(pdfBytes);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "lnkSaveasPDF_Click", ex.Message);
+            }
         }
 
         #endregion "Event handling"
@@ -662,41 +669,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "GetSourceAddressFromConfig", ex.Message);
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// This will create cart Pdf o download
-        /// </summary>
-        /// <param name="distributorCartData"></param>
-        private void CreateDistributorCartPDF(DataTable distributorCartData)
-        {
-            try
-            {
-                var html = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTML");
-                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
-                var PDFBody = "";
-                foreach (var cart in groupCart)
-                {
-                    PDFBody += CartPDFHelper.CreateCarOuterContent(cart.FirstOrDefault(), CurrentSiteName);
-                    var cartData = cart.ToList();
-                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CartPDFHelper.CreateCartInnerContent(cartData, CurrentSiteName));
-                    html = html.Replace("{PDFNAME}", $"{(cart.FirstOrDefault())["AddressPersonalName"].ToString()}");
-                }
-                html = html.Replace("{OUTERCONTENT}", PDFBody);
-                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
-                string fileName = "test" + DateTime.Now.Ticks + ".pdf";
-                Response.Clear();
-                MemoryStream ms = new MemoryStream(pdfBytes);
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-                Response.Buffer = true;
-                ms.WriteTo(Response.OutputStream);
-                Response.End();
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("CartPDFHelper", "CreateCarOuterContent", ex.Message);
             }
         }
 

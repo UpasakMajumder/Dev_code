@@ -1,16 +1,68 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace Kadena.Old_App_Code.Kadena.PDFHelpers
 {
     public class CartPDFHelper
     {
+        private const string _cartPDFFileName = "KDA_CartPDFFileName";
+
         #region Methods
+
+        /// <summary>
+        /// Create Pdf method
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        public static byte[] CreateProductPDF(DataTable distributorCartData)
+        {
+            try
+            {
+                var html = SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_DistributorCartPDFHTML");
+                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
+                var PDFBody = "";
+                foreach (var cart in groupCart)
+                {
+                    PDFBody += CreateCarOuterContent(cart.FirstOrDefault(), SiteContext.CurrentSiteName);
+                    var cartData = cart.ToList();
+                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CreateCartInnerContent(cartData, SiteContext.CurrentSiteName));
+                }
+                html = html.Replace("{OUTERCONTENT}", PDFBody);
+                return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "CreateProductPDF", ex.Message);
+                return null;
+            }
+        }
+
+        public static void WriteresponseToPDF(byte[] pdfBytes)
+        {
+            try
+            {
+                string fileName = $"{ _cartPDFFileName }.pdf";
+                HttpContext.Current.Response.Clear();
+                MemoryStream ms = new MemoryStream(pdfBytes);
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                HttpContext.Current.Response.Buffer = true;
+                ms.WriteTo(HttpContext.Current.Response.OutputStream);
+                HttpContext.Current.Response.End();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "CreateProductPDF", ex.Message);
+            }
+        }
 
         /// <summary>
         /// This will returns distributor cart items
