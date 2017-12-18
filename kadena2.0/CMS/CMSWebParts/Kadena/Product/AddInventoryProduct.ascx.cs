@@ -716,7 +716,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
+                
                 string selectedPos = ddlPosNo.SelectedValue;
+                BindData();
                 SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
                 if (skuDetails != null)
                 {
@@ -764,7 +766,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         }
                     }
                 }
-                BindData();
+               
                 ddlPosNo.SelectedValue = selectedPos;
             }
             catch (Exception ex)
