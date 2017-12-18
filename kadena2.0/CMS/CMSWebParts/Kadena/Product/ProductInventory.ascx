@@ -1,21 +1,21 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Product_ProductInventory" CodeBehind="~/CMSWebParts/Kadena/Product/ProductInventory.ascx.cs" %>
 <%@ Register TagName="CustomerCart" Src="~/CMSWebParts/Kadena/ShoppingCart/CustomerCartOperations.ascx" TagPrefix="Cart" %>
 
-<div class="custom_section">
-    <div class="custom_block clearfix">
-        <div class="custom_select">
+<div class="custom__section">
+    <div class="custom__block clearfix">
+        <div class="custom__select">
             <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
-        <div class="search_block">
+        <div class="search__block">
             <asp:TextBox ID="txtPos" runat="server" OnTextChanged="txtPos_TextChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
         </div>
     </div>
-    <div class="custom_content">
+    <div class="custom__content">
         <cms:CMSRepeater ID="rptProductList" runat="server">
             <ItemTemplate>
-                <div class="cus_content_block">
-                    <div class="img_block">
+                <div class="cus__content_block">
+                    <div class="img__block">
                         <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
                         <label for='zoomCheck_<%#Eval("SKUID") %>'>
                             <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />

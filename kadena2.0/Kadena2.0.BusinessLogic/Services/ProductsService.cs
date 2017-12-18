@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Linq;
 
 namespace Kadena.BusinessLogic.Services
@@ -12,6 +13,15 @@ namespace Kadena.BusinessLogic.Services
 
         public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites)
         {
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (favorites == null)
+            {
+                throw new ArgumentNullException(nameof(favorites));
+            }
+
             this.productsProvider = products;
             this.favorites = favorites;
         }

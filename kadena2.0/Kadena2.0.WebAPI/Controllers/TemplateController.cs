@@ -6,6 +6,7 @@ using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -16,6 +17,15 @@ namespace Kadena.WebAPI.Controllers
 
         public TemplateController(ITemplateService templateService, IMapper mapper)
         {
+            if (templateService == null)
+            {
+                throw new ArgumentNullException(nameof(templateService));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _templateService = templateService;
             _mapper = mapper;
         }
