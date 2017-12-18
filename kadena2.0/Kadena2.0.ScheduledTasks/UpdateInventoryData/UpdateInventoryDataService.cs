@@ -13,26 +13,30 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
         private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoLogger kenticoLog;
 
         public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
                                           IInventoryUpdateClient microserviceInventory, 
-                                          IKenticoProviderService kenticoProvider, 
+                                          IKenticoProviderService kenticoProvider,
+                                          IKenticoProductsProvider productsProvider,
                                           IKenticoLogger kenticoLog)
         {
             if (configurationProvider == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(configurationProvider));
             }
-
             if (microserviceInventory == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
             }
-
             if (kenticoProvider == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(kenticoProvider));
+            }
+            if (productsProvider == null)
+            {
+                throw new ArgumentNullException(nameof(productsProvider));
             }
             if (kenticoLog == null)
             {
@@ -42,6 +46,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             this.configurationProvider = configurationProvider;
             this.microserviceInventory = microserviceInventory;
             this.kenticoProvider = kenticoProvider;
+            this.productsProvider = productsProvider;
             this.kenticoLog = kenticoLog;
         }
 
@@ -80,7 +85,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
             {
-                kenticoProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
+                productsProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
             }
 
             return $"Customer with ErpId {customerErpId} done successfully";

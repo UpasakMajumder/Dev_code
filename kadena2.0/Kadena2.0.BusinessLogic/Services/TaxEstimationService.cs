@@ -5,6 +5,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -14,6 +15,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
+        private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
         public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
@@ -22,12 +24,39 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
                                    IKenticoLogger kenticoLog,
+                                   IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (taxCalculator == null)
+            {
+                throw new ArgumentNullException(nameof(taxCalculator));
+            }
+            if (kenticoLog == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLog));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (cache == null)
+            {
+                throw new ArgumentNullException(nameof(cache));
+            }
+
             this.kenticoProvider = kenticoProvider;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            
             this.kenticoLog = kenticoLog;
+            this.shoppingCart = shoppingCart;
             this.cache = cache;
         }
 
@@ -97,11 +126,11 @@ namespace Kadena.BusinessLogic.Services
 
         private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress)
         {
-            double totalItemsPrice = kenticoProvider.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = kenticoProvider.GetCurrentCartShippingCost();
+            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
+            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
 
-            var addressTo = deliveryAddress ?? kenticoProvider.GetCurrentCartShippingAddress();
-            var addressFrom = kenticoProvider.GetDefaultBillingAddress();
+            var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
+            var addressFrom = shoppingCart.GetDefaultBillingAddress();
 
             return CreateTaxEstimationRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
         }
