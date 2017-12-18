@@ -39,7 +39,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             this.Key = key ? path : PathHelper.GetObjectKeyFromPath(path);
             if (path == null || !path.EndsWith("\\", StringComparison.Ordinal) || this.Key.EndsWith("/", StringComparison.Ordinal))
+            {
                 return;
+            }
             this.Key += "/";
         }
 
@@ -77,16 +79,18 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 if (this.mMetadata == null)
                 {
-                    this.mMetadata = AbstractStockHelper<RequestStockHelper>.GetItem("AmazonStorage|S3ObjectInfo|", this.Key + "|Metadata", false) as Dictionary<string, string>;
+                    this.mMetadata = AbstractStockHelper<RequestStockHelper>.GetItem(STORAGE_KEY, this.Key + "|Metadata", false) as Dictionary<string, string>;
                     if (this.mMetadata == null)
+                    {
                         this.mMetadata = new Dictionary<string, string>();
+                    }
                 }
                 return this.mMetadata;
             }
             set
             {
                 this.mMetadata = value;
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|Metadata", (object)this.mMetadata, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Metadata", (object)this.mMetadata, false);
             }
         }
 
@@ -98,7 +102,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return CMS.Helpers.ValidationHelper.GetBoolean((object)this.GetMetadata("Lock"), false, (CultureInfo)null);
+                return ValidationHelper.GetBoolean(this.GetMetadata("Lock"), false);
             }
         }
 
@@ -111,7 +115,7 @@ namespace Kadena.AmazonFileSystemProvider
             }
             set
             {
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|ETag", (object)value, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|ETag", value, false);
             }
         }
 
@@ -133,7 +137,7 @@ namespace Kadena.AmazonFileSystemProvider
             }
             set
             {
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|Length", (object)value, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Length", value, false);
             }
         }
 
@@ -162,14 +166,22 @@ namespace Kadena.AmazonFileSystemProvider
         public void SetMetadata(string key, string value, bool update, bool log)
         {
             if (this.Metadata.ContainsKey(key))
+            {
                 this.Metadata[key] = value;
+            }
             else
+            {
                 this.Metadata.Add(key, value);
+            }
             if (update)
+            {
                 this.SaveMetadata(PathHelper.GetPathFromObjectKey(this.Key, true), this.Metadata);
+            }
             if (!log)
+            {
                 return;
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(SetMetadata), "Amazon");
+            }
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(SetMetadata), "Custom Amazon");
         }
 
         /// <summary>Returns object meta data.</summary>
@@ -178,8 +190,10 @@ namespace Kadena.AmazonFileSystemProvider
         {
             this.FetchMetadata();
             if (this.Metadata.ContainsKey(key))
+            {
                 return this.Metadata[key];
-            return (string)null;
+            }
+            return null;
         }
 
         /// <summary>Deletes metadata file.</summary>
@@ -188,25 +202,29 @@ namespace Kadena.AmazonFileSystemProvider
             this.S3Client.DeleteObject(new DeleteObjectRequest()
             {
                 BucketName = this.BucketName,
-                Key = "__metadata/" + this.Key + ".meta"
+                Key = $"{METADATA_FOLDER}{this.Key}{METADATA_EXT}"
             });
         }
 
         /// <summary>Locks current object.</summary>
         public void Lock()
         {
-            if (!this.Provider.ObjectExists((IS3ObjectInfo)this))
+            if (!this.Provider.ObjectExists(this))
+            {
                 return;
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(Lock), "Amazon");
+            }
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(Lock), "Custom Amazon");
             this.SetMetadata(nameof(Lock), "True", true, false);
         }
 
         /// <summary>Unlocks current object.</summary>
         public void UnLock()
         {
-            if (!this.Provider.ObjectExists((IS3ObjectInfo)this))
+            if (!this.Provider.ObjectExists(this))
+            {
                 return;
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), "Unlock", "Amazon");
+            }
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), "Unlock", "Custom Amazon");
             this.SetMetadata("Lock", "False", true, false);
         }
 
@@ -214,27 +232,33 @@ namespace Kadena.AmazonFileSystemProvider
         public bool Exists()
         {
             if (string.IsNullOrEmpty(this.Key))
+            {
                 return false;
+            }
             this.FetchMetadata();
-            return CMS.Helpers.ValidationHelper.GetBoolean(AbstractStockHelper<RequestStockHelper>.GetItem("AmazonStorage|S3ObjectInfo|", this.Key + "|Exists", false), false, (CultureInfo)null);
+            return ValidationHelper.GetBoolean(AbstractStockHelper<RequestStockHelper>.GetItem(STORAGE_KEY, this.Key + "|Exists", false), false);
         }
 
         /// <summary>Returns E-tag of the current object.</summary>
         private string GetETag()
         {
             string key = this.Key + "|ETag";
-            if (!AbstractStockHelper<RequestStockHelper>.Contains("AmazonStorage|S3ObjectInfo|", key, false))
+            if (!AbstractStockHelper<RequestStockHelper>.Contains(STORAGE_KEY, key, false))
+            {
                 this.FetchMetadata();
-            return CMS.Helpers.ValidationHelper.GetString(AbstractStockHelper<RequestStockHelper>.GetItem("AmazonStorage|S3ObjectInfo|", key, false), string.Empty, (CultureInfo)null);
+            }
+            return ValidationHelper.GetString(AbstractStockHelper<RequestStockHelper>.GetItem(STORAGE_KEY, key, false), string.Empty);
         }
 
         /// <summary>Returns content length of the current object.</summary>
         private long GetLength()
         {
             string key = this.Key + "|Length";
-            if (!AbstractStockHelper<RequestStockHelper>.Contains("AmazonStorage|S3ObjectInfo|", key, false))
+            if (!AbstractStockHelper<RequestStockHelper>.Contains(STORAGE_KEY, key, false))
+            {
                 this.FetchMetadata();
-            return CMS.Helpers.ValidationHelper.GetLong(AbstractStockHelper<RequestStockHelper>.GetItem("AmazonStorage|S3ObjectInfo|", key, false), 0L, (CultureInfo)null);
+            }
+            return ValidationHelper.GetLong(AbstractStockHelper<RequestStockHelper>.GetItem(STORAGE_KEY, key, false), 0L);
         }
 
         /// <summary>
@@ -242,26 +266,34 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         private void FetchMetadata()
         {
-            if (AbstractStockHelper<RequestStockHelper>.Contains("AmazonStorage|S3ObjectInfo|", this.Key + "|Exists", false))
+            if (AbstractStockHelper<RequestStockHelper>.Contains(STORAGE_KEY, this.Key + "|Exists", false))
+            {
                 return;
-            GetObjectMetadataRequest request = new GetObjectMetadataRequest();
-            request.BucketName = this.BucketName;
-            request.Key = this.Key;
+            }
+            GetObjectMetadataRequest request = new GetObjectMetadataRequest
+            {
+                BucketName = this.BucketName,
+                Key = this.Key
+            };
             try
             {
                 GetObjectMetadataResponse objectMetadata = this.S3Client.GetObjectMetadata(request);
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|Length", (object)objectMetadata.ContentLength, false);
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|ETag", (object)objectMetadata.ETag, false);
-                AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|Exists", (object)true, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Length", objectMetadata.ContentLength, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|ETag", objectMetadata.ETag, false);
+                AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Exists", true, false);
                 this.Metadata = this.LoadMetadata(PathHelper.GetPathFromObjectKey(this.Key, true));
                 if (!this.Metadata.ContainsKey("LastWriteTime"))
-                    this.Metadata.Add("LastWriteTime", CMS.Helpers.ValidationHelper.GetString((object)objectMetadata.LastModified, string.Empty, "en-us"));
-                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(FetchMetadata), "Amazon");
+                {
+                    this.Metadata.Add("LastWriteTime", ValidationHelper.GetString(objectMetadata.LastModified, string.Empty, "en-us"));
+                }
+                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(FetchMetadata), "Custom Amazon");
             }
             catch (AmazonS3Exception ex)
             {
                 if (ex.StatusCode == HttpStatusCode.NotFound)
-                    AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|S3ObjectInfo|", this.Key + "|Exists", (object)false, false);
+                {
+                    AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Exists", false, false);
+                }
                 else
                     throw;
             }
@@ -272,19 +304,17 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="metadata">Metadata.</param>
         private void SaveMetadata(string path, Dictionary<string, string> metadata)
         {
-            string path1 = path + ".meta";
-            string empty = string.Empty;
-            foreach (KeyValuePair<string, string> keyValuePair in metadata)
+            string path1 = $"{path}{METADATA_EXT}";
+            var sb = new StringBuilder();
+            foreach (var keyValuePair in metadata)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append((object)keyValuePair.Key, (object)";", (object)keyValuePair.Value, (object)"#");
-                empty += sb.ToString();
+                sb.Append($"{keyValuePair.Key};{keyValuePair.Value}#");
             }
             this.S3Client.PutObject(new PutObjectRequest()
             {
                 BucketName = this.BucketName,
-                ContentBody = empty,
-                Key = "__metadata/" + PathHelper.GetObjectKeyFromPath(path1)
+                ContentBody = sb.ToString(),
+                Key = $"{METADATA_FOLDER}{PathHelper.GetObjectKeyFromPath(path1)}"
             });
         }
 
@@ -292,24 +322,32 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path.</param>
         private Dictionary<string, string> LoadMetadata(string path)
         {
-            string path1 = path + ".meta";
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            S3ObjectInfo s3ObjectInfo = new S3ObjectInfo(path1);
-            GetObjectRequest request = new GetObjectRequest();
-            request.BucketName = this.BucketName;
-            request.Key = "__metadata/" + PathHelper.GetObjectKeyFromPath(path1);
+            string path1 = $"{path}{METADATA_EXT}";
+            var dictionary = new Dictionary<string, string>();
+            var s3ObjectInfo = new S3ObjectInfo(path1);
+            GetObjectRequest request = new GetObjectRequest
+            {
+                BucketName = this.BucketName,
+                Key = $"{METADATA_FOLDER}{PathHelper.GetObjectKeyFromPath(path1)}"
+            };
             if (path1.StartsWith(Directory.CurrentDirectory, StringComparison.Ordinal))
+            {
                 path1 = path1.Substring(Directory.CurrentDirectory.Length);
-            string str1 = CMS.IO.Path.Combine(PathHelper.TempPath, "__metadata" + path1);
+            }
+            string str1 = Path.Combine(PathHelper.TempPath, $"{METADATA_FOLDER}{path1}");
             try
             {
                 using (GetObjectResponse getObjectResponse = this.S3Client.GetObject(request))
+                {
                     getObjectResponse.WriteResponseStreamToFile(str1);
+                }
             }
             catch (AmazonS3Exception ex)
             {
                 if (ex.StatusCode == HttpStatusCode.NotFound)
+                {
                     return dictionary;
+                }
             }
             string str2 = System.IO.File.ReadAllText(str1);
             char[] separator = new char[1] { '#' };
