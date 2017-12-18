@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AddressType.cs" />
     <Compile Include="BillingAddress.cs" />
+    <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Campaigns\Campagin.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
