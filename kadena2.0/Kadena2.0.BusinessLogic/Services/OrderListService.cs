@@ -9,6 +9,7 @@ using System.Linq;
 using Kadena.Dto.Order;
 using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -19,6 +20,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoProviderService _kentico;
+        private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoLogger _logger;
 
         private readonly string _orderDetailUrl;
@@ -44,14 +46,48 @@ namespace Kadena.BusinessLogic.Services
         public bool EnablePaging { get; set; }
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
-            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IKenticoDocumentProvider documents,
+            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents,
             IKenticoLogger logger)
         {
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (orderClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderClient));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (kenticoResources == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResources));
+            }
+            if (kentico == null)
+            {
+                throw new ArgumentNullException(nameof(kentico));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
             _mapper = mapper;
             _orderClient = orderClient;
             _kenticoUsers = kenticoUsers;
             _kenticoResources = kenticoResources;
             _kentico = kentico;
+            _shoppingCart = shoppingCart;
             _logger = logger;
 
             _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
@@ -112,7 +148,7 @@ namespace Kadena.BusinessLogic.Services
 
             foreach (var o in orders)
             {
-                o.Status = _kentico.MapOrderStatus(o.Status);
+                o.Status = _shoppingCart.MapOrderStatus(o.Status);
             }
         }
 

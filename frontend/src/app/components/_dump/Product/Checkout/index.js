@@ -33,7 +33,9 @@ class CheckoutProduct extends Component {
     buttonLabels: PropTypes.shape({
       edit: PropTypes.string.isRequired,
       remove: PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    productionTime: PropTypes.string,
+    shipTime: PropTypes.string
   };
 
   componentWillReceiveProps(nextProps) {
@@ -99,9 +101,51 @@ class CheckoutProduct extends Component {
     return null;
   };
 
+  getShippingElement = () => {
+    const {
+      productionTimeLabel,
+      shipTimeLabel,
+      productionTime,
+      shipTime
+    } = this.props;
+
+    if (!productionTime && !shipTime) return null;
+
+    const productionTimeElement = productionTime
+      ? (
+        <span className="mr-3"><strong>{productionTimeLabel}:</strong> {productionTime}</span>
+      ) : null;
+
+    const shipTimeElement = shipTime
+      ? (
+        <span><strong>{shipTimeLabel}:</strong> {shipTime}</span>
+      ) : null;
+
+    return (
+      <div className="cart-product__shipping">
+        {productionTimeElement}
+        {shipTimeElement}
+      </div>
+    );
+  };
+
   render() {
-    const { delivery, id, image, isMailingList, mailingList, price, pricePrefix, quantityPrefix,
-      template, removeProduct, isQuantityEditable, disableInteractivity, templatePrefix, mailingListPrefix, buttonLabels } = this.props;
+    const {
+      delivery,
+      id, image,
+      isMailingList,
+      mailingList,
+      price,
+      pricePrefix,
+      quantityPrefix,
+      template,
+      removeProduct,
+      isQuantityEditable,
+      disableInteractivity,
+      templatePrefix,
+      mailingListPrefix,
+      buttonLabels
+    } = this.props;
     const { quantity } = this.state;
 
     const quantityElement = isQuantityEditable
@@ -123,7 +167,6 @@ class CheckoutProduct extends Component {
         <span>{quantityPrefix}</span>
         {quantityElement}
       </div>;
-
 
     const productClassName = isMailingList ? 'cart-product' : 'cart-product--non-deliverable cart-product';
 
@@ -151,6 +194,8 @@ class CheckoutProduct extends Component {
           {productDifference}
 
           {deliveryElement}
+
+          {this.getShippingElement()}
         </div>
 
         <div className="cart-product__options">

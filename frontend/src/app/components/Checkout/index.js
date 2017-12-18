@@ -269,6 +269,7 @@ class Checkout extends Component {
 
     if (Object.keys(ui).length) {
       const {
+        message,
         emptyCart,
         submit,
         deliveryAddresses,
@@ -336,56 +337,66 @@ class Checkout extends Component {
           />
         ) : null;
 
-      content = <div>
-        <div className="shopping-cart__block">
-          <Products
-            removeProduct={removeProduct}
-            disableInteractivity={disableInteractivity}
-            changeProductQuantity={changeProductQuantity}
-            ui={products}
-          />
+      const welcomeMessage = message
+        ? (
+          <div className="shopping-cart__block">
+            <Alert type="grey" text={message}/>
+          </div>
+        ) : null;
+
+      content = (
+        <div>
+          {welcomeMessage}
+          <div className="shopping-cart__block">
+            <Products
+              removeProduct={removeProduct}
+              disableInteractivity={disableInteractivity}
+              changeProductQuantity={changeProductQuantity}
+              ui={products}
+            />
+          </div>
+
+          {deliveryAddressComponent}
+          {emailConfirmationContent}
+          {Checkout.getDeliveryMethodComponent(
+            isDeliverable,
+            changeShoppingData,
+            deliveryMethod,
+            isSending,
+            deliveryMethods,
+            disableInteractivity
+          )}
+
+          <div className="shopping-cart__block">
+            <PaymentMethod
+              validationMessage={validationMessage}
+              changeShoppingData={changeShoppingData}
+              checkedObj={paymentMethod}
+              ui={paymentMethods}
+            />
+          </div>
+
+          <div className="shopping-cart__block">
+            {totalsComponent}
+          </div>
+
+          {tAndCComponent}
+
+          <div className="shopping-cart__block text--right">
+            <Button
+              text={submit.btnLabel}
+              type="action"
+              disabled={!this.state.agreeWithTandC}
+              isLoading={disableInteractivity}
+              onClick={() => this.placeOrder({
+                ...checkedData,
+                agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC,
+                emailConfirmation: this.state.fields
+              })}
+            />
+          </div>
         </div>
-
-        {deliveryAddressComponent}
-        {emailConfirmationContent}
-        {Checkout.getDeliveryMethodComponent(
-          isDeliverable,
-          changeShoppingData,
-          deliveryMethod,
-          isSending,
-          deliveryMethods,
-          disableInteractivity
-        )}
-
-        <div className="shopping-cart__block">
-          <PaymentMethod
-            validationMessage={validationMessage}
-            changeShoppingData={changeShoppingData}
-            checkedObj={paymentMethod}
-            ui={paymentMethods}
-          />
-        </div>
-
-        <div className="shopping-cart__block">
-          {totalsComponent}
-        </div>
-
-        {tAndCComponent}
-
-        <div className="shopping-cart__block text--right">
-          <Button
-            text={submit.btnLabel}
-            type="action"
-            disabled={!this.state.agreeWithTandC}
-            isLoading={disableInteractivity}
-            onClick={() => this.placeOrder({
-              ...checkedData,
-              agreeWithTandC: CHECKOUT.tAndC.exists && this.state.agreeWithTandC,
-              emailConfirmation: this.state.fields
-            })}
-          />
-        </div>
-      </div>;
+      );
     }
 
     return content;
