@@ -18,6 +18,15 @@ namespace Kadena.WebAPI.Controllers
 
         public KListController(IKListService service, IMapper mapper)
         {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _service = service;
             _mapper = mapper;
         }

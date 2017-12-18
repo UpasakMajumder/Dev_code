@@ -341,11 +341,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var logger = new KenticoLogger();
-                var resources = new KenticoResourceService();
-                var documents = new KenticoDocumentProvider(resources, logger, Mapper.Instance);
-                var kenticoService = new KenticoProviderService(resources, logger, documents, Mapper.Instance);
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                var kenticoLocalization = new KenticoLocalizationProvider();
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }

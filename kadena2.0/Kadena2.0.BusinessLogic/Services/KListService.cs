@@ -20,6 +20,23 @@ namespace Kadena.BusinessLogic.Services
 
         public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
         {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (kenticoResource == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResource));
+            }
+            if (validationClient == null)
+            {
+                throw new ArgumentNullException(nameof(validationClient));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _mailingClient = client;
             _kentico = kenticoResource;
             _mapper = mapper;

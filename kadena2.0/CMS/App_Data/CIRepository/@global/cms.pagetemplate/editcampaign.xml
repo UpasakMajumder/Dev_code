@@ -19,27 +19,25 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
+<div class="content-header">
+  <div class="content-header__inner">
+    <h1 class="content-header__page-name">
+      <cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" />
+    </h1>
+  </div>
+  <div class="breadcrumbs">
+    <cms:CMSWebPartZone ZoneID="ZoneNavigation" runat="server" />
+  </div>
+</div>
+<div class="content-block">
+  <div class="login__form-content js-login">
+    <div class="css-login changepwd_block">
+      <cms:CMSWebPartZone ZoneID="ZoneCampaignEdit" runat="server" />
+    </div>
+  </div>
+</div>
 
-    <div class="content-header">
-      <div class="content-header__inner">
-        <h1 class="content-header__page-name">
-        <cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" />
-          </h1>
-      </div>
-      <div class="breadcrumbs">
-        <cms:CMSWebPartZone ZoneID="ZoneNavigation" runat="server" />
-      </div>
-    </div>
-    <div class="content-block">
-      <div class="login__form-content js-login">
-        <div class="css-login changepwd_block">
-          <cms:CMSWebPartZone ZoneID="ZoneCampaignEdit" runat="server" />
-        </div>
-      </div>
-      
-    </div>
-  
- 
+
 
 ]]>
   </PageTemplateLayout>
