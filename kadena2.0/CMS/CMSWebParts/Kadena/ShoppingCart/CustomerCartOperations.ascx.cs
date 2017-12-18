@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 using System.Linq;
-using Kadena.Models.CustomerData;
 
 namespace Kadena.CMSWebParts.Kadena.ShoppingCart
 {
@@ -150,7 +149,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 List<AddressInfo> myAddressList = GetMyAddressBookList();
                 if (myAddressList.Count > 0)
                 {
-                    List<CartDistributorItem> distributorList = new List<CartDistributorItem>();
+                    List<object> distributorList = new List<object>();
                     List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
                                                                     .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
                                                                     .WhereEquals("ShoppingCartInventoryType", InventoryType).ToList()
@@ -162,7 +161,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     myAddressList.ForEach(g =>
                     {
                         ShoppingCartItemInfo cartItem = cartItems.Where(k => k.GetValue<int>("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID).FirstOrDefault();
-                        distributorList.Add(new CartDistributorItem()
+                        distributorList.Add(new
                         {
                             AddressID = g.AddressID,
                             AddressPersonalName = g.AddressPersonalName,
@@ -171,7 +170,6 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                             SKUID = cartItem != null ? cartItem.SKUID : default(int),
                             SKUUnits = cartItem != null ? cartItem.CartItemUnits : default(int)
                         });
-
                     });
                     gvCustomersCart.DataSource = distributorList.Distinct().ToList();
                     gvCustomersCart.Columns[1].HeaderText = AddressIDText;

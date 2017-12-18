@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.ProductTypes</CodeName>
+    <GUID>9b44792d-c8dc-4e8e-a3ad-9c46401a4d02</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.create$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.create$}</PermissionDisplayName>
+  <PermissionGUID>bbb0b68c-71a4-4fd2-a295-b72ae987c5a5</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

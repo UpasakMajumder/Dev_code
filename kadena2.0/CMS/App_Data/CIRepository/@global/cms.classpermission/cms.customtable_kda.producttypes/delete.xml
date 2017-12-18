@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.ProductTypes</CodeName>
+    <GUID>9b44792d-c8dc-4e8e-a3ad-9c46401a4d02</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.delete$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$general.delete$}</PermissionDisplayName>
+  <PermissionGUID>f80a78f4-771b-433d-97cf-c1b8b3b59ed2</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>
