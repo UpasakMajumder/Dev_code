@@ -79,7 +79,7 @@ namespace Kadena.AmazonFileSystemProvider
                 {
                     Provider.CreateEmptyObject(info2);
                 }
-                info2.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
+                info2.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
             }
             else
             {
@@ -141,9 +141,9 @@ namespace Kadena.AmazonFileSystemProvider
                     Provider.CreateEmptyObject(destDirectoryInfo);
                 }
                 var now = DateTime.Now;
-                destDirectoryInfo.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now));
-                destInfo.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(now), false);
-                destInfo.SetMetadata("CreationTime", S3ObjectInfoProvider.GetDateTimeString(now));
+                destDirectoryInfo.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(now));
+                destInfo.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(now), false);
+                destInfo.SetMetadata(S3ObjectInfoProvider.CREATION_TIME, S3ObjectInfoProvider.GetDateTimeString(now));
             }
         }
 
@@ -244,7 +244,7 @@ namespace Kadena.AmazonFileSystemProvider
             }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             File.Provider.PutTextToObject(info, contents);
-            info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
+            info.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Kadena.AmazonFileSystemProvider
             }
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             File.Provider.AppendTextToObject(info, contents);
-            info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
+            info.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
         }
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace Kadena.AmazonFileSystemProvider
             var memoryStream = new System.IO.MemoryStream(bytes);
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             Provider.PutDataFromStreamToObject(info, memoryStream);
-            info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
+            info.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
         }
 
         /// <summary>Opens an existing file for reading.</summary>
@@ -331,8 +331,8 @@ namespace Kadena.AmazonFileSystemProvider
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             if (File.Provider.ObjectExists(info))
             {
-                info.SetMetadata("Attributes", ValidationHelper.GetString(ValidationHelper.GetInteger(fileAttributes, 0), string.Empty), false);
-                info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
+                info.SetMetadata(S3ObjectInfoProvider.ATTRIBUTES, ValidationHelper.GetString(ValidationHelper.GetInteger(fileAttributes, 0), string.Empty), false);
+                info.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(DateTime.Now));
             }
             else
             {
@@ -391,7 +391,7 @@ namespace Kadena.AmazonFileSystemProvider
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             if (Provider.ObjectExists(info))
             {
-                return S3ObjectInfoProvider.GetStringDateTime(info.GetMetadata("LastWriteTime"));
+                return S3ObjectInfoProvider.GetStringDateTime(info.GetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME));
             }
             return System.IO.File.GetLastAccessTime(path);
         }
@@ -410,7 +410,7 @@ namespace Kadena.AmazonFileSystemProvider
             IS3ObjectInfo info = S3ObjectFactory.GetInfo(path);
             if (Provider.ObjectExists(info))
             {
-                info.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(lastWriteTime));
+                info.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(lastWriteTime));
             }
             else
             {

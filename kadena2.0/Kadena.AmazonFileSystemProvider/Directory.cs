@@ -359,7 +359,7 @@ namespace Kadena.AmazonFileSystemProvider
                 {
                     Key = PathHelper.GetObjectKeyFromPath(p, true)
                 })
-                .Batch(1000);
+                .Batch(S3ObjectInfoProvider.MAX_OBJECTS_PER_REQUEST);
             foreach (IEnumerable<KeyVersion> source in keyVersions)
             {
                 DeleteObjectsRequest request = new DeleteObjectsRequest()

@@ -175,13 +175,13 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata("LastWriteTime"));
+                return S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME));
             }
             set
             {
                 if (this.existsInS3Storage)
                 {
-                    this.obj.SetMetadata("LastWriteTime", S3ObjectInfoProvider.GetDateTimeString(value));
+                    this.obj.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, S3ObjectInfoProvider.GetDateTimeString(value));
                 }
             }
         }
@@ -259,9 +259,9 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 if (this.mExists)
                 {
-                    this.mLastWriteTime = S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata("LastWriteTime"));
-                    this.mCreationTime = S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata("CreationTime"));
-                    this.mAttributes = (CMS.IO.FileAttributes)ValidationHelper.GetInteger((object)this.obj.GetMetadata("CreationTime"), ValidationHelper.GetInteger((object)CMS.IO.FileAttributes.Normal, 0, (CultureInfo)null), (CultureInfo)null);
+                    this.mLastWriteTime = S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME));
+                    this.mCreationTime = S3ObjectInfoProvider.GetStringDateTime(this.obj.GetMetadata(S3ObjectInfoProvider.CREATION_TIME));
+                    this.mAttributes = (CMS.IO.FileAttributes)ValidationHelper.GetInteger((object)this.obj.GetMetadata(S3ObjectInfoProvider.CREATION_TIME), ValidationHelper.GetInteger((object)CMS.IO.FileAttributes.Normal, 0, (CultureInfo)null), (CultureInfo)null);
                     this.mLength = this.obj.Length;
                 }
                 else

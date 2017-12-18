@@ -193,7 +193,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return 5242880;
+                return S3ObjectInfoProvider.MINIMAL_PART_SIZE;
             }
         }
 
@@ -204,7 +204,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return 5242880000;
+                return S3ObjectInfoProvider.MAXIMAL_PART_SIZE;
             }
         }
 
@@ -496,11 +496,11 @@ namespace Kadena.AmazonFileSystemProvider
         private void SetLastWriteTimeAndCreationTimeToS3Object()
         {
             string dateTimeString = S3ObjectInfoProvider.GetDateTimeString(DateTime.Now);
-            if (this.obj.GetMetadata("CreationTime") == null)
+            if (this.obj.GetMetadata(S3ObjectInfoProvider.CREATION_TIME) == null)
             {
-                this.obj.SetMetadata("CreationTime", dateTimeString, false);
+                this.obj.SetMetadata(S3ObjectInfoProvider.CREATION_TIME, dateTimeString, false);
             }
-            this.obj.SetMetadata("LastWriteTime", dateTimeString);
+            this.obj.SetMetadata(S3ObjectInfoProvider.LAST_WRITE_TIME, dateTimeString);
         }
     }
 }

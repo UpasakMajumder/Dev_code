@@ -102,7 +102,7 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                return ValidationHelper.GetBoolean(this.GetMetadata("Lock"), false);
+                return ValidationHelper.GetBoolean(this.GetMetadata(S3ObjectInfoProvider.LOCK), false);
             }
         }
 
@@ -225,7 +225,7 @@ namespace Kadena.AmazonFileSystemProvider
                 return;
             }
             FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), "Unlock", "Custom Amazon");
-            this.SetMetadata("Lock", "False", true, false);
+            this.SetMetadata(S3ObjectInfoProvider.LOCK, "False", true, false);
         }
 
         /// <summary>Returns whether object exists.</summary>
@@ -282,9 +282,9 @@ namespace Kadena.AmazonFileSystemProvider
                 AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|ETag", objectMetadata.ETag, false);
                 AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, this.Key + "|Exists", true, false);
                 this.Metadata = this.LoadMetadata(PathHelper.GetPathFromObjectKey(this.Key, true));
-                if (!this.Metadata.ContainsKey("LastWriteTime"))
+                if (!this.Metadata.ContainsKey(S3ObjectInfoProvider.LAST_WRITE_TIME))
                 {
-                    this.Metadata.Add("LastWriteTime", ValidationHelper.GetString(objectMetadata.LastModified, string.Empty, "en-us"));
+                    this.Metadata.Add(S3ObjectInfoProvider.LAST_WRITE_TIME, ValidationHelper.GetString(objectMetadata.LastModified, string.Empty, "en-us"));
                 }
                 FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(this.Key, true), nameof(FetchMetadata), "Custom Amazon");
             }
