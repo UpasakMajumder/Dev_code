@@ -6,7 +6,6 @@ using CMS.IO;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -16,7 +15,7 @@ namespace Kadena.AmazonFileSystemProvider
     /// <summary>Performs operations over the S3 objects.</summary>
     public class S3ObjectInfoProvider : IS3ObjectInfoProvider
     {
-        private static IS3ObjectInfoProvider mCurrent = (IS3ObjectInfoProvider)null;
+        private static IS3ObjectInfoProvider mCurrent = null;
         private static readonly ConcurrentDictionary<string, AutoResetEvent> mS3ObjectEvents = new ConcurrentDictionary<string, AutoResetEvent>();
         /// <summary>
         /// Property name which returns if file is locked for writing.
@@ -65,7 +64,9 @@ namespace Kadena.AmazonFileSystemProvider
             get
             {
                 if (this.mMultiPartUploader == null)
-                    this.mMultiPartUploader = new S3MultiPartUploader(this.S3Client, 5242880L, 5242880000L);
+                {
+                    this.mMultiPartUploader = new S3MultiPartUploader(this.S3Client, MINIMAL_PART_SIZE, MAXIMAL_PART_SIZE);
+                }
                 return this.mMultiPartUploader;
             }
         }
@@ -76,7 +77,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             AbstractStorageProvider storageProvider = StorageHelper.GetStorageProvider(path);
             if (!string.IsNullOrEmpty(storageProvider.CustomRootPath))
+            {
                 return storageProvider.CustomRootPath;
+            }
             return AccountInfo.Current.BucketName;
         }
 
@@ -86,7 +89,9 @@ namespace Kadena.AmazonFileSystemProvider
         {
             AbstractStorageProvider storageProvider = StorageHelper.GetStorageProvider(path);
             if (storageProvider.PublicExternalFolderObject.HasValue)
+            {
                 return storageProvider.PublicExternalFolderObject.Value;
+            }
             return AmazonHelper.PublicAccess;
         }
 
@@ -95,9 +100,11 @@ namespace Kadena.AmazonFileSystemProvider
         {
             get
             {
-                if (S3ObjectInfoProvider.mCurrent == null)
-                    S3ObjectInfoProvider.mCurrent = (IS3ObjectInfoProvider)new S3ObjectInfoProvider();
-                return S3ObjectInfoProvider.mCurrent;
+                if (mCurrent == null)
+                {
+                    mCurrent = new S3ObjectInfoProvider();
+                }
+                return mCurrent;
             }
         }
 
@@ -121,24 +128,34 @@ namespace Kadena.AmazonFileSystemProvider
         /// </remarks>
         public List<string> GetObjectsList(string path, ObjectTypeEnum type, bool useFlatListing = false, bool lower = true, bool useCache = true)
         {
-            string bucketName = S3ObjectInfoProvider.GetBucketName(path);
+            string bucketName = GetBucketName(path);
             if (string.IsNullOrEmpty(bucketName))
-                return (List<string>)null;
-            ListObjectsRequest request = new ListObjectsRequest();
-            request.BucketName = bucketName;
-            if (!string.IsNullOrEmpty(path))
-                request.Prefix = PathHelper.GetObjectKeyFromPath(path).TrimEnd('/') + "/";
-            if (!useFlatListing)
-                request.Delimiter = "/";
-            HashSet<string> source1 = new HashSet<string>();
-            string key = request.Prefix + "|" + type.ToString("F") + "|" + (object)useFlatListing + "|" + (object)lower;
-            if (useCache && AbstractStockHelper<RequestStockHelper>.Contains("AmazonStorage|GetObjectList|", key, false))
             {
-                CMS.IO.Directory.LogDirectoryOperation(path, "GetObjectListFromCache", "Amazon");
-                HashSet<string> source2 = AbstractStockHelper<RequestStockHelper>.GetItem("AmazonStorage|GetObjectList|", key, false) as HashSet<string>;
+                return null;
+            }
+            var request = new ListObjectsRequest
+            {
+                BucketName = bucketName
+            };
+            if (!string.IsNullOrEmpty(path))
+            {
+                request.Prefix = PathHelper.GetObjectKeyFromPath(path).TrimEnd('/') + "/";
+            }
+            if (!useFlatListing)
+            {
+                request.Delimiter = "/";
+            }
+            var source1 = new HashSet<string>();
+            string key = $"{request.Prefix }|{type.ToString("F")}|{useFlatListing}|{lower}";
+            if (useCache && AbstractStockHelper<RequestStockHelper>.Contains(STORAGE_KEY, key, false))
+            {
+                CMS.IO.Directory.LogDirectoryOperation(path, "GetObjectListFromCache", "Custom Amazon");
+                var source2 = AbstractStockHelper<RequestStockHelper>.GetItem(STORAGE_KEY, key, false) as HashSet<string>;
                 if (source2 == null)
+                {
                     return new List<string>();
-                return source2.ToList<string>();
+                }
+                return source2.ToList();
             }
             ListObjectsResponse listObjectsResponse;
             do
@@ -147,27 +164,33 @@ namespace Kadena.AmazonFileSystemProvider
                 if (type == ObjectTypeEnum.Directories && !useFlatListing)
                 {
                     foreach (string commonPrefix in listObjectsResponse.CommonPrefixes)
-                        source1.Add(path + "\\" + CMS.IO.Path.GetFileName(commonPrefix.TrimEnd('/')) + (object)'\\');
+                    {
+                        source1.Add($"{path}\\{CMS.IO.Path.GetFileName(commonPrefix.TrimEnd('/'))}\\");
+                    }
                 }
                 else
                 {
-                    bool flag1 = type == ObjectTypeEnum.FilesAndDirectories || type == ObjectTypeEnum.Directories;
-                    bool flag2 = type == ObjectTypeEnum.FilesAndDirectories || type == ObjectTypeEnum.Files;
+                    bool isDirectory = type == ObjectTypeEnum.FilesAndDirectories || type == ObjectTypeEnum.Directories;
+                    bool isFile = type == ObjectTypeEnum.FilesAndDirectories || type == ObjectTypeEnum.Files;
                     foreach (S3Object s3Object in listObjectsResponse.S3Objects)
                     {
                         bool directory = s3Object.Key.EndsWith("/", StringComparison.Ordinal);
-                        if (directory && flag1 || !directory && flag2)
+                        if (directory && isDirectory || !directory && isFile)
+                        {
                             source1.Add(PathHelper.GetPathFromObjectKey(s3Object.Key, true, directory, lower));
+                        }
                     }
                 }
                 if (listObjectsResponse.IsTruncated)
+                {
                     request.Marker = listObjectsResponse.NextMarker;
+                }
             }
             while (listObjectsResponse.IsTruncated);
             source1.Remove(PathHelper.GetPathFromObjectKey(request.Prefix, true, true, lower));
-            CMS.IO.Directory.LogDirectoryOperation(path, "ListObjects", "Amazon");
-            AbstractStockHelper<RequestStockHelper>.AddToStorage("AmazonStorage|GetObjectList|", key, (object)source1, false);
-            return source1.ToList<string>();
+            CMS.IO.Directory.LogDirectoryOperation(path, "ListObjects", "Custom Amazon");
+            AbstractStockHelper<RequestStockHelper>.AddToStorage(STORAGE_KEY, key, (object)source1, false);
+            return source1.ToList();
         }
 
         /// <summary>Returns whether object exists.</summary>
@@ -183,46 +206,51 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="fileAccess">File access.</param>
         /// <param name="fileShare">Sharing permissions.</param>
         /// <param name="bufferSize">Buffer size.</param>
-        public System.IO.Stream GetObjectContent(IS3ObjectInfo obj, System.IO.FileMode fileMode = System.IO.FileMode.Open, System.IO.FileAccess fileAccess = System.IO.FileAccess.Read, System.IO.FileShare fileShare = System.IO.FileShare.ReadWrite, int bufferSize = 4096)
+        public System.IO.Stream GetObjectContent(IS3ObjectInfo obj, System.IO.FileMode fileMode = System.IO.FileMode.Open,
+            System.IO.FileAccess fileAccess = System.IO.FileAccess.Read, System.IO.FileShare fileShare = System.IO.FileShare.ReadWrite, int bufferSize = 4096)
         {
             if (!this.ObjectExists(obj))
-                return (System.IO.Stream)null;
-            AutoResetEvent orAdd = S3ObjectInfoProvider.mS3ObjectEvents.GetOrAdd(obj.Key, new AutoResetEvent(true));
+            {
+                return null;
+            }
+            AutoResetEvent orAdd = mS3ObjectEvents.GetOrAdd(obj.Key, new AutoResetEvent(true));
             try
             {
-                string str1 = CMS.IO.Path.Combine(PathHelper.TempPath, PathHelper.GetPathFromObjectKey(obj.Key, false));
-                Directory.CreateDiskDirectoryStructure(str1);
-                string str2 = CMS.IO.Path.Combine(PathHelper.CachePath, PathHelper.GetPathFromObjectKey(obj.Key, false));
-                string path = str2 + ".etag";
+                string tempPath = CMS.IO.Path.Combine(PathHelper.TempPath, PathHelper.GetPathFromObjectKey(obj.Key, false));
+                Directory.CreateDiskDirectoryStructure(tempPath);
+                string cachePath = CMS.IO.Path.Combine(PathHelper.CachePath, PathHelper.GetPathFromObjectKey(obj.Key, false));
+                string path = $"{cachePath}.etag";
                 orAdd.WaitOne();
-                if (CMS.IO.File.Exists(str2) && System.IO.File.ReadAllText(path).Trim() == obj.ETag)
+                if (CMS.IO.File.Exists(cachePath) && System.IO.File.ReadAllText(path).Trim() == obj.ETag)
                 {
                     orAdd.Set();
-                    System.IO.FileStream fileStream = new System.IO.FileStream(str2, fileMode, fileAccess, fileShare, bufferSize);
-                    FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "GetObjectFromCache", "Amazon");
-                    return (System.IO.Stream)fileStream;
+                    System.IO.FileStream fileStream = new System.IO.FileStream(cachePath, fileMode, fileAccess, fileShare, bufferSize);
+                    FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "GetObjectFromCache", "Custom Amazon");
+                    return fileStream;
                 }
                 using (GetObjectResponse getObjectResponse = this.S3Client.GetObject(new GetObjectRequest()
                 {
                     BucketName = obj.BucketName,
                     Key = obj.Key
                 }))
-                    getObjectResponse.WriteResponseStreamToFile(str1);
-                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "GetObjectFromS3Storage", "Amazon");
-                Directory.CreateDiskDirectoryStructure(str2);
-                System.IO.File.Copy(str1, str2, true);
+                {
+                    getObjectResponse.WriteResponseStreamToFile(tempPath);
+                }
+                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "GetObjectFromS3Storage", "Custom Amazon");
+                Directory.CreateDiskDirectoryStructure(cachePath);
+                System.IO.File.Copy(tempPath, cachePath, true);
                 System.IO.File.WriteAllText(path, obj.ETag);
                 if (fileMode == System.IO.FileMode.Append && fileAccess != System.IO.FileAccess.Read)
                 {
                     fileMode = System.IO.FileMode.Open;
                     fileAccess = System.IO.FileAccess.ReadWrite;
                 }
-                return (System.IO.Stream)new System.IO.FileStream(str1, fileMode, fileAccess, fileShare, bufferSize);
+                return new System.IO.FileStream(tempPath, fileMode, fileAccess, fileShare, bufferSize);
             }
             finally
             {
                 orAdd.Set();
-                S3ObjectInfoProvider.mS3ObjectEvents.TryRemove(obj.Key, out orAdd);
+                mS3ObjectEvents.TryRemove(obj.Key, out orAdd);
             }
         }
 
@@ -236,25 +264,27 @@ namespace Kadena.AmazonFileSystemProvider
         public void PutFileToObject(IS3ObjectInfo obj, string pathToSource)
         {
             if (obj.IsLocked)
-                throw new Exception("[IS3ObjectInfoProvider.PutFileToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
+            {
+                throw new Exception($"[IS3ObjectInfoProvider.PutFileToObject]: Couldn't upload object {obj.Key} because it is used by another process.");
+            }
             obj.Lock();
             string bucketName = obj.BucketName;
             long length = new System.IO.FileInfo(pathToSource).Length;
-            if (length >= 15728640L)
+            if (length >= RECOMMENDED_SIZE_FOR_MULTIPART_UPLOAD)
             {
                 CompleteMultipartUploadResponse response = this.MultiPartUploader.UploadFromFilePath(obj.Key, bucketName, pathToSource);
                 this.SetS3ObjectMetadaFromResponse(obj, response, length);
             }
             else
             {
-                PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, bucketName);
+                PutObjectRequest putRequest = CreatePutRequest(obj.Key, bucketName);
                 putRequest.FilePath = pathToSource;
                 PutObjectResponse response = this.S3Client.PutObject(putRequest);
                 this.SetS3ObjectMetadaFromResponse(obj, response, length);
             }
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(PutFileToObject), "Amazon");
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(PutFileToObject), "Custom Amazon");
             obj.UnLock();
-            S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+            RemoveRequestCache(obj.Key);
         }
 
         /// <summary>Puts data from stream to Amazon S3 storage.</summary>
@@ -263,25 +293,27 @@ namespace Kadena.AmazonFileSystemProvider
         public void PutDataFromStreamToObject(IS3ObjectInfo obj, System.IO.Stream stream)
         {
             if (obj.IsLocked)
-                throw new Exception("[IS3ObjectInfoProvider.PutDataFromStreamToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
+            {
+                throw new Exception($"[IS3ObjectInfoProvider.PutDataFromStreamToObject]: Couldn't upload object {obj.Key} because it is used by another process.");
+            }
             obj.Lock();
             string bucketName = obj.BucketName;
             long length = stream.Length;
-            if (length > 15728640L)
+            if (length > RECOMMENDED_SIZE_FOR_MULTIPART_UPLOAD)
             {
                 CompleteMultipartUploadResponse response = this.MultiPartUploader.UploadFromStream(obj.Key, bucketName, stream);
                 this.SetS3ObjectMetadaFromResponse(obj, response, length);
             }
             else
             {
-                PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, bucketName);
+                PutObjectRequest putRequest = CreatePutRequest(obj.Key, bucketName);
                 putRequest.InputStream = stream;
                 PutObjectResponse response = this.S3Client.PutObject(putRequest);
                 this.SetS3ObjectMetadaFromResponse(obj, response, length);
             }
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "PutStreamToObject", "Amazon");
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), "PutStreamToObject", "Custom Amazon");
             obj.UnLock();
-            S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+            RemoveRequestCache(obj.Key);
         }
 
         /// <summary>Puts text to Amazon S3 storage object.</summary>
@@ -290,16 +322,18 @@ namespace Kadena.AmazonFileSystemProvider
         public void PutTextToObject(IS3ObjectInfo obj, string content)
         {
             if (obj.IsLocked)
-                throw new Exception("[IS3ObjectInfoProvider.PutTextToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
+            {
+                throw new Exception($"[IS3ObjectInfoProvider.PutTextToObject]: Couldn't upload object {obj.Key} because it is used by another process.");
+            }
             string pathFromObjectKey = PathHelper.GetPathFromObjectKey(obj.Key, true);
             obj.Lock();
-            PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, S3ObjectInfoProvider.GetBucketName(pathFromObjectKey));
+            PutObjectRequest putRequest = CreatePutRequest(obj.Key, GetBucketName(pathFromObjectKey));
             putRequest.ContentBody = content;
             PutObjectResponse response = this.S3Client.PutObject(putRequest);
             this.SetS3ObjectMetadaFromResponse(obj, response, 0L);
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(PutTextToObject), "Amazon");
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(PutTextToObject), "Custom Amazon");
             obj.UnLock();
-            S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+            RemoveRequestCache(obj.Key);
         }
 
         /// <summary>Appends text to Amazon S3 storage object.</summary>
@@ -310,22 +344,29 @@ namespace Kadena.AmazonFileSystemProvider
             if (this.ObjectExists(obj))
             {
                 if (obj.IsLocked)
-                    throw new Exception("[IS3ObjectInfoProvider.AppendTextToObject]: Couldn't upload object " + obj.Key + " because it is used by another process.");
+                {
+                    throw new Exception($"[IS3ObjectInfoProvider.AppendTextToObject]: Couldn't upload object {obj.Key} because it is used by another process.");
+                }
                 obj.Lock();
-                System.IO.Stream objectContent = this.GetObjectContent(obj, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite, 4096);
-                string str = (string)null;
+                System.IO.Stream objectContent = this.GetObjectContent(obj, System.IO.FileMode.Open, 
+                    System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite, 4096);
+                string str = null;
                 using (CMS.IO.StreamReader streamReader = CMS.IO.StreamReader.New(objectContent))
+                {
                     str = streamReader.ReadToEnd();
-                PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, obj.BucketName);
+                }
+                PutObjectRequest putRequest = CreatePutRequest(obj.Key, obj.BucketName);
                 putRequest.ContentBody = str + content;
                 PutObjectResponse response = this.S3Client.PutObject(putRequest);
                 this.SetS3ObjectMetadaFromResponse(obj, response, 0L);
-                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(AppendTextToObject), "Amazon");
+                FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(AppendTextToObject), "Custom Amazon");
                 obj.UnLock();
-                S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+                RemoveRequestCache(obj.Key);
             }
             else
+            {
                 this.PutTextToObject(obj, content);
+            }
         }
 
         /// <summary>Deletes object from Amazon S3 storage.</summary>
@@ -338,14 +379,14 @@ namespace Kadena.AmazonFileSystemProvider
                 Key = obj.Key
             });
             obj.DeleteMetadataFile();
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(DeleteObject), "Amazon");
-            S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(DeleteObject), "Custom Amazon");
+            RemoveRequestCache(obj.Key);
             try
             {
-                S3ObjectInfoProvider.RemoveFromTemp(obj);
-                S3ObjectInfoProvider.RemoveFromCache(obj);
+                RemoveFromTemp(obj);
+                RemoveFromCache(obj);
             }
-            catch (IOException ex)
+            catch (IOException)
             {
             }
         }
@@ -359,17 +400,19 @@ namespace Kadena.AmazonFileSystemProvider
             CopyObjectRequest request = new CopyObjectRequest()
             {
                 SourceBucket = sourceObject.BucketName,
-                DestinationBucket = S3ObjectInfoProvider.GetBucketName(pathFromObjectKey),
+                DestinationBucket = GetBucketName(pathFromObjectKey),
                 SourceKey = sourceObject.Key,
                 DestinationKey = destObject.Key
             };
             if (this.IsPublicAccess(pathFromObjectKey))
+            {
                 request.CannedACL = S3CannedACL.PublicRead;
+            }
             CopyObjectResponse copyObjectResponse = this.S3Client.CopyObject(request);
             destObject.ETag = copyObjectResponse.ETag;
-            destObject.Length = ValidationHelper.GetLong((object)copyObjectResponse.ContentLength, 0L, (CultureInfo)null);
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(sourceObject.Key, true) + "|" + PathHelper.GetPathFromObjectKey(destObject.Key, true), nameof(CopyObjects), "Amazon");
-            S3ObjectInfoProvider.RemoveRequestCache(destObject.Key);
+            destObject.Length = ValidationHelper.GetLong(copyObjectResponse.ContentLength, 0L);
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(sourceObject.Key, true) + "|" + PathHelper.GetPathFromObjectKey(destObject.Key, true), nameof(CopyObjects), "Custom Amazon");
+            RemoveRequestCache(destObject.Key);
         }
 
         /// <summary>Creates empty object.</summary>
@@ -377,19 +420,19 @@ namespace Kadena.AmazonFileSystemProvider
         public void CreateEmptyObject(IS3ObjectInfo obj)
         {
             string pathFromObjectKey = PathHelper.GetPathFromObjectKey(obj.Key, true);
-            PutObjectRequest putRequest = S3ObjectInfoProvider.CreatePutRequest(obj.Key, S3ObjectInfoProvider.GetBucketName(pathFromObjectKey));
-            putRequest.InputStream = (System.IO.Stream)new System.IO.MemoryStream();
+            PutObjectRequest putRequest = CreatePutRequest(obj.Key, GetBucketName(pathFromObjectKey));
+            putRequest.InputStream = new System.IO.MemoryStream();
             PutObjectResponse response = this.S3Client.PutObject(putRequest);
             this.SetS3ObjectMetadaFromResponse(obj, response, 0L);
-            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(CreateEmptyObject), "Amazon");
-            S3ObjectInfoProvider.RemoveRequestCache(obj.Key);
+            FileDebug.LogFileOperation(PathHelper.GetPathFromObjectKey(obj.Key, true), nameof(CreateEmptyObject), "Custom Amazon");
+            RemoveRequestCache(obj.Key);
         }
 
         /// <summary>Returns new instance of IS3ObjectInfo.</summary>
         /// <param name="path">Path with file name.</param>
         public IS3ObjectInfo GetInfo(string path)
         {
-            return (IS3ObjectInfo)new S3ObjectInfo(path);
+            return new S3ObjectInfo(path);
         }
 
         /// <summary>
@@ -399,26 +442,26 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="key">Specifies that given path is already object key.</param>
         public IS3ObjectInfo GetInfo(string path, bool key)
         {
-            return (IS3ObjectInfo)new S3ObjectInfo(path, key);
+            return new S3ObjectInfo(path, key);
         }
 
         /// <summary>Removes cached object's items from request cache.</summary>
         /// <param name="objectKey">Object key.</param>
         internal static void RemoveRequestCache(string objectKey)
         {
-            string storageKey = "AmazonStorage|S3ObjectInfo|";
+            string storageKey = S3ObjectInfo.STORAGE_KEY;
             AbstractStockHelper<RequestStockHelper>.Remove(storageKey, objectKey + "|Exists", false);
             AbstractStockHelper<RequestStockHelper>.Remove(storageKey, objectKey + "|Length", false);
             AbstractStockHelper<RequestStockHelper>.Remove(storageKey, objectKey + "|Metadata", false);
             AbstractStockHelper<RequestStockHelper>.Remove(storageKey, objectKey + "|ETag", false);
-            AbstractStockHelper<RequestStockHelper>.DropStorage("AmazonStorage|GetObjectList|", false);
+            AbstractStockHelper<RequestStockHelper>.DropStorage(STORAGE_KEY, false);
         }
 
         /// <summary>Remove S3 file from temporary local storage.</summary>
         /// <param name="obj">S3 object to be removed from temporary local storage</param>
         private static void RemoveFromTemp(IS3ObjectInfo obj)
         {
-            S3ObjectInfoProvider.DeleteFileFromLocalPath(CMS.IO.Path.Combine(PathHelper.TempPath, PathHelper.GetPathFromObjectKey(obj.Key, false)));
+            DeleteFileFromLocalPath(CMS.IO.Path.Combine(PathHelper.TempPath, PathHelper.GetPathFromObjectKey(obj.Key, false)));
         }
 
         /// <summary>Remove S3 file from cache local storage.</summary>
@@ -426,8 +469,8 @@ namespace Kadena.AmazonFileSystemProvider
         private static void RemoveFromCache(IS3ObjectInfo obj)
         {
             string path = CMS.IO.Path.Combine(PathHelper.CachePath, PathHelper.GetPathFromObjectKey(obj.Key, false));
-            S3ObjectInfoProvider.DeleteFileFromLocalPath(path);
-            S3ObjectInfoProvider.DeleteFileFromLocalPath(path + ".etag");
+            DeleteFileFromLocalPath(path);
+            DeleteFileFromLocalPath(path + ".etag");
         }
 
         /// <summary>Delete file from local filesystem</summary>
@@ -435,7 +478,9 @@ namespace Kadena.AmazonFileSystemProvider
         private static void DeleteFileFromLocalPath(string path)
         {
             if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path))
+            {
                 return;
+            }
             System.IO.File.Delete(path);
         }
 
@@ -452,7 +497,9 @@ namespace Kadena.AmazonFileSystemProvider
                 Key = key
             };
             if (AmazonHelper.PublicAccess)
+            {
                 putObjectRequest.CannedACL = S3CannedACL.PublicRead;
+            }
             return putObjectRequest;
         }
 
@@ -469,9 +516,11 @@ namespace Kadena.AmazonFileSystemProvider
         /// </param>
         private void SetS3ObjectMetadaFromResponse(IS3ObjectInfo obj, string eTag, AmazonWebServiceResponse response, long length)
         {
-            long num = ValidationHelper.GetLong((object)response.ContentLength, 0L, (CultureInfo)null);
+            long num = ValidationHelper.GetLong(response.ContentLength, 0L);
             if (num == 0L)
+            {
                 num = length;
+            }
             obj.ETag = eTag;
             obj.Length = num;
         }
@@ -488,7 +537,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// </param>
         private void SetS3ObjectMetadaFromResponse(IS3ObjectInfo obj, PutObjectResponse response, long length = 0)
         {
-            this.SetS3ObjectMetadaFromResponse(obj, response.ETag, (AmazonWebServiceResponse)response, length);
+            this.SetS3ObjectMetadaFromResponse(obj, response.ETag, response, length);
         }
 
         /// <summary>
@@ -503,14 +552,14 @@ namespace Kadena.AmazonFileSystemProvider
         /// </param>
         private void SetS3ObjectMetadaFromResponse(IS3ObjectInfo obj, CompleteMultipartUploadResponse response, long length = 0)
         {
-            this.SetS3ObjectMetadaFromResponse(obj, response.ETag, (AmazonWebServiceResponse)response, length);
+            this.SetS3ObjectMetadaFromResponse(obj, response.ETag, response, length);
         }
 
         /// <summary>Returns date time as a string type in english culture.</summary>
         /// <param name="datetime">Date time.</param>
         public static string GetDateTimeString(DateTime datetime)
         {
-            return ValidationHelper.GetString((object)datetime, string.Empty, CultureHelper.EnglishCulture);
+            return ValidationHelper.GetString(datetime, string.Empty, CultureHelper.EnglishCulture);
         }
 
         /// <summary>
@@ -519,7 +568,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="datetime">String date time.</param>
         public static DateTime GetStringDateTime(string datetime)
         {
-            return ValidationHelper.GetDateTime((object)datetime, DateTimeHelper.ZERO_TIME, CultureHelper.EnglishCulture);
+            return ValidationHelper.GetDateTime(datetime, DateTimeHelper.ZERO_TIME, CultureHelper.EnglishCulture);
         }
     }
 }
