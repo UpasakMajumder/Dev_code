@@ -1030,12 +1030,13 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             "FYBudget",
             "PasswordHint",
             "UserCompanyName",
+            "UserZipCode"
         };
         List<string> intUserSettingKeys = new List<string>() {
             "UserCountry",
             "UserDivisionID",
             "SalesManagerID",
-            "TradeMarketingManagerID",
+            "TradeMarketingManagerID"
         };
         user = new UserInfo()
         {
