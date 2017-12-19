@@ -7,12 +7,12 @@
   <ContainerTextBefore>
 <![CDATA[
 <img src='{%BannerImage%}'>
-<div class="banner_con">
+<div class="banner__con">
 <h2>{%HeaderText%}</h2>
 <h4>{%SubHeaderTextOne%}</h4>
 <h4>{%SubHeaderTextTwo%}</h4>
 </div>
-<div class="order_dates">
+<div class="order__dates">
 <h6>{%FooterTextOne%}</h6>
 <h6>{%FooterTextTwo%}</h6>
 </div>
