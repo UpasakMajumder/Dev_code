@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<div class="faq_nav">
+<div class="faq__nav">
   <ul>
     <li id="item_<%# Eval<string>("NodeGuid") %>"><a href="#page<%# Eval<string>("NodeGuid") %>"><%# Eval("FAQQuestion",true) %></a></li>
   </ul>
@@ -15,10 +15,10 @@
 
 
 <asp:PlaceHolder runat="server" ID="plcTokenInfo" Visible=<%#CustomFunctions.ChildCount(Eval<string>("NodeGuid"))%> >
-  <div class="faq_content">
+  <div class="faq__content">
     <cms:CMSRepeater ID="nestedRPT" runat="server" DelayedLoading="true" ClassNames="CMS.Faq" TransformationName="KDA.Transformations.FaqNestRepeater" >
     </cms:CMSRepeater>
-     </div>
+  </div>
 </asp:placeholder>
 
 <script runat="server">
@@ -35,42 +35,42 @@
     {
       
       public static bool ChildCount(string nodeGuid)
-    {
-        bool Islast = false;
-        Guid childCount = new Guid();
-        int nodeId = 0;
-        if (!string.IsNullOrEmpty(nodeGuid))
         {
-
+          bool Islast = false;
+          Guid childCount = new Guid();
+          int nodeId = 0;
+          if (!string.IsNullOrEmpty(nodeGuid))
+          {
+            
             Guid nodeGUID = new Guid(nodeGuid);
-            if (nodeGUID != null)
+          if (nodeGUID != null)
+          {
+            nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(nodeGUID, CMS.SiteProvider.SiteContext.CurrentSiteName);
+            
+            if (nodeId > 0)
             {
-                nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(nodeGUID, CMS.SiteProvider.SiteContext.CurrentSiteName);
-
-                if (nodeId > 0)
-                {
-                    CMS.DocumentEngine.TreeProvider tp = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
-                    CMS.DocumentEngine.TreeNode node = tp.SelectSingleNode(nodeId);
-
-
-                    CMS.DocumentEngine.TreeProvider tp2 = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
-                    CMS.DocumentEngine.TreeNode pnode = tp.SelectSingleNode(node.Parent.NodeID);
-                    childCount = pnode.Children.LastItem.NodeGUID;
-                    if (childCount.ToString() == nodeGuid)
-                        Islast = true;
-                }
-
-                return Islast;
+              CMS.DocumentEngine.TreeProvider tp = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
+              CMS.DocumentEngine.TreeNode node = tp.SelectSingleNode(nodeId);
+              
+              
+              CMS.DocumentEngine.TreeProvider tp2 = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
+              CMS.DocumentEngine.TreeNode pnode = tp.SelectSingleNode(node.Parent.NodeID);
+              childCount = pnode.Children.LastItem.NodeGUID;
+              if (childCount.ToString() == nodeGuid)
+                Islast = true;
             }
-            else
-            {
-                childCount = new Guid();
-            }
+            
             return Islast;
+          }
+          else
+          {
+            childCount = new Guid();
+          }
+          return Islast;
         }
-        return Islast;
+      return Islast;
     }
-  }
+    }
 </script>
 ]]>
   </TransformationCode>
