@@ -1,21 +1,11 @@
 ﻿using AutoMapper;
-using CMS.CustomTables;
-using CMS.DataEngine;
-using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Globalization;
-using CMS.Helpers;
 using CMS.Localization;
-using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
-using Kadena.Models.Checkout;
-using Kadena.Models.Product;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Factories;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,10 +39,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public Site[] GetSites()
         {
-            var sites = SiteInfoProvider.GetSites()
-                .Select(s => SiteFactory.CreateSite(s))
-                .ToArray();
-            return sites;
+            return _mapper.Map<Site[]>(SiteInfoProvider.GetSites().ToArray());
         }
         public IEnumerable<Country> GetCountries()
         {

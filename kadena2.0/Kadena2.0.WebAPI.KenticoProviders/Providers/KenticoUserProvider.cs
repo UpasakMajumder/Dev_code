@@ -4,7 +4,6 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Factories;
 using System;
 using System.Linq;
 
@@ -50,22 +49,12 @@ namespace Kadena.WebAPI.KenticoProviders
        
         public Customer GetCurrentCustomer()
         {
-            var customer = ECommerceContext.CurrentCustomer;
-
-            if (customer == null)
-                return null;
-
-            return CustomerFactory.CreateCustomer(customer);
+            return _mapper.Map<Customer>(ECommerceContext.CurrentCustomer);
         }
 
         public Customer GetCustomer(int customerId)
         {
-            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
-
-            if (customer == null)
-                return null;
-
-            return CustomerFactory.CreateCustomer(customer);
+            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
         }
 
         public bool UserCanSeePrices()

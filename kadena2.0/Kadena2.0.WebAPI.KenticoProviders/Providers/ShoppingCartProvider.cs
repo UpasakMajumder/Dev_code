@@ -12,7 +12,6 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Factories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -71,7 +70,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shippingOptions = GetShippingOptions();
             var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
 
-            var deliveryMethods = DeliveryFactory.CreateCarriers(carriers);
+            var deliveryMethods = _mapper.Map<DeliveryCarrier[]>(carriers);
 
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
@@ -152,7 +151,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public PaymentMethod[] GetPaymentMethods()
         {
             var paymentOptionInfoCollection = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
-            var methods = PaymentOptionFactory.CreateMethods(paymentOptionInfoCollection);
+            var methods = _mapper.Map<PaymentMethod[]>(paymentOptionInfoCollection);
 
             foreach (var method in methods)
             {
@@ -164,9 +163,8 @@ namespace Kadena.WebAPI.KenticoProviders
         public PaymentMethod GetPaymentMethod(int id)
         {
             var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
-            var method = PaymentOptionFactory.CreateMethod(paymentInfo);
+            var method = _mapper.Map<PaymentMethod>(paymentInfo);
             method.Title = resources.ResolveMacroString(method.DisplayName);
-
             return method;
         }
 
