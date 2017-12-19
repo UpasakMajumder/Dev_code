@@ -81,6 +81,15 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/recentorders/getheaders/{orderType}")]
+        public async Task<IHttpActionResult> GetHeaders(string orderType)
+        {
+            var orderHead = await _orderService.GetHeaders(orderType, 0);
+            var result = _mapper.Map<OrderHeadDto>(orderHead);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
         [Route("api/recentorders/getheaders/{orderType}/{campaignID}")]
         public async Task<IHttpActionResult> GetHeaders(string orderType, int campaignID)
         {
