@@ -103,6 +103,9 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
+   $('.js-btnBrand').text('{$Kadena.Address.AssignBrand$}');
+    $('.js-btnSaveBrand').text('{$Kadena.Address.AddBrand$}');
+   
     function BindAddressBrands(){
       var addressID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('id=')[1]));
       $.ajax({
@@ -114,7 +117,7 @@
           if (data.success) {
             var brandData=data.payload;
             $('#AddressBrandsTablebody').html('');
-            var th="<tr><td>Brand Name</td><td>Brand Code</td></tr>";            
+            var th="<tr><td>{$Kadena.Address.BrandName$}</td><td>{$Kadena.Address.BrandCode$}</td></tr>";            
             var rowData='';
             var ids='';
             $('#hdnBrand').val('');
@@ -179,7 +182,7 @@
     });
     $(document).on('click', ".js-btnSaveBrand", function (e) {                
       $('#AddressBrandsTablebody').html('');
-      var th='<tr><td>Brand Name</td><td>Brand Code</td></tr>';
+      var th='<tr><td>{$Kadena.Address.BrandName$}</td><td>{$Kadena.Address.BrandCode$}</td></tr>';
       var tbody='';
       $('#hdnBrand').val('');
       $('#AddressBrandsTablebody').append('');
