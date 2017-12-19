@@ -125,8 +125,7 @@
                     <span class="input__label" runat="server" id="lblItemSpecs"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtItemSpecs" class="input__text"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rqItemSpecs" CssClass="input__error" ControlToValidate="txtItemSpecs" runat="server"></asp:RequiredFieldValidator>
-                    </div>
+                     </div>
                 </div>
             </div>
             <div class="mb-2 form__block">

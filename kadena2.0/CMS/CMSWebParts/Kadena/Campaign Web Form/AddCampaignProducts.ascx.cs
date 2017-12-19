@@ -511,7 +511,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                                 folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                                 txtLongDescription.Text = skuDetails.SKUDescription;
-                                txtEstimatedprice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                                 ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty);
                                 txtProductName.Text = skuDetails.SKUName;
                                 txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
@@ -523,6 +522,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
                             ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                             ddlBrand.SelectedValue = product.BrandID.ToString();
+                            txtEstimatedprice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
                             ddlProductcategory.SelectedValue = product.CategoryID.ToString();
                             txtQty.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                             txtItemSpecs.Text = ValidationHelper.GetString(product.ItemSpecs, string.Empty);
