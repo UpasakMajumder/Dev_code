@@ -1,7 +1,6 @@
 using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using System;
-using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Dashboard;
 using CMS.Ecommerce;
@@ -69,14 +68,19 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             EventLogProvider.LogException("Getting Statistics", "GetStatistics", ex);
         }
     }
-
+    /// <summary>
+    /// Binding sales persons data to labels
+    /// </summary>
     private void BindSalespersonData()
     {
-            lblCurrentWeekUserCount.InnerText = GetSalespersonStatistics(7);
-            lblCurrentMonthUserCount.InnerText = GetSalespersonStatistics(30);
-            lblCurrentYearUserCount.InnerText = GetSalespersonStatistics(365);
+        lblCurrentWeekUserCount.InnerText = GetSalespersonStatistics(7);
+        lblCurrentMonthUserCount.InnerText = GetSalespersonStatistics(30);
+        lblCurrentYearUserCount.InnerText = GetSalespersonStatistics(365);
     }
-
+    /// <summary>
+    /// Binding Open orders data to labels
+    /// </summary>
+    /// <param name="openOrders"></param>
     private void BindOpenOrdersData(StatisticBlock openOrders)
     {
         if (openOrders != null)
@@ -89,7 +93,10 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             lblCurrentYearOpenOrdersMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(openOrders.Year.Cost, 0));
         }
     }
-
+    /// <summary>
+    /// Binding Order placed data to labels
+    /// </summary>
+    /// <param name="ordersPlaced"></param>
     private void BindOrdersPlacedData(StatisticBlock ordersPlaced)
     {
         if (ordersPlaced != null)
@@ -111,12 +118,13 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     {
         try
         {
-            var count =UserInfoProvider.GetUsers().Where(x =>(DateTime.Now - x.UserCreated).Days <= lastNDays).ToList().Count;
+            var count = UserInfoProvider.GetUsers().Where(x => (DateTime.Now - x.UserCreated).Days <= lastNDays).ToList().Count;
             if (count != default(int))
             {
                 return count.ToString();
             }
-            else {
+            else
+            {
                 return "0";
             }
         }
@@ -126,6 +134,10 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             return "0";
         }
     }
+    /// <summary>
+    /// getting orders from microservices
+    /// </summary>
+    /// <returns></returns>
     public DashboardStatistics GetDashboardStatistics()
     {
         DashboardStatistics statistics = new DashboardStatistics();
@@ -138,7 +150,12 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
         }
         return statistics;
     }
-
+    /// <summary>
+    /// Getting orders based on status
+    /// </summary>
+    /// <param name="ordersList"></param>
+    /// <param name="orderStatus"></param>
+    /// <returns></returns>
     private StatisticBlock GetOrdersBlock(IEnumerable<OrderDto> ordersList, string orderStatus)
     {
         List<OrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
@@ -163,7 +180,13 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             }
         };
     }
-
+    /// <summary>
+    /// Filtering orders based on status
+    /// </summary>
+    /// <param name="ordersList"></param>
+    /// <param name="orderStatus"></param>
+    /// <param name="lastNDays"></param>
+    /// <returns></returns>
     private List<OrderDto> FilterOrders(IEnumerable<OrderDto> ordersList, string orderStatus, int lastNDays)
     {
         return ordersList.Where(x => x.Status.Equals(orderStatus) && (DateTime.Now - x.CreateDate).Days <= lastNDays).ToList();
