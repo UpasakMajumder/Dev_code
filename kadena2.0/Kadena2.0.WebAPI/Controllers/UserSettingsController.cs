@@ -5,6 +5,7 @@ using Kadena.WebAPI.Infrastructure;
 using System.Web.Http;
 using Kadena.Models;
 using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -15,6 +16,15 @@ namespace Kadena.WebAPI.Controllers
 
         public UserSettingsController(ISettingsService service, IMapper mapper)
         {
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _service = service;
             _mapper = mapper;
         }

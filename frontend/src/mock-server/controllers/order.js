@@ -1,4 +1,6 @@
 const order = require('../ws/order');
+const campaign = require('../ws/filtered-recent-orders/campaigns');
+const filteredOrders = require('../ws/filtered-recent-orders/orders');
 
 module.exports.detail = (req, res) => res.json(order.detail);
 
@@ -11,5 +13,9 @@ module.exports.recent = {
     } else {
       res.json(order.recent.page2);
     }
+  },
+  filtered: {
+    campaigns: (req, res) => res.json(campaign),
+    orders: (req, res) => res.json(filteredOrders)
   }
 };

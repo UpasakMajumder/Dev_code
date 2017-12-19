@@ -17,6 +17,9 @@ apiRouter.use((req, res, next) => {
   next();
 });
 
+apiRouter.get('/order/recent/filtered/campaigns/:selectedOrderType', Orders.recent.filtered.campaigns);
+apiRouter.get('/order/recent/filtered/orders/:selectedOrderType/:selectedCampaign*?', Orders.recent.filtered.orders);
+
 apiRouter.post('/login', Login);
 apiRouter.post('/accepttac', AcceptTaC);
 apiRouter.post('/checktac', CheckTaC);
