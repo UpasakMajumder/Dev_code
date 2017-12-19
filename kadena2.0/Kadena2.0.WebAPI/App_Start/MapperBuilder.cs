@@ -21,13 +21,11 @@ using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
-using Kadena.DTO.Dashboard;
 using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
-using Kadena.Models.Dashboard;
 using Kadena.Models.Login;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Product;
@@ -240,14 +238,6 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
 				config.CreateMap<BusinessUnit, BusinessUnitDto>();
                 config.CreateMap<Brand, BrandDto>();
-                config.CreateMap<DashboardStatistics, DashboardStatisticsDTO>()
-              .ForMember(dest => dest.OpenOrders, opt => opt.MapFrom(src => src.OpenOrders))
-              .ForMember(dest => dest.OrdersPlaced, opt => opt.MapFrom(src => src.OrdersPlaced));
-                config.CreateMap<StatisticBlock, StatisticBlockDTO>()
-                .ForMember(dest => dest.Week, opt => opt.MapFrom(src => src.Week))
-                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.Month))
-                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Year));
-                config.CreateMap<StatisticsReading, StatisticsReadingDTO>();
             });
         }
     }
