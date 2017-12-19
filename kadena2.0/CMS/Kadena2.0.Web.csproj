@@ -1238,6 +1238,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\AddressBrands.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\InboundTracking.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />

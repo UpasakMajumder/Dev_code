@@ -63,6 +63,8 @@ export const UNSET_ADDRESS_DEFAULT = 'UNSET_ADDRESS_DEFAULT';
 export const TAC_CHECK = 'TaC_CHECK';
 export const TAC_ACCEPT = 'TaC_ACCEPT';
 export const CREDENTINALS_CHANGE = 'CREDENTINALS_CHANGE';
+export const FILTERED_RECENT_ORDERS_GET_ORDERS = 'FILTERED_RECENT_ORDERS_GET_ORDERS';
+export const FILTERED_RECENT_ORDERS_GET_CAMPAIGNS = 'FILTERED_RECENT_ORDERS_GET_CAMPAIGNS';
 
 /* config */
 export const isDevelopment = process.env.NODE_ENV === 'development';

@@ -20,6 +20,8 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoProviderService kenticoProvider;
+        private readonly IShoppingCartProvider shoppingCart;
+        private readonly IKenticoProductsProvider products;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
@@ -35,6 +37,8 @@ namespace Kadena.BusinessLogic.Services
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
             IKenticoProviderService kenticoProvider,
+            IShoppingCartProvider shoppingCart,
+            IKenticoProductsProvider products,
             IKenticoUserProvider kenticoUsers,
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
@@ -42,8 +46,63 @@ namespace Kadena.BusinessLogic.Services
             ITemplatedClient templateService,
             IKenticoDocumentProvider documents)
         {
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (orderSubmitClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderSubmitClient));
+            }
+            if (orderViewClient == null)
+            {
+                throw new ArgumentNullException(nameof(orderViewClient));
+            }
+            if (mailingClient == null)
+            {
+                throw new ArgumentNullException(nameof(mailingClient));
+            }
+            if (kenticoProvider == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoProvider));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (kenticoLog == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLog));
+            }
+            if (taxService == null)
+            {
+                throw new ArgumentNullException(nameof(taxService));
+            }
+            if (templateService == null)
+            {
+                throw new ArgumentNullException(nameof(templateService));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+
             this.mapper = mapper;
             this.kenticoProvider = kenticoProvider;
+            this.shoppingCart = shoppingCart;
+            this.products = products;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.orderSubmitClient = orderSubmitClient;
@@ -68,7 +127,7 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var data = microserviceResponse.Payload;
-            var genericStatus = kenticoProvider.MapOrderStatus(data.Status);
+            var genericStatus = shoppingCart.MapOrderStatus(data.Status);
 
             var orderDetail = new OrderDetail()
             {
@@ -160,7 +219,7 @@ namespace Kadena.BusinessLogic.Services
                 orderDetail.ShippingInfo = new ShippingInfo
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
-                    DeliveryMethod = kenticoProvider.GetShippingProviderIcon(data.ShippingInfo.Provider),
+                    DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null // TODO Track your package url unknown
                 };
@@ -185,7 +244,7 @@ namespace Kadena.BusinessLogic.Services
             var orderedItems = items.Select(i => new OrderedItem()
             {
                 Id = i.SkuId,
-                Image = kenticoProvider.GetSkuImageUrl(i.SkuId),
+                Image = products.GetSkuImageUrl(i.SkuId),
                 MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                 Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                 Quantity = i.Quantity,
@@ -261,7 +320,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
-            var paymentMethods = kenticoProvider.GetPaymentMethods();
+            var paymentMethods = shoppingCart.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
 
             switch (selectedPayment?.ClassName ?? string.Empty)
@@ -303,7 +362,7 @@ namespace Kadena.BusinessLogic.Services
 
             if ((request?.DeliveryAddress?.Id ?? 0) < 0)
             {
-                kenticoProvider.SetShoppingCartAddress(request.DeliveryAddress);
+                shoppingCart.SetShoppingCartAddress(request.DeliveryAddress);
                 customer.FirstName = request.DeliveryAddress.CustomerName;
                 customer.LastName = string.Empty;
                 customer.Email = request.DeliveryAddress.Email;
@@ -334,8 +393,8 @@ namespace Kadena.BusinessLogic.Services
             if (serviceResult.Success)
             {
                 kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
-                kenticoProvider.RemoveCurrentItemsFromStock();
-                kenticoProvider.ClearCart();
+                shoppingCart.RemoveCurrentItemsFromStock();
+                shoppingCart.ClearCart();
             }
             else
             {
@@ -366,14 +425,14 @@ namespace Kadena.BusinessLogic.Services
         {
             // TODO: add to order request. need confirmation on the name of the property from microservice side.
 
-            var shippingAddress = kenticoProvider.GetCurrentCartShippingAddress();
+            var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
             shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
-            var billingAddress = kenticoProvider.GetDefaultBillingAddress();
+            var billingAddress = shoppingCart.GetDefaultBillingAddress();
             var site = resources.GetKenticoSite();
-            var paymentMethod = kenticoProvider.GetPaymentMethod(paymentMethodId);
-            var cartItems = kenticoProvider.GetShoppingCartItems();
+            var paymentMethod = shoppingCart.GetPaymentMethod(paymentMethodId);
+            var cartItems = shoppingCart.GetShoppingCartItems();
             var currency = resources.GetSiteCurrency();
-            var totals = kenticoProvider.GetShoppingCartTotals();
+            var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             if (string.IsNullOrWhiteSpace(customer.Company))
@@ -471,7 +530,7 @@ namespace Kadena.BusinessLogic.Services
             // If only mailing list items in cart, we are not picking any delivery option
             if (!cartItems.All(i => i.IsMailingList))
             {
-                var deliveryMethod = kenticoProvider.GetShippingOption(deliveryMethodId);
+                var deliveryMethod = shoppingCart.GetShippingOption(deliveryMethodId);
                 orderDto.ShippingOption = new ShippingOptionDTO()
                 {
                     KenticoShippingOptionID = deliveryMethod.Id,
@@ -520,7 +579,7 @@ namespace Kadena.BusinessLogic.Services
 
         private string GetPaymentMethodIcon(string paymentMethod)
         {
-            var methods = kenticoProvider.GetPaymentMethods();
+            var methods = shoppingCart.GetPaymentMethods();
             var method = methods.FirstOrDefault(m => m.Title == paymentMethod);
             return method?.Icon ?? string.Empty;
         }
