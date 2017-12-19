@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<div class="video_block">
+<div class="video__block col-sm-3">
   <h6>{%VideoName%}</h6>
   <div class="iframe-video iframe-video--fixed iframeWrapper" onclick="Showpopup('{%VideoUrl%}');" >
     <iframe id="theiframe" src="{%VideoUrl%}" 
