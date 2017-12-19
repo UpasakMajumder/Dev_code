@@ -1,16 +1,70 @@
 ﻿using CMS.DataEngine;
 using CMS.EventLog;
+using CMS.Helpers;
+using CMS.MediaLibrary;
+using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.Old_App_Code.Kadena.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace Kadena.Old_App_Code.Kadena.PDFHelpers
 {
     public class CartPDFHelper
     {
+        private const string _cartPDFFileName = "KDA_CartPDFFileName";
         #region Methods
+
+        /// <summary>
+        /// Create Pdf method
+        /// </summary>
+        /// <param name="distributorCartData"></param>
+        public static byte[] CreateProductPDF(DataTable distributorCartData,int inventoryType)
+        {
+            try
+            {
+                var html = SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_DistributorCartPDFHTML");
+                var groupCart = distributorCartData.AsEnumerable().GroupBy(x => x["ShoppingCartID"]);
+                var PDFBody = "";
+                foreach (var cart in groupCart)
+                {
+                    PDFBody += CreateCarOuterContent(cart.FirstOrDefault(), SiteContext.CurrentSiteName);
+                    var cartData = cart.ToList();
+                    PDFBody = PDFBody.Replace("{INNERCONTENT}", CreateCartInnerContent(cartData, SiteContext.CurrentSiteName, inventoryType));
+                }
+                html = html.Replace("{OUTERCONTENT}", PDFBody);
+                return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "CreateProductPDF", ex.Message);
+                return null;
+            }
+        }
+
+        public static void WriteresponseToPDF(byte[] pdfBytes)
+        {
+            try
+            {
+                string fileName = $"{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_cartPDFFileName}") }.pdf";
+                HttpContext.Current.Response.Clear();
+                MemoryStream ms = new MemoryStream(pdfBytes);
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                HttpContext.Current.Response.Buffer = true;
+                ms.WriteTo(HttpContext.Current.Response.OutputStream);
+                HttpContext.Current.Response.End();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("CartPDFHelper", "WriteresponseToPDF", ex.Message);
+            }
+        }
 
         /// <summary>
         /// This will returns distributor cart items
@@ -61,7 +115,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// </summary>
         /// <param name="distributorCartData"></param>
         /// <returns></returns>
-        public static string CreateCartInnerContent(DataTable distributorCartData, string CurrentSiteName)
+        public static string CreateCartInnerContent(DataTable distributorCartData, string CurrentSiteName,int inventoryType)
         {
             try
             {
@@ -73,6 +127,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string)), inventoryType));
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -89,7 +144,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// </summary>
         /// <param name="distributorCartData"></param>
         /// <returns></returns>
-        public static string CreateCartInnerContent(List<DataRow> distributorCartData, string CurrentSiteName)
+        public static string CreateCartInnerContent(List<DataRow> distributorCartData, string CurrentSiteName,int inventoryType)
         {
             try
             {
@@ -101,6 +156,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"],default(string)), inventoryType));
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -135,7 +191,42 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 return string.Empty;
             }
         }
+        /// <summary>
+        /// Get product Image by Image path
+        /// </summary>
+        /// <param name="imagepath"></param>
+        /// <returns></returns>
+        public static string GetProductImage(object imagepath,int typeOfProduct)
+        {
+            string returnValue = string.Empty;
+            try
+            {
+                if (typeOfProduct == (int)ProductType.PreBuy)
+                {
+                    string folderName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ImagesFolderName");
+                    folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+                    if (imagepath != null && folderName != null)
+                    {
+                        returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(SiteContext.CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                    }
+                }
+                else
+                {
+                    string folderName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_InventoryProductImageFolderName");
+                    folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
+                    if (imagepath != null && folderName != null)
+                    {
+                        returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(SiteContext.CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                    }
+                }
 
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, SiteContext.CurrentSiteID, ex.Message);
+            }
+            return returnValue;
+        }
         #endregion Methods
     }
 }

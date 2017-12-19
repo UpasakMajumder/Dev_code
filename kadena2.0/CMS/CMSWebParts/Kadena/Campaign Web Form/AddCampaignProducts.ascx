@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
@@ -57,7 +56,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
-                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text "></asp:TextBox>
                     </div>
                 </div>
             </div>

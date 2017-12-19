@@ -18,12 +18,9 @@
     {
         public const string cartItems = "KDA.Transformations.xCartItems";
     }
-    /// <summary>
-    /// This class represents orderstatus
-    /// </summary>
-    public class OrderStatusConstants
+    public static class OrderType
     {
-        public const string OrderInProgress = "Submission in progress";
-        public const string OrderPlaced = "Submitted";
+        public const string prebuy = "prebuy";
+        public const string generalInventory = "general";
     }
 }
