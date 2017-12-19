@@ -49,7 +49,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         {
             try
             {
-                string fileName = $"{ _cartPDFFileName }.pdf";
+                string fileName = $"{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_cartPDFFileName}") }.pdf";
                 HttpContext.Current.Response.Clear();
                 MemoryStream ms = new MemoryStream(pdfBytes);
                 HttpContext.Current.Response.ContentType = "application/pdf";
