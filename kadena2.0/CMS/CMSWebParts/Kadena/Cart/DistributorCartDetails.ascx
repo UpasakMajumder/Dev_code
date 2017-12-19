@@ -51,16 +51,17 @@
         </td>
         <td></td>
     </tr>
-   </tbody>
+    </tbody>
 </table>
-
 </div>
 <div class="dialog" id="divDailogue" runat="server">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__content">
-            <p><asp:Label runat="server" ID="lblCartUpdateSuccess"></asp:Label></p>
-            <p> <asp:Label runat="server" ID="lblCartError"></asp:Label></p>
+            <p>
+                <asp:Label runat="server" ID="lblCartUpdateSuccess"></asp:Label></p>
+            <p>
+                <asp:Label runat="server" ID="lblCartError"></asp:Label></p>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
