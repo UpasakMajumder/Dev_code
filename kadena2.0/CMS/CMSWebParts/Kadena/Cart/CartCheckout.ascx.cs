@@ -102,7 +102,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                OrdersDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID);
+                OrderDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID);
                 var response = ShoppingCartHelper.CallOrderService(Ordersdto);
                 return response;
             }

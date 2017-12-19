@@ -23,12 +23,11 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
-    public static class ShoppingCartHelper
+    public  class ShoppingCartHelper
     {
         private static ShoppingCartInfo Cart { get; set; }
-        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
-        private static readonly IMicroProperties _properties;
-
+        private const string _serviceUrlShippingSettingKey = "KDA_ShippingCostServiceUrl";
+        private const string _serviceUrlOrderSettingKey = "KDA_OrderServiceEndpoint";
         /// <summary>
         /// creating estimation DTO
         /// </summary>
@@ -60,12 +59,12 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <param name="cart"></param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static OrdersDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID)
+        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID)
         {
             try
             {
                 Cart = cart;
-                return new OrdersDTO
+                return new OrderDTO
                 {
                     Campaign = GetCampaign(),
                     BillingAddress = GetBillingAddress(),
@@ -120,7 +119,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
                 if (!response.Success || response.Payload == null)
                 {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider to service URL '{_properties.GetServiceUrl(_serviceUrlSettingKey)}' resulted with error {response.Error?.Message ?? string.Empty}");
+                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider to service URL '{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_serviceUrlShippingSettingKey}")}' resulted with error {response.Error?.Message ?? string.Empty}");
                 }
                 return response;
             }
@@ -136,7 +135,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="requestBody"></param>
         /// <returns></returns>
-        public static BaseResponseDto<string> CallOrderService(OrdersDTO requestBody)
+        public static BaseResponseDto<string> CallOrderService(OrderDTO requestBody)
         {
             try
             {
@@ -145,7 +144,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
                 if (!response.Success || response.Payload == null)
                 {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from to service URL '{_properties.GetServiceUrl(_serviceUrlSettingKey)}' resulted with error {response.Error?.Message ?? string.Empty}");
+                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from to service URL '{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_serviceUrlOrderSettingKey}")}' resulted with error {response.Error?.Message ?? string.Empty}");
                 }
                 return response;
             }
@@ -352,19 +351,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
-            try
-            {
                 return new SiteDTO
                 {
                     KenticoSiteID = SiteContext.CurrentSiteID,
                     KenticoSiteName = SiteContext.CurrentSiteName
                 };
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetSite", ex.Message);
-                return null;
-            }
         }
 
         /// <summary>

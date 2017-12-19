@@ -150,7 +150,6 @@
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceRequests\OrdersDTO.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
