@@ -923,6 +923,13 @@
     <Compile Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx.designer.cs">
       <DependentUpon>CreateCampaign.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx.cs">
+      <DependentUpon>CartCheckout.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx.designer.cs">
+      <DependentUpon>CartCheckout.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1295,6 +1302,7 @@
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\PayPal.cs" />
     <Compile Include="Old_App_Code\Kadena\PaymentMethods\CreditCard.cs" />
     <Compile Include="Old_App_Code\Kadena\PDFHelpers\CartPDFHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\Shoppingcart\ShoppingCartHelper.cs" />
     <Compile Include="ProgramWebservice.asmx.cs">
       <DependentUpon>ProgramWebservice.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -1374,6 +1382,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
