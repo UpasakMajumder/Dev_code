@@ -48,7 +48,8 @@
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
-    <Compile Include="Campaigns\Campagin.cs" />
+    <Compile Include="RecentOrders\OrderCampaginHead.cs" />
+    <Compile Include="RecentOrders\OrderCampaginItem.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\ButtonLabels.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />

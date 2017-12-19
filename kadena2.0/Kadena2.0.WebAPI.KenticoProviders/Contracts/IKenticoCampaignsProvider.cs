@@ -1,11 +1,10 @@
-﻿using Kadena.Models.Campaigns;
-using System.Collections.Generic;
+﻿using Kadena.Models.RecentOrders;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoCampaignsProvider
     {
         void DeleteCampaign(int campaignID);
-        List<Campaign> GetCampaigns(string orderType);
+        OrderCampaginHead GetCampaigns(string orderType);
     }
 }

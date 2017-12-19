@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
-using Kadena.Dto.Campaigns;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
@@ -25,7 +24,6 @@ using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
-using Kadena.Models.Campaigns;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
@@ -240,7 +238,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
 				config.CreateMap<BusinessUnit, BusinessUnitDto>();
                 config.CreateMap<Brand, BrandDto>();
-                config.CreateMap<Campaign, CampaginDto>();
+                config.CreateMap<OrderCampaginHead, OrderCampaginHeadDto>();
+                config.CreateMap<OrderCampaginItem, OrderCampaginItemDto>();
             });
         }
     }

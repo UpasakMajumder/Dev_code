@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
-    <Compile Include="Campaigns\CampaginDto.cs" />
+    <Compile Include="RecentOrders\OrderCampaginItemDto.cs" />
     <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\ButtonLabelsDto.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="Product\ProductDto.cs" />
     <Compile Include="Product\RequestResultDto.cs" />
     <Compile Include="Product\Responses\GetProductsDto.cs" />
+    <Compile Include="RecentOrders\OrderCampaginHeadDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
     <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
     <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />

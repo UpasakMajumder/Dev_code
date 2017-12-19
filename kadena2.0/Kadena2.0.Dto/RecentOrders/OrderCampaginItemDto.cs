@@ -1,6 +1,6 @@
-﻿namespace Kadena.Models.Campaigns
+﻿namespace Kadena.Dto.RecentOrders
 {
-    public class Campaign
+    public class OrderCampaginItemDto
     {
         public int id { get; set; }
         public string name { get; set; }

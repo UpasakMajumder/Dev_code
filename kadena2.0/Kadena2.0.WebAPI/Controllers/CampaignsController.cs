@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.Dto.Campaigns;
+using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
@@ -44,7 +43,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult GetCampaigns(string orderType)
         {
             var campaigns = campaignsService.GetCampaigns(orderType);
-            var result = mapper.Map<CampaginDto[]>(campaigns);
+            var result = mapper.Map<OrderCampaginHeadDto>(campaigns);
             return ResponseJson(result);
         }
     }

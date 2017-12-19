@@ -1,5 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
-using Kadena.Models.Campaigns;
+using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Kadena.BusinessLogic.Services
             kenticoCampaigns.DeleteCampaign(campaignID);
         }
 
-        public List<Campaign> GetCampaigns(string orderType)
+        public OrderCampaginHead GetCampaigns(string orderType)
         {
             return kenticoCampaigns.GetCampaigns(orderType);
         }

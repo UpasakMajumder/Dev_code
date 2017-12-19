@@ -3,7 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.Models.Campaigns;
+using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 
@@ -26,17 +26,17 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public List<Campaign> GetCampaigns(string orderType)
+        public OrderCampaginHead GetCampaigns(string orderType)
         {
-            List<Campaign> campaigns = new List<Campaign>();
-            if(orderType.Equals(orderTypePreBuy))
+            List<OrderCampaginItem> campaigns = new List<OrderCampaginItem>();
+            if (orderType.Equals(orderTypePreBuy))
             {
                 var campaignDocuments = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereTrue("OpenCampaign");
                 if (!DataHelper.DataSourceIsEmpty(campaignDocuments))
                 {
                     foreach (TreeNode item in campaignDocuments.TypedResult.Items)
                     {
-                        campaigns.Add(new Campaign()
+                        campaigns.Add(new OrderCampaginItem()
                         {
                             id = item.GetIntegerValue("CampaignID", 0),
                             name = item.GetStringValue("Name", string.Empty)
@@ -44,7 +44,11 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 }
             }
-            return campaigns;
+            return new OrderCampaginHead()
+            {
+                placeholder = ResHelper.GetString("Kadena.RecentOrders.Filter.SelectCampaign"),
+                items = campaigns
+            };
         }
     }
 }
