@@ -149,7 +149,6 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                 List<AddressInfo> myAddressList = GetMyAddressBookList();
                 if (myAddressList.Count > 0)
                 {
-                    List<object> distributorList = new List<object>();
                     List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
                                                                     .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
                                                                     .WhereEquals("ShoppingCartInventoryType", InventoryType)
@@ -158,20 +157,24 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                                                                                        .WhereIn("ShoppingCartID", shoppingCartIDs)
                                                                                        .WhereEquals("SKUID", productID)
                                                                                        .ToList();
-                    myAddressList.ForEach(g =>
-                    {
-                        ShoppingCartItemInfo cartItem = cartItems.Where(k => k.GetValue<int>("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID).FirstOrDefault();
-                        distributorList.Add(new
+                    gvCustomersCart.DataSource = myAddressList
+                        .Distinct()
+                        .Select(g =>
                         {
-                            AddressID = g.AddressID,
-                            AddressPersonalName = g.AddressPersonalName,
-                            IsSelected = cartItem?.CartItemUnits > 0 ? true : false,
-                            ShoppingCartID = cartItem != null ? cartItem.ShoppingCartID : default(int),
-                            SKUID = cartItem != null ? cartItem.SKUID : default(int),
-                            SKUUnits = cartItem != null ? cartItem.CartItemUnits : default(int)
-                        });
-                    });
-                    gvCustomersCart.DataSource = distributorList.Distinct().ToList();
+                            var cartItem = cartItems
+                                .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID)
+                                .FirstOrDefault();
+                            return new
+                            {
+                                g.AddressID,
+                                g.AddressPersonalName,
+                                IsSelected = cartItem?.CartItemUnits > 0,
+                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
+                                SKUID = cartItem?.SKUID ?? default(int),
+                                SKUUnits = cartItem?.CartItemUnits ?? default(int)
+                            };
+                        })
+                        .ToList();
                     gvCustomersCart.Columns[1].HeaderText = AddressIDText;
                     gvCustomersCart.Columns[2].HeaderText = AddressPersonalNameText;
                     gvCustomersCart.DataBind();
