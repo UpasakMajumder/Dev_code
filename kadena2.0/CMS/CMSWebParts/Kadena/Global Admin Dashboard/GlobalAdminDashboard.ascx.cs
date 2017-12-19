@@ -8,6 +8,12 @@ using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Membership;
 using System.Linq;
+using Kadena2.MicroserviceClients.Clients;
+using Kadena.Helpers;
+using Kadena.Dto.General;
+using Kadena.Dto.Order;
+using System.Collections.Generic;
+using Kadena.Old_App_Code.Kadena.Constants;
 
 public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashboard : CMSAbstractWebPart
 {
@@ -50,8 +56,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     {
         try
         {
-            var client = new DashboardStatisticsService(new KenticoResourceService());
-            DashboardStatistics serviceCallResult = client.GetDashboardStatistics();
+            DashboardStatistics serviceCallResult = GetDashboardStatistics();
             BindSalespersonData();
             if (serviceCallResult != null)
             {
@@ -120,6 +125,48 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             EventLogProvider.LogException("Getting user Statistics", "GetSalespersonStatistics", ex);
             return "0";
         }
+    }
+    public DashboardStatistics GetDashboardStatistics()
+    {
+        DashboardStatistics statistics = new DashboardStatistics();
+        var statisticClient = new OrderViewClient(new MicroProperties(new KenticoResourceService()));
+        BaseResponseDto<OrderListDto> response = statisticClient.GetOrders(CurrentSiteName, 1, 1000).Result;
+        if (response.Success)
+        {
+            statistics.OpenOrders = GetOrdersBlock(response.Payload.Orders, OrderStatusConstants.OrderInProgress);
+            statistics.OrdersPlaced = GetOrdersBlock(response.Payload.Orders, OrderStatusConstants.OrderPlaced);
+        }
+        return statistics;
+    }
+
+    private StatisticBlock GetOrdersBlock(IEnumerable<OrderDto> ordersList, string orderStatus)
+    {
+        List<OrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
+        List<OrderDto> Monthly = FilterOrders(ordersList, orderStatus, 30);
+        List<OrderDto> Yearly = FilterOrders(ordersList, orderStatus, 365);
+        return new StatisticBlock()
+        {
+            Week = new StatisticsReading()
+            {
+                Count = Weekly.Count,
+                Cost = Weekly.Sum(x => x.TotalPrice).ToString()
+            },
+            Month = new StatisticsReading()
+            {
+                Count = Monthly.Count,
+                Cost = Monthly.Sum(x => x.TotalPrice).ToString()
+            },
+            Year = new StatisticsReading()
+            {
+                Count = Yearly.Count,
+                Cost = Yearly.Sum(x => x.TotalPrice).ToString()
+            }
+        };
+    }
+
+    private List<OrderDto> FilterOrders(IEnumerable<OrderDto> ordersList, string orderStatus, int lastNDays)
+    {
+        return ordersList.Where(x => x.Status.Equals(orderStatus) && (DateTime.Now - x.CreateDate).Days <= lastNDays).ToList();
     }
     #endregion "Methods"
 }
