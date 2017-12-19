@@ -40,7 +40,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 DataTable distributorCartData = CartPDFHelper.GetLoggedInUserCartData(InventoryType, CurrentUser.UserID);
-                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData);
+                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData, InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }
             catch (Exception ex)

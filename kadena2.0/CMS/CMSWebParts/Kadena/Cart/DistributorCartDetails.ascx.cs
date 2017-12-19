@@ -371,7 +371,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
-                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData);
+                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData,InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }
             catch (Exception ex)
