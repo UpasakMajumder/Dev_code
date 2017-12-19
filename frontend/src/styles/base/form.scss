@@ -22,6 +22,10 @@
   }
 }
 
+.form__lg {
+  max-width: 100%;
+}
+
 .form-block {
   @include rem(padding, 20px 10px);
   background-color: $form-bg;
