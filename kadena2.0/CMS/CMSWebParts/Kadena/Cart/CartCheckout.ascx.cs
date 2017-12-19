@@ -4,6 +4,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.General;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using System;
@@ -49,7 +50,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
         #endregion
         #region Events
-
+        /// <summary>
+        /// Page load event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            divErrorDailogue.Attributes.Add("class", "dialog");
+        }
         /// <summary>
         /// Chekcou click event for order processing
         /// </summary>
@@ -83,7 +92,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs).Column("AddressPersonalName").ToList().Select(x => x?.AddressPersonalName).ToList();
                     ShowOrderErrorList(distributors);
                 }
-                divDailogue.Attributes.Add("class", "dialog active");
+                divErrorDailogue.Attributes.Add("class", "dialog active");
             }
             catch (Exception ex)
             {
@@ -102,7 +111,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                OrderDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID);
+                OrderDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID, OrderType.generalInventory);
                 var response = ShoppingCartHelper.CallOrderService(Ordersdto);
                 return response;
             }
