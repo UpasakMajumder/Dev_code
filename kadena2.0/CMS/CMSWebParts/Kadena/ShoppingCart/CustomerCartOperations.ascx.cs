@@ -152,7 +152,7 @@ namespace Kadena.CMSWebParts.Kadena.ShoppingCart
                     List<object> distributorList = new List<object>();
                     List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
                                                                     .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
-                                                                    .WhereEquals("ShoppingCartInventoryType", InventoryType).ToList()
+                                                                    .WhereEquals("ShoppingCartInventoryType", InventoryType)
                                                                     .Select(x => x.ShoppingCartID).ToList();
                     List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
                                                                                        .WhereIn("ShoppingCartID", shoppingCartIDs)

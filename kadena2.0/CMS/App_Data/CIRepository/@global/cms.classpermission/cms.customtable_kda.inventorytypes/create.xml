@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.classpermission>
   <ClassID>
-    <CodeName>KDA.ProductTypes</CodeName>
+    <CodeName>KDA.InventoryTypes</CodeName>
     <GUID>9b44792d-c8dc-4e8e-a3ad-9c46401a4d02</GUID>
     <ObjectType>cms.customtable</ObjectType>
   </ClassID>
