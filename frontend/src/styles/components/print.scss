@@ -11,12 +11,12 @@
       h2 {
         color: $print_heading;
         text-transform: uppercase;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
       }
 
       p {
         font-size: $font-l;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
       }
     }
   }
@@ -81,31 +81,6 @@
       float: right;
       margin: 20px 0 0;
 
-      .crime__topsec {
-        .details__sec {
-          margin-bottom: 10px;
-
-          .input__label {
-            width: 21%;
-            float: left;
-            display: inline-block;
-
-            label {
-              font-size: $font-m;
-            }
-          }
-
-          .input__con {
-            width: 60%;
-            display: inline-block;
-
-            label {
-              font-size: $font-m;
-            }
-          }
-        }
-      }
-
       .crime__btmsec {
         margin-bottom: 10px;
 
@@ -129,12 +104,35 @@
   }
 }
 
+.details__sec {
+  margin-bottom: 10px;
+
+  .input__label {
+    width: 21%;
+    float: left;
+    display: inline-block;
+
+    label {
+      font-size: $font-size-default;
+    }
+  }
+
+  .input__con {
+    width: 60%;
+    display: inline-block;
+
+    label {
+      font-size: $font-size-default;
+    }
+  }
+}
+
 .product__details {
   .input__label {
     width: auto;
 
     label {
-      font-size: $font-s;
+      font-size: $font-size-default;
     }
   }
 
@@ -143,7 +141,7 @@
     padding-left: 5px;
 
     label {
-      font-size: $font-s;
+      font-size: $font-size-default;
       display: block;
     }
   }
@@ -175,7 +173,8 @@
     float: left;
   }
 
-  .cus__content-block {
+  .cus__content--block {
     width: 100%;
   }
 }
+

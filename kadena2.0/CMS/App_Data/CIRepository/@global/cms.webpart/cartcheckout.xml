@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>TWECart</CodeName>
+    <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDisplayName>Cart Checkout</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/CartCheckout.ascx</WebPartFileName>
+  <WebPartGUID>6a8d8631-8688-4fe5-9ac6-d2b5765c012a</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>CartCheckout</WebPartName>
+  <WebPartProperties>
+    <form />
+  </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>
