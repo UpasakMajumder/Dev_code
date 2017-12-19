@@ -12,5 +12,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<OrderHead> GetHeaders();
 
         Task<OrderBody> GetBody(int pageNumber);
+
+        Task<OrderHead> GetHeaders(string orderType, int campaignID);
     }
 }

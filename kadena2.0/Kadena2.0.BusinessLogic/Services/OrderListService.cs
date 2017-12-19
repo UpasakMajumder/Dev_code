@@ -141,5 +141,64 @@ namespace Kadena.BusinessLogic.Services
                 return new OrderListDto();
             }
         }
+
+        private async Task<OrderListDto> GetOrders(int pageNumber, int campaignID, string orderType)
+        {
+            var siteName = _kenticoResources.GetKenticoSite().Name;
+            BaseResponseDto<OrderListDto> response = null;
+            if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            {
+                response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity, campaignID, orderType);
+            }
+            else
+            {
+                var customer = _kenticoUsers.GetCurrentCustomer();
+                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity, campaignID, orderType);
+            }
+
+            if (response?.Success ?? false)
+            {
+                return response.Payload;
+            }
+            else
+            {
+                _logger.LogError("OrderListService - GetOrders", response?.Error?.Message);
+                return new OrderListDto();
+            }
+        }
+
+        public async Task<OrderHead> GetHeaders(string orderType, int campaignID)
+        {
+            var orderList = _mapper.Map<OrderList>(await GetOrders(1, campaignID, orderType));
+            MapOrdersStatusToGeneric(orderList?.Orders);
+            int pages = 0;
+            if (EnablePaging && _pageCapacity > 0)
+            {
+                pages = orderList.TotalCount / _pageCapacity + (orderList.TotalCount % _pageCapacity > 0 ? 1 : 0);
+            }
+            return new OrderHead
+            {
+                Headings = new List<string> {
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
+                    string.Empty
+                },
+                PageInfo = new Pagination
+                {
+                    RowsCount = orderList.TotalCount,
+                    RowsOnPage = _pageCapacity,
+                    PagesCount = pages
+                },
+                NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
+                Rows = orderList.Orders.Select(o =>
+                {
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    return o;
+                })
+            };
+        }
     }
 }
