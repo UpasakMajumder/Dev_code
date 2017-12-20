@@ -170,7 +170,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                                     Values = sts.Select(s => new
                                     {
                                         Id = s.Id.ToString(),
-                                        Name = s.StateCode
+                                        Name = s.StateName
                                     }).ToArray()
                                 }).ToList()
                     },
