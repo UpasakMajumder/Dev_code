@@ -50,6 +50,8 @@
 
 .inbound__track {
   overflow-x: auto;
+  position: relative;
+  padding: 0 0 40px;
 
   table {
     tbody {
@@ -62,6 +64,25 @@
 
         td {
           display: table-cell;
+        }
+      }
+    }
+  }
+
+  .pagination__table {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    td {
+      border: none;
+
+      table {
+        td {
+          border-radius: 50%;
+          vertical-align: middle;
+          border: none;
+          padding: 5px;
         }
       }
     }
