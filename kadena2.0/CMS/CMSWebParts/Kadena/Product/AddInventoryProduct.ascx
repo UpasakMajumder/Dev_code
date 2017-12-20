@@ -85,6 +85,16 @@
         </div>
         <div class="mb-2 form__block">
             <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblWeight" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblWeight" />
+                <div class="input__inner">
+                    <cms:CMSTextBox ID="txtWeight" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
+                    <asp:RequiredFieldValidator ID="rfvWeight" runat="server" ControlToValidate="txtWeight" ></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revWeigth" ValidationExpression="((\d+)((\.\d{1,100})?))$" runat="server" ControlToValidate="txtWeight"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form__block">
+            <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblActualPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblActualPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtActualPrice" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
