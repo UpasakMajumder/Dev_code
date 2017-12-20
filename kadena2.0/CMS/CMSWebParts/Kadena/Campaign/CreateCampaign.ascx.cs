@@ -87,6 +87,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     lblFailureText.Visible = false;
                     Name.Text = "";
                     Description.Text = "";
+                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
                 }
                 else
                 {
@@ -121,6 +122,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     editPage.SetValue("Description", campaignDes);
                     editPage.Update();
                     URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
                 }
                 else
                 {

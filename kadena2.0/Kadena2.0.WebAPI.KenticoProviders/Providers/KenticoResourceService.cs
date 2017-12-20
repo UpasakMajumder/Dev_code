@@ -7,6 +7,8 @@ using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Site;
 using CMS.Localization;
+using System;
+using CMS.MacroEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -106,6 +108,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetContextCultureCode()
         {
             return LocalizationContext.CurrentCulture.CultureCode;
+        }
+
+        public string ResolveMacroString(string macroString)
+        {
+            return MacroResolver.Resolve(macroString, new MacroSettings { Culture = LocalizationContext.CurrentCulture.CultureCode });
         }
     }
 }

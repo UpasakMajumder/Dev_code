@@ -43,6 +43,28 @@
         chiliSaved: {
           title: 'Success',
           text: 'The template has been saved'
+        },
+        checkoutValidation: {
+          deliveryMethod: {
+            title: 'Validation Error',
+            text: 'Delivery Method is invalid'
+          },
+          paymentMethod: {
+            title: 'Validation Error',
+            text: 'Payment Method is invalid'
+          },
+          deliveryAddress: {
+            title: 'Validation Error',
+            text: 'Delivery Address is invalid'
+          },
+          invoice: {
+            title: 'Validation Error',
+            text: 'PO number is invalid'
+          },
+          emailConfirmation: {
+            title: 'Validation Error',
+            text: 'Emails is invalid'
+          }
         }
       },
       languages: {
@@ -152,6 +174,24 @@
       recentOrders: {
         getHeaders: PATH + 'order/recent/ui',
         getPageItems: PATH + 'order/recent/page'
+      },
+      filteredRecentOrders: {
+        orderTypes: {
+          placeholder: 'Order Type',
+          items: [
+            {
+              id: '0',
+              name: 'Pre-But Orders',
+              campaigns: true
+            },
+            {
+              id: '1',
+              name: 'General Inventory Orders'
+            }
+          ]
+        },
+        getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
+        getOrdersUrl: PATH + 'order/recent/filtered/orders'
       },
       modifyMailingList: {
         errorList: {

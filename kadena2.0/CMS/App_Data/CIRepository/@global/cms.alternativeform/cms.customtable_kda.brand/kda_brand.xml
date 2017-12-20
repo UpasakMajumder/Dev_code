@@ -8,10 +8,16 @@
   <FormDefinition>
     <form version="2">
       <field column="ItemID" guid="1f1aa13e-1422-4885-928b-5fd714019d28" />
-      <field column="BrandCode" guid="81df5fa1-7df8-4378-94bd-b1d915112337" />
+      <field column="BrandCode" guid="81df5fa1-7df8-4378-94bd-b1d915112337" reftype="Required">
+        <properties>
+          <controlcssclass>input__text </controlcssclass>
+          <validationerrormessage>{$Kadena.Brand.BrandCodeRequired$}</validationerrormessage>
+        </properties>
+      </field>
       <field column="BrandName" guid="342dca97-2875-4142-990c-0b2867ec607c">
         <properties>
           <controlcssclass>input__text js_brandName</controlcssclass>
+          <validationerrormessage>{$Kadena.Brand.BrandNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Brand Name should be at least 1 character">

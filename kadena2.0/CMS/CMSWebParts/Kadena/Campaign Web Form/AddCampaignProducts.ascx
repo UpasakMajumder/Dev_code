@@ -1,13 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
 <asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
 <div class="login__form-content js-login">
     <div class="css-login">
-        <div class="form form_width100 formerrormsgs">
-            <div class="mb-2 form_block">
+        <div class="form form__lg">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <div class="input__inner">
@@ -17,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
@@ -26,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProductName"></span>
                     <div class="input__inner">
@@ -35,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblState"></span>
                     <div class="input__inner">
@@ -43,25 +42,25 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
-                    <div class="input__inner">
+                    <div class="input__inner long__desc">
                         <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="input__error" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
 
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
-                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text "></asp:TextBox>
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblBrand"></span>
                     <div class="input__inner">
@@ -71,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblEstimatedPrice"></span>
                     <div class="input__inner">
@@ -83,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblActualPrice"></span>
                     <div class="input__inner">
@@ -91,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProductCategory"></span>
                     <div class="input__inner">
@@ -100,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblQtyPerPack"></span>
                     <div class="input__inner">
@@ -112,25 +111,23 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblStatus"></span>
                     <div class="input__inner">
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="input__select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rqStatus" CssClass="input__error" runat="server" ControlToValidate="ddlStatus" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblItemSpecs"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtItemSpecs" class="input__text"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rqItemSpecs" CssClass="input__error" ControlToValidate="txtItemSpecs" runat="server"></asp:RequiredFieldValidator>
-                    </div>
+                     </div>
                 </div>
             </div>
-            <div class="mb-2 form_block">
+            <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblImage"></span>
                     <div class="input__inner">
@@ -143,7 +140,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="mb-3 form_btns">
+        <div class="mb-3 form__btns">
             <div class="">
                 <asp:Button ID="btnSave" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click" />
                 <asp:Button ID="btnUpdate" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnUpdate_Click" />
