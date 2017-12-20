@@ -714,7 +714,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int)),
                             CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, default(int)),
                             QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int)),
-                            ItemSpecs = ValidationHelper.GetInteger(txtItemSpecs.Text, default(int)),
+                            ItemSpecs = ValidationHelper.GetString(txtItemSpecs.Text, string.Empty),
                             State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int)),
                             ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty)
                         };
@@ -779,7 +779,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int));
                     product.CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
                     product.QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int));
-                    product.ItemSpecs = ValidationHelper.GetInteger(txtItemSpecs.Text, default(int));
+                    product.ItemSpecs = ValidationHelper.GetString(txtItemSpecs.Text, string.Empty);
                     product.ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                     SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                     if (updateProduct != null)

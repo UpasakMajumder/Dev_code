@@ -144,7 +144,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="ItemSpecs" columntype="integer" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
+      <field allowempty="true" column="ItemSpecs" columnsize="200" columntype="text" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
