@@ -31,7 +31,7 @@
     <tr>
         <td colspan="2"><%= Shipping %></td>
         <td>
-            <asp:DropDownList runat="server" ID="ddlShippingOption" EnableViewState="true"></asp:DropDownList>
+            <asp:DropDownList runat="server" ID="ddlShippingOption" EnableViewState="true" OnSelectedIndexChanged="ddlShippingOption_SelectedIndexChanged" ></asp:DropDownList>
         </td>
         <td colspan="2">
             <asp:Label ID="lblShippingCharge" runat="server" />
@@ -40,7 +40,7 @@
     <tr>
         <td colspan="4"><%= BusinessUnit %></td>
         <td>
-            <asp:DropDownList runat="server" AutoPostBack="false" ID="ddlBusinessUnits"></asp:DropDownList>
+            <asp:DropDownList runat="server"  ID="ddlBusinessUnits" EnableViewState="true" OnSelectedIndexChanged="ddlBusinessUnits_SelectedIndexChanged" ></asp:DropDownList>
             <asp:Label ID="lblTotalUnits" runat="server" />
         </td>
     </tr>
