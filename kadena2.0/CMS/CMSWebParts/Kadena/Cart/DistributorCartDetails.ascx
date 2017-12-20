@@ -8,7 +8,7 @@
     <a href="#" class="btn-action"><i class="fa fa-print" aria-hidden="true"></i><%= Print %></a>
 </div>
 <div class="add_btn">
-    <asp:LinkButton runat="server" ID="lnkSaveasPDF" class="btn-action">
+    <asp:LinkButton runat="server" ID="lnkSaveasPDF" OnClick="lnkSaveasPDF_Click" class="btn-action">
         <i class="fa fa-file-pdf-o" aria-hidden="true"></i><%=SaveasPDF %>
     </asp:LinkButton>
 </div>
@@ -51,16 +51,17 @@
         </td>
         <td></td>
     </tr>
-   </tbody>
+    </tbody>
 </table>
-
 </div>
 <div class="dialog" id="divDailogue" runat="server">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__content">
-            <p><asp:Label runat="server" ID="lblCartUpdateSuccess"></asp:Label></p>
-            <p> <asp:Label runat="server" ID="lblCartError"></asp:Label></p>
+            <p>
+                <asp:Label runat="server" ID="lblCartUpdateSuccess"></asp:Label></p>
+            <p>
+                <asp:Label runat="server" ID="lblCartError"></asp:Label></p>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">

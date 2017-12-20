@@ -6,7 +6,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
     public class OrderDTO
     {
         public string OrderID { get; set; }
-
+        public string Type { get; set; }
+        public CampaignDTO Campaign { get; set; }
         public AddressDTO BillingAddress { get; set; }
 
         public AddressDTO ShippingAddress { get; set; }

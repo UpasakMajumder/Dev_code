@@ -14,21 +14,22 @@
     <form version="2">
       <field column="UserID" guid="153b1cec-1580-43ae-adf8-ca0e4879d168" visible="" />
       <field column="UserName" guid="aa4122b7-db14-48a5-885e-07a242f84702" visible="" />
-      <field column="FirstName" guid="60af25ea-ad95-49ba-a446-2ea754cd10be">
+      <field column="FirstName" guid="60af25ea-ad95-49ba-a446-2ea754cd10be" allowempty="">
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.FirstNameRequired$}</validationerrormessage>
         </properties>
         <rules>
-          <rule errormsg="First Name length should not be more than 50 characters">
+          <rule errormsg="{$Kadena.Users.FirstNameMaxLength$}">
             <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
           </rule>
-          <rule errormsg="Please enter First Name">
+          <rule errormsg="{$Kadena.Users.FirestNameRequired$}">
             <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
           </rule>
         </rules>
       </field>
       <field column="MiddleName" guid="bc86d726-a42d-4401-b92a-227e8e280293" visible="" />
-      <field column="LastName" guid="67305fcf-928a-45ea-8e29-735f17da0972">
+      <field column="LastName" guid="67305fcf-928a-45ea-8e29-735f17da0972" allowempty="">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -38,9 +39,10 @@
         </settings>
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.LastNameRequired$}</validationerrormessage>
         </properties>
         <rules>
-          <rule errormsg="Please enter Last Name">
+          <rule errormsg="{$Kadena.Users.LastNameRequired$}">
             <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
           </rule>
           <rule errormsg="Last Name length should not be more than 50 characters">
@@ -60,12 +62,17 @@
         </settings>
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.EmailRequired$}</validationerrormessage>
         </properties>
+        <rules>
+          <rule errormsg="{$Kadena.Users.InvalidEmail$}">
+            <![CDATA[{%Rule("(Util.IsEmail(Value))", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"Email\" ></r></rules>")|(user)cvoqa2@gmail.com|(hash)9312a04fb05be8a25d823176cbe1a9d7dba2f9f04d8ee8e71701a4d2ad230127%}]]>
+          </rule>
+        </rules>
       </field>
-      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19">
+      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" reftype="Required">
         <settings>
-          <controlname>PasswordConfirmator</controlname>
-          <showstrength>False</showstrength>
+          <controlname>Password</controlname>
           <AutoCompleteEnableCaching />
           <AutoCompleteFirstRowSelected />
           <AutoCompleteShowOnlyCurrentWordInCompletionListItem />
@@ -73,21 +80,35 @@
           <Trim />
         </settings>
         <properties>
-          <controlcssclass>input__password_field</controlcssclass>
+          <controlcssclass>input__password_field input__text</controlcssclass>
           <fieldcaption>Password</fieldcaption>
         </properties>
       </field>
-      <field column="PreferredCultureCode" guid="03d85a82-c928-4967-b793-f33bedb426be" visible="" />
-      <field column="PreferredUICultureCode" guid="d0a047c0-ea96-4422-af97-fff6c35a80de" visible="" />
-      <field column="UserEnabled" guid="d5d58e7d-6b71-4a51-9226-d7ce166e8580">
+      <field column="ConfirmPassword" columnsize="200" columntype="text" dummy="altform" guid="6bbf5326-6bd0-4f8b-abaa-a6afbd334187" publicfield="false" visible="true" order="8">
+        <properties>
+          <controlcssclass> input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.ConfirmPasswordReqired$}</validationerrormessage>
+        </properties>
+        <settings>
+          <controlname>Password</controlname>
+        </settings>
+        <rules>
+          <rule errormsg="{$Kadena.Users.ConfirmPasswordError$}">
+            <![CDATA[{%Rule("(Value == Fields[\"adaad374-af5a-4e1b-afc7-72b4fb798d19\"].Value)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"CompareToField\" ><p n=\"field\"><t>Password</t><v>adaad374-af5a-4e1b-afc7-72b4fb798d19</v><r>0</r><d></d><vt>text</vt><tv>0</tv></p><p n=\"operator\"><t>Equals</t><v>==</v><r>0</r><d></d><vt>text</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)99661f9ba19502d9199d6737345862acff8ea97de284a3b0aeefc3147c779c08%}]]>
+          </rule>
+        </rules>
+      </field>
+      <field column="PreferredCultureCode" guid="03d85a82-c928-4967-b793-f33bedb426be" visible="" order="9" />
+      <field column="PreferredUICultureCode" guid="d0a047c0-ea96-4422-af97-fff6c35a80de" visible="" order="10" />
+      <field column="UserEnabled" guid="d5d58e7d-6b71-4a51-9226-d7ce166e8580" order="11">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Options>
 <![CDATA[
-0;{$KDA.User.Disable$}
 1;{$KDA.User.Enable$}
+0;{$KDA.User.Disable$}
 ]]>
           </Options>
           <SortItems>False</SortItems>
@@ -96,111 +117,123 @@
           <defaultvalue>False</defaultvalue>
         </properties>
       </field>
-      <field column="TermsConditionsAccepted" guid="6c08a46b-8d40-44ba-bf72-8fde63aa8efc" visible="" />
-      <field column="UserPrivilegeLevel" guid="40915ccd-31c3-40e7-bbf1-fd29fc61a7f8" />
-      <field column="UserIsExternal" guid="def5feec-077b-4c26-8c4a-005a4a8d82d8" visible="" />
-      <field column="UserPasswordFormat" guid="d3f178a2-6df1-4651-bec5-864be986332a" visible="" />
-      <field column="UserCreated" columnprecision="7" guid="d75ebe3e-3d7d-44ab-af34-0ee947c3a3eb" visible="" />
-      <field column="LastLogon" columnprecision="7" guid="8bb80186-0c9b-45cb-91d1-cbec14b8fdc7" visible="" />
-      <field column="UserStartingAliasPath" guid="e2152255-6ad0-4b88-8497-2b505c64d23c" visible="" />
-      <field column="UserGUID" guid="89fae932-ca98-420b-92a0-0fc146856ce3" visible="" />
-      <field column="UserLastModified" columnprecision="7" guid="e1f9c8fd-8c5d-415c-ad0e-935034d751de" visible="" />
-      <field column="UserLastLogonInfo" guid="c17d233f-cd61-42d7-9c98-f96267a12764" visible="" />
-      <field column="UserIsHidden" guid="82febdf9-9057-4cea-bbba-de40b8cf653e" visible="" />
-      <field column="UserVisibility" guid="150ce55f-7617-4fff-9d31-6f3792291b67" visible="" />
-      <field column="UserIsDomain" guid="6ca5c321-81dd-4fbf-8ccc-9df2675839f9" visible="" />
-      <field column="UserHasAllowedCultures" guid="e7db3339-6c1c-413d-8fa3-fa85d99b8c80" visible="" />
-      <field column="UserTokenID" guid="731732f9-22f5-4ac1-a56a-f4cb4530e818" visible="" />
-      <field column="UserTokenIteration" guid="67bffc8e-3d34-4862-b6b6-934fb948a653" visible="" />
-      <field column="UserMFRequired" guid="a104e30f-7366-4a87-a774-7e771b19a7e6" visible="" />
-      <field column="UserSecurityStamp" guid="52911de8-d111-4afd-8567-cd0150927a95" />
-      <field column="UserSettingsID" guid="f88177e0-3b3e-4f62-9ceb-1338a5a0722a" isunique="true" translatefield="" visible="" />
-      <field column="PasswordHint" guid="e6b4f30d-dff8-417a-be0a-fb4aca147b95">
+      <field column="TermsConditionsAccepted" guid="6c08a46b-8d40-44ba-bf72-8fde63aa8efc" visible="" order="12" />
+      <field column="UserPrivilegeLevel" guid="40915ccd-31c3-40e7-bbf1-fd29fc61a7f8" order="13" />
+      <field column="UserIsExternal" guid="def5feec-077b-4c26-8c4a-005a4a8d82d8" visible="" order="14" />
+      <field column="UserPasswordFormat" guid="d3f178a2-6df1-4651-bec5-864be986332a" visible="" order="15" />
+      <field column="UserCreated" columnprecision="7" guid="d75ebe3e-3d7d-44ab-af34-0ee947c3a3eb" visible="" order="16" />
+      <field column="LastLogon" columnprecision="7" guid="8bb80186-0c9b-45cb-91d1-cbec14b8fdc7" visible="" order="17" />
+      <field column="UserStartingAliasPath" guid="e2152255-6ad0-4b88-8497-2b505c64d23c" visible="" order="18" />
+      <field column="UserGUID" guid="89fae932-ca98-420b-92a0-0fc146856ce3" visible="" order="19" />
+      <field column="UserLastModified" columnprecision="7" guid="e1f9c8fd-8c5d-415c-ad0e-935034d751de" visible="" order="20" />
+      <field column="UserLastLogonInfo" guid="c17d233f-cd61-42d7-9c98-f96267a12764" visible="" order="21" />
+      <field column="UserIsHidden" guid="82febdf9-9057-4cea-bbba-de40b8cf653e" visible="" order="22" />
+      <field column="UserVisibility" guid="150ce55f-7617-4fff-9d31-6f3792291b67" visible="" order="23" />
+      <field column="UserIsDomain" guid="6ca5c321-81dd-4fbf-8ccc-9df2675839f9" visible="" order="24" />
+      <field column="UserHasAllowedCultures" guid="e7db3339-6c1c-413d-8fa3-fa85d99b8c80" visible="" order="25" />
+      <field column="UserTokenID" guid="731732f9-22f5-4ac1-a56a-f4cb4530e818" visible="" order="26" />
+      <field column="UserTokenIteration" guid="67bffc8e-3d34-4862-b6b6-934fb948a653" visible="" order="27" />
+      <field column="UserMFRequired" guid="a104e30f-7366-4a87-a774-7e771b19a7e6" visible="" order="28" />
+      <field column="UserSecurityStamp" guid="52911de8-d111-4afd-8567-cd0150927a95" order="29" />
+      <field column="UserSettingsID" guid="f88177e0-3b3e-4f62-9ceb-1338a5a0722a" isunique="true" translatefield="" visible="" order="30" />
+      <field column="PasswordHint" guid="e6b4f30d-dff8-417a-be0a-fb4aca147b95" order="31">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserNickName" guid="efb1a8cb-a54b-4362-ba8e-f759e1ee834f" visible="" />
-      <field column="UserPicture" guid="ea2ec595-2e19-441e-88cf-f7c1181867ff" visible="" />
-      <field column="UserSignature" guid="028e7124-d2eb-4ee9-becf-60b6a2281521" visible="" />
-      <field column="UserURLReferrer" guid="df3044e3-28fe-4b46-bb07-37428f5d833f" visible="" />
-      <field column="UserCampaign" guid="c4e77a91-8804-4956-a27d-dd89ddf30b3c" visible="" />
-      <field column="UserMessagingNotificationEmail" guid="8968e8bd-9223-41dd-831f-586632285df1" visible="" />
-      <field column="UserCustomData" guid="34e7ab20-5aab-4305-96da-ba828c4eafd0" visible="" />
-      <field column="UserRegistrationInfo" guid="b254202a-cd95-49cf-8002-422c37fbb311" visible="" />
-      <field column="UserPreferences" guid="8e07e797-b695-4ddf-86d1-bfff4e3028f8" visible="" />
-      <field column="UserActivationDate" columnprecision="7" guid="4b9bf86d-4b85-4d32-9599-c49a3ca30687" translatefield="" visible="" />
-      <field column="UserActivatedByUserID" guid="02ee7d84-59b9-4c6d-9505-23ef5620f70e" translatefield="" visible="" />
-      <field column="UserTimeZoneID" guid="b6c65099-1e1d-4ad7-a540-d872aae4a3bf" visible="" />
-      <field column="UserAvatarID" guid="7df4af3f-bd8e-49d2-814c-0a00613120bb" translatefield="" visible="" />
-      <field column="UserAvatarType" guid="7c7b397a-d22b-4567-97c5-c657d276d4ee" />
-      <field column="UserBadgeID" guid="cf437fae-27be-4b53-af62-55975f3b0785" translatefield="" visible="" />
-      <field column="UserActivityPoints" guid="fc8a6be4-44ae-42a8-b6c0-be43147e2d33" translatefield="" visible="" />
-      <field column="UserForumPosts" guid="448e7d8f-a886-46a6-9be5-74b22fda0eb2" translatefield="" visible="" />
-      <field column="UserBlogComments" guid="69691713-f8ee-4104-a0d1-db52fddec111" translatefield="" visible="" />
-      <field column="UserGender" guid="bb81189b-8090-4d61-8e71-bb2a40e97ef6" translatefield="" visible="" />
-      <field column="UserDateOfBirth" columnprecision="7" guid="0000a8ba-40fb-4e91-8a1f-90e4913f0aec" translatefield="" visible="" />
-      <field column="UserMessageBoardPosts" guid="4107fe8b-72a5-43bb-91c2-c5850262c303" translatefield="" visible="" />
-      <field column="UserSettingsUserGUID" guid="ca94536c-9d77-4451-9cad-e0b13f672e09" translatefield="" visible="" />
-      <field column="UserSettingsUserID" guid="821e0a34-28a4-4b59-8b3a-d3afcf53ed96" translatefield="" visible="" />
-      <field column="WindowsLiveID" guid="6cfd72b6-214c-4018-a970-284d411341ca" />
-      <field column="UserBlogPosts" guid="bfb792b5-40a1-491b-9c83-255e04b31f68" translatefield="" visible="" />
-      <field column="UserWaitingForApproval" guid="ea1dde05-b660-4fee-bac7-3475cb559340" translatefield="" visible="" />
-      <field column="UserDialogsConfiguration" guid="11e15a34-e0de-43cd-9cbe-74e26a1bd367" visible="" />
-      <field column="UserDescription" guid="01309c8c-b144-4662-8534-ca68fcdda40d" visible="" />
-      <field column="UserUsedWebParts" guid="f1a33942-073f-4e54-bccc-2b13f05d1a80" />
-      <field column="UserUsedWidgets" guid="9e0b3fb8-d9f1-40a3-adf9-460dd19ab044" />
-      <field column="UserFacebookID" guid="4971b905-286a-4e79-a1e8-454763b91a3d" />
-      <field column="UserLinkedInID" guid="72604a87-5d1d-4d70-a9c7-b16596f0416c" />
-      <field column="UserAuthenticationGUID" guid="75360e04-4c1f-44e0-b8f4-bc154e395e3d" />
-      <field column="UserSkype" guid="882a11c9-192a-4b38-81dd-3ee5b5e2477e" />
-      <field column="UserIM" guid="9634d746-a4db-44ce-930c-9c37ff5097a1" />
-      <field column="UserPhone" guid="f79c705a-da88-43d5-93a7-3d7d5ab0f281" />
-      <field column="UserPosition" guid="dbf94b10-7262-4d2c-8f6d-887bd8e7e7bc" />
-      <field column="UserLogActivities" guid="aa46b973-7036-4b71-aa50-b351a5658965" />
-      <field column="UserPasswordRequestHash" guid="734de788-ae15-4c25-88c6-1ec0c8cbfa87" />
-      <field column="UserInvalidLogOnAttempts" guid="6a65e39a-c6ec-484e-afec-a72c8bc212eb" />
-      <field column="UserInvalidLogOnAttemptsHash" guid="eb317070-1a19-4010-9df3-23379de984c0" />
-      <field column="UserPasswordLastChanged" guid="7235a5d3-07c7-4b8f-a2c3-979e4dd5bb47" />
-      <field column="UserAccountLockReason" guid="6acefd4b-46f2-4c6d-974b-4deb35f2c139" />
-      <field column="UserDataComUser" guid="0e1ca92a-9ef5-46be-828c-09fe8d703a29" />
-      <field column="UserDataComPassword" guid="a20fb030-36f2-44f5-93bc-ed508b9a0d90" />
-      <field column="UserShowIntroductionTile" guid="c07f99fd-3e99-43c9-8859-78f4e306d532" />
-      <field column="UserDashboardApplications" guid="513a285e-0d1f-4b48-a652-ce7c094cb86b" />
-      <field column="UserDismissedSmartTips" guid="5509d0d2-2bb2-4f8a-ae3f-0bf71d22d47f" />
-      <field column="UserCustomerID" guid="e5ac9903-8144-4b8b-8f7a-d51b16632fac" visible="" />
-      <field column="UserMobile" guid="7f09d9af-d147-4ff3-97b4-9da7a83dde6f">
+      <field column="UserNickName" guid="efb1a8cb-a54b-4362-ba8e-f759e1ee834f" visible="" order="32" />
+      <field column="UserPicture" guid="ea2ec595-2e19-441e-88cf-f7c1181867ff" visible="" order="33" />
+      <field column="UserSignature" guid="028e7124-d2eb-4ee9-becf-60b6a2281521" visible="" order="34" />
+      <field column="UserURLReferrer" guid="df3044e3-28fe-4b46-bb07-37428f5d833f" visible="" order="35" />
+      <field column="UserCampaign" guid="c4e77a91-8804-4956-a27d-dd89ddf30b3c" visible="" order="36" />
+      <field column="UserMessagingNotificationEmail" guid="8968e8bd-9223-41dd-831f-586632285df1" visible="" order="37" />
+      <field column="UserCustomData" guid="34e7ab20-5aab-4305-96da-ba828c4eafd0" visible="" order="38" />
+      <field column="UserRegistrationInfo" guid="b254202a-cd95-49cf-8002-422c37fbb311" visible="" order="39" />
+      <field column="UserPreferences" guid="8e07e797-b695-4ddf-86d1-bfff4e3028f8" visible="" order="40" />
+      <field column="UserActivationDate" columnprecision="7" guid="4b9bf86d-4b85-4d32-9599-c49a3ca30687" translatefield="" visible="" order="41" />
+      <field column="UserActivatedByUserID" guid="02ee7d84-59b9-4c6d-9505-23ef5620f70e" translatefield="" visible="" order="42" />
+      <field column="UserTimeZoneID" guid="b6c65099-1e1d-4ad7-a540-d872aae4a3bf" visible="" order="43" />
+      <field column="UserAvatarID" guid="7df4af3f-bd8e-49d2-814c-0a00613120bb" translatefield="" visible="" order="44" />
+      <field column="UserAvatarType" guid="7c7b397a-d22b-4567-97c5-c657d276d4ee" order="45" />
+      <field column="UserBadgeID" guid="cf437fae-27be-4b53-af62-55975f3b0785" translatefield="" visible="" order="46" />
+      <field column="UserActivityPoints" guid="fc8a6be4-44ae-42a8-b6c0-be43147e2d33" translatefield="" visible="" order="47" />
+      <field column="UserForumPosts" guid="448e7d8f-a886-46a6-9be5-74b22fda0eb2" translatefield="" visible="" order="48" />
+      <field column="UserBlogComments" guid="69691713-f8ee-4104-a0d1-db52fddec111" translatefield="" visible="" order="49" />
+      <field column="UserGender" guid="bb81189b-8090-4d61-8e71-bb2a40e97ef6" translatefield="" visible="" order="50" />
+      <field column="UserDateOfBirth" columnprecision="7" guid="0000a8ba-40fb-4e91-8a1f-90e4913f0aec" translatefield="" visible="" order="51" />
+      <field column="UserMessageBoardPosts" guid="4107fe8b-72a5-43bb-91c2-c5850262c303" translatefield="" visible="" order="52" />
+      <field column="UserSettingsUserGUID" guid="ca94536c-9d77-4451-9cad-e0b13f672e09" translatefield="" visible="" order="53" />
+      <field column="UserSettingsUserID" guid="821e0a34-28a4-4b59-8b3a-d3afcf53ed96" translatefield="" visible="" order="54" />
+      <field column="WindowsLiveID" guid="6cfd72b6-214c-4018-a970-284d411341ca" order="55" />
+      <field column="UserBlogPosts" guid="bfb792b5-40a1-491b-9c83-255e04b31f68" translatefield="" visible="" order="56" />
+      <field column="UserWaitingForApproval" guid="ea1dde05-b660-4fee-bac7-3475cb559340" translatefield="" visible="" order="57" />
+      <field column="UserDialogsConfiguration" guid="11e15a34-e0de-43cd-9cbe-74e26a1bd367" visible="" order="58" />
+      <field column="UserDescription" guid="01309c8c-b144-4662-8534-ca68fcdda40d" visible="" order="59" />
+      <field column="UserUsedWebParts" guid="f1a33942-073f-4e54-bccc-2b13f05d1a80" order="60" />
+      <field column="UserUsedWidgets" guid="9e0b3fb8-d9f1-40a3-adf9-460dd19ab044" order="61" />
+      <field column="UserFacebookID" guid="4971b905-286a-4e79-a1e8-454763b91a3d" order="62" />
+      <field column="UserLinkedInID" guid="72604a87-5d1d-4d70-a9c7-b16596f0416c" order="63" />
+      <field column="UserAuthenticationGUID" guid="75360e04-4c1f-44e0-b8f4-bc154e395e3d" order="64" />
+      <field column="UserSkype" guid="882a11c9-192a-4b38-81dd-3ee5b5e2477e" order="65" />
+      <field column="UserIM" guid="9634d746-a4db-44ce-930c-9c37ff5097a1" order="66" />
+      <field column="UserPhone" guid="f79c705a-da88-43d5-93a7-3d7d5ab0f281" order="67" />
+      <field column="UserPosition" guid="dbf94b10-7262-4d2c-8f6d-887bd8e7e7bc" order="68" />
+      <field column="UserLogActivities" guid="aa46b973-7036-4b71-aa50-b351a5658965" order="69" />
+      <field column="UserPasswordRequestHash" guid="734de788-ae15-4c25-88c6-1ec0c8cbfa87" order="70" />
+      <field column="UserInvalidLogOnAttempts" guid="6a65e39a-c6ec-484e-afec-a72c8bc212eb" order="71" />
+      <field column="UserInvalidLogOnAttemptsHash" guid="eb317070-1a19-4010-9df3-23379de984c0" order="72" />
+      <field column="UserPasswordLastChanged" guid="7235a5d3-07c7-4b8f-a2c3-979e4dd5bb47" order="73" />
+      <field column="UserAccountLockReason" guid="6acefd4b-46f2-4c6d-974b-4deb35f2c139" order="74" />
+      <field column="UserDataComUser" guid="0e1ca92a-9ef5-46be-828c-09fe8d703a29" order="75" />
+      <field column="UserDataComPassword" guid="a20fb030-36f2-44f5-93bc-ed508b9a0d90" order="76" />
+      <field column="UserShowIntroductionTile" guid="c07f99fd-3e99-43c9-8859-78f4e306d532" order="77" />
+      <field column="UserDashboardApplications" guid="513a285e-0d1f-4b48-a652-ce7c094cb86b" order="78" />
+      <field column="UserDismissedSmartTips" guid="5509d0d2-2bb2-4f8a-ae3f-0bf71d22d47f" order="79" />
+      <field column="UserCustomerID" guid="e5ac9903-8144-4b8b-8f7a-d51b16632fac" visible="" order="80" />
+      <field column="UserMobile" guid="7f09d9af-d147-4ff3-97b4-9da7a83dde6f" allowempty="" order="81">
+        <properties>
+          <controlcssclass>input__text</controlcssclass>
+        </properties>
+        <rules>
+          <rule errormsg="{$Kadena.Users.MobileError$}">
+            <![CDATA[{%Rule("(Util.IsUsPhoneNumber(Value))", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"PhoneNumber_US\" ></r></rules>")|(user)cvoqa2@gmail.com|(hash)2f3ca957165068436f8cce3747b6ce08876aa4910d6fc6d03edcbd4767cba1aa%}]]>
+          </rule>
+        </rules>
+      </field>
+      <field column="UserCompanyName" guid="b99e4b90-5eda-45b7-a0b5-3ebe79e91126" order="82">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserCompanyName" guid="b99e4b90-5eda-45b7-a0b5-3ebe79e91126">
+      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" allowempty="" order="83">
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.TitleError$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6">
-        <properties>
-          <controlcssclass>input__text</controlcssclass>
-        </properties>
-      </field>
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="" order="84">
         <settings>
           <EnableStateSelection>False</EnableStateSelection>
         </settings>
         <properties>
           <controlcssclass>input__select js-Country</controlcssclass>
           <defaultvalue>271</defaultvalue>
+          <validationerrormessage>{$KDA.Users.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" order="85">
+        <properties>
+          <controlcssclass>input__text</controlcssclass>
+        </properties>
+      </field>
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="" order="86">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Query>
 <![CDATA[
-select 0,'Select State' 
+select 0,'{$Kadena.Users.SelectState$}' 
 union
 select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
 ]]>
@@ -224,26 +257,12 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           </rule>
         </rules>
       </field>
-      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401">
-        <properties>
-          <controlcssclass>input__text js-City</controlcssclass>
-          <fieldcaption>City/Town</fieldcaption>
-        </properties>
-        <rules>
-          <rule errormsg="Please enter City">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
-          </rule>
-          <rule errormsg="City should not be more than 20 characters">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
-          </rule>
-        </rules>
-      </field>
-      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" order="86">
+      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" order="87">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field allowempty="true" column="BusinessUnits" columnsize="200" columntype="text" dummy="altform" guid="dfd86394-7db1-49a2-a01e-e389daa0030c" publicfield="false" order="87">
+      <field allowempty="true" column="BusinessUnits" columnsize="200" columntype="text" dummy="altform" guid="dfd86394-7db1-49a2-a01e-e389daa0030c" publicfield="false" order="88">
         <properties>
           <controlcssclass>input__text</controlcssclass>
           <fieldcaption>Business Units</fieldcaption>
@@ -257,7 +276,12 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="UserDivisionID" guid="0d969aaa-c832-46f6-bb19-9e0653e2966a">
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" order="89">
+        <properties>
+          <controlcssclass>input__select</controlcssclass>
+        </properties>
+      </field>
+      <field column="UserDivisionID" guid="0d969aaa-c832-46f6-bb19-9e0653e2966a" order="90">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -298,27 +322,25 @@ Select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__select</controlcssclass>
         </properties>
       </field>
-      <field column="SalesManagerID" guid="b0db90d0-cf01-4bba-b34f-3182a97464f5" visibility="authenticated">
+      <field column="SalesManagerID" guid="b0db90d0-cf01-4bba-b34f-3182a97464f5" visibility="authenticated" order="91">
         <properties>
           <controlcssclass>input__select</controlcssclass>
         </properties>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e">
-        <properties>
-          <controlcssclass>input__select</controlcssclass>
-        </properties>
-      </field>
-      <field column="UserFax" guid="d55367d7-d9af-4aa4-bd9f-f8c8c9f60910" order="91">
+      <field column="UserFax" guid="d55367d7-d9af-4aa4-bd9f-f8c8c9f60910" order="92">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field allowempty="true" column="BusinessUnit" columnsize="2000" columntype="text" dummy="altform" guid="4ec111a3-89f9-4990-90a9-09e4eda81c93" publicfield="false" visible="true" order="92">
+      <field column="BusinessUnit" columnsize="2000" columntype="text" dummy="altform" guid="4ec111a3-89f9-4990-90a9-09e4eda81c93" publicfield="false" visible="true" order="93">
+        <properties>
+          <validationerrormessage>{$Kadena.Users.BURequired$}</validationerrormessage>
+        </properties>
         <settings>
           <controlname>BusinessUnitControl</controlname>
         </settings>
       </field>
-      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" order="93">
+      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" order="94">
         <properties>
           <controlcssclass>input__text js-Address</controlcssclass>
         </properties>
@@ -331,7 +353,7 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field allowempty="true" column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" reftype="Required" visible="true" order="94">
+      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" visible="true" order="95">
         <properties>
           <controlcssclass>input__select</controlcssclass>
           <fieldcaption>User Role</fieldcaption>
@@ -345,6 +367,20 @@ Select ItemID,DivisionName from KDA_Division
           </Query>
           <SortItems>False</SortItems>
         </settings>
+      </field>
+      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" allowempty="" order="96">
+        <properties>
+          <controlcssclass>input__text js-City</controlcssclass>
+          <fieldcaption>City/Town</fieldcaption>
+        </properties>
+        <rules>
+          <rule errormsg="Please enter City">
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+          </rule>
+          <rule errormsg="City should not be more than 20 characters">
+            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+          </rule>
+        </rules>
       </field>
     </form>
   </FormDefinition>
@@ -384,11 +420,15 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$$$validation:UserCity$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$ <span class="input__error">$$validation:UserCity$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$} </span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}</span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+</div>
+
+<div class="mb-2 form_block">
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.ZipCode$}</span>$$input:UserZipCode$$<span class="input__error">$$validation:UserZipCode$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
@@ -424,6 +464,10 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserConfirmPassword$}</span>$$input:ConfirmPassword$$<span class="input__error">$$validation:ConfirmPassword$$</span></div>
+</div>
+
+<div class="mb-2 form_block">
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
 </div>
 
@@ -432,8 +476,7 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<br />
-&nbsp;</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<span class="input__error">$$validation:BusinessUnit$$</span></div>
 </div>
 
 <div class="clearfix">&nbsp;</div>
