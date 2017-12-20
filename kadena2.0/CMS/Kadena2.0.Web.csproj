@@ -937,6 +937,13 @@
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.designer.cs">
+      <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx.cs">
       <DependentUpon>RemoveItemFromCart.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -999,6 +1006,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.designer.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx.cs">
+      <DependentUpon>GlobalAdminDashboard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx.designer.cs">
+      <DependentUpon>GlobalAdminDashboard.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx.cs">
       <DependentUpon>SpotfireControl.ascx</DependentUpon>
@@ -1384,6 +1398,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
     <Content Include="CMSWebParts\Kadena\Catalog\CreateCatalog.ascx" />
@@ -1393,6 +1408,7 @@
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
+    <Content Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
     <Content Include="CMSWebParts\Kadena\KSource\BidsList.ascx" />
     <Content Include="CMSWebParts\Kadena\General\Button.ascx" />

@@ -46,4 +46,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.DocumentEngine.Web.UI.CMSRepeater rptProductList;
+    
+    /// <summary>
+    /// crtCustomerCart control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Kadena.CMSWebParts.Kadena.ShoppingCart.CustomerCartOperations crtCustomerCart;
 }
