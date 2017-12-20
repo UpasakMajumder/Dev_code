@@ -1,5 +1,4 @@
 ﻿using Amazon.S3;
-using CMS.DataEngine;
 using System;
 
 namespace Kadena.AmazonFileSystemProvider
@@ -13,7 +12,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <summary>Default constructor is private.</summary>
         private AccountInfo()
         {
-            this.BucketName = SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName);
+            this.BucketName = S3ObjectInfoProvider.GetBucketName("~");
             if (string.IsNullOrEmpty(this.BucketName))
             {
                 throw new InvalidOperationException($"Amazon S3 bucket name could not be found. You must specify it in Settings by {SettingsKeyNames.AmazonS3BucketName} setting key.");

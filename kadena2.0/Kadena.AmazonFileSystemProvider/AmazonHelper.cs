@@ -1,5 +1,4 @@
 ﻿using CMS.Base;
-using CMS.DataEngine;
 using CMS.Helpers;
 
 namespace Kadena.AmazonFileSystemProvider
@@ -69,7 +68,7 @@ namespace Kadena.AmazonFileSystemProvider
             mEndPoint = ValidationHelper.GetString(SettingsHelper.AppSettings["CMSAmazonEndPoint"], null);
             if (mEndPoint == null)
             {
-                mEndPoint = $"http://{SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName)}.s3.amazonaws.com";
+                mEndPoint = $"http://{S3ObjectInfoProvider.GetBucketName("~")}.s3.amazonaws.com";
                 mPublicAccess = new bool?(ValidationHelper.GetBoolean(SettingsHelper.AppSettings["CMSAmazonPublicAccess"], false));
             }
             else
