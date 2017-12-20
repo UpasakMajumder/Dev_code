@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Product Types</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="9098b61f-50fb-4965-b593-826fb748ee2e" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ProductType" columnsize="200" columntype="text" guid="0b554a61-49a9-462d-8573-3117dee1f98a" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Type</fieldcaption>
+          <fielddescription>Product Type like General inventory or pre-buy</fielddescription>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="5d2f7d06-5e28-40f4-8327-c1e21265acfd" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="77655585-9b73-49e2-a1d4-ec8b1d216d97" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="6de65228-7000-490a-a36d-3df2c9f29bff" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="c476aa6c-bb63-494b-908f-d757ad64bbf5" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemOrder" columnprecision="0" columntype="integer" guid="95483608-d176-45dd-991a-2774401aa349" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Order</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="68ad2691-e51e-47c4-838e-23c4d6f81fcb" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>9b44792d-c8dc-4e8e-a3ad-9c46401a4d02</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.InventoryTypes</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="14796aea-7dd1-4d49-be4d-25316f4ad38c" name="ItemModifiedBy" searchable="True" tokenized="False" />
+      <item content="False" id="1bd40731-7faf-413c-86a0-c592d179ca38" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="False" id="4b0175ea-22a7-4f54-b9f9-759e59658937" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="True" id="60875587-9db8-432b-9bed-1a95d0b21bd1" name="ProductType" searchable="False" tokenized="True" />
+      <item content="False" id="82da69e9-d508-432f-92bd-76463ad2e61f" name="ItemOrder" searchable="True" tokenized="False" />
+      <item content="False" id="a066e1da-bd74-4c50-a644-fb94a5eaecf5" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="a0e85fd6-2f68-462e-b659-0a09de956a3a" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="e59b56af-7ec9-4351-a0f0-a8b88baa5658" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_ProductTypes</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

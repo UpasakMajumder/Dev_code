@@ -27,25 +27,25 @@
     </div>
   </div>
   <div class="content-block">
-    <div class="main_content">
-      <div class="main_left">
+    <div class="main__content">
+      <div class="main__left">
         <!--Header left Zone-->
         {^WebPartZone|(id)ZoneHeaderLeft^}  
       </div>
-      <div class="main_right">
-        <div class="scroll_block">
+      <div class="main__right">
+        <div class="scroll__block">
           <!--Header right Zone-->                            
           {^WebPartZone|(id)ZoneHeaderRight^}
         </div>
       </div>
       <div style="clear:both"></div>
     </div>
-    <div class="product_sec">
+    <div class="product__sec">
       <!--Admin area header Zone-->
          {^WebPartZone|(id)AdminFeatures^}
       </div>
     </div>
-    <div class="admin_access">
+    <div class="admin__access">
       <!--Global admin header zone-->
      {^WebPartZone|(id)GlobalAdminFeatures^}
     </div>
@@ -75,7 +75,7 @@
         </properties>
         <webpart controlid="HomeContentBlock" guid="7be51a9d-6394-4766-8ae8-63bfb2f605c6" iswidget="true" type="HomeContentBlock" v="1">
           <property name="bannerimage">
-            <![CDATA[~/TWE/media/CampaignProducts/Images/banner.jpg?ext=.jpg]]>
+            <![CDATA[~/TWE/media/CampaignProducts/Images/BB.jpg?ext=.jpg]]>
           </property>
           <property name="container">HomeContent</property>
           <property name="containercssclass"></property>
@@ -192,6 +192,12 @@
       <webpartzone id="GlobalAdminFeatures" v="1">
         <properties>
           <property name="containerhideonsubpages">False</property>
+          <property name="contentafter">
+            <![CDATA[</div>]]>
+          </property>
+          <property name="contentbefore">
+            <![CDATA[<div class="admin__inner">]]>
+          </property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles">GlobalAdmin</property>
           <property name="hideonsubpages">False</property>
@@ -219,7 +225,7 @@
           </property>
           <property name="controlid">GlobalAdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext"></property>
+          <property name="defaulttext" ismacro="true">{$Kadena.Home.GlobalAdminHeaderText$}</property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -480,7 +486,7 @@
 ]]>
           </property>
           <property name="contentbefore">
-            <![CDATA[<div class="product_inner">   ]]>
+            <![CDATA[<div class="product__inner row">   ]]>
           </property>
           <property name="controlid">rptAdminFeatures</property>
           <property name="culturecode"></property>
