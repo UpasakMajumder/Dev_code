@@ -3,7 +3,7 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login changepwd_block">
-            <div class="form form_width100">
+            <div class="form">
                 <div class="mb-2">
                     <div class="input__wrapper">
                         <span id="lblBUNumber" runat="server" class="input__label"></span>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3 form_btns">
+            <div class="mb-3 form__btns">
                 <div class="">
                     <asp:Button ID="btnSave" runat="server" OnClick="btnSave_Click" CssClass="btn-action login__login-button btn--no-shadow" />
                     <asp:Button ID="btnCancel" runat="server" OnClick="btnCancel_Click" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" />

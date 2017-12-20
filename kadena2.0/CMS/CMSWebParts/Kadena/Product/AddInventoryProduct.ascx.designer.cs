@@ -67,33 +67,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBrand;
         
         /// <summary>
-        /// lblShortDes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblShortDes;
-        
-        /// <summary>
-        /// txtShortDes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtShortDes;
-        
-        /// <summary>
-        /// rfvShortDes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvShortDes;
-        
-        /// <summary>
         /// lblLongDes control.
         /// </summary>
         /// <remarks>
@@ -119,6 +92,33 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLongDes;
+        
+        /// <summary>
+        /// lblShortDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblShortDes;
+        
+        /// <summary>
+        /// txtShortDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSTextBox txtShortDes;
+        
+        /// <summary>
+        /// rfvShortDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvShortDes;
         
         /// <summary>
         /// lblBundleQnt control.

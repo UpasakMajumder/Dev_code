@@ -359,7 +359,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     products.DocumentPageTemplateID = template.PageTemplateId;
                 }
-
                 products.Insert(parentPage, true);
                 var productID = ValidationHelper.GetInteger(products.CampaignsProductID, 0);
                 AllocateProductToUsers(productID);

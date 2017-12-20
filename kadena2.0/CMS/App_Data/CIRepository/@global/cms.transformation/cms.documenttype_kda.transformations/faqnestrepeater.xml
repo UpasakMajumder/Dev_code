@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<div class="faq_block" id="page{% NodeGuid %}">  
+<div class="faq__block" id="page{% NodeGuid %}">  
   <h6 style="color:#0275d8">{%FAQQuestion%}</h6>
   <p>{%FAQAnswer%}</p>
 </div>

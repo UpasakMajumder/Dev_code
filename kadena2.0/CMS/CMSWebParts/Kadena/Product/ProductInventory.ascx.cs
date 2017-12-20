@@ -1,4 +1,5 @@
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
@@ -27,6 +28,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         set
         {
             SetValue("ProductType", value);
+        }
+    }
+    // <summary>
+    /// Get the Product type.
+    /// </summary>
+    public int ShippingID
+    {
+        get
+        {
+            return ValidationHelper.GetInteger(GetValue("ShippingID"), default(int));
+        }
+        set
+        {
+            SetValue("ShippingID", value);
         }
     }
 
@@ -389,6 +404,37 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     protected void txtPos_TextChanged(object sender, EventArgs e)
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
+    }
+
+    /// <summary>
+    /// Adds items to the cart
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void lnkAddToCart_Command(object sender, CommandEventArgs e)
+    {
+        try
+        {
+            var skuID = ValidationHelper.GetInteger(e.CommandArgument, default(int));
+            if (skuID != default(int))
+            {
+                crtCustomerCart.ProductSKUID = skuID;
+                crtCustomerCart.InventoryType = ProductType;
+                var productDocument = DocumentHelper.GetDocuments().WhereEquals("NodeSKUID", skuID).FirstOrDefault();
+                if (!DataHelper.DataSourceIsEmpty(productDocument) && productDocument.Parent.ClassName == "KDA.Program")
+                {
+                    var productID = ValidationHelper.GetInteger(productDocument.Parent.GetValue("ProgramID"), default(int));
+                    var campaignID = ValidationHelper.GetInteger(productDocument.Parent.GetValue("CampaignID"), default(int));
+                    crtCustomerCart.ProductCampaignID = productID;
+                    crtCustomerCart.ProductCampaignID = campaignID;
+                    crtCustomerCart.ProductShippingID = ShippingID;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 
     #endregion "Methods"

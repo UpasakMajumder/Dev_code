@@ -8,182 +8,6 @@
   </PageTemplateCategoryID>
   <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
   <PageTemplateCodeName>KDA.CustomCatalog</PageTemplateCodeName>
-  <PageTemplateCSS>
-<![CDATA[
-.content_container {
-        width: 100%;
-        margin: 60px 0px;
-    }
-
-    .clearfix {
-        clear: both;
-    }
-
-    .treasure_content {
-        margin-bottom: 220px;
-    }
-
-    .treasure_heading {
-        text-align: center;
-    }
-
-        .treasure_heading h2 {
-            color: #b5161a;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        .treasure_heading p {
-            font-size: 24px;
-            margin-bottom: 40px;
-        }
-
-    .treasure_con {
-        text-align: center;
-    }
-
-        .treasure_con h2 {
-            font-size: 22px;
-            text-decoration: underline;
-            font-family: arial;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .treasure_con p {
-            font-size: 22px;
-            color: #333;
-        }
-
-            .treasure_con p.merch_con {
-                color: #b5161a;
-                padding: 0 180px;
-            }
-
-    .Crimes_section {
-        width: 100%;
-        padding: 0 0px;
-        margin: 0 auto;
-    }
-
-        .Crimes_section h1 {
-            text-align: center;
-        }
-
-    .crime_block {
-        border-bottom: 1px solid #000;
-    }
-
-    .crime_leftsec {
-        width: 20%;
-        float: left;
-    }
-
-    .img_block {
-        width: 234px;
-        height: auto;
-        margin: 0 auto;
-    }
-
-        .img_block img {
-            padding: 30px 0;
-            max-width: 100%;
-        }
-
-    .crime_rightsec {
-        width: 77%;
-        float: left;
-        margin: 20px 0 0 30px;
-    }
-
-    .details_sec {
-        margin-bottom: 10px;
-    }
-
-    .input_label {
-        width: 20%;
-        float: left;
-        display: inline-block;
-    }
-
-        .input_label label, .input_con label {
-            font-size: 20px;
-        }
-
-    .input_con {
-        width: 60%;
-        display: inline-block;
-    }
-
-    .crime_btmSec {
-        margin-bottom: 10px;
-    }
-
-    .crime_btmSec_detail {
-        width: 30%;
-        display: inline-block;
-    }
-
-        .crime_btmSec_detail .input_label {
-            display: inline-block;
-            width: auto;
-            float: none;
-        }
-
-        .crime_btmSec_detail .input_con {
-            display: inline-block;
-            width: auto;
-        }
-
-    @media print {
-        .content_container {
-            width: 1000px;
-        }
-    }
-
-    .img_block input[type=checkbox] {
-        display: none;
-    }
-
-    .img_block img {
-        margin: 100px;
-        transition: transform 0.25s ease;
-        cursor: zoom-in;
-    }
-
-    .img_block input[type=checkbox]:checked ~ label > img {
-        transform: scale(2);
-        cursor: zoom-out;
-    }
-
-    .Notdisplay  {
-        display: none;
-    }
-
-    @media print {
-        .noprint {
-            display: none;
-        }
-
-        .printIt {
-            display: block;
-        }
-
-        .custom_block {
-            display: none;
-        }
-
-        .content {
-            padding-left: 0 !important;
-        }
-
-        .crime_leftsec {
-            width: 20%;
-            float: left;
-        }
-    }
-]]>
-  </PageTemplateCSS>
   <PageTemplateDisplayName>_Custom Catalog </PageTemplateDisplayName>
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
@@ -342,7 +166,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -415,7 +239,7 @@ iteratedDocument = iteratedDocument.Parent;
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible">False</property>
           <property name="webparttitle">PrintCoverpage</property>
           <property name="webparttype">statichtml</property>
         </webpart>
