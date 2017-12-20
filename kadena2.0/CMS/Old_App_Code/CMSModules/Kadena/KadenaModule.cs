@@ -30,7 +30,7 @@ namespace Kadena.Old_App_Code.CMSModules.Kadena
                 var customAmazonProvider = new StorageProvider("CustomAmazon", "Kadena.AmazonFileSystemProvider", true)
                 {
                     CustomRootPath = s3BucketName,
-                    CustomRootUrl = environment.AmazonS3Folder
+                    CustomRootUrl = environment?.AmazonS3Folder
                 };
                 StorageHelper.MapStoragePath("~/", customAmazonProvider);
             }

@@ -18,7 +18,14 @@ namespace Kadena.AmazonFileSystemProvider
         static PathHelper()
         {
             var provider = StorageHelper.GetStorageProvider("~/");
-            _specialFolder = $"{provider.CustomRootUrl.Trim('/')}/";
+            if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))
+            {
+                _specialFolder = string.Empty;
+            }
+            else
+            {
+                _specialFolder = $"{provider.CustomRootUrl.Trim('/')}/";
+            }
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
