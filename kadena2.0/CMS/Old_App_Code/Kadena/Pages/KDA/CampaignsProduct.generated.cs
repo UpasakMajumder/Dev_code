@@ -88,23 +88,6 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
-		/// Bundle Qty.
-		/// </summary>
-		[DatabaseField]
-		public int BundleQty
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("BundleQty"), 0);
-			}
-			set
-			{
-				SetValue("BundleQty", value);
-			}
-		}
-
-
-		/// <summary>
 		/// Produc tName.
 		/// </summary>
 		[DatabaseField]
@@ -210,11 +193,11 @@ namespace CMS.DocumentEngine.Types.KDA
 		/// Item Specs.
 		/// </summary>
 		[DatabaseField]
-		public int ItemSpecs
+		public string ItemSpecs
 		{
 			get
 			{
-				return ValidationHelper.GetInteger(GetValue("ItemSpecs"), 0);
+				return ValidationHelper.GetString(GetValue("ItemSpecs"), "");
 			}
 			set
 			{
@@ -270,23 +253,6 @@ namespace CMS.DocumentEngine.Types.KDA
 			set
 			{
 				SetValue("StoreFrontProductID", value);
-			}
-		}
-
-
-		/// <summary>
-		/// SKUID.
-		/// </summary>
-		[DatabaseField]
-		public int SKUID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("SKUID"), 0);
-			}
-			set
-			{
-				SetValue("SKUID", value);
 			}
 		}
 
@@ -366,22 +332,6 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.EstimatedPrice = value;
-				}
-			}
-
-
-			/// <summary>
-			/// Bundle Qty.
-			/// </summary>
-			public int BundleQty
-			{
-				get
-				{
-					return mInstance.BundleQty;
-				}
-				set
-				{
-					mInstance.BundleQty = value;
 				}
 			}
 
@@ -485,7 +435,7 @@ namespace CMS.DocumentEngine.Types.KDA
 			/// <summary>
 			/// Item Specs.
 			/// </summary>
-			public int ItemSpecs
+			public string ItemSpecs
 			{
 				get
 				{
@@ -542,22 +492,6 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.StoreFrontProductID = value;
-				}
-			}
-
-
-			/// <summary>
-			/// SKUID.
-			/// </summary>
-			public int SKUID
-			{
-				get
-				{
-					return mInstance.SKUID;
-				}
-				set
-				{
-					mInstance.SKUID = value;
 				}
 			}
 		}

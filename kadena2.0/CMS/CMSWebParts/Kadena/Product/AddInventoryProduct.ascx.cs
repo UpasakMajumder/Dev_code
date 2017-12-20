@@ -362,7 +362,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     products.DocumentPageTemplateID = template.PageTemplateId;
                 }
-
                 products.Insert(parentPage, true);
                 var productID = ValidationHelper.GetInteger(products.CampaignsProductID, 0);
                 AllocateProductToUsers(productID);
@@ -391,7 +390,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
-                SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.SKUID).FirstObject;
+                SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                 if (updateProduct != null)
                 {
                     if (productImage.HasFile)
@@ -445,7 +444,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     if (product != null)
                     {
                         SKUInfo skuDetails = SKUInfoProvider.GetSKUs()
-                            .WhereEquals("SKUID", product.SKUID)
+                            .WhereEquals("SKUID", product.NodeSKUID)
                             .FirstObject;
                         if (skuDetails != null)
                         {
