@@ -8,6 +8,7 @@ using CMS.Helpers;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using System;
 using System.Collections.Generic;
@@ -360,7 +361,24 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
             }
         }
-
+        /// <summary>
+        /// Save pdf click event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lnkSaveasPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+                var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData,InventoryType);
+                CartPDFHelper.WriteresponseToPDF(pdfBytes);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "lnkSaveasPDF_Click", ex.Message);
+            }
+        }
         #endregion "Event handling"
 
         #region "Private Methods"

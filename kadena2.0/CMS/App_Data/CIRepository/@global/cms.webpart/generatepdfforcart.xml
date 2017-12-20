@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>TWECart</CodeName>
+    <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>Generate PDF for Cart</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/GeneratePDFforCart.ascx</WebPartFileName>
+  <WebPartGUID>fa8d930e-8249-4bcd-96fb-50151cc656d5</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>GeneratePDFforCart</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field column="InventoryType" columntype="integer" guid="91ba9e8d-2a85-4b08-b3af-38819a30c3a1" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Inventory Type</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;General Inventory
+2;Pre-Buy
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>
