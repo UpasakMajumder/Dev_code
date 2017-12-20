@@ -84,6 +84,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
                 revBundleQnt.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+                rfvWeight.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
+                revWeigth.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 revEstPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
@@ -349,6 +351,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
                     SKUProductType = SKUProductTypeEnum.EProduct,
+                    SKUWeight=ValidationHelper.GetDouble(txtWeight.Text,default(double)),
                 };
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
@@ -409,6 +412,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     updateProduct.SKUSiteID = CurrentSite.SiteID;
                     updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
                     updateProduct.SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0);
+                    updateProduct.SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double));
                     SKUInfoProvider.SetSKUInfo(updateProduct);
                 }
                 product.Update();

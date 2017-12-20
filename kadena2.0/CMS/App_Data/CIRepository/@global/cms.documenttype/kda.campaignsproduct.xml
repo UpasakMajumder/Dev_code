@@ -144,7 +144,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="ItemSpecs" columntype="integer" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
+      <field allowempty="true" column="ItemSpecs" columnsize="200" columntype="text" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
@@ -181,6 +181,19 @@
       <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Store Front ProductID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductWeight" columnprecision="4" columnsize="19" columntype="decimal" guid="cf17246b-edde-4742-bf92-4e2b6c4d04c9" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Weight</fieldcaption>
         </properties>
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
