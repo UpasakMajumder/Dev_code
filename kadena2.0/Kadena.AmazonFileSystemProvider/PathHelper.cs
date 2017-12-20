@@ -1,4 +1,5 @@
 ﻿using CMS.Base;
+using CMS.IO;
 using System;
 
 namespace Kadena.AmazonFileSystemProvider
@@ -8,9 +9,17 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class PathHelper
     {
+        private static string _specialFolder;
+
         private static string mTempPath;
         private static string mCachePath;
         private static string mCurrentDirectory;
+
+        static PathHelper()
+        {
+            var provider = StorageHelper.GetStorageProvider("~/");
+            _specialFolder = $"{provider.CustomRootUrl.Trim('/')}/";
+        }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
         public static string TempPath
@@ -94,7 +103,7 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return null;
             }
-            path = CMS.IO.Path.EnsureBackslashes(path, true);
+            path = Path.EnsureBackslashes(path, true);
             if (lower)
             {
                 path = path.ToLowerCSafe();
@@ -130,7 +139,12 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return null;
             }
-            string str1 = GetValidPath(objectKey, lower);
+            string nonEnvPath = objectKey;
+            if (objectKey.StartsWith(_specialFolder))
+            {
+                nonEnvPath = objectKey.Substring(_specialFolder.Length);
+            }
+            string str1 = GetValidPath(nonEnvPath, lower);
             string str2 = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
             if (absolute)
             {
@@ -174,8 +188,8 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 path += "/";
             }
-            path = CMS.IO.Path.EnsureSlashes(path, false);
-            return path.TrimStart('/');
+            path = Path.EnsureSlashes(path, false);
+            return $"{_specialFolder}{path.TrimStart('/')}";
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
