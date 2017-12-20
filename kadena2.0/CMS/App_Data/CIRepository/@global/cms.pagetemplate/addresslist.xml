@@ -89,7 +89,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-buttom">
+<table id="reptable" class="table show__table-bottom">
   <tbody>
     <tr>
       <th>{$KDA.MyAddresses.Name$}</th>

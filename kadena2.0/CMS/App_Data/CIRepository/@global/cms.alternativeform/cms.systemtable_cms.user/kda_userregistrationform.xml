@@ -18,7 +18,7 @@
         <properties>
           <controlcssclass>input__text j-first-name</controlcssclass>
           <fieldcaption>FIRST NAME</fieldcaption>
-          <validationerrormessage>Enter First Name</validationerrormessage>
+          <validationerrormessage>{$Kadena.Signup.FirstNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="First Name should have at least 1 character">
@@ -41,6 +41,7 @@
         <properties>
           <controlcssclass>input__text j-last-name</controlcssclass>
           <fieldcaption>LAST NAME</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.LastNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Last name should have minimum 1 character">
@@ -132,6 +133,7 @@
         <properties>
           <controlcssclass>input__text j-first-name js-Address</controlcssclass>
           <fieldcaption>ADDRESS</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.AddressRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Address should be less than 50 characters">
@@ -146,6 +148,7 @@
         <properties>
           <controlcssclass>input__text j-first-name js-City</controlcssclass>
           <fieldcaption>CITY/TOWN</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.CityRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="City/Town should have at least 1 character">
@@ -164,7 +167,7 @@
           <controlcssclass>js-Country</controlcssclass>
           <defaultvalue>271</defaultvalue>
           <fieldcaption>SELECT COUNTRY</fieldcaption>
-          <validationerrormessage>Please select country</validationerrormessage>
+          <validationerrormessage>{$Kadena.Signup.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
       <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="" order="81">
@@ -189,6 +192,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
         <properties>
           <controlcssclass>input__select  js-State</controlcssclass>
           <fieldcaption>STATE/PROVENCE</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.StateRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="State/Province should have at least 1 character">
@@ -218,6 +222,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
         <properties>
           <controlcssclass>input__text j-first-name</controlcssclass>
           <fieldcaption>EMAIL</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.EmailRequired$}</validationerrormessage>
         </properties>
       </field>
       <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" order="84">
@@ -230,12 +235,16 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim />
         </settings>
         <properties>
+          <controlcssclass>input__text</controlcssclass>
           <fieldcaption>PASSWORD</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.PasswordRequired$}</validationerrormessage>
         </properties>
       </field>
       <field column="ConfirmPassword" columnsize="200" columntype="text" dummy="altform" guid="42195681-1ec1-4277-8e32-6c5e228167b8" publicfield="false" reftype="Required" visible="true" order="85">
         <properties>
+          <controlcssclass>input__text</controlcssclass>
           <fieldcaption>Confirm Password</fieldcaption>
+          <validationerrormessage>{$Kadena.Signup.ConfirmPasswordRequired$}</validationerrormessage>
         </properties>
         <settings>
           <controlname>Password</controlname>
