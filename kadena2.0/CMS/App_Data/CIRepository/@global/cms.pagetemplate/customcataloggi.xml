@@ -28,7 +28,7 @@
   </div>
 </div>
 <div class="content-block">
-  <div class="custom_section">
+  <div class="custom__section">
     {^WebPartZone|(id)ZoneCustomCatalog^}
   </div>
 </div>
@@ -164,7 +164,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -199,7 +199,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="text">
 <![CDATA[
-<div class="content_container Notdisplay printIt">
+<div class="content_container notdisplay printIt">
 <div class="treasure_content">
 <div class="treasure_heading">
 <h2>Treasury Wine Estates</h2>
@@ -237,7 +237,7 @@ iteratedDocument = iteratedDocument.Parent;
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible">False</property>
           <property name="webparttitle"></property>
           <property name="webparttype">statichtml</property>
         </webpart>

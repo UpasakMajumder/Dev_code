@@ -10,17 +10,17 @@
             <asp:TextBox ID="txtPos" runat="server" OnTextChanged="txtPos_TextChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
         </div>
     </div>
-    <div class="custom__content">
+    <div class="custom__content row">
         <cms:CMSRepeater ID="rptProductList" runat="server">
             <ItemTemplate>
-                <div class="cus__content_block">
+                <div class="cus__content--block col-sm-3">
                     <div class="img__block">
                         <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
                            <label for='zoomCheck_<%#Eval("SKUID") %>'>
                         <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
                     </div>
-                    <div class="custom_blockin">
-                        <h4><%# Eval("SKUNumber")%></h4>
+                    <div class="custom__blockin">
+                        <h4>POS#: <%# Eval("SKUNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
                         <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
                         <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%#Eval("SKUID") %>' Text='<%#AddToCartLinkText%>'></asp:LinkButton>
