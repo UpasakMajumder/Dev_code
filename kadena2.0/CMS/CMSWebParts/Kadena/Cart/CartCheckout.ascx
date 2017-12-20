@@ -2,7 +2,7 @@
 <div class="add_btn">
     <asp:LinkButton runat="server" ID="lnkCheckout" OnClick="lnkCheckout_Click" class="btn-action"><%=CheckoutButtonText %></asp:LinkButton>
 </div>
-<div class="dialog" id="divDailogue" runat="server">
+<div class="dialog" id="divErrorDailogue" runat="server">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__content">
