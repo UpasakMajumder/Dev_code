@@ -14,9 +14,10 @@
     <form version="2">
       <field column="UserID" guid="153b1cec-1580-43ae-adf8-ca0e4879d168" visible="" />
       <field column="UserName" guid="aa4122b7-db14-48a5-885e-07a242f84702" visible="" />
-      <field column="FirstName" guid="60af25ea-ad95-49ba-a446-2ea754cd10be">
+      <field column="FirstName" guid="60af25ea-ad95-49ba-a446-2ea754cd10be" allowempty="">
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.FirstNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="First Name length should not be more than 50 characters">
@@ -28,7 +29,7 @@
         </rules>
       </field>
       <field column="MiddleName" guid="bc86d726-a42d-4401-b92a-227e8e280293" visible="" />
-      <field column="LastName" guid="67305fcf-928a-45ea-8e29-735f17da0972">
+      <field column="LastName" guid="67305fcf-928a-45ea-8e29-735f17da0972" allowempty="">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -38,6 +39,7 @@
         </settings>
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.LastNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Please enter Last Name">
@@ -49,7 +51,7 @@
         </rules>
       </field>
       <field column="FullName" guid="5c3003d6-de76-4e96-aca4-cf1efa86b3fa" visible="" />
-      <field column="Email" guid="fcef0fb3-6145-48ed-8f41-e28b71a665a8">
+      <field column="Email" guid="fcef0fb3-6145-48ed-8f41-e28b71a665a8" allowempty="">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -60,7 +62,13 @@
         </settings>
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.EmailRequired$}</validationerrormessage>
         </properties>
+        <rules>
+          <rule errormsg="{$Kadena.Users.EmailValidError$}">
+            <![CDATA[{%Rule("(Util.IsEmail(Value))", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"Email\" ></r></rules>")|(user)cvoqa2@gmail.com|(hash)9312a04fb05be8a25d823176cbe1a9d7dba2f9f04d8ee8e71701a4d2ad230127%}]]>
+          </rule>
+        </rules>
       </field>
       <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" visible="">
         <settings>
@@ -89,8 +97,8 @@
           <EditText>False</EditText>
           <Options>
 <![CDATA[
-0;{$KDA.User.Disable$}
 1;{$KDA.User.Enable$}
+0;{$KDA.User.Disable$}
 ]]>
           </Options>
           <SortItems>False</SortItems>
@@ -173,37 +181,50 @@
       <field column="UserDashboardApplications" guid="513a285e-0d1f-4b48-a652-ce7c094cb86b" />
       <field column="UserDismissedSmartTips" guid="5509d0d2-2bb2-4f8a-ae3f-0bf71d22d47f" />
       <field column="UserCustomerID" guid="e5ac9903-8144-4b8b-8f7a-d51b16632fac" visible="" />
-      <field column="UserMobile" guid="7f09d9af-d147-4ff3-97b4-9da7a83dde6f">
+      <field column="UserMobile" guid="7f09d9af-d147-4ff3-97b4-9da7a83dde6f" allowempty="">
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$KDA.Users.MobileRequired$}</validationerrormessage>
         </properties>
+        <rules>
+          <rule errormsg="{$KDA.Users.MobileValidError$}">
+            <![CDATA[{%Rule("(Util.IsUsPhoneNumber(Value))", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"PhoneNumber_US\" ></r></rules>")|(user)cvoqa2@gmail.com|(hash)2f3ca957165068436f8cce3747b6ce08876aa4910d6fc6d03edcbd4767cba1aa%}]]>
+          </rule>
+        </rules>
       </field>
       <field column="UserCompanyName" guid="b99e4b90-5eda-45b7-a0b5-3ebe79e91126">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6">
+      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" allowempty="">
         <properties>
           <controlcssclass>input__text</controlcssclass>
+          <validationerrormessage>{$KDA.Users.TitleRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="">
         <settings>
           <EnableStateSelection>False</EnableStateSelection>
         </settings>
         <properties>
           <controlcssclass>input__select js-Country</controlcssclass>
+          <validationerrormessage>{$KDA.Users.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be">
+        <properties>
+          <controlcssclass>input__text</controlcssclass>
+        </properties>
+      </field>
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Query>
 <![CDATA[
-select 0,'Select State' 
+select 0,'{$Kadena.Users.SelectState$}' 
 union
 select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry==""){return 0;}else{return UserCountry;}|(user)cvoqa2@gmail.com|(hash)12df11ad7457695fca2959c1a9033ead28088d09b20357c2216c0e09e969a946%}
 ]]>
@@ -227,20 +248,6 @@ select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry=
           </rule>
         </rules>
       </field>
-      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401">
-        <properties>
-          <controlcssclass>input__text js-City</controlcssclass>
-          <fieldcaption>City/Town</fieldcaption>
-        </properties>
-        <rules>
-          <rule errormsg="Please enter City">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
-          </rule>
-          <rule errormsg="City should not be more than 20 characters">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
-          </rule>
-        </rules>
-      </field>
       <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" order="86">
         <properties>
           <controlcssclass>input__text</controlcssclass>
@@ -259,6 +266,11 @@ select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry=
           <FilterMode>False</FilterMode>
           <Trim>False</Trim>
         </settings>
+      </field>
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" order="88">
+        <properties>
+          <controlcssclass>input__select</controlcssclass>
+        </properties>
       </field>
       <field column="UserDivisionID" guid="0d969aaa-c832-46f6-bb19-9e0653e2966a">
         <settings>
@@ -306,19 +318,15 @@ Select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__select</controlcssclass>
         </properties>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e">
-        <properties>
-          <controlcssclass>input__select</controlcssclass>
-        </properties>
-      </field>
       <field column="UserFax" guid="d55367d7-d9af-4aa4-bd9f-f8c8c9f60910" order="91">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field allowempty="true" column="BusinessUnit" columnsize="200" columntype="text" dummy="altform" guid="e19748a6-2b0a-486f-9f06-f4d9c7339c72" publicfield="false" visible="true" order="92">
+      <field column="BusinessUnit" columnsize="200" columntype="text" dummy="altform" guid="e19748a6-2b0a-486f-9f06-f4d9c7339c72" publicfield="false" reftype="Required" visible="true" order="92">
         <properties>
           <fieldcaption>Business Units</fieldcaption>
+          <validationerrormessage>{$Kadena.Users.BURequired$}</validationerrormessage>
         </properties>
         <settings>
           <controlname>BusinessUnitControl</controlname>
@@ -337,7 +345,10 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field allowempty="true" column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" reftype="Required" visible="true" order="94">
+      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" visible="true" order="94">
+        <properties>
+          <validationerrormessage>{$Kadena.Users.RoleError$}</validationerrormessage>
+        </properties>
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -348,7 +359,21 @@ Select ItemID,DivisionName from KDA_Division
           <SortItems>False</SortItems>
         </settings>
       </field>
-      <field column="UserZipCode" visible="false" />
+      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" allowempty="" order="95">
+        <properties>
+          <controlcssclass>input__text js-City</controlcssclass>
+          <fieldcaption>City/Town</fieldcaption>
+          <validationerrormessage>{$Kadena.Users.CityRequired$}</validationerrormessage>
+        </properties>
+        <rules>
+          <rule errormsg="Please enter City">
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+          </rule>
+          <rule errormsg="City should not be more than 20 characters">
+            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+          </rule>
+        </rules>
+      </field>
     </form>
   </FormDefinition>
   <FormDisplayName>KDA Edit User</FormDisplayName>
@@ -383,7 +408,7 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}&nbsp;</span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
@@ -391,7 +416,11 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}&nbsp;</span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+</div>
+
+<div class="mb-2 form_block">
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.ZipCode$}</span>$$input:UserZipCode$$<span class="input__error">$$validation:UserZipCode$$</span></div>
 </div>
 
 <div class="mb-2 form_block">
@@ -431,7 +460,7 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form_block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$</div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<span class="input__error">$$validation:BusinessUnit$$</span></div>
 </div>
 
 <div class="clearfix">&nbsp;</div>

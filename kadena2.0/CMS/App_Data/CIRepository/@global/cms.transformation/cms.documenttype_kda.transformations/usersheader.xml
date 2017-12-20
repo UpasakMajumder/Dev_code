@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<table class="show-table">
+<table class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.UsersList.FirstName$}</th>
