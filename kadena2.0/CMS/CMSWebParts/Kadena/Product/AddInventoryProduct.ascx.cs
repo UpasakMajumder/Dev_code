@@ -460,6 +460,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
+                            txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
@@ -495,6 +496,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             txtLongDes.Text = string.Empty;
             txtQuantity.Text = string.Empty;
             txtShortDes.Text = string.Empty;
+            txtWeight.Text = string.Empty;
             RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
@@ -719,7 +721,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                
                 string selectedPos = ddlPosNo.SelectedValue;
                 BindData();
                 SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
@@ -737,6 +738,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                     txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                     txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
+                    txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                     CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", skuDetails.SKUID).FirstObject;
                     if (product != null)
                     {
