@@ -115,7 +115,6 @@
     <Compile Include="App_Start\ContainerBuilder.cs" />
     <Compile Include="App_Start\MapperBuilder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\DistributorController.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\BusinessUnitsController.cs" />

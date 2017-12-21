@@ -3,6 +3,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.BusinessUnit;
 using System;
+using CMS.Ecommerce;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -27,6 +28,21 @@ namespace Kadena.BusinessLogic.Services
         public List<BusinessUnit> GetUserBusinessUnits(int UserID)
         {
             return kenticoBusinessUnits.GetUserBusinessUnits(UserID);
+        }
+
+        public string UpdateItemQuantity(int cartItemID, int quantity)
+        {
+            if (cartItemID != default(int) && quantity != default(int))
+            {
+                var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
+                if (shoppingCartItem != null)
+                {
+                    shoppingCartItem.CartItemUnits = quantity;
+                    shoppingCartItem.Update();
+                    return "success";
+                }
+            }
+            return "fail";
         }
     }
 }
