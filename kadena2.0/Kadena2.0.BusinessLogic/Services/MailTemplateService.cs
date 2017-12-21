@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -10,6 +11,11 @@ namespace Kadena.BusinessLogic.Services
 
         public MailTemplateService(IKenticoMailProvider kenticoMail)
         {
+            if (kenticoMail == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoMail));
+            }
+
             this.kenticoMail = kenticoMail;
         }
 

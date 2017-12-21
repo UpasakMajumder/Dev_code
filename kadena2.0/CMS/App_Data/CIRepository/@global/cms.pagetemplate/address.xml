@@ -89,6 +89,136 @@
           <property name="webparttitle"></property>
           <property name="webparttype">CreateAddress</property>
         </webpart>
+        <webpart controlid="AddressScript" guid="b924cca6-4604-4a26-9933-f3940aa30dc5" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">AddressScript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script>
+  $(document).ready(function () {
+   $('.js-btnBrand').text('{$Kadena.Address.AssignBrand$}');
+    $('.js-btnSaveBrand').text('{$Kadena.Address.AddBrand$}');
+   
+    function BindAddressBrands(){
+      var addressID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('id=')[1]));
+      $.ajax({
+        type:"POST",
+        url:'api/getaddressbrands/'+addressID,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success:function(data){
+          if (data.success) {
+            var brandData=data.payload;
+            $('#AddressBrandsTablebody').html('');
+            var th="<tr><td>{$Kadena.Address.BrandName$}</td><td>{$Kadena.Address.BrandCode$}</td></tr>";            
+            var rowData='';
+            var ids='';
+            $('#hdnBrand').val('');
+            for(i=0; i<brandData.length;i++)  {
+              rowData +='<tr id='+brandData[i].itemID+'><td>'+brandData[i].brandName+'</td><td>'+brandData[i].brandCode+'</td></tr>';
+              ids+=brandData[i].itemID+';';
+            }
+            $('#hdnBrand').val(ids);
+            if(rowData != ''){
+              $('#AddressBrandsTablebody').append(th+rowData);
+              $('#AddressBrandsTable').show();
+            }
+          }
+        }
+      });
+    }
+    function BindBrands(){
+      $.ajax({
+        type: "GET",
+        url: '/api/getbrands',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          if (data.success) {
+            var brandData=data.payload;
+            $('#brands').html('');
+            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>Brand Name</td><td>Brand Code</td>                   </tr>';
+            
+            var rowData='';
+            for(i=0; i<brandData.length;i++){
+              rowData +='<tr><td><input type="checkbox" class="js-chk" value='+brandData[i].itemID+'></td><td class=js-td>'+brandData[i].brandName+'</td><td class=js-td>'+brandData[i].brandCode+
+                '</td></tr>';            
+            }
+            if(rowData != ''){
+              $('#brands').append(th+rowData);
+            } 
+            if($('#hdnBrand').val()!=''){
+              var arr=$('#hdnBrand').val().split(';');
+              $('.js-chk:checkbox', brands).each(function(){
+                if(jQuery.inArray($(this).val(), arr) >= 0)
+                  $(this).prop("checked", true);
+              });
+            }
+          }
+          else {
+            alert('failed');
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {          
+        }
+      });
+    }
+    $(document).on('click', ".js-btnBrand", function (e) {
+      
+      $('.modal_brand').show();
+    });
+    $(document).on('click', ".js-btnClose", function () {                
+      $('.modal_brand').hide();
+    });
+    $(document).on('change', ".js-chkAll", function () {         
+      $('input:checkbox').not(this).prop('checked', this.checked);      
+    });
+    $(document).on('click', ".js-btnSaveBrand", function (e) {                
+      $('#AddressBrandsTablebody').html('');
+      var th='<tr><td>{$Kadena.Address.BrandName$}</td><td>{$Kadena.Address.BrandCode$}</td></tr>';
+      var tbody='';
+      $('#hdnBrand').val('');
+      $('#AddressBrandsTablebody').append('');
+      var ids='';
+      $('.js-chk:checkbox:checked', brands).each(function(){
+        var rowData='';
+        ids+=$(this).val()+';';
+        $(this).closest('tr').children('.js-td').each(function(){
+          rowData +='<td>'+$(this).html()+'</td>';          
+        });
+        tbody+='<tr>'+rowData+'</tr>';
+        $('#hdnBrand').val(ids);
+      });
+      if(tbody != ''){
+        $('#AddressBrandsTablebody').append(th+tbody);
+        $('#AddressBrandsTable').show();
+      }
+      
+      $('.modal_brand').hide();
+    });    
+    
+    BindAddressBrands();
+    BindBrands();
+  });
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Beginning</property>
+          <property name="instanceguid">b924cca6-4604-4a26-9933-f3940aa30dc5</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
       <webpartzone id="ZoneBreadCrumbs" v="1">
         <webpart controlid="BreadCrumbs" guid="0252a514-5c19-45ee-aec0-4462b17383a6" type="statictext" v="1">

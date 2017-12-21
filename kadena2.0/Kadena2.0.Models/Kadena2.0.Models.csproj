@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AddressType.cs" />
     <Compile Include="BillingAddress.cs" />
+    <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\ButtonLabels.cs" />
@@ -75,6 +76,9 @@
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
     <Compile Include="CustomerData\CustomerData.cs" />
+    <Compile Include="Dashboard\DashboardStatistics.cs" />
+    <Compile Include="Dashboard\StatisticBlock.cs" />
+    <Compile Include="Dashboard\StatisticsReading.cs" />
     <Compile Include="DeliveryAddress.cs" />
     <Compile Include="DeliveryCarrier.cs" />
     <Compile Include="DeliveryOption.cs" />

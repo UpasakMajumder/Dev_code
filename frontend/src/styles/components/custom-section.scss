@@ -5,7 +5,7 @@
 .search__block {
   width: 370px;
   float: left;
-  margin: 0 0 20px;
+  margin: 0 5px 20px 0;
   position: relative;
 }
 
@@ -41,12 +41,26 @@
   }
 }
 
+.form__section {
+  width: 100%;
+  display: inline-block;
+}
+
 .form__block {
   float: left;
   width: 50%;
   margin-right: 0%;
   margin-bottom: 15px;
   padding: 0 15px;
+
+  .input__error {
+    position: absolute;
+    display: block;
+  }
+
+  .input__file {
+    height: 41px;
+  }
 }
 
 .prebuy__distdata {
@@ -81,5 +95,30 @@
 
   .add__btn {
     margin-bottom: 10px;
+  }
+}
+
+.long__desc {
+  line-height: 13px;
+
+  textarea {
+    height: 119px;
+  }
+}
+
+.webform__view {
+  position: relative;
+  text-align: center;
+
+  a,
+  span {
+    border-right: 1px solid #5d5a5a;
+    line-height: 14px;
+    display: inline-block;
+    padding: 0 10px;
+
+    &:last-child {
+      border: none;
+    }
   }
 }

@@ -31,12 +31,12 @@
   </div>
 </div>
 <div class="content-block">
-  <div class="search_block">
+  <div class="search__block">
     <!--Filter content zone-->
     {^WebPartZone|(id)ZoneFilter^}
     
   </div>
-  <div class="add_btn">
+  <div class="add__btn">
     <!--<a href="~/brand-creation"><i class="fa fa-plus" aria-hidden="true"></i>New Brand</a>-->
     <!--Zone for creating new brand button-->
     {^WebPartZone|(id)ZoneCreateNewBrand^}
@@ -93,7 +93,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="show-table">
+<table id="reptable" class="table show__table-bottom">
   <tr>    
     <th>{$KDA.BrandsList.BrandName$}</th>
     <th>{$KDA.BrandsList.BrandCode$}</th>
@@ -103,7 +103,7 @@
 ]]>
           </property>
           <property name="controlid">BrandsList</property>
-          <property name="customtable">KDA.AddressErrors</property>
+          <property name="customtable">KDA.Brand</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>

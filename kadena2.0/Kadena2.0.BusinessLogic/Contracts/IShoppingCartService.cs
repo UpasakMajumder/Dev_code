@@ -1,7 +1,6 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
-using System;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
