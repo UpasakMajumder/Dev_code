@@ -56,45 +56,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
         }
-
-        public bool UserCanSeePrices()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanSeePrices(int siteId, int userId)
-        {
-            var userinfo = UserInfoProvider.GetUserInfo(userId);
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-
-            if (userinfo == null || site == null)
-                return false;
-
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", site.SiteName, userinfo);
-        }
-
-        public bool UserCanSeeAllOrders()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanModifyShippingAddress()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress",
-                SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanDownloadHiresPdf(int siteId, int userId)
-        {
-            var userinfo = UserInfoProvider.GetUserInfo(userId);
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-
-            if (userinfo == null || site == null)
-                return false;
-
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_CanDownloadHiresPdf", site.SiteName, userinfo);
-        }
-
+       
         public User GetCurrentUser()
         {
             return _mapper.Map<User>(MembershipContext.AuthenticatedUser);

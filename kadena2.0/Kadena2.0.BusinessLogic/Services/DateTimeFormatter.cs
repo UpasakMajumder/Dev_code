@@ -8,7 +8,7 @@ namespace Kadena.BusinessLogic.Services
 {
     public class DateTimeFormatter : IDateTimeFormatter
     {
-        private readonly IKenticoResourceService resources;
+        private readonly IKenticoLocalizationProvider localization;
 
         private readonly string defaultFormatString = "MMM dd, yyyy";
 
@@ -17,19 +17,19 @@ namespace Kadena.BusinessLogic.Services
             {"ja-JP" , "M\u6708 dd, yyyy"}
         };
 
-        public DateTimeFormatter(IKenticoResourceService resources)
+        public DateTimeFormatter(IKenticoLocalizationProvider localization)
         {
-            if (resources == null)
+            if (localization == null)
             {
-                throw new ArgumentNullException(nameof(resources));
+                throw new ArgumentNullException(nameof(localization));
             }
 
-            this.resources = resources;
+            this.localization = localization;
         }
 
         public string GetFormatString()
         {
-            var culture = resources.GetContextCultureCode();
+            var culture = localization.GetContextCultureCode();
             return GetFormatString(culture);
         }
 
@@ -45,7 +45,7 @@ namespace Kadena.BusinessLogic.Services
 
         public string Format(DateTime dt)
         {
-            var culture = resources.GetContextCultureCode();
+            var culture = localization.GetContextCultureCode();
             var formatProvider =  new CultureInfo(culture);
             var formatString = GetFormatString(culture);
             return dt.ToString(formatString, formatProvider);

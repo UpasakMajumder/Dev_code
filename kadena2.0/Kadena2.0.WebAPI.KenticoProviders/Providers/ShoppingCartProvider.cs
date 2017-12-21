@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CMS.CustomTables;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -12,6 +10,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,13 +24,17 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IKenticoLogger logger;
         private readonly IKenticoDocumentProvider documents;
         private readonly IMapper _mapper;
+        private readonly IShippingEstimationSettings estimationSettings;
 
-        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper)
+        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings)
         {
             this.resources = resources;
             this.logger = logger;
             this.documents = documents;
             this._mapper = mapper;
+            this.estimationSettings = estimationSettings;
+
+            // TODO null checks
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -44,22 +47,22 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var streets = new[]
             {
-                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine1"),
-                SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
+                estimationSettings.SenderAddressLine1,
+                estimationSettings.SenderAddressLine2,
             }.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            string countryName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry");
-            string stateName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState");
+            string countryName = estimationSettings.SenderCountry;
+            string stateName = estimationSettings.SenderState;
             int countryId = CountryInfoProvider.GetCountryInfoByCode(countryName).CountryID;
             int stateId = StateInfoProvider.GetStateInfoByCode(stateName).StateID;
 
             return new BillingAddress()
             {
                 Street = streets,
-                City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
+                City = estimationSettings.SenderCity,
                 Country = countryName,
                 CountryId = countryId,
-                Zip = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
+                Zip = estimationSettings.SenderPostal,
                 State = stateName,
                 StateId = stateId
             };
@@ -678,16 +681,6 @@ namespace Kadena.WebAPI.KenticoProviders
         private static void SetAmount(ShoppingCartItemInfo cartItem, int amount)
         {
             cartItem.CartItemUnits = amount;
-        }
-
-        public string MapOrderStatus(string microserviceStatus)
-        {
-            var genericStatusItem = CustomTableItemProvider.GetItems("KDA.OrderStatusMapping")
-                .FirstOrDefault(i => i["MicroserviceStatus"].ToString().ToLower() == microserviceStatus.ToLower());
-
-            var resourceKey = genericStatusItem?.GetValue("GenericStatus")?.ToString();
-
-            return string.IsNullOrEmpty(resourceKey) ? microserviceStatus : resources.GetResourceString(resourceKey);
         }        
     }
 }

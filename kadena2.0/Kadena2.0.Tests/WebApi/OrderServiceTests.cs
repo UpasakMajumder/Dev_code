@@ -15,6 +15,8 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using Xunit;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.Tests.WebApi
 {
@@ -52,18 +54,19 @@ namespace Kadena.Tests.WebApi
         {
             MapperBuilder.InitializeAll();
             var mapper = Mapper.Instance;
-
-            var kenticoProvider = new Mock<IKenticoProviderService>();
             var kenticoUsers = new Mock<IKenticoUserProvider>();
-            kenticoUsers.Setup(p => p.UserCanSeeAllOrders())
+            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
+            kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
                 .Returns(false);
             kenticoUsers.Setup(p => p.GetCurrentCustomer())
                .Returns(new Customer() { Id = 10, UserID = 16 });
 
             var kenticoResource = new Mock<IKenticoResourceService>();
-            kenticoResource.Setup(p => p.GetKenticoSite())
+            var kenticoSite = new Mock<IKenticoSiteProvider>();
+            kenticoSite.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
 
+            var kenticoOrder = new Mock<IKenticoOrderProvider>();
             var shoppingCart = new Mock<IShoppingCartProvider>();
             var productsProvider = new Mock<IKenticoProductsProvider>();
             var orderSubmitClient = new Mock<IOrderSubmitClient>();
@@ -71,12 +74,15 @@ namespace Kadena.Tests.WebApi
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedClient>();
             var documents = new Mock<IKenticoDocumentProvider>();
+            var localization = new Mock<IKenticoLocalizationProvider>();
+            var permissions = new Mock<IKenticoPermissionsProvider>();
+            var settings = new Mock<IKadenaSettings>();
 
             return new OrderService(mapper,
                 orderSubmitClient.Object,
                 orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
                 mailingListClient.Object,
-                kenticoProvider.Object,
+                kenticoOrder.Object,
                 shoppingCart.Object,
                 productsProvider.Object,
                 kenticoUsers.Object,
@@ -84,7 +90,12 @@ namespace Kadena.Tests.WebApi
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
                 templateProductService.Object,
-                documents.Object);
+                documents.Object,
+                localization.Object,
+                permissions.Object,
+                kenticoSite.Object,
+                settings.Object
+            );
         }
 
         [Fact]

@@ -12,9 +12,9 @@ namespace Kadena.BusinessLogic.Factories.Checkout
     {
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoLocalizationProvider kenticoLocalization;
 
-        public CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoProviderService kenticoProvider)
+        public CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLocalizationProvider kenticoLocalization)
         {
             if(resources == null)
             {
@@ -24,15 +24,15 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             {
                 throw new ArgumentNullException(nameof(documents));
             }
-            if (kenticoProvider == null)
+            if (kenticoLocalization == null)
             {
-                throw new ArgumentNullException(nameof(kenticoProvider));
+                throw new ArgumentNullException(nameof(kenticoLocalization));
             }
 
 
             this.resources = resources;
             this.documents = documents;
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoLocalization = kenticoLocalization;
         }
 
         public CartEmptyInfo CreateCartEmptyInfo(CartItem[] cartItems)
@@ -107,8 +107,8 @@ namespace Kadena.BusinessLogic.Factories.Checkout
 
         public Models.Checkout.AddressDialog GetOtherAddressDialog()
         {
-            var countries = kenticoProvider.GetCountries();
-            var states = kenticoProvider.GetStates();
+            var countries = kenticoLocalization.GetCountries();
+            var states = kenticoLocalization.GetStates();
             var defaultCountryId = int.Parse(resources.GetSettingsKey("KDA_AddressDefaultCountry"));
             return new Models.Checkout.AddressDialog
             {
