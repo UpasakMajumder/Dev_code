@@ -5,6 +5,7 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
+using System.Net;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
@@ -49,13 +50,13 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(userBusinessUnitsDto);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/distributor/update")]
         public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
         {
             var submitRequest = mapper.Map<DistributorDTO>(request);
             var serviceResponse = businessUnits.UpdateItemQuantity(submitRequest.CartItemId, submitRequest.ItemQuantity);
-            return Ok(serviceResponse);
+            return Ok(serviceResponse == "success" ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
         }
     }
 }

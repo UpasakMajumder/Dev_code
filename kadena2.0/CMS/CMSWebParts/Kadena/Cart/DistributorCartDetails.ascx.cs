@@ -531,17 +531,13 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var shippingID = ValidationHelper.GetInteger(ddlBusinessUnits.SelectedValue, default(int));
-                if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
+                var businessUnitID = ValidationHelper.GetInteger(ddlBusinessUnits.SelectedValue, default(int));
+                if (CartID != default(int) && businessUnitID > 0)
                 {
                     var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                     if (shoppingCart != null)
                     {
-                        shoppingCart.ShoppingCartShippingOptionID = shippingID;
-                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                        var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                        shoppingCart.TotalShipping = estimatedPrice;
+                        shoppingCart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
                         shoppingCart.Update();
                     }
                 }
@@ -561,13 +557,17 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var businessUnitID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
-                if (CartID != default(int) && businessUnitID > 0)
+                var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
+                if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
                 {
                     var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                     if (shoppingCart != null)
                     {
-                        shoppingCart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+                        shoppingCart.ShoppingCartShippingOptionID = shippingID;
+                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
+                        var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                        shoppingCart.TotalShipping = estimatedPrice;
                         shoppingCart.Update();
                     }
                 }

@@ -14,7 +14,7 @@
 <tr>
   <td><%# Eval("SKUNumber") %></td>
   <td><%# Eval("SKUName") %> </td>
-  <td><asp:TextBox runat="server" TextMode="Number"  ID="txtUnits" Text='<%# Eval("SKUUnits") %>'/>
+  <td><asp:TextBox runat="server" TextMode="Number" CssClass="Input_Box"  ID="txtUnits" Text='<%# Eval("SKUUnits") %>'/>
 <asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' /></td>
   <td>
     <%# (EvalInteger("ShoppingCartInventoryType")==1) ? (FormatPrice(0)) :(FormatPrice( EvalInteger("SKUUnits")*EvalDouble("SKUPrice"))) %>
