@@ -471,11 +471,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
-                    fileName = GetOpenCampaign.Name + DateTime.Today + ".pdf";
+                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
                 }
                 else
                 {
-                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + DateTime.Today.ToString() + ".pdf";
+                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
                 Response.Clear();
                 MemoryStream ms = new MemoryStream(pdfBytes);
