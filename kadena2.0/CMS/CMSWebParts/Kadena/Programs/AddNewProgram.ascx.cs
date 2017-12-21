@@ -77,6 +77,20 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
     }
 
     /// <summary>
+    /// Delivery Date localization string
+    /// </summary>
+    public string DeliveryDateToDistributors
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Program.DeliveryDateToDistributors"), "");
+        }
+        set
+        {
+            SetValue("DeliveryDateToDistributors", value);
+        }
+    }
+    /// <summary>
     /// SaveButton localization string
     /// </summary>
     public string SaveButtonText
@@ -149,6 +163,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             lblProgramDescription.InnerText = ProgramDescriptionText;
             lblBrandName.InnerText = BrandNameText;
             lblCampaignName.InnerText = CampaignNameText;
+            lblProgramDeliveryDate.InnerText = DeliveryDateToDistributors;
             btnAddProgram.Text = SaveButtonText;
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
@@ -276,8 +291,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                         program.ProgramDescription = txtProgramDescription.Text;
                         program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
                         program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                        program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text,default(DateTime));
                         program.Insert(CampaignNode, true);
-
                         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                     }
                 }
@@ -323,6 +338,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                         program.ProgramDescription = txtProgramDescription.Text;
                         program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
                         program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                        program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime));
                         program.Update();
                     }
                     if (ViewState["CampaignID"] != null)

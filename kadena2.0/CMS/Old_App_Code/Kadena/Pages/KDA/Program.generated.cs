@@ -64,6 +64,23 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
+		/// Delivery Date To Distrubutors.
+		/// </summary>
+		[DatabaseField]
+		public DateTime DeliveryDateToDistributors
+		{
+			get
+			{
+				return ValidationHelper.GetDateTime(GetValue("DeliveryDateToDistributors"), DateTimeHelper.ZERO_TIME);
+			}
+			set
+			{
+				SetValue("DeliveryDateToDistributors", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Program Name.
 		/// </summary>
 		[DatabaseField]
@@ -178,6 +195,22 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.ProgramID = value;
+				}
+			}
+
+
+			/// <summary>
+			/// Delivery Date To Distrubutors.
+			/// </summary>
+			public DateTime DeliveryDateToDistributors
+			{
+				get
+				{
+					return mInstance.DeliveryDateToDistributors;
+				}
+				set
+				{
+					mInstance.DeliveryDateToDistributors = value;
 				}
 			}
 

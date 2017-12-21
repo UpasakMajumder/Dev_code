@@ -21,6 +21,18 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="DeliveryDateToDistributors" columntype="date" guid="082a1960-7a86-4472-bf39-0641216251b4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Delivery Date To Distrubutors</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
       <field column="ProgramName" columnsize="200" columntype="text" guid="8272c934-50d3-450f-9d54-801352974ca2" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Program Name</fieldcaption>

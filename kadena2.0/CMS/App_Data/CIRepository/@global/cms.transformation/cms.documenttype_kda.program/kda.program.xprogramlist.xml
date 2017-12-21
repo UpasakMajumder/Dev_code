@@ -12,6 +12,7 @@
   <td>{%BrandName%}</td>
   <td>{%CampaignName%}</td>
   <td>{%ProgramDescription%}</td>
+  <td>{%DeliveryDateToDistributors%}</td>
   <td>
     <div class="text-center">
       <a href="{% Settings.KDA_CreateProgramURL |(user)cvoqa2@gmail.com|(hash)72ca8ff86960817e3ce040d6ce89e39e0b6e84627c53c20794824ad0da26fd99%}?id={%ProgramID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>

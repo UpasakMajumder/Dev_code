@@ -34,6 +34,13 @@
                     <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="input__error" ErrorMessage="Please select Campaign" InitialValue="0" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
                 </div>
             </div>
+            <div class="mb-2">
+                <div class="input__wrapper">
+                    <span class="input__label" id="lblProgramDeliveryDate" runat="server"></span>
+                    <asp:TextBox ID="txtProgramDeliveryDate" runat="server" CssClass="input__text js-datepicker"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="txtDeliveryDateRequired" runat="server" CssClass="input__error" ErrorMessage="Please select delivery date" InitialValue="0" ControlToValidate="txtProgramDeliveryDate"></asp:RequiredFieldValidator>
+                </div>
+            </div>
         </div>
         <div class="mb-3 form_btns">
             <div class="">
