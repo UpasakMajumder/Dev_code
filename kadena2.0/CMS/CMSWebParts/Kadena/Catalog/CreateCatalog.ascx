@@ -11,8 +11,8 @@
     </div>
     <div class="custom__check">
         <div class="input__wrapper">
-            <input type="checkbox" class=" input__checkbox selectAllChk " id="allCheck-<%# Eval("SKUID") %>" value="true">
-            <label for="allCheck-<%# Eval("SKUID") %>" class="input__label input__label--checkbox selectAll" id="selectAllLabel"></label>
+            <input type="checkbox" class=" input__checkbox selectAllChk " id="allCheck-<%# Eval("NodeSKUID") %>" value="true">
+            <label for="allCheck-<%# Eval("NodeSKUID") %>" class="input__label input__label--checkbox selectAll" id="selectAllLabel"></label>
         </div>
     </div>
     <div class="custom__btns">
@@ -33,15 +33,15 @@
            <div class="cus__content--block col-sm-3">
                <div class="noprint ">
                 <div class="img__block">
-                    <input type="checkbox" id="zoomCheck_<%# Eval("SKUID")%>" />
-                    <label for="zoomCheck_<%# Eval("SKUID")%>">
+                    <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
+                    <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
                         <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
                     </label>
                 </div>
                 <div class="input__wrapper">
                     <label for="dom" class="input__label "><%#TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
-                    <input type="checkbox" id="dom_<%# Eval("SKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
-                    <label for="dom_<%# Eval("SKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
+                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
+                    <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
                 </div>
                 <p><%#Eval("SKUDescription")%></p>
                </div>
