@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
 
@@ -46,7 +45,7 @@
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
-                    <div class="input__inner">
+                    <div class="input__inner long__desc">
                         <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="input__error" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
                     </div>
@@ -57,7 +56,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
-                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text "></asp:TextBox>
                     </div>
                 </div>
             </div>
@@ -141,7 +140,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="mb-3 form_btns">
+        <div class="mb-3 form__btns">
             <div class="">
                 <asp:Button ID="btnSave" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click" />
                 <asp:Button ID="btnUpdate" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnUpdate_Click" />

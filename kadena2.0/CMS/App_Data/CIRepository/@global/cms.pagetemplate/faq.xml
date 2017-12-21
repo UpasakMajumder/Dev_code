@@ -46,18 +46,18 @@
   {^WebPartZone|(id)ZoneBreadCrumb^}
 </div>
 <div class="content-block">
-  <div class="video_section">
+  <div class="video__section row">
     {^WebPartZone|(id)ZoneVideosList^}
     <div class="clearfix"></div>
   </div>
-  <div class="faq_contentblock">
-    <div class="faq_section">
+  <div class="faq__contentblock row">
+    <div class="faq__section col-sm-8">
       {^WebPartZone|(id)ZoneFaqQuestions^}
     </div>
-    <div class="support_sec">
-      <div class="support_block">
+    <div class="support__sec col-sm-3">
+      <div class="support__block">
         <h6>
-          <svg class="phone_icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+          <svg class="phone__icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
             <g>
               <path d="M256,32c123.5,0,224,100.5,224,224S379.5,480,256,480S32,379.5,32,256S132.5,32,256,32 M256,0C114.625,0,0,114.625,0,256
 s114.625,256,256,256s256-114.625,256-256S397.375,0,256,0L256,0z M398.719,341.594l-1.438-4.375
@@ -102,8 +102,8 @@ c0.344,0,11.063-2.281,14.719-5.938l20.5-20.5C398.688,366.062,402.062,351.656,398
             {^WebPartZone|(id)ZoneAddress^}
           </p>
         </div>
-        <div class="support_block">
-          <h6><svg class="mail_icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+        <div class="support__block">
+          <h6><svg class="mail__icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
             <g>
               <path d="M256,0C114.609,0,0,114.609,0,256c0,141.391,114.609,256,256,256c141.391,0,256-114.609,256-256
 C512,114.609,397.391,0,256,0z M256,472c-119.297,0-216-96.703-216-216S136.703,40,256,40s216,96.703,216,216S375.297,472,256,472z

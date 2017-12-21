@@ -6,7 +6,7 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form__section">
-            <div class="form signup_form form_width100">
+            <div class="form signup_form form__lg">
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper">
@@ -114,18 +114,28 @@
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
-                    <div class="input__wrapper">
-                        <span class="input__label" runat="server" id="lblBrand"><%#ResHelper.GetString("KDA.Address.Brands")%></span>
-                        <div class="input__inner">
-                            <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand"><i class="fa fa-plus" aria-hidden="true"></i><%#ResHelper.GetString("KDA.Address.Brand")%></a>
-                        </div>
+                <div class="mb-2 form__block">
+                    <div class="input__wrapper allocated__block allocated__business">
+                        <span class="input__label" runat="server" id="lblBrand"><%#ResHelper.GetString("Kadena.Address.Brands")%></span>
+                        <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand" id="btnAssignBrand">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 511.398 511.398" style="enable-background: new 0 0 511.398 511.398;" xml:space="preserve" class=""><g><g><path d="M477.549,182.379H329.018V33.847c0-18.69-15.154-33.844-33.844-33.844H216.22c-18.69,0-33.844,15.153-33.844,33.844    v148.526H33.844C15.153,182.373,0,197.526,0,216.216v78.966c0,18.691,15.153,33.844,33.844,33.844h148.532v148.527    c0,18.689,15.153,33.842,33.844,33.842h78.96c18.691,0,33.844-15.152,33.844-33.842V329.026h148.533    c18.689,0,33.842-15.152,33.842-33.844v-78.966C511.393,197.526,496.246,182.379,477.549,182.379z" data-original="#D63A3A" class="active-path" data-old_color="#0275d8" fill="#0275d8"/></g></g></g></svg>
+                            </a>
+                    </div>
+                    <div class="Business_Assigned_user">
+                        <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display: none">
+                            <tbody id="AddressBrandsTablebody">
+                                <tr>
+                                    <td><%#ResHelper.GetString("Kadena.Address.BrandName")%></td>
+                                    <td><%#ResHelper.GetString("Kadena.Address.BrandCcode")%></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
             </div>
-            <div class="mb-3 form_btns">
+            <div class="mb-3 form__btns">
                 <div class="">
                     <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click"></asp:LinkButton>
                     <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
@@ -138,21 +148,21 @@
 <asp:HiddenField ID="hdnBrand" runat="server" ClientIDMode="Static" />
 
 <!--pop up html-->
-<div class="modal_popup modal_brand" id="myModal_brand" style="display: none">
-    <div class="modal-content">
-        <div class="modal_header clearfix">
-            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("KDA.Address.AddBrand")%></a>
-            <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
+<div class="modal__popup modal_brand" id="myModal_brand" style="display: none">
+    <div class="modal__content">
+        <div class="modal__header clearfix">
+            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("Kadena.Address.AddBrand")%></a>
+            <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
         </div>
-        <div class="modal_body">
-            <table class="show-table" id="brands">
+        <div class="modal__body">
+            <table class="table" id="brands">
                 <tbody id="brandsbody">
                     <tr>
                         <td>
                             <input type="checkbox" class="js-chkAll" id="selectAll">
                         </td>
-                        <td><%#ResHelper.GetString("KDA.Address.BrandName")%></td>
-                        <td><%#ResHelper.GetString("KDA.Address.BrandCcode")%></td>
+                        <td><%#ResHelper.GetString("Kadena.Address.BrandName")%></td>
+                        <td><%#ResHelper.GetString("Kadena.Address.BrandCode")%></td>
                     </tr>
                 </tbody>
             </table>
@@ -160,15 +170,5 @@
     </div>
 </div>
 
-<!--Bind Brands-->
-<div class="Business_Assigned_user">
-    <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display: none">
-        <tbody id="AddressBrandsTablebody">
-            <tr>
-                <td><%#ResHelper.GetString("KDA.Address.BrandName")%></td>
-                <td><%#ResHelper.GetString("KDA.Address.BrandCcode")%></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+
 

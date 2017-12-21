@@ -14,7 +14,6 @@ using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.WebAPI.KenticoProviders;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,11 +21,12 @@ using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
-    public  class ShoppingCartHelper
+    public class ShoppingCartHelper
     {
         private static ShoppingCartInfo Cart { get; set; }
         private const string _serviceUrlShippingSettingKey = "KDA_ShippingCostServiceUrl";
         private const string _serviceUrlOrderSettingKey = "KDA_OrderServiceEndpoint";
+
         /// <summary>
         /// creating estimation DTO
         /// </summary>
@@ -58,13 +58,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <param name="cart"></param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID)
+        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string type)
         {
             try
             {
                 Cart = cart;
                 return new OrderDTO
                 {
+                    Type = type,
                     Campaign = GetCampaign(),
                     BillingAddress = GetBillingAddress(),
                     ShippingAddress = GetBillingAddress(),
@@ -77,7 +78,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     LastModified = DateTime.Now,
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(ProductType.GeneralInventory),
-                    TotalShipping= GetOrderShippingTotal(ProductType.GeneralInventory)
+                    TotalShipping = GetOrderShippingTotal(ProductType.GeneralInventory)
                 };
             }
             catch (Exception ex)
@@ -113,7 +114,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new ShippingCostServiceClient(ProviderFactory.MicroProperties);
+                var microserviceClient = new ShippingCostServiceClient(new MicroProperties(new KenticoResourceService()));
                 var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -138,7 +139,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new OrderSubmitClient(ProviderFactory.MicroProperties);
+                var microserviceClient = new OrderSubmitClient(new MicroProperties(new KenticoResourceService()));
                 var response = microserviceClient.SubmitOrder(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -350,11 +351,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
-                return new SiteDTO
-                {
-                    KenticoSiteID = SiteContext.CurrentSiteID,
-                    KenticoSiteName = SiteContext.CurrentSiteName
-                };
+            return new SiteDTO
+            {
+                KenticoSiteID = SiteContext.CurrentSiteID,
+                KenticoSiteName = SiteContext.CurrentSiteName
+            };
         }
 
         /// <summary>
@@ -412,6 +413,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
             return items;
         }
+
         /// <summary>
         /// Returns order total
         /// </summary>
@@ -427,7 +429,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 }
                 else
                 {
-                   return  default(decimal);
+                    return default(decimal);
                 }
             }
             catch (Exception ex)
@@ -436,6 +438,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return default(decimal);
             }
         }
+
         /// <summary>
         /// returns Shipping total
         /// </summary>

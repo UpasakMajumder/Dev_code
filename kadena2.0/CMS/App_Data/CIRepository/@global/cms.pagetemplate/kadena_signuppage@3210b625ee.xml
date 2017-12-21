@@ -242,6 +242,19 @@
       if(regEx!=null ||regEx!='') {
         var email=new RegExp(regEx);
         var val=$('[id$=txtEmailInput]').val();
+        if(val=="")
+        {
+          event.preventDefault();
+          if($('[id$=Email_lbe]').text()!='')
+          {
+            $('[id$=Email_lbe]').text('Please enter valid Email');
+          }
+          else
+          {
+            if($('#emailError').text()=='')
+              $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
+          }
+        }
         if(val!='')
         {
           if(!email.test(val)){
@@ -251,11 +264,12 @@
             }
             else
             {
-             if($('#emailError').text()=='')
+              if($('#emailError').text()=='')
                 $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
             }
             event.preventDefault();
-          } 
+          }
+          
         } 
       }
     });

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
 /* globals */
-import { CHECKOUT } from 'app.globals';
+import { CHECKOUT, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
 /* components */
@@ -88,37 +88,15 @@ class Checkout extends Component {
   }
 
   static fireNotification(fields) {
-    let message = 'Please, select one of ';
-
     fields.forEach((field, index) => {
-      if (index === fields.length - 1 && index !== 0) {
-        message += ' and ';
-      } else if (index) {
-        message += ', ';
-      }
+      const { checkoutValidation } = NOTIFICATION;
 
-      switch (field) {
-      case 'deliveryMethod':
-        message += 'the delivery methods';
-        break;
-      case 'paymentMethod':
-        message += 'the payment methods';
-        break;
-      case 'deliveryAddress':
-        message += 'the delivery addresses';
-        break;
-      case 'invoice':
-        message += 'the PO number';
-        break;
-      case 'emailConfirmation':
-        message += 'the confirmation emails';
-        break;
-      default:
-        break;
+      if (checkoutValidation) {
+        if (checkoutValidation[field]) {
+          toastr.error(checkoutValidation[field].title, checkoutValidation[field].text);
+        }
       }
     });
-
-    toastr.error(message);
   }
 
   toggleAgreementWithTandC = () => {

@@ -539,7 +539,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 if (!DataHelper.DataSourceIsEmpty(skuDetails))
                 {
                     var catalogList = productsList
-                                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.SKUID, x.QtyPerPack, x.State, x.BrandID, y.SKUNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil, x.EstimatedPrice })
+                                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.NodeSKUID, x.QtyPerPack, x.State, x.BrandID, y.SKUNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil, x.EstimatedPrice })
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(catalogList) && posNum != null)
                     {
