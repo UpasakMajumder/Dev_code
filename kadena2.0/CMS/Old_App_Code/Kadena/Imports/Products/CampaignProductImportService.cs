@@ -231,6 +231,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             SKUTreeNode existingProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeSKUID == sku.SKUID);
             SKUTreeNode newProduct = existingProduct ?? (SKUTreeNode)TreeNode.New("KDA.CampaignsProduct", tree);
             Program program = GetProgram(product.Campagin, product.ProgramName);
+            ProductCategory productCategory = GetProductCategory(product.ProductCategory);
 
             newProduct.DocumentName = product.ProductName;
             newProduct.DocumentSKUName = product.ProductName;
@@ -251,9 +252,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 newProduct.SetValue("EstimatedPrice", product.EstimatedPrice);
             }
-            if (!string.IsNullOrWhiteSpace(product.ProductCategoryID))
+            if (productCategory != null)
             {
-                newProduct.SetValue("CategoryID", product.ProductCategoryID);
+                newProduct.SetValue("CategoryID", productCategory.ProductCategoryID);
             }
             if (!string.IsNullOrWhiteSpace(product.BundleQuantity))
             {
@@ -291,6 +292,21 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
             return brandID;
+        }
+
+        private ProductCategory GetProductCategory(string productCategoryName)
+        {
+            if (string.IsNullOrWhiteSpace(productCategoryName))
+            {
+                return null;
+            }
+            else
+            {
+                return ProductCategoryProvider.GetProductCategories()
+                                  .OnSite(_site)
+                                  .Where(x => x.ProductCategoryTitle.Equals(productCategoryName) || x.DocumentName.Equals(productCategoryName))
+                                  .FirstOrDefault();
+            }
         }
 
         private Program GetProgram(string campaignName, string programName)
