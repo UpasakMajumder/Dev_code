@@ -299,7 +299,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 return null;
             }
-            Campaign campaign = GetCampaign(campaignName);
+            CMS.DocumentEngine.Types.KDA.Campaign campaign = GetCampaign(campaignName);
             if (campaign != null)
             {
                 return ProgramProvider.GetPrograms()
@@ -313,7 +313,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
         }
 
-        private Campaign GetCampaign(string campaignName)
+        private CMS.DocumentEngine.Types.KDA.Campaign GetCampaign(string campaignName)
         {
             return CampaignProvider.GetCampaigns()
                                    .OnSite(_site)
