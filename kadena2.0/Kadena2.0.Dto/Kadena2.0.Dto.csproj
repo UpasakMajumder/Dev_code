@@ -50,6 +50,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\ButtonLabelsDto.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />

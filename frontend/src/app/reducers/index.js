@@ -17,6 +17,7 @@ import products from './products';
 import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
+import filteredRecentOrders from './filteredRecentOrders';
 
 const rootReducer = combineReducers({
   login,
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
   toastr,
   dialogAlert,
   cardPayment,
-  languageSelector
+  languageSelector,
+  filteredRecentOrders
 });
 
 export default rootReducer;

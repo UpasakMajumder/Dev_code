@@ -5,6 +5,7 @@ using Kadena.WebAPI.Infrastructure;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
+using System;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -16,6 +17,15 @@ namespace Kadena.WebAPI.Controllers
 
         public DashboardController(IOrderListServiceFactory orderListServiceFactory, IMapper mapper)
         {
+            if (orderListServiceFactory == null)
+            {
+                throw new ArgumentNullException(nameof(orderListServiceFactory));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _mapper = mapper;
             _orderService = orderListServiceFactory.GetDashboard();
         }

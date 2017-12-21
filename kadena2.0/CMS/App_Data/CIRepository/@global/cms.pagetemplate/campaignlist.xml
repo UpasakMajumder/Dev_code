@@ -29,10 +29,10 @@
     </div>
     <div class="content-block">
       
-      <div class="search_block">
+      <div class="search__block">
         <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
       </div>
-      <div class="add_btn">
+      <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZoneCreate" runat="server" />
       </div>
          
@@ -300,7 +300,7 @@
           <property name="text" ismacro="true">
 <![CDATA[
 <a class="btn-action" href='{% KadenaNamespace.GetLocalizedDocumentUrlByGUID(Settings.KDA_CampaignCreatePageUrl) |(user)cvoqa2@gmail.com|(hash)0722e110dd54d18ba3eb52da4b07b960a5a8c84dca3680deb82d5e7858dd962c%}
-'><i class="fa fa-plus" aria-hidden="true"></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
+'><i></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -462,7 +462,16 @@ return false;
           <property name="visible">True</property>
           <property name="webparttitle">Campaign List</property>
           <property name="webparttype">BasicRepeater</property>
-          <property name="zerorowstext">{$Kadena.ItemList.NoDataFoundText$}</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+{$Kadena.ItemList.NoDataFoundText$}
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
+]]>
+          </property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneNav" v="1">
