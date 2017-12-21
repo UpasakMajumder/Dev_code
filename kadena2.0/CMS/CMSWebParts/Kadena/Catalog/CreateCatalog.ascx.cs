@@ -104,8 +104,13 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             return CampaignProvider.GetCampaigns().Columns("CampaignID")
                                 .WhereEquals("OpenCampaign", true)
-                                .WhereEquals("CloseCampaign", false)
+                                .WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null)
                                 .WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+        }
+        set
+        {
+            SetValue("GetOpenCampaign", value);
         }
     }
 
@@ -136,44 +141,56 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             ddlBrands.Visible = ShowBrandFilter;
             ddlProductTypes.Visible = ShowProductCategoryFilter;
             ddlPrograms.Visible = ShowProgramFilter;
-            posNumber.Visible = ShowPosFilter;
+            if (ShowPosFilter)
+            {
+                searchDiv.Visible = true;
+                posNumber.Visible = ShowPosFilter;
+            }
+            else
+            {
+                searchDiv.Visible = false;
+                posNumber.Visible = ShowPosFilter;
+            }
             if (!IsPostBack)
             {
-                List<CampaignsProduct> products = null;
-                if (TypeOfProduct == (int)ProductsType.PreBuy)
-                {
-                    BindPrograms();
-                    BindProductTypes();
-                    List<int> programIds = new List<int>();
-                    if (GetOpenCampaign != null)
-                    {
-                        var programs = ProgramProvider.GetPrograms()
-                                            .WhereEquals("CampaignID", GetOpenCampaign.CampaignID)
-                                            .Columns("ProgramID")
-                                            .ToList();
-                        if (!DataHelper.DataSourceIsEmpty(programs))
-                        {
-                            foreach (var program in programs)
-                            {
-                                programIds.Add(program.ProgramID);
-                            }
-                        }
-                    }
-                    products = CampaignsProductProvider.GetCampaignsProducts()
-                        .WhereIn("ProgramID", programIds).ToList();
-                }
-                else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
-                {
-                    BindBrands();
-                    BindProductTypes();
-                    products = CampaignsProductProvider.GetCampaignsProducts()
-                        .WhereEquals("ProgramID", null).ToList();
-                }
-                BindingProductsToRepeater(products);
+                Bindproducts();
             }
         }
     }
-
+    private void Bindproducts()
+    {
+        List<CampaignsProduct> products = null;
+        if (TypeOfProduct == (int)ProductsType.PreBuy)
+        {
+            BindPrograms();
+            BindProductTypes();
+            List<int> programIds = new List<int>();
+            if (GetOpenCampaign != null)
+            {
+                var programs = ProgramProvider.GetPrograms()
+                                    .WhereEquals("CampaignID", GetOpenCampaign.CampaignID)
+                                    .Columns("ProgramID")
+                                    .ToList();
+                if (!DataHelper.DataSourceIsEmpty(programs))
+                {
+                    foreach (var program in programs)
+                    {
+                        programIds.Add(program.ProgramID);
+                    }
+                }
+            }
+            products = CampaignsProductProvider.GetCampaignsProducts()
+                .WhereIn("ProgramID", programIds).ToList();
+        }
+        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+        {
+            BindBrands();
+            BindProductTypes();
+            products = CampaignsProductProvider.GetCampaignsProducts()
+                .WhereEquals("ProgramID", null).ToList();
+        }
+        BindingProductsToRepeater(products);
+    }
     /// <summary>
     /// Binding product types
     /// </summary>
@@ -202,11 +219,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Binding programs based on campaign
     /// </summary>
-    private void BindPrograms()
+    public void BindPrograms()
     {
         try
         {
-            if (ValidationHelper.GetInteger(GetOpenCampaign?.GetValue("CampaignID") ?? default(int), default(int)) != default(int))
+            if (GetOpenCampaign.CampaignID != default(int))
             {
                 var programs = ProgramProvider.GetPrograms()
                                     .WhereEquals("NodeSiteID", CurrentSite.SiteID)
@@ -221,9 +238,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ddlPrograms.DataValueField = "ProgramID";
                     string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.SelectProgramText"), string.Empty);
                     ddlPrograms.DataBind();
-                    ddlPrograms.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.Catalog.SelectProgramText"), "0"));
                 }
             }
+            ddlPrograms.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.Catalog.SelectProgramText"), "0"));
         }
         catch (Exception ex)
         {
@@ -275,7 +292,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             if (TypeOfProduct == (int)ProductsType.PreBuy)
             {
-                var products = CampaignsProductProvider.GetCampaignsProducts().ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).ToList();
                 if (programID != default(int) && !DataHelper.DataSourceIsEmpty(products))
                 {
                     products = products.Where(x => x.ProgramID == programID).ToList();
@@ -286,7 +303,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 BindingProductsToRepeater(products, posNum);
             }
-            else
+            else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
             {
                 var products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID", null).ToList();
                 if (brandID != default(int) && !DataHelper.DataSourceIsEmpty(products))
@@ -392,7 +409,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 else
                 {
                     var productItems = CampaignsProductProvider.GetCampaignsProducts()
-                                        .WhereEquals("ProgramID",null)
+                                        .WhereEquals("ProgramID", null)
                                         .ToList();
                     var inventoryList = productItems
                                         .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber })
@@ -413,17 +430,17 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         productBrandHeader = productBrandHeader.Replace("BrandName", brandName);
                         List<CampaignsProduct> productItems = new List<CampaignsProduct>();
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
-                        { 
+                        {
                             productItems = CampaignsProductProvider.GetCampaignsProducts().ToList();
                         }
-                        else if(TypeOfProduct == (int)ProductsType.GeneralInventory)
+                        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                         {
-                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID",null).ToList();
+                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID", null).ToList();
                         }
-                            var catalogList = productItems
-                                            .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
-                                            .Where(x => x.BrandID == brand)
-                                            .ToList();
+                        var catalogList = productItems
+                                        .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
+                                        .Where(x => x.BrandID == brand)
+                                        .ToList();
                         string pdfProductsContent = string.Empty;
                         if (!DataHelper.DataSourceIsEmpty(catalogList))
                         {
@@ -467,6 +484,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 Response.Buffer = true;
                 ms.WriteTo(Response.OutputStream);
                 Response.End();
+            }
+            else
+            {
+                Bindproducts();
             }
         }
         catch (Exception ex)
@@ -545,18 +566,23 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     {
                         catalogList = catalogList.Where(x => x.SKUNumber.Contains(posNum)).ToList();
                     }
-                    if (TypeOfProduct == (int)ProductsType.PreBuy)
+                    if (!DataHelper.DataSourceIsEmpty(catalogList))
                     {
+                        lblNoProducts.Visible = false;
                         rptCatalogProducts.DataSource = catalogList;
                         rptCatalogProducts.DataBind();
                     }
                     else
                     {
-                        rptCatalogProducts.DataSource = catalogList;
-                        rptCatalogProducts.DataBind();
+                        lblNoProducts.Visible = true;
                     }
                 }
             }
+            else
+            {
+                lblNoProducts.Visible = true;
+            }
+
         }
         catch (Exception ex)
         {
