@@ -13,6 +13,7 @@ namespace Kadena.Old_App_Code.CMSModules.Kadena
     public class KadenaModule : Module
     {
         private const string SelectedEnvironment = "KDA_EnvironmentId";
+        private const string AmazonS3Exclude = "KDA_AmazonS3Excluded";
 
         public KadenaModule()
             : base("Kadena") { }
@@ -24,7 +25,12 @@ namespace Kadena.Old_App_Code.CMSModules.Kadena
             var s3BucketName = SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName);
             if (!string.IsNullOrWhiteSpace(s3BucketName))
             {
-
+                var excludeSetting = SettingsKeyInfoProvider.GetValue(AmazonS3Exclude);
+                var excludedPaths = excludeSetting.Split(';');
+                foreach (var path in excludedPaths)
+                {
+                    StorageHelper.UseLocalFileSystemForPath(path);
+                }
                 var environmentId = SettingsKeyInfoProvider.GetIntValue(SelectedEnvironment);
                 var environment = CustomTableItemProvider.GetItem<EnvironmentItem>(environmentId);
                 var customAmazonProvider = new StorageProvider("CustomAmazon", "Kadena.AmazonFileSystemProvider", true)
