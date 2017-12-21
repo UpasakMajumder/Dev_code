@@ -39,20 +39,101 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     protected global::System.Web.UI.WebControls.TextBox txtPos;
     
     /// <summary>
-    /// rptProductList control.
+    /// rptProductLists control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.DocumentEngine.Web.UI.CMSRepeater rptProductList;
+    protected global::System.Web.UI.WebControls.Repeater rptProductLists;
     
     /// <summary>
-    /// crtCustomerCart control.
+    /// dialog_Add_To_Cart control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::Kadena.CMSWebParts.Kadena.ShoppingCart.CustomerCartOperations crtCustomerCart;
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl dialog_Add_To_Cart;
+    
+    /// <summary>
+    /// lblPopUpHeader control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblPopUpHeader;
+    
+    /// <summary>
+    /// lblProductName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblProductName;
+    
+    /// <summary>
+    /// lblError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblError;
+    
+    /// <summary>
+    /// lblErrorMsg control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblErrorMsg;
+    
+    /// <summary>
+    /// lblAvailbleItems control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblAvailbleItems;
+    
+    /// <summary>
+    /// gvCustomersCart control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.GridView gvCustomersCart;
+    
+    /// <summary>
+    /// lblSuccessMsg control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblSuccessMsg;
+    
+    /// <summary>
+    /// llbtnAddToCart control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbtnAddToCart;
+    
+    /// <summary>
+    /// hdnClickSKU control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnClickSKU;
 }
