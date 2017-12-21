@@ -10,7 +10,7 @@
         <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnExport_Click" />
     </div>
 </div>
-<div class="inbound__track">
+<div class="inbound__track table__responsive">
     <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" 
         OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast" 
         class="table show__table-bottom" PagerStyle-CssClass="pagination__table">
