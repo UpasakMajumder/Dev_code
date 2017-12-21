@@ -43,6 +43,28 @@
         chiliSaved: {
           title: 'Success',
           text: 'The template has been saved'
+        },
+        checkoutValidation: {
+          deliveryMethod: {
+            title: 'Validation Error',
+            text: 'Delivery Method is invalid'
+          },
+          paymentMethod: {
+            title: 'Validation Error',
+            text: 'Payment Method is invalid'
+          },
+          deliveryAddress: {
+            title: 'Validation Error',
+            text: 'Delivery Address is invalid'
+          },
+          invoice: {
+            title: 'Validation Error',
+            text: 'PO number is invalid'
+          },
+          emailConfirmation: {
+            title: 'Validation Error',
+            text: 'Emails is invalid'
+          }
         }
       },
       languages: {

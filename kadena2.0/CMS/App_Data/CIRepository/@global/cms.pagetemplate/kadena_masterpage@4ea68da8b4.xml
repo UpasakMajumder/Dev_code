@@ -134,7 +134,29 @@
     addAddress: {
       title: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessTitle"))|(user)rostyslav.diachenko@actum.cz|(hash)fda2e7f51a451b4b5d50546b512240f14ad266772a6f8709ff90b727de203c63%}',
       text: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessText"))|(user)rostyslav.diachenko@actum.cz|(hash)bfa418526f0e55e291235f939ffaa195557b981dce3bb11c9d703951ee2ff533%}'
-    }
+    },
+    checkoutValidation  : {
+          deliveryMethod: {
+            title: 'Validation Error',
+            text: '{$Kadena.Checkout.DeliveryMethodInvalid$}'
+          },
+          paymentMethod: {
+            title: 'Validation Error',
+            text: '{$Kadena.Checkout.PaymentMethodInvalid$}'
+          },
+          deliveryAddress: {
+            title: 'Validation Error',
+            text: '{$Kadena.Checkout.DeliveryAddressInvalid$}'
+          },
+          invoice: {
+            title: 'Validation Error',
+            text: '{$Kadena.Checkout.PONumberInvalid$}'
+          },
+          emailConfirmation: {
+            title: 'Validation Error',
+            text: '{$Kadena.Checkout.EmailInvalid$}'
+          }
+    }      
   };
   config.localization.staticFields = {
     validation: {

@@ -5,7 +5,7 @@
         <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
     </div>
-    <div class="custom_check">
+    <div class="custom__check">
         <div class="input__wrapper">
             <input type="checkbox" class=" input__checkbox " id="dom-1" value="true">
             <cms:LocalizedLabel runat="server" CssClass="input__label input__label--checkbox" ID="selectAllLabel" ResourceString="KDA.CustomCatalog.Filter.SelectAllLabel"></cms:LocalizedLabel>
