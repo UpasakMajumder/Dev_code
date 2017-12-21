@@ -25,7 +25,7 @@
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts">
          <HeaderTemplate>
-             <div class="Crimes_section notdisplay  printIt">
+             <div class="crimes__section notdisplay  printIt">
             <h1>19 Crimes - Share it with the Gang</h1>
                </div>
         </HeaderTemplate>
@@ -128,3 +128,35 @@
     </cms:CMSRepeater>
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
+<style>
+   
+    @media print{
+        printIt{
+            display:block;
+        }
+         .css-header{
+        display:none;
+    }
+    .sidebar-logo{
+        display:none;
+    }
+    .css-sidebar{
+        display:none;
+    }
+    .cus__content--block{
+        width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    }
+    .crime__leftsec{width:20%;float:left}
+    .crime__leftsec .img__block{width:100%;margin:0 auto}
+    .crime__leftsec .img__block img{padding:30px 0;max-width:100%;height:auto}
+    .crime__rightsec{width:77%;float:right;margin:20px 0 0}
+    .crime__rightsec .crime__btmsec{margin-bottom:10px}
+    .crime__rightsec .crime__btmsec .crime__btmsec-detail{width:30%;display:inline-block}
+    .crime__rightsec .crime__btmsec .crime__btmsec-detail .input__label{display:inline-block;width:auto;float:none}
+    .footer{
+        display:none;
+    }
+    }
+</style>

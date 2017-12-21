@@ -3,7 +3,7 @@
 
 <div class="login__form-content js-login">
     <div class="css-login changepwd_block">
-        <div class="form signup_form">
+        <div class="form">
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
