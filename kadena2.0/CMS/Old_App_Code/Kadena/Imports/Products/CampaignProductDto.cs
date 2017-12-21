@@ -46,7 +46,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(10, "Product Category (Type) *")]
         [Required]
         [MaxLength(30)]
-        public string ProductCategoryID { get; set; }
+        public string ProductCategory { get; set; }
 
         [Header(11, "Bundle Quantity *")]
         [Required]
