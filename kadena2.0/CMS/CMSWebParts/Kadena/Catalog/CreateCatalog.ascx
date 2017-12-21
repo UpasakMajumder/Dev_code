@@ -26,7 +26,7 @@
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts">
          <HeaderTemplate>
-             <div class="Crimes_section notdisplay  printIt">
+             <div class="crimes__section notdisplay  printIt">
             <h1>19 Crimes - Share it with the Gang</h1>
                </div>
         </HeaderTemplate>
