@@ -1,8 +1,8 @@
 ﻿using CMS.Helpers;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.IO;
 
-namespace Kadena2.WebAPI.KenticoProviders.Providers
+namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class KenticoHelper : IKenticoHelper
     {
