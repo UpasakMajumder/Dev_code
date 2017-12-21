@@ -1,6 +1,11 @@
 .custom__section {
+  width: 100%;
+  display: inline-block;
+
   .custom__block {
     margin-bottom: 30px;
+    width: 100%;
+    display: inline-block;
 
     .custom__check {
       display: inline-block;
@@ -82,7 +87,7 @@
       .input__checkbox:checked + label:after {
         left: inherit;
         top: -6px;
-        right: -6px;
+        right: -3px;
         margin-right: 10px;
       }
     }
