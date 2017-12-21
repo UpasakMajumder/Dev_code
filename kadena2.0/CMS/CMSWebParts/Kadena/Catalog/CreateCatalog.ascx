@@ -36,7 +36,7 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
+                        <img src='<%#Eval("SKUImagePath")%>' />
                     </label>
                 </div>
                 <div class="input__wrapper">
