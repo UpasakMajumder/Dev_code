@@ -95,6 +95,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     lblFailureText.Visible = false;
                     txtName.Text = string.Empty;
                     txtDescription.Text = string.Empty;
+                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
                 }
                 else
                 {

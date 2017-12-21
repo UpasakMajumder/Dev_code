@@ -271,7 +271,7 @@ iteratedDocument = iteratedDocument.Parent;
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-buttom">
+<table id="reptable" class="table show__table-bottom">
   <tr>    
     <th>{$KDA.BusinessUnitsList.BusinessUnitNumber$}</th>
     <th>{$KDA.BusinessUnitsList.BusinessUnitName$}</th>

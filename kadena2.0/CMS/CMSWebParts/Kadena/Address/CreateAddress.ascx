@@ -6,7 +6,7 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form__section">
-            <div class="form signup_form form_width100">
+            <div class="form signup_form form__lg">
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper">
@@ -135,14 +135,12 @@
 
                 <div class="clearfix"></div>
             </div>
-            <div class="mb-3 form_btns">
+            <div class="mb-3 form__btns">
                 <div class="">
                     <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click"></asp:LinkButton>
                     <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
                 </div>
             </div>
-
-
             <div class="clearfix"></div>
         </div>
     </div>
@@ -150,14 +148,14 @@
 <asp:HiddenField ID="hdnBrand" runat="server" ClientIDMode="Static" />
 
 <!--pop up html-->
-<div class="modal_popup modal_brand" id="myModal_brand" style="display: none">
-    <div class="modal-content">
-        <div class="modal_header clearfix">
-            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("KDA.Address.AddBrand")%></a>
-            <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
+<div class="modal__popup modal_brand" id="myModal_brand" style="display: none">
+    <div class="modal__content">
+        <div class="modal__header clearfix">
+            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("Kadena.Address.AddBrand")%></a>
+            <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
         </div>
-        <div class="modal_body">
-            <table class="show-table" id="brands">
+        <div class="modal__body">
+            <table class="table" id="brands">
                 <tbody id="brandsbody">
                     <tr>
                         <td>
@@ -171,4 +169,6 @@
         </div>
     </div>
 </div>
+
+
 

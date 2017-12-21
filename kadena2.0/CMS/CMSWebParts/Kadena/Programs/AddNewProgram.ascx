@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="mb-3 form_btns">
+        <div class="mb-3 form__btns">
             <div class="">
                 <asp:Button ID="btnAddProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnAddProgram_Click" />
                 <asp:Button ID="btnUpdateProgram" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnUpdateProgram_Click" />

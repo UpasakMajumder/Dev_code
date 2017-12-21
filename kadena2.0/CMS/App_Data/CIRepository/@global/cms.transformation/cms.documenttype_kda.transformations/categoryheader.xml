@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<table id="reptable" class="table show__table-buttom">
+<table id="reptable" class="table show__table-bottom">
   <tbody>
     <tr>
       <th>{$Kadena.CategoryList.CategoryTitle$}</th>
