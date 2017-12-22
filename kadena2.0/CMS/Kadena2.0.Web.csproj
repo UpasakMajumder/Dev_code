@@ -1126,6 +1126,13 @@
     <Compile Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx.designer.cs">
       <DependentUpon>ModuleAccessChecker.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\POS\POSBulkImport.ascx.cs">
+      <DependentUpon>POSBulkImport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\POS\POSBulkImport.ascx.designer.cs">
+      <DependentUpon>POSBulkImport.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\POS\POSFilter.ascx.cs">
       <DependentUpon>POSFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1423,6 +1430,7 @@
     <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />
     <Content Include="CMSWebParts\Kadena\Metrics\DashboardMetrics.ascx" />
     <Content Include="CMSWebParts\Kadena\Modules\ModuleAccessChecker.ascx" />
+    <Content Include="CMSWebParts\Kadena\POS\POSBulkImport.ascx" />
     <Content Include="CMSWebParts\Kadena\POS\POSFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\POS\POSForm.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddInventoryProduct.ascx" />
