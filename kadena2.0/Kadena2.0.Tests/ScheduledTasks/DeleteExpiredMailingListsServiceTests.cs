@@ -29,12 +29,12 @@ namespace Kadena.Tests.ScheduledTasks
             // Arrange
             var site = "site1";
             var sites = new[] { new Site { Name = site } };
-            var kenticoProvider = Mock.Of<IKenticoProviderService>(kp => kp.GetSites() == sites);
+            var kenticoSite = Mock.Of<IKenticoSiteProvider>(kp => kp.GetSites() == sites);
             var mailingService = new Mock<IMailingListClient>(MockBehavior.Strict);
             var configuration = new MailingListConfiguration { DeleteMailingListsPeriod = null };
             var configurationProvider = Mock.Of<IConfigurationProvider>(cp =>
                 cp.Get<MailingListConfiguration>(site) == configuration);
-            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoProvider, mailingService.Object);
+            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoSite, mailingService.Object);
 
             // Act
             await sut.Delete();
@@ -49,13 +49,13 @@ namespace Kadena.Tests.ScheduledTasks
             // Arrange
             var site = "site1";
             var sites = new[] { new Site { Name = site } };
-            var kenticoProvider = Mock.Of<IKenticoProviderService>(kp => kp.GetSites() == sites);
+            var kenticoSite = Mock.Of<IKenticoSiteProvider>(kp => kp.GetSites() == sites);
             var mailingService = Mock.Of<IMailingListClient>(mlc =>
                 mlc.RemoveMailingList(It.IsAny<DateTime>()) == GetUnsuccessFullMicroserviceResponse());
             var configuration = new MailingListConfiguration { DeleteMailingListsPeriod = 10 };
             var configurationProvider = Mock.Of<IConfigurationProvider>(cp =>
                 cp.Get<MailingListConfiguration>(site) == configuration);
-            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoProvider, mailingService);
+            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoSite, mailingService);
 
             // Act
             var result = sut.Delete();
@@ -73,12 +73,12 @@ namespace Kadena.Tests.ScheduledTasks
             var minimalTime = currentTime.AddDays(-configuration.DeleteMailingListsPeriod.Value);
             var site = "site1";
             var sites = new[] { new Site { Name = site } };
-            var kenticoProvider = Mock.Of<IKenticoProviderService>(kp => kp.GetSites() == sites);
+            var kenticoSite = Mock.Of<IKenticoSiteProvider>(kp => kp.GetSites() == sites);
             var mailingService = Mock.Of<IMailingListClient>(mlc => 
                 mlc.RemoveMailingList(minimalTime) == GetSuccessFullMicroserviceResponse());
             var configurationProvider = Mock.Of<IConfigurationProvider>(cp =>
                 cp.Get<MailingListConfiguration>(site) == configuration);
-            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoProvider, mailingService);
+            var sut = new DeleteExpiredMailingListsService(configurationProvider, kenticoSite, mailingService);
             sut.GetCurrentTime = () => currentTime;
 
             // Act

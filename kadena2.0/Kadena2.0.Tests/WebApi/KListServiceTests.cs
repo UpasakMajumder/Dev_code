@@ -48,12 +48,12 @@ namespace Kadena.Tests.WebApi
             var mapper = Mapper.Instance;
 
 
-            var kenticoClient = new Mock<IKenticoResourceService>();
-            kenticoClient.Setup(p => p.GetKenticoSite())
+            var site = new Mock<IKenticoSiteProvider>();
+            site.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
 
             return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
-                kenticoClient.Object,
+                site.Object,
                 validationClient?.Object ?? new Mock<IAddressValidationClient>().Object,
                 mapper);
         }
