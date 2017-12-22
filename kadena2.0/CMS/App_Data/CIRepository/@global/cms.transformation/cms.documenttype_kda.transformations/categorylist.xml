@@ -10,6 +10,11 @@
 <tr>
   <td>{%ProductCategoryTitle%}</td>
   <td>{%ProductCategoryDescription%}</td>
+  {% if(Status==true){ %}
+  <td>{$KDA.Common.Status.Active$}</td>
+  {%} else {%}
+  <td>{$KDA.Common.Status.InActive$}</td> 
+  {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
   <td>
     <div class="text-center">
       <a href='{% Settings.KDA_CategoryCreatePageUrl |(user)cvoqa2@gmail.com|(hash)5a6674606e2b6d62760303938a8352a5b9a087ebf2020d41205dc1e579462d03%}?ID={%ProductCategoryID%}' class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>

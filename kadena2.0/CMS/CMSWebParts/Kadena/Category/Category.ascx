@@ -19,6 +19,14 @@
                 </div>
             </div>
         </div>
+          <div class="mb-2">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblStatus" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.StatusText" />
+                <div class="input__inner">
+                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="mb-3 form__btns">

@@ -98,6 +98,7 @@
     <th>{$KDA.BrandsList.BrandName$}</th>
     <th>{$KDA.BrandsList.BrandCode$}</th>
     <th>{$KDA.BrandsList.Description$}</th>
+    <th>{$KDA.BrandsList.Status$}</th>
     <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
   </tr>
 ]]>
