@@ -159,6 +159,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         else
         {
+            lblDateValid.Visible = false;
             lblProgramName.InnerText = ProgramNameText;
             lblProgramDescription.InnerText = ProgramDescriptionText;
             lblBrandName.InnerText = BrandNameText;
@@ -181,6 +182,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                     txtProgramDescription.Text = program.ProgramDescription;
                     ddlBrand.SelectedValue = program.BrandID.ToString();
                     ddlCampaign.SelectedValue = program.CampaignID.ToString();
+                    txtProgramDeliveryDate.Text = program.DeliveryDateToDistributors == default(DateTime) ? string.Empty : program.DeliveryDateToDistributors.ToShortDateString();
                     btnAddProgram.Visible = false;
                     btnUpdateProgram.Visible = true;
                     ViewState["CampaignID"] = program.CampaignID;
@@ -284,16 +286,24 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 {
                     if (CampaignNode != null)
                     {
-                        Program program = new Program();
-                        program.DocumentName = txtProgramName.Text;
-                        program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
-                        program.ProgramName = txtProgramName.Text;
-                        program.ProgramDescription = txtProgramDescription.Text;
-                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
-                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
-                        program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text,default(DateTime));
-                        program.Insert(CampaignNode, true);
-                        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                        if (ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date >= DateTime.Today)
+                        {
+                            lblDateValid.Visible = false;
+                            Program program = new Program();
+                            program.DocumentName = txtProgramName.Text;
+                            program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
+                            program.ProgramName = txtProgramName.Text;
+                            program.ProgramDescription = txtProgramDescription.Text;
+                            program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                            program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                            program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date;
+                            program.Insert(CampaignNode, true);
+                            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                        }
+                        else
+                        {
+                            lblDateValid.Visible = true;
+                        }
                     }
                 }
             }
@@ -329,30 +339,41 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             {
                 if (ViewState["programNodeID"] != null)
                 {
-                    Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
+                    if (ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date >= DateTime.Today)
+                    {
+                        lblDateValid.Visible = false;
+                        Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
 
-                    if (program != null)
-                    {
-                        program.DocumentName = txtProgramName.Text;
-                        program.ProgramName = txtProgramName.Text;
-                        program.ProgramDescription = txtProgramDescription.Text;
-                        program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
-                        program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
-                        program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime));
-                        program.Update();
-                    }
-                    if (ViewState["CampaignID"] != null)
-                    {
-                        if (Convert.ToInt32(ViewState["CampaignID"]) != campaignID)
+                        if (program != null)
                         {
-                            Campaign targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
-                            if (targetCampaign != null && program != null)
-                                DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
+
+                            program.DocumentName = txtProgramName.Text;
+                            program.ProgramName = txtProgramName.Text;
+                            program.ProgramDescription = txtProgramDescription.Text;
+                            program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
+                            program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+                            program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime));
+                            program.Update();
+
                         }
+                        if (ViewState["CampaignID"] != null)
+                        {
+                            if (Convert.ToInt32(ViewState["CampaignID"]) != campaignID)
+                            {
+                                Campaign targetCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", campaignID).FirstOrDefault();
+                                if (targetCampaign != null && program != null)
+                                    DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
+                            }
+                        }
+                        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                     }
-                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                    else
+                    {
+                        lblDateValid.Visible = true;
+                    }
                 }
             }
+
         }
         catch (Exception ex)
         {
