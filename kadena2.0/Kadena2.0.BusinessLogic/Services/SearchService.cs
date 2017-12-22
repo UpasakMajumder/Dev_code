@@ -16,12 +16,13 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoSiteProvider siteProvider;
         private readonly IKenticoSearchService kenticoSearch;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoDocumentProvider documents;
 
-        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, 
-            IKenticoProductsProvider products, IKenticoDocumentProvider documents)
+        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
+            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
             if (mapper == null)
             {
@@ -30,6 +31,10 @@ namespace Kadena.BusinessLogic.Services
             if (resources == null)
             {
                 throw new ArgumentNullException(nameof(resources));
+            }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
             }
             if (kenticoSearch == null)
             {
@@ -46,6 +51,7 @@ namespace Kadena.BusinessLogic.Services
 
             this.mapper = mapper;
             this.resources = resources;
+            this.siteProvider = site;
             this.kenticoSearch = kenticoSearch;
             this.products = products;
             this.documents = documents;
@@ -100,7 +106,7 @@ namespace Kadena.BusinessLogic.Services
 
         public List<ResultItemPage> SearchPages(string phrase, int results)
         {
-            var site = resources.GetKenticoSite();
+            var site = siteProvider.GetKenticoSite();
             var searchResultPages = new List<ResultItemPage>();
             var indexName = $"KDA_PagesIndex.{site.Name}";
             var datarowsResults = kenticoSearch.Search(phrase, indexName, "/%", results, true);
@@ -125,7 +131,7 @@ namespace Kadena.BusinessLogic.Services
 
         public List<ResultItemProduct> SearchProducts(string phrase, int results)
         {
-            var site = resources.GetKenticoSite();
+            var site = siteProvider.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
             var indexName = $"KDA_ProductsIndex.{site.Name}";
             var productsPath = resources.GetSettingsKey("KDA_ProductsPageUrl")?.TrimEnd('/');

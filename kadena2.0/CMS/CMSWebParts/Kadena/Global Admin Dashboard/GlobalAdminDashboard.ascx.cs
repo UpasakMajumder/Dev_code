@@ -13,6 +13,7 @@ using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using System.Collections.Generic;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena2.WebAPI.KenticoProviders;
 
 public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashboard : CMSAbstractWebPart
 {
@@ -141,7 +142,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     public DashboardStatistics GetDashboardStatistics()
     {
         DashboardStatistics statistics = new DashboardStatistics();
-        var statisticClient = new OrderViewClient(new MicroProperties(new KenticoResourceService()));
+        var statisticClient = new OrderViewClient(ProviderFactory.MicroProperties);
         BaseResponseDto<OrderListDto> response = statisticClient.GetOrders(CurrentSiteName, 1, 1000).Result;
         if (response.Success)
         {
