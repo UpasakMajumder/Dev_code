@@ -193,9 +193,9 @@ namespace Kadena.BusinessLogic.Services
 
         private async Task<OrderListDto> GetOrders(int pageNumber, int campaignID, string orderType)
         {
-            var siteName = _kenticoResources.GetKenticoSite().Name;
+            var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity, campaignID, orderType);
             }
