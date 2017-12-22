@@ -320,6 +320,36 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     }
 
     /// <summary>
+    /// Get Active text resource string
+    /// </summary>
+    public string ActiveText
+    {
+        get
+        {
+            return ResHelper.GetString("KDA.Common.Status.Active");
+        }
+        set
+        {
+            SetValue("ActiveText", value);
+        }
+    }
+
+    /// <summary>
+    /// Get InActive Resource string
+    /// </summary>
+    public string InActiveText
+    {
+        get
+        {
+            return ResHelper.GetString("KDA.Common.Status.Inactive");
+        }
+        set
+        {
+            SetValue("InActiveText", value);
+        }
+    }
+
+    /// <summary>
     /// No Data resource string
     /// </summary>
     public string NoDataText
@@ -908,6 +938,39 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         gdvInboundProducts.PageIndex = e.NewPageIndex;
         GetProducts();
+    }
+
+    /// <summary>
+    /// Binding the data
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gdvInboundProducts_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow && (e.Row.RowState & DataControlRowState.Edit) > 0)
+            {
+                DropDownList ddlStatus = (DropDownList)e.Row.FindControl("ddlStatus");
+                ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+                ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
+                string inActiveText = ResHelper.GetString("KDA.Common.Status.Inactive");
+                string activeText = ResHelper.GetString("KDA.Common.Status.Active");
+                string lblStatus = (e.Row.FindControl("lbleditStatus") as Label).Text;
+                if (lblStatus == inActiveText)
+                {
+                    ddlStatus.SelectedValue = "0";
+                }
+                if (lblStatus == activeText)
+                {
+                    ddlStatus.SelectedValue = "1";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Binding Status", "gdvInboundProducts_RowDataBound()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 }
 

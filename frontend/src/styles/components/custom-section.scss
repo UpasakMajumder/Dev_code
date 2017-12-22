@@ -1,10 +1,5 @@
 .show__table-bottom {
   margin-bottom: 20px;
-
-  td,
-  th {
-    word-break: break-all;
-  }
 }
 
 .search__block {
@@ -62,6 +57,10 @@
     position: absolute;
     display: block;
   }
+
+  .input__file {
+    height: 41px;
+  }
 }
 
 .prebuy__distdata {
@@ -96,6 +95,14 @@
 
   .add__btn {
     margin-bottom: 10px;
+  }
+}
+
+.long__desc {
+  line-height: 13px;
+
+  textarea {
+    height: 119px;
   }
 }
 

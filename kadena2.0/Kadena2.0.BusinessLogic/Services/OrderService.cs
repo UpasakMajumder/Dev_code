@@ -8,6 +8,8 @@ using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace Kadena.BusinessLogic.Services
     public class OrderService : IOrderService
     {
         private readonly IMapper mapper;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoOrderProvider kenticoOrder;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoUserProvider kenticoUsers;
@@ -31,12 +33,16 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoLocalizationProvider localization;
+        private readonly IKenticoPermissionsProvider permissions;
+        private readonly IKenticoSiteProvider siteProvider;
+        private readonly IKadenaSettings settings;
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
-            IKenticoProviderService kenticoProvider,
+            IKenticoOrderProvider kenticoOrder,
             IShoppingCartProvider shoppingCart,
             IKenticoProductsProvider products,
             IKenticoUserProvider kenticoUsers,
@@ -44,7 +50,11 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IKenticoDocumentProvider documents)
+            IKenticoDocumentProvider documents,
+            IKenticoLocalizationProvider localization,
+            IKenticoPermissionsProvider permissions,
+            IKenticoSiteProvider site,
+            IKadenaSettings settings)
         {
             if (mapper == null)
             {
@@ -62,9 +72,9 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(mailingClient));
             }
-            if (kenticoProvider == null)
+            if (kenticoOrder == null)
             {
-                throw new ArgumentNullException(nameof(kenticoProvider));
+                throw new ArgumentNullException(nameof(kenticoOrder));
             }
             if (shoppingCart == null)
             {
@@ -98,9 +108,25 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(documents));
             }
+            if (localization == null)
+            {
+                throw new ArgumentNullException(nameof(localization));
+            }
+            if (permissions == null)
+            {
+                throw new ArgumentNullException(nameof(permissions));
+            }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
 
             this.mapper = mapper;
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoOrder = kenticoOrder;
             this.shoppingCart = shoppingCart;
             this.products = products;
             this.kenticoUsers = kenticoUsers;
@@ -112,6 +138,10 @@ namespace Kadena.BusinessLogic.Services
             this.taxService = taxService;
             this.templateService = templateService;
             this.documents = documents;
+            this.localization = localization;
+            this.permissions = permissions;
+            this.siteProvider = site;
+            this.settings = settings;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -127,7 +157,7 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var data = microserviceResponse.Payload;
-            var genericStatus = shoppingCart.MapOrderStatus(data.Status);
+            var genericStatus = kenticoOrder.MapOrderStatus(data.Status);
 
             var orderDetail = new OrderDetail()
             {
@@ -223,15 +253,15 @@ namespace Kadena.BusinessLogic.Services
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null // TODO Track your package url unknown
                 };
-                orderDetail.ShippingInfo.Address.State = kenticoProvider
+                orderDetail.ShippingInfo.Address.State = localization
                     .GetStates()
                     .FirstOrDefault(s => s.StateCode.Equals(data.ShippingInfo.AddressTo.State));
-                orderDetail.ShippingInfo.Address.Country = kenticoProvider
+                orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
                     .FirstOrDefault(s => s.Code.Equals(data.ShippingInfo.AddressTo.isoCountryCode));
             }
 
-            if (!kenticoUsers.UserCanSeePrices())
+            if (!permissions.UserCanSeePrices())
             {
                 orderDetail.HidePrices();
             }
@@ -308,7 +338,7 @@ namespace Kadena.BusinessLogic.Services
 
             // Allow admin who has set permission to see all orders in Kentico
             // or Allow orders belonging to currently logged User and Customer
-            bool isAdmin = kenticoUsers.UserCanSeeAllOrders();
+            bool isAdmin = permissions.UserCanSeeAllOrders();
             bool isOrderOwner = (orderUserId == customer.UserID && orderCustomerId == customer.Id);
             if (isAdmin || isOrderOwner)
             {
@@ -426,18 +456,18 @@ namespace Kadena.BusinessLogic.Services
             // TODO: add to order request. need confirmation on the name of the property from microservice side.
 
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
-            shippingAddress.Country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
+            shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
-            var site = resources.GetKenticoSite();
+            var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(paymentMethodId);
             var cartItems = shoppingCart.GetShoppingCartItems();
-            var currency = resources.GetSiteCurrency();
+            var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
-                customer.Company = resources.GetDefaultCustomerCompanyName();
+                customer.Company = settings.DefaultCustomerCompanyName;
             }
 
             foreach (var item in cartItems.Where(i => i.IsTemplated))
@@ -456,9 +486,9 @@ namespace Kadena.BusinessLogic.Services
                     State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
-                    AddressCompanyName = resources.GetDefaultSiteCompanyName(),
+                    AddressCompanyName = settings.DefaultSiteCompanyName,
                     isoCountryCode = billingAddress.Country,
-                    AddressPersonalName = resources.GetDefaultSitePersonalName(),
+                    AddressPersonalName = settings.DefaultSitePersonalName,
                     Zip = billingAddress.Zip,
                     Country = billingAddress.Country,
                     KenticoAddressID = 0
@@ -509,7 +539,7 @@ namespace Kadena.BusinessLogic.Services
                 },
                 OrderStatus = new OrderStatusDTO()
                 {
-                    KenticoOrderStatusID = resources.GetOrderStatusId("Pending"),
+                    KenticoOrderStatusID = kenticoOrder.GetOrderStatusId("Pending"),
                     OrderStatusName = "PENDING"
                 },
                 OrderTracking = new OrderTrackingDTO()

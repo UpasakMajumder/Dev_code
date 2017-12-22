@@ -9,6 +9,7 @@ using Kadena.Models.Checkout;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
 using System.Linq;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -87,7 +88,9 @@ namespace Kadena.Tests.WebApi
 
 
 
-            var kenticoProvider = new Mock<IKenticoProviderService>();
+            var kenticoSite = new Mock<IKenticoSiteProvider>();
+            var kenticoLocalization = new Mock<IKenticoLocalizationProvider>();
+            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
             var kenticoResource = new Mock<IKenticoResourceService>();
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.CountOfItems"))
                 .Returns("You have {0} {1} in cart");
@@ -100,10 +103,12 @@ namespace Kadena.Tests.WebApi
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingService = new Mock<IKListService>();
             var documentsProvider = new Mock<IKenticoDocumentProvider>();
-            var checkoutFactory = new CheckoutPageFactory(kenticoResource.Object, documentsProvider.Object, kenticoProvider.Object);
+            var checkoutFactory = new CheckoutPageFactory(kenticoResource.Object, documentsProvider.Object, kenticoLocalization.Object);
 
             return new ShoppingCartService(
-                kenticoProvider.Object,
+                kenticoSite.Object,
+                kenticoLocalization.Object,
+                kenticoPermissions.Object,
                 kenticoUser.Object,
                 kenticoResource.Object,
                 taxCalculator.Object,

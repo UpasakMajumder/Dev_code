@@ -14,20 +14,20 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     public class DeleteExpiredMailingListsService
     {
         private IConfigurationProvider configurationProvider;
-        private IKenticoProviderService kenticoProvider;
+        private IKenticoSiteProvider kenticoSiteProvider;
         private IMailingListClient mailingService;
 
         public Func<DateTime> GetCurrentTime { get; set; } = () => DateTime.Now;
 
-        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoProviderService kenticoProvider, IMailingListClient mailingService)
+        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoSiteProvider kenticoSiteProvider, IMailingListClient mailingService)
         {
             if (configurationProvider == null)
             {
                 throw new ArgumentNullException(nameof(configurationProvider));
             }
-            if (kenticoProvider == null)
+            if (kenticoSiteProvider == null)
             {
-                throw new ArgumentNullException(nameof(kenticoProvider));
+                throw new ArgumentNullException(nameof(kenticoSiteProvider));
             }
             if (mailingService == null)
             {
@@ -35,13 +35,13 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             }
 
             this.configurationProvider = configurationProvider;
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoSiteProvider = kenticoSiteProvider;
             this.mailingService = mailingService;
         }
 
         public async Task Delete()
         {
-            var customers = kenticoProvider.GetSites();
+            var customers = kenticoSiteProvider.GetSites();
             var now = GetCurrentTime();
 
             var tasks = new List<Task<BaseResponseDto<object>>>();

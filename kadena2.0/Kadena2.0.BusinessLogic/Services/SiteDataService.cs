@@ -2,31 +2,38 @@
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class SiteDataService : ISiteDataService
     {
-        private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoSiteProvider _site;
+        private readonly IKadenaSettings _settings;
 
-        public SiteDataService(IKenticoResourceService kentico)
+        public SiteDataService(IKenticoSiteProvider site, IKadenaSettings settings)
         {
-            if (kentico == null)
+            if (site == null)
             {
-                throw new ArgumentNullException(nameof(kentico));
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
             }
 
-            _kentico = kentico;
+            _site = site;
+            _settings = settings;
         }  
 
         public ArtworkFtpSettings GetArtworkFtpSettings(int siteId)
         {
-            var site = _kentico.GetKenticoSite(siteId);
+            var site = _site.GetKenticoSite(siteId);
 
             if (site == null)
                 throw new ArgumentOutOfRangeException(nameof(siteId));
 
-            bool enabled = _kentico.GetSettingsKey(site.Name, "KDA_FTPAW_Enabled").ToLower() == "true";
+            bool enabled = _settings.FTPArtworkEnabled(site.Name);
 
             var result = new ArtworkFtpSettings()
             {
@@ -37,9 +44,9 @@ namespace Kadena.BusinessLogic.Services
             {
                 result.Ftp = new FtpCredentials()
                 {
-                    Url = _kentico.GetSettingsKey(site.Name, "KDA_FTPAW_Url"),
-                    Login = _kentico.GetSettingsKey(site.Name, "KDA_FTPAW_Username"),
-                    Password = _kentico.GetSettingsKey(site.Name, "KDA_FTPAW_Password"),
+                    Url = _settings.FTPArtworkUrl(site.Name),
+                    Login = _settings.FTPArtworkUsername(site.Name),
+                    Password = _settings.FTPArtworkPassword(site.Name)
                 };
             }
 
@@ -52,12 +59,12 @@ namespace Kadena.BusinessLogic.Services
 
             if (siteId.HasValue)
             {
-                site = _kentico.GetKenticoSite(siteId.Value);
+                site = _site.GetKenticoSite(siteId.Value);
             }
 
             if (site == null && !string.IsNullOrEmpty(siteName))
             {
-                site = _kentico.GetKenticoSite(siteName);
+                site = _site.GetKenticoSite(siteName);
             }
 
             return site;
