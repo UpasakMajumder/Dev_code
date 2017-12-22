@@ -7,12 +7,15 @@ using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoSiteProvider kenticoSite;
+        private readonly IKenticoLocalizationProvider localization;
+        private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationService taxCalculator;
@@ -20,7 +23,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
 
-        public ShoppingCartService(IKenticoProviderService kenticoProvider,
+        public ShoppingCartService(IKenticoSiteProvider kenticoSite,
+                                   IKenticoLocalizationProvider localization,
+                                   IKenticoPermissionsProvider permissions,
                                    IKenticoUserProvider kenticoUsers,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
@@ -28,9 +33,17 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartProvider shoppingCart,
                                    ICheckoutPageFactory checkoutfactory)
         {
-            if (kenticoProvider == null)
+            if (kenticoSite == null)
             {
-                throw new ArgumentNullException(nameof(kenticoProvider));
+                throw new ArgumentNullException(nameof(kenticoSite));
+            }
+            if (localization == null)
+            {
+                throw new ArgumentNullException(nameof(localization));
+            }
+            if (permissions == null)
+            {
+                throw new ArgumentNullException(nameof(permissions));
             }
             if (kenticoUsers == null)
             {
@@ -57,7 +70,9 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentNullException(nameof(checkoutfactory));
             }
 
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoSite = kenticoSite;
+            this.localization = localization;
+            this.permissions = permissions;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
             this.taxCalculator = taxCalculator;
@@ -118,7 +133,7 @@ namespace Kadena.BusinessLogic.Services
                 }
             };
 
-            if (kenticoUsers.UserCanSeePrices())
+            if (permissions.UserCanSeePrices())
             {
                 await UpdateTotals(result, deliveryAddress);
             }
@@ -227,8 +242,8 @@ namespace Kadena.BusinessLogic.Services
         private string GetUserNotificationString()
         {
             var userNotification = string.Empty;
-            var userNotificationLocalizationKey = kenticoProvider.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
-            if (!kenticoProvider.IsCurrentCultureDefault())
+            var userNotificationLocalizationKey = kenticoSite.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
+            if (!localization.IsCurrentCultureDefault())
             {
                 userNotification = resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : resources.GetResourceString(userNotificationLocalizationKey);
             }
@@ -263,7 +278,7 @@ namespace Kadena.BusinessLogic.Services
 
         private void SetPricesVisibility(CheckoutPage page)
         {
-            if (!kenticoUsers.UserCanSeePrices())
+            if (!permissions.UserCanSeePrices())
             {
                 page.Products.HidePrices();
             }
@@ -271,7 +286,7 @@ namespace Kadena.BusinessLogic.Services
 
         private void SetPricesVisibility(CheckoutPageDeliveryTotals page)
         {
-            if (!kenticoUsers.UserCanSeePrices())
+            if (!permissions.UserCanSeePrices())
             {
                 page.DeliveryMethods.HidePrices();
             }
@@ -311,7 +326,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItemsPreview ItemsPreview()
         {
-            bool userCanSeePrices = kenticoUsers.UserCanSeePrices();
+            bool userCanSeePrices = permissions.UserCanSeePrices();
             var cartItems = shoppingCart.GetShoppingCartItems(userCanSeePrices);
 
             var preview = new CartItemsPreview

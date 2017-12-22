@@ -11,7 +11,7 @@ namespace Kadena.BusinessLogic.Services
 {
     public class TaxEstimationService : ITaxEstimationService
     {
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
@@ -20,16 +20,16 @@ namespace Kadena.BusinessLogic.Services
 
         public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
-        public TaxEstimationService(IKenticoProviderService kenticoProvider,
+        public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
                                    IKenticoLogger kenticoLog,
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
-            if (kenticoProvider == null)
+            if (kenticoLocalization == null)
             {
-                throw new ArgumentNullException(nameof(kenticoProvider));
+                throw new ArgumentNullException(nameof(kenticoLocalization));
             }
             if (resources == null)
             {
@@ -52,7 +52,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentNullException(nameof(cache));
             }
 
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoLocalization = kenticoLocalization;
             this.resources = resources;            
             this.taxCalculator = taxCalculator;            
             this.kenticoLog = kenticoLog;
@@ -105,7 +105,7 @@ namespace Kadena.BusinessLogic.Services
                 ShipCost = shippingCosts
             };
 
-            var stateTo = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == (addressTo?.State?.Id ?? 0));
+            var stateTo = kenticoLocalization.GetStates().FirstOrDefault(s => s.Id == (addressTo?.State?.Id ?? 0));
 
             if (addressFrom != null)
             {

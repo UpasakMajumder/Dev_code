@@ -31,7 +31,7 @@
 </div>
 <div class="content-block">
   <div class="login__form-content js-login">
-    <div class="css-login changepwd_block">
+    <div class="css-login">
       <cms:CMSWebPartZone ZoneID="ZoneCampaignEdit" runat="server" />
     </div>
   </div>

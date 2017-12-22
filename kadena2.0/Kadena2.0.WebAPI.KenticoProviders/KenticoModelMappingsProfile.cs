@@ -4,6 +4,9 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using CMS.Membership;
 using System;
+using Kadena.Models.Site;
+using CMS.SiteProvider;
+using Kadena.WebAPI.KenticoProviders;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -51,6 +54,35 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SAPName, opt => opt.MapFrom(src => src.GetStringValue("ShippingOptionSAPName", string.Empty)));
             CreateMap<UserInfo, User>()
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)));
+            CreateMap<SiteInfo, Site>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SiteID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName));
+            CreateMap<PaymentOptionInfo, PaymentMethod>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PaymentOptionID))
+                .ForMember(dest => dest.Disabled, opt => opt.MapFrom(src => !src.PaymentOptionEnabled))
+                .ForMember(dest => dest.Icon, opt => opt.MapFrom(src => src.GetStringValue("IconResource", string.Empty)))
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.PaymentOptionDisplayName))
+                .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.PaymentOptionName))
+                .ForMember(dest => dest.IsUnpayable, opt => opt.MapFrom(src => src.GetBooleanValue("IsUnpayable", false)))
+                .AfterMap((src, dest) => dest.Checked = false);
+            CreateMap<CustomerInfo, Customer>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CustomerID))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.CustomerFirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.CustomerLastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.CustomerEmail))
+                .ForMember(dest => dest.CustomerNumber, opt => opt.MapFrom(src => src.CustomerGUID.ToString()))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.CustomerPhone))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.CustomerUserID))
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
+                .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
+                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoUserProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
+            CreateMap<CarrierInfo, DeliveryCarrier>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CarrierDisplayName))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CarrierName))
+                .AfterMap((src, dest) => dest.Opened = false);
+            ;
         }
     }
 }

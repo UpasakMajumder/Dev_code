@@ -19,10 +19,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             var datetime = DateTime.Parse(date);
-            var resources = new Mock<IKenticoResourceService>();
-            resources.Setup(m => m.GetContextCultureCode())
+            var localization = new Mock<IKenticoLocalizationProvider>();
+            localization.Setup(m => m.GetContextCultureCode())
                 .Returns(culture);
-            var dateFormatter = new DateTimeFormatter(resources.Object);
+            var dateFormatter = new DateTimeFormatter(localization.Object);
 
             // Act
             var outputDate = dateFormatter.Format(datetime);
