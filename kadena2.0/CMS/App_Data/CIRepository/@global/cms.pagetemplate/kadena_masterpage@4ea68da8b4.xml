@@ -1208,7 +1208,7 @@ config.localization.languages = {
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">
-            <![CDATA[KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.ProductsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.BrandsModule;KDA.AddressModule;KDA.CampaignModule;KDA.Category;KDA.ProgramsModule;KDA.UsersModule]]>
+            <![CDATA[KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.ProductsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.BrandsModule;KDA.AddressModule;KDA.Category;KDA.ProgramsModule;KDA.UsersModule;KDA.BusienssUnitsModule;KDA.POSModule;KDA.InboundTrackingModule;KDA.CampaignModule;KDA.CampaignProductModule]]>
           </property>
           <property name="columns">
             <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>

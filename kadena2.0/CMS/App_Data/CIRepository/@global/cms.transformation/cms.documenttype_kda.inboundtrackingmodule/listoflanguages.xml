@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.InboundTrackingModule</CodeName>
+    <GUID>5786a488-cef3-4684-9f21-7e5effc9c218</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+{
+  code: '{% CultureCode %}',          
+  language: '{% CultureName %}',
+  url: '{% HTMLEncode(URL) %}?{% QueryString %}'
+},
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>1843de17-2abf-4951-85cb-137eb56eb3f0</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>ListOfLanguages</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

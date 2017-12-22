@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>PreBuy_Products</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="PreBuy_ProductsID" columnprecision="0" columntype="integer" guid="0679e060-9906-4b1c-9025-5f9448f8b814" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>PreBuy_ProductsID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="POSNumber" columntype="integer" guid="8cff741c-066f-4a80-be5f-3518a1a4bdfc" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>POS Number</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field column="BrandID" columntype="integer" guid="a6528079-2750-46e8-b761-6238d29f1cd1" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Brand</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field column="ProductShortDescription" columntype="longtext" guid="dae60ecc-da3f-4def-a4e8-3ac2fe0105ee" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Short Description</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>HtmlAreaControl</controlname>
+          <Dialogs_Content_Hide>False</Dialogs_Content_Hide>
+          <HeightUnitType>PX</HeightUnitType>
+          <MediaDialogConfiguration>True</MediaDialogConfiguration>
+          <ShowAddStampButton>False</ShowAddStampButton>
+          <WidthUnitType>PX</WidthUnitType>
+        </settings>
+      </field>
+      <field column="ProductFullDescription" columnsize="200" columntype="text" guid="79565873-c9f1-49f3-9051-b528c4bba5ee" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Full Description</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="BundleQty" columnsize="200" columntype="text" guid="1a747388-cd77-450c-a75b-cdf8dbd02cc4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Bundle Qty</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ProductExpirationDate" columntype="date" guid="05fbe369-4aea-447c-a72e-bb219f4eb5d4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Expiration Date</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
+      <field allowempty="true" column="Thumbnail_JPEG" columntype="docattachments" guid="92b377b5-ff6b-43a4-83d7-fa11f8569e26" publicfield="false" visible="true">
+        <settings>
+          <Allowed_Extensions>
+            <![CDATA[pdf;doc;docx;ppt;pptx;xls;xlsx;htm;html;xml;bmp;gif;jpg;jpeg;png;wav;wma;wmv;mp3;mp4;mpg;mpeg;mov;avi;swf;rar;zip;txt;rtf]]>
+          </Allowed_Extensions>
+          <ChangeOrder>True</ChangeOrder>
+          <controlname>DocumentAttachmentsControl</controlname>
+          <Extensions>inherit</Extensions>
+          <Paging>True</Paging>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>b1f15001-2a12-4074-ae25-dbe730c92a7b</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassInheritsFromClassID>0</ClassInheritsFromClassID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassName>KDA.PreBuyProducts</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchSettings>
+    <search />
+  </ClassSearchSettings>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_PreBuy_Products</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

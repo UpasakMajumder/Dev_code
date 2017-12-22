@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.BusinessUnitsModule</CodeName>
+    <GUID>e96a2010-357a-4533-bb18-f540a2fc24df</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+{
+  code: '{% CultureCode %}',          
+  language: '{% CultureName %}',
+  url: '{% HTMLEncode(URL) %}?{% QueryString %}'
+},
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>b9b925e0-26a6-4fb5-9ffb-b5e1b57619e2</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>ListOfLanguages</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

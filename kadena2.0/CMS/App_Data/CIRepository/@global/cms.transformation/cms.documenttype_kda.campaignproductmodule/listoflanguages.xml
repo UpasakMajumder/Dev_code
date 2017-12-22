@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.CampaignProductModule</CodeName>
+    <GUID>6f91ea44-0379-4774-91f9-47ea75e045f0</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+{
+  code: '{% CultureCode %}',          
+  language: '{% CultureName %}',
+  url: '{% HTMLEncode(URL) %}?{% QueryString %}'
+},
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>1453d5ea-9a9e-4eb1-a005-10bc60660968</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>ListOfLanguages</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

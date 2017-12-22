@@ -90,5 +90,33 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.POSModule">
+      <ParentClassID>
+        <CodeName>KDA.POSModule</CodeName>
+        <GUID>5070f19c-4ff8-4338-bcba-00d096d79a01</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.InboundTrackingModule">
+      <ParentClassID>
+        <CodeName>KDA.InboundTrackingModule</CodeName>
+        <GUID>5786a488-cef3-4684-9f21-7e5effc9c218</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.CampaignProductModule">
+      <ParentClassID>
+        <CodeName>KDA.CampaignProductModule</CodeName>
+        <GUID>6f91ea44-0379-4774-91f9-47ea75e045f0</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.BusinessUnitsModule">
+      <ParentClassID>
+        <CodeName>KDA.BusinessUnitsModule</CodeName>
+        <GUID>e96a2010-357a-4533-bb18-f540a2fc24df</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
   </Bindings>
 </cms.allowedchildclass>
