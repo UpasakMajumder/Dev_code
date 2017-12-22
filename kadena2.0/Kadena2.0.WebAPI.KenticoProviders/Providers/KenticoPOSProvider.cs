@@ -29,7 +29,8 @@ namespace Kadena.WebAPI.KenticoProviders
                var isProductsExist= SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", posItem.GetStringValue("POSNumber", string.Empty)).Any();
                 if (!isProductsExist)
                 {
-                    posItem.Delete();
+                    posItem.SetValue("Enable", false);
+                    posItem.Update();
                     isDeleted = true;
                 }
             }
