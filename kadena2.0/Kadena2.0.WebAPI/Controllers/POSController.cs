@@ -37,7 +37,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson<string>("OK");
         }
         [HttpGet]
-        [Route("api/pos/{posID}")]
+        [Route("api/deletepos/{posID}")]
         public IHttpActionResult DeletePOS(int posID)
         {
            var isDeleted= posService.DeletePOS(posID);

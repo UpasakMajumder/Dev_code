@@ -230,41 +230,44 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-function ChangePOSStatus(PosID,thiselem)
-{
-var x = confirm('{$Kadena.CampaignDelete.Alert$}');
-if (x)
-{
-if(PosID !='')
-{
-$.ajax({
-type: "GET",
-url: '/api/pos/'+ PosID,
-contentType: "application/json; charset=utf-8",
-dataType: "json",
-success: function (data) {
-if(data.success)
-{
-location.reload();
-}
-else{
-$("#divDailogue").addClass("active")
-}
-},
-error: function (xhr, ajaxOptions, thrownError) { }
-});
-}
-}
-else
-return false;
-}
-$(".js-CloseMesaage").on("click",function(){
-$("#divDailogue").removeClass("active")
-})
+<script>
+  function ChangePOSStatus(PosID,thiselem)
+  {
+    var x = confirm('{$Kadena.CampaignDelete.Alert$}');
+    if (x)
+    {
+      if(PosID !='')
+      {
+        $.ajax({
+          type: "GET",
+          url: '/api/deletepos/'+ PosID,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function (data) {
+            if(data.success)
+            {
+              location.reload();
+            }
+            else
+            {
+              $("#divDailogue").addClass("active")
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) { }
+        });
+      }
+    }
+    else
+      return false;
+  }
+  $(".js-CloseMesaage").on("click",function(){
+    $("#divDailogue").removeClass("active")
+      });
+</script>
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>
