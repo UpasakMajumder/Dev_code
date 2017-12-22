@@ -30,11 +30,25 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/pos/{posID}")]
+        [Route("api/poss/{posID}")]
         public IHttpActionResult TogglePOSStatus(int posID)
         {
             posService.TogglePOSStatus(posID);
             return ResponseJson<string>("OK");
+        }
+        [HttpGet]
+        [Route("api/pos/{posID}")]
+        public IHttpActionResult DeletePOS(int posID)
+        {
+           var isDeleted= posService.DeletePOS(posID);
+            if(isDeleted)
+            {
+                return ResponseJson<string>("OK");
+            }
+            else
+            {
+                return ErrorJson("ERROR");
+            }
         }
     }
 }

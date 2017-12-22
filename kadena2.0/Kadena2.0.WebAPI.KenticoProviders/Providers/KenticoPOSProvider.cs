@@ -1,5 +1,9 @@
 ﻿using CMS.CustomTables;
+using CMS.Ecommerce;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -15,6 +19,21 @@ namespace Kadena.WebAPI.KenticoProviders
                 posItem.SetValue("Enable", !posItem.GetBooleanValue("Enable", false));
                 posItem.Update();
             }
+        }
+        public bool DeletePOS(int posID)
+        {
+            bool isDeleted = false;
+            CustomTableItem posItem = CustomTableItemProvider.GetItem(posID, CustomTableName);
+            if (posItem != null)
+            {
+               var isProductsExist= SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", posItem.GetStringValue("POSNumber", string.Empty)).Any();
+                if (!isProductsExist)
+                {
+                    posItem.Delete();
+                    isDeleted = true;
+                }
+            }
+            return isDeleted;
         }
     }
 }
