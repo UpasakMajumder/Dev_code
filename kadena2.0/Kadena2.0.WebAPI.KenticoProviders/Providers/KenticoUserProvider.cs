@@ -4,7 +4,6 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Factories;
 using System;
 using System.Linq;
 
@@ -50,62 +49,14 @@ namespace Kadena.WebAPI.KenticoProviders
        
         public Customer GetCurrentCustomer()
         {
-            var customer = ECommerceContext.CurrentCustomer;
-
-            if (customer == null)
-                return null;
-
-            return CustomerFactory.CreateCustomer(customer);
+            return _mapper.Map<Customer>(ECommerceContext.CurrentCustomer);
         }
 
         public Customer GetCustomer(int customerId)
         {
-            var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
-
-            if (customer == null)
-                return null;
-
-            return CustomerFactory.CreateCustomer(customer);
+            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
         }
-
-        public bool UserCanSeePrices()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanSeePrices(int siteId, int userId)
-        {
-            var userinfo = UserInfoProvider.GetUserInfo(userId);
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-
-            if (userinfo == null || site == null)
-                return false;
-
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeePrices", site.SiteName, userinfo);
-        }
-
-        public bool UserCanSeeAllOrders()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanModifyShippingAddress()
-        {
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_User_Settings", "KDA_ModifyShippingAddress",
-                SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
-        }
-
-        public bool UserCanDownloadHiresPdf(int siteId, int userId)
-        {
-            var userinfo = UserInfoProvider.GetUserInfo(userId);
-            var site = SiteInfoProvider.GetSiteInfo(siteId);
-
-            if (userinfo == null || site == null)
-                return false;
-
-            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_CanDownloadHiresPdf", site.SiteName, userinfo);
-        }
-
+       
         public User GetCurrentUser()
         {
             return _mapper.Map<User>(MembershipContext.AuthenticatedUser);

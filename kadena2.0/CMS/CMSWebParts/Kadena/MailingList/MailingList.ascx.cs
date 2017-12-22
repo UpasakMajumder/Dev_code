@@ -2,11 +2,8 @@
 using System.Linq;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena.Old_App_Code.Kadena.MailingList;
-using CMS.SiteProvider;
-using CMS.DataEngine;
 using CMS.EventLog;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.Helpers;
+using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -42,7 +39,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private void GetMailingLists()
         {
-            var client = new MailingListClient(new MicroProperties(new KenticoResourceService()));
+            var client = new MailingListClient(ProviderFactory.MicroProperties);
             var serviceCallResult = client.GetMailingListsForCustomer().Result;
 
             if (serviceCallResult.Success)

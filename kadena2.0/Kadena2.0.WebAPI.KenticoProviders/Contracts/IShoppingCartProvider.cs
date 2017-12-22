@@ -51,8 +51,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetShippingProviderIcon(string title);
                 
-        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
-
-        string MapOrderStatus(string microserviceStatus);
+        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);        
     }
 }
