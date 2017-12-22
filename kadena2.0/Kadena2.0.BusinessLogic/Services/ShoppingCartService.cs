@@ -94,7 +94,6 @@ namespace Kadena.BusinessLogic.Services
 
             var checkoutPage = new CheckoutPage()
             {
-                Message = resources.GetResourceString("Kadena.Checkout.TopMessage"),
                 EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
                 Products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString),
                 DeliveryAddresses = checkoutfactory.CreateDeliveryAddresses(addresses.ToList(), userNotificationString, otherAddressEnabled),
