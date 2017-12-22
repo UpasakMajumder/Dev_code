@@ -43,7 +43,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             string campaignParameter = campaignID > 0 ? $"&CampaignId={campaignID}" : string.Empty;
-            url = $"{url}/api/Order/byquery?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}&Type={orderType}{campaignParameter}";
+            url = $"{url}/api/Order/byquery?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}&type={orderType}{campaignParameter}";
             return await Get<OrderListDto>(url).ConfigureAwait(false);
         }
 
@@ -51,7 +51,7 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             string campaignParameter = campaignID > 0 ? $"&CampaignId={campaignID}" : string.Empty;
-            var parameterizedUrl = $"{url}/api/Order/byquery?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}&Type={orderType}{campaignParameter}";
+            var parameterizedUrl = $"{url}/api/Order/byquery?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}&type={orderType}{campaignParameter}";
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
     }
