@@ -47,7 +47,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
                     <div class="input__inner long__desc">
-                        <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="input__error" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="input__error" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="input__error"
-                            ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$" ForeColor="Red">
+                            ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         <asp:TextBox runat="server" ID="txtQty" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqQty" CssClass="input__error" runat="server" ControlToValidate="txtQty"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator ID="revQty" runat="server" CssClass="input__error"
-                            ControlToValidate="txtQty" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                            ControlToValidate="txtQty" ValidationExpression="^[0-9]*$">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
