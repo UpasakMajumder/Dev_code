@@ -2,7 +2,6 @@
 {
     public interface IKenticoPOSProvider
     {
-        void TogglePOSStatus(int posID);
         bool DeletePOS(int posID);
     }
 }
