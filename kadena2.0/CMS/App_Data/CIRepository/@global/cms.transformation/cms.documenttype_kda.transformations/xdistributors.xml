@@ -16,14 +16,14 @@
     </div>
     <div class="Distributor-name">
       <h4><%# Localize("{$KDA.DistributorCart.DistributorAddress$}") %>:</h4>
-      <h6><%#Eval("AddressName") %> </h6>,
-      <h6><%#Eval("AddressCity") %> </h6>,
-      <h6><%#Eval("StateDisplayName") %> </h6>,
-      <h6><%#Eval("AddressZip") %> </h6>,
-      <h6><%#Eval("AddressPhone") %> </h6>,
-    </div>
-    <cms:DistributorCartDetails runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
-  </div>
+      <h6><%#Eval("AddressName") %> ,
+        <%#Eval("AddressCity") %> ,
+        <<%#Eval("StateDisplayName") %> ,
+        <%#Eval("AddressZip") %>,
+        <%#Eval("AddressPhone") %> </h6>
+        </div>
+        <cms:DistributorCartDetails runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
+      </div>
 ]]>
   </TransformationCode>
   <TransformationCSS />
