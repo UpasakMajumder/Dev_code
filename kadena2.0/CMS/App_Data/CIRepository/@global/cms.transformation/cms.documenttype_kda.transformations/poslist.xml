@@ -13,11 +13,13 @@
   <td>{%POSNumber%}</td>
   <td>{%POSCategoryName%}</td>
   <td>
+    {%if(Enable){%}
     <div class="text-center">
       <div class="webform__view">
         <a class="fa fa-trash delete__btn" href onclick="ChangePOSStatus({%ItemID%},this);return false;"></a>
       </div>
     </div>
+    {%}|(user)cvoqa2@gmail.com|(hash)150376a4e495dad57c7b1f17db667e090047d7bd6754ddb2cc9363bf24809393%}
   </td>
 </tr>
 
