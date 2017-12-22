@@ -50,7 +50,6 @@ namespace Kadena.ScheduledTasks
             // kentico
             container.Register<IKadenaSettings, KadenaSettings>();
             container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
-            container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoLogger, KenticoLogger>();
 

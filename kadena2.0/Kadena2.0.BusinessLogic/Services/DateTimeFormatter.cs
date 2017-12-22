@@ -10,7 +10,7 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoLocalizationProvider localization;
 
-        private readonly string defaultFormatString = "MMM dd, yyyy";
+        private const string defaultFormatString = "MMM dd, yyyy";
 
         private Dictionary<string,string> customFormatStrings => new Dictionary<string, string>
         {
