@@ -971,9 +971,16 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     private List<CustomTableItem> GetItemSpecs()
     {
         List<CustomTableItem> itemList = new List<CustomTableItem>();
-        itemList = CustomTableItemProvider.GetItems(ProductItemSpecsItem.CLASS_NAME)
-            .Columns("ItemID,ItemSpec")
-            .ToList();
+        try
+        {
+            itemList = CustomTableItemProvider.GetItems(ProductItemSpecsItem.CLASS_NAME)
+                .Columns("ItemID,ItemSpec")
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetItemSpecs()", ex, CurrentSite.SiteID, ex.Message);
+        }
         return itemList;
     }
 
@@ -982,16 +989,23 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     /// </summary>
     private void BindItemSpecsDropdown()
     {
-        var itemSpecs = GetItemSpecs();
-        if (!DataHelper.DataSourceIsEmpty(itemSpecs))
+        try
         {
-            ddlItemSpecs.DataSource = itemSpecs;
-            ddlItemSpecs.DataTextField = "ItemSpec";
-            ddlItemSpecs.DataValueField = "ItemID";
-            ddlItemSpecs.DataBind();
+            var itemSpecs = GetItemSpecs();
+            if (!DataHelper.DataSourceIsEmpty(itemSpecs))
+            {
+                ddlItemSpecs.DataSource = itemSpecs;
+                ddlItemSpecs.DataTextField = "ItemSpec";
+                ddlItemSpecs.DataValueField = "ItemID";
+                ddlItemSpecs.DataBind();
+            }
+            ddlItemSpecs.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.CampaignProduct.SelectItemSpecsText"), "0"));
+            ddlItemSpecs.Items.Add(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText"));
         }
-        ddlItemSpecs.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.CampaignProduct.SelectItemSpecsText"), "0"));
-        ddlItemSpecs.Items.Add(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText"));
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "BindItemSpecsDropdown()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 
     /// <summary>
@@ -1001,8 +1015,16 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     /// <param name="e"></param>
     protected void ddlItemSpecs_SelectedIndexChanged(object sender, EventArgs e)
     {
-        divItemSpecs.Visible = ddlItemSpecs.SelectedValue.Equals(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")) ? true : false;
+        try
+        {
+            divItemSpecs.Visible = ddlItemSpecs.SelectedValue.Equals(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")) ? true : false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "ddlItemSpecs_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
+
     /// <summary>
     /// returns the selected item spec and custom item spec value
     /// </summary>
@@ -1010,8 +1032,17 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
     /// <param name="customItemSpecs"></param>
     private void GetItemSpecsValue(out string itemSpecsId, out string customItemSpecs)
     {
-        itemSpecsId = ddlItemSpecs.SelectedValue.Equals(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")) ? "0" : ddlItemSpecs.SelectedValue;
-        customItemSpecs = divItemSpecs.Visible ? txtItemSpec.Text.Trim() : string.Empty;
+        itemSpecsId = string.Empty;
+        customItemSpecs = string.Empty;
+        try
+        {
+            itemSpecsId = ddlItemSpecs.SelectedValue.Equals(ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")) ? "0" : ddlItemSpecs.SelectedValue;
+            customItemSpecs = divItemSpecs.Visible ? txtItemSpec.Text.Trim() : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetItemSpecsValue()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 
     #endregion "Methods"
