@@ -131,7 +131,8 @@
         tAndC: {
           exists: true,
           text: 'I have reviewed <a href="#">both</a> the storefront Terms and Conditions and the order and certify that it is acceptable.'
-        }
+        },
+        message: 'Good day and know that all your money are belong to us'
       },
       spotfire: {
         serverUrl: 'http://10.83.71.208/spotfire/wp/',
