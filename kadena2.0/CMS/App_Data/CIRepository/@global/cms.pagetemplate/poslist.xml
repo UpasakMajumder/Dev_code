@@ -299,6 +299,53 @@ return false;
           <property name="webparttitle">POSCreateButton</property>
           <property name="webparttype">statichtml</property>
         </webpart>
+        <webpart controlid="shtmlPOSBulkUploadBtn" guid="5af2c6ab-474e-44d2-ba54-5a20293121e4" type="statichtml" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">shtmlPOSBulkUploadBtn</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">5af2c6ab-474e-44d2-ba54-5a20293121e4</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="text" ismacro="true">
+            <![CDATA[&nbsp;<a class="btn-action" href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_POSBulkUploadPage)|(user)cvoqa2@gmail.com|(hash)6f8d8363d40ef455f13caf3373af2c87832fc26d312bad50be0101a35392f343%}">{$Kadena.POS.POSBulkUploadBtn$}</a>]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">POS Bulk Upload Button</property>
+          <property name="webparttype">statichtml</property>
+        </webpart>
       </webpartzone>
       <webpartzone id="ZoneSearch" v="1">
         <webpart controlid="SQLSearchBox" guid="6ff39f67-bb0b-4569-a00a-5af8b727abe9" type="cmssearchbox" v="1">
