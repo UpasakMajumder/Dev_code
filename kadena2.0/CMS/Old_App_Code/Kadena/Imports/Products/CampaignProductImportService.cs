@@ -239,14 +239,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.NodeName = product.ProductName;
             newProduct.DocumentCulture = _culture;
             newProduct.SetValue("ProductName", product.ProductName);
-            newProduct.SetValue("BrandID", GetBrandID(product.BrandCode));
+            newProduct.SetValue("BrandID", GetBrandID(product.Brand));
             if (program != null)
             {
                 newProduct.SetValue("ProgramID", program.ProgramID);
             }
             if (!string.IsNullOrWhiteSpace(product.AllowedStates))
             {
-                newProduct.SetValue("State", product.AllowedStates);
+                newProduct.SetValue("State", GetStatesGroupID(product.AllowedStates));
             }
             if (!string.IsNullOrWhiteSpace(product.EstimatedPrice))
             {
@@ -280,12 +280,26 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newProduct;
         }
 
-        private int GetBrandID(string brandCode)
+        private int GetStatesGroupID(string statesGroupName)
+        {
+            int statesGroupID = default(int);
+            if (!string.IsNullOrWhiteSpace(statesGroupName))
+            {
+                StatesGroupItem statesGroup = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("GroupName", statesGroupName).FirstOrDefault();
+                if (statesGroup != null)
+                {
+                    statesGroupID = statesGroup.ItemID;
+                }
+            }
+            return statesGroupID;
+        }
+
+        private int GetBrandID(string brandName)
         {
             int brandID = default(int);
-            if (!string.IsNullOrWhiteSpace(brandCode))
+            if (!string.IsNullOrWhiteSpace(brandName))
             {
-                BrandItem brand = CustomTableItemProvider.GetItems<BrandItem>().WhereEquals("BrandCode", brandCode).FirstOrDefault();
+                BrandItem brand = CustomTableItemProvider.GetItems<BrandItem>().WhereEquals("BrandName", brandName).FirstOrDefault();
                 if (brand != null)
                 {
                     brandID = brand.ItemID;
@@ -423,7 +437,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             sku.SKUSiteID = siteID;
             sku.SKUNumber = product.SKU;
             sku.SKUDescription = product.LongDescription;
-            sku.SKUEnabled = ValidationHelper.GetBoolean(product.Status, true);
+            if (product.Status.ToLower().Equals("active"))
+            {
+                sku.SKUEnabled = true;
+            }
+            else
+            {
+                sku.SKUEnabled = false;
+            }
 
             if (string.IsNullOrWhiteSpace(product.Campagin))
             {
