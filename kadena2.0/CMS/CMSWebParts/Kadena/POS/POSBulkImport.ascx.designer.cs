@@ -12,11 +12,65 @@
 public partial class CMSWebParts_Kadena_POS_POSBulkImport {
     
     /// <summary>
-    /// llbtnPOSBulkImport control.
+    /// llbtnDownloadTemplate control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbtnPOSBulkImport;
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbtnDownloadTemplate;
+    
+    /// <summary>
+    /// importFile control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.FileUpload importFile;
+    
+    /// <summary>
+    /// llbtnUploadPOS control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbtnUploadPOS;
+    
+    /// <summary>
+    /// errorMessageContainer control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder errorMessageContainer;
+    
+    /// <summary>
+    /// errorMessage control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Literal errorMessage;
+    
+    /// <summary>
+    /// successMessageContainer control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder successMessageContainer;
+    
+    /// <summary>
+    /// successMessage control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Literal successMessage;
 }

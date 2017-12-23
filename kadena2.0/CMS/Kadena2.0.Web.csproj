@@ -1288,6 +1288,9 @@
     <Compile Include="Old_App_Code\Kadena\Imports\ImportHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportResult.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ImportServiceBase.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\POS\POSImportService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\POS\POSDto.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\POS\POSTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
