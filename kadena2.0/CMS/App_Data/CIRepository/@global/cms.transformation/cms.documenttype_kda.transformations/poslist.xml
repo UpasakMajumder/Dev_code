@@ -14,18 +14,9 @@
   <td>{%POSCategoryName%}</td>
   <td>
     <div class="text-center">
-      {% if (Enable == True) { %}
-      <select onchange="ChangePOSStatus({%ItemID%})">
-        <option value="True" selected>{$KDA.Common.Status.Active$}</option>
-        <option value="False" >{$KDA.Common.Status.Inactive$}</option>
-      </select>
-      {% } 
-      else{  %}
-      <select onchange="ChangePOSStatus({%ItemID%},this)" value="{%Enable%}">
-        <option value="True">{$KDA.Common.Status.Active$}</option>
-        <option value="False" selected>{$KDA.Common.Status.Inactive$}</option>
-      </select> 
-      {% }  |(user)cvoqa2@gmail.com|(hash)85c9fe7196d7c89b51f864952d2bc6b6cc8322efd45cbca8ea4e071f2e0b7792%}
+      <div class="webform__view">
+        <a class="fa fa-trash delete__btn" href onclick="ChangePOSStatus({%ItemID%},this);return false;"></a>
+      </div>
     </div>
   </td>
 </tr>
