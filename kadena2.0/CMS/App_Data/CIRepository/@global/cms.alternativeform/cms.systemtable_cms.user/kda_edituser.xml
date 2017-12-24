@@ -323,7 +323,7 @@ Select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="BusinessUnit" columnsize="200" columntype="text" dummy="altform" guid="e19748a6-2b0a-486f-9f06-f4d9c7339c72" publicfield="false" reftype="Required" visible="true" order="92">
+      <field column="BusinessUnit" columnsize="200" columntype="text" dummy="altform" guid="e19748a6-2b0a-486f-9f06-f4d9c7339c72" publicfield="false" visible="true" order="92">
         <properties>
           <fieldcaption>Business Units</fieldcaption>
           <validationerrormessage>{$Kadena.Users.BURequired$}</validationerrormessage>
@@ -345,9 +345,10 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" visible="true" order="94">
+      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" reftype="Required" visible="true" order="94">
         <properties>
-          <validationerrormessage>{$Kadena.Users.RoleError$}</validationerrormessage>
+          <controlcssclass>input__select</controlcssclass>
+          <fieldcaption>User Role</fieldcaption>
         </properties>
         <settings>
           <controlname>DropDownListControl</controlname>
