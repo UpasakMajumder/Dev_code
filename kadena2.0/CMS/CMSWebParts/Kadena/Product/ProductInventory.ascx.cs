@@ -32,6 +32,25 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("ProductType", value);
         }
     }
+    /// <summary>
+    /// get the open campaign
+    /// </summary>
+    public Campaign OpenCampaign
+    {
+        get
+        {
+            return CampaignProvider.GetCampaigns()
+                             .Columns("CampaignID")
+                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                             .WhereTrue("OpenCampaign")
+                             .Where(new WhereCondition().WhereTrue("CloseCampaign").Or().WhereNull("CloseCampaign"))
+                             .FirstOrDefault();
+        }
+        set
+        {
+            SetValue("OpenCampaign", value);
+        }
+    }
     // <summary>
     /// Get the Product type.
     /// </summary>
@@ -279,14 +298,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         List<SKUInfo> skuDetails = new List<SKUInfo>();
         try
         {
-            List<int> skuIds = new List<int>();
-            if (!DataHelper.DataSourceIsEmpty(productsDetails))
-            {
-                foreach (var product in productsDetails)
-                {
-                    skuIds.Add(product.NodeSKUID);
-                }
-            }
+            List<int> skuIds = productsDetails.Select(x=>x.NodeSKUID).ToList<int>();
             if (!DataHelper.DataSourceIsEmpty(skuIds))
             {
                 skuDetails = SKUInfoProvider.GetSKUs()
@@ -344,23 +356,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         List<int> programIds = new List<int>();
         try
         {
-            Campaign campaign = CampaignProvider.GetCampaigns()
-                                .Columns("CampaignID")
-                                .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                                .FirstOrDefault();
-            if (campaign != null)
+            if (OpenCampaign != null)
             {
-                var programs = ProgramProvider.GetPrograms()
-                               .WhereEquals("CampaignID", campaign.CampaignID)
+                programIds = ProgramProvider.GetPrograms()
+                               .WhereEquals("CampaignID", OpenCampaign.CampaignID)
                                .Columns("ProgramID")
-                               .ToList();
-                if (!DataHelper.DataSourceIsEmpty(programs))
-                {
-                    foreach (var program in programs)
-                    {
-                        programIds.Add(program.ProgramID);
-                    }
-                }
+                               .Select(x => x.ProgramID).ToList<int>();
             }
         }
         catch (Exception ex)
@@ -377,18 +378,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            Campaign campaign = CampaignProvider.GetCampaigns()
-                             .Columns("CampaignID")
-                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                             .Where(x => x.OpenCampaign == true && x.CloseCampaign == false)
-                             .FirstOrDefault();
-            if (campaign != null)
+            if (OpenCampaign != null)
             {
-                if (campaign.CampaignID != default(int))
+                if (OpenCampaign.CampaignID != default(int))
                 {
                     var programs = ProgramProvider.GetPrograms()
                         .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                        .WhereEquals("CampaignID", campaign.CampaignID)
+                        .WhereEquals("CampaignID", OpenCampaign.CampaignID)
                         .Columns("ProgramName,ProgramID")
                         .ToList();
                     if (!DataHelper.DataSourceIsEmpty(programs))

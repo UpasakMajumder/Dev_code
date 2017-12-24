@@ -92,10 +92,14 @@
           <defaultvalue>false</defaultvalue>
         </properties>
       </field>
-      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false">
+      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
+          <fieldcaption>open</fieldcaption>
         </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
       </field>
       <field allowempty="true" column="GlobalAdminNotified" columntype="boolean" guid="7076c701-9060-4dc7-8c32-6c91f79969de" publicfield="false">
         <properties>
