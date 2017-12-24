@@ -113,7 +113,24 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+<![CDATA[
+<div class="dialog" id="divDailogue" >
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__content">
+            <p>
+                <span  ID="lblCartError">{$ KDA.POSDelete.DeleteErrorMessage$}</span></p>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+                <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">{$KDA.Common.CloseButtonText$}</button>
+            </div>
+        </div>
+    </div>
+</div>
+]]>
+          </property>
           <property name="contentbefore"></property>
           <property name="controlid">BasicRepeater</property>
           <property name="customtimezone"></property>
@@ -213,35 +230,47 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-function ChangePOSStatus(PosID,thiselem)
-{
-var x = confirm('{$Kadena.CampaignDelete.Alert$}');
-if (x)
-{
-if(PosID !='')
-{
-$.ajax({
-type: "GET",
-url: '/api/pos/'+ PosID,
-contentType: "application/json; charset=utf-8",
-dataType: "json",
-success: function (data) {
-location.reload();
-},
-error: function (xhr, ajaxOptions, thrownError) { }
-});
-}
-}
-else
-return false;
-}
+<script>
+  function ChangePOSStatus(PosID,thiselem)
+  {
+    var x = confirm('{$Kadena.CampaignDelete.Alert$}');
+    if (x)
+    {
+      if(PosID !='')
+      {
+        $.ajax({
+          type: "GET",
+          url: '/api/deletepos/'+ PosID,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function (data) {
+            if(data.success)
+            {
+              location.reload();
+            }
+            else
+            {
+              $("#divDailogue").addClass("active")
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) { }
+        });
+      }
+    }
+    else
+      return false;
+  }
+  $(".js-CloseMesaage").on("click",function(){
+    $("#divDailogue").removeClass("active")
+      });
+</script>
 ]]>
           </property>
-          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="inlinescriptpagelocation">Startup</property>
           <property name="instanceguid">43ce29f6-019b-4475-9b47-b0843aeef152</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>

@@ -6,13 +6,13 @@
             EnableViewState="false" />
         <asp:LinkButton runat="server" ID="lnkSortByActivity" OnClick="lnkSortByActivity_Click"
             EnableViewState="false" />
-    </span><span class="search_block">
+    </span><span class="search__block">
         <cms:LocalizedLabel ID="lblValue" runat="server" EnableViewState="false" AssociatedControlID="txtValue"
             Display="false" ResourceString="general.searchexpression" />
         <cms:CMSTextBox runat="server" ID="txtValue" EnableViewState="false" CssClass="input__text" />
         <cms:CMSButton runat="server" ID="btnSelect" OnClick="btnSelect_Click" EnableViewState="false" ButtonStyle="Default" Style="display: none;" />
     </span>
-    <div class="add_btn">
+    <div class="add__btn">
         <a href="?userid=-1" class="btn-action">
             <cms:LocalizedLiteral runat="server" ID="ltrNewUser"></cms:LocalizedLiteral>
         </a>
