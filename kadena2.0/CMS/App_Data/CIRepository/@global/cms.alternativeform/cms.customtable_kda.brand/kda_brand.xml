@@ -60,7 +60,7 @@
   <FormIsCustom>False</FormIsCustom>
   <FormLayout>
 <![CDATA[
-<div class="form signup_form">
+<div class="form">
 <div class="mb-2">
 <div class="input__wrapper"><span class="input__label">{$Kadena.CreateBrand.BrandName$}</span> $$input:BrandName$$ <span class="input__error">$$validation:BrandName$$</span></div>
 </div>

@@ -39,6 +39,7 @@ namespace Kadena.WebAPI
             new Container()
                 .RegisterInfrastructure()
                 .RegisterKentico()
+                .RegisterKadenaSettings()
                 .RegisterBLL()
                 .RegisterMicroservices()
                 .RegisterFactories()

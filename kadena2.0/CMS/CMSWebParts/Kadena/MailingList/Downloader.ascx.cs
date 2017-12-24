@@ -1,10 +1,8 @@
-﻿using CMS.DataEngine;
-using CMS.EventLog;
+﻿using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
-using Kadena.Helpers;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.WebAPI.KenticoProviders;
 using System;
 using System.IO;
 
@@ -26,7 +24,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var microProperties = new MicroProperties(new KenticoResourceService());
+                var microProperties = ProviderFactory.MicroProperties;
                 var mailingListClient = new MailingListClient(microProperties);
 
                 var mailingListResponse = mailingListClient.GetMailingList(_containerId).Result;

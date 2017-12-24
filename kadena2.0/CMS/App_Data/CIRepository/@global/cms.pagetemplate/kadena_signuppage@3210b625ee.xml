@@ -20,7 +20,7 @@
   <PageTemplateLayout>
 <![CDATA[
 <div class="container-fluid">
-  <div class="login signup_form">
+  <div class="login signup__form">
     <div class="login__form">
       <div class="login__form-inner">
         <div class="login__custom-logo mb-3">

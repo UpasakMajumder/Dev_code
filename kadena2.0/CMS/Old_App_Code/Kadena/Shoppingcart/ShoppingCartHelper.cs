@@ -14,6 +14,7 @@ using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.WebAPI.KenticoProviders;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -114,7 +115,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new ShippingCostServiceClient(new MicroProperties(new KenticoResourceService()));
+                var microserviceClient = new ShippingCostServiceClient(ProviderFactory.MicroProperties);
                 var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -139,7 +140,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new OrderSubmitClient(new MicroProperties(new KenticoResourceService()));
+                var microserviceClient = new OrderSubmitClient(ProviderFactory.MicroProperties);
                 var response = microserviceClient.SubmitOrder(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
