@@ -1,7 +1,6 @@
 ﻿using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Helpers;
-using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models.Product;

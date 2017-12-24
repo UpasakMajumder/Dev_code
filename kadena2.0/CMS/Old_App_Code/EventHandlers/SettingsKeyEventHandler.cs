@@ -3,9 +3,8 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
-using Kadena.Helpers;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.WebAPI.KenticoProviders;
 using System;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.EventHandlers.SettingsKeyEventHandler))]
@@ -93,7 +92,7 @@ namespace Kadena.Old_App_Code.EventHandlers
 
                     try
                     {
-                        var client = new CloudEventConfiguratorClient(new MicroProperties(new KenticoResourceService()));
+                        var client = new CloudEventConfiguratorClient(ProviderFactory.MicroProperties);
                         var result = client.UpdateNooshRule(nooshRule, nooshSettings).Result;
                         if (!result.Success)
                         {
