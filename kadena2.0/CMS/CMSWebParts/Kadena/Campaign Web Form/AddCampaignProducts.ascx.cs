@@ -892,10 +892,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                        .Columns("ItemID,BrandCode").FirstOrDefault();
                         if (brand != null)
                         {
-                            var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
-                  .WhereEquals("BrandID",ValidationHelper.GetInteger(brand.GetValue("BrandCode"),0))
-                  .Columns("ItemID,POSNumber")
-                  .ToList();
+                         var pos= ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetCampaignPos", null, "CTE.POSNumber is null and KDA_POSNumber.BrandId=" + ValidationHelper.GetInteger(brand.GetValue("BrandCode"), 0));
                             if (!DataHelper.DataSourceIsEmpty(pos))
                             {
                                 ddlPos.DataSource = pos;
@@ -904,6 +901,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 ddlPos.DataBind();
                                 string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectPOSText"), string.Empty);
                                 ddlPos.Items.Insert(0, new ListItem(selectText, "0"));
+                            }
+                            else
+                            {
+                                ddlPos.Items.Clear();
                             }
                         }
                     }
