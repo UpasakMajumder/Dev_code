@@ -38,6 +38,19 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="CheckoutPageTopMessage" columnsize="1000" columntype="text" guid="c9a4c73c-db4f-4ab8-8a4d-b3ea1cc43988" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Top message</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextAreaControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Wrap>True</Wrap>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>aaa6d365-0c66-48f3-8e15-ee0ef5517046</ClassGUID>
