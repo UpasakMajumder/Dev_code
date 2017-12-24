@@ -92,7 +92,7 @@
           <defaultvalue>false</defaultvalue>
         </properties>
       </field>
-      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false" visible="true">
+      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false">
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>open</fieldcaption>
