@@ -191,6 +191,32 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ProductWeight" columnprecision="4" columnsize="19" columntype="decimal" guid="cf17246b-edde-4742-bf92-4e2b6c4d04c9" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Weight</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="CustomItemSpecs" columnsize="200" columntype="text" guid="a5220525-408c-40f2-bf60-b9fec2d04623" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Custom Item Specs</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</ClassGUID>

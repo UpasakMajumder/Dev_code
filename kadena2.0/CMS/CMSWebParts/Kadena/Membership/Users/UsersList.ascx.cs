@@ -983,10 +983,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 if (user == null || (user != null && user.UserID <= 0))
                 {
                     CreateNewUser(user);
-                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
-                    {
-                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
-                    }
                     Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
                 }
                 else
@@ -1091,6 +1087,11 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         if (!string.IsNullOrEmpty(NewUserRole))
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
+        }
+        if (user != null)
+        {
+            string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+            BindBusinessUnitsToUser(BusinessUnits, user.UserID);
         }
     }
 
