@@ -94,8 +94,6 @@ namespace Kadena.Tests.WebApi
             var kenticoResource = new Mock<IKenticoResourceService>();
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.CountOfItems"))
                 .Returns("You have {0} {1} in cart");
-            kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.TopMessage"))
-                .Returns("TopMessage");
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.ItemSingular"))
                 .Returns("item");
             kenticoResource.Setup(m => m.GetSettingsKey("KDA_AddressDefaultCountry"))
@@ -133,7 +131,6 @@ namespace Kadena.Tests.WebApi
             Assert.Null(result.EmptyCart);
             Assert.NotNull(result.PaymentMethods);
             Assert.NotNull(result.Submit);
-            Assert.Matches("TopMessage", result.Message);
             Assert.Matches("You have 1 item in cart", result.Products.Number);
             Assert.Single(result.Products.Items);
             Assert.Equal(10, result.Products.Items[0].TotalPrice);
