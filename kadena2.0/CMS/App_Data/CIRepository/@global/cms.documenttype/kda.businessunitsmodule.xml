@@ -10,7 +10,7 @@
     <GUID>dc7c98ea-b3c9-4f88-a04f-ee8afd85b54d</GUID>
     <ObjectType>cms.pagetemplate</ObjectType>
   </ClassDefaultPageTemplateID>
-  <ClassDisplayName>__BusinessUnits Module</ClassDisplayName>
+  <ClassDisplayName>_BusinessUnits Module</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
       <field column="BusienssUnitsModuleID" columnprecision="0" columntype="integer" guid="b3e97a7f-bd5a-4d4c-92ae-6b103e598b4e" isPK="true" publicfield="false">

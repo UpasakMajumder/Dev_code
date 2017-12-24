@@ -10,7 +10,7 @@
     <GUID>2e3f1106-f8e4-4347-ae3b-15ada5ac006a</GUID>
     <ObjectType>cms.pagetemplate</ObjectType>
   </ClassDefaultPageTemplateID>
-  <ClassDisplayName>__POS Module</ClassDisplayName>
+  <ClassDisplayName>_POS Module</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
       <field column="POSModuleID" columnprecision="0" columntype="integer" guid="b3e97a7f-bd5a-4d4c-92ae-6b103e598b4e" isPK="true" publicfield="false">

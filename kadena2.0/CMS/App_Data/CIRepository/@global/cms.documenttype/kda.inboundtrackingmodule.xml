@@ -10,7 +10,7 @@
     <GUID>b5ee6dbf-4573-4222-941f-696938e95915</GUID>
     <ObjectType>cms.pagetemplate</ObjectType>
   </ClassDefaultPageTemplateID>
-  <ClassDisplayName>__InboundTracking Module</ClassDisplayName>
+  <ClassDisplayName>_InboundTracking Module</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
       <field column="InboundTrackingModuleID" columnprecision="0" columntype="integer" guid="b3e97a7f-bd5a-4d4c-92ae-6b103e598b4e" isPK="true" publicfield="false">
