@@ -113,6 +113,14 @@
                         </div>
                     </div>
                 </div>
+                 <div class="mb-2 form__block">
+                    <div class="input__wrapper">
+                        <span class="input__label" runat="server" id="lblStatus"><%#ResHelper.GetString("Kadena.Address.Status")%></span>
+                        <div class="input__inner">
+                            <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper allocated__block allocated__business">
