@@ -1146,7 +1146,7 @@ config.localization.manageProducts = {
           <property name="contentbefore">
 <![CDATA[
 <div class="block">
-  <h2 class="block__heading pt-4 pb-4 ">{$ Kadena.Product.Description $}</h2>
+  <h2 class="block__heading pt-4 pb-2 ">{$ Kadena.Product.Description $}</h2>
   <div>
 ]]>
           </property>

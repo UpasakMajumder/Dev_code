@@ -12,8 +12,8 @@
 <tr>
   <td><%# Eval("Name")%></td>
   <td> <%#Eval("Description")%></td>
-  <td><%# Eval("DocumentCreatedWhen")%></td>
-  <td> <%#Eval("DocumentModifiedWhen")%></td>
+  <td><%# Eval("StartDate")%></td>
+  <td> <%#Eval("EndDate")%></td>
   <td>
     <div class="text-center webform_view">      
       <uc1:CampaignWebFormActions runat="server" id="CampaignWebFormActions" />
