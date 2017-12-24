@@ -45,6 +45,7 @@
     .img__block {
       width: 50%;
       margin: 0 auto 15px;
+      height: 100px;
 
       img {
         max-width: 100%;
@@ -60,6 +61,9 @@
       input[type=checkbox]:checked ~ label > img {
         transform: scale(2);
         cursor: zoom-out;
+        position: relative;
+        z-index: 999;
+        margin-top: 15px;
       }
     }
 
