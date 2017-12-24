@@ -54,7 +54,7 @@ ORDER BY ItemOrder
       </field>
     </form>
   </ClassFormDefinition>
-  <ClassGUID>5070f19c-4ff8-4338-bcba-00d096d79a01</ClassGUID>
+  <ClassGUID>fdb19ce7-6fff-47d6-852a-eee766472d75</ClassGUID>
   <ClassIconClass>icon-doc-o</ClassIconClass>
   <ClassInheritsFromClassID>
     <CodeName>KDA.Module</CodeName>

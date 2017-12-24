@@ -2,13 +2,13 @@
 <cms.classpermission>
   <ClassID>
     <CodeName>KDA.POSModule</CodeName>
-    <GUID>5070f19c-4ff8-4338-bcba-00d096d79a01</GUID>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
     <ObjectType>cms.documenttype</ObjectType>
   </ClassID>
   <PermissionDescription>Allows to access page content.</PermissionDescription>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
   <PermissionDisplayName>Read</PermissionDisplayName>
-  <PermissionGUID>0d2bf2c7-877a-4a7c-b7de-dcc49415f342</PermissionGUID>
+  <PermissionGUID>0d0d826d-4dff-4703-bad2-9112f8b2295d</PermissionGUID>
   <PermissionName>Read</PermissionName>
   <PermissionOrder>1</PermissionOrder>
 </cms.classpermission>

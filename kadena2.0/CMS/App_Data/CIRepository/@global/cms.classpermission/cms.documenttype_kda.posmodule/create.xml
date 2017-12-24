@@ -2,7 +2,7 @@
 <cms.classpermission>
   <ClassID>
     <CodeName>KDA.POSModule</CodeName>
-    <GUID>5070f19c-4ff8-4338-bcba-00d096d79a01</GUID>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
     <ObjectType>cms.documenttype</ObjectType>
   </ClassID>
   <PermissionDescription>
@@ -10,7 +10,7 @@
   </PermissionDescription>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
   <PermissionDisplayName>Create Anywhere</PermissionDisplayName>
-  <PermissionGUID>3e8f501d-33a9-4a2b-9c13-670b7fab23f5</PermissionGUID>
+  <PermissionGUID>cdd34205-ac24-454c-96b6-2213a22613b1</PermissionGUID>
   <PermissionName>Create</PermissionName>
   <PermissionOrder>4</PermissionOrder>
 </cms.classpermission>

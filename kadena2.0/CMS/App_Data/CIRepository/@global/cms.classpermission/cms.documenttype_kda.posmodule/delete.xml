@@ -2,7 +2,7 @@
 <cms.classpermission>
   <ClassID>
     <CodeName>KDA.POSModule</CodeName>
-    <GUID>5070f19c-4ff8-4338-bcba-00d096d79a01</GUID>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
     <ObjectType>cms.documenttype</ObjectType>
   </ClassID>
   <PermissionDescription>
@@ -10,7 +10,7 @@
   </PermissionDescription>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
   <PermissionDisplayName>Delete</PermissionDisplayName>
-  <PermissionGUID>b9c26ad4-fdd7-449c-b2fc-6b4671937d44</PermissionGUID>
+  <PermissionGUID>2aec3cd5-59b6-4f79-93af-fbbcf2427e3b</PermissionGUID>
   <PermissionName>Delete</PermissionName>
   <PermissionOrder>5</PermissionOrder>
 </cms.classpermission>

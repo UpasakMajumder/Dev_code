@@ -2,13 +2,13 @@
 <cms.classpermission>
   <ClassID>
     <CodeName>KDA.POSModule</CodeName>
-    <GUID>5070f19c-4ff8-4338-bcba-00d096d79a01</GUID>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
     <ObjectType>cms.documenttype</ObjectType>
   </ClassID>
   <PermissionDescription>Allows to manage page-level permissions.</PermissionDescription>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
   <PermissionDisplayName>Modify permissions</PermissionDisplayName>
-  <PermissionGUID>fa1f0ede-4f79-4360-9eb5-72899a3b88c0</PermissionGUID>
+  <PermissionGUID>1aeb36e1-10b7-4247-a023-66e483481c0d</PermissionGUID>
   <PermissionName>ModifyPermissions</PermissionName>
   <PermissionOrder>8</PermissionOrder>
 </cms.classpermission>
