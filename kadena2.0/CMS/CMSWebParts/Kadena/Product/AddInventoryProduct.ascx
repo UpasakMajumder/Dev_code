@@ -64,7 +64,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblExpDate" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblExpDate" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker hasDatepicker" TextMode="DateTime"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker" ReadOnly="true"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="input__error"  ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
                 </div>

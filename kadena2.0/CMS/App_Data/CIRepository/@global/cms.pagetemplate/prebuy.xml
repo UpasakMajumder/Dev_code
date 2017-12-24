@@ -303,6 +303,40 @@
           <property name="wherecondition"></property>
           <property name="zerorowstext">No data found</property>
         </webpart>
+        <webpart controlid="Javascript" guid="07e77c99-868f-4cfc-a705-bf7707efee03" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+    $('#btnClose').click(function(){
+      $('#dialog_Add_To_Cart').removeClass('active');
+    });
+  });
+</script> 
+
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">07e77c99-868f-4cfc-a705-bf7707efee03</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>

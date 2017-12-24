@@ -7,20 +7,26 @@ namespace Kadena.Helpers
     public class MicroProperties : IMicroProperties
     {
         private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoSiteProvider _site;
 
-        public MicroProperties(IKenticoResourceService kentico)
+        public MicroProperties(IKenticoResourceService kentico, IKenticoSiteProvider site)
         {
             if (kentico == null)
             {
                 throw new ArgumentNullException(nameof(kentico));
             }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
+            }
 
             _kentico = kentico;
+            _site = site;
         }
 
         public string GetCustomerName()
         {
-            return _kentico.GetKenticoSite().Name;
+            return _site.GetKenticoSite().Name;
         }
 
         public string GetServiceUrl(string urlLocationName)

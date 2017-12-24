@@ -12,13 +12,13 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
     {
         private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoLogger kenticoLog;
 
         public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
-                                          IInventoryUpdateClient microserviceInventory, 
-                                          IKenticoProviderService kenticoProvider,
+                                          IInventoryUpdateClient microserviceInventory,
+                                          IKenticoSiteProvider kenticoSite,
                                           IKenticoProductsProvider productsProvider,
                                           IKenticoLogger kenticoLog)
         {
@@ -30,9 +30,9 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
             {
                 throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
             }
-            if (kenticoProvider == null)
+            if (kenticoSite == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(kenticoProvider));
+                throw new ArgumentOutOfRangeException(nameof(kenticoSite));
             }
             if (productsProvider == null)
             {
@@ -45,14 +45,14 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             this.configurationProvider = configurationProvider;
             this.microserviceInventory = microserviceInventory;
-            this.kenticoProvider = kenticoProvider;
+            this.kenticoSite = kenticoSite;
             this.productsProvider = productsProvider;
             this.kenticoLog = kenticoLog;
         }
 
         public async Task<string> UpdateInventoryData()
         {
-            var sites = kenticoProvider.GetSites();
+            var sites = kenticoSite.GetSites();
             var tasks = new List<Task<string>>();
 
             foreach (var site in sites)

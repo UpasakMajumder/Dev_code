@@ -3,7 +3,6 @@
     public class CheckoutPage
     {
         public CartEmptyInfo EmptyCart { get; set; }
-        public string Message { get; set; }
         public CartItems Products { get;set;}
         public DeliveryAddresses DeliveryAddresses { get; set; }
         public PaymentMethods PaymentMethods { get; set; }

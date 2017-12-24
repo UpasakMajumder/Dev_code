@@ -247,7 +247,6 @@ class Checkout extends Component {
 
     if (Object.keys(ui).length) {
       const {
-        message,
         emptyCart,
         submit,
         deliveryAddresses,
@@ -315,10 +314,10 @@ class Checkout extends Component {
           />
         ) : null;
 
-      const welcomeMessage = message
+      const welcomeMessage = CHECKOUT.message
         ? (
           <div className="shopping-cart__block">
-            <Alert type="grey" text={message}/>
+            <Alert type="grey" text={CHECKOUT.message}/>
           </div>
         ) : null;
 
