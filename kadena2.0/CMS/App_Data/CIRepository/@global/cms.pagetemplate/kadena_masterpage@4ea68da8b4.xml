@@ -1208,10 +1208,10 @@ config.localization.languages = {
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">
-            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule]]>
+            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule]]>
           </property>
           <property name="columns">
-            <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>
+            <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName, ExternalLink]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -1311,7 +1311,7 @@ config.localization.languages = {
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">
-            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule]]>
+            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule]]>
           </property>
           <property name="columns">
             <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>

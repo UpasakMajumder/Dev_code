@@ -111,5 +111,33 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.FAQModule">
+      <ParentClassID>
+        <CodeName>KDA.FAQModule</CodeName>
+        <GUID>148beec3-c2f9-479e-a018-6092b43a4c38</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.CustomCatalogModule">
+      <ParentClassID>
+        <CodeName>KDA.CustomCatalogModule</CodeName>
+        <GUID>17293c65-056c-4f99-b106-0b0004c995cf</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.AdminModule">
+      <ParentClassID>
+        <CodeName>KDA.AdminModule</CodeName>
+        <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.PrebuyModule">
+      <ParentClassID>
+        <CodeName>KDA.PrebuyModule</CodeName>
+        <GUID>a1d0e888-ecf8-43e9-9d53-a5ea343ecf63</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
   </Bindings>
 </cms.allowedchildclass>

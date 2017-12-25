@@ -41,5 +41,12 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.FAQModule">
+      <ParentClassID>
+        <CodeName>KDA.FAQModule</CodeName>
+        <GUID>148beec3-c2f9-479e-a018-6092b43a4c38</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
   </Bindings>
 </cms.allowedchildclass>

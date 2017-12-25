@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>70e2b120-e13a-4690-a4cb-cc4773b27cec</ItemGUID>
+  <ItemOrder>22</ItemOrder>
+  <PageTypeCodeName>KDA.CustomCatalogModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_CustomCatalogModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>
