@@ -243,6 +243,14 @@ namespace Kadena.WebAPI
                 config.CreateMap<Brand, BrandDto>();
                 config.CreateMap<OrderCampaginHead, OrderCampaginHeadDto>();
                 config.CreateMap<OrderCampaginItem, OrderCampaginItemDto>();
+
+                config.CreateMap<OrderHeadBlock, OrderHeadBlockDto>();
+                config.CreateMap<OrderRow, RecentOrderRowDto>();
+                config.CreateMap<OrderDialog, OrderDialogDto>();
+                config.CreateMap<OrderDailogLabel, OrderDailogLabelDto>();
+                config.CreateMap<OrderDialogTable, OrderDialogTableDto>();
+                config.CreateMap<OrderTableCell, OrderTableCellDto>();
+                config.CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
             });
         }
     }

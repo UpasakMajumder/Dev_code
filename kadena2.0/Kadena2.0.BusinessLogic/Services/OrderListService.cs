@@ -11,6 +11,7 @@ using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Checkout;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -25,11 +26,13 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
+        private readonly IKenticoAddressBookProvider _kenticoAddressBook;
 
         private readonly string _orderDetailUrl;
 
         private int _pageCapacity;
         private string _pageCapacityKey;
+        private Dictionary<int, string> _addressBookList;
 
         public string PageCapacityKey
         {
@@ -50,7 +53,7 @@ namespace Kadena.BusinessLogic.Services
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
             IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order,
-            IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger)
+            IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, IKenticoAddressBookProvider kenticoAddressBook)
         {
             if (mapper == null)
             {
@@ -92,6 +95,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(logger));
             }
+            if (kenticoAddressBook == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoAddressBook));
+            }
 
             _mapper = mapper;
             _orderClient = orderClient;
@@ -102,6 +109,7 @@ namespace Kadena.BusinessLogic.Services
             _shoppingCart = shoppingCart;
             _permissions = permissions;
             _logger = logger;
+            _kenticoAddressBook = kenticoAddressBook;
 
             _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
         }
@@ -216,8 +224,9 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        public async Task<OrderHead> GetHeaders(string orderType, int campaignID)
+        public async Task<OrderHeadBlock> GetHeaders(string orderType, int campaignID)
         {
+            _addressBookList = _kenticoAddressBook.GetAddressNames();
             var orderList = _mapper.Map<OrderList>(await GetOrders(1, campaignID, orderType));
             MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
@@ -225,12 +234,12 @@ namespace Kadena.BusinessLogic.Services
             {
                 pages = orderList.TotalCount / _pageCapacity + (orderList.TotalCount % _pageCapacity > 0 ? 1 : 0);
             }
-            return new OrderHead
+            return new OrderHeadBlock
             {
-                Headings = new List<string> {
+                headers = new List<string> {
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
+                    _kenticoResources.GetResourceString("Kadena.OrdersList.Distributor"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
                     _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
                     string.Empty
@@ -242,12 +251,81 @@ namespace Kadena.BusinessLogic.Services
                     PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
-                Rows = orderList.Orders.Select(o =>
+                rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
-                    return o;
+                    return new OrderRow()
+                    {
+                        dailog = GetOrderDialog(o),
+                        items = GetOrderItems(o)
+                    };
                 })
             };
         }
+
+        private OrderDialog GetOrderDialog(Order o)
+        {
+            return new OrderDialog()
+            {
+                distributor = new OrderDailogLabel()
+                {
+                    label = _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.Distributor"),
+                    value = GetDistributorName(o.campaign.DistributorID)
+                },
+                orderId = new OrderDailogLabel()
+                {
+                    label = _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.OrderID"),
+                    value = o.Id
+                },
+                pdf = new OrderDailogLabel()
+                {
+                    label = _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.PDFBtnText"),
+                    value = "#"
+                },
+                table = new OrderDialogTable()
+                {
+                    headers = new List<string>()
+                        {
+                            _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.POSNumber"),
+                            _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.ProductName"),
+                            _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.Quantity"),
+                            _kenticoResources.GetResourceString("Kadena.OrdersList.Dailog.Price"),
+                        },
+                    rows = GetOrderItemsForDailog(o.Items)
+                }
+            };
+        }
+
+        private List<OrderTableCell> GetOrderItems(Order o)
+        {
+            return new List<OrderTableCell>()
+                {
+                    new OrderTableCell() { value = o.Id },
+                    new OrderTableCell() { value = o.CreateDate.ToShortDateString() },
+                    new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID) },
+                    new OrderTableCell() { value = o.Status },
+                    new OrderTableCell() { value = o.ShippingDate.ToString() },
+                    new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "button" }
+                };
+        }
+
+        private List<List<OrderDialogTableCell>> GetOrderItemsForDailog(IEnumerable<CartItem> items)
+        {
+            return items.Select(i =>
+              {
+                  return new List<OrderDialogTableCell>()
+                  {
+                      new OrderDialogTableCell() { value = i.SKUNumber ?? string.Empty, span = 1 },
+                      new OrderDialogTableCell() { value = i.SKUName, span = 1 },
+                      new OrderDialogTableCell() { value = i.Quantity.ToString(), span = 1 },
+                      new OrderDialogTableCell() { value = i.UnitPrice.ToString(), span = 1 }
+                  };
+              }).ToList();
+        }
+
+        private string GetDistributorName(int distributorID)
+        {
+            return _addressBookList.Where(x => x.Key.Equals(distributorID)).FirstOrDefault().Value ?? string.Empty;
+        }
+
     }
 }

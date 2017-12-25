@@ -85,7 +85,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> GetHeaders(string orderType)
         {
             var orderHead = await _orderService.GetHeaders(orderType, 0);
-            var result = _mapper.Map<OrderHeadDto>(orderHead);
+            var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }
 
@@ -94,7 +94,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> GetHeaders(string orderType, int campaignID)
         {
             var orderHead = await _orderService.GetHeaders(orderType, campaignID);
-            var result = _mapper.Map<OrderHeadDto>(orderHead);
+            var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }
     }
