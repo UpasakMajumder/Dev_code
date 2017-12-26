@@ -5,8 +5,8 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblName" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.lblName" />
                 <cms:CMSTextBox ID="txtName" runat="server" MaxLength="100" CssClass="input__text" />
-                <cms:CMSRequiredFieldValidator ForeColor="Red" ID="rfvUserNameRequired" runat="server" ControlToValidate="txtName" Display="Dynamic" ValidationGroup="feildvalidation" />
-                <asp:RegularExpressionValidator ForeColor="Red" Display="Dynamic" ControlToValidate="txtName" ID="revName" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
+                <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="txtName" CssClass="input__error" Display="Dynamic" ValidationGroup="feildvalidation" />
+                <asp:RegularExpressionValidator Display="Dynamic" ControlToValidate="txtName" ID="revName" CssClass="input__error" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
             </div>
         </div>
         <div class="mb-2">
@@ -14,8 +14,15 @@
                 <cms:LocalizedLabel ID="lblDecription" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.DesText" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtDescription" runat="server" MaxLength="100" TextMode="MultiLine" CssClass="input__textarea" />
-
-                    <asp:RegularExpressionValidator  Display="Dynamic" ControlToValidate="txtDescription" ID="revDescription" ValidationExpression="^[\s\S]{0,50}$" ValidationGroup="feildvalidation" ForeColor="Red" runat="server"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator CssClass="input__error"  Display="Dynamic" ControlToValidate="txtDescription" ID="revDescription" ValidationExpression="^[\s\S]{0,50}$" ValidationGroup="feildvalidation" runat="server"></asp:RegularExpressionValidator>
+                </div>
+            </div>
+        </div>
+          <div class="mb-2">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblStatus" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.StatusText" />
+                <div class="input__inner">
+                    <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
                 </div>
             </div>
         </div>

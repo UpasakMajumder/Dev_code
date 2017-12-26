@@ -267,11 +267,15 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter">
-            <![CDATA[</table>]]>
+<![CDATA[
+</table>
+</div>
+]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-bottom">
+<div class="table__responsive">
+<table id="reptable" class="table show__table-buttom">
   <tr>    
     <th>{$KDA.BusinessUnitsList.BusinessUnitNumber$}</th>
     <th>{$KDA.BusinessUnitsList.BusinessUnitName$}</th>

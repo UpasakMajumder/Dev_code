@@ -88,16 +88,19 @@
           <property name="contentafter">
 <![CDATA[
 </table>
+</div>
 
 ]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-bottom">
+<div class="table__responsive">
+<table id="reptable" class="table show__table-buttom">
   <tr>    
     <th>{$KDA.BrandsList.BrandName$}</th>
     <th>{$KDA.BrandsList.BrandCode$}</th>
     <th>{$KDA.BrandsList.Description$}</th>
+    <th>{$KDA.BrandsList.Status$}</th>
     <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
   </tr>
 ]]>
