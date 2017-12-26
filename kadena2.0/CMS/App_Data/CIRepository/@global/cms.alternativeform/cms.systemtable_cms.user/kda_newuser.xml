@@ -70,7 +70,7 @@
           </rule>
         </rules>
       </field>
-      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" reftype="Required">
+      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19">
         <settings>
           <controlname>Password</controlname>
           <AutoCompleteEnableCaching />
@@ -223,9 +223,9 @@
           <validationerrormessage>{$KDA.Users.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" order="85">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required" order="85">
         <properties>
-          <controlcssclass>input__text</controlcssclass>
+          <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
       <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="" order="86">
@@ -249,13 +249,11 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
         </settings>
         <properties>
           <controlcssclass>js-State</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.StateRequired$}</validationerrormessage>
         </properties>
         <rules>
-          <rule errormsg="Please enter State">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
-          </rule>
-          <rule errormsg="State should not be more than 20 characters">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+          <rule errormsg="{$Kadena.Users.StateRequired$}">
+            <![CDATA[{%Rule("(Value >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinValue\" ><p n=\"minvalue\"><t>1</t><v>1</v><r>0</r><d></d><vt>double</vt><tv>0</tv></p></r></rules>")%}]]>
           </rule>
         </rules>
       </field>
@@ -342,9 +340,10 @@ Select ItemID,DivisionName from KDA_Division
           <controlname>BusinessUnitControl</controlname>
         </settings>
       </field>
-      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" order="94">
+      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" allowempty="" order="94">
         <properties>
           <controlcssclass>input__text js-Address</controlcssclass>
+          <validationerrormessage>{$Kadena.Users.AddressRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Please enter Address">
@@ -419,7 +418,7 @@ Select ItemID,DivisionName from KDA_Division
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error ">$$validation:UserAddress$$</span></div>
 </div>
 
 <div class="mb-2 form__block">

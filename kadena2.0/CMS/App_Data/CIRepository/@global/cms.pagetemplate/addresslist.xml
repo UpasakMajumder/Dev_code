@@ -85,11 +85,13 @@
 <![CDATA[
  </tbody>
                                 </table>
+</div>
 ]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-bottom">
+<div class="table__responsive">
+<table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.MyAddresses.Name$}</th>

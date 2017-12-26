@@ -99,7 +99,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvStartDate;
+    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvStartDate;
     
     /// <summary>
     /// lbl control.
@@ -126,7 +126,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEndDate;
+    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvEndDate;
     
     /// <summary>
     /// lblCampaignStatus control.
