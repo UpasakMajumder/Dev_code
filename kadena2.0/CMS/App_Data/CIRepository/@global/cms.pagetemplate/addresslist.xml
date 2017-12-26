@@ -100,6 +100,7 @@
       <th>{$KDA.MyAddresses.Company$}</th>
       <th>{$KDA.MyAddresses.TelephoneNo$}</th>
       <th>{$KDA.MyAddresses.Email$}</th>
+      <th>{$KDA.MyAddresses.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>

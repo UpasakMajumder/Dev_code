@@ -55,6 +55,15 @@
           <WidthUnitType>PX</WidthUnitType>
         </settings>
       </field>
+      <field allowempty="true" column="Status" columntype="boolean" guid="f064f208-ccc4-48c5-98a3-8610c020a561" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>true</defaultvalue>
+          <fieldcaption>Status</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>10f7514a-fa79-4056-ad99-0e9d5b5553ab</ClassGUID>

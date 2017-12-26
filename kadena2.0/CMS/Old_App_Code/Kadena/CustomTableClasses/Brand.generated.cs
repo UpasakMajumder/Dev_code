@@ -23,176 +23,209 @@ using CMS.CustomTables;
 
 namespace CMS.CustomTables.Types.KDA
 {
-	/// <summary>
-	/// Represents a content item of type BrandItem.
-	/// </summary>
-	public partial class BrandItem : CustomTableItem
-	{
-		#region "Constants and variables"
+    /// <summary>
+    /// Represents a content item of type BrandItem.
+    /// </summary>
+    public partial class BrandItem : CustomTableItem
+    {
+        #region "Constants and variables"
 
-		/// <summary>
-		/// The name of the data class.
-		/// </summary>
-		public const string CLASS_NAME = "KDA.Brand";
-
-
-		/// <summary>
-		/// The instance of the class that provides extended API for working with BrandItem fields.
-		/// </summary>
-		private readonly BrandItemFields mFields;
-
-		#endregion
+        /// <summary>
+        /// The name of the data class.
+        /// </summary>
+        public const string CLASS_NAME = "KDA.Brand";
 
 
-		#region "Properties"
+        /// <summary>
+        /// The instance of the class that provides extended API for working with BrandItem fields.
+        /// </summary>
+        private readonly BrandItemFields mFields;
 
-		/// <summary>
-		/// Brand Code.
-		/// </summary>
-		[DatabaseField]
-		public int BrandCode
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("BrandCode"), 0);
-			}
-			set
-			{
-				SetValue("BrandCode", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// Brand Name.
-		/// </summary>
-		[DatabaseField]
-		public string BrandName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("BrandName"), "");
-			}
-			set
-			{
-				SetValue("BrandName", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// Brand Code.
+        /// </summary>
+        [DatabaseField]
+        public int BrandCode
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("BrandCode"), 0);
+            }
+            set
+            {
+                SetValue("BrandCode", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string BrandDescription
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("BrandDescription"), "");
-			}
-			set
-			{
-				SetValue("BrandDescription", value);
-			}
-		}
+        /// <summary>
+        /// Brand Name.
+        /// </summary>
+        [DatabaseField]
+        public string BrandName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("BrandName"), "");
+            }
+            set
+            {
+                SetValue("BrandName", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Gets an object that provides extended API for working with BrandItem fields.
-		/// </summary>
-		[RegisterProperty]
-		public BrandItemFields Fields
-		{
-			get
-			{
-				return mFields;
-			}
-		}
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string BrandDescription
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("BrandDescription"), "");
+            }
+            set
+            {
+                SetValue("BrandDescription", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Provides extended API for working with BrandItem fields.
-		/// </summary>
-		[RegisterAllProperties]
-		public partial class BrandItemFields : AbstractHierarchicalObject<BrandItemFields>
-		{
-			/// <summary>
-			/// The content item of type BrandItem that is a target of the extended API.
-			/// </summary>
-			private readonly BrandItem mInstance;
+        /// <summary>
+        /// Status.
+        /// </summary>
+        [DatabaseField]
+        public bool Status
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("Status"), true);
+            }
+            set
+            {
+                SetValue("Status", value);
+            }
+        }
 
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="BrandItemFields" /> class with the specified content item of type BrandItem.
-			/// </summary>
-			/// <param name="instance">The content item of type BrandItem that is a target of the extended API.</param>
-			public BrandItemFields(BrandItem instance)
-			{
-				mInstance = instance;
-			}
+        /// <summary>
+        /// Gets an object that provides extended API for working with BrandItem fields.
+        /// </summary>
+        [RegisterProperty]
+        public BrandItemFields Fields
+        {
+            get
+            {
+                return mFields;
+            }
+        }
 
 
-			/// <summary>
-			/// Brand Code.
-			/// </summary>
-			public int BrandCode
-			{
-				get
-				{
-					return mInstance.BrandCode;
-				}
-				set
-				{
-					mInstance.BrandCode = value;
-				}
-			}
+        /// <summary>
+        /// Provides extended API for working with BrandItem fields.
+        /// </summary>
+        [RegisterAllProperties]
+        public partial class BrandItemFields : AbstractHierarchicalObject<BrandItemFields>
+        {
+            /// <summary>
+            /// The content item of type BrandItem that is a target of the extended API.
+            /// </summary>
+            private readonly BrandItem mInstance;
 
 
-			/// <summary>
-			/// Brand Name.
-			/// </summary>
-			public string BrandName
-			{
-				get
-				{
-					return mInstance.BrandName;
-				}
-				set
-				{
-					mInstance.BrandName = value;
-				}
-			}
+            /// <summary>
+            /// Initializes a new instance of the <see cref="BrandItemFields" /> class with the specified content item of type BrandItem.
+            /// </summary>
+            /// <param name="instance">The content item of type BrandItem that is a target of the extended API.</param>
+            public BrandItemFields(BrandItem instance)
+            {
+                mInstance = instance;
+            }
 
 
-			/// <summary>
-			/// Description.
-			/// </summary>
-			public string BrandDescription
-			{
-				get
-				{
-					return mInstance.BrandDescription;
-				}
-				set
-				{
-					mInstance.BrandDescription = value;
-				}
-			}
-		}
-
-		#endregion
+            /// <summary>
+            /// Brand Code.
+            /// </summary>
+            public int BrandCode
+            {
+                get
+                {
+                    return mInstance.BrandCode;
+                }
+                set
+                {
+                    mInstance.BrandCode = value;
+                }
+            }
 
 
-		#region "Constructors"
+            /// <summary>
+            /// Brand Name.
+            /// </summary>
+            public string BrandName
+            {
+                get
+                {
+                    return mInstance.BrandName;
+                }
+                set
+                {
+                    mInstance.BrandName = value;
+                }
+            }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BrandItem" /> class.
-		/// </summary>
-		public BrandItem() : base(CLASS_NAME)
-		{
-			mFields = new BrandItemFields(this);
-		}
 
-		#endregion
-	}
+            /// <summary>
+            /// Description.
+            /// </summary>
+            public string BrandDescription
+            {
+                get
+                {
+                    return mInstance.BrandDescription;
+                }
+                set
+                {
+                    mInstance.BrandDescription = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Status.
+            /// </summary>
+            public bool Status
+            {
+                get
+                {
+                    return mInstance.Status;
+                }
+                set
+                {
+                    mInstance.Status = value;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BrandItem" /> class.
+        /// </summary>
+        public BrandItem() : base(CLASS_NAME)
+        {
+            mFields = new BrandItemFields(this);
+        }
+
+        #endregion
+    }
 }

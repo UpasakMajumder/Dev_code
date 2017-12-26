@@ -233,6 +233,15 @@ ORDER BY [ItemOrder]
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="Status" columntype="boolean" guid="2014b3b9-aeb6-4045-b669-f8e0d6f61750" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>true</defaultvalue>
+          <fieldcaption>Status</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassFormLayout />
