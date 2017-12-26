@@ -96,20 +96,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
     }
     /// <summary>
-    /// The property describe's inventory type
-    /// </summary>
-    public int InventoryType
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(GetValue("InventoryType"), 1);
-        }
-        set
-        {
-            SetValue("InventoryType", value);
-        }
-    }
-    /// <summary>
     /// SKUID of the product adding to cart
     /// </summary>
     public int ProductSKUID { get; set; }
@@ -298,7 +284,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         List<SKUInfo> skuDetails = new List<SKUInfo>();
         try
         {
-            List<int> skuIds = productsDetails.Select(x=>x.NodeSKUID).ToList<int>();
+            List<int> skuIds = productsDetails.Select(x => x.NodeSKUID).ToList<int>();
             if (!DataHelper.DataSourceIsEmpty(skuIds))
             {
                 skuDetails = SKUInfoProvider.GetSKUs()
@@ -477,7 +463,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             var product = SKUInfoProvider.GetSKUInfo(ProductSKUID);
             dialog_Add_To_Cart.Attributes.Add("class", "dialog active");
             lblPopUpHeader.Text = ResHelper.GetString("KDA.AddToCart.Popup.HeaderText");
-            if (!DataHelper.DataSourceIsEmpty(product) && InventoryType == (int)ProductType)
+            if (!DataHelper.DataSourceIsEmpty(product) && ProductType == (int)ProductsType.GeneralInventory)
             {
                 lblProductName.Text = product.SKUName;
                 lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
@@ -522,7 +508,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
                                                                 .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
-                                                                .WhereEquals("ShoppingCartInventoryType", InventoryType)
+                                                                .WhereEquals("ShoppingCartInventoryType", ProductType)
                                                                 .Select(x => x.ShoppingCartID).ToList();
                 List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
                                                                                    .WhereIn("ShoppingCartID", shoppingCartIDs)
@@ -600,7 +586,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[4].Text, default(int));
                     if (chkRow.Checked)
                     {
-                        if (InventoryType == (int)ProductType)
+                        if (ProductType == (int)ProductsType.GeneralInventory)
                         {
                             itemsPlaced += quantityPlacing;
                             if (itemsPlaced < product.SKUAvailableItems)
@@ -704,7 +690,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 {
                     ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, unitCount);
                     parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                    parameters.Price = (InventoryType == (int)ProductType) ? default(double) : product.SKUPrice;
+                    parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                     ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                     cartItem.SetValue("CartItemDistributorID", customerAddressID);
                     cartItem.SetValue("CartItemCampaignID", campaingnID);
@@ -767,17 +753,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 cart.SetValue("ShoppingCartCampaignID", ProductCampaignID);
                 cart.SetValue("ShoppingCartProgramID", ProductProgramID);
                 cart.SetValue("ShoppingCartDistributorID", customerAddressID);
-                cart.SetValue("ShoppingCartInventoryType", InventoryType);
+                cart.SetValue("ShoppingCartInventoryType", ProductType);
                 cart.User = CurrentUser;
                 cart.ShoppingCartShippingAddress = customerAddress;
-                if (InventoryType == (int)ProductType)
+                if (ProductType == (int)ProductType)
                 {
                     cart.ShoppingCartShippingOptionID = ProductShippingID;
                 }
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
                 parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                parameters.Price = (InventoryType == (int)ProductType) ? default(double) : product.SKUPrice;
+                parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                 ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                 cartItem.SetValue("CartItemDistributorID", customerAddressID);
                 cartItem.SetValue("CartItemCampaignID", ProductCampaignID);
