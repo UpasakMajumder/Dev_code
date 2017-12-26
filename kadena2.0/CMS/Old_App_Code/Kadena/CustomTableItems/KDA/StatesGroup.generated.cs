@@ -47,23 +47,6 @@ namespace CMS.CustomTables.Types.KDA
 		#region "Properties"
 
 		/// <summary>
-		/// Select States.
-		/// </summary>
-		[DatabaseField]
-		public string States
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("States"), "");
-			}
-			set
-			{
-				SetValue("States", value);
-			}
-		}
-
-
-		/// <summary>
 		/// Group Name.
 		/// </summary>
 		[DatabaseField]
@@ -76,6 +59,23 @@ namespace CMS.CustomTables.Types.KDA
 			set
 			{
 				SetValue("GroupName", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Select States.
+		/// </summary>
+		[DatabaseField]
+		public string States
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("States"), "");
+			}
+			set
+			{
+				SetValue("States", value);
 			}
 		}
 
@@ -116,22 +116,6 @@ namespace CMS.CustomTables.Types.KDA
 
 
 			/// <summary>
-			/// Select States.
-			/// </summary>
-			public string States
-			{
-				get
-				{
-					return mInstance.States;
-				}
-				set
-				{
-					mInstance.States = value;
-				}
-			}
-
-
-			/// <summary>
 			/// Group Name.
 			/// </summary>
 			public string GroupName
@@ -143,6 +127,22 @@ namespace CMS.CustomTables.Types.KDA
 				set
 				{
 					mInstance.GroupName = value;
+				}
+			}
+
+
+			/// <summary>
+			/// Select States.
+			/// </summary>
+			public string States
+			{
+				get
+				{
+					return mInstance.States;
+				}
+				set
+				{
+					mInstance.States = value;
 				}
 			}
 		}
