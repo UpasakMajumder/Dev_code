@@ -54,7 +54,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             {
                 btnSave.Click += btnSave_Save;
             }
-
+            BindStatus();
             txtName.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.Categoryform.NameWatermark"));
             txtDescription.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.Categoryform.DesWatermark"));
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameValidation");
@@ -88,6 +88,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     newPage.SetValue("ProductCategoryTitle", categoryName);
                     newPage.SetValue("ProductCategoryDescription", categroyDes);
+                    newPage.SetValue("Status",ddlStatus.SelectedValue);
 
                     // Inserts the new page as a child of the parent page
                     newPage.Insert(parentPage);
@@ -129,7 +130,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     editPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     editPage.SetValue("ProductCategoryTitle", categoryName);
                     editPage.SetValue("ProductCategoryDescription", categroyDes);
-
+                    editPage.SetValue("Status", ddlStatus.SelectedValue);
                     // update the  campaign
                     editPage.Update();
 
@@ -147,7 +148,15 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             EventLogProvider.LogException("CategroyCreateFormEdit", "EXCEPTION", ex);
         }
     }
-
+    /// <summary>
+    /// Dropdown for Status
+    /// </summary>
+    public void BindStatus()
+    {
+        ddlStatus.Items.Clear();
+        ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+        ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
+    }
 
     /// <summary>
     /// Method to fetch the record which user wants to edit and populates the fields with those values 

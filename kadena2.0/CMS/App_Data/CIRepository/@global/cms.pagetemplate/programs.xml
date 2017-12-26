@@ -72,6 +72,7 @@
 <![CDATA[
 </tbody>
 </table>
+</div>
 
 
 
@@ -79,13 +80,15 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table id="reptable" class="table show__table-bottom">
+<div class="table__responsive">
+<table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.ProgramsList.ProgramName$}</th>
       <th>{$KDA.ProgramsList.BrandName$}</th>
       <th>{$KDA.ProgramsList.CampaignName$}</th>
       <th>{$KDA.ProgramsList.Description$}</th>
+      <th>{$KDA.ProgramsList.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>

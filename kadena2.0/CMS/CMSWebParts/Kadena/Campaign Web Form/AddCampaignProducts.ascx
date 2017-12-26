@@ -3,7 +3,12 @@
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 
 <asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
-<div class="login__form-content js-login">
+<div class=" mt-2" id="Emptydata" runat="server" visible="false">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen">
+        <cms:LocalizedLabel ResourceString="Kadena.CampaignProduct.NoProgramfoundText" runat="server">
+        </cms:LocalizedLabel></div>
+</div>
+<div class="login__form-content js-login" runat="server" id="AddProductdiv">
     <div class="css-login">
         <div class="form form__lg">
             <div class="mb-2 form__block">

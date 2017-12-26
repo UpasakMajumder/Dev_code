@@ -113,13 +113,26 @@
                         </div>
                     </div>
                 </div>
+                 <div class="mb-2 form__block">
+                    <div class="input__wrapper">
+                        <span class="input__label" runat="server" id="lblStatus"><%#ResHelper.GetString("Kadena.Address.Status")%></span>
+                        <div class="input__inner">
+                            <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper allocated__block allocated__business">
                         <span class="input__label" runat="server" id="lblBrand"><%#ResHelper.GetString("Kadena.Address.Brands")%></span>
                         <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand" id="btnAssignBrand">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 511.398 511.398" style="enable-background: new 0 0 511.398 511.398;" xml:space="preserve" class=""><g><g><path d="M477.549,182.379H329.018V33.847c0-18.69-15.154-33.844-33.844-33.844H216.22c-18.69,0-33.844,15.153-33.844,33.844    v148.526H33.844C15.153,182.373,0,197.526,0,216.216v78.966c0,18.691,15.153,33.844,33.844,33.844h148.532v148.527    c0,18.689,15.153,33.842,33.844,33.842h78.96c18.691,0,33.844-15.152,33.844-33.842V329.026h148.533    c18.689,0,33.842-15.152,33.842-33.844v-78.966C511.393,197.526,496.246,182.379,477.549,182.379z" data-original="#D63A3A" class="active-path" data-old_color="#0275d8" fill="#0275d8"/></g></g></g></svg>
-                            </a>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 511.398 511.398" style="enable-background: new 0 0 511.398 511.398;" xml:space="preserve" class="">
+<g>
+    <g>
+        <path d="M477.549,182.379H329.018V33.847c0-18.69-15.154-33.844-33.844-33.844H216.22c-18.69,0-33.844,15.153-33.844,33.844    v148.526H33.844C15.153,182.373,0,197.526,0,216.216v78.966c0,18.691,15.153,33.844,33.844,33.844h148.532v148.527    c0,18.689,15.153,33.842,33.844,33.842h78.96c18.691,0,33.844-15.152,33.844-33.842V329.026h148.533    c18.689,0,33.842-15.152,33.842-33.844v-78.966C511.393,197.526,496.246,182.379,477.549,182.379z" data-original="#D63A3A" class="active-path" data-old_color="#0275d8" fill="#0275d8" />
+    </g>
+</g></g></svg>
+                        </a>
                     </div>
                     <div class="Business_Assigned_user">
                         <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display: none">
@@ -148,13 +161,14 @@
 <asp:HiddenField ID="hdnBrand" runat="server" ClientIDMode="Static" />
 
 <!--pop up html-->
-<div class="modal__popup modal_brand" id="myModal_brand" style="display: none">
-    <div class="modal__content">
-        <div class="modal__header clearfix">
+<div class="dialog modal_businessunit" id="brandPopup">
+    <div class="dialog__block">
+        <div class="dialog__header">
             <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("Kadena.Address.AddBrand")%></a>
             <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
         </div>
-        <div class="modal__body">
+        <div class="dialog__content">
+            <div id="NoBrands" style="display:none">No Brands Found</div>
             <table class="table" id="brands">
                 <tbody id="brandsbody">
                     <tr>
@@ -167,8 +181,10 @@
                 </tbody>
             </table>
         </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+            </div>
+        </div>
     </div>
 </div>
-
-
 
