@@ -9,21 +9,30 @@
 <![CDATA[
 <%@ Register Src="~/CMSWebParts/Kadena/Cart/DistributorCartDetails.ascx" TagName="DistributorCartDetails" TagPrefix="cms" %>
 <div class="content-block mb30">
-  <div class="prebuy-distdata">
-    <div class="Distributor-name">
-      <h4><%# Localize("{$KDA.DistributorCart.Distributor$}") %> :</h4>
-      <h4><%#Eval("AddressPersonalName") %> </h4>
-    </div>
-    <div class="Distributor-name">
-      <h4><%# Localize("{$KDA.DistributorCart.DistributorAddress$}") %>:</h4>
-      <h6><%#Eval("AddressName") %> ,
-        <%#Eval("AddressCity") %> ,
-        <<%#Eval("StateDisplayName") %> ,
-        <%#Eval("AddressZip") %>,
-        <%#Eval("AddressPhone") %> </h6>
+  <div class="prebuy__distdata">
+    <div class="general__left">
+      <div class="details__sec">
+        <div class="input__label">
+          <label><b><%# Localize("{$KDA.DistributorCart.Distributor$}") %> :</b></label>
         </div>
-        <cms:DistributorCartDetails runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
+        <div class="input__con">
+          <label> <%#Eval("AddressPersonalName") %></label>
+        </div>
       </div>
+      <div class="details__sec">
+        <div class="input__label">
+          <label><b><%# Localize("{$KDA.DistributorCart.DistributorAddress$}") %> :</b></label>
+        </div>
+        <div class="input__con">
+          <label> <%#Eval("AddressName") %> ,
+            <%#Eval("StateDisplayName") %> ,
+            <%#Eval("AddressZip") %>,
+            <%#Eval("AddressPhone") %></label>
+        </div>
+      </div>
+      <div class="general__left">
+      <cms:DistributorCartDetails runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
+    </div>
 ]]>
   </TransformationCode>
   <TransformationCSS />
