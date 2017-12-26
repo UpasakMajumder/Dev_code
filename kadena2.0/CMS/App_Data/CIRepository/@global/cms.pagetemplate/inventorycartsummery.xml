@@ -22,10 +22,10 @@
   <div class="content-header__inner">
     <h1 class="content-header__page-name">General Inventory</h1>
     <div class="text-right">
-      <div class="add_btn">
+      <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZonePDF" runat="server" />
       </div>
-      <div class="add_btn" style="margin-right: 5px;">
+      <div class="add__btn" style="margin-right: 5px;">
         <cms:CMSWebPartZone ZoneID="ZonePrint" runat="server" />
       </div>
     </div>
