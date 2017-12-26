@@ -3,9 +3,8 @@ using CMS.EventLog;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using Kadena.Dto.Payment.CreditCard.MicroserviceRequests;
-using Kadena.Helpers;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.WebAPI.KenticoProviders;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.Payment
@@ -20,7 +19,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             var requestData = CreateRequestData();
-            var client = new CreditCardManagerClient(new MicroProperties(new KenticoResourceService()));
+            var client = new CreditCardManagerClient(ProviderFactory.MicroProperties);
             var result = client.CreateCustomerContainer(requestData).Result;
 
             if (result == null || !result.Success)
