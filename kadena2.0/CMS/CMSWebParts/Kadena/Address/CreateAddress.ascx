@@ -6,7 +6,7 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form__section">
-            <div class="form signup_form form__lg">
+            <div class="form form__lg">
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper">

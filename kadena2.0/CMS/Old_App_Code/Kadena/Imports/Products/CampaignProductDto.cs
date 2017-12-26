@@ -30,10 +30,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(20)]
         public string SKUValidUntil { get; set; }
 
-        [Header(7, "Brand Code *")]
+        [Header(7, "Brand *")]
         [Required]
-        [MaxLength(10)]
-        public string BrandCode { get; set; }
+        [MaxLength(100)]
+        public string Brand { get; set; }
 
         [Header(8, "Estimated Price")]
         [MaxLength(30)]
@@ -45,8 +45,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         [Header(10, "Product Category (Type) *")]
         [Required]
-        [MaxLength(30)]
-        public string ProductCategoryID { get; set; }
+        [MaxLength(100)]
+        public string ProductCategory { get; set; }
 
         [Header(11, "Bundle Quantity *")]
         [Required]
@@ -64,7 +64,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         [Header(14, "Status *")]
         [Required]
-        [MaxLength(250)]
+        [MaxLength(20)]
         public string Status { get; set; }
 
         [Header(15, "Item Specs ID")]

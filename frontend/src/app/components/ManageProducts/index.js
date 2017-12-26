@@ -87,7 +87,7 @@ class ManageProducts extends Component {
     return (
       <div className="product-template__block">
         <div className="product-template__item">
-          <h3>{title}</h3>
+          <h2 className="block__heading pt-4 pb-2">{title}</h2>
         </div>
         <div className="product-template__item">
 

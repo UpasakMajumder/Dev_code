@@ -11,6 +11,8 @@ using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
+using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
 namespace Kadena.ScheduledTasks
 {
@@ -43,10 +45,13 @@ namespace Kadena.ScheduledTasks
         {
             // infrastructure
             container.Register<Infrastructure.IConfigurationProvider, KenticoConfigurationProvider>();
-            container.Register<IKenticoProviderService, KenticoProviderService>();
+            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+
+            // kentico
+            container.Register<IKadenaSettings, KadenaSettings>();
+            container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoLogger, KenticoLogger>();
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
 
             // microservices
             container.Register<IMailingListClient, MailingListClient>();

@@ -52,6 +52,41 @@
           </rule>
         </rules>
       </field>
+      <field column="StartDate" columntype="date" guid="c9d56f67-d972-4630-b3ac-30f841116701" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Start Date</fieldcaption>
+          <validationerrormessage>{$Kadena.CampaignForm.StartDateRequired$}</validationerrormessage>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
+      <field column="EndDate" columntype="date" guid="8923f367-0b3c-48dd-93d7-54470becd906" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>End Date</fieldcaption>
+          <validationerrormessage>{$Kadena.CampaignForm.EndDateRequired$}</validationerrormessage>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
+      <field column="Status" columntype="boolean" guid="87a662e9-74f0-4b4c-af7e-1602b827be87" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>True</defaultvalue>
+          <fieldcaption>Status</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="CampaignInitiate" columntype="boolean" guid="b7e71442-25ca-42c6-bab6-05bff12f9e76" publicfield="false">
         <properties>
           <defaultvalue>false</defaultvalue>
@@ -63,11 +98,6 @@
         </properties>
       </field>
       <field allowempty="true" column="GlobalAdminNotified" columntype="boolean" guid="7076c701-9060-4dc7-8c32-6c91f79969de" publicfield="false">
-        <properties>
-          <defaultvalue>false</defaultvalue>
-        </properties>
-      </field>
-      <field allowempty="true" column="AllowUpdates" columntype="boolean" guid="3994257c-ee5a-44e3-8881-57d03e8d05f3" publicfield="false">
         <properties>
           <defaultvalue>false</defaultvalue>
         </properties>

@@ -9,23 +9,24 @@ using System.Web.Security;
 using System.Web;
 using CMS.SiteProvider;
 using CMS.Activities.Loggers;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoLoginProvider : IKenticoLoginProvider
     {
         private readonly IKenticoLogger logger;
-        private readonly IKenticoResourceService resource;
+        private readonly IKadenaSettings kadenaSettings;
 
-        public KenticoLoginProvider(IKenticoLogger logger, IKenticoResourceService resource)
+        public KenticoLoginProvider(IKenticoLogger logger, IKadenaSettings kadenaSettings)
         {
             this.logger = logger;
-            this.resource = resource;
+            this.kadenaSettings = kadenaSettings;
         }
 
         public DateTime GetTaCValidFrom()
         {
-            var tacNodeAliasPath = resource.GetSettingsKey("KDA_TermsAndConditionPage");
+            var tacNodeAliasPath = kadenaSettings.TermsAndConditionsPage;
             var tacDocument = DocumentHelper.GetDocuments("KDA.TermsAndConditions")
                 .OnCurrentSite()
                 .Path(tacNodeAliasPath)

@@ -1,5 +1,4 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Product_ProductInventory" CodeBehind="~/CMSWebParts/Kadena/Product/ProductInventory.ascx.cs" %>
-<%@ Register TagName="CustomerCart" Src="~/CMSWebParts/Kadena/ShoppingCart/CustomerCartOperations.ascx" TagPrefix="Cart" %>
 
 <div class="custom__section">
     <div class="custom__block clearfix">
@@ -12,7 +11,7 @@
         </div>
     </div>
     <div class="custom__content row">
-        <cms:CMSRepeater ID="rptProductList" runat="server">
+        <asp:Repeater runat="server" ID="rptProductLists">
             <ItemTemplate>
                 <div class="cus__content--block col-sm-3">
                     <div class="img__block">
@@ -23,13 +22,53 @@
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
-                        <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%#Eval("SKUID") %>' OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>'></asp:LinkButton>
+                         <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
+                        <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true"></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
                 </div>
             </ItemTemplate>
-        </cms:CMSRepeater>
+        </asp:Repeater>
     </div>
 </div>
-<Cart:CustomerCart runat="server" ID="crtCustomerCart" InventoryType='<%# ProductType %>' Visible="true" />
+<div class="dialog" id="dialog_Add_To_Cart" runat="server" clientidmode="Static">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <asp:Label runat="server" ID="lblPopUpHeader"></asp:Label>
+            <asp:Label Text="" ID="lblProductName" runat="server" />
+        </div>
+        <div class="dialog__content">
+            <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
+            <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
+            <asp:Label Text="" runat="server" ID="lblAvailbleItems" /><br />
+            <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="show-table">
+                <Columns>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:CheckBox Text="" ID="chkSelected" runat="server" Checked='<%# ValidationHelper.GetBoolean(Eval("IsSelected"),default(bool)) %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="AddressID" />
+                    <asp:BoundField DataField="AddressPersonalName" />
+                    <asp:TemplateField>
+                        <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
+                        <ItemTemplate>
+                            <asp:TextBox runat="server" CssClass="input__text" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" ClientIDMode="Static" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
+                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
+                </Columns>
+            </asp:GridView>
+            <asp:Label runat="server" ID="lblSuccessMsg"></asp:Label>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose"><%= CartCloseText %></button>
+                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
+            </div>
+        </div>
+    </div>
+</div>
+<asp:HiddenField runat="server" ID="hdnClickSKU" />

@@ -10,6 +10,7 @@ using Kadena.Dto.Order;
 using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -19,8 +20,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IOrderViewClient _orderClient;
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _kenticoResources;
-        private readonly IKenticoProviderService _kentico;
+        private readonly IKenticoSiteProvider _site;
+        private readonly IKenticoOrderProvider _order;
         private readonly IShoppingCartProvider _shoppingCart;
+        private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
 
         private readonly string _orderDetailUrl;
@@ -46,8 +49,8 @@ namespace Kadena.BusinessLogic.Services
         public bool EnablePaging { get; set; }
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
-            IKenticoResourceService kenticoResources, IKenticoProviderService kentico, IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents,
-            IKenticoLogger logger)
+            IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order,
+            IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger)
         {
             if (mapper == null)
             {
@@ -65,13 +68,21 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(kenticoResources));
             }
-            if (kentico == null)
+            if (site == null)
             {
-                throw new ArgumentNullException(nameof(kentico));
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
             }
             if (shoppingCart == null)
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (permissions == null)
+            {
+                throw new ArgumentNullException(nameof(permissions));
             }
             if (documents == null)
             {
@@ -86,8 +97,10 @@ namespace Kadena.BusinessLogic.Services
             _orderClient = orderClient;
             _kenticoUsers = kenticoUsers;
             _kenticoResources = kenticoResources;
-            _kentico = kentico;
+            _site = site;
+            _order = order;
             _shoppingCart = shoppingCart;
+            _permissions = permissions;
             _logger = logger;
 
             _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
@@ -148,16 +161,16 @@ namespace Kadena.BusinessLogic.Services
 
             foreach (var o in orders)
             {
-                o.Status = _shoppingCart.MapOrderStatus(o.Status);
+                o.Status = _order.MapOrderStatus(o.Status);
             }
         }
 
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
-            var siteName = _kenticoResources.GetKenticoSite().Name;
+            var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_kentico.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity);
             }
