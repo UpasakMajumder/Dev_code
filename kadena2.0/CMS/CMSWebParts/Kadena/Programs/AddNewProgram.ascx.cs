@@ -289,14 +289,16 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                         if (ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date >= DateTime.Today)
                         {
                             lblDateValid.Visible = false;
-                            Program program = new Program();
-                            program.DocumentName = txtProgramName.Text;
-                            program.DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture;
-                            program.ProgramName = txtProgramName.Text;
-                            program.ProgramDescription = txtProgramDescription.Text;
-                            program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
-                            program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
-                            program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date;
+                            Program program = new Program()
+                            {
+                                DocumentName = txtProgramName.Text,
+                                DocumentCulture = SiteContext.CurrentSite.DefaultVisitorCulture,
+                                ProgramName = txtProgramName.Text,
+                                ProgramDescription = txtProgramDescription.Text,
+                                BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0),
+                                CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0),
+                                DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date
+                            };
                             program.Insert(CampaignNode, true);
                             URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                         }
@@ -343,10 +345,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                     {
                         lblDateValid.Visible = false;
                         Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
-
                         if (program != null)
                         {
-
                             program.DocumentName = txtProgramName.Text;
                             program.ProgramName = txtProgramName.Text;
                             program.ProgramDescription = txtProgramDescription.Text;
@@ -354,7 +354,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                             program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
                             program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime));
                             program.Update();
-
                         }
                         if (ViewState["CampaignID"] != null)
                         {
