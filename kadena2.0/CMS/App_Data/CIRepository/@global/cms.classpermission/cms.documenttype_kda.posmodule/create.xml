@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.POSModule</CodeName>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to create new pages anywhere in the content tree.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Create Anywhere</PermissionDisplayName>
+  <PermissionGUID>cdd34205-ac24-454c-96b6-2213a22613b1</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>

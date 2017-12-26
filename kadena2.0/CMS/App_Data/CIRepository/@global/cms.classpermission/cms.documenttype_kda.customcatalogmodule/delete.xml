@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.CustomCatalogModule</CodeName>
+    <GUID>17293c65-056c-4f99-b106-0b0004c995cf</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to remove pages (only to Recycle bin). See also the Destroy page permission.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Delete</PermissionDisplayName>
+  <PermissionGUID>0e28c48b-2fa7-4ada-8ae7-90cc1c6e30c3</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>5</PermissionOrder>
+</cms.classpermission>

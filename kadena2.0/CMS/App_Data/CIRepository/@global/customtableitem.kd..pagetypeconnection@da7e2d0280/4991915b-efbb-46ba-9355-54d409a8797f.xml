@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>4991915b-efbb-46ba-9355-54d409a8797f</ItemGUID>
+  <ItemOrder>21</ItemOrder>
+  <PageTypeCodeName>KDA.AdminModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_AdminModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

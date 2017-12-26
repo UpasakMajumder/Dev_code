@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>c1f75eb5-f751-4018-b66c-6c6e445c45d7</ItemGUID>
+  <ItemOrder>25</ItemOrder>
+  <PageTypeCodeName>KDA.PrebuyModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_PrebuyModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

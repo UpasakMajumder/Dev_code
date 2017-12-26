@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>_Generic Module</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="GenericModuleID" columnprecision="0" columntype="integer" guid="b3e97a7f-bd5a-4d4c-92ae-6b103e598b4e" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>SettingsModuleID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ModuleName" columnsize="200" columntype="text" guid="85e9f4b9-bf08-43da-8177-b6d605250136" isinherited="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ModuleMainIcon" columnsize="50" columntype="text" guid="6aa33e3d-464d-42ce-a07f-da84a23fd271" isinherited="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Main Icon</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Query>
+<![CDATA[
+SELECT IconCodeName, IconName
+FROM KDA_MainMenuIcon WITH(nolock)
+ORDER BY ItemOrder
+]]>
+          </Query>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field allowempty="true" column="ExternalLink" columnsize="2000" columntype="text" guid="8de57981-35c0-4b10-9dd3-9a67270636f6" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>External Link</fieldcaption>
+        </properties>
+        <settings>
+          <Autoresize>
+<![CDATA[
+<AutoResize>
+  <autoresize>noresize</autoresize>
+  <autoresize_width />
+  <autoresize_height />
+  <autoresize_maxsidesize />
+</AutoResize>
+]]>
+          </Autoresize>
+          <Configuration>True</Configuration>
+          <controlname>URLSelector</controlname>
+          <Dialogs_Content_Hide>False</Dialogs_Content_Hide>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>b4129f2e-d3a9-4ffd-a23a-015a7db273bd</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassInheritsFromClassID>
+    <CodeName>KDA.Module</CodeName>
+    <GUID>e389c224-fafd-4166-bf24-968f92202e09</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassInheritsFromClassID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>True</ClassIsMenuItemType>
+  <ClassName>KDA.GenericModule</ClassName>
+  <ClassNodeNameSource>ModuleName</ClassNodeNameSource>
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="True" id="9065eb26-7acb-4f71-872e-dbaafec5fe2d" name="ModuleName" searchable="False" tokenized="True" />
+      <item content="False" id="b08fd647-4936-4bd3-b6c6-47662c112cb8" name="GenericModuleID" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_GenericModule</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

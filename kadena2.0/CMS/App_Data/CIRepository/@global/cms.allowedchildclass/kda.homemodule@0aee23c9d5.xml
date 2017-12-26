@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.allowedchildclass>
+  <Parent>
+    <CodeName>KDA.HomeModule</CodeName>
+    <GUID>07544547-a8c4-4565-97d1-54986d930c75</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </Parent>
+  <Bindings>
+    <Binding id="cms.documenttype_CMS.Root">
+      <ParentClassID>
+        <CodeName>CMS.Root</CodeName>
+        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.AdminModule">
+      <ParentClassID>
+        <CodeName>KDA.AdminModule</CodeName>
+        <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+  </Bindings>
+</cms.allowedchildclass>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.allowedchildclass>
+  <Parent>
+    <CodeName>KDA.GenericModule</CodeName>
+    <GUID>b4129f2e-d3a9-4ffd-a23a-015a7db273bd</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </Parent>
+  <Bindings>
+    <Binding id="cms.documenttype_CMS.Root">
+      <ParentClassID>
+        <CodeName>CMS.Root</CodeName>
+        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+  </Bindings>
+</cms.allowedchildclass>

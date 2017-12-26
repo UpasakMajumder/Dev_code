@@ -12,6 +12,7 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>2e3f1106-f8e4-4347-ae3b-15ada5ac006a</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
