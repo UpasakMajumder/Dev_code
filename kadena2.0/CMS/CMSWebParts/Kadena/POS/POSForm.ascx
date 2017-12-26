@@ -8,7 +8,7 @@
                 <cms:LocalizedLabel ID="lblCategory" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSCategoryLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlCategory" runat="server" EnableViewState="false" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvCatgory" InitialValue="0" runat="server" CssClass="input__error" ForeColor="Red" ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvCatgory" InitialValue="0" runat="server" CssClass="input__error"  ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
                 <cms:LocalizedLabel ID="lblBrand" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.BrandLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false" onchange="brandChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0" ForeColor="Red" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0"  ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                 <cms:LocalizedLabel ID="lblYear" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.FiscalYearLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlYear" runat="server" EnableViewState="false" onchange="yearChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvYear" runat="server" InitialValue="0" ForeColor="Red" ControlToValidate="ddlYear" CssClass="input__error"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvYear" runat="server" InitialValue="0"  ControlToValidate="ddlYear" CssClass="input__error"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -35,10 +35,10 @@
                 <cms:LocalizedLabel ID="lblPOSCode" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSLabel" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtPOSCode"  runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvPOSCode" Display="Dynamic" CssClass="input__error" runat="server"  ForeColor="Red" ControlToValidate="txtPOSCode">
+                    <asp:RequiredFieldValidator ID="rfvPOSCode" Display="Dynamic" CssClass="input__error" runat="server"   ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator Display="Dynamic" CssClass="input__error" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
-                        ForeColor="Red" ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
+                         ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    <div class="mb-3 form_btns">
+    <div class="mb-3 form__btns">
         <div class="">
             <cms:LocalizedButton ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary" EnableViewState="false"
                 ResourceString="Kadena.POSFrom.SaveButtonText" />
@@ -59,6 +59,6 @@
         </div>
     </div>
     <cms:LocalizedLabel ID="lblSuccess" runat="server" EnableViewState="False" Visible="false" CssClass="logon-token-info" ForeColor="Green" ResourceString="Kadena.POSFrom.SuccessMsg" />
-    <cms:LocalizedLabel ID="lblError" runat="server" EnableViewState="False" Visible="false" CssClass="logon-token-info" ForeColor="Red" ResourceString="Kadena.POSFrom.ErrorMsg" />
-    <cms:LocalizedLabel ID="lblDuplicate" runat="server" EnableViewState="False" Visible="false" CssClass="logon-token-info" ForeColor="Red" ResourceString="Kadena.POSFrom.DuplicatePOSMsg" />
+    <cms:LocalizedLabel ID="lblError" runat="server" EnableViewState="False" Visible="false" CssClass="logon-token-info"  ResourceString="Kadena.POSFrom.ErrorMsg" />
+    <cms:LocalizedLabel ID="lblDuplicate" runat="server" EnableViewState="False" Visible="false" CssClass="logon-token-info"  ResourceString="Kadena.POSFrom.DuplicatePOSMsg" />
 </div>

@@ -103,9 +103,9 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
-   $('.js-btnBrand').text('{$Kadena.Address.AssignBrand$}');
+    $('.js-btnBrand').text('{$Kadena.Address.AssignBrand$}');
     $('.js-btnSaveBrand').text('{$Kadena.Address.AddBrand$}');
-   
+    
     function BindAddressBrands(){
       var addressID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('id=')[1]));
       $.ajax({
@@ -144,12 +144,11 @@
           if (data.success) {
             var brandData=data.payload;
             $('#brands').html('');
-            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>Brand Name</td><td>Brand Code</td>                   </tr>';
-            
+            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>Brand Name</td><td>Brand Code</td></tr>';            
             var rowData='';
             for(i=0; i<brandData.length;i++){
               rowData +='<tr><td><input type="checkbox" class="js-chk" value='+brandData[i].itemID+'></td><td class=js-td>'+brandData[i].brandName+'</td><td class=js-td>'+brandData[i].brandCode+
-                '</td></tr>';            
+                '</td></tr>';         
             }
             if(rowData != ''){
               $('#brands').append(th+rowData);
@@ -162,8 +161,7 @@
               });
             }
           }
-          else {
-            alert('failed');
+          else {            
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {          
@@ -171,11 +169,10 @@
       });
     }
     $(document).on('click', ".js-btnBrand", function (e) {
-      
-      $('.modal_brand').show();
+      $('#brandPopup').toggleClass('active');
     });
     $(document).on('click', ".js-btnClose", function () {                
-      $('.modal_brand').hide();
+      $('#brandPopup').toggleClass('active');
     });
     $(document).on('change', ".js-chkAll", function () {         
       $('input:checkbox').not(this).prop('checked', this.checked);      
@@ -200,12 +197,12 @@
         $('#AddressBrandsTablebody').append(th+tbody);
         $('#AddressBrandsTable').show();
       }
-      
-      $('.modal_brand').hide();
+      $('#brandPopup').toggleClass('active');
     });    
     
     BindAddressBrands();
     BindBrands();
+    $('#brandPopup').removeClass('active');
   });
 </script>
 ]]>

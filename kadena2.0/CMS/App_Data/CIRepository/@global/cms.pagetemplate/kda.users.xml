@@ -25,29 +25,38 @@
   {^WebPartZone|(id)zoneContent^}
   
   {^WebPartZone|(id)zoneTextAfter^}
-  <!--pop up html-->
-  <div class="modal__popup modal_businessunit" id="myModal_businessunits" style="display: none">
-    <div class="modal__content">
-      <div class="modal__header clearfix">
-        <button type="button" class="btn-action js-btnSaveBU">Add Business Units</button>
-        <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
-      </div>
-      <div class="modal__body">
-        <table class="table" id="buinessunits">
-          <tbody id="buinessunitsbody">
-            <tr>
-              <td>
-                <input type="checkbox" class="js-chkAll" id="selectAll">
-              </td>
-              <td>{$Kadena.Users.BusinessUnitName$}</td>
-              <td>{$Kadena.Users.BusinessUnitNumber$}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  
 </div>
+<!--pop up html-->
+<div class="dialog modal_businessunit" id="businessUnitPopup">  
+  <!--<div class="dialog__shadow"> </div>-->  
+  <div class="dialog__block">    
+    <div class="dialog__header">      
+      <button type="button" class="btn-action js-btnSaveBU">Add Business Units</button>
+      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>      
+    </div>    
+    <div class="dialog__content">      
+      <table class="table" id="buinessunits">
+        <tbody id="buinessunitsbody">
+          <tr>
+            <td>
+              <input type="checkbox" class="js-chkAll" id="selectAll">
+            </td>
+            <td>{$Kadena.Users.BusinessUnitName$}</td>
+            <td>{$Kadena.Users.BusinessUnitNumber$}</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>    
+    <div class="dialog__footer">      
+      <div class="btn-group btn-group--right">        
+        <!--<button type="button" class="btn-action btn-action--secondary">Discard changes</button>
+<button type="button" class="btn-action">Save address</button>-->            
+      </div>          
+    </div>      
+  </div>    
+</div>
+
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
@@ -364,9 +373,7 @@ iteratedDocument = iteratedDocument.Parent;
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
-    if($('.ConfirmationSeparator').is(':visible')){
-      $('.ConfirmationSeparator').next().addClass('input__label').text('{%GetResourceString("Kadena.MyAccount.ConfirmPassword")|(user)cvoqa2@gmail.com|(hash)4d0d90a14d6450a1a67865f49af7c5beda7f599b7b288aaf5b474bc8bfd07ef6%}');
-    }
+    $('#businessUnitPopup').removeClass('active');    
     //Bind already existed  business units
     function BindBUData() {
       var currentUserID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('userid=')[1]));
@@ -390,21 +397,13 @@ iteratedDocument = iteratedDocument.Parent;
                   '</td></tr>';
                 ids+=parsedData[i].ItemID+';';
               }
-              $('#hdnbuid').val(ids);
-              
-              //alert('data');
-              //var tablehtml='<tbody>'+th+rowData+'</tbody>';
-              //$('#UserBusinessUnit').append(tablehtml);
-              //var tablehtml=rowData;
+              $('#hdnbuid').val(ids);                           
               $('#UserBusinessUnitbody').append(rowData);
-              $('#UserBusinessUnit').show();
-              
+              $('#UserBusinessUnit').show();                           
             } else {
-              //alert('failed');
             }
           },
-          error: function (xhr, ajaxOptions, thrownError) {
-            
+          error: function (xhr, ajaxOptions, thrownError) {            
           }
         });
       }
@@ -420,8 +419,7 @@ iteratedDocument = iteratedDocument.Parent;
           if (data.d != '') {
             $('#buinessunits').html('');
             var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitName$}</td><td>{$Kadena.Users.BusinessUnitNumber$}</td></tr>';
-            var parsedData=JSON.parse(data.d);
-            //alert(parsedData);
+            var parsedData=JSON.parse(data.d);          
             var rowData='';
             for(i=0; i<parsedData.length;i++)
               rowData +='<tr><td><input type="checkbox" class="js-chk" value='+parsedData[i].ItemID+'></td><td class=js-td>'+parsedData[i].BusinessUnitNumber+'</td><td class=js-td>'+parsedData[i].BusinessUnitName+
@@ -437,8 +435,7 @@ iteratedDocument = iteratedDocument.Parent;
               });
             }
             
-          } else {
-            //alert('failed');
+          } else {            
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {          
@@ -448,12 +445,12 @@ iteratedDocument = iteratedDocument.Parent;
     //Show pop up
     $(document).on('click', ".js-btnAssignBU", function (e) {
       e.preventDefault();
-      $('.modal_businessunit').show();
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     //Close the pop up
-    $(document).on('click', ".js-btnClose", function () {                
-      $('.modal_businessunit').hide();
+    $(document).on('click', ".js-btnClose", function () {            
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     //check/uncheck all check boxes
@@ -468,7 +465,6 @@ iteratedDocument = iteratedDocument.Parent;
       var tbody='';
       $('#UserBusinessUnitbody').append('')
         $('.js-chk:checkbox:checked', buinessunits).each(function() {
-          //alert('hello');
           itemID+=$(this).val()+';';
           var rowData='';
           $(this).closest('tr').children('.js-td').each(function(){
@@ -481,12 +477,12 @@ iteratedDocument = iteratedDocument.Parent;
         $('#UserBusinessUnit').show();
       }
       $('#hdnbuid').val(itemID);
-      $('.modal_businessunit').hide();
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     BindBUData();
     BindBusinessUnits();
-    
+    $('#businessUnitPopup').removeClass('active');
   });
 </script>
 ]]>
