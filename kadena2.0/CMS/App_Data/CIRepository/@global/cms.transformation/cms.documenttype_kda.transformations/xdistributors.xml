@@ -24,13 +24,16 @@
           <label><b><%# Localize("{$KDA.DistributorCart.DistributorAddress$}") %> :</b></label>
         </div>
         <div class="input__con">
-          <label> <%#Eval("AddressName") %> ,
+          <label> 
+            <%#Eval("AddressName") %> ,
             <%#Eval("StateDisplayName") %> ,
             <%#Eval("AddressZip") %>,
-            <%#Eval("AddressPhone") %></label>
+            <%#Eval("AddressPhone") %>
+          </label>
         </div>
       </div>
-      <div class="general__left">
+      </div>
+      <div class="general__right">
       <cms:DistributorCartDetails runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
     </div>
 ]]>
