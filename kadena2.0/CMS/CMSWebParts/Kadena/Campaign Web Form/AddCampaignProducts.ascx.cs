@@ -581,15 +581,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             .Columns("ProgramName,ProgramID")
                             .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
                             .ToList();
-                        if (!DataHelper.DataSourceIsEmpty(programs))
+                        if(programs.Count>0)
                         {
-                            ddlProgram.DataSource = programs;
-                            ddlProgram.DataTextField = "ProgramName";
-                            ddlProgram.DataValueField = "ProgramID";
-                            ddlProgram.DataBind();
-                            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                            ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                            if (!DataHelper.DataSourceIsEmpty(programs))
+                            {
+                                ddlProgram.DataSource = programs;
+                                ddlProgram.DataTextField = "ProgramName";
+                                ddlProgram.DataValueField = "ProgramID";
+                                ddlProgram.DataBind();
+                                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+                                ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+                            }
                         }
+                        else
+                        {
+                            AddProductdiv.Visible = false;
+                            Emptydata.Visible = true;
+                        }
+                       
                     }
                 }
             }
