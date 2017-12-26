@@ -37,7 +37,7 @@ namespace Kadena.BusinessLogic.Services
             return kenticoBusinessUnits.GetUserBusinessUnits(UserID);
         }
 
-        public string UpdateItemQuantity(int cartItemID, int quantity)
+        public bool UpdateItemQuantity(int cartItemID, int quantity)
         {
             if (cartItemID != default(int) && quantity != default(int))
             {
@@ -45,7 +45,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                return "fail";
+                return false;
             }
         }
     }

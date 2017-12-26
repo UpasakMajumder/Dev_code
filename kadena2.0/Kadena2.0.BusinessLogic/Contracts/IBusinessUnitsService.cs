@@ -9,6 +9,6 @@ namespace Kadena.BusinessLogic.Contracts
 
         List<BusinessUnit> GetUserBusinessUnits(int UserID);
 
-        string UpdateItemQuantity(int CartItemID, int quantity);
+        bool UpdateItemQuantity(int CartItemID, int quantity);
     }
 }

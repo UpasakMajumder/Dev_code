@@ -54,6 +54,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
                 
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
-        string UpdateCartQuantity(int cartItemID,int quantity);
+        bool UpdateCartQuantity(int cartItemID,int quantity);
     }
 }

@@ -63,7 +63,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var submitRequest = mapper.Map<DistributorDTO>(request);
             var serviceResponse = businessUnits.UpdateItemQuantity(submitRequest.CartItemId, submitRequest.ItemQuantity);
-            return Ok(serviceResponse == "success" ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
+            return Ok(serviceResponse ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
         }
     }
 }

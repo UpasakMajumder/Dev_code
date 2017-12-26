@@ -683,7 +683,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItem.CartItemUnits = amount;
         }
 
-        public string UpdateCartQuantity(int cartItemID, int quantity)
+        public bool UpdateCartQuantity(int cartItemID, int quantity)
         {
 
             var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
@@ -691,9 +691,9 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 shoppingCartItem.CartItemUnits = quantity;
                 shoppingCartItem.Update();
-                return "success";
+                return true;
             }
-            return "fail";
+            return false;
         }
     }
 }
