@@ -803,7 +803,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.DocumentName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                     product.ProgramID = ValidationHelper.GetInteger(ddlProgram.SelectedValue, 0);
                     product.State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int));
-                    product.BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int));
+                    product.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int));
                     product.CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
                     product.QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int));
                     product.ItemSpecs = ValidationHelper.GetString(itemSpecsID, string.Empty);

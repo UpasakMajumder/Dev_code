@@ -143,22 +143,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Price", value);
             }
         }
-
-        /// <summary>
-        /// Gets or sets the Save.
-        /// </summary>
-        public string Save
-        {
-            get
-            {
-                return ResHelper.GetString("KDA.DistributorCart.Save");
-            }
-            set
-            {
-                SetValue("Save", value);
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets the SaveasPDF
         /// </summary>
@@ -177,15 +162,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// <summary>
         /// Gets or sets the Print
         /// </summary>
-        public string Print
+        public string Action
         {
             get
             {
-                return ResHelper.GetString("KDA.DistributorCart.Print");
+                return ResHelper.GetString("KDA.DistributorCart.Action");
             }
             set
             {
-                SetValue("Print", value);
+                SetValue("Action", value);
             }
         }
 
@@ -315,52 +300,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Page events"
 
         #region "Event handling"
-
-        /// <summary>
-        /// Save Cart items event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnSaveCartItems_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (Control item in rptCartItems.Items)
-                {
-                    var txtQuantity = item.Controls[0].FindControl("txtUnits") as TextBox;
-                    var quantity = ValidationHelper.GetInteger(txtQuantity.Text, default(int));
-                    if (quantity > default(int))
-                    {
-                        var hdnCartItemID = item.Controls[0].FindControl("hdnCartItemID") as HiddenField;
-                        var cartItemID = ValidationHelper.GetInteger(hdnCartItemID.Value, default(int));
-                        if (cartItemID != default(int))
-                        {
-                            var cartItem = Cart.CartItems.Where(x => x.CartItemID == cartItemID).FirstOrDefault();
-                            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItem, quantity);
-                            ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
-                            ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
-                            Cart.InvalidateCalculations();
-                        }
-                    }
-                    else
-                    {
-                        lblCartError.Text = ResHelper.GetString("KDA.DistributorCart.QuantityError");
-                        divDailogue.Attributes.Add("class", "dialog active");
-                        ValidCart = false;
-                        return;
-                    }
-                }
-                Cart.ShoppingCartShippingOptionID = ValidationHelper.GetValue<int>(ddlShippingOption.SelectedValue);
-                Cart.SetValue("BusinessUnitIDForDistributor", ddlBusinessUnits.SelectedValue);
-                ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
-                lblCartUpdateSuccess.Text = ResHelper.GetString("KDA.DistributorCart.CartUpdateSuccessMessage");
-                divDailogue.Attributes.Add("class", "dialog active");
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "btnSaveCartItems_Click", ex.Message);
-            }
-        }
         /// <summary>
         /// Save pdf click event
         /// </summary>
