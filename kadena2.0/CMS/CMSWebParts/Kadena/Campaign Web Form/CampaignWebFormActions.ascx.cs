@@ -118,6 +118,90 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             SetValue("InitiateCampaignLinkText", value);
         }
     }
+    /// <summary>
+    /// Edit Campaign Tooltip resource string
+    /// </summary>
+    public string EditCampaignToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.EditCampaignToolTipText");
+        }
+        set
+        {
+            SetValue("EditCampaignToolTipText", value);
+        }
+    }
+    /// <summary>
+    /// Initiate Campaign Tooltip resource string
+    /// </summary>
+    public string InitiateCampaignToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.InitiateCampaignToolTipText");
+        }
+        set
+        {
+            SetValue("InitiateCampaignToolTipText", value);
+        }
+    }
+    /// <summary>
+    /// View Products Tooltip resource string
+    /// </summary>
+    public string ViewProductsToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.ViewProductsToolTipText");
+        }
+        set
+        {
+            SetValue("ViewProductsToolTipText", value);
+        }
+    }
+    /// <summary>
+    /// Update products Tooltip resource string
+    /// </summary>
+    public string UpdateProductsToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.UpdateProductsToolTipText");
+        }
+        set
+        {
+            SetValue("UpdateProductsToolTipText", value);
+        }
+    }
+    /// <summary>
+    /// Open Campaign Tooltip resource string
+    /// </summary>
+    public string OpenCampaignToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.OpenCampaignToolTipText");
+        }
+        set
+        {
+            SetValue("OpenCampaignToolTipText", value);
+        }
+    }
+    /// <summary>
+    /// Close Campaign Tooltip resource string
+    /// </summary>
+    public string CloseCampaignToolTipText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.CampaignProduct.CloseCampaignToolTipText");
+        }
+        set
+        {
+            SetValue("CloseCampaignToolTipText", value);
+        }
+    }
 
     #endregion "Properties"
 

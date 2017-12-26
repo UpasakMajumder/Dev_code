@@ -13,7 +13,7 @@
   <QueryName>AddressList</QueryName>
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
-    <![CDATA[SELECT AddressID,AddressPersonalName,AddressType,AddressName,CompanyName,AddressPhone,Email FROM COM_Address where ##where##]]>
+    <![CDATA[SELECT AddressID,AddressPersonalName,AddressType,AddressName,CompanyName,AddressPhone,Email,Status FROM COM_Address where ##where##]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>
 </cms.query>

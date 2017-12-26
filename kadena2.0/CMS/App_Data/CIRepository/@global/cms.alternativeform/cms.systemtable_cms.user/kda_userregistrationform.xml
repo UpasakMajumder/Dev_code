@@ -311,7 +311,7 @@ Select ItemID,DivisionName from KDA_Division
 <div>
 <h2><b>Sign Up</b></h2>
 
-<p>Enter your personal details below:</p>
+<p>{$kadena.signup.PersonalDetailsText$}</p>
 
 <div class="form">
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.FirstName$}</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
@@ -331,7 +331,7 @@ Select ItemID,DivisionName from KDA_Division
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Zipcode$}</span> $$input:UserZipCode$$</div>
 </div>
 
-<p>Enter your account details below:</p>
+<p>{$kadena.signup.AccountsDetailsText$}</p>
 
 <div class="form">
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Email$}</span> $$input:Email$$ <span class="input__error">$$validation:Email$$</span></div>
