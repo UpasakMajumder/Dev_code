@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>KDA.CampaignsProduct</CodeName>
+    <GUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>1e0ed5cc-b277-4963-a622-3ac23fd2a4bb</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetGIPos</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+WITH GI_CTE(POSNumber,ProgramID,Status)
+As
+(
+select s.SKUNumber as POSNumber,Program.ProgramID,C.Status
+from KDA_CampaignsProduct p left join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
+left join COM_SKU s  on s.SKUID=t.NodeSKUID
+left join KDA_Program Program on p.ProgramID=Program.ProgramID
+left join KDA_Campaign C  on C.CampaignID= Program.CampaignID 
+)
+
+select KDA_POSNumber.POSNumber from KDA_POSNumber left join GI_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
+where CTE.POSNumber is null or CTE.Status=0
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>
