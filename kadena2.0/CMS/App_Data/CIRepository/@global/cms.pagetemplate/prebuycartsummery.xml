@@ -134,6 +134,38 @@
 $(".js-CloseMesaage").on("click",function(){
 $(this).closest(".dialog").removeClass("active");
 })
+
+
+$(document).ready(function () {
+	$(".Input_Box").focusout(function(){
+		var cID=parseInt($(this).siblings().first().val());
+		var iQTY=parseInt($(this).val());
+		if(cID!=undefined && iQTY!=undefined && cID!=0){
+			UpdateItem(cID,iQTY);
+		}
+	});
+
+	function UpdateItem(id,qty){
+		var request= {CartItemId: id,ItemQuantity:qty}
+		$.ajax({
+			type: "POST",
+			data :JSON.stringify(request),
+			url: "api/distributor/update",
+			contentType: "application/json",
+			success: function (data) {
+				if (data==200) {
+					$('.Input_Box').parent().parent().siblings().first().next().next().children().first().next().children().trigger('change');
+				} 
+				else{
+				}
+			},
+			error:function (xhr, ajaxOptions, thrownError) {
+
+			}
+		});
+	}
+
+}); 
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>
