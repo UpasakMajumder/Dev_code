@@ -19,7 +19,37 @@ using Kadena.Old_App_Code.Kadena.Enums;
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
     #region "Properties"
-    
+
+    /// <summary>
+    /// Select all text
+    /// </summary>
+    public string SelectAllText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.SelectAllText"), string.Empty);
+        }
+        set
+        {
+            SetValue("SelectAllText", value);
+        }
+    }
+
+    /// <summary>
+    /// Select all text
+    /// </summary>
+    public string NoDataFoundText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.NoDataFoundText"), string.Empty);
+        }
+        set
+        {
+            SetValue("NoDataFoundText", value);
+        }
+    }
+
     /// <summary>
     /// Gets or sets the value of product type
     /// </summary>
@@ -138,6 +168,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
         else
         {
+            lblNoProducts.Visible = false;
             ddlBrands.Visible = ShowBrandFilter;
             ddlProductTypes.Visible = ShowProductCategoryFilter;
             ddlPrograms.Visible = ShowProgramFilter;
@@ -290,6 +321,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
+            lblNoProducts.Visible = false;
             if (TypeOfProduct == (int)ProductsType.PreBuy)
             {
                 var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).ToList();
@@ -380,6 +412,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             if (!string.IsNullOrEmpty(hdncheckedValues.Value))
             {
+                lblNoProducts.Visible = false;
                 List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
                 var skuDetails = SKUInfoProvider.GetSKUs()
                                             .WhereIn("SKUNumber", selectedProducts)
@@ -504,6 +537,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             else
             {
                 Bindproducts();
+                lblNoProducts.Visible = true;
             }
         }
         catch (Exception ex)
@@ -584,23 +618,23 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     }
                     if (!DataHelper.DataSourceIsEmpty(catalogList))
                     {
-                        lblNoProducts.Visible = false;
+                        noData.Visible = false;
                         rptCatalogProducts.DataSource = catalogList;
                         rptCatalogProducts.DataBind();
                     }
                     else
                     {
-                        lblNoProducts.Visible = true;
+                        noData.Visible = true;
                     }
                 }
                 else
                 {
-                    lblNoProducts.Visible = true;
+                    noData.Visible = true;
                 }
             }
             else
             {
-                lblNoProducts.Visible = true;
+                noData.Visible = true;
             }
 
         }
