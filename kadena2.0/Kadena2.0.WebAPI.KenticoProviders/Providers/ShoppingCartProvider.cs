@@ -388,7 +388,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
-        
+
         private decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
         {
             if (ranges != null)
@@ -491,7 +491,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
-        
+
         public CartItem AddCartItem(NewCartItem newItem, MailingList mailingList = null)
         {
             var addedAmount = newItem?.Quantity ?? 0;
@@ -510,8 +510,8 @@ namespace Kadena.WebAPI.KenticoProviders
             if (cartItem == null)
             {
                 isNew = true;
-                cartItem = isTemplatedType 
-                    ? CreateCartItem(productDocument, newItem.TemplateId) 
+                cartItem = isTemplatedType
+                    ? CreateCartItem(productDocument, newItem.TemplateId)
                     : CreateCartItem(productDocument);
             }
 
@@ -681,6 +681,19 @@ namespace Kadena.WebAPI.KenticoProviders
         private static void SetAmount(ShoppingCartItemInfo cartItem, int amount)
         {
             cartItem.CartItemUnits = amount;
-        }        
+        }
+
+        public string UpdateCartQuantity(int cartItemID, int quantity)
+        {
+
+            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
+            if (shoppingCartItem != null)
+            {
+                shoppingCartItem.CartItemUnits = quantity;
+                shoppingCartItem.Update();
+                return "success";
+            }
+            return "fail";
+        }
     }
 }

@@ -1,23 +1,30 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders;
 using System.Collections.Generic;
 using Kadena.Models.BusinessUnit;
 using System;
-using CMS.Ecommerce;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class BusinessUnitService : IBusinessUnitsService
     {
         private readonly IKenticoBusinessUnitsProvider kenticoBusinessUnits;
+        private readonly IShoppingCartProvider _shoppingCartProvider;
 
-        public BusinessUnitService(IKenticoBusinessUnitsProvider kenticoBusinessUnits)
+        public BusinessUnitService(IKenticoBusinessUnitsProvider kenticoBusinessUnits, IShoppingCartProvider shoppingCartProvider)
         {
             if (kenticoBusinessUnits == null)
             {
                 throw new ArgumentNullException(nameof(kenticoBusinessUnits));
             }
+
+            if (shoppingCartProvider == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCartProvider));
+            }
             this.kenticoBusinessUnits = kenticoBusinessUnits;
+            _shoppingCartProvider = shoppingCartProvider;
         }
 
         public List<BusinessUnit> GetBusinessUnits()
@@ -34,15 +41,12 @@ namespace Kadena.BusinessLogic.Services
         {
             if (cartItemID != default(int) && quantity != default(int))
             {
-                var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
-                if (shoppingCartItem != null)
-                {
-                    shoppingCartItem.CartItemUnits = quantity;
-                    shoppingCartItem.Update();
-                    return "success";
-                }
+                return _shoppingCartProvider.UpdateCartQuantity(cartItemID, quantity);
             }
-            return "fail";
+            else
+            {
+                return "fail";
+            }
         }
     }
 }

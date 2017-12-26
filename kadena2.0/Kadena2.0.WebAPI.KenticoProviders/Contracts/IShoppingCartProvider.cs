@@ -1,4 +1,5 @@
-﻿using Kadena.Models;
+﻿using CMS.Ecommerce;
+using Kadena.Models;
 using Kadena.Models.Checkout;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -51,6 +52,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetShippingProviderIcon(string title);
                 
-        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);        
+        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
+
+        string UpdateCartQuantity(int cartItemID,int quantity);
     }
 }

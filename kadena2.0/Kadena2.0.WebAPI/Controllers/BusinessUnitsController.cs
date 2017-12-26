@@ -4,6 +4,7 @@ using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Net;
 using System.Web.Http;
@@ -14,9 +15,10 @@ namespace Kadena.WebAPI.Controllers
     public class BusinessUnitsController : ApiControllerBase
     {
         private readonly IBusinessUnitsService businessUnits;
+        private readonly IShoppingCartProvider _shoppingCartProvider;
         private readonly IMapper mapper;
 
-        public BusinessUnitsController(IBusinessUnitsService businessUnits, IMapper mapper)
+        public BusinessUnitsController(IBusinessUnitsService businessUnits, IMapper mapper, IShoppingCartProvider shoppingCartProvider)
         {
             if (businessUnits == null)
             {
@@ -28,8 +30,13 @@ namespace Kadena.WebAPI.Controllers
                 throw new ArgumentNullException(nameof(mapper));
             }
 
+            if (shoppingCartProvider == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCartProvider));
+            }
             this.mapper = mapper;
             this.businessUnits = businessUnits;
+            _shoppingCartProvider = shoppingCartProvider;
         }
 
         [HttpGet]
