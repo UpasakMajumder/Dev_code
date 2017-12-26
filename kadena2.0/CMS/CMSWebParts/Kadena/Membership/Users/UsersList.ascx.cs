@@ -990,6 +990,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
                     {
                         BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                        DeleteUserRoles(user.UserID);
                         NewUserRole = ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
                         if (!string.IsNullOrEmpty(NewUserRole))
                         {
@@ -1007,6 +1008,31 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         catch (Exception ex)
         {
             EventLogProvider.LogException("UsersList", "UserSave", ex);
+        }
+    }
+    /// <summary>
+    /// deletes all the roles assigned to particular user
+    /// </summary>
+    /// <param name="userID"></param>
+    private void DeleteUserRoles(int userID)
+    {
+        try
+        {
+            var userRoleData = UserRoleInfoProvider.GetUserRoles()
+                .WhereEquals("UserID", userID)
+                .Columns("RoleID")
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(userRoleData))
+            {
+                userRoleData.ForEach(x =>
+                {
+                    UserRoleInfoProvider.RemoveUserFromRole(userID, x.RoleID);
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList", "DeleteUserRoles", ex);
         }
     }
 
@@ -1057,7 +1083,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         UserInfoProvider.SetUserInfo(user);
         UserInfoProvider.SetPassword(user.UserName, Password);
         UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
-        NewUserRole=ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
+        NewUserRole = ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
         if (!string.IsNullOrEmpty(NewUserRole))
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);

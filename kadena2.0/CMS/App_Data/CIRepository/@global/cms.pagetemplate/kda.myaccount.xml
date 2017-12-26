@@ -127,7 +127,16 @@
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
-          <property name="contentbefore"></property>
+          <property name="contentbefore">
+<![CDATA[
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script>
+  $(document).ready(function () {
+    $('.FormButton').addClass('btn-action');
+  });
+</script>
+]]>
+          </property>
           <property name="controlid">MyProfile</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
@@ -155,7 +164,7 @@
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resourceprefix"></property>
           <property name="showfordocumenttypes"></property>
-          <property name="submitbuttonresourcestring">Save Changes</property>
+          <property name="submitbuttonresourcestring">{$Kadena.MyAccount.SaveChanges$}</property>
           <property name="timezonetype">inherit</property>
           <property name="usecolonbehindlabel">True</property>
           <property name="useupdatepanel">False</property>
