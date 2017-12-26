@@ -34,6 +34,12 @@
                     <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="input__error" ErrorMessage="Please select Campaign" InitialValue="0" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
                 </div>
             </div>
+             <div class="mb-2">
+                <div class="input__wrapper">
+                    <span class="input__label" id="lblStatus" runat="server"></span>
+                    <cms:CMSDropDownList id="ddlStatus" CssClass="input__select" runat="server" ></cms:CMSDropDownList>
+               </div>
+            </div>
         </div>
         <div class="mb-3 form__btns">
             <div class="">

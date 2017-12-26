@@ -618,6 +618,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             var categories = ProductCategoryProvider.GetProductCategories()
                 .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("Status",1)
                 .Columns("ProductCategoryID,ProductCategoryTitle")
                 .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
                 .ToList();
