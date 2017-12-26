@@ -236,8 +236,9 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckTaCRequestDTO, LoginRequest>();
                 config.CreateMap<AcceptTaCRequestDTO, LoginRequest>();
                 config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
-				config.CreateMap<BusinessUnit, BusinessUnitDto>();
+                config.CreateMap<BusinessUnit, BusinessUnitDto>();
                 config.CreateMap<Brand, BrandDto>();
+                config.CreateMap<Distributor, DistributorDTO>();
             });
         }
     }

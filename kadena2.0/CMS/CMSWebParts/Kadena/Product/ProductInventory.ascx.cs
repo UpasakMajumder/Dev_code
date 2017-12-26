@@ -80,7 +80,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("AddToCartLinkText", value);
         }
     }
-
+    /// <summary>
+    /// NoDataText Link text
+    /// </summary>
+    public string NoDataText
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.ItemList.NoDataFoundText");
+        }
+        set
+        {
+            SetValue("NoDataText", value);
+        }
+    }
     /// <summary>
     /// Search placeholder text
     /// </summary>
@@ -325,6 +338,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                       .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
                 rptProductLists.DataSource = productAndSKUDetails;
                 rptProductLists.DataBind();
+            }
+            else
+            {
+                divNoRecords.Visible = true;
             }
         }
         catch (Exception ex)
