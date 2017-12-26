@@ -64,7 +64,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblExpDate" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblExpDate" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker" ReadOnly="true"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="input__error" ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
                 </div>
@@ -88,7 +88,7 @@
                 <cms:LocalizedLabel ID="lblWeight" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblWeight" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtWeight" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvWeight" runat="server" ControlToValidate="txtWeight" ></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="rfvWeight" runat="server" ControlToValidate="txtWeight" CssClass="input__error"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="revWeigth" ValidationExpression="((\d+)((\.\d{1,100})?))$" runat="server" ControlToValidate="txtWeight"></asp:RegularExpressionValidator>
                 </div>
             </div>
