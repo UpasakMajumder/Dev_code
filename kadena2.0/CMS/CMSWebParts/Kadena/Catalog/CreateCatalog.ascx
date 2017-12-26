@@ -36,7 +36,7 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#Eval("SKUImagePath",string.Empty)==string.Empty? CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") :Eval("SKUImagePath",string.Empty)%>' />
+                        <img src='<%# GetProductImage(Eval("SKUImagePath"))%>' />
                     </label>
                 </div>
                 <div class="input__wrapper">
@@ -49,7 +49,7 @@
                 <div class="crime__block enablePrint notdisplay">
                     <div class="crime__leftsec">
                         <div class="img__block"><p><%# Eval("SKUImagePath")%></p>
-                            <img src="<%#Eval("SKUImagePath",string.Empty)==string.Empty? CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") :Eval("SKUImagePath",string.Empty)%>" />
+                            <img src="<%# GetProductImage(Eval("SKUImagePath"))%>" />
                         </div>
                     </div>
                     <div class="crime__rightsec">

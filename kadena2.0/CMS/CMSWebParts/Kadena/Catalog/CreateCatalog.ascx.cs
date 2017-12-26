@@ -389,6 +389,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", GetOpenCampaign?.Name);
                 htmlTextheader = htmlTextheader.Replace("OrderStartDate", GetOpenCampaign.StartDate == default(DateTime) ? string.Empty : GetOpenCampaign.StartDate.ToString("MMM dd, yyyy"));
                 htmlTextheader = htmlTextheader.Replace("OrderEndDate", GetOpenCampaign.EndDate == default(DateTime) ? string.Empty : GetOpenCampaign.EndDate.ToString("MMM dd, yyyy"));
+                string generalInventory = string.Empty;
+                if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+                {
+                    generalInventory = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_GeneralInventoryCover");
+                }
                 List<int> brands = new List<int>();
                 string programsContent = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
@@ -450,7 +455,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             {
                                 var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                                 string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", string.IsNullOrEmpty(product.SKUImagePath) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : product.SKUImagePath);
+                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductImage(product.SKUImagePath));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product.SKUNumber);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product.SKUShortDescription);
@@ -470,7 +475,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PdfEndingTags");
                 string html = pdfProductsContentWithBrands + pdfClosingDivs;
-                var pdfBytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
+                byte[] pdfByte = default(byte[]);
+                if (TypeOfProduct == (int)ProductsType.PreBuy)
+                {
+                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
+                }
+                else
+                {
+                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, generalInventory + closingDiv);
+                }
                 string fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
@@ -481,7 +494,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
                 Response.Clear();
-                MemoryStream ms = new MemoryStream(pdfBytes);
+                MemoryStream ms = new MemoryStream(pdfByte);
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
                 Response.Buffer = true;
@@ -580,6 +593,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         lblNoProducts.Visible = true;
                     }
                 }
+                else
+                {
+                    lblNoProducts.Visible = true;
+                }
             }
             else
             {
@@ -591,6 +608,43 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             EventLogProvider.LogException("Binding products to repeater", ex.Message, ex);
         }
+    }
+
+    /// <summary>
+    /// Get product Image by Image path
+    /// </summary>
+    /// <param name="imagepath"></param>
+    /// <returns></returns>
+    public string GetProductImage(object imagepath)
+    {
+        string returnValue = string.Empty;
+        try
+        {
+            if (TypeOfProduct == (int)ProductType.PreBuy)
+            {
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
+            }
+            else
+            {
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
     }
 
     /// <summary>
