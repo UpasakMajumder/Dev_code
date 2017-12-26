@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/AddCampaignProducts.ascx.cs" %>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+
+<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 
 <asp:HiddenField ID="hdnDatepickerUrl" runat="server" />
 <div class="login__form-content js-login">
@@ -46,7 +46,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
                     <div class="input__inner long__desc">
-                        <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__text"></asp:TextBox>
+                        <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="input__error" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                         <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="input__error" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="input__error"
-                            ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$" ForeColor="Red">
+                            ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         <asp:TextBox runat="server" ID="txtQty" class="input__text"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqQty" CssClass="input__error" runat="server" ControlToValidate="txtQty"></asp:RequiredFieldValidator>
                         <asp:RegularExpressionValidator ID="revQty" runat="server" CssClass="input__error"
-                            ControlToValidate="txtQty" ValidationExpression="^[0-9]*$" ForeColor="Red">
+                            ControlToValidate="txtQty" ValidationExpression="^[0-9]*$">
                         </asp:RegularExpressionValidator>
                     </div>
                 </div>
@@ -119,12 +119,22 @@
                     </div>
                 </div>
             </div>
+
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
-                    <span class="input__label" runat="server" id="lblItemSpecs"></span>
+                    <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.OtherItemSpecsText")%></span>
                     <div class="input__inner">
-                        <asp:TextBox runat="server" ID="txtItemSpecs" class="input__text"></asp:TextBox>
-                     </div>
+                        <asp:DropDownList runat="server" ID="ddlItemSpecs" CssClass="input__select" OnSelectedIndexChanged="ddlItemSpecs_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-2 form__block" id="divItemSpecs" runat="server" visible="false">
+                <div class="input__wrapper">
+                    <span class="input__label" runat="server" id="lblOtherItemSpec"></span>
+                    <div class="input__inner">
+                        <asp:TextBox runat="server" ID="txtItemSpec" CssClass="input__text"></asp:TextBox>
+                    </div>
                 </div>
             </div>
             <div class="mb-2 form__block">

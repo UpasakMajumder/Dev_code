@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.ProductItemSpecs</CodeName>
+    <GUID>a214ad8e-cfbd-4a39-8352-95028b861e93</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.create$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.create$}</PermissionDisplayName>
+  <PermissionGUID>0c7ba3d5-27a9-4ac8-8318-1b02671719b3</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

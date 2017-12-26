@@ -52,52 +52,52 @@
   h1 {
     text-align: center;
   }
+}
 
-  .crime__block {
+.crime__block {
+  border-bottom: 1px solid $brand-black;
+
+  &.product__selected {
     border-bottom: 1px solid $brand-black;
+  }
 
-    &.product__selected {
-      border-bottom: 1px solid $brand-black;
-    }
+  .crime__leftsec {
+    width: 20%;
+    float: left;
 
-    .crime__leftsec {
-      width: 20%;
-      float: left;
+    .img__block {
+      width: 100%;
+      margin: 0 auto;
 
-      .img__block {
-        width: 100%;
-        margin: 0 auto;
-
-        img {
-          padding: 30px 0;
-          max-width: 100%;
-          height: auto;
-        }
+      img {
+        padding: 30px 0;
+        max-width: 100%;
+        height: auto;
       }
     }
+  }
 
-    .crime__rightsec {
-      width: 77%;
-      float: right;
-      margin: 20px 0 0;
+  .crime__rightsec {
+    width: 77%;
+    float: right;
+    margin: 20px 0 0;
 
-      .crime__btmsec {
-        margin-bottom: 10px;
+    .crime__btmsec {
+      margin-bottom: 10px;
 
-        .crime__btmsec-detail {
-          width: 30%;
+      .crime__btmsec-detail {
+        width: 30%;
+        display: inline-block;
+
+        .input__label {
           display: inline-block;
+          width: auto;
+          float: none;
+        }
 
-          .input__label {
-            display: inline-block;
-            width: auto;
-            float: none;
-          }
-
-          .input__con {
-            display: inline-block;
-            width: auto;
-          }
+        .input__con {
+          display: inline-block;
+          width: auto;
         }
       }
     }
@@ -123,6 +123,36 @@
 
     label {
       font-size: $font-size-default;
+    }
+  }
+}
+
+.general__sec {
+  width: 100%;
+
+  .general__left {
+    float: left;
+    width: 50%;
+
+    .details__sec {
+      width: 100%;
+      margin-bottom: 0;
+      line-height: 16px;
+
+      .input__con {
+        margin-left: 10px;
+
+        label {
+          font-size: 14px;
+        }
+      }
+
+      .input__label {
+        label {
+          font-size: 14px;
+          margin: 0;
+        }
+      }
     }
   }
 }
@@ -173,8 +203,26 @@
     float: left;
   }
 
-  .cus__content--block {
+  .css-header {
+    display: none;
+  }
+
+  .css-sidebar {
+    display: none;
+  }
+
+  .sidebar-logo {
+    display: none;
+  }
+
+  .cus__content--block,
+  .col-sm-3 {
     width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .footer {
+    display: none;
   }
 }
-
