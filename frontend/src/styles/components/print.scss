@@ -127,6 +127,36 @@
   }
 }
 
+.general__sec {
+  width: 100%;
+
+  .general__left {
+    float: left;
+    width: 50%;
+
+    .details__sec {
+      width: 100%;
+      margin-bottom: 0;
+      line-height: 16px;
+
+      .input__con {
+        margin-left: 10px;
+
+        label {
+          font-size: 14px;
+        }
+      }
+
+      .input__label {
+        label {
+          font-size: 14px;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
 .product__details {
   .input__label {
     width: auto;
