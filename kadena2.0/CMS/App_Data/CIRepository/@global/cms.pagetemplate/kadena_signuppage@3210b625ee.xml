@@ -163,7 +163,7 @@
           <property name="approvalpage">~/CMSPages/Dialogs/UserRegistration.aspx</property>
           <property name="assigntoroles"></property>
           <property name="assigntosites">TWE</property>
-          <property name="buttoncss">btn-action j-submit-button js-btnSmarty</property>
+          <property name="buttoncss">btn-action j-submit-button </property>
           <property name="buttontext">Sign Up</property>
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
