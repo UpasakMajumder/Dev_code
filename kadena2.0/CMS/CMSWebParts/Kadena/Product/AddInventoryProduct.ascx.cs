@@ -84,6 +84,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
                 revBundleQnt.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+                rfvWeight.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
+                revWeigth.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 revEstPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
@@ -349,6 +351,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
                     SKUProductType = SKUProductTypeEnum.EProduct,
+                    SKUWeight=ValidationHelper.GetDouble(txtWeight.Text,default(double)),
                 };
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
@@ -408,6 +411,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     updateProduct.SKUSiteID = CurrentSite.SiteID;
                     updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
                     updateProduct.SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0);
+                    updateProduct.SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double));
                     SKUInfoProvider.SetSKUInfo(updateProduct);
                 }
                 product.Update();
@@ -456,6 +460,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
+                            txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
@@ -491,6 +496,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             txtLongDes.Text = string.Empty;
             txtQuantity.Text = string.Empty;
             txtShortDes.Text = string.Empty;
+            txtWeight.Text = string.Empty;
             RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
             lstUsers = new List<Product.AllocateProduct>();
@@ -715,7 +721,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                
                 string selectedPos = ddlPosNo.SelectedValue;
                 BindData();
                 SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
@@ -733,6 +738,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                     txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                     txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
+                    txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                     CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", skuDetails.SKUID).FirstObject;
                     if (product != null)
                     {
