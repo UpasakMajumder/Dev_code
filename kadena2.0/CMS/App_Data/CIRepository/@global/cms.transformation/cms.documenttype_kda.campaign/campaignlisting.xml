@@ -15,7 +15,7 @@
   <td><%# Eval("StartDate")%></td>
   <td> <%#Eval("EndDate")%></td>
   <td>
-    <div class="text-center webform_view">      
+    <div class="text-center webform__view">      
       <uc1:CampaignWebFormActions runat="server" id="CampaignWebFormActions" />
     </div>
   </td>

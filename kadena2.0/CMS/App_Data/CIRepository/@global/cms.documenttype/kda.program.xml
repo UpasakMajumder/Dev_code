@@ -84,6 +84,15 @@
           <SortItems>False</SortItems>
         </settings>
       </field>
+      <field allowempty="true" column="Status" columntype="boolean" guid="c00f373d-93fc-4263-ba74-91a8c757842d" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>true</defaultvalue>
+          <fieldcaption>Status</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>3014d09e-c493-4c7d-8e58-6564e28a1344</ClassGUID>

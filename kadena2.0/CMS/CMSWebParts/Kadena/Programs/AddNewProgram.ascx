@@ -41,6 +41,12 @@
                     <cms:LocalizedLabel runat="server" ID="lblDateValid" CssClass="input__label" ResourceString="KDA.Programs.DateValidation" Visible="false"></cms:LocalizedLabel>
                 </div>
             </div>
+             <div class="mb-2">
+                <div class="input__wrapper">
+                    <span class="input__label" id="lblStatus" runat="server"></span>
+                    <cms:CMSDropDownList id="ddlStatus" CssClass="input__select" runat="server" ></cms:CMSDropDownList>
+               </div>
+            </div>
         </div>
         <div class="mb-3 form__btns">
             <div class="">

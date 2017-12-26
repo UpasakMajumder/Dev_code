@@ -88,6 +88,7 @@
       <th>{$KDA.ProgramsList.BrandName$}</th>
       <th>{$KDA.ProgramsList.CampaignName$}</th>
       <th>{$KDA.ProgramsList.Description$}</th>
+      <th>{$KDA.ProgramsList.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>
