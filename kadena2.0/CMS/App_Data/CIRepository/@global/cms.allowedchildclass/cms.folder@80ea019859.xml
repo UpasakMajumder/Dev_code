@@ -48,5 +48,12 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.AdminModule">
+      <ParentClassID>
+        <CodeName>KDA.AdminModule</CodeName>
+        <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
   </Bindings>
 </cms.allowedchildclass>

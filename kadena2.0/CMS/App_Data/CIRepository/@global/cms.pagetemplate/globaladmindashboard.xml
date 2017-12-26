@@ -13,6 +13,7 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>754acf74-5c61-419a-ac5a-cd7631909473</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
