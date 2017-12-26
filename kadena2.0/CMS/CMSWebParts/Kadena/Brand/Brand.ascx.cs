@@ -81,6 +81,7 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
                 brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
                 brandData.BrandName = ValidationHelper.GetString(form.GetFieldValue("BrandName"), string.Empty);
                 brandData.BrandDescription = ValidationHelper.GetString(form.GetFieldValue("BrandDescription"), string.Empty);
+                brandData.Status= ValidationHelper.GetBoolean(form.GetFieldValue("Status"), true);
                 form.SaveData(CurrentDocument.Parent.AbsoluteURL);
             }
         }
