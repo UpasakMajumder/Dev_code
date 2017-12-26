@@ -9,7 +9,7 @@
 <![CDATA[
 <div class="data_footer">
   <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-    <ul class="pagination">
+    <ul class="pagination mb-0 text--right list--unstyled">
       <asp:PlaceHolder runat="server" ID="plcFirstPage"></asp:PlaceHolder>
       <asp:PlaceHolder runat="server" ID="plcPreviousPage"></asp:PlaceHolder>&nbsp;
       <asp:PlaceHolder runat="server" ID="plcPreviousGroup"></asp:PlaceHolder>
