@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    <div class="mb-3 form_btns">
+    <div class="mb-3 form__btns">
         <div class="">
             <cms:LocalizedButton ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" runat="server" ButtonStyle="Primary" EnableViewState="false"
                 ResourceString="Kadena.POSFrom.SaveButtonText" />
