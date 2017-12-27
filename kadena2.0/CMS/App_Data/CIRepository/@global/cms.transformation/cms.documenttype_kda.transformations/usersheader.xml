@@ -7,6 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
+<div class="table__responsive">
 <table class="table show__table-bottom">
   <tbody>
     <tr>
