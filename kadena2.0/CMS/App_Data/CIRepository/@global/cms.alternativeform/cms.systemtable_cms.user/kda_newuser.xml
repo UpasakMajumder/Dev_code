@@ -480,8 +480,8 @@ Select ItemID,DivisionName from KDA_Division
 <div class="mb-2 form__block">
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<span class="input__error">$$validation:BusinessUnit$$</span></div>
 
-<div class="business__assigned-user">
-<table class="show-table js-buTable" id="UserBusinessUnit" style="display:none">
+<div class="Business__Assigned-User">
+<table class="show-table js-buTable table show__table-bottom" id="UserBusinessUnit" style="display:none">
 	<tbody id="UserBusinessUnitbody">
 		<tr>
 			<td>Bussiness Unit Name</td>

@@ -22,7 +22,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblStartDate" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.CampaignForm.lblStartDate" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtStartDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker" ReadOnly="true"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtStartDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                      <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtStartDate" runat="server"></cms:CMSRequiredFieldValidator>
                 </div>
             </div>
@@ -31,7 +31,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lbl" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.CampaignForm.lblEndDate" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtEndDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker" ReadOnly="true"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtEndDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                    <cms:CMSRequiredFieldValidator ID="rfvEndDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtEndDate" runat="server"></cms:CMSRequiredFieldValidator>
                 </div>
             </div>
