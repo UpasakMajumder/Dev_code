@@ -38,7 +38,6 @@
         </HeaderTemplate>
         <ItemTemplate>
             <div class="cus__content--block col-sm-3">
-                <div class="noprint ">
                     <div class="img__block">
                         <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                         <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
@@ -46,91 +45,11 @@
                         </label>
                     </div>
                     <div class="input__wrapper">
-                        <label for="dom" class="input__label "><%#TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
+                        <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
                         <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
                         <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
                     </div>
                     <p><%#Eval("SKUDescription")%></p>
-                </div>
-                <div class="crime__block enablePrint notdisplay">
-                    <div class="crime__leftsec">
-                        <div class="img__block">
-                            <p><%# Eval("SKUImagePath")%></p>
-                            <img src="<%# GetProductImage(Eval("SKUImagePath"))%>" />
-                        </div>
-                    </div>
-                    <div class="crime__rightsec">
-                        <div class="crime__topsec">
-                            <div class="details__sec">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("kadena.CatalogPrint.PartNumberText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><b><%#Eval("SKUNumber")%>&nbsp;</b></label>
-                                </div>
-                            </div>
-                            <div class="details__sec">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("kadena.CatalogPrint.BrandText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int)))%>&nbsp;</label>
-                                </div>
-                            </div>
-                            <div class="details__sec">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("kadena.CatalogPrint.ShortDescText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#Eval("ProductName")%>&nbsp;</label>
-                                </div>
-                            </div>
-                            <div class="details__sec">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("kadena.CatalogPrint.DescriptionText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#Eval("SKUDescription")%>&nbsp;</label>
-                                </div>
-                            </div>
-                            <div class="details__sec">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("kadena.CatalogPrint.ValidStatesText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#CMS.Globalization.StateInfoProvider.GetStateInfo("State")%>&nbsp;</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="crime_btmSec">
-                            <div class="crime_btmSec_detail">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("Kadena.CatalogPrint.CostText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#Eval("EstimatedPrice")%>&nbsp;</label>
-                                </div>
-                            </div>
-                            <div class="crime_btmSec_detail">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("Kadena.CatalogPrint.BundleQtyText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#Eval("QtyPerPack")%>&nbsp;</label>
-                                </div>
-                            </div>
-                            <div class="crime__btmSec_detail">
-                                <div class="input__label">
-                                    <label><b><%# CMS.Helpers.ResHelper.GetString("Kadena.CatalogPrint.ExpireDateText") %>:</b></label>
-                                </div>
-                                <div class="input__con">
-                                    <label><%#Eval("SKUValidUntil")%>&nbsp;</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
             </div>
         </ItemTemplate>
     </cms:CMSRepeater>
