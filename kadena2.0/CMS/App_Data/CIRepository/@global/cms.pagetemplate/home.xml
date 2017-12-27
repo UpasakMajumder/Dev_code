@@ -203,7 +203,7 @@
 ]]>
           </property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles">GlobalAdmin</property>
+          <property name="displaytoroles">TWEAdmin;TWEGlobalAdmin</property>
           <property name="hideonsubpages">False</property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -353,7 +353,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
@@ -532,7 +532,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="querystringkey"></property>
           <property name="relatednodeisontheleftside">False</property>
