@@ -54,7 +54,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             string[] statesGroupList = CustomTableItemProvider.GetItems<StatesGroupItem>().ToList().Select(x => x.GroupName).ToArray();
             if (statesGroupList != null && statesGroupList.Count() > 0)
             {
-                AddOneFromManyValidation(4, "StatesGroupList", statesGroupList, sheet);
+                AddOneFromManyValidation(5, "StatesGroupList", statesGroupList, sheet);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             string[] brandList = CustomTableItemProvider.GetItems<BrandItem>().ToList().Select(x => x.BrandName).ToArray();
             if (brandList != null && brandList.Count() > 0)
             {
-                AddOneFromManyValidation(7, "BrandList", brandList, sheet);
+                AddOneFromManyValidation(8, "BrandList", brandList, sheet);
             }
         }
 
@@ -72,14 +72,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             string[] productCategoryList = ProductCategoryProvider.GetProductCategories().OnCurrentSite().Select(x => x.ProductCategoryTitle).ToArray();
             if (productCategoryList != null && productCategoryList.Count() > 0)
             {
-                AddOneFromManyValidation(10, "ProductCategoryList", productCategoryList, sheet);
+                AddOneFromManyValidation(11, "ProductCategoryList", productCategoryList, sheet);
             }
         }
 
         private void BindStatusList(ISheet sheet)
         {
             string[] statusList = new string[] { "Active", "In-Active" };
-            AddOneFromManyValidation(14, "ProductStatus", statusList, sheet);
+            AddOneFromManyValidation(15, "ProductStatus", statusList, sheet);
         }
     }
 }
