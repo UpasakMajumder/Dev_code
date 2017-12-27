@@ -47,7 +47,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             rfvCatgory.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCategroyRequired");
             revPOSCodeLength.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSMaxLengthMsg");
         }
-    }   
+    }
 
     /// <summary>
     /// Reloads the control data.
@@ -149,7 +149,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 
     private void BindBrands()
     {
-        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").WhereEquals("Status",1).OrderBy("BrandName").ToList();
+        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").WhereEquals("Status", 1).OrderBy("BrandName").ToList();
         if (!DataHelper.DataSourceIsEmpty(brands))
         {
             ddlBrand.DataSource = brands;
