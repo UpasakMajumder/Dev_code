@@ -110,7 +110,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)),
                         BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
                         POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
-                        Enable = true
                     };
                     objPosNumber.Insert();
                     Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
@@ -150,7 +149,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 
     private void BindBrands()
     {
-        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").ToList();
+        var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME).Columns("BrandCode,BrandName").WhereEquals("Status", 1).OrderBy("BrandName").ToList();
         if (!DataHelper.DataSourceIsEmpty(brands))
         {
             ddlBrand.DataSource = brands;
