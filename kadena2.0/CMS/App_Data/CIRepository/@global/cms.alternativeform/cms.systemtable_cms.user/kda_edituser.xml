@@ -463,7 +463,8 @@ Select ItemID,DivisionName from KDA_Division
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<span class="input__error">$$validation:BusinessUnit$$</span></div>
 
 <div class="business__assigned-user">
-<table class="show-table js-buTable" id="UserBusinessUnit" style="display:none">
+<div class="table__responsive">
+<table class="show-table js-buTable table show__table-bottom" id="UserBusinessUnit" style="display:none">
 	<tbody id="UserBusinessUnitbody">
 		<tr>
 			<td>{$Kadena.Users.BusinessUnitName$}</td>
@@ -471,6 +472,7 @@ Select ItemID,DivisionName from KDA_Division
 		</tr>
 	</tbody>
 </table>
+</div>
 </div>
 </div>
 
