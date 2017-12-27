@@ -211,13 +211,12 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
-  
   $(document).ready(function(){
     $('#btnClose').click(function(){
       $('#dialog_Add_To_Cart').removeClass('active');
