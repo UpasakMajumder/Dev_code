@@ -21,28 +21,31 @@
 <![CDATA[
 <div class="content-header">
   <div class="content-header__inner">
-  <cms:CMSWebPartZone ZoneID="ZoneProgramsHeader" runat="server" />
-    </div>
-    <div class="breadcrumbs">
-   <cms:CMSWebPartZone ZoneID="ZoneBreadcrubs" runat="server" />
-    </div>
+    <cms:CMSWebPartZone ZoneID="ZoneProgramsHeader" runat="server" />
   </div>
-  <div class="content-block">
-    
-    <div class="search__block">
-     <!-- <input type="text" class="input__text" placeholder="Search" value="">-->
-      <cms:CMSWebPartZone ZoneID="ZoneFilter" runat="server" />
-    </div> 
-    <cms:CMSWebPartZone ZoneID="ZoneAddNewProgram" runat="server" />
-     <cms:CMSWebPartZone ZoneID="ZoneProgramList" runat="server" />
+  <div class="breadcrumbs">
+    <cms:CMSWebPartZone ZoneID="ZoneBreadcrubs" runat="server" />
+  </div>
+</div>
+<div class="content-block">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        
+        <cms:CMSWebPartZone ZoneID="ZoneFilter" runat="server" />
+      </div> 
+      <cms:CMSWebPartZone ZoneID="ZoneAddNewProgram" runat="server" />
+      </div>
+    </div>
+    <cms:CMSWebPartZone ZoneID="ZoneProgramList" runat="server" />
     <div class="data_footer">
-   
+      
       <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-       <cms:CMSWebPartZone ZoneID="ZonePager" runat="server" />
+        <cms:CMSWebPartZone ZoneID="ZonePager" runat="server" />
       </div>
       
     </div>
-  </div>
+</div>
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
@@ -158,7 +161,6 @@ Name LIKE '%{?searchtext?}%'
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-<div class="clearfix"></div>
 <div class=" mt-2">
     <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
 </div>

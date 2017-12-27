@@ -61,7 +61,8 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
-                        <asp:TextBox runat="server" ID="txtExpireDate" CssClass="input__text "></asp:TextBox>
+                        <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
+                        <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
                     </div>
                 </div>
             </div>
