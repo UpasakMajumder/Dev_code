@@ -57,7 +57,28 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+<![CDATA[
+<div class="dialog" id="autoSave_Dialog">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__content">
+      <p class="response_Success">
+        {$KDA.Cart.Update.Success$}
+      </p>
+      <p class="response_failure">
+        {$KDA.Cart.Update.Failure$}
+      </p>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+]]>
+          </property>
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
@@ -134,45 +155,49 @@
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-$(".js-CloseMesaage").on("click",function(){
-$(this).closest(".dialog").removeClass("active");
-})
-
-
-$(document).ready(function () {
-	$(".Input_Box").focusout(function(){
-		var cID=parseInt($(this).siblings().first().val());
-		var iQTY=parseInt($(this).val());
-		if(cID!=undefined && iQTY!=undefined && cID!=0){
-			UpdateItem(cID,iQTY);
-		}
-	});
-
-	function UpdateItem(id,qty){
-		var request= {CartItemId: id,ItemQuantity:qty}
-		$.ajax({
-			type: "POST",
-			data :JSON.stringify(request),
-			url: "api/distributor/update",
-			contentType: "application/json",
-			success: function (data) {
-				if (data==200) {
-					$('.Input_Box').parent().parent().siblings().first().next().next().children().first().next().children().trigger('change');
-				} 
-				else{
-				}
-			},
-			error:function (xhr, ajaxOptions, thrownError) {
-
-			}
-		});
-	}
-
-}); 
+<script type="text/javascript" >
+  $(".js-CloseMesaage").on("click",function(){
+    $(this).closest(".dialog").removeClass("active");
+  })
+    $(document).ready(function () {
+      $(".js-ItemQuantity").focusout(function(){
+        var cID=parseInt($(this).siblings().first().val());
+        var iQTY=parseInt($(this).val());
+        if(cID!=undefined && iQTY!=undefined && cID!=0){
+          UpdateItem(cID,iQTY,this);
+        }
+      });
+      function UpdateItem(id,qty,box){
+        var request= {CartItemId: id,ItemQuantity:qty}
+            $.ajax({
+              type: "POST",
+              data :JSON.stringify(request),
+              url: "api/distributor/update",
+              contentType: "application/json",
+              success: function (data) {
+                $('#autoSave_Dialog').addClass('active');
+                if (data==200) {
+                  $('.response_Success').show();
+                  $('.response_failure').hide();
+                  $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change');
+                } 
+                else{
+                  $('.response_Success').hide();
+                  $('.response_failure').show();
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError) {
+                $('.response_Success').hide();
+                $('.response_failure').show();
+              }
+            });
+      }
+    }); 
+</script>
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>
