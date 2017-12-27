@@ -22,10 +22,10 @@
   <div class="content-header__inner">
     <h1 class="content-header__page-name">Pre-Buy</h1>
     <div class="text-right">
-      <div class="add_btn">
+      <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZonePDF" runat="server" />
       </div>
-      <div class="add_btn" style="margin-right: 5px;">
+      <div class="add__btn" style="margin-right: 5px;">
         <cms:CMSWebPartZone ZoneID="ZonePrint" runat="server" />
       </div>
     </div>
@@ -118,7 +118,14 @@
           <property name="wherecondition" ismacro="true">
             <![CDATA[ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
           </property>
-          <property name="zerorowstext">No cart items found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class="clearfix"></div>
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+]]>
+          </property>
         </webpart>
         <webpart controlid="Javascript" guid="4b4cc245-d040-4a96-8e1d-743b38234c5e" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
@@ -134,6 +141,38 @@
 $(".js-CloseMesaage").on("click",function(){
 $(this).closest(".dialog").removeClass("active");
 })
+
+
+$(document).ready(function () {
+	$(".Input_Box").focusout(function(){
+		var cID=parseInt($(this).siblings().first().val());
+		var iQTY=parseInt($(this).val());
+		if(cID!=undefined && iQTY!=undefined && cID!=0){
+			UpdateItem(cID,iQTY);
+		}
+	});
+
+	function UpdateItem(id,qty){
+		var request= {CartItemId: id,ItemQuantity:qty}
+		$.ajax({
+			type: "POST",
+			data :JSON.stringify(request),
+			url: "api/distributor/update",
+			contentType: "application/json",
+			success: function (data) {
+				if (data==200) {
+					$('.Input_Box').parent().parent().siblings().first().next().next().children().first().next().children().trigger('change');
+				} 
+				else{
+				}
+			},
+			error:function (xhr, ajaxOptions, thrownError) {
+
+			}
+		});
+	}
+
+}); 
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>

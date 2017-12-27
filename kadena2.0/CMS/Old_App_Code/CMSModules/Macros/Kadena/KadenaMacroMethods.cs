@@ -389,7 +389,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             foreach (var pageType in pageTypes)
             {
-                result += $"ClassName = N'{pageType}' OR ";
+                if (GetRoleBasedAdminAccessModuleStatus(pageType))
+                {
+                    result += $"ClassName = N'{pageType}' OR ";
+                }
             }
             if (result.Length > 0)
             {
@@ -400,6 +403,26 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 result = "1 = 0";
             }
             return result;
+        }
+
+        private static bool GetRoleBasedAdminAccessModuleStatus(string className)
+        {
+            bool status = true;
+            if (className.ToLower().Equals("kda.adminmodule"))
+            {
+                string globalAdminRole = SettingsKeyInfoProvider.GetValue("KDA_GlobalAminRoleName", SiteContext.CurrentSiteID);
+                string adminRole = SettingsKeyInfoProvider.GetValue("KDA_AdminRoleName", SiteContext.CurrentSiteID);
+                UserInfo User = MembershipContext.AuthenticatedUser;
+                if (User != null && (User.IsInRole(globalAdminRole, SiteContext.CurrentSiteName) || User.IsInRole(adminRole, SiteContext.CurrentSiteName)))
+                {
+                    status = true;
+                }
+                else
+                {
+                    status = false;
+                }
+            }
+            return status;
         }
 
         #region TWE macro methods

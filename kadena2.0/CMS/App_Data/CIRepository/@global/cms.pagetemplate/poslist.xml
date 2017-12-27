@@ -12,6 +12,7 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>2e3f1106-f8e4-4347-ae3b-15ada5ac006a</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
@@ -456,15 +457,15 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displayfirstlastautomatically">False</property>
-          <property name="displaypreviousnextautomatically">True</property>
+          <property name="displaypreviousnextautomatically">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="firstpage">CMS.PagerTransformations.General-FirstPage</property>
+          <property name="firstpage"></property>
           <property name="groupsize">10</property>
           <property name="hideonsubpages">False</property>
           <property name="hidepagerforsinglepage">True</property>
           <property name="instanceguid">d4c0c55f-8a9e-4954-978b-480958d28e4c</property>
-          <property name="lastpage">CMS.PagerTransformations.General-LastPage</property>
+          <property name="lastpage"></property>
           <property name="nextgroup">CMS.PagerTransformations.General-NextGroup</property>
           <property name="nextpage">KDA.Transformations.General-NextPage</property>
           <property name="outputconverttablestodivs">none</property>
