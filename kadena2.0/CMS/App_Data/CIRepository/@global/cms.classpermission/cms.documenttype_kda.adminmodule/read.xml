@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.AdminModule</CodeName>
+    <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>Allows to access page content.</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Read</PermissionDisplayName>
+  <PermissionGUID>7eb42553-c4c8-4aff-b6cf-893d5f4c6290</PermissionGUID>
+  <PermissionName>Read</PermissionName>
+  <PermissionOrder>1</PermissionOrder>
+</cms.classpermission>

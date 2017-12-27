@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.POSModule</CodeName>
+    <GUID>fdb19ce7-6fff-47d6-852a-eee766472d75</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>Allows to access page content.</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Read</PermissionDisplayName>
+  <PermissionGUID>0d0d826d-4dff-4703-bad2-9112f8b2295d</PermissionGUID>
+  <PermissionName>Read</PermissionName>
+  <PermissionOrder>1</PermissionOrder>
+</cms.classpermission>

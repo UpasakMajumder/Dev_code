@@ -13,6 +13,7 @@
     <tr>
       <th>{$Kadena.CategoryList.CategoryTitle$}</th>
       <th>{$Kadena.CategoryList.Description$}</th>
+      <th>{$Kadena.CategoryList.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>

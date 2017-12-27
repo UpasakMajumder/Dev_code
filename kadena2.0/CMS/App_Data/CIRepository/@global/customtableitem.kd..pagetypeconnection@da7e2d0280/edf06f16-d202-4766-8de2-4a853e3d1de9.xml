@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>edf06f16-d202-4766-8de2-4a853e3d1de9</ItemGUID>
+  <ItemOrder>18</ItemOrder>
+  <PageTypeCodeName>KDA.InboundTrackingModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_InboundTrackingModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

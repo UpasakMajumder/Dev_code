@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>54304678-de67-4d77-9e83-d26d28dd923d</ItemGUID>
+  <ItemOrder>19</ItemOrder>
+  <PageTypeCodeName>KDA.POSModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_POSModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

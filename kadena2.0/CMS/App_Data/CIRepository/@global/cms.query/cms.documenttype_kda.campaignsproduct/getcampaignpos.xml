@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>KDA.CampaignsProduct</CodeName>
+    <GUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>950b237f-7938-4369-a202-e996fe41eaf6</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetCampaignPos</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+WITH PreBuy_CTE(POSNumber)
+As
+(
+select s.SKUNumber as POSNumber
+from KDA_CampaignsProduct p left join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
+left join COM_SKU s  on s.SKUID=t.NodeSKUID
+)
+
+select KDA_POSNumber.POSNumber from KDA_POSNumber left join PreBuy_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
+where  ##WHERE## 
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

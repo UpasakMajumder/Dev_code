@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.GenericModule</CodeName>
+    <GUID>b4129f2e-d3a9-4ffd-a23a-015a7db273bd</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to create new pages under pages for which the user has the 'Create' page-level permission.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Create</PermissionDisplayName>
+  <PermissionGUID>c2ee3e4e-7bb2-4fe7-a52c-ad9cabec6d9e</PermissionGUID>
+  <PermissionName>CreateSpecific</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

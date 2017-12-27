@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.PrebuyModule</CodeName>
+    <GUID>a1d0e888-ecf8-43e9-9d53-a5ea343ecf63</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to create new pages anywhere in the content tree.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Create Anywhere</PermissionDisplayName>
+  <PermissionGUID>a5195a0a-a974-47d0-817e-d7c225c272ca</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>

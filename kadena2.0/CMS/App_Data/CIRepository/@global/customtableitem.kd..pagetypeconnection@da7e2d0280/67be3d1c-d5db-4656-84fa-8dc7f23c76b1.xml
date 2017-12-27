@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>67be3d1c-d5db-4656-84fa-8dc7f23c76b1</ItemGUID>
+  <ItemOrder>17</ItemOrder>
+  <PageTypeCodeName>KDA.BusienssUnitsModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_BusinessUnitsModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.CustomCatalogModule</CodeName>
+    <GUID>17293c65-056c-4f99-b106-0b0004c995cf</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to create new pages under pages for which the user has the 'Create' page-level permission.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Create</PermissionDisplayName>
+  <PermissionGUID>cda85d71-8dda-425c-9fdb-957215b89880</PermissionGUID>
+  <PermissionName>CreateSpecific</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

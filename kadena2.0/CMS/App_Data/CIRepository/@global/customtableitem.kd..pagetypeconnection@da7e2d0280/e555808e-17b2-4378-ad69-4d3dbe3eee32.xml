@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>e555808e-17b2-4378-ad69-4d3dbe3eee32</ItemGUID>
+  <ItemOrder>26</ItemOrder>
+  <PageTypeCodeName>KDA.HomeModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_HomeModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

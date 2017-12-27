@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.FAQModule</CodeName>
+    <GUID>148beec3-c2f9-479e-a018-6092b43a4c38</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>Allows to browse the content tree.</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Browse tree</PermissionDisplayName>
+  <PermissionGUID>df4c4831-1abd-4c6b-be12-f91f0bca1353</PermissionGUID>
+  <PermissionName>ExploreTree</PermissionName>
+  <PermissionOrder>7</PermissionOrder>
+</cms.classpermission>
