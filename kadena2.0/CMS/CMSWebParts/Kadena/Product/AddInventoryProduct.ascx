@@ -118,7 +118,7 @@
         <div class="mb-2 form__block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblState" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblState" />
-                <a href="#" style="position: absolute; right: 0; top: -3px;" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
+                <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="True"></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="input__error" InitialValue="0" ControlToValidate="ddlState"></asp:RequiredFieldValidator>
@@ -213,10 +213,11 @@
 </div>
 
 <div class="dialog" id="AddUserPopup">
+    <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__header">
             <cms:LocalizedButton ID="btnAllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action " runat="server" ResourceString="Kadena.InvProductForm.AddUser" OnClientClick="$('#AddUserPopup').toggleClass('active');" />
-            <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+            <a href="#" class="btn__close js-btnClose" onclick="$('#AddUserPopup').toggleClass('active');"><i class="fa fa-close"></i></a>
         </div>
         <div class="dialog__content">
             <div class="modal__body business__assigned-user">
@@ -281,9 +282,11 @@
 </div>
 <%--State dropdown GroupInfoPopup--%>
 <div class="dialog" id="StateGroupInfoPopup">
+    <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__header">
-            <a onclick="$('#StateGroupInfoPopup').toggleClass('active');" class="btn__close js-btnClose">+<i class="fa fa-close"></i></a>
+            <span><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateGroupPopupHeading") %></span>
+            <a onclick="$('#StateGroupInfoPopup').toggleClass('active');" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
         </div>
         <div class="dialog__content">
             <div class="modal__body business__assigned-user">
@@ -298,7 +301,7 @@
                     </HeaderTemplate>
                     <ItemTemplate>
                         <tr>
-                            <td>
+                            <td class="state__group">
                                 <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("GroupName") %>' /></td>
                             <td>
                                 <asp:Label ID="lblUserid" runat="server" CssClass="trstyle" Text='<%# Eval("States") %>' />
@@ -321,15 +324,6 @@
         </div>
     </div>
 </div>
-<style type="text/css">
-    .modal-content{
-        height:450px;
-    }
-    .trstyle{
-    width: 400px;
-    word-wrap: break-word;
-    }
-   
-</style>
+
 
 

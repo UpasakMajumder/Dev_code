@@ -28,14 +28,18 @@
   </div>
 </div>
 <div class="content-block">
+  <div class="row">
+    <div class="col-sm-12">
   <div class="search__block">
     {^WebPartZone|(id)ZoneSearch^}
   </div>
   <div class="add__btn">
     {^WebPartZone|(id)ZoneCategorybutton^}
   </div>
-  {^WebPartZone|(id)ZoneCategoryList^}
-  <div class="data_footer">
+      </div>
+    </div>
+   {^WebPartZone|(id)ZoneCategoryList^}
+   <div class="data_footer">
     <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
       {^WebPartZone|(id)ZonePagination^}
     </div>
@@ -104,7 +108,11 @@
           <property name="webparttype">BasicRepeater</property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>
 {$Kadena.ItemList.NoDataFoundText$}
+</span></div>
+</div>
 <style>
   #reptable {
   display: none;
