@@ -29,7 +29,7 @@
 </div>
 <!--pop up html-->
 <div class="dialog modal_businessunit" id="businessUnitPopup">  
-  <!--<div class="dialog__shadow"> </div>-->  
+  <div class="dialog__shadow"></div>
   <div class="dialog__block">    
     <div class="dialog__header">      
       <button type="button" class="btn-action js-btnSaveBU">Add Business Units</button>
