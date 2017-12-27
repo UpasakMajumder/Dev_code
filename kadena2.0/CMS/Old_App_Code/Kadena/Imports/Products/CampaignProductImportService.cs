@@ -260,6 +260,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 newProduct.SetValue("QtyPerPack", product.BundleQuantity);
             }
+            if (!string.IsNullOrWhiteSpace(product.CenveoID))
+            {
+                newProduct.SetValue("CVOProductID", product.CenveoID);
+            }
 
             if (existingProduct == null)
             {

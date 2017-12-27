@@ -227,11 +227,11 @@ namespace CMS.DocumentEngine.Types.KDA
         /// CVO ProductID.
         /// </summary>
         [DatabaseField]
-        public int CVOProductID
+        public string CVOProductID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("CVOProductID"), 0);
+                return ValidationHelper.GetString(GetValue("CVOProductID"), "");
             }
             set
             {
@@ -258,6 +258,23 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
         /// <summary>
+        /// Product Weight.
+        /// </summary>
+        [DatabaseField]
+        public decimal ProductWeight
+        {
+            get
+            {
+                return ValidationHelper.GetDecimal(GetValue("ProductWeight"), 0);
+            }
+            set
+            {
+                SetValue("ProductWeight", value);
+            }
+        }
+
+
+        /// <summary>
         /// Custom Item Specs.
         /// </summary>
         [DatabaseField]
@@ -270,6 +287,23 @@ namespace CMS.DocumentEngine.Types.KDA
             set
             {
                 SetValue("CustomItemSpecs", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Thumbnail.
+        /// </summary>
+        [DatabaseField]
+        public Guid ProductThumbnail
+        {
+            get
+            {
+                return ValidationHelper.GetGuid(GetValue("ProductThumbnail"), Guid.Empty);
+            }
+            set
+            {
+                SetValue("ProductThumbnail", value);
             }
         }
 
@@ -484,7 +518,7 @@ namespace CMS.DocumentEngine.Types.KDA
             /// <summary>
             /// CVO ProductID.
             /// </summary>
-            public int CVOProductID
+            public string CVOProductID
             {
                 get
                 {
@@ -514,6 +548,22 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
             /// <summary>
+            /// Product Weight.
+            /// </summary>
+            public decimal ProductWeight
+            {
+                get
+                {
+                    return mInstance.ProductWeight;
+                }
+                set
+                {
+                    mInstance.ProductWeight = value;
+                }
+            }
+
+
+            /// <summary>
             /// Custom Item Specs.
             /// </summary>
             public string CustomItemSpecs
@@ -525,6 +575,18 @@ namespace CMS.DocumentEngine.Types.KDA
                 set
                 {
                     mInstance.CustomItemSpecs = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Thumbnail.
+            /// </summary>
+            public Attachment ProductThumbnail
+            {
+                get
+                {
+                    return mInstance.GetFieldAttachment("ProductThumbnail");
                 }
             }
         }
