@@ -201,7 +201,7 @@
           <property name="controlid">editabletext</property>
           <property name="customtimezone"></property>
           <property name="defaulttext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.CampaignForm.HeaderText")  |(user)cvoqa2@gmail.com|(hash)5760736445d093d9020db3f55e722cb3fbc13c6fbf37ba0f409badabef8c4392%}]]>
+            <![CDATA[{% CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)99dff8a4110e4a69eb6809487cf1b9326821762ff6b2feb7276ae774e8fc8e10%}]]>
           </property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
