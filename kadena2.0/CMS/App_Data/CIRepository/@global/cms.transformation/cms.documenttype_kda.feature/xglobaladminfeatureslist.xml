@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<a href="{%TargetURL%}">
+<a href="{%TargetURL%}" target='{%TargetPage%}'>
   <img src="{%DisplayImage%}">
   <h5>{%FeatureName%}</h5>
 </a>

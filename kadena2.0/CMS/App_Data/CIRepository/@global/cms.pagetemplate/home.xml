@@ -49,7 +49,7 @@
       <!--Global admin header zone-->
      {^WebPartZone|(id)GlobalAdminFeatures^}
     </div>
-  </div>
+  <!--</div>-->
 
 
 
@@ -221,11 +221,11 @@
             <![CDATA[</h4>]]>
           </property>
           <property name="contentbefore">
-            <![CDATA[<h4>	]]>
+            <![CDATA[<h4>]]>
           </property>
           <property name="controlid">GlobalAdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.GlobalAdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -299,7 +299,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -349,7 +349,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
@@ -395,11 +395,11 @@
             <![CDATA[</h4>]]>
           </property>
           <property name="contentbefore">
-            <![CDATA[<h4>	]]>
+            <![CDATA[<h4>]]>
           </property>
           <property name="controlid">AdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.AdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -471,7 +471,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -528,7 +528,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="querystringkey"></property>
           <property name="relatednodeisontheleftside">False</property>
