@@ -39,10 +39,10 @@
             <asp:Label Text="" ID="lblProductName" runat="server" />
         </div>
         <div class="dialog__content">
-            <asp:Label Text="" ID="lblError" Visible="false" runat="server"  />
+            <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
             <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
-            <asp:Label Text="" runat="server" ID="lblAvailbleItems" /><br />
-            <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="show-table">
+            <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
+            <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
                 <Columns>
                     <asp:TemplateField>
                         <ItemTemplate>
@@ -57,16 +57,16 @@
                             <asp:TextBox runat="server" CssClass="input__text" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" ClientIDMode="Static" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
-                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible"  />
+                    <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />
+                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />
                 </Columns>
             </asp:GridView>
-            <asp:Label runat="server" ID="lblSuccessMsg"></asp:Label>
+            <asp:Label runat="server" ID="lblSuccessMsg" Visible="false"></asp:Label>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" ClientIDMode="Static" ></button>
-                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart"  CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" clientidmode="Static"></button>
+                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
     </div>
