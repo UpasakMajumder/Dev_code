@@ -143,7 +143,20 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             SetValue("GetOpenCampaign", value);
         }
     }
-
+    /// <summary>
+    /// Search placeholder text
+    /// </summary>
+    public string PosSearchPlaceholder
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.PosSearchPlaceholderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("PosSearchPlaceholder", value);
+        }
+    }
     #endregion "Properties"
 
     #region "Methods"
@@ -184,6 +197,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             }
             if (!IsPostBack)
             {
+                posNumber.Attributes.Add("placeholder", PosSearchPlaceholder);
                 Bindproducts();
             }
         }
