@@ -955,16 +955,18 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         try
         {
             var states = CustomTableItemProvider.GetItems(StatesGroupItem.CLASS_NAME)
-                .Columns("ItemID,States")
+                .Columns("ItemID,States,GroupName")
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(states))
             {
                 ddlState.DataSource = states;
-                ddlState.DataTextField = "States";
+                ddlState.DataTextField = "GroupName";
                 ddlState.DataValueField = "ItemID";
                 ddlState.DataBind();
                 string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.StateStateText"), string.Empty);
                 ddlState.Items.Insert(0, new ListItem(selectText, "0"));
+                RepStateInfo.DataSource = states;
+                RepStateInfo.DataBind();
             }
         }
         catch (Exception ex)
