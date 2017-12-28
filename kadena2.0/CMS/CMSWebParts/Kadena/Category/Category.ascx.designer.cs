@@ -75,6 +75,24 @@ public partial class CMSWebParts_Kadena_Category {
     protected global::System.Web.UI.WebControls.RegularExpressionValidator revDescription;
     
     /// <summary>
+    /// lblStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblStatus;
+    
+    /// <summary>
+    /// ddlStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlStatus;
+    
+    /// <summary>
     /// btnSave control.
     /// </summary>
     /// <remarks>

@@ -220,6 +220,42 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revEstPrice;
         
         /// <summary>
+        /// lblWeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblWeight;
+        
+        /// <summary>
+        /// txtWeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSTextBox txtWeight;
+        
+        /// <summary>
+        /// rfvWeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvWeight;
+        
+        /// <summary>
+        /// revWeigth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revWeigth;
+        
+        /// <summary>
         /// lblActualPrice control.
         /// </summary>
         /// <remarks>
@@ -454,15 +490,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.LocalizedLabel lblFailureText;
         
         /// <summary>
-        /// UpdatePanel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
-        /// <summary>
         /// btnAllocateProduct control.
         /// </summary>
         /// <remarks>
@@ -470,6 +497,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CMS.Base.Web.UI.LocalizedButton btnAllocateProduct;
+        
+        /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// RepterDetails control.

@@ -1204,11 +1204,11 @@ config.localization.languages = {
           <property name="cat_open_output_filter">False</property>
           <property name="cat_open_performance">False</property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">
-            <![CDATA[KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.ProductsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.BrandsModule;KDA.AddressModule;KDA.CampaignModule;KDA.Category;KDA.ProgramsModule;KDA.UsersModule]]>
+            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule;KDA.HomeModule]]>
           </property>
           <property name="columns">
             <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>
@@ -1237,7 +1237,7 @@ config.localization.languages = {
           <property name="instanceguid">a38ce46c-36b4-4370-8993-433c7d62af5b</property>
           <property name="itemseparator"></property>
           <property name="loadpagesindividually">False</property>
-          <property name="maxrelativelevel">-1</property>
+          <property name="maxrelativelevel">1</property>
           <property name="nestedcontrolsid"></property>
           <property name="newbuttontext"></property>
           <property name="orderby">NodeOrder ASC</property>
@@ -1281,14 +1281,13 @@ config.localization.languages = {
           <property name="timezonetype">inherit</property>
           <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return false;}else{return true;}|(user)cvoqa2@gmail.com|(hash)fd6578c1b76825e16ba1dea7f4efac279b4eed44b47bdf9b52342673449b8576%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
           <property name="wherecondition" ismacro="true">
-<![CDATA[
-{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)4703396a420b7818590aebc805a6eb1e56ca04a137d471f1cf3c53183224f6a1%}
-
-]]>
+            <![CDATA[{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)4703396a420b7818590aebc805a6eb1e56ca04a137d471f1cf3c53183224f6a1%}]]>
           </property>
           <property name="zerorowstext">No data found</property>
         </webpart>
@@ -1307,11 +1306,11 @@ config.localization.languages = {
           <property name="cat_open_output_filter">False</property>
           <property name="cat_open_performance">False</property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">
-            <![CDATA[KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.ProductsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.BrandsModule;KDA.AddressModule;KDA.CampaignModule;KDA.Category;KDA.ProgramsModule;KDA.UsersModule]]>
+            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule;KDA.HomeModule]]>
           </property>
           <property name="columns">
             <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>
@@ -1392,6 +1391,113 @@ config.localization.languages = {
           <property name="wherecondition" ismacro="true">
 <![CDATA[
 {% KadenaNamespace.GetMainNavigationWhereCondition(false)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)49d1b2d0d8856e862381ac305e6c21599c8448b3d4c98aed26479c1727a33306%}
+
+]]>
+          </property>
+          <property name="zerorowstext">No data found</property>
+        </webpart>
+        <webpart controlid="MainNavigationAdminView" guid="dc8d5388-062a-4a75-a81c-6e4b13189ea3" type="repeater" v="1">
+          <property name="alternatingtransformationname"></property>
+          <property name="backnextlocation">split</property>
+          <property name="cachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="cacheitemname"></property>
+          <property name="cacheminutes"></property>
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter">False</property>
+          <property name="cat_open_performance">False</property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility">False</property>
+          <property name="categoryname"></property>
+          <property name="checkpermissions">False</property>
+          <property name="classnames">
+            <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule;KDA.HomeModule]]>
+          </property>
+          <property name="columns">
+            <![CDATA[NodeAliasPath, DocumentUrlPath, ModuleMainIcon, ModuleName]]>
+          </property>
+          <property name="combinewithdefaultculture"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">MainNavigationAdminView</property>
+          <property name="culturecode"></property>
+          <property name="customtimezone"></property>
+          <property name="datasourcename"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">True</property>
+          <property name="displaytoroles">TWEGlobalAdmin</property>
+          <property name="enableoutputfilter">False</property>
+          <property name="enablepaging">False</property>
+          <property name="filtername"></property>
+          <property name="filteroutduplicates">False</property>
+          <property name="hidecontrolforzerorows">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">dc8d5388-062a-4a75-a81c-6e4b13189ea3</property>
+          <property name="itemseparator"></property>
+          <property name="loadpagesindividually">False</property>
+          <property name="maxrelativelevel">1</property>
+          <property name="nestedcontrolsid"></property>
+          <property name="newbuttontext"></property>
+          <property name="orderby">NodeOrder ASC</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">False</property>
+          <property name="outputfixhtml5">False</property>
+          <property name="outputfixjavascript">False</property>
+          <property name="outputfixlowercase">False</property>
+          <property name="outputfixselfclose">False</property>
+          <property name="outputresolveurls">False</property>
+          <property name="pagenumbersseparator">-</property>
+          <property name="pagerhtmlafter"></property>
+          <property name="pagerhtmlbefore"></property>
+          <property name="pagerposition">bottom</property>
+          <property name="pagesize">10</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="path">/{0}/%</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">True</property>
+          <property name="querystringkey"></property>
+          <property name="relatednodeisontheleftside">False</property>
+          <property name="relationshipname">isrelatedto</property>
+          <property name="relationshipwithnodeguid">00000000-0000-0000-0000-000000000000</property>
+          <property name="resultsposition">top</property>
+          <property name="selecteditemtransformationname"></property>
+          <property name="selectonlypublished">True</property>
+          <property name="selecttopn"></property>
+          <property name="showdeletebutton">False</property>
+          <property name="showeditbutton">False</property>
+          <property name="showeditdeletebuttons">False</property>
+          <property name="showfirstlast">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="shownewbutton">False</property>
+          <property name="sitename"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return true;}else{return false;}|(user)cvoqa2@gmail.com|(hash)62e3a105844f6e4916ae795815274fe47a2603e80574ee638f8a416b24942a67%}]]>
+          </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">repeater</property>
+          <property name="wherecondition" ismacro="true">
+<![CDATA[
+{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)4703396a420b7818590aebc805a6eb1e56ca04a137d471f1cf3c53183224f6a1%}
 
 ]]>
           </property>

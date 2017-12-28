@@ -57,15 +57,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     protected global::System.Web.UI.WebControls.TextBox posNumber;
     
     /// <summary>
-    /// llbPrintSelection control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbPrintSelection;
-    
-    /// <summary>
     /// llbSaveSelection control.
     /// </summary>
     /// <remarks>
@@ -73,15 +64,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.Base.Web.UI.LocalizedLinkButton llbSaveSelection;
-    
-    /// <summary>
-    /// llbPrintFull control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbPrintFull;
     
     /// <summary>
     /// llbSaveFull control.
@@ -100,6 +82,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.Base.Web.UI.LocalizedLabel lblNoProducts;
+    
+    /// <summary>
+    /// noData control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl noData;
     
     /// <summary>
     /// rptCatalogProducts control.

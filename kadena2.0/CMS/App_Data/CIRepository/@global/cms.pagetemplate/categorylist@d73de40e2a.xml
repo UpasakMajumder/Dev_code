@@ -127,7 +127,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.ProductCategory</property>
           <property name="columns">
-            <![CDATA[ProductCategoryID,ProductCategoryTitle,ProductCategoryDescription]]>
+            <![CDATA[ProductCategoryID,ProductCategoryTitle,ProductCategoryDescription,Status]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="controlid">PagesDataSource</property>

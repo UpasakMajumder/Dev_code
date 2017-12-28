@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>6d0730d6-e2fc-4440-81a3-699111f1ced2</ItemGUID>
+  <ItemOrder>20</ItemOrder>
+  <PageTypeCodeName>KDA.CampaignProduct</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_CampaignProductEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

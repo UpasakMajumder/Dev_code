@@ -8,7 +8,7 @@
   <FormDefinition>
     <form version="2">
       <field column="ItemID" guid="1f1aa13e-1422-4885-928b-5fd714019d28" />
-      <field column="BrandCode" guid="81df5fa1-7df8-4378-94bd-b1d915112337" reftype="Required">
+      <field column="BrandCode" guid="81df5fa1-7df8-4378-94bd-b1d915112337">
         <properties>
           <controlcssclass>input__text </controlcssclass>
           <validationerrormessage>{$Kadena.Brand.BrandCodeRequired$}</validationerrormessage>
@@ -46,6 +46,20 @@
           </rule>
         </rules>
       </field>
+      <field column="Status" guid="881fbe4c-44ff-49d4-a8f5-d48d0f8f7d83">
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;{% GetResourceString("KDA.Common.Status.Active") |(user)cvoqa2@gmail.com|(hash)6e1056d7412cc044f75b5ea15ebbefa7257cec6f418721caebf0471368bb06b4%}
+0;{% GetResourceString("KDA.Common.Status.Inactive") |(user)cvoqa2@gmail.com|(hash)7b7ce893bea52bed64c64863ced63f007764aee0ba45ac275cd72ed01cb916d6%}
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <field column="ItemCreatedBy" guid="e753091a-495b-4e88-9d4a-2c6a709cf2c7" />
       <field column="ItemCreatedWhen" guid="ef0e9492-ef91-471a-8f2f-b4d9c3b69200" />
       <field column="ItemModifiedBy" guid="c5b0e871-b6fa-4bb5-95e0-3e73d7eb4b10" />
@@ -73,7 +87,9 @@
 <div class="input__wrapper"><span class="input__label">{$Kadena.CreateBrand.Description$}</span>
 
 <div class="input__inner">$$input:BrandDescription$$</div>
-<span class="input__error">$$validation:BrandDescription$$</span></div>
+<span class="input__error">$$validation:BrandDescription$$</span><br />
+<span class="input__label">{$Kadena.CreateBrand.Status$}</span><br />
+$$input:Status$$</div>
 </div>
 </div>
 

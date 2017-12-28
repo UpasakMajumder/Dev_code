@@ -1,7 +1,6 @@
 module.exports.ui = {
   "success": true,
   "payload": {
-    "message": "Good day",
     "emptyCart":{
       "text": "Your shopping cart is empty.",
       "dashboardButtonText": "Go to dashboard",

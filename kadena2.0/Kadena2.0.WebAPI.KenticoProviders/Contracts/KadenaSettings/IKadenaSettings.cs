@@ -6,6 +6,7 @@
         string DefaultSitePersonalName { get; }
         string DefaultCustomerCompanyName { get; }
         string TermsAndConditionsPage { get; }
+        string CheckoutPageUrl { get; }
         string ErpCustomerId { get; }
         string OrderNotificationEmail { get; }
         bool FTPArtworkEnabled(string siteName);

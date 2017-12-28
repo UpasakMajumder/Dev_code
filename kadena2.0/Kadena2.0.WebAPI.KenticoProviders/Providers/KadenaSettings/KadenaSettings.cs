@@ -22,6 +22,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings
         public string DefaultSitePersonalName => resources.GetSettingsKey("KDA_CustomerPersonalName");
         public string DefaultCustomerCompanyName => resources.GetSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
         public string TermsAndConditionsPage => resources.GetSettingsKey("KDA_TermsAndConditionPage");
+        public string CheckoutPageUrl => resources.GetSettingsKey("KDA_CheckoutPageUrl");
         public string ErpCustomerId => resources.GetSettingsKey("KDA_ErpCustomerId");
         public string OrderNotificationEmail => resources.GetSettingsKey("KDA_OrderNotificationEmail");
 

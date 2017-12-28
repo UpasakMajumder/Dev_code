@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.kadenamoduleandpagetypeconnection>
+  <ItemGUID>5ecabf07-2c7a-48a5-89f0-035dcf81b7dc</ItemGUID>
+  <ItemOrder>23</ItemOrder>
+  <PageTypeCodeName>KDA.FAQModule</PageTypeCodeName>
+  <SettingsKeyCodeName>KDA_FAQModuleEnabled</SettingsKeyCodeName>
+</customtableitem.kda.kadenamoduleandpagetypeconnection>

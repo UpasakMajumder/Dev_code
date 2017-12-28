@@ -16,10 +16,9 @@ namespace Kadena.BusinessLogic.Services
             }
             this.kenticoPOS = kenticoPOS;
         }
-
-        public void TogglePOSStatus(int posID)
+        public bool DeletePOS(int posID)
         {
-            kenticoPOS.TogglePOSStatus(posID);
+           return kenticoPOS.DeletePOS(posID);
         }
     }
 }

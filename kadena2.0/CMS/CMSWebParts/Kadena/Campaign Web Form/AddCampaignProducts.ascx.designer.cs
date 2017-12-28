@@ -21,6 +21,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.HiddenField hdnDatepickerUrl;
     
     /// <summary>
+    /// Emptydata control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl Emptydata;
+    
+    /// <summary>
+    /// AddProductdiv control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl AddProductdiv;
+    
+    /// <summary>
     /// lblProgramName control.
     /// </summary>
     /// <remarks>
@@ -345,13 +363,40 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblItemSpecs;
     
     /// <summary>
-    /// txtItemSpecs control.
+    /// ddlItemSpecs control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtItemSpecs;
+    protected global::System.Web.UI.WebControls.DropDownList ddlItemSpecs;
+    
+    /// <summary>
+    /// divItemSpecs control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl divItemSpecs;
+    
+    /// <summary>
+    /// lblOtherItemSpec control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblOtherItemSpec;
+    
+    /// <summary>
+    /// txtItemSpec control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtItemSpec;
     
     /// <summary>
     /// lblImage control.
