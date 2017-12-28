@@ -23,7 +23,7 @@
     <tr>
         <td colspan="2"><%= Shipping %></td>
         <td>
-            <asp:DropDownList runat="server" ID="ddlShippingOption" CssClass="select-list" EnableViewState="true" OnSelectedIndexChanged="ddlShippingOption_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
+            <asp:DropDownList runat="server" ID="ddlShippingOption" CssClass="select-list js-Shipping" EnableViewState="true" OnSelectedIndexChanged="ddlShippingOption_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
         </td>
         <td colspan="2">
             <asp:Label ID="lblShippingCharge" runat="server" />
@@ -32,7 +32,7 @@
     <tr>
         <td colspan="4"><%= BusinessUnit %></td>
         <td>
-            <asp:DropDownList runat="server"  ID="ddlBusinessUnits" EnableViewState="true" OnSelectedIndexChanged="ddlBusinessUnits_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
+            <asp:DropDownList runat="server"  ID="ddlBusinessUnits" CssClass="js-BusinessUnit" EnableViewState="true" OnSelectedIndexChanged="ddlBusinessUnits_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
             <asp:Label ID="lblTotalUnits" runat="server" />
         </td>
     </tr>

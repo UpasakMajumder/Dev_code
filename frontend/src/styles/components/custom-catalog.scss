@@ -15,6 +15,7 @@
 
     .custom__btns {
       display: inline-block;
+      margin-bottom: 5px;
 
       .btn-action {
         font-size: $font-xs;
@@ -28,6 +29,7 @@
 
 .custom__select {
   display: inline-block;
+  margin-bottom: 5px;
 
   select {
     width: auto;
@@ -43,27 +45,22 @@
     vertical-align: top;
 
     .img__block {
-      width: 50%;
+      width: 100%;
       margin: 0 auto 15px;
-      height: 100px;
+      text-align: center;
+      position: relative;
+      z-index: 9999;
 
       img {
         max-width: 100%;
-        height: auto;
+        height: 100px;
         transition: transform 0.25s ease;
-        cursor: zoom-in;
+        margin: 0 auto;
+        width: 100%;
       }
 
       input[type=checkbox] {
         display: none;
-      }
-
-      input[type=checkbox]:checked ~ label > img {
-        transform: scale(2);
-        cursor: zoom-out;
-        position: relative;
-        z-index: 999;
-        margin-top: 15px;
       }
     }
 
