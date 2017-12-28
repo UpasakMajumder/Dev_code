@@ -165,7 +165,7 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="CVOProductID" columntype="integer" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
+      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
         <properties>
           <fieldcaption>CVO ProductID</fieldcaption>
         </properties>
@@ -215,6 +215,16 @@
           <controlname>TextBoxControl</controlname>
           <FilterMode>False</FilterMode>
           <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductThumbnail" columntype="file" guid="6cc6abc0-7d57-4046-b6ae-5a85f56ec2ac" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Thumbnail</fieldcaption>
+        </properties>
+        <settings>
+          <Allowed_Extensions>jpg;jpeg;png;</Allowed_Extensions>
+          <controlname>DirectUploadControl</controlname>
+          <Extensions>custom</Extensions>
         </settings>
       </field>
     </form>
