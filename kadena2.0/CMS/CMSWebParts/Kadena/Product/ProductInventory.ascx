@@ -22,7 +22,7 @@
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                         <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
+                        <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
                         <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true"></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
@@ -39,7 +39,7 @@
             <asp:Label Text="" ID="lblProductName" runat="server" />
         </div>
         <div class="dialog__content">
-            <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
+            <asp:Label Text="" ID="lblError" Visible="false" runat="server"  />
             <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
             <asp:Label Text="" runat="server" ID="lblAvailbleItems" /><br />
             <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="show-table">
@@ -58,15 +58,15 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
-                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible" />
+                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="invisible" ItemStyle-CssClass="invisible"  />
                 </Columns>
             </asp:GridView>
             <asp:Label runat="server" ID="lblSuccessMsg"></asp:Label>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose"><%= CartCloseText %></button>
-                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" ClientIDMode="Static" ></button>
+                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart"  CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
     </div>
