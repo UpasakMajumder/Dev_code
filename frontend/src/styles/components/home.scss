@@ -72,20 +72,25 @@
 
   .product__inner {
     .product__block {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       a {
         color: $brand-dark;
+        position: relative;
+        display: block;
 
         img {
           width: 100%;
           height: auto;
-          margin-bottom: 15px;
+          margin-bottom: 0;
         }
 
-        span {
-          display: block;
-          font-size: $font-xs;
+        h5 {
+          position: absolute;
+          bottom: 0;
+          color: $brand-white;
+          text-align: center;
+          width: 100%;
         }
       }
 
@@ -107,11 +112,21 @@
     img {
       max-width: 100%;
       height: auto;
-      margin-bottom: 15px;
+      margin-bottom: 0;
     }
 
     a {
       color: $brand-dark;
+      position: relative;
+      display: block;
+    }
+
+    h5 {
+      position: absolute;
+      bottom: 0;
+      color: $brand-white;
+      text-align: center;
+      width: 100%;
     }
   }
 }

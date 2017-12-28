@@ -207,18 +207,30 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         string returnValue = string.Empty;
         try
         {
-            string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-            folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-            if (imagepath != null && folderName != null)
+            if (ProductType == (int)ProductsType.PreBuy)
             {
-                returnValue = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
+            }
+            else
+            {
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, CurrentSite.SiteID, ex.Message);
         }
-        return returnValue;
+        return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
     }
 
     /// <summary>
