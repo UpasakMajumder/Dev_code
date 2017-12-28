@@ -658,16 +658,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
             try
             {
                 var states = CustomTableItemProvider.GetItems(StatesGroupItem.CLASS_NAME)
-                    .Columns("ItemID,States")
+                    .Columns("ItemID,States,GroupName")
                     .ToList();
                 if (!DataHelper.DataSourceIsEmpty(states))
                 {
                     ddlState.DataSource = states;
-                    ddlState.DataTextField = "States";
+                    ddlState.DataTextField = "GroupName";
                     ddlState.DataValueField = "ItemID";
                     ddlState.DataBind();
                     string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.StateWaterMark"), string.Empty);
                     ddlState.Items.Insert(0, new ListItem(selectText, "0"));
+                    RepStateInfo.DataSource = states;
+                    RepStateInfo.DataBind();
                 }
             }
             catch (Exception ex)

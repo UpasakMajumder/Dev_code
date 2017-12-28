@@ -162,6 +162,7 @@
 
 <!--pop up html-->
 <div class="dialog modal_businessunit" id="brandPopup">
+    <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__header">
             <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("Kadena.Address.AddBrand")%></a>

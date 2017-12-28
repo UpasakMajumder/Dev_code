@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using System;
 using System.Collections.Generic;
 
 namespace Kadena.Dto.RecentOrders
@@ -12,5 +13,6 @@ namespace Kadena.Dto.RecentOrders
         public DateTime DeliveryDate { get; set; }
         public DateTime? ShippingDate { get; set; }
         public ButtonDto ViewBtn { get; set; }
+        public CampaignDTO campaign { get; set; }
     }
 }

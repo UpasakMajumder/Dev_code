@@ -18,5 +18,6 @@ namespace Kadena.Models
         public IEnumerable<CartItem> Items { get; set; }
 
         public Button ViewBtn { get; set; }
+        public Campaign campaign { get; set; }
     }
 }

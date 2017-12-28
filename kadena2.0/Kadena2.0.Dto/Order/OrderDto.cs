@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -30,5 +31,8 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "items")]
         public IEnumerable<OrderItemDto> Items { get; set; }
+
+        [DataMember(Name = "campaign")]
+        public CampaignDTO campaign { get; set; }
     }
 }
