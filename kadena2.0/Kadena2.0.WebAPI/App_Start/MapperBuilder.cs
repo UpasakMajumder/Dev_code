@@ -251,6 +251,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<OrderDialogTable, OrderDialogTableDto>();
                 config.CreateMap<OrderTableCell, OrderTableCellDto>();
                 config.CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
+                config.CreateMap<Distributor, DistributorDTO>();
             });
         }
     }
