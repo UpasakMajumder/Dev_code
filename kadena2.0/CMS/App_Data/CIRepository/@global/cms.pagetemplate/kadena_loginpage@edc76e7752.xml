@@ -211,7 +211,7 @@
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -252,10 +252,78 @@
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible">False</property>
           <property name="webpartlayout">LogonForgottenPassword</property>
           <property name="webparttitle">logonform_forgottenPassword</property>
           <property name="webparttype">logonform</property>
+        </webpart>
+        <webpart controlid="ForgotPasswordWithHint" guid="003ac426-3324-45c9-a0e1-53b8351dfc26" type="KDA.ForgotPasswordWithHint" v="1">
+          <property name="allowpasswordretrieval">True</property>
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_logon form settings">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_passwordhint">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">ForgotPasswordWithHint</property>
+          <property name="customtimezone"></property>
+          <property name="defaulttargeturl" ismacro="true">
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl("/login") |(user)cvoqa2@gmail.com|(hash)67172a38f70113ebbd715b467416ceef309c1ab78bb4cfaba79c64e5997aface%}]]>
+          </property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="failuretext"></property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">003ac426-3324-45c9-a0e1-53b8351dfc26</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="passwordhinttext" ismacro="true">
+            <![CDATA[ {% GetResourceString("Kadena.LogonForm.PasswordHintText") |(user)cvoqa2@gmail.com|(hash)044e6ceccdfad1dd8cdb907a56783437eb754a306b925ab903019aa89549f0ae%}]]>
+          </property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resetpasswordurl"></property>
+          <property name="sendemailfrom"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="showpasswordlink" ismacro="true">
+            <![CDATA[{% Settings.EnablePasswordHint|(user)cvoqa2@gmail.com|(hash)ae494ace6f5925358a09d79455a11bdd15b0da9247efa090a11912d11e0c03b9%}]]>
+          </property>
+          <property name="showsignuplink" ismacro="true">
+            <![CDATA[{% Settings.EnableAccountCreation|(user)cvoqa2@gmail.com|(hash)18e90a16bc6e9a3a44f9eac1c071bac1f8100e8b3cb027ae2914f946de8f1298%}]]>
+          </property>
+          <property name="signuplinktext" ismacro="true">
+            <![CDATA[{% GetResourceString("Kadena.loginForm.SignupText") |(user)cvoqa2@gmail.com|(hash)a444ab2d9f40ae9f1c58efcf6623a2b9f89baa90c328211234846d4ebbd4f56e%}]]>
+          </property>
+          <property name="signuppageurl" ismacro="true">
+            <![CDATA[{% Settings.AccountRegistrationPag |(user)cvoqa2@gmail.com|(hash)c4dbe11d0438f33612470e88e28f11700abe7435a075bd1394882b1e31a4b803%}]]>
+          </property>
+          <property name="skinid"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">KDA.ForgotPasswordWithHint</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zonePageBackgroud" v="1">
