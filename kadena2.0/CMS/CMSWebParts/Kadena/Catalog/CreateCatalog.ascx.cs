@@ -128,7 +128,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Get current open campaign
     /// </summary>
-    public Campaign GetOpenCampaign
+    public Campaign OpenCampaign
     {
         get
         {
@@ -210,10 +210,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             BindPrograms();
             BindProductTypes();
             List<int> programIds = new List<int>();
-            if (GetOpenCampaign != null)
+            if (OpenCampaign != null)
             {
                 var programs = ProgramProvider.GetPrograms()
-                                    .WhereEquals("CampaignID", GetOpenCampaign.CampaignID)
+                                    .WhereEquals("CampaignID", OpenCampaign.CampaignID)
                                     .Columns("ProgramID")
                                     .ToList();
                 if (!DataHelper.DataSourceIsEmpty(programs))
@@ -268,11 +268,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            if (GetOpenCampaign.CampaignID != default(int))
+            if ((OpenCampaign?.CampaignID ?? default(int)) != default(int))
             {
                 var programs = ProgramProvider.GetPrograms()
                                     .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                                    .WhereEquals("CampaignID", ValidationHelper.GetInteger(GetOpenCampaign.GetValue("CampaignID"), default(int)))
+                                    .WhereEquals("CampaignID", ValidationHelper.GetInteger(OpenCampaign.GetValue("CampaignID"), default(int)))
                                     .Columns("ProgramName,ProgramID").Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
                                     .ToList()
                                     .OrderBy(y => y.ProgramName);
@@ -335,8 +335,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
+            rptCatalogProducts.DataSource = null;
+            rptCatalogProducts.DataBind();
             lblNoProducts.Visible = false;
-            if (TypeOfProduct == (int)ProductsType.PreBuy)
+            if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
             {
                 var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).ToList();
                 if (programID != default(int) && !DataHelper.DataSourceIsEmpty(products))
@@ -433,9 +435,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                             .ToList();
                 string htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProductsPDFHeader");
                 string programFooterText = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProgramFooterText");
-                htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", GetOpenCampaign?.Name);
-                htmlTextheader = htmlTextheader.Replace("OrderStartDate", GetOpenCampaign.StartDate == default(DateTime) ? string.Empty : GetOpenCampaign.StartDate.ToString("MMM dd, yyyy"));
-                htmlTextheader = htmlTextheader.Replace("OrderEndDate", GetOpenCampaign.EndDate == default(DateTime) ? string.Empty : GetOpenCampaign.EndDate.ToString("MMM dd, yyyy"));
+                htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", OpenCampaign?.Name);
+                htmlTextheader = htmlTextheader.Replace("OrderStartDate", OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"));
+                htmlTextheader = htmlTextheader.Replace("OrderEndDate", OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
                 string generalInventory = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                 {
@@ -447,7 +449,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 {
                     var programs = ProgramProvider.GetPrograms()
                                        .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
-                                       .WhereEquals("CampaignID", GetOpenCampaign.CampaignID)
+                                       .WhereEquals("CampaignID", OpenCampaign.CampaignID)
                                        .ToList();
                     foreach (var program in programs)
                     {
@@ -477,7 +479,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string closingDiv = SettingsKeyInfoProvider.GetValue("ClosingDIV").ToString();
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
-                    foreach (var brand in brands)
+                    foreach (var brand in brands.Distinct())
                     {
                         var brandName = GetBrandName(brand);
                         string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrand");

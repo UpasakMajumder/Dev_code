@@ -19,35 +19,32 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-     <div class="content-header">
-      <div class="content-header__inner">
-        <h1 class="content-header__page-name"><cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" /></h1>
-      </div>
-      <div class="breadcrumbs">
-        <cms:CMSWebPartZone ZoneID="ZoneNav" runat="server" />
-      </div>
-    </div>
-    <div class="content-block">
-      
+<div class="content-header">
+  <div class="content-header__inner">
+    <h1 class="content-header__page-name"><cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" /></h1>
+  </div>
+  <div class="breadcrumbs">
+    <cms:CMSWebPartZone ZoneID="ZoneNav" runat="server" />
+  </div>
+</div>
+<div class="content-block">
+  <div class="row">
+    <div class="col-sm-12">
       <div class="search__block">
         <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
       </div>
       <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZoneCreate" runat="server" />
       </div>
-         
-        <cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />
-        
-      <div class="data_footer">
-        
-        
-        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-         
-          <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
-        </div>
-        
-      </div>
-    </div>
+</div>
+</div>
+<cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />
+<div class="data_footer">
+  <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+    <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
+  </div>
+</div>
+</div>
 
 
 ]]>
@@ -464,10 +461,12 @@ return false;
           <property name="webparttype">BasicRepeater</property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.ItemList.NoDataFoundText$}
+<div class=" mt-2">
+  <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
 <style>
   #reptable {
-  display: none;
+    display: none;
   }
 </style>
 ]]>

@@ -29,7 +29,7 @@
 </div>
 <!--pop up html-->
 <div class="dialog modal_businessunit" id="businessUnitPopup">  
-  <!--<div class="dialog__shadow"> </div>-->  
+  <div class="dialog__shadow"></div>
   <div class="dialog__block">    
     <div class="dialog__header">      
       <button type="button" class="btn-action js-btnSaveBU">Add Business Units</button>
@@ -163,7 +163,13 @@
           <property name="webparttitle"></property>
           <property name="webparttype">KDA.UsersList</property>
           <property name="wherecondition">UserPrivilegeLevel!=3</property>
-          <property name="zerorowstext">No data found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+]]>
+          </property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneHeader" v="1">
