@@ -1,5 +1,8 @@
 ﻿using CMS.Ecommerce;
+using CMS.SiteProvider;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -12,6 +15,12 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 AddressInfoProvider.DeleteAddressInfo(addressID);
             }
+        }
+
+        public Dictionary<int, string> GetAddressNames()
+        {
+            List<int> customerIDs = CustomerInfoProvider.GetCustomers().Where(x => x.CustomerSiteID.Equals(SiteContext.CurrentSiteID)).Select(x => x.CustomerID).ToList();
+            return AddressInfoProvider.GetAddresses().WhereIn("AddressCustomerID", customerIDs).ToDictionary(x => x.AddressID, x => x.AddressName);
         }
     }
 }
