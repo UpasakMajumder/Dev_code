@@ -498,7 +498,7 @@ function deleteProgram(programID) {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Programs.HeaderText")|(user)cvoqa2@gmail.com|(hash)902a00288a42f9cb01c0b226cfd32f8b7c871f4f77c4aca640bb9dc8f3ba2cd0%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
