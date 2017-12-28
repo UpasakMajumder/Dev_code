@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>Product</CodeName>
+    <GUID>d65e82ba-5c00-4de3-a7ce-6f99dcbfbf08</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDisplayName>_Product Inventory</WebPartDisplayName>
+  <WebPartFileName>Kadena/Product/ProductInventory.ascx</WebPartFileName>
+  <WebPartGUID>b300172c-8911-4e15-bd8d-36a2975c8e69</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>ProductInventory</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <category name="ProductSettings">
+        <properties>
+          <caption>Product Settings</caption>
+          <visible>True</visible>
+        </properties>
+      </category>
+      <field column="ProductType" columnsize="200" columntype="text" guid="6915e53f-6a6a-4128-afe3-9b23c00a3911" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Product Type</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+0;-- Select Product Type --
+1; General Inventory
+2; Pre-Buy
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+        <rules>
+          <rule errormsg="Please Select Product Type">
+            <![CDATA[{%Rule("(Value >= 0)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinValue\" ><p n=\"minvalue\"><t>0</t><v>0</v><r>0</r><d></d><vt>double</vt><tv>0</tv></p></r></rules>")%}]]>
+          </rule>
+        </rules>
+      </field>
+      <field allowempty="true" column="ClassName" columnsize="200" columntype="text" guid="7060e3bf-44a0-4c0c-aa58-a886c126205d" publicfield="false" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Class Name</fieldcaption>
+        </properties>
+        <settings>
+          <AllowAll>False</AllowAll>
+          <AllowEmpty>True</AllowEmpty>
+          <controlname>selectclassnames</controlname>
+          <HideInheritedClasses>False</HideInheritedClasses>
+          <ReturnColumnName>ClassName</ReturnColumnName>
+          <SelectionMode>0</SelectionMode>
+          <ShowOnlyCoupled>False</ShowOnlyCoupled>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

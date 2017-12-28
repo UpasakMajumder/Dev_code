@@ -1,12 +1,12 @@
 ﻿using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static Kadena.Helpers.SerializerConfig;
 
 namespace Kadena2.MicroserviceClients.Clients.Base
 {
@@ -24,12 +24,6 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         }
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
-
-        private static JsonSerializerSettings camelCaseSerializer = new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {
@@ -56,42 +50,35 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return await Send<TResult>(HttpMethod.Put, url, body).ConfigureAwait(false); ;
         }
 
-        protected async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        protected static string SerializeRequestContent(object body)
+        {
+            return JsonConvert.SerializeObject(body, CamelCaseSerializer);
+        }
+
+        protected virtual async Task<BaseResponseDto<TResult>> SendRequest<TResult>(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(method, url))
+                using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
-                    if (!string.IsNullOrEmpty(suppliantDomain))
-                    {
-                        AddHeader(client, "suppliantDomain", suppliantDomain);
-                    }
-                    
-                    if (body != null)
-                    {
-                        request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
-                    }
-                    
-                    using (var response = await client.SendAsync(request).ConfigureAwait(false))
-                    {
-                        return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
-                    }
+                    return await ReadResponseJson<TResult>(response).ConfigureAwait(false);
                 }
             }
         }
 
-        private void AddHeader(HttpClient httpClient, string headerName, string headerValue)
+        protected virtual HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
-            httpClient.DefaultRequestHeaders.Add(headerName, headerValue);
+            var request = new HttpRequestMessage(method, url);
+            AddSuppliantDomain(request);
+
+            if (body != null)
+            {
+                request.Content = new StringContent(SerializeRequestContent(body), Encoding.UTF8, "application/json");
+            }
+            return request;
         }
 
-        protected static string SerializeRequestContent(object body)
-        {
-            return JsonConvert.SerializeObject(body, camelCaseSerializer);
-        }
-
-        protected async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;
@@ -141,6 +128,45 @@ namespace Kadena2.MicroserviceClients.Clients.Base
                     InnerError = innerError
                 }
             };
+        }
+
+        private async Task<BaseResponseDto<TResult>> Send<TResult>(HttpMethod method, string url, object body = null)
+        {
+            HttpRequestMessage request = null;
+            try
+            {
+                request = CreateRequest(method, url, body);
+                return await SendRequest<TResult>(request).ConfigureAwait(false);
+            }
+            catch (Exception exc)
+            {
+                return new BaseResponseDto<TResult>
+                {
+                    Success = false,
+                    Payload = default(TResult),
+                    Error = new BaseErrorDto
+                    {
+                        Message = "Failed to request microservice.",
+                        InnerError = new BaseErrorDto
+                        {
+                            Message = exc.GetBaseException().Message
+                        }
+                    }
+                };
+            }
+            finally
+            {
+                request?.Dispose();
+            }
+        }
+
+        private void AddSuppliantDomain(HttpRequestMessage request)
+        {
+            var suppliantDomain = _suppliantDomain?.GetSuppliantDomain();
+            if (!string.IsNullOrEmpty(suppliantDomain))
+            {
+                request.Headers.Add("suppliantDomain", suppliantDomain);
+            }
         }
     }
 }

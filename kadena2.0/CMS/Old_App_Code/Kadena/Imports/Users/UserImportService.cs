@@ -13,7 +13,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
 {
     public class UserImportService : ImportServiceBase
     {
-        public ImportResult ProcessUserImportFile(byte[] importFileData, ExcelType type, int siteID, string passwordEmailTemplateName)
+        public string PasswordEmailTemplateName { get; set; }
+
+        public override ImportResult Process(byte[] importFileData, ExcelType type, int siteID)
         {
             var site = GetSite(siteID);
             var rows = GetExcelRows(importFileData, type);
@@ -47,7 +49,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                     var newCustomer = CreateCustomer(newUser.UserID, siteID, userDto);
                     CreateCustomerAddress(newCustomer.CustomerID, userDto);
 
-                    emailService.SendResetPasswordEmail(newUser, passwordEmailTemplateName, site.SiteName);
+                    emailService.SendResetPasswordEmail(newUser, PasswordEmailTemplateName, site.SiteName);
                 }
                 catch (Exception ex)
                 {
@@ -65,72 +67,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             };
         }
 
-        public ImportResult ProcessAddressImportFile(byte[] importFileData, ExcelType type, int siteId, int[] userIds)
-        {
-            if ((userIds?.Length ?? 0) == 0)
-                throw new ArgumentOutOfRangeException("No users selected to upload addresses to");
-
-            var rows = GetExcelRows(importFileData, type);
-            var addresses = GetDtosFromExcelRows<AddressDto>(rows);
-            statusMessages.Clear();
-
-            foreach (var userId in userIds)
-            {
-                var user = UserInfoProvider.GetUserInfo(userId);
-
-                if (user == null)
-                {
-                    statusMessages.Add($"Nonexisting user : {userId}");
-                    continue;
-                }
-
-                var customer = EnsureCustomer(user, siteId);
-
-                var currentItemNumber = 1;
-                foreach (var addressDto in addresses)
-                {
-                    try
-                    {
-                        List<string> validationResults;
-                        if (!ValidatorHelper.ValidateDto(addressDto, out validationResults, "field {0} - {1}"))
-                        {
-                            validationResults.Sort();
-
-                            statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
-                            continue;
-                        }
-
-                        CreateCustomerAddress(customer.CustomerID, new UserDto
-                        {
-                            Country = addressDto.Country,
-                            State = addressDto.State,
-                            AddressLine = addressDto.AddressLine,
-                            AddressLine2 = addressDto.AddressLine2,
-                            City = addressDto.City,
-                            ContactName = addressDto.ContactName,
-                            PostalCode = addressDto.PostalCode,
-                            PhoneNumber = addressDto.PhoneNumber
-
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        statusMessages.Add("There was an error when processing item number " + currentItemNumber);
-                        EventLogProvider.LogException("Import addresses", "EXCEPTION", ex);
-                    }
-
-                    currentItemNumber++;
-                }
-            }
-
-            return new ImportResult
-            {
-                AllMessagesCount = statusMessages.AllMessagesCount,
-                ErrorMessages = statusMessages.ToArray()
-            };
-        }
-
-        private CustomerInfo EnsureCustomer(UserInfo user, int siteId)
+        protected CustomerInfo EnsureCustomer(UserInfo user, int siteId)
         {
             var customer = CustomerInfoProvider.GetCustomerInfoByUserID(user.UserID);
 
@@ -145,6 +82,37 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
             }
 
             return customer;
+        }
+
+        protected void CreateCustomerAddress(int customerID, UserDto userDto)
+        {
+            var country = FindCountry(userDto.Country);
+            if (country == null)
+            {
+                EventLogProvider.LogInformation("Import users", "INFO", $"Skipping creation of address of user { userDto.Email }. Reason - invalid country.");
+                return;
+            }
+
+            var state = FindState(userDto.State);
+
+            var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
+                .Where(af => !string.IsNullOrWhiteSpace(af));
+            var newAddress = new AddressInfo
+            {
+                AddressName = string.Join(", ", addressNameFields),
+                AddressLine1 = userDto.AddressLine ?? "",
+                AddressLine2 = userDto.AddressLine2,
+                AddressCity = userDto.City ?? "",
+                AddressZip = userDto.PostalCode ?? "",
+                AddressPersonalName = userDto.ContactName ?? $"{userDto.FirstName} {userDto.LastName}",
+                AddressPhone = userDto.PhoneNumber ?? "",
+                AddressCustomerID = customerID,
+                AddressCountryID = country.CountryID,
+                AddressStateID = state?.StateID ?? 0
+            };
+            newAddress.SetValue("AddressType", AddressType.Shipping.Code);
+
+            AddressInfoProvider.SetAddressInfo(newAddress);
         }
 
         private bool ValidateImportItem(UserDto userDto, Role[] roles, out List<string> validationErrors)
@@ -201,37 +169,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Users
                 .Or()
                 .WhereEquals("StateCode", code)
                 .FirstOrDefault();
-        }
-
-        private void CreateCustomerAddress(int customerID, UserDto userDto)
-        {
-            var country = FindCountry(userDto.Country);
-            if (country == null)
-            {
-                EventLogProvider.LogInformation("Import users", "INFO", $"Skipping creation of address of user { userDto.Email }. Reason - invalid country.");
-                return;
-            }
-
-            var state = FindState(userDto.State);
-
-            var addressNameFields = new[] { $"{userDto.FirstName} {userDto.LastName}", userDto.AddressLine, userDto.AddressLine2, userDto.City }
-                .Where(af => !string.IsNullOrWhiteSpace(af));
-            var newAddress = new AddressInfo
-            {
-                AddressName = string.Join(", ", addressNameFields),
-                AddressLine1 = userDto.AddressLine ?? "",
-                AddressLine2 = userDto.AddressLine2,
-                AddressCity = userDto.City ?? "",
-                AddressZip = userDto.PostalCode ?? "",
-                AddressPersonalName = userDto.ContactName ?? $"{userDto.FirstName} {userDto.LastName}",
-                AddressPhone = userDto.PhoneNumber ?? "",
-                AddressCustomerID = customerID,
-                AddressCountryID = country.CountryID,
-                AddressStateID = state?.StateID ?? 0
-            };
-            newAddress.SetValue("AddressType", AddressType.Shipping.Code);
-
-            AddressInfoProvider.SetAddressInfo(newAddress);
         }
 
         private CustomerInfo CreateCustomer(int userID, int siteID, UserDto userDto)

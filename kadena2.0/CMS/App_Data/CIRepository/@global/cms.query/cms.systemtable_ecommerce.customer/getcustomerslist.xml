@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>ecommerce.customer</CodeName>
+    <GUID>cd867311-743a-4599-ba72-5fe29b1c4a9c</GUID>
+    <ObjectType>cms.systemtable</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>4e6f3632-26e8-4c8f-865f-b67b12baf265</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetCustomersList</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+SELECT ##TOPN## ##COLUMNS## FROM COM_Customer C1 LEFT OUTER JOIN COM_ShoppingCart C2 ON 
+C1.CustomerID=C2.ShoppingCartCustomerID  LEFT OUTER JOIN COM_ShoppingCartSKU C3 ON
+C2.ShoppingCartID=C3.ShoppingCartID  AND C3.SKUID=@SKUID
+WHERE ##WHERE## ORDER BY ##ORDERBY##
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

@@ -161,7 +161,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
     {
         try
         {
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", CampaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", CampaignID)
+                .FirstObject;
             if (campaign != null)
             {
                 bool initiated = campaign.GetBooleanValue("CampaignInitiate", false);
@@ -202,7 +205,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkOpenCampaign.Visible = true;
                         lnkOpenCampaign.Enabled = true;
                     }
-                   else if (openCampaign)
+                    if (openCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
@@ -211,7 +214,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                         lnkCloseCampaign.Enabled = true;
                         lnkCloseCampaign.Visible = true;
                     }
-                    else if (closeCampaign)
+                    if (closeCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
@@ -268,7 +271,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
+            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_CampaignCreatePageUrl"), Guid.Empty);
             {
                 if (!nodeGUID.Equals(Guid.Empty))
                 {
@@ -297,7 +300,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", campaignID)
+                .FirstObject;
             if (campaign != null)
             {
                 campaign.CampaignInitiate = true;
@@ -322,7 +328,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", campaignID)
+                .FirstObject;
             Response.Redirect(campaign.DocumentUrlPath);
         }
         catch (Exception ex)
@@ -342,7 +351,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", campaignID)
+                .FirstObject;
             Response.Redirect(campaign.DocumentUrlPath);
         }
         catch (Exception ex)
@@ -362,7 +374,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", campaignID)
+                .FirstObject;
             if (campaign != null)
             {
                 campaign.OpenCampaign = true;
@@ -396,7 +411,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            Campaign campaign = CampaignProvider.GetCampaigns().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("CampaignID", campaignID).FirstObject;
+            Campaign campaign = CampaignProvider.GetCampaigns()
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .WhereEquals("CampaignID", campaignID)
+                .FirstObject;
             if (campaign != null)
             {
                 campaign.CloseCampaign = true;

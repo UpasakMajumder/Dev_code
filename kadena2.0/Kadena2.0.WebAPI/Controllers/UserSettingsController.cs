@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.Dto.Settings;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System.Web.Http;
 using Kadena.Models;

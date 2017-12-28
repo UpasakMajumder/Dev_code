@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<span>{%If(Supporttype.ToString()!=null){%} <span>{%Supporttype%}</span> {%}|(user)cvoqa2@gmail.com|(hash)75e178cd9697ab8507425a4f14969015f0d13bc9ccacf6417831fb1ccde150d8%}</span> 
+<span>{%If(ContactName.ToString()!=null){%} <span>{%ContactName%}</span> {%}|(user)cvoqa2@gmail.com|(hash)01ebf8bef8ddc98fc2e5567d5e48450f58899c71ddadb495a0466f5c4d0f9eaa%}</span> 
+<a href="mailto:{%If(Email.ToString()!=null){%} {%Email%}{%}|(user)cvoqa2@gmail.com|(hash)09dc118501dfe378f2ff2d594f46c58311ff78193835b2c4dfcda664bcc9552c%}">{%If(Email.ToString()!=null){%} <span>{%Email%}</span> {%}|(user)cvoqa2@gmail.com|(hash)444af2cbf068413fb97cacaaf17aaa95d7787ee9f2fd1d1026648696672a97cd%}</a> 
+
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>cc8b877d-fb81-485f-b0b5-2ca51ca27be8</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>EmailSupport</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

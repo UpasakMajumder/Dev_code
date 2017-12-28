@@ -95,13 +95,25 @@ namespace Kadena.WebAPI.KenticoProviders
                 SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser);
         }
 
+        public bool UserCanDownloadHiresPdf(int siteId, int userId)
+        {
+            var userinfo = UserInfoProvider.GetUserInfo(userId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+
+            if (userinfo == null || site == null)
+                return false;
+
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_CanDownloadHiresPdf", site.SiteName, userinfo);
+        }
+
         public User GetCurrentUser()
         {
-            var user = MembershipContext.AuthenticatedUser;
-            return new User
-            {
-                UserId = user.UserID
-            };
+            return _mapper.Map<User>(MembershipContext.AuthenticatedUser);
+        }
+
+        public User GetUser(string mail)
+        {
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public bool SaveLocalization(string code)
@@ -138,6 +150,12 @@ namespace Kadena.WebAPI.KenticoProviders
         public void UnsetDefaultShippingAddress()
         {
             SetDefaultShippingAddress(0);
+        }
+
+        public bool UserIsInCurrentSite(int userId)
+        {
+            var user = UserInfoProvider.GetUserInfo(userId);
+            return user?.IsInSite(SiteContext.CurrentSiteName) ?? false;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CMS.EventLog;
 using CMS.UIControls;
 using System;
-using System.Linq;
 using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
@@ -20,40 +19,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnUploadProductList_Click(object sender, EventArgs e)
         {
-            var file = importFile.PostedFile;
-            if (string.IsNullOrWhiteSpace(file.FileName))
-            {
-                ShowErrorMessage("You need to choose the import file.");
-                return;
-            }
-
-            if (SelectedSiteID == 0)
-            {
-                ShowErrorMessage("You need to choose the Site.");
-                return;
-            }
-
-            var fileData = ReadFileFromRequest(file);
-            var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
-
-            try
-            {
-                var result = new ProductImportService().ProcessProductsImportFile(fileData, excelType, SelectedSiteID);
-                if (result.ErrorMessages.Length > 0)
-                {
-                    ShowErrorMessage(FormatImportResult(result));
-                }
-                else
-                {
-                    ShowSuccessMessage("Operation successfully completed");
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("Import products", "EXCEPTION", ex);
-                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
-            }
+            Import(importFile, new ProductImportService());
         }
 
         private string FormatImportResult(ImportResult result)
@@ -64,12 +30,12 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new ProductTemplateService().GetProductTemplateFile(SelectedSiteID);
+            var bytes = new ProductTemplateService().GetTemplateFile<ProductDto>(SelectedSiteID);
             var templateFileName = "products-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
         }
 
-        private byte[] ReadFileFromRequest(HttpPostedFile fileRequest)
+        private byte[] ReadBytes(HttpPostedFile fileRequest)
         {
             using (var binaryReader = new BinaryReader(fileRequest.InputStream))
             {
@@ -105,6 +71,68 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
         {
             errorMessageContainer.Visible = false;
             successMessageContainer.Visible = false;
+        }
+
+        protected void btnDownloadProductCategoryTemplate_Click(object sender, EventArgs e)
+        {
+            var bytes = new TemplateServiceBase().GetTemplateFile<ProductCategoryImportDto>(SelectedSiteID);
+            var templateFileName = "productcategories-upload-template.xlsx";
+            WriteFileToResponse(templateFileName, bytes);
+        }
+
+        protected void btnUploadProductCategories_Click(object sender, EventArgs e)
+        {
+            Import(importProductCategories, new ProductCategoryImporter());
+
+        }
+
+        private void Import(System.Web.UI.WebControls.FileUpload fileControl, ImportServiceBase importer)
+        {
+            if (fileControl == null || importer == null)
+            {
+                EventLogProvider.LogEvent(EventType.ERROR, GetType().Name, "IMPORT", "Improper usage of import method.");
+                return;
+            }
+
+            if (SelectedSiteID == 0)
+            {
+                ShowErrorMessage("You need to choose the Site.");
+                return;
+            }
+
+            var file = fileControl.PostedFile;
+            if (string.IsNullOrWhiteSpace(file.FileName))
+            {
+                ShowErrorMessage("You need to choose the import file.");
+                return;
+            }
+            var excelType = ImportHelper.GetExcelTypeFromFileName(file.FileName);
+
+            var fileData = ReadBytes(file);
+            if (fileData == null)
+            {
+                ShowErrorMessage("Selected file doesn't have any data.");
+                return;
+            }
+
+            try
+            {
+                var result = importer.Process(fileData, excelType, SelectedSiteID);
+                if (result.ErrorMessages.Length > 0)
+                {
+                    ShowErrorMessage(FormatImportResult(result));
+                }
+                else
+                {
+                    ShowSuccessMessage("Operation successfully completed");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException(GetType().Name, "EXCEPTION", ex);
+                ShowErrorMessage("There was an error while processing the request. Detailed information was placed in Event log.");
+            }
         }
     }
 }

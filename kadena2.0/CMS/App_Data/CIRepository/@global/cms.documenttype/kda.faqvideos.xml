@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>_FAQ Videos</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="FAQVideosID" columnprecision="0" columntype="integer" guid="4ede90d9-3abe-45e9-91bf-116a0438ea57" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>FAQVideosID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="VideoName" columnsize="200" columntype="text" guid="f6067e31-ecb4-4bdb-91fc-7297d33bedb8" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Video Name </fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="VideoUrl" columnsize="200" columntype="text" guid="2ab82481-7383-4c93-8bfd-5e0f35fc2e34" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Video Url</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>d28e408b-a5f1-4b04-b833-9f3841298ce9</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassInheritsFromClassID>0</ClassInheritsFromClassID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassName>KDA.FAQVideos</ClassName>
+  <ClassNodeAliasSource>VideoName</ClassNodeAliasSource>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="403c19e2-0ad6-462e-ad43-4eaf56a2a7e8" name="FAQVideosID" searchable="True" tokenized="False" />
+      <item content="True" id="4dddea19-93ff-4a20-adb3-5af7ee709c8f" name="VideoName" searchable="False" tokenized="True" />
+      <item content="True" id="a07d486b-5b96-4de2-9b07-cb492268b291" name="VideoUrl" searchable="False" tokenized="True" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_FAQVideos</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

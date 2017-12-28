@@ -64,10 +64,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Product GetProductByNodeId(int nodeId);
 
-        string GetDocumentUrl(int documentId);
-
-        List<string> GetBreadcrumbs(int documentId);
-
         string GetProductTeaserImageUrl(int documentId);
 
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
@@ -83,10 +79,5 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string MapOrderStatus(string microserviceStatus);
 
         void SetSkuAvailableQty(string skunumber, int availableItems);
-
-        string GetDocumentUrl(string aliasPath);
-
-        string GetDocumentUrl(string aliasPath, string cultureCode);
-
     }
 }

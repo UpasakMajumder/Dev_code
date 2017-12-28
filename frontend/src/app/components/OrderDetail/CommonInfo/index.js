@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
 /* helpers */
-import { divideBySlash } from 'app.helpers/time';
+import timeFormat from 'app.helpers/time';
 
-const CommonInfo = ({ ui }) => {
+const CommonInfo = ({ ui, dateTimeNAString }) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
 
   const tiles = [
@@ -16,12 +16,12 @@ const CommonInfo = ({ ui }) => {
     },
     {
       title: orderDate.title,
-      value: orderDate.value,
+      value: timeFormat(orderDate.value, dateTimeNAString),
       icon: 'calendar'
     },
     {
       title: shippingDate.title,
-      value: shippingDate.value,
+      value: timeFormat(shippingDate.value, dateTimeNAString),
       icon: 'truck'
     },
     {
@@ -38,7 +38,7 @@ const CommonInfo = ({ ui }) => {
         <SVG name={icon} className="icon-tile"/>
         <div>
           <p className="tile-bar__title">{title}</p>
-          <p className="tile-bar__description">{title.includes('date') ? divideBySlash(value) : value}</p>
+          <p className="tile-bar__description">{value}</p>
         </div>
       </div>
     );
@@ -54,6 +54,7 @@ const CommonInfo = ({ ui }) => {
 };
 
 CommonInfo.propTypes = {
+  dateTimeNAString: PropTypes.string.isRequired,
   ui: PropTypes.shape({
     status: PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -61,11 +62,11 @@ CommonInfo.propTypes = {
     }).isRequired,
     orderDate: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
+      value: PropTypes.string
     }).isRequired,
     shippingDate: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
+      value: PropTypes.string
     }).isRequired,
     totalCost: PropTypes.shape({
       title: PropTypes.string.isRequired,

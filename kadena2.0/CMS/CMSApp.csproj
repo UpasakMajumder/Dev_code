@@ -23273,9 +23273,9 @@
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj">
-      <Project>{fb19606b-d327-4f43-ab3f-825000079b1a}</Project>
-      <Name>Kadena2.0.WebAPI</Name>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

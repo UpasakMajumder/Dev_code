@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.CampaignsProduct</CodeName>
+    <GUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<div class="Print">
+<div class="cus_content_block noprint">
+  <div class="img_block " >
+   <input type="checkbox" id="zoomCheck_{%DataItemIndex%}">
+    <label for="zoomCheck_{%DataItemIndex%}">
+    <img src='http://default.kadenatest.com:8090/TWE/media/InventoryProduct/{% SKUImagePath%}' />
+       </label>
+  </div>
+  <i class="fa fa-search" aria-hidden="true"></i>
+  <div>
+    <input type="checkbox" name="ProductCheckBox" value={%"CampaignsProductID")%} runat="server" id='chkbox' class="js_Product noprint" onchange="SelectforPrint(this);" />
+    <label for="dom" class="input__label input__label--checkbox ">{%ProductName%}</label>
+  </div>
+  <p>{%SKUDescription%}</p>
+ </div>
+  
+  <div style="width: 100%; padding: 0 15px; margin: 0 auto; float: left;" class="enablePrint Notdisplay">
+    {%If(IsFirst) { %}IsFirst
+            <div style="text-align: center;">
+                <h1>
+               Product heading
+                </h1>
+            </div>
+     {%}|(user)cvoqa2@gmail.com|(hash)3630e1c7ae34d326961136c4c0d270db58c2642a216d23b5ce978fbc6f0c9a8d%}
+            <div style="width: 20%; float: left;">
+                <div style="width: 234px;height: auto;margin: 0 auto;">
+                    <img src='http://default.kadenatest.com:8090/TWE/media/InventoryProduct/{% SKUImagePath%}' style="width: 230px; padding: 30px 0;">
+                </div>
+            </div>
+            <div style="width: 77%;float: left; margin: 20px 0 0 30px;">
+                <div style="font-size: 20px;">
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 20%; float: left; display: inline-block;>
+                            <label style=" font-size:="" 22px; "=" "><b>Part Number:</b>
+                        </div>
+                        <div style="width: 60%; display: inline-block;>
+                            <label style=" font-size:=" " 22px;"=""><b>{%POSNumber%}</b>
+                        </div>
+                    </div>
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 20%; float: left; display: inline-block;>
+                            <label style=" font-size:="" 22px; "=" "><b>Brand:</b>
+                        </div>
+                        <div style="width: 60%; display: inline-block;>
+                            <label style=" font-size:=" " 22px;"="">{%BrandName%}</label>
+                        </div>
+                    </div>
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 20%; float: left; display: inline-block;>
+                            <label style=" font-size:="" 22px; "=" "><b>Short Desc:</b>
+                        </div>
+                        <div style="width: 60%; display: inline-block;>
+                            <label style=" font-size:=" " 22px;"="">{%SKUName%}</label>
+                        </div>
+                    </div>
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 20%; float: left; display: inline-block;>
+                            <label style=" font-size:="" 22px; "=" "><b>Description:</b>
+                        </div>
+                        <div style="width: 60%; display: inline-block;>
+                            <label style=" font-size:=" " 22px;"="">{%SKUDescription%}</label>
+                        </div>
+                    </div>
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 20%; display: inline-block;>
+                            <label style=" font-size:="" 22px; "=" "><b>Valid States:</b>
+                        </div>
+                        <div style="width: 60%; display: inline-block;>
+                            <label style=" font-size:=" " 22px;"="">
+                        </div>
+                    </div>
+                    <div style="display: block; margin-bottom: 10px;">
+                        <div style="width: 30%; display: inline-block;">
+                            <div style="display: inline-block;>
+                                <label style=" font-size:="" 22px;="" "=" "><b>Cost/Bundle:</b>
+                            </div>
+                            <div style="display: inline-block;>
+                                <label style=" font-size:=" " 22px;"=""></label>
+                            </div>
+                        </div>
+                        <div style="width: 30%; display: inline-block;">
+                            <div style="display: inline-block;>
+                                <label style=" font-size:="" 22px;="" "=" "><b>Bundle Qty:</b>
+                            </div>
+                            <div style="display: inline-block;>
+                                <label style=" font-size:=" " 22px;"="">{%BundleQty%}</label>
+                            </div>
+                        </div>
+                        <div style="width: 30%; display: inline-block;">
+                            <div style="display: inline-block;>
+                                <label style=" font-size:="" 22px;="" "=" "><b>Expire Date:</b>
+                            </div>
+                            <div style="display: inline-block;>
+                                <label style=" font-size:=" " 22px;"="">{%SKUValidUntil%}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  </div>
+ {%If(!IsFirst){ %}
+  <hr style="border-bottom: 1px solid #000;" class="linesep noprint Notdisplay">
+  {% } |(user)cvoqa2@gmail.com|(hash)b507a506669997e3ab9d3f9011894a1294ef68a393bbefd4139028dffd307915%}
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>f7d161c1-f955-4b36-b058-8224148470f5</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>InventoryProduct</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

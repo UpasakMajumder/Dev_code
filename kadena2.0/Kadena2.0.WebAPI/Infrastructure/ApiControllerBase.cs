@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Results;
 
-using static Kadena.WebAPI.SerializerConfig;
+using static Kadena.Helpers.SerializerConfig;
 
 namespace Kadena.WebAPI.Infrastructure
 {

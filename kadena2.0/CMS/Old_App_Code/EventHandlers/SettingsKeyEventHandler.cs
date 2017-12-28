@@ -3,7 +3,7 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;

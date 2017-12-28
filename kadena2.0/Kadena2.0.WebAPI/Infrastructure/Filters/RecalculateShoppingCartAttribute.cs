@@ -1,5 +1,5 @@
 ﻿using CMS.Base;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using System.Web.Http.Filters;
 
 namespace Kadena.WebAPI.Infrastructure.Filters

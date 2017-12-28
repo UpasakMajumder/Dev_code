@@ -1,5 +1,4 @@
 ﻿using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,26 +6,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImagesTemplateService : TemplateServiceBase
     {
-        public byte[] GetProductImagesTemplateFile(int siteID)
+        protected override ISheet CreateSheet(List<Column> headers)
         {
-            var columns = GetImportColumns<ProductImageDto>();
-            return CreateTemplateFile(columns);
-        }
-        private byte[] CreateTemplateFile(List<Column> columns)
-        {
-            IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("ProductImages");
-            var columnInfos = ImportHelper.GetHeaderProperties<ProductImageDto>();
-            CreateSheetHeader(columns, sheet);
+            var sheet = base.CreateSheet(headers);
 
-            var indexOfUrl1 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ImageURL)).Order;
-            var indexOfUrl2 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ThumbnailURL)).Order;
+            var indexOfUrl1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ImageURL)).Order;
+            var indexOfUrl2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductImageDto.ThumbnailURL)).Order;
 
             var urlFieldWidth = 256 * 100;
             sheet.SetColumnWidth(indexOfUrl1, urlFieldWidth);
             sheet.SetColumnWidth(indexOfUrl2, urlFieldWidth);
 
-            return GetWorkbookBytes(workbook);
+            return sheet;
         }
     }
 }

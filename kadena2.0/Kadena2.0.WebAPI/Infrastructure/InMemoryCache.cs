@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
 using System;
 using System.Web.Caching;
 

@@ -1,6 +1,6 @@
 ﻿using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.Services;
+using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
@@ -15,66 +15,68 @@ namespace Kadena.Tests.WebApi
 {
     public class TemplateServiceTest
     {
-        private string _currentName = "currentName";
+        private readonly string newName = "newName";
+        private readonly int newQuantity = 5;
+        private readonly Guid templateId = Guid.Empty;
 
         private TemplateService Create(Mock<ITemplatedClient> templateClient)
         {
             return new TemplateService(
-                Mock.Of<IKenticoResourceService>(), 
+                Mock.Of<IKenticoResourceService>(),
                 Mock.Of<IKenticoLogger>(),
                 templateClient.Object,
                 Mock.Of<IKenticoProviderService>(),
-                Mock.Of<IKenticoUserProvider>()
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>()
                 );
         }
-
-        private BaseResponseDto<bool?> SetNameSuccess(string name)
+        
+        [Fact(DisplayName = "TemplateUpdateSucceed")]
+        public async Task TemplateUpdateSucceed()
         {
-            _currentName = name;
-            return new BaseResponseDto<bool?>
-            {
-                Success = true,
-                Payload = true
-            };
-        }
+            var templateClient = new Mock<ITemplatedClient>();
+            templateClient.Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(new BaseResponseDto<bool?>
+                {
+                    Success = true,
+                    Payload = true
+                }));
+            var logger = new Mock<IKenticoLogger>();
+            var service = new TemplateService(Mock.Of<IKenticoResourceService>(),
+                logger.Object, templateClient.Object,
+                Mock.Of<IKenticoProviderService>(),
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>());
 
-        private BaseResponseDto<bool?> SetNameFailed()
-        {
-            return new BaseResponseDto<bool?>
-            {
-                Success = false,
-                Payload = null,
-                ErrorMessages = "Some error."
-            };
-        }
+            var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
-        [Fact(DisplayName = "SetNameSucceed")]
-        public async Task SetNameSucceed()
-        {
-            var newName = "newName";
-            Assert.NotEqual(newName, _currentName);
-
-            var client = new Mock<ITemplatedClient>();
-            client.Setup(c => c.SetName(Guid.Empty, newName))
-                .Returns(Task.FromResult(SetNameSuccess(newName)));
-            var service = Create(client);
-
-            var result = await service.SetName(Guid.Empty, newName);
+            templateClient.Verify(c => c.UpdateTemplate(templateId, newName, newQuantity), Times.Once);
+            logger.Verify(c => c.LogError(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             Assert.True(result);
-            Assert.Equal(newName, _currentName);
         }
 
-        [Fact(DisplayName = "SetNameFail")]
-        public async Task SetNameFail()
+        [Fact(DisplayName = "TemplateUpdateFailed")]
+        public async Task TemplateUpdateFailed()
         {
-            var newName = "newName";
+            var templateClient = new Mock<ITemplatedClient>();
+            templateClient.Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(Task.FromResult(new BaseResponseDto<bool?>
+                {
+                    Success = false,
+                    Payload = null,
+                    ErrorMessages = "Some error."
+                }));
+            var logger = new Mock<IKenticoLogger>();
+            var service = new TemplateService(Mock.Of<IKenticoResourceService>(),
+                logger.Object, templateClient.Object,
+                Mock.Of<IKenticoProviderService>(),
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>());
 
-            var client = new Mock<ITemplatedClient>();
-            client.Setup(c => c.SetName(Guid.Empty, newName))
-                .Returns(Task.FromResult(SetNameFailed()));
-            var service = Create(client);
-            var result = await service.SetName(Guid.Empty, newName);
+            var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
+            templateClient.Verify(c => c.UpdateTemplate(templateId, newName, newQuantity), Times.Once);
+            logger.Verify(c => c.LogError(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             Assert.False(result);
         }
 
@@ -88,7 +90,8 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(invalidNodeId) == new Product { ProductType = ProductTypes.StaticProduct }),
-                Mock.Of<IKenticoUserProvider>()
+                Mock.Of<IKenticoUserProvider>(),
+                Mock.Of<IKenticoDocumentProvider>()
             );
 
             var templates = await sut.GetTemplatesByProduct(invalidNodeId);
@@ -111,8 +114,8 @@ namespace Kadena.Tests.WebApi
                 Success = true,
                 Payload = new List<TemplateServiceDocumentResponse>
                 {
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime },
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime }
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() },
+                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() }
                 }
             };
 
@@ -121,7 +124,8 @@ namespace Kadena.Tests.WebApi
                 Mock.Of<IKenticoLogger>(),
                 Mock.Of<ITemplatedClient>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
                 Mock.Of<IKenticoProviderService>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct }),
-                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { })
+                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { }),
+                Mock.Of<IKenticoDocumentProvider>()
             );
 
             var templates = await sut.GetTemplatesByProduct(nodeId);

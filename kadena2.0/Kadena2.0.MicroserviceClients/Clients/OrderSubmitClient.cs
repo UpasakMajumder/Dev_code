@@ -7,7 +7,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class OrderSubmitClient : ClientBase, IOrderSubmitClient
+    public sealed class OrderSubmitClient : SignedClientBase, IOrderSubmitClient
     {
         private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private readonly IMicroProperties _properties;
@@ -15,13 +15,6 @@ namespace Kadena2.MicroserviceClients.Clients
         public OrderSubmitClient(IMicroProperties properties)
         {
             _properties = properties;
-        }
-
-        public async Task<BaseResponseDto<string>> FinishOrder(string orderNumber)
-        {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/order";
-            return await Patch<string>(url, orderNumber).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)

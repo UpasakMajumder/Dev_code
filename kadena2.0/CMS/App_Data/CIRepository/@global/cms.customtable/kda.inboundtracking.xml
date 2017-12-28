@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>In-Bound Tracking</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="41592d49-44a6-4294-a09c-e1142a1c30af" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUID" columntype="integer" guid="07354247-2b13-4b03-ae35-56f20d014d20" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SKUID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="QtyOrdered" columntype="integer" guid="8cd6ec05-3b11-4ae6-a201-ee479d32d6f9" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Qty Ordered</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="DemandGoal" columntype="integer" guid="de3c6569-757b-47fe-b8e5-c7383a046eb9" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Demand Goal</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="QtyReceived" columntype="integer" guid="3fa872c1-b112-47df-8540-15447db3bfba" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Qty Received</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="QtyProduced" columntype="integer" guid="814bee78-a11d-4264-9573-d37f725576ed" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Qty Produced</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="Overage" columntype="integer" guid="e18188b2-cd5b-4d1b-87ff-1f148e532f42" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Overage</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="Vendor" columnsize="200" columntype="text" guid="292005d8-dede-4932-a6b0-0f729488f630" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Vendor</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ExpArrivalToCenveo" columnsize="200" columntype="text" guid="52043d6f-e5e4-49c0-81a1-5cd396652355" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Exp Arrival To Cenveo</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="DeliveryToDistBy" columnsize="200" columntype="text" guid="73e97534-efc1-4c0e-8264-a2c02f42c7e8" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Delivery To Dist By</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ShippedToDist" columnsize="200" columntype="text" guid="eb4a6a38-1f23-438a-b085-8c3114cc2b19" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Shipped To Dist</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="CenveoComments" columnsize="200" columntype="text" guid="a6164753-0fc8-43bc-8162-52749cc88db3" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Cenveo Comments</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="TweComments" columnsize="200" columntype="text" guid="931a52fc-19aa-4b4b-ab66-226aa9ece5f7" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Twe Comments</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ActualPrice" columntype="double" guid="1ccd4256-f87e-4804-8f4b-2861ae159c08" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Actual Price</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="4c248c5e-ef92-43f2-b59d-c35918b5b628" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="25109f8d-8704-42fa-853e-0848f3fe9b27" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="3c57d03c-f35e-421c-86b7-e3da373cf557" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="7570ee50-c7b9-4176-a15a-1c4208f93345" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemOrder" columnprecision="0" columntype="integer" guid="1313b019-07d5-423c-893c-c199e46bf4d4" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Order</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="35512924-8965-4f24-919f-0aaf13428cf1" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>6549aeb4-b4da-4ace-ade8-b8c141913d1e</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.InboundTracking</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="11ed5880-dafd-44ad-ae2b-5041163346c3" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="True" id="17352176-ac8b-4e12-99b6-3eafb9efd331" name="DeliveryToDistBy" searchable="False" tokenized="True" />
+      <item content="False" id="21688546-e723-4069-a04e-57796f302770" name="DemandGoal" searchable="True" tokenized="False" />
+      <item content="True" id="28882f8f-9b6c-4a90-bc2a-f7bba9a1c031" name="CenveoComments" searchable="False" tokenized="True" />
+      <item content="False" id="2a76cf59-84dd-4c02-aaa3-7fa86279db9a" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="3066b6bf-bf96-40f4-9d5e-e9fd30e71ea5" name="SKUID" searchable="True" tokenized="False" />
+      <item content="False" id="3b1d0c6c-ef03-47b1-9774-57d74559764e" name="Overage" searchable="True" tokenized="False" />
+      <item content="False" id="559fbd7a-663c-4314-bb90-336d5f3af530" name="QtyOrdered" searchable="True" tokenized="False" />
+      <item content="False" id="5d3cce1d-e228-4f7e-ae32-ec471317b372" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="6db82b22-5823-4c14-8818-727b5261f79c" name="ActualPrice" searchable="True" tokenized="False" />
+      <item content="False" id="70e0cbdd-3398-458b-9b7e-5690e7c99f29" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="73fb940f-38e3-4cdc-9472-d493b1dbeef9" name="QtyProduced" searchable="True" tokenized="False" />
+      <item content="True" id="88a73c93-8de0-4359-a794-e8fd59f3112d" name="ShippedToDist" searchable="False" tokenized="True" />
+      <item content="True" id="9ced8979-3a63-4384-80ee-c22bbd194d34" name="Vendor" searchable="False" tokenized="True" />
+      <item content="True" id="ae34aa62-690a-43c1-92ef-14ffb4b6f24c" name="TweComments" searchable="False" tokenized="True" />
+      <item content="False" id="c4c0eec1-c96a-4ea4-91d8-93718237a3f3" name="QtyReceived" searchable="True" tokenized="False" />
+      <item content="False" id="cf5717b5-1e3d-4425-a1f1-a26cfb670a51" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="False" id="e596719a-fdd8-420a-9384-b325b7c44108" name="ItemOrder" searchable="True" tokenized="False" />
+      <item content="True" id="e9948684-f6d5-4679-8c57-0e9bcbfda36f" name="ExpArrivalToCenveo" searchable="False" tokenized="True" />
+      <item content="False" id="eec02701-dc06-46ee-b734-00835158b66e" name="ItemModifiedBy" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_InboundTracking</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

@@ -1,12 +1,11 @@
-﻿using CMS.DataEngine;
-using CMS.Ecommerce;
+﻿using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.SiteProvider;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
-using Kadena2.Carriers.Helpers;
+using Kadena.Helpers;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients.Clients;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            _properties = new MicroProperties();
+            _properties = new MicroProperties(new KenticoResourceService());
             microserviceClient = new ShippingCostServiceClient(_properties);
             ServiceUrl = _properties.GetServiceUrl("KDA_ShippingCostServiceUrl");
         }

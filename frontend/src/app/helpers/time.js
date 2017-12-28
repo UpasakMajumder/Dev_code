@@ -4,12 +4,11 @@ import { LANGUAGES } from 'app.globals';
 
 if (LANGUAGES) moment.locale(LANGUAGES.locale || 'en-gb');
 
-export const convertToWords = (date) => {
+export default (date, devaultValue) => {
   const timestamp = Date.parse(date);
-  return isNaN(timestamp) ? date : moment(date).format('MMM D YYYY');
-};
 
-export const divideBySlash = (date) => {
-  const timestamp = Date.parse(date);
-  return isNaN(timestamp) ? date : moment(date).format('M/DD/YYYY');
+  let result = devaultValue || date;
+  result = isNaN(timestamp) ? result : moment(date).format('MMM DD, YYYY');
+
+  return result;
 };

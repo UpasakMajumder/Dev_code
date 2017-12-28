@@ -5,6 +5,7 @@ using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
 using Kadena.Old_App_Code.Kadena.Imports.Products;
+using CMS.DocumentEngine.Types.KDA;
 
 namespace Kadena.CMSModules.Kadena.Pages.Products
 {
@@ -16,6 +17,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
         }
 
         private int SelectedSiteID => Convert.ToInt32(siteSelector.Value);
+        private string SelectedPageType => ddlProductPageType.SelectedValue;
 
         protected void btnUploadProductList_Click(object sender, EventArgs e)
         {
@@ -37,7 +39,15 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
             try
             {
-                var result = new ProductImportService().ProcessProductImagesImportFile(fileData, excelType, SelectedSiteID);
+                ImportResult result = null;
+                if (SelectedPageType.Equals(CampaignsProduct.CLASS_NAME))
+                {
+                    result = new CampaignProductImportService().ProcessProductImagesImportFile(fileData, excelType, SelectedSiteID);
+                }
+                else
+                {
+                    result = new ProductImportService().ProcessProductImagesImportFile(fileData, excelType, SelectedSiteID);
+                }
                 if (result.ErrorMessages.Length > 0)
                 {
                     ShowErrorMessage(FormatImportResult(result));
@@ -62,7 +72,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
 
         protected void btnDownloadTemplate_Click(object sender, EventArgs e)
         {
-            var bytes = new ProductImagesTemplateService().GetProductImagesTemplateFile(SelectedSiteID);
+            var bytes = new ProductImagesTemplateService().GetTemplateFile<ProductImageDto>(SelectedSiteID);
             var templateFileName = "productimages-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
         }

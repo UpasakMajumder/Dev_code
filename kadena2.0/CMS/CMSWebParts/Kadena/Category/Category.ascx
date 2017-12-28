@@ -13,7 +13,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblDecription" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.DesText" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtDescription" runat="server" MaxLength="100" TextMode="MultiLine" CssClass="input__text" />
+                    <cms:CMSTextBox ID="txtDescription" runat="server" MaxLength="100" TextMode="MultiLine" CssClass="input__textarea" />
 
                     <asp:RegularExpressionValidator  Display="Dynamic" ControlToValidate="txtDescription" ID="revDescription" ValidationExpression="^[\s\S]{0,50}$" ValidationGroup="feildvalidation" ForeColor="Red" runat="server"></asp:RegularExpressionValidator>
                 </div>

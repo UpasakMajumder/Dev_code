@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDefaultPageTemplateID>
+    <CodeName>CampaignProducts</CodeName>
+    <GUID>bef5302f-c7bd-4569-ae3c-811455ec978a</GUID>
+    <ObjectType>cms.pagetemplate</ObjectType>
+  </ClassDefaultPageTemplateID>
+  <ClassDisplayName>_Campaigns Product</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="CampaignsProductID" columnprecision="0" columntype="integer" guid="9adb2f46-7698-4061-b4d2-36825853f378" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>CampaignsProductID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="EstimatedPrice" columntype="double" guid="a478b9bb-1cf9-4319-a3fc-5606159ff4ae" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Estimated Price</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductName" columnsize="200" columntype="text" guid="fa1f93fe-ae70-47da-9e04-84bd836a05de" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Produc tName</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProgramID" columntype="integer" guid="123f0243-1344-48d4-ada3-bde6aa507d33" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>ProgramID</fieldcaption>
+        </properties>
+        <settings>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>False</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
+          <DisplayNameFormat>{%ProgramName%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>cms.document.kda.program</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
+          <ReturnColumnName>ProgramID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>0</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
+        </settings>
+      </field>
+      <field allowempty="true" column="BrandID" columntype="integer" guid="36f4d469-2c83-4635-babc-9b2269cffe21" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>BrandID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CustomTableItemSelector</controlname>
+          <CustomTable>KDA.Brand</CustomTable>
+          <DisplayNameFormat>{%BrandName%}</DisplayNameFormat>
+          <ReturnColumnName>ItemID</ReturnColumnName>
+        </settings>
+      </field>
+      <field allowempty="true" column="State" columntype="integer" guid="253b6b13-ed8f-4ddf-b3cc-fddd0462ca65" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>State</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CustomTableItemSelector</controlname>
+          <CustomTable>KDA.StatesGroup</CustomTable>
+          <DisplayNameFormat>{%States%}</DisplayNameFormat>
+          <ReturnColumnName>ItemID</ReturnColumnName>
+        </settings>
+      </field>
+      <field allowempty="true" column="CategoryID" columntype="integer" guid="270a446b-6cdd-4881-8eae-9d9cf9e9cdb5" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>CategoryID</fieldcaption>
+        </properties>
+        <settings>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>False</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
+          <DisplayNameFormat>{%ProductCategoryTitle%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>cms.document.kda.productcategory</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
+          <ReturnColumnName>ProductCategoryID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>0</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
+        </settings>
+      </field>
+      <field allowempty="true" column="QtyPerPack" columntype="integer" guid="701c95e3-8215-41b2-b69b-47c15d71ddd4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Qty Per Pack</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemSpecs" columntype="integer" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Item Specs</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="Cancelled" columntype="boolean" guid="83d8267d-cf59-47a9-945f-2faa84e0924e" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Cancelled</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="CVOProductID" columntype="integer" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>CVO ProductID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Store Front ProductID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassInheritsFromClassID>0</ClassInheritsFromClassID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>True</ClassIsProduct>
+  <ClassIsProductSection>False</ClassIsProductSection>
+  <ClassName>KDA.CampaignsProduct</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="43aa1dca-b0e6-4672-bc82-0a6171ce2703" name="StoreFrontProductID" searchable="True" tokenized="False" />
+      <item content="False" id="44c77694-a25e-41ba-a10f-12fa045f0907" name="QtyPerPack" searchable="True" tokenized="False" />
+      <item content="False" id="4b1b5af0-fbdf-437e-84a5-461761255eef" name="CampaignsProductID" searchable="True" tokenized="False" />
+      <item content="False" id="4fc05400-59c4-4b90-9723-4aa60790f851" name="CategoryID" searchable="True" tokenized="False" />
+      <item content="False" id="6b6d5bf5-34a3-4a83-816f-2351db186797" name="State" searchable="True" tokenized="False" />
+      <item content="False" id="805b3b71-8a2b-4f65-af2b-28e91e785cdc" name="ProgramID" searchable="True" tokenized="False" />
+      <item content="False" id="931f77ec-cdc0-4cfd-b8ab-75c3e15bd827" name="ItemSpecs" searchable="True" tokenized="False" />
+      <item content="False" id="af122031-b1fd-40bd-91ed-c2a96e58717e" name="BrandID" searchable="True" tokenized="False" />
+      <item content="False" id="b9acbac7-8dbe-497a-b3d4-d5600257589b" name="CVOProductID" searchable="True" tokenized="False" />
+      <item content="False" id="d044c337-c888-4b6d-997b-657ff96471cc" name="Cancelled" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassSKUDefaultProductType>EPRODUCT</ClassSKUDefaultProductType>
+  <ClassTableName>KDA_CampaignsProduct</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>

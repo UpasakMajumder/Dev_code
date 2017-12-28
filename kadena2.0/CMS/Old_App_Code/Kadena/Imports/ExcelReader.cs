@@ -6,12 +6,12 @@ using System.IO;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
-    public class ExcelReader
+    public static class ExcelReader
     {
         /// <summary>
         /// Reads first sheet from the file.
         /// </summary>
-        public List<string[]> ReadDataFromExcelFile(byte[] fileData, ExcelType type)
+        public static List<string[]> ReadDataFromExcelFile(byte[] fileData, ExcelType type)
         {
             using (var file = new MemoryStream(fileData))
             {
@@ -46,7 +46,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
         }
 
-        private IWorkbook OpenWorkBook(Stream file, ExcelType type)
+        private static IWorkbook OpenWorkBook(Stream file, ExcelType type)
         {
             if (type == ExcelType.Xlsx)
             {
@@ -58,7 +58,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports
             }
         }
 
-        private string[] GetHeader(ISheet sheet)
+        private static string[] GetHeader(ISheet sheet)
         {
             var columnNames = new List<string>();
 

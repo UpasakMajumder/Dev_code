@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpartcategory>
+  <CategoryDisplayName>Brand</CategoryDisplayName>
+  <CategoryGUID>72c61e48-a7af-42f2-907e-d046515da577</CategoryGUID>
+  <CategoryName>Brand</CategoryName>
+  <CategoryParentID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </CategoryParentID>
+</cms.webpartcategory>

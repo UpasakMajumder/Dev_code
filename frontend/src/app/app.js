@@ -64,6 +64,7 @@ const app = {
     render('Products/All', document.querySelectorAll('.r-products'));
     render('Products/Favorites', document.querySelectorAll('.r-products-favorites'));
     render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
+    render('TaC', document.querySelectorAll('.r-tac'));
   }
 };
 

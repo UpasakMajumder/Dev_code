@@ -3,11 +3,12 @@ using System;
 using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Product.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class ProductsController : ApiControllerBase
     {
         private readonly IProductsService products;
@@ -31,8 +32,7 @@ namespace Kadena.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/products")]
-        [CustomerAuthorizationFilter]
+        [Route("api/products")]        
         [QuerystringParameterRequired("url")]
         public IHttpActionResult GetProducts([FromUri]string url)
         {

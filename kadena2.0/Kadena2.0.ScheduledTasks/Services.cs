@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using DryIoc;
+using Kadena.Helpers;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
-using Kadena.WebAPI.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;

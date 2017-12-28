@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class TemplatedClient : ClientBase, ITemplatedClient
+    public sealed class TemplatedClient : SignedClientBase, ITemplatedClient
     {
         private const string _serviceUrlSettingKey = "KDA_TemplatingServiceEndpoint";
         private readonly IMicroProperties _properties;
@@ -34,17 +34,21 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Get<GeneratePdfTaskStatusResponseDto>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<bool?>> SetName(Guid templateId, string name)
+        public async Task<BaseResponseDto<bool?>> UpdateTemplate(Guid templateId, string name, int quantity)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/template";
             var body = new
             {
                 templateId = templateId,
-                name = name
+                name = name,
+                metaData = new
+                {
+                    quantity
+                }
             };
 
-            return await Put<bool?>(url, body).ConfigureAwait(false);
+            return await Patch<bool?>(url, body).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(int userId, Guid masterTemplateId)

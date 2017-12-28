@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>Brand</CodeName>
+    <GUID>72c61e48-a7af-42f2-907e-d046515da577</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDisplayName>Brand</WebPartDisplayName>
+  <WebPartFileName>Kadena/Brand/Brand.ascx</WebPartFileName>
+  <WebPartGUID>3a3265d8-eec4-43f4-9cb2-9ae2ccbca908</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>Brand</WebPartName>
+  <WebPartProperties>
+    <form />
+  </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<div class="faq_block" id="page{% NodeGuid %}">  
+  <h6 style="color:#0275d8">{%FAQQuestion%}</h6>
+  <p>{%FAQAnswer%}</p>
+</div>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>08209aee-0d03-424b-9ff7-2c558c1fde29</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>FaqNestRepeater</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.Dto.Site.Requests;
 using Kadena.Dto.Site.Responses;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters.Authentication;
 using System.Web.Http;

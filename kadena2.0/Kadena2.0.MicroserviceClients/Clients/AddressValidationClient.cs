@@ -7,7 +7,7 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class AddressValidationClient : ClientBase, IAddressValidationClient
+    public sealed class AddressValidationClient : SignedClientBase, IAddressValidationClient
     {
         private const string _serviceUrlSettingKey = "KDA_ValidateAddressUrl";
         private readonly IMicroProperties _properties;

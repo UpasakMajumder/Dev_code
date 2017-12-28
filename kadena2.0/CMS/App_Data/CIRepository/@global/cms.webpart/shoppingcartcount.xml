@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>TWECart</CodeName>
+    <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDisplayName>Shopping Cart Count</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/ShoppingCartCount.ascx</WebPartFileName>
+  <WebPartGUID>af0652ee-d3f0-47a5-8205-9f99112b38bd</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>ShoppingCartCount</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field column="ShoppingCartInventoryType" columntype="integer" guid="2812d016-5ebd-4bb4-a608-c00b0d3b78cd" publicfield="false" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Shopping Cart Inventory Type</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;General Inventory
+2;Pre-Buy
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field column="URL" columnsize="200" columntype="text" guid="678acb4a-393b-4ac8-b901-2674e78d8569" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Order Details Page URL</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="CartDisplayName" columnsize="200" columntype="text" guid="7e1a760e-a43d-44f8-8eaf-ea9c2fab5316" publicfield="false" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Cart Display Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

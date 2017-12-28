@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using Kadena.Dto.MailingList;
 using Kadena.Models;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Kadena.WebAPI.Infrastructure.Filters;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class KListController : ApiControllerBase
     {
         private readonly IKListService _service;

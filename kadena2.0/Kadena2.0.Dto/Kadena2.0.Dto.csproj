@@ -50,6 +50,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\AddressDialogDto.cs" />
     <Compile Include="Checkout\ButtonLabelsDto.cs" />
     <Compile Include="Checkout\CartEmptyInfoDTO.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="Checkout\DeliveryAddressesBoundsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\NewCartItemDto.cs" />
+    <Compile Include="Checkout\NotificationEmailDto.cs" />
+    <Compile Include="Checkout\NotificationEmailTooltipDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
     <Compile Include="Checkout\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />
@@ -96,6 +99,10 @@
     <Compile Include="KSource\NooshDto.cs" />
     <Compile Include="KSource\ProjectDto.cs" />
     <Compile Include="KSource\RuleDto.cs" />
+    <Compile Include="Logon\Requests\AcceptTaCRequestDTO.cs" />
+    <Compile Include="Logon\Requests\CheckTaCRequestDTO.cs" />
+    <Compile Include="Logon\Requests\LogonUserRequestDTO.cs" />
+    <Compile Include="Logon\Responses\CheckTaCResultDTO.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
     <Compile Include="MailingList\UpdateAddressDto.cs" />
     <Compile Include="MailTemplate\Responses\MailTemplateDto.cs" />
@@ -140,12 +147,14 @@
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesHeaderDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\FileInfoDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
@@ -157,7 +166,7 @@
     <Compile Include="CustomerData\CustomerAddressDTO.cs" />
     <Compile Include="CustomerData\CustomerDataDTO.cs" />
     <Compile Include="General\GeneralResultDTO.cs" />
-    <Compile Include="Logon\LogonUserResultDTO.cs" />
+    <Compile Include="Logon\Responses\LogonUserResultDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Checkout\TotalsDTO.cs" />
     <Compile Include="Checkout\TotalDTO.cs" />

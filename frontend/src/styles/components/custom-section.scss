@@ -1,0 +1,85 @@
+.show__table-bottom {
+  margin-bottom: 20px;
+}
+
+.search__block {
+  width: 370px;
+  float: left;
+  margin: 0 0 20px;
+  position: relative;
+}
+
+.add__btn {
+  float: right;
+
+  a {
+    color: $brand-white;
+    border-radius: $border-radius;
+    padding: 6px 9px;
+    display: inline-block;
+
+    i {
+      margin-right: 10px;
+    }
+  }
+}
+
+.form__btns {
+  width: 100%;
+  padding: 15px 0;
+
+  .login__login-button {
+    width: auto;
+  }
+}
+
+.webform__title {
+  padding-bottom: 20px;
+
+  h4 {
+    display: inline-block;
+  }
+}
+
+.form__block {
+  float: left;
+  width: 50%;
+  margin-right: 0%;
+  margin-bottom: 15px;
+  padding: 0 15px;
+}
+
+.prebuy__distdata {
+  margin-bottom: 20px;
+
+  .custom__select {
+    padding-left: 0;
+  }
+
+  .add__btn {
+    padding-left: 5px;
+    margin-bottom: 20px;
+    float: right;
+  }
+}
+
+.Distributor__name {
+  display: inline;
+
+  h4 {
+    display: inline-block;
+  }
+}
+
+.itemcount {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.modalcontent__custom {
+  margin: 10px;
+
+  .add__btn {
+    margin-bottom: 10px;
+  }
+}

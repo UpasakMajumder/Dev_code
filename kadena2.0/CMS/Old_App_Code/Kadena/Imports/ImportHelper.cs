@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Kadena.Old_App_Code.Kadena.Imports
 {
-    public class ImportHelper
+    public static class ImportHelper
     {
         public static Func<string[], T> GetImportMapper<T>(string[] header)
         {

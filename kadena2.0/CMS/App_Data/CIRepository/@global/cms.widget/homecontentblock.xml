@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.widget>
+  <WidgetCategoryID>
+    <CodeName>Kadena</CodeName>
+    <GUID>193f4981-edc5-4b8e-b884-a3c027187227</GUID>
+    <ObjectType>cms.widgetcategory</ObjectType>
+  </WidgetCategoryID>
+  <WidgetDescription>
+    <![CDATA[This web part allows developers to enter HTML content using a WYSIWYG editor and place it onto the page. Unlike with the Editable text web part, page editors cannot modify the content. The static content entered into the web part is displayed on the live site.]]>
+  </WidgetDescription>
+  <WidgetDisplayName>Home Content Block</WidgetDisplayName>
+  <WidgetDocumentation />
+  <WidgetForDashboard>False</WidgetForDashboard>
+  <WidgetForEditor>True</WidgetForEditor>
+  <WidgetForGroup>False</WidgetForGroup>
+  <WidgetForInline>False</WidgetForInline>
+  <WidgetForUser>True</WidgetForUser>
+  <WidgetGUID>666b1e31-7b97-4d8a-902e-c2be4cf255ae</WidgetGUID>
+  <WidgetIconClass>icon-w-static-html</WidgetIconClass>
+  <WidgetIsEnabled>True</WidgetIsEnabled>
+  <WidgetName>HomeContentBlock</WidgetName>
+  <WidgetProperties>
+    <form version="2">
+      <field allowempty="true" column="HeaderText" columnsize="200" columntype="text" extra="true" guid="00c870fe-9cb1-49e1-93a1-8c86f3852849" publicfield="false" visible="true" order="1">
+        <properties>
+          <fieldcaption>Header Text</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="BannerImage" columnsize="200" columntype="text" extra="true" guid="c05d9241-d6d5-461e-83a3-3cbf4bef0ff7" publicfield="false" visible="true" order="2">
+        <properties>
+          <fieldcaption>Banner Image</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SubHeaderTextOne" columnsize="200" columntype="text" extra="true" guid="8f1e2a06-03af-461d-a60e-2ba620165bc9" publicfield="false" visible="true" order="3">
+        <properties>
+          <fieldcaption>Sub Header Text 1</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="SubHeaderTextTwo" columnsize="200" columntype="text" extra="true" guid="41f9b857-824d-4383-adf3-aa52aa7644a4" publicfield="false" visible="true" order="4">
+        <properties>
+          <fieldcaption>Sub Header Text Two</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="FooterTextOne" columnsize="200" columntype="text" extra="true" guid="65e0b432-f354-4eb6-94fa-4f57a5fc6374" publicfield="false" visible="true" order="5">
+        <properties>
+          <fieldcaption>Footer Text 1</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="FooterTextTwo" columnsize="200" columntype="text" extra="true" guid="a4148fbe-b8b0-4304-b38d-ed10fea0435c" publicfield="false" reftype="Required" visible="true" order="6">
+        <properties>
+          <fieldcaption>Footer Text 2</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="Text" guid="040fbee7-4d9f-4c50-8846-fdd62daf7e61" visible="" order="7" />
+      <field column="ResolveDynamicControls" guid="29e28611-c933-4523-8dba-a8ba1fbe87be" visible="" order="8" />
+    </form>
+  </WidgetProperties>
+  <WidgetSecurity>2</WidgetSecurity>
+  <WidgetSkipInsertProperties>False</WidgetSkipInsertProperties>
+  <WidgetWebPartID>
+    <CodeName>statichtml</CodeName>
+    <GUID>22c87868-6572-46eb-b517-dab4cc97ee78</GUID>
+    <ObjectType>cms.webpart</ObjectType>
+  </WidgetWebPartID>
+</cms.widget>

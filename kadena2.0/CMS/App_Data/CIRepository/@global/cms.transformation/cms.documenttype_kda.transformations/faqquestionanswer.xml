@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<div class="faq_nav">
+  <ul>
+    <li id="item_<%# Eval<string>("NodeGuid") %>"><a href="#page<%# Eval<string>("NodeGuid") %>"><%# Eval("FAQQuestion",true) %></a></li>
+  </ul>
+</div>
+
+
+<asp:PlaceHolder runat="server" ID="plcTokenInfo" Visible=<%#CustomFunctions.ChildCount(Eval<string>("NodeGuid"))%> >
+  <div class="faq_content">
+    <cms:CMSRepeater ID="nestedRPT" runat="server" DelayedLoading="true" ClassNames="CMS.Faq" TransformationName="KDA.Transformations.FaqNestRepeater" >
+    </cms:CMSRepeater>
+     </div>
+</asp:placeholder>
+
+<script runat="server">
+  
+  protected override void OnInit(EventArgs e) {
+    string path=Eval("NodeAliasPath")+"";
+    int index = path.LastIndexOf("/");
+    if (index > 0)
+      path = path.Substring(0, index);
+    nestedRPT.Path = path + "/%";
+    nestedRPT.ReloadData(true);
+  }
+  public class CustomFunctions
+    {
+      
+      public static bool ChildCount(string nodeGuid)
+    {
+        bool Islast = false;
+        Guid childCount = new Guid();
+        int nodeId = 0;
+        if (!string.IsNullOrEmpty(nodeGuid))
+        {
+
+            Guid nodeGUID = new Guid(nodeGuid);
+            if (nodeGUID != null)
+            {
+                nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(nodeGUID, CMS.SiteProvider.SiteContext.CurrentSiteName);
+
+                if (nodeId > 0)
+                {
+                    CMS.DocumentEngine.TreeProvider tp = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
+                    CMS.DocumentEngine.TreeNode node = tp.SelectSingleNode(nodeId);
+
+
+                    CMS.DocumentEngine.TreeProvider tp2 = new CMS.DocumentEngine.TreeProvider(CMS.Base.CMSActionContext.CurrentUser);
+                    CMS.DocumentEngine.TreeNode pnode = tp.SelectSingleNode(node.Parent.NodeID);
+                    childCount = pnode.Children.LastItem.NodeGUID;
+                    if (childCount.ToString() == nodeGuid)
+                        Islast = true;
+                }
+
+                return Islast;
+            }
+            else
+            {
+                childCount = new Guid();
+            }
+            return Islast;
+        }
+        return Islast;
+    }
+  }
+</script>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>4fc464e9-bf28-4fae-81b1-26b90fb150e7</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>FaqQuestionAnswer</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

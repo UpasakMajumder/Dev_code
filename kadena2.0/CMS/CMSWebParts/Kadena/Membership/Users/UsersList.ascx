@@ -17,7 +17,7 @@
             <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" ValidateRequestMode="Enabled" ShowValidationErrorMessage="true" />
             <div class="mb-3 form_btns">
                 <div>
-                    <cms:LocalizedLinkButton runat="server" ID="btnSave" CssClass="btn-action login__login-button btn--no-shadow" Text="Save" OnClick="btnSave_Click"></cms:LocalizedLinkButton>
+                    <cms:LocalizedLinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click" Text="Save"></cms:LocalizedLinkButton>
                     <cms:LocalizedLinkButton runat="server" ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" Text="Cancel" OnClick="btnCancel_Click"></cms:LocalizedLinkButton>
                 </div>
             </div>

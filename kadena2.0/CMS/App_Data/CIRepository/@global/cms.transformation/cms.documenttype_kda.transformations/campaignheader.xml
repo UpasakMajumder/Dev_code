@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<table id="reptable"  class="show-table">
+  <tbody>
+    <tr>
+      <th>{% GetResourceString("Kadena.Campaignlst.NameHearder") |(user)cvoqa2@gmail.com|(hash)ac1e778e9c8f4794c642c671d69e83a64f20ee9fec8260c0e6217196b79eccee%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.DesText") |(user)cvoqa2@gmail.com|(hash)e284b98bbcd091ef902ef302efc460b8be7cb62f47357007db82a24c188e6a3e%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.CreatedDateText") |(user)cvoqa2@gmail.com|(hash)461faa3f97b89aa25cf9aa539f571f856d0bf0d7e5a7f7b3ad2f57cb59f94e01%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.ModifiedDateText") |(user)cvoqa2@gmail.com|(hash)3d3afe7d15f75fd6838595857436cf1bd050900f2d965c3602c26ee305d656ff%}</th>
+      <th><div class="text-center">{% GetResourceString("Kadena.Campaignlst.ActionText") |(user)cvoqa2@gmail.com|(hash)a39291082e4e94a4999859e5bda52ad87d60a6a7710428c29068f2150c9be15a%}</div></th>
+    </tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>e5554042-93be-47cb-a57e-2c848df0bf4e</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>CampaignHeader</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

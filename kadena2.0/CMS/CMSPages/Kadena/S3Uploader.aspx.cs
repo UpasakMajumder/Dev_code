@@ -3,7 +3,7 @@ using CMS.EventLog;
 using CMS.IO;
 using CMS.SiteProvider;
 using CMS.UIControls;
-using Kadena.WebAPI.Helpers;
+using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;

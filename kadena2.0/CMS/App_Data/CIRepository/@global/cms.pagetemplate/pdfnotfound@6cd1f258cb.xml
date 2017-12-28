@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>_PdfNotFound</PageTemplateCodeName>
+  <PageTemplateDisplayName>Pdf Not Found</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>27461102-ecb7-4f6b-a5b0-c5467d353f12</PageTemplateGUID>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+    <![CDATA[<cms:CMSWebPartZone ZoneID="ZoneText" runat="server" />]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneHeader" v="1" widgetzonetype="editor">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+      </webpartzone>
+      <webpartzone id="ZoneText" v="1" widgetzonetype="editor">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

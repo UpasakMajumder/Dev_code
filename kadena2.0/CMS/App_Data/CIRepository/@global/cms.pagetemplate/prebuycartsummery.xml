@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_System</CodeName>
+    <GUID>f8f77f9f-4939-415a-a248-b2551d11f8cb</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>PreBuyCartSummery</PageTemplateCodeName>
+  <PageTemplateDisplayName>_Pre Buy Cart Summery</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>c7be0b2e-ff99-40f7-aac8-4aec89a0d12f</PageTemplateGUID>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content-header">
+  <div class="content-header__inner">
+    <h1 class="content-header__page-name">Pre-Buy</h1>
+    <div class="text-right">
+      <div class="add_btn">
+        <cms:CMSWebPartZone ZoneID="ZonePDF" runat="server" />
+      </div>
+      <div class="add_btn" style="margin-right: 5px;">
+        <cms:CMSWebPartZone ZoneID="ZonePrint" runat="server" />
+      </div>
+    </div>
+  </div>
+</div>
+<cms:CMSWebPartZone ZoneID="ZonePreBuy" runat="server" />
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZonePreBuy" v="1">
+        <webpart controlid="rptCartDistributors" guid="bb8dbfaa-e524-4f10-a194-180f1bdd6606" type="queryrepeater" v="1">
+          <property name="alternatingtransformationname"></property>
+          <property name="backnextlocation">split</property>
+          <property name="cachedependencies">##NONE##</property>
+          <property name="cacheitemname"></property>
+          <property name="cacheminutes">0</property>
+          <property name="cat_open_ajax">False</property>
+          <property name="cat_open_output_filter">False</property>
+          <property name="cat_open_performance">False</property>
+          <property name="cat_open_time zones">False</property>
+          <property name="cat_open_visibility">False</property>
+          <property name="columns"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore" ismacro="true">
+<![CDATA[
+<div class="itemcount">
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2)|(user)cvoqa2@gmail.com|(hash)1ed0b9f55354b1b931890394450dc4c6e24f10198d4a3d42cf10c0f6016e2a5f%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2))|(user)cvoqa2@gmail.com|(hash)40cf89191d47fb4689766db2d7285df93a797c7491aba7095f7be4f3d366ae6b%}</label>
+</div>
+]]>
+          </property>
+          <property name="controlid">rptCartDistributors</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="enablepaging">False</property>
+          <property name="filtername"></property>
+          <property name="hidecontrolforzerorows">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">bb8dbfaa-e524-4f10-a194-180f1bdd6606</property>
+          <property name="itemseparator"></property>
+          <property name="loadpagesindividually">False</property>
+          <property name="orderby"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagenumbersseparator">-</property>
+          <property name="pagerhtmlafter"></property>
+          <property name="pagerhtmlbefore"></property>
+          <property name="pagerposition">bottom</property>
+          <property name="pagesize">10</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">##NONE##</property>
+          <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="queryname">Ecommerce.Shoppingcart.GetCartDistributors</property>
+          <property name="querystringkey"></property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="resultsposition">top</property>
+          <property name="selecttopn"></property>
+          <property name="showdeletebutton">False</property>
+          <property name="showeditbutton">False</property>
+          <property name="showeditdeletebuttons">False</property>
+          <property name="showfirstlast">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="transformationname">KDA.Transformations.XDistributors</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webpartlayout"></property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">queryrepeater</property>
+          <property name="wherecondition" ismacro="true">
+            <![CDATA[ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
+          </property>
+          <property name="zerorowstext">No cart items found</property>
+        </webpart>
+        <webpart controlid="Javascript" guid="4b4cc245-d040-4a96-8e1d-743b38234c5e" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+$(".js-CloseMesaage").on("click",function(){
+$(this).closest(".dialog").removeClass("active");
+})
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">4b4cc245-d040-4a96-8e1d-743b38234c5e</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

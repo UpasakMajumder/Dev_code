@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode />
+  <TransformationGUID>94f2ad0f-d133-49d1-a36f-f4fe926b107f</TransformationGUID>
+  <TransformationHierarchicalXML>
+<![CDATA[
+<Items>
+  <Item ApplyToSublevels="False" ID="44bbc216-8cb6-4a63-a277-63dfecf2138e" Level="1" TransformationName="KDA.Transformations.FaqQuestionAnswer" Type="item" Value="CMS.Faq" />
+  <Item ApplyToSublevels="True" ID="fad63a1e-7358-4334-a0cc-ece2f3a09ae8" Level="0" TransformationName="KDA.Transformations.FaqCategory" Type="item" Value="CMS.Folder" />
+</Items>
+]]>
+  </TransformationHierarchicalXML>
+  <TransformationIsHierarchical>True</TransformationIsHierarchical>
+  <TransformationName>xFaqQuestionAnswer</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

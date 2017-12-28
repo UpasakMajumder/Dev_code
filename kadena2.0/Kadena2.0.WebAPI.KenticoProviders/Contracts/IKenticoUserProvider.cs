@@ -14,10 +14,13 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool UserCanSeePrices(int siteId, int userId);
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
+        bool UserCanDownloadHiresPdf(int siteId, int userId);
         void SetDefaultShippingAddress(int addressId);
         User GetCurrentUser();
-
+        User GetUser(string mail);
         bool SaveLocalization(string code);
         void UnsetDefaultShippingAddress();
+
+        bool UserIsInCurrentSite(int userId);
     }
 }

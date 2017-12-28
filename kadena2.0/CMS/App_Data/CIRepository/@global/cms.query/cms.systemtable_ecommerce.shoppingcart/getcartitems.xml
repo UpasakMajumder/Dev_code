@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>ecommerce.shoppingcart</CodeName>
+    <GUID>c8a865c2-df9e-4f10-9b9e-f78bc0926f15</GUID>
+    <ObjectType>cms.systemtable</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>3f999d87-bd65-4b2a-b6b9-648cc594365f</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetCartItems</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+SELECT cart.ShoppingCartID,cartSKU.CartItemID,cartSKU.CartItemDistributorID,sku.SKUNumber,sku.SKUName,cartSKU.SKUUnits,sku.SKUPrice,
+ cart.ShoppingCartInventoryType FROM COM_ShoppingCart cart INNER JOIN COM_ShoppingCartSKU cartSKU ON cart.ShoppingCartID= cartSKU.ShoppingCartID
+  INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID  WHERE CartItemDistributorID=@CartItemDistributorID
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

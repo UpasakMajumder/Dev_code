@@ -334,6 +334,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Models", "Kadena2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.ScheduledTasks", "Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj", "{43388B1F-8597-46EB-8346-E9C6544C5306}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Helpers", "Kadena2.0.Helpers\Kadena2.0.Helpers.csproj", "{6B1835F6-5564-40D8-8AB8-63B6ADC56976}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.BusinessLogic", "Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj", "{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -387,6 +391,14 @@ Global
 		{43388B1F-8597-46EB-8346-E9C6544C5306}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43388B1F-8597-46EB-8346-E9C6544C5306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1835F6-5564-40D8-8AB8-63B6ADC56976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1835F6-5564-40D8-8AB8-63B6ADC56976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1835F6-5564-40D8-8AB8-63B6ADC56976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1835F6-5564-40D8-8AB8-63B6ADC56976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

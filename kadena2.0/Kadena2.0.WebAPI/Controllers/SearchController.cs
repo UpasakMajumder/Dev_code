@@ -1,4 +1,4 @@
-﻿using Kadena.WebAPI.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
 using System.Web.Http;
 using System;
 using AutoMapper;
@@ -10,6 +10,7 @@ using Kadena.Dto.Search.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class SearchController : ApiControllerBase
     {
         private readonly ISearchService service;
@@ -33,8 +34,7 @@ namespace Kadena.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/search")]
-        [CustomerAuthorizationFilter]
+        [Route("api/search")]        
         [QuerystringParameterRequired("phrase")]
         public IHttpActionResult Search()
         {
@@ -46,7 +46,6 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/autocomplete")]
-        [CustomerAuthorizationFilter]
         [QuerystringParameterRequired("phrase")]
         public IHttpActionResult Autocomplete()
         {

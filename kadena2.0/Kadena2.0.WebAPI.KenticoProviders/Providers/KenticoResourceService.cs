@@ -102,5 +102,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return RequestContext.CurrentDomain;
         }
+
+        public string GetContextCultureCode()
+        {
+            return LocalizationContext.CurrentCulture.CultureCode;
+        }
     }
 }

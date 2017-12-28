@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.allowedchildclass>
+  <Parent>
+    <CodeName>KDA.CampaignsProduct</CodeName>
+    <GUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </Parent>
+  <Bindings>
+    <Binding id="cms.documenttype_CMS.Root">
+      <ParentClassID>
+        <CodeName>CMS.Root</CodeName>
+        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.MenuItem">
+      <ParentClassID>
+        <CodeName>CMS.MenuItem</CodeName>
+        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.ProductsModule">
+      <ParentClassID>
+        <CodeName>KDA.ProductsModule</CodeName>
+        <GUID>aba96492-ba9e-4302-b541-9b4235cde1a5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.Program">
+      <ParentClassID>
+        <CodeName>KDA.Program</CodeName>
+        <GUID>3014d09e-c493-4c7d-8e58-6564e28a1344</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+  </Bindings>
+</cms.allowedchildclass>

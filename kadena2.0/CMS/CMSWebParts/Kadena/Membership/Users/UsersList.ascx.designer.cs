@@ -75,13 +75,13 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList {
     protected global::CMS.FormEngine.Web.UI.DataForm formElem;
     
     /// <summary>
-    /// btnSave control.
+    /// lnkSave control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton btnSave;
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton lnkSave;
     
     /// <summary>
     /// btnCancel control.

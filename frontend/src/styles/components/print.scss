@@ -1,0 +1,181 @@
+.content__container {
+  width: 100%;
+  margin: 60px auto;
+
+  .treasure__content {
+    margin-bottom: 220px;
+
+    .treasure__heading {
+      text-align: center;
+
+      h2 {
+        color: $print_heading;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+      }
+
+      p {
+        font-size: $font-l;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
+
+.treasure__con {
+  text-align: center;
+
+  h2 {
+    font-size: $font-xm;
+    text-decoration: underline;
+    font-family: arial;
+    font-weight: 600;
+    color: $brand-lightblack;
+  }
+
+  p {
+    font-size: $font-xm;
+    color: $brand-lightblack;
+
+    &.merch_con {
+      color: $print_heading;
+      padding: 0 180px;
+    }
+  }
+}
+
+.crimes__section {
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+  }
+
+  .crime__block {
+    border-bottom: 1px solid $brand-black;
+
+    &.product__selected {
+      border-bottom: 1px solid $brand-black;
+    }
+
+    .crime__leftsec {
+      width: 20%;
+      float: left;
+
+      .img__block {
+        width: 100%;
+        margin: 0 auto;
+
+        img {
+          padding: 30px 0;
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    }
+
+    .crime__rightsec {
+      width: 77%;
+      float: right;
+      margin: 20px 0 0;
+
+      .crime__topsec {
+        .details__sec {
+          margin-bottom: 10px;
+
+          .input__label {
+            width: 21%;
+            float: left;
+            display: inline-block;
+
+            label {
+              font-size: $font-m;
+            }
+          }
+
+          .input__con {
+            width: 60%;
+            display: inline-block;
+
+            label {
+              font-size: $font-m;
+            }
+          }
+        }
+      }
+
+      .crime__btmsec {
+        margin-bottom: 10px;
+
+        .crime__btmsec-detail {
+          width: 30%;
+          display: inline-block;
+
+          .input__label {
+            display: inline-block;
+            width: auto;
+            float: none;
+          }
+
+          .input__con {
+            display: inline-block;
+            width: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.product__details {
+  .input__label {
+    width: auto;
+
+    label {
+      font-size: $font-s;
+    }
+  }
+
+  .input__con {
+    width: auto;
+    padding-left: 5px;
+
+    label {
+      font-size: $font-s;
+      display: block;
+    }
+  }
+}
+
+@media print {
+  .content__container {
+    width: 1000px;
+  }
+
+  .noprint {
+    display: none;
+  }
+
+  .printIt {
+    display: block;
+  }
+
+  .custom__block {
+    display: none;
+  }
+
+  .content {
+    padding-left: 0;
+  }
+
+  .crime__leftsec {
+    width: 20%;
+    float: left;
+  }
+
+  .cus__content-block {
+    width: 100%;
+  }
+}

@@ -4,7 +4,7 @@ using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models.SubmitOrder;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Threading.Tasks;

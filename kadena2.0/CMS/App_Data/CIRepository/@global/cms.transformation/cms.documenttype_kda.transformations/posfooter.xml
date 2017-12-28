@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+</tbody>
+</table>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>e5eb2711-f4d1-4366-8f4d-2fcfbfe0b1e9</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>PosFooter</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

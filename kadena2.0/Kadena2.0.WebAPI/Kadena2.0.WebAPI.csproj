@@ -114,29 +114,20 @@
   <ItemGroup>
     <Compile Include="App_Start\ContainerBuilder.cs" />
     <Compile Include="App_Start\MapperBuilder.cs" />
-    <Compile Include="App_Start\SerializerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Contracts\ICreditCardService.cs" />
-    <Compile Include="Contracts\ICache.cs" />    
-    <Compile Include="Contracts\ICustomerDataService.cs" />
-    <Compile Include="Contracts\IKListService.cs" />
-    <Compile Include="Contracts\IMailTemplateService.cs" />
-    <Compile Include="Contracts\IFavoritesService.cs" />
-    <Compile Include="Contracts\IProductsService.cs" />
-    <Compile Include="Contracts\ISearchService.cs" />
-    <Compile Include="Contracts\IOrderListService.cs" />
-    <Compile Include="Contracts\IOrderListServiceFactory.cs" />
-    <Compile Include="Contracts\ISettingsService.cs" />
-    <Compile Include="Contracts\IOrderService.cs" />
-    <Compile Include="Contracts\ITaxEstimationService.cs" />
-    <Compile Include="Contracts\IShoppingCartService.cs" />
-    <Compile Include="Contracts\ISiteDataService.cs" />
-    <Compile Include="Contracts\ITemplateService.cs" />
+    <Compile Include="Controllers\ProgramsController.cs" />
+    <Compile Include="Controllers\AddressBookController.cs" />
+    <Compile Include="Controllers\BusinessUnitsController.cs" />
+    <Compile Include="Controllers\CampaignsController.cs" />
     <Compile Include="Controllers\CreditCard3dsiController.cs" />
+    <Compile Include="Controllers\PdfController.cs" />
     <Compile Include="Controllers\CustomerDataController.cs" />
     <Compile Include="Controllers\KListController.cs" />
     <Compile Include="Controllers\MailTemplateController.cs" />
     <Compile Include="Controllers\FavoritesController.cs" />
+    <Compile Include="Controllers\BrandsController.cs" />
+    <Compile Include="Controllers\POSController.cs" />
+    <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -144,15 +135,10 @@
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\SiteDataController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
-    <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
-    <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
-    <Compile Include="Helpers\MicroProperties.cs" />
-    <Compile Include="Helpers\StringHelpers.cs" />
-    <Compile Include="Helpers\SuppliantDomain.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
-    <Compile Include="Infrastructure\BackgroundTaskScheduler.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
     <Compile Include="Infrastructure\Filters\Authentication\BasicAuthenticationAttribute.cs" />
@@ -166,23 +152,8 @@
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
     <Compile Include="App_Start\WebApiInitModule.cs" />
-    <Compile Include="Infrastructure\IBackgroundTaskScheduler.cs" />
     <Compile Include="Infrastructure\InMemoryCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CreditCardService.cs" />
-    <Compile Include="Services\CustomerDataService.cs" />
-    <Compile Include="Services\KListService.cs" />
-    <Compile Include="Services\OrderService.cs" />
-    <Compile Include="Services\MailTemplateService.cs" />
-    <Compile Include="Services\FavoritesService.cs" />
-    <Compile Include="Services\ProductsService.cs" />
-    <Compile Include="Services\SearchService.cs" />
-    <Compile Include="Services\OrderListService.cs" />
-    <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Services\TaxEstimationService.cs" />
-    <Compile Include="Services\ShoppingCartService.cs" />
-    <Compile Include="Services\SiteDataService.cs" />
-    <Compile Include="Services\TemplateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -195,12 +166,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Infrastructure\Attributes\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
+      <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
+      <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>
       <Name>Kadena2.0.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>

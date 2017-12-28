@@ -8,7 +8,7 @@ import Spinner from 'app.dump/Spinner';
 /* ac */
 import { loadManageProducts } from 'app.ac/manageProducts';
 /* helpers */
-import { convertToWords } from 'app.helpers/time';
+import timeFormat from 'app.helpers/time';
 
 class ManageProducts extends Component {
   static propTypes = {
@@ -87,7 +87,7 @@ class ManageProducts extends Component {
     return (
       <div className="product-template__block">
         <div className="product-template__item">
-          <h3>{title}</h3>
+          <h2 className="block__heading pt-4 pb-2">{title}</h2>
         </div>
         <div className="product-template__item">
 
@@ -123,10 +123,10 @@ class ManageProducts extends Component {
                   <a className="link weight--normal" href={template.editorUrl}>{template.productName}</a>
                 </td>
                 <td>
-                  {template.createdDate && convertToWords(template.createdDate)}
+                  {template.createdDate && timeFormat(template.createdDate)}
                 </td>
                 <td>
-                  {template.updatedDate && convertToWords(template.updatedDate)}
+                  {template.updatedDate && timeFormat(template.updatedDate)}
                 </td>
                 <td>
                   <div className="product-list__btn-group">

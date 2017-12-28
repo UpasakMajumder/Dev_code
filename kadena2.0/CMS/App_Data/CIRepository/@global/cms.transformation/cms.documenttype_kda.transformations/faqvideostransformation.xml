@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<tr>
+  <td>
+   
+{% If( !String.IsNullOrEmpty(VideoUrl))
+{ %}
+ <a data-lightbox="product_image"  rel="lightbox" href="{% GetAttachmentUrl(VideoName,NodeAliasPath)%}?maxsidesize=400">
+<iframe src="{%VideoUrl%}" style="background-color: #FFFFFF" width="400" height="400"
+frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      </a>
+    {%}
+else{%}
+     <div onclick="javascript:alert('test');"> 
+<iframe src="{%GetAbsoluteUrl(MediaLibraryPath)%}" onclick="javascript:alert('test');" style="background-color: #FFFFFF" width="400" height="400"
+frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+     </div>
+<object codetype="CMSInlineControl" height="200" style="display: none" type="Media" width="300">
+  <param name="ext" value=".mp4" />
+  <param name="url" value="{%GetAbsoluteUrl(MediaLibraryPath)%}" />
+  <param name="cms_type" value="audiovideo" />
+  </object>
+{%}|(user)cvoqa2@gmail.com|(hash)22734526adb7b4d698ddc726c53775b4a800a6ea7a3062faf5af73a57aa9670f%}
+ </td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>ffa27c92-6c54-48b5-80a0-4f8b7a30fb67</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>FaqVideosTransformation</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

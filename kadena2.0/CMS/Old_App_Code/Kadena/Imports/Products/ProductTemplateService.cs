@@ -1,6 +1,5 @@
 ﻿using Kadena.Models.Product;
 using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,41 +7,33 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductTemplateService : TemplateServiceBase
     {
-        public byte[] GetProductTemplateFile(int siteID)
-        {
-            var columns = GetImportColumns<ProductDto>();
-            var productTypes = GetProductTypes();
-            return CreateTemplateFile(columns, productTypes.ToArray());
-        }
-
-        private List<string> GetProductTypes()
+        private string[] GetProductTypes()
         {
             var types = ProductTypes.GetAll().ToList();
             types.Add(ProductTypes.Combine(ProductTypes.MailingProduct, ProductTypes.TemplatedProduct));
-            return types;
+            return types.ToArray();
         }
 
-        private byte[] CreateTemplateFile(List<Column> columnInfos, string[] productTypes)
+        protected override ISheet CreateSheet(List<Column> headers)
         {
-            IWorkbook workbook = new XSSFWorkbook();
-            var sheet = workbook.CreateSheet("Products");
-            CreateSheetHeader(columnInfos, sheet);
-            
-            if (productTypes != null)
+            var sheet = base.CreateSheet(headers);
+
+            var productTypes = GetProductTypes();
+            if ((productTypes?.Count() ?? 0) > 0)
             {
-                var indexOfproductType = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ProductType)).Order;
+                var indexOfproductType = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ProductType)).Order;
                 AddOneFromManyValidation(indexOfproductType, "ProductTypes", productTypes, sheet);
                 sheet.SetColumnWidth(indexOfproductType, 256 * productTypes.Max(t => t.Length));
             }
 
-            var indexOfTrack = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.TrackInventory)).Order;
+            var indexOfTrack = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.TrackInventory)).Order;
             AddOneFromManyValidation(indexOfTrack, "Trackings", new[] { "Yes", "No", "By variants" }, sheet);
 
-            var indexOfChili1 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliTemplateID)).Order;
-            var indexOfChili2 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliWorkgroupID)).Order;
-            var indexOfChili3 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliPdfGeneratorSettingsID)).Order;
-            var indexOfUrl1 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ImageURL)).Order;
-            var indexOfUrl2 = columnInfos.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ThumbnailURL)).Order;
+            var indexOfChili1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliTemplateID)).Order;
+            var indexOfChili2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliWorkgroupID)).Order;
+            var indexOfChili3 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliPdfGeneratorSettingsID)).Order;
+            var indexOfUrl1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ImageURL)).Order;
+            var indexOfUrl2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ThumbnailURL)).Order;
 
             var guidFieldWidth = 256 * 36;
             var urlFieldWidth = 256 * 100;
@@ -54,7 +45,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             sheet.SetColumnWidth(indexOfUrl1, urlFieldWidth);
             sheet.SetColumnWidth(indexOfUrl2, urlFieldWidth);
 
-            return GetWorkbookBytes(workbook);
+            return sheet;
         }
     }
 }

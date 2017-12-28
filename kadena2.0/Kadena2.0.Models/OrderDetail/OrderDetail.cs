@@ -2,6 +2,7 @@
 {
     public class OrderDetail
     {
+        public string DateTimeNAString { get;set;}
         public CommonInfo CommonInfo { get; set; }
         public ShippingInfo ShippingInfo { get; set; }
         public PaymentInfo PaymentInfo { get; set; }

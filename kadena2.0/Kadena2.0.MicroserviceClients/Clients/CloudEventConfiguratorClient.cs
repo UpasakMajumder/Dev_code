@@ -1,14 +1,13 @@
 ﻿using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
-using System.Net.Http;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena.Dto.KSource;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
-    public class CloudEventConfiguratorClient : ClientBase, ICloudEventConfiguratorClient
+    public sealed class CloudEventConfiguratorClient : SignedClientBase, ICloudEventConfiguratorClient
     {
         enum TargetType
         {
@@ -45,7 +44,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 }
             };
 
-            return await Send<string>(HttpMethod.Put, url, body).ConfigureAwait(false);
+            return await Put<string>(url, body).ConfigureAwait(false);
         }
     }
 }

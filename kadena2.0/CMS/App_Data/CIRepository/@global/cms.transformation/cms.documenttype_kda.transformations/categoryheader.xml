@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<table id="reptable" class="show-table">
+  <tbody>
+    <tr>
+      <th>{$Kadena.CategoryList.CategoryTitle$}</th>
+      <th>{$Kadena.CategoryList.Description$}</th>
+      <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
+    </tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>222bf3bd-6f9a-422a-88f2-ab454ab71077</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>CategoryHeader</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

@@ -18,6 +18,7 @@ class OrderDetail extends Component {
   static propTypes = {
     getUI: PropTypes.func.isRequired,
     ui: PropTypes.shape({
+      dateTimeNAString: PropTypes.string,
       commonInfo: PropTypes.object,
       orderedItems: PropTypes.object,
       paymentInfo: PropTypes.object,
@@ -37,15 +38,18 @@ class OrderDetail extends Component {
     const { ui } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
 
-    const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems } = ui;
+    const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems, dateTimeNAString } = ui;
 
     const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
-    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} /></div> : null;
+    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
     return (
       <div>
-        <CommonInfo ui={commonInfo} />
+        <CommonInfo
+          ui={commonInfo}
+          dateTimeNAString={dateTimeNAString}
+        />
 
         <div className="order-block">
           <div className="row">

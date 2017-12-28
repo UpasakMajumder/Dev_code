@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Campaign</CodeName>
+    <GUID>74b3eaef-5a09-4fbd-a8d3-a58fc7a9d962</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<%@ Register src="~/CMSWebParts/Kadena/Campaign Web Form/ProductEditButton.ascx" TagName="ProductEditButton" TagPrefix="uc1" %>
+<tr>
+  <td><%#Eval("SKUNumber")%></td>
+  <td><%#Eval("ProductName")%></td>
+  <td><%# Eval("ProgramName")%></td>
+  <td><%# Eval("ProductCategoryTitle")%></td>
+  <td><%# Eval("SKUValidUntil")%></td>
+  <td class="webform_view">
+    <uc1:ProductEditButton runat="server" id="ProductEditButton" />
+  </td>
+</tr>
+<script runat="server">
+  protected override void OnDataBinding(EventArgs e)
+    {
+      base.OnDataBinding(e);
+      ProductEditButton.ProductID = Eval<int>("CampaignsProductID");
+      ProductEditButton.ReloadData();
+    }
+</script>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>515b8e7c-493c-41fb-b399-41174c8298dd</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>DisplayPreBuyProduct</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

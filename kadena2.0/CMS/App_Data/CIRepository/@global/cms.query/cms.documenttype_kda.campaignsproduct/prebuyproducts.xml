@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>KDA.CampaignsProduct</CodeName>
+    <GUID>fc71f447-6b14-46a8-b9dc-b1b6ecbe5895</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>a5973488-f38f-42ac-a7c5-adb0c13136d3</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>PreBuyProducts</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+SELECT ProgramName,ProductCategoryTitle,t.NodeSKUID,p.ProductName,SKUNumber,SKUValidUntil,p.ProgramID,p.CategoryID,p.CampaignsProductID FROM View_CMS_Tree_Joined t 
+INNER JOIN KDA_CampaignsProduct p ON t.DocumentForeignKeyValue=p.CampaignsProductID 
+INNER JOIN COM_SKU s ON s.SKUID=t.NodeSKUID
+INNER JOIN KDA_ProductCategory c ON c.ProductCategoryID=p.CategoryID
+INNER JOIN KDA_Program pr ON pr.ProgramID=p.ProgramID
+WHERE p.ProgramID IS NOT NULL and t.ClassName='KDA.CampaignsProduct' and t.NodeSKUID IS NOT NULL and NodeParentID in (select NodeID FROM View_CMS_Tree_Joined WHERE ClassName='KDA.Program' and  ##where##)
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

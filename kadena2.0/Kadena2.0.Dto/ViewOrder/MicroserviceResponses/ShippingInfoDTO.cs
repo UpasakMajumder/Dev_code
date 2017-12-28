@@ -8,6 +8,6 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public string Provider { get; set; }
         public AddressDTO AddressTo { get; set; }
         public string AddressFrom { get; set; }
-        public DateTime ShippingDate { get; set; }
+        public DateTime? ShippingDate { get; set; }
     }
 }

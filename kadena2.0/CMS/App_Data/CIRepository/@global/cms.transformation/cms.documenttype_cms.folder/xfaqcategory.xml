@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>CMS.Folder</CodeName>
+    <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+    <![CDATA[<div id="{%DocumentName%}"><h1>{%DocumentName%}</h1>]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>a6293729-f887-4c2f-8f16-dcc33bac0289</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xFaqCategory</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

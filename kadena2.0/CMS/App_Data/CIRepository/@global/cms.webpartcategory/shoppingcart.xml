@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpartcategory>
+  <CategoryDisplayName>ShoppingCart</CategoryDisplayName>
+  <CategoryGUID>ae2427e8-df05-4a45-9d52-5193a34ed19f</CategoryGUID>
+  <CategoryName>ShoppingCart</CategoryName>
+  <CategoryParentID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </CategoryParentID>
+</cms.webpartcategory>

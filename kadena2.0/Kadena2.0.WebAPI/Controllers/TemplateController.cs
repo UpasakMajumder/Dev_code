@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Models.Checkout;
-using Kadena.WebAPI.Contracts;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Threading.Tasks;
@@ -22,9 +22,9 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/template/setname")]
-        public async Task<IHttpActionResult> SetName([FromBody] NewCartItem item)
+        public async Task<IHttpActionResult> UpdateTemplate([FromBody] NewCartItem item)
         {
-            var result = await _templateService.SetName(item.TemplateId, item.CustomProductName);
+            var result = await _templateService.UpdateTemplate(item.TemplateId, item.CustomProductName, item.Quantity);
             if (result)
             {
                 return ResponseJson(result);
