@@ -48,6 +48,17 @@
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
+    <Compile Include="Campaign.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderDialogTable.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderTableCell.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderDialogTableCell.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderHeadBlock.cs" />
+    <Compile Include="RecentOrdersWithFilters\OrderRow.cs" />
+    <Compile Include="RecentOrdersWithFilters\RecentOrderList.cs" />
+    <Compile Include="RecentOrders\OrderCampaginHead.cs" />
+    <Compile Include="RecentOrders\OrderCampaginItem.cs" />
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\ButtonLabels.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />

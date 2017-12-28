@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
@@ -35,6 +36,15 @@ namespace Kadena.WebAPI.Controllers
         {
             campaignsService.DeleteCampaign(campaignID);
             return ResponseJson<string>("OK");
+        }
+
+        [HttpGet]
+        [Route("api/getCampaigns/{ordertype}")]
+        public IHttpActionResult GetCampaigns(string orderType)
+        {
+            var campaigns = campaignsService.GetCampaigns(orderType);
+            var result = mapper.Map<OrderCampaginHeadDto>(campaigns);
+            return ResponseJson(result);
         }
     }
 }
