@@ -229,7 +229,7 @@
           </property>
           <property name="controlid">GlobalAdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.GlobalAdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -303,7 +303,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -403,7 +403,7 @@
           </property>
           <property name="controlid">AdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.AdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -475,7 +475,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
