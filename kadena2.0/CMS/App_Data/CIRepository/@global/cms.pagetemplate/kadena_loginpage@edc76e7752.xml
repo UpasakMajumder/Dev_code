@@ -316,7 +316,7 @@
             <![CDATA[{% GetResourceString("Kadena.loginForm.SignupText") |(user)cvoqa2@gmail.com|(hash)a444ab2d9f40ae9f1c58efcf6623a2b9f89baa90c328211234846d4ebbd4f56e%}]]>
           </property>
           <property name="signuppageurl" ismacro="true">
-            <![CDATA[{% Settings.AccountRegistrationPag |(user)cvoqa2@gmail.com|(hash)c4dbe11d0438f33612470e88e28f11700abe7435a075bd1394882b1e31a4b803%}]]>
+            <![CDATA[{% Settings.AccountRegistrationPage |(user)cvoqa2@gmail.com|(hash)3cd0a1f7fa6da2c75d64a9e14a1d19cdeef1ca556353b3264018f5059205517c%}]]>
           </property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
