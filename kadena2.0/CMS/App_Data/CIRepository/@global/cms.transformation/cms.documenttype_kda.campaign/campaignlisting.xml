@@ -12,8 +12,9 @@
 <tr>
   <td><%# Eval("Name")%></td>
   <td> <%#Eval("Description")%></td>
-  <td><%# Eval("StartDate")%></td>
-  <td> <%#Eval("EndDate")%></td>
+  <td><%#Eval("StartDate","{0:dd-MM-yyyy}")%> <%# ResolveMacros("{%KadenaNamespace.FormatDate("+Eval<string>("StartDate")+")|(user)cvoqa2@gmail.com|(hash)00dc0fc764aae12d1707366f0ed0b6b72bab1bb842dbff2fa4ecb2d35c6b7fdd%}") %></td>
+  <td> <%#Eval("EndDate","{0:MM/dd/yyyy}")%></td>
+  
   <td>
     <div class="text-center webform__view">      
       <uc1:CampaignWebFormActions runat="server" id="CampaignWebFormActions" />

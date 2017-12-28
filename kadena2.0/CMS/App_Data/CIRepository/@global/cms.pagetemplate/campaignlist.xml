@@ -330,9 +330,7 @@
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Campaign</property>
-          <property name="columns">
-            <![CDATA[Name,Description,CampaignID,DocumentModifiedWhen,DocumentCreatedWhen]]>
-          </property>
+          <property name="columns">Name,Description,CampaignID,StartDate,EndDate</property>
           <property name="combinewithdefaultculture"></property>
           <property name="controlid">PagesDataSource</property>
           <property name="culturecode"></property>
