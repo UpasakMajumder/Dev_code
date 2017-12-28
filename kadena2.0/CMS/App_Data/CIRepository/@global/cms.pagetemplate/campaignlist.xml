@@ -30,10 +30,10 @@
 <div class="content-block">
   <div class="row">
     <div class="col-sm-12">
-      <div class="search_block">
+      <div class="search__block">
         <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
       </div>
-      <div class="add_btn">
+      <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZoneCreate" runat="server" />
       </div>
 </div>

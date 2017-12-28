@@ -31,11 +31,11 @@
 <div class="content-block">
   <div class="row">
     <div class="col-sm-12">
-      <div class="search_block">
+      <div class="search__block">
         <!--Filter content zone-->
         {^WebPartZone|(id)ZoneProductFilter^}
       </div>
-      <div class="add_btn">
+      <div class="add__btn">
         <!--Zone for creating new Product button-->
         {^WebPartZone|(id)ZoneNewProduct^}
       </div>
