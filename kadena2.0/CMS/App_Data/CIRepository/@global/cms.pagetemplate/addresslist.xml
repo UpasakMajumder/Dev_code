@@ -22,19 +22,21 @@
 
 <div class="content-header">
   <div class="content-header__inner">
-      <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
+    <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
   </div>
   <div class="breadcrumbs">
     <cms:CMSWebPartZone ZoneID="ZoneBreadcrubs" runat="server" />
   </div>
 </div>
 <div class="content-block">
-  
-  <div class="search__block">
-    <!-- <input type="text" class="input__text" placeholder="Search" value="">-->
-    <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
+      </div>
+      <cms:CMSWebPartZone ZoneID="ZoneAddAddress" runat="server" />
+    </div>
   </div>
-  <cms:CMSWebPartZone ZoneID="ZoneAddAddress" runat="server" />
   <cms:CMSWebPartZone ZoneID="ZoneAddressList" runat="server" />
   <div class="data_footer">
     <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
@@ -172,13 +174,12 @@ AddressPhone LIKE '%{?searchtext?}%'
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-<div class="clearfix"></div>
-<div class="mt-2">
-  <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
 </div>
 <style>
   #reptable {
-    display: none;
+  display: none;
   }
 </style>
 ]]>
