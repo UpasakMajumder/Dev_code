@@ -104,6 +104,25 @@
           <SortItems>False</SortItems>
         </settings>
       </field>
+      <field allowempty="true" column="TargetPage" columnsize="200" columntype="text" guid="cce483d4-de4c-4e7a-b910-b11d16aaa1e4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Target Page</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+_self; Open in same tab
+_blank;Open in new window or tab
+_parent;Opens in the parent frame
+_top;Opens in full body of the window
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</ClassGUID>
