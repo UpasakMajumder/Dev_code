@@ -303,7 +303,7 @@
                         <tr>
                             <td class="state__group">
                                 <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("GroupName") %>' /></td>
-                            <td>
+                            <td class="state__group">
                                 <asp:Label ID="lblUserid" runat="server" CssClass="trstyle" Text='<%# Eval("States") %>' />
 
                             </td>
