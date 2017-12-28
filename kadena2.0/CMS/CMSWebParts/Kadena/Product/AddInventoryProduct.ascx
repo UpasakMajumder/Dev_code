@@ -118,6 +118,7 @@
         <div class="mb-2 form__block">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblState" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblState" />
+                <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="True"></cms:CMSDropDownList>
                     <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="input__error" InitialValue="0" ControlToValidate="ddlState"></asp:RequiredFieldValidator>
@@ -187,7 +188,7 @@
                             <FooterTemplate>
                                 </tbody>
                                  </table>
-                               
+                                   
                             </FooterTemplate>
                         </asp:Repeater>
                     </ContentTemplate>
@@ -212,10 +213,11 @@
 </div>
 
 <div class="dialog" id="AddUserPopup">
+    <div class="dialog__shadow"></div>
     <div class="dialog__block">
         <div class="dialog__header">
             <cms:LocalizedButton ID="btnAllocateProduct" CausesValidation="false" UseSubmitBehavior="false" CssClass="btn-action " runat="server" ResourceString="Kadena.InvProductForm.AddUser" OnClientClick="$('#AddUserPopup').toggleClass('active');" />
-            <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+            <a href="#" class="btn__close js-btnClose" onclick="$('#AddUserPopup').toggleClass('active');"><i class="fa fa-close"></i></a>
         </div>
         <div class="dialog__content">
             <div class="modal__body business__assigned-user">
@@ -253,7 +255,7 @@
                             <FooterTemplate>
                                 </tbody>
                                  </table>
-                       
+                         
                             </FooterTemplate>
                         </asp:Repeater>
                         <asp:Repeater ID="rptPager" runat="server">
@@ -261,7 +263,6 @@
                                 <ul class="pagination mb-0 text--right list--unstyled">
                             </HeaderTemplate>
                             <ItemTemplate>
-
                                 <asp:LinkButton ID="lnkPage" runat="server" Text='<%#Eval("Text") %>' CommandArgument='<%# Eval("Value") %>'
                                     CssClass='<%# Convert.ToBoolean(Eval("Enabled")) ?"pagination__item disabled" : "pagination__item pagination__page--active" %>'
                                     OnClick="Page_Changed" OnClientClick='<%# !Convert.ToBoolean(Eval("Enabled")) ? "return false;" : "" %>' CausesValidation="false"></asp:LinkButton>
@@ -279,3 +280,50 @@
         </div>
     </div>
 </div>
+<%--State dropdown GroupInfoPopup--%>
+<div class="dialog" id="StateGroupInfoPopup">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <span><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateGroupPopupHeading") %></span>
+            <a onclick="$('#StateGroupInfoPopup').toggleClass('active');" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog__content">
+            <div class="modal__body business__assigned-user">
+                <asp:Repeater ID="RepStateInfo" runat="server">
+                    <HeaderTemplate>
+                        <table class="show-table">
+                            <tbody>
+                                <tr>
+                                    <th><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.GroupNameText") %></th>
+                                    <th><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateText") %></th>
+                                </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td class="state__group">
+                                <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("GroupName") %>' /></td>
+                            <td class="state__group">
+                                <asp:Label ID="lblUserid" runat="server" CssClass="trstyle" Text='<%# Eval("States") %>' />
+
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody>
+                        </table>
+               
+                    </FooterTemplate>
+                </asp:Repeater>
+                <asp:Label runat="server" ID="Label3" Visible="false" />
+            </div>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

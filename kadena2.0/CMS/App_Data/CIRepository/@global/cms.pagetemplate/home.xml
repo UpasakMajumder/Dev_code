@@ -20,36 +20,34 @@
   <PageTemplateLayout>
 <![CDATA[
 <!--<div class="content__inner">-->
-  <div class="content-header">
-    <!--<div class="breadcrumbs">-->
-      <!--Bread crumbs Zone--> 
-      {^WebPartZone|(id)ZoneBreadCrumbs^}
-    <!--</div>-->
+<div class="content-header">
+  <!--<div class="breadcrumbs">-->
+  <!--Bread crumbs Zone--> 
+  {^WebPartZone|(id)ZoneBreadCrumbs^}
+  <!--</div>-->
+</div>
+<div class="content-block">
+  <div class="main__content">
+    <div class="main__left">
+      <!--Header left Zone-->
+      {^WebPartZone|(id)ZoneHeaderLeft^}  
+    </div>
+    <div class="main__right">
+      <div class="scroll__block">
+        <!--Header right Zone-->                            
+        {^WebPartZone|(id)ZoneHeaderRight^}
+      </div>
+    </div>
+    <div style="clear:both"></div>
   </div>
-  <div class="content-block">
-    <div class="main__content">
-      <div class="main__left">
-        <!--Header left Zone-->
-        {^WebPartZone|(id)ZoneHeaderLeft^}  
-      </div>
-      <div class="main__right">
-        <div class="scroll__block">
-          <!--Header right Zone-->                            
-          {^WebPartZone|(id)ZoneHeaderRight^}
-        </div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
-    <div class="product__sec">
-      <!--Admin area header Zone-->
-         {^WebPartZone|(id)AdminFeatures^}
-      </div>
-    </div>
-    <div class="admin__access">
-      <!--Global admin header zone-->
-     {^WebPartZone|(id)GlobalAdminFeatures^}
-    </div>
+  <div class="product__sec">
+    <!--Admin area header Zone-->
+    {^WebPartZone|(id)AdminFeatures^}
   </div>
+</div>
+<!--Global admin header zone-->
+{^WebPartZone|(id)GlobalAdminFeatures^}
+<!--</div>-->
 
 
 
@@ -193,13 +191,19 @@
         <properties>
           <property name="containerhideonsubpages">False</property>
           <property name="contentafter">
-            <![CDATA[</div>]]>
+<![CDATA[
+</div>
+</div>
+]]>
           </property>
           <property name="contentbefore">
-            <![CDATA[<div class="admin__inner">]]>
+<![CDATA[
+<div class="admin__access">
+<div class="admin__inner">
+]]>
           </property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles">GlobalAdmin</property>
+          <property name="displaytoroles">TWEAdmin;TWEGlobalAdmin</property>
           <property name="hideonsubpages">False</property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -225,7 +229,7 @@
           </property>
           <property name="controlid">GlobalAdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.GlobalAdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -299,7 +303,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -349,7 +353,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
@@ -399,7 +403,7 @@
           </property>
           <property name="controlid">AdminHeader</property>
           <property name="customtimezone"></property>
-          <property name="defaulttext" ismacro="true">{$Kadena.Home.AdminHeaderText$}</property>
+          <property name="defaulttext"></property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
           <property name="disablemacros">False</property>
@@ -471,7 +475,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -528,7 +532,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="querystringkey"></property>
           <property name="relatednodeisontheleftside">False</property>

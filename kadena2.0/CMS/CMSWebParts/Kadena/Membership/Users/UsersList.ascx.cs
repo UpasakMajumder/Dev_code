@@ -1019,14 +1019,13 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         try
         {
             var userRoleData = UserRoleInfoProvider.GetUserRoles()
-                .WhereEquals("UserID", userID)
-                .Columns("RoleID")
+                .WhereEquals("UserID", userID)                
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(userRoleData))
             {
                 userRoleData.ForEach(x =>
                 {
-                    UserRoleInfoProvider.RemoveUserFromRole(userID, x.RoleID);
+                    UserRoleInfoProvider.DeleteUserRoleInfo(x);
                 });
             }
         }
