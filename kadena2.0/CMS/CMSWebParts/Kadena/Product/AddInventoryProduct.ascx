@@ -67,6 +67,7 @@
                     <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="input__error" ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
+                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="input__error" ControlToValidate="txtExpDate" Type="date" Display="Dynamic" />
                 </div>
             </div>
         </div>
@@ -189,6 +190,7 @@
                                 </tbody>
                                  </table>
                                    
+                           
                             </FooterTemplate>
                         </asp:Repeater>
                     </ContentTemplate>
@@ -256,6 +258,7 @@
                                 </tbody>
                                  </table>
                          
+                           
                             </FooterTemplate>
                         </asp:Repeater>
                         <asp:Repeater ID="rptPager" runat="server">
@@ -313,6 +316,7 @@
                         </tbody>
                         </table>
                
+                   
                     </FooterTemplate>
                 </asp:Repeater>
                 <asp:Label runat="server" ID="Label3" Visible="false" />

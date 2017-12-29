@@ -38,7 +38,7 @@
                     <span class="input__label" id="lblProgramDeliveryDate" runat="server"></span>
                     <asp:TextBox ID="txtProgramDeliveryDate" type="text" ClientIDMode="Static" runat="server" CssClass="input__text js-datepicker"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="txtDeliveryDateRequired" runat="server" CssClass="input__error" ErrorMessage="Please select delivery date" ControlToValidate="txtProgramDeliveryDate"></asp:RequiredFieldValidator>
-                    <cms:LocalizedLabel runat="server" ID="lblDateValid" CssClass="input__label" ResourceString="KDA.Programs.DateValidation" Visible="false"></cms:LocalizedLabel>
+                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="input__error"  ControlToValidate="txtProgramDeliveryDate" Type="date" Display="Dynamic" />
                 </div>
             </div>
              <div class="mb-2">
