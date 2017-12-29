@@ -207,7 +207,7 @@
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" allowempty="" order="83">
+      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" reftype="Required" order="83">
         <properties>
           <controlcssclass>input__text</controlcssclass>
           <validationerrormessage>{$Kadena.Users.TitleError$}</validationerrormessage>
@@ -223,7 +223,7 @@
           <validationerrormessage>{$KDA.Users.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required" order="85">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" order="85">
         <properties>
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
