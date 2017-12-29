@@ -207,18 +207,30 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         string returnValue = string.Empty;
         try
         {
-            string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-            folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-            if (imagepath != null && folderName != null)
+            if (ProductType == (int)ProductsType.PreBuy)
             {
-                returnValue = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
+            }
+            else
+            {
+                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
+                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
+                if (imagepath != null && folderName != null)
+                {
+                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
+                }
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, CurrentSite.SiteID, ex.Message);
         }
-        return returnValue;
+        return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
     }
 
     /// <summary>
@@ -479,6 +491,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             hdnClickSKU.Value = ProductSKUID.ToString();
             var product = SKUInfoProvider.GetSKUInfo(ProductSKUID);
             dialog_Add_To_Cart.Attributes.Add("class", "dialog active");
+            btnClose.InnerText = CartCloseText;
             lblPopUpHeader.Text = ResHelper.GetString("KDA.AddToCart.Popup.HeaderText");
             if (!DataHelper.DataSourceIsEmpty(product) && ProductType == (int)ProductsType.GeneralInventory)
             {
@@ -628,7 +641,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     }
                 }
             }
-
+            btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
             if (!lblErrorMsg.Visible)
             {
                 lblSuccessMsg.Text = ResHelper.GetString("Kadena.AddToCart.SuccessfullyAdded");

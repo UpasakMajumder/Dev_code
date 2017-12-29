@@ -197,7 +197,7 @@
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" allowempty="">
+      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" reftype="Required">
         <properties>
           <controlcssclass>input__text</controlcssclass>
           <validationerrormessage>{$KDA.Users.TitleRequired$}</validationerrormessage>
@@ -212,7 +212,7 @@
           <validationerrormessage>{$KDA.Users.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be">
         <properties>
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
@@ -344,7 +344,7 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" reftype="Required" visible="true" order="94">
+      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="77e9b0ea-84e3-4711-8ff9-747d8ab10f07" publicfield="false" visible="true" order="94">
         <properties>
           <controlcssclass>input__select</controlcssclass>
           <fieldcaption>User Role</fieldcaption>

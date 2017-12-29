@@ -81,7 +81,7 @@ $sidebar-item-padding-y--shrinked: 5px;
   &__nav-item {
     position: relative;
     margin-bottom: 2px;
-    white-space: nowrap;
+    white-space: unset;
     cursor: pointer;
 
     &[disabled] {
