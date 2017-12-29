@@ -11,6 +11,7 @@
     img {
       max-width: 100%;
       height: auto;
+      width: 100%;
     }
 
     .banner__con {
@@ -56,13 +57,17 @@
 
     .scroll__block {
       overflow-y: auto;
-      max-height: 219px;
+      max-height: 220px;
 
       p {
         padding-right: 10px;
       }
     }
   }
+}
+
+.modal__product__sec {
+  width: 500px;
 }
 
 .product__sec {
@@ -102,13 +107,10 @@
 }
 
 .admin__access {
-  background: $form-bg;
-  padding: 20px 2%;
+  padding: 0;
   border-radius: 5px;
 
   .admin__inner {
-    width: 30%;
-
     img {
       max-width: 100%;
       height: auto;

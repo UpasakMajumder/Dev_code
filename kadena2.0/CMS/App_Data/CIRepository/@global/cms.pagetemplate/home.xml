@@ -49,6 +49,35 @@
 {^WebPartZone|(id)GlobalAdminFeatures^}
 <!--</div>-->
 
+<!--pop up html-->
+<div class="dialog modal_businessunit" id="customCatalogPopup">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__header"> 
+      <h3>{$Kadena.HomePage.PopUpHeaderText$}</h3>
+      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+    </div>
+    <div class="dialog__content">
+      <div class="product__sec modal__productsec">
+      <div class="product__inner row">       
+      <div class="product__block col-sm-6">
+        <a href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CustomCatalogURL)|(user)cvoqa2@gmail.com|(hash)97ef310f963410ec1d729a0539899dc22a938d26f89665bdaef57c147ecf4ff1%}" target="_self"><img src="{%Settings.KDA_CustomCatalogImage|(user)cvoqa2@gmail.com|(hash)853cd567d42b9e4ea6ce2425a0e439cc16f323904b90b7918e902fca1b9ee962%}">          
+          <h5>Pre-Buy Catalog</h5></a>
+        </div>          
+      <div class="product__block col-sm-6">
+        <a href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_PreBuyCatalogURL)|(user)cvoqa2@gmail.com|(hash)4f878b05fa8dcc4b6306227c1407ac5e2959cb4272875c1cba2a3b181303b830%}" target="_self"><img src="{%Settings.KDA_PreBuyCatalogImage|(user)cvoqa2@gmail.com|(hash)d675c53b82df08e440b1bb4e6d1d15de55e99d72fa5a69a30352f0d5e8e6a260%}">
+          <h5>Custom Catalog</h5></a>
+      </div>         
+      </div>
+      </div>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -198,8 +227,8 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
-<div class="admin__access">
-<div class="admin__inner">
+<div class="admin__access row">
+<div class="admin__inner col-sm-3">
 ]]>
           </property>
           <property name="disableviewstate">False</property>
@@ -303,7 +332,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage,FeatureID]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -475,7 +504,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage,FeatureID]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -558,6 +587,46 @@
           <property name="wherecondition">VisibleRole=1</property>
           <property name="zerorowstext">No data found</property>
         </webpart>
+        <webpart controlid="HomePageScript" guid="bb3ee8ce-5150-4f89-8dfe-b36733f61995" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">HomePageScript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    var modalID='';
+    $('.js-modal').on('click',function(){
+      if($(this).attr("target") == "modal") {
+        $(this).attr("href","#");
+        modalID='#'+$(this).attr("id");
+        $(this).removeAttr("target");
+        $('#customCatalogPopup').toggleClass('active');        
+      }
+    });
+    $(document).on('click', ".js-btnClose", function () {                
+      $('#customCatalogPopup').toggleClass('active');
+      $(modalID).attr("target","modal");
+    });
+  });
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">bb3ee8ce-5150-4f89-8dfe-b36733f61995</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
       <webpartzone id="ZoneBreadCrumbs" v="1">
         <webpart controlid="BreadCrumbs" guid="19d3430c-f60b-4b93-8dc1-7a406b9c112e" type="statictext" v="1">
@@ -613,63 +682,6 @@ iteratedDocument = iteratedDocument.Parent;
 |(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
 ]]>
           </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="Header" guid="0b2d2da4-4d16-4c95-9c96-1dd33bfb690a" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter">
-<![CDATA[
-</h1>
-</div>
-]]>
-          </property>
-          <property name="contentbefore">
-<![CDATA[
-<div class="content-header__inner">
-<h1 class="content-header__page-name">
-]]>
-          </property>
-          <property name="controlid">Header</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">0b2d2da4-4d16-4c95-9c96-1dd33bfb690a</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">{%DocumentName%}</property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>

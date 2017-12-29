@@ -9,194 +9,203 @@
 
 
 
-public partial class CMSWebParts_Campaign_CreateCampaign {
+public partial class CMSWebParts_Kadena_Membership_Logon_ForgotPasswordWithHint {
     
     /// <summary>
-    /// lblTokenIDlabel control.
+    /// pnlBody control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblTokenIDlabel;
+    protected global::System.Web.UI.WebControls.Panel pnlBody;
     
     /// <summary>
-    /// Name control.
+    /// Login1 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSTextBox Name;
+    protected global::System.Web.UI.WebControls.Login Login1;
     
     /// <summary>
-    /// rfvUserNameRequired control.
+    /// pnlUpdatePasswordRetrievalLink control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvUserNameRequired;
+    protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlUpdatePasswordRetrievalLink;
     
     /// <summary>
-    /// rvName control.
+    /// lnkPasswdRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RegularExpressionValidator rvName;
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton lnkPasswdRetrieval;
     
     /// <summary>
-    /// LocalizedLabel1 control.
+    /// pnlUpdatePasswordRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel LocalizedLabel1;
+    protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlUpdatePasswordRetrieval;
     
     /// <summary>
-    /// Description control.
+    /// pnlPasswdRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSTextBox Description;
+    protected global::System.Web.UI.WebControls.Panel pnlPasswdRetrieval;
     
     /// <summary>
-    /// rvDescription control.
+    /// lblPasswdRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.RegularExpressionValidator rvDescription;
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblPasswdRetrieval;
     
     /// <summary>
-    /// lblStartDate control.
+    /// txtPasswordRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblStartDate;
+    protected global::CMS.Base.Web.UI.CMSTextBox txtPasswordRetrieval;
     
     /// <summary>
-    /// txtStartDate control.
+    /// btnPasswdRetrieval control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSTextBox txtStartDate;
+    protected global::CMS.Base.Web.UI.LocalizedButton btnPasswdRetrieval;
     
     /// <summary>
-    /// rfvStartDate control.
+    /// lblResult control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvStartDate;
+    protected global::System.Web.UI.WebControls.Label lblResult;
     
     /// <summary>
-    /// compareDate control.
+    /// lblForgotPwdError control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.CompareValidator compareDate;
+    protected global::System.Web.UI.WebControls.Label lblForgotPwdError;
     
     /// <summary>
-    /// lbl control.
+    /// lnkSignup control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lbl;
+    protected global::CMS.Base.Web.UI.LocalizedHyperlink lnkSignup;
     
     /// <summary>
-    /// txtEndDate control.
+    /// CMSUpdatePanel1 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSTextBox txtEndDate;
+    protected global::CMS.Base.Web.UI.CMSUpdatePanel CMSUpdatePanel1;
     
     /// <summary>
-    /// rfvEndDate control.
+    /// lnkPasswordhint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvEndDate;
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton lnkPasswordhint;
     
     /// <summary>
-    /// compareWithStartdate control.
+    /// pnlUpdatePasswordHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.CompareValidator compareWithStartdate;
+    protected global::CMS.Base.Web.UI.CMSUpdatePanel pnlUpdatePasswordHint;
     
     /// <summary>
-    /// lblCampaignStatus control.
+    /// PnlPasswordHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblCampaignStatus;
+    protected global::System.Web.UI.WebControls.Panel PnlPasswordHint;
     
     /// <summary>
-    /// ddlStatus control.
+    /// lblPasswordHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblPasswordHint;
     
     /// <summary>
-    /// btnSave control.
+    /// txtPasswordHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedButton btnSave;
+    protected global::CMS.Base.Web.UI.CMSTextBox txtPasswordHint;
     
     /// <summary>
-    /// btnCancel control.
+    /// btnPasswordHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedButton btnCancel;
+    protected global::CMS.Base.Web.UI.LocalizedButton btnPasswordHint;
     
     /// <summary>
-    /// lblSuccessMsg control.
+    /// lblPwdHint control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblSuccessMsg;
+    protected global::System.Web.UI.WebControls.Label lblPwdHint;
     
     /// <summary>
-    /// lblFailureText control.
+    /// lblHintResult control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblFailureText;
+    protected global::System.Web.UI.WebControls.Label lblHintResult;
+    
+    /// <summary>
+    /// lblError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblError;
 }

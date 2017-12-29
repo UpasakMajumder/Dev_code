@@ -118,6 +118,7 @@ _self; Open in same tab
 _blank;Open in new window or tab
 _parent;Opens in the parent frame
 _top;Opens in full body of the window
+modal;Opens a modal dialog in same page
 ]]>
           </Options>
           <SortItems>False</SortItems>

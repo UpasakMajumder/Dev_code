@@ -177,8 +177,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<Dto.Order.OrderItemDto, CartItem>()
                     .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
                 config.CreateMap<OrderDto, Order>();
-                config.CreateMap<OrderListDto, OrderList>()
-                     .ForMember(d => d.Orders, o => o.MapFrom(s => s.Orders));
+                config.CreateMap<OrderListDto, OrderList>();
                 config.CreateMap<CartItem, Dto.RecentOrders.OrderItemDto>()
                     .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
                 config.CreateMap<Button, ButtonDto>();
