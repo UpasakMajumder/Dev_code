@@ -104,13 +104,13 @@
         </Triggers>
     </cms:CMSUpdatePanel>
 
-    <cms:LocalizedHyperlink runat="server" ID="lnkSignup"></cms:LocalizedHyperlink>
+    <cms:LocalizedHyperlink runat="server" ID="lnkSignup" CssClass="link mb-2"></cms:LocalizedHyperlink>
 
     <%-- Password hint part  ResourceString="LogonForm.lnkPasswordRetrieval"--%>
     <cms:CMSUpdatePanel runat="server" ID="CMSUpdatePanel1" UpdateMode="Conditional">
         <ContentTemplate>
             <cms:LocalizedLinkButton ID="lnkPasswordhint" runat="server" EnableViewState="false" OnClick="lnkPasswordhint_Click"
-                CssClass="logon-password-retrieval-link" />
+                CssClass="logon-password-retrieval-link link mb-2" />
         </ContentTemplate>
     </cms:CMSUpdatePanel>
 
