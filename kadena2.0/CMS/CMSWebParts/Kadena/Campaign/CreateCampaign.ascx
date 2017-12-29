@@ -24,6 +24,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtStartDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                      <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtStartDate" runat="server"></cms:CMSRequiredFieldValidator>
+                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="input__error" ControlToValidate="txtStartDate" Type="date" Display="Dynamic" />
                 </div>
             </div>
         </div>
@@ -33,6 +34,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEndDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                    <cms:CMSRequiredFieldValidator ID="rfvEndDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtEndDate" runat="server"></cms:CMSRequiredFieldValidator>
+                     <asp:CompareValidator ID="compareWithStartdate" runat="server" Operator="GreaterThan" CssClass="input__error" ControlToValidate="txtEndDate" ControlToCompare="txtStartDate" Type="date" Display="Dynamic" />
                 </div>
             </div>
         </div>
