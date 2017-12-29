@@ -24,7 +24,7 @@
           <visible>True</visible>
         </properties>
       </category>
-      <field column="ProductType" columnsize="200" columntype="text" guid="6915e53f-6a6a-4128-afe3-9b23c00a3911" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+      <field column="ProductType" columnsize="200" columntype="text" guid="6915e53f-6a6a-4128-afe3-9b23c00a3911" publicfield="false" resolvedefaultvalue="False" visible="true">
         <properties>
           <fieldcaption>Product Type</fieldcaption>
         </properties>
@@ -33,11 +33,12 @@
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Options>
-            <![CDATA[
+<![CDATA[
             0;-- Select Product Type --
             1; General Inventory
             2; Pre-Buy
-            ]]>
+            
+]]>
           </Options>
           <SortItems>False</SortItems>
         </settings>
@@ -63,6 +64,7 @@
       </field>
       <field column="ShippingID" columntype="integer" guid="7f6381ce-27eb-46ca-9103-bf21be48c53f" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
         <properties>
+          <defaultvalue>137</defaultvalue>
           <fieldcaption>Please select shipping option</fieldcaption>
           <fielddescription>
             <![CDATA[Indicates which shipping option should be used if item is pre-buy]]>
@@ -73,12 +75,12 @@
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Query>
-            <![CDATA[
-            select ShippingOptionID as value,ShippingOptionDisplayName as text from COM_ShippingOption
+<![CDATA[
+select ShippingOptionID as value,ShippingOptionDisplayName as text from COM_ShippingOption
             where ShippingOptionSiteID={%CurrentSite.ID|(user)cvoqa2@gmail.com|(hash)bd1ae4e27dbe1e2a368414c4ebfbc3913c59531047bbe5fb2d0e56619febd3b2%} and ShippingOptionEnabled=1
-            ]]>
+]]>
           </Query>
-          <SortItems>False</SortItems>
+          <SortItems>True</SortItems>
         </settings>
       </field>
     </form>

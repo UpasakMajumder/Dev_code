@@ -9,8 +9,8 @@
 <![CDATA[
 <div class="product__block col-sm-3"> 
   {% If(HeaderTextOne.ToLower().Contains("pre-buy")) {%}
-  {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}' target='{%TargetPage%}'> {% } else { %}<a href='#'>{%}%}
-    {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}'>  {%}|(user)cvoqa2@gmail.com|(hash)3e44325e1076be952f5c0b3e3b6a63b9e6a1c4ec1236a73992071c9a39b00f57%}      
+  {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}"> {% } else { %}<a href='#' class="js-modal" id="{%FeatureID%}">{%}%}
+    {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}">  {%}|(user)cvoqa2@gmail.com|(hash)3eae4475418fe192cbb2d100413a14a9160642994473c18f320cc6bafc0b419c%}      
       <img src="{%DisplayImage%}" alt="{%FeatureName%}"/>
       <h5>{%HeaderTextOne%}{%HeaderTextTwo%}</h5></a>
     </div>
