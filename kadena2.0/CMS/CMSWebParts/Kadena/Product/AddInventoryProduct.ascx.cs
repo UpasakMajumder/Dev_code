@@ -68,7 +68,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     BindUsers(1);
                     BindData();
                 }
-
+                if (!IsPostBack)
+                {
+                    string currentDate = DateTime.Today.ToShortDateString();
+                    //Assign the value to compare here
+                    compareDate.ValueToCompare = currentDate;
+                }
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
                 hdnDatepickerUrl.Value = SettingsKeyInfoProvider.GetValue("KDA_DatePickerPath", CurrentSiteName);
@@ -90,6 +95,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
                 folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
                 libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
+                compareDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDaterangeMessage");
             }
         }
 

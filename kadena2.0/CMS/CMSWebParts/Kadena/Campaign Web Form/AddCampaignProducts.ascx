@@ -64,6 +64,7 @@
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
                         <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
+                         <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date" Display="Dynamic" />
                     </div>
                 </div>
             </div>

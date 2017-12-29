@@ -176,7 +176,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         else
         {
-            lblDateValid.Visible = false;
             lblProgramName.InnerText = ProgramNameText;
             lblProgramDescription.InnerText = ProgramDescriptionText;
             lblBrandName.InnerText = BrandNameText;
@@ -188,6 +187,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnUpdateProgram.Text = UpdateButtonText;
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
             cvDesc.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            compareDate.ErrorMessage = ResHelper.GetString("Kadena.Programs.DeliveryDateRangeMessage");
             GetBrandName();
             GetCampaign();
             BindStatus();
@@ -309,7 +309,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                     {
                         if (ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date >= DateTime.Today)
                         {
-                            lblDateValid.Visible = false;
                             Program program = new Program()
                             {
                                 DocumentName = txtProgramName.Text,
@@ -323,10 +322,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                             };
                             program.Insert(CampaignNode, true);
                             URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
-                        }
-                        else
-                        {
-                            lblDateValid.Visible = true;
                         }
                     }
                 }
@@ -365,7 +360,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 {
                     if (ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date >= DateTime.Today)
                     {
-                        lblDateValid.Visible = false;
                         Program program = ProgramProvider.GetProgram(ValidationHelper.GetInteger(ViewState["programNodeID"], 0), CurrentDocument.DocumentCulture, CurrentSiteName);
 
                         if (program != null)
@@ -388,10 +382,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                             }
                         }
                         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
-                    }
-                    else
-                    {
-                        lblDateValid.Visible = true;
                     }
                 }
             }
