@@ -12,7 +12,7 @@
   {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}"> {% } else { %}<a href='#' class="js-modal" id="{%FeatureID%}">{%}%}
     {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}">  {%}|(user)cvoqa2@gmail.com|(hash)3eae4475418fe192cbb2d100413a14a9160642994473c18f320cc6bafc0b419c%}      
       <img src="{%DisplayImage%}" alt="{%FeatureName%}"/>
-      <h5>{%HeaderTextOne%}{%HeaderTextTwo%}</h5></a>
+      <h5>{%FeatureName%}</h5></a>
     </div>
 ]]>
   </TransformationCode>
