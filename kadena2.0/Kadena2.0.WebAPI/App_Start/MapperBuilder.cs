@@ -191,6 +191,7 @@ namespace Kadena.WebAPI
                         d.OrderDate = s.CreateDate;
                         d.OrderStatus = s.Status;
                     });
+                config.CreateMap<OrderRowDto, Order>();
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
                 config.CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
