@@ -6,6 +6,8 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
+using Kadena.Dto.General;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
@@ -143,7 +145,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Price", value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the SaveasPDF
         /// </summary>
@@ -267,6 +269,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
+                var estimatedPrice = default(double);
                 if (ValidCart)
                 {
                     base.OnPreRender(e);
@@ -280,10 +284,18 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                     }
                 }
-                var txtQuantity = Cart.CartItems.Sum(x => x.CartItemUnits);
-                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                if (Cart.ShippingOption.ShippingOptionCarrierServiceName != "Ground")
+                {
+                   estimation= GetShippingResponse();
+                }
+                if (estimation.Success && estimation != null)
+                {
+                    estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                }
+                else
+                {
+                    divDailogue.Attributes.Add("class", "dialog");
+                }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 SelectShippingoption(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
@@ -516,9 +528,21 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlShippingOption_SelectedIndexChanged", ex.Message);
             }
         }
-
         #endregion "Private Methods"
 
+        private BaseResponseDto<EstimateDeliveryPricePayloadDto> GetShippingResponse()
+        {
+            try
+            {
+                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                return ShoppingCartHelper.CallEstimationService(estimationdto);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
+                return null;
+            }
+        }
 
     }
 }
