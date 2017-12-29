@@ -207,7 +207,7 @@
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" reftype="Required" order="83">
+      <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" order="83">
         <properties>
           <controlcssclass>input__text</controlcssclass>
           <validationerrormessage>{$Kadena.Users.TitleError$}</validationerrormessage>
@@ -354,18 +354,23 @@ Select ItemID,DivisionName from KDA_Division
           </rule>
         </rules>
       </field>
-      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" visible="true" order="95">
+      <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" reftype="Required" visible="true" order="95">
         <properties>
           <controlcssclass>input__select</controlcssclass>
           <fieldcaption>User Role</fieldcaption>
+          <validationerrormessage>{$kadena.Users.RoleRequiredError$}</validationerrormessage>
         </properties>
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
-          <Query>
-            <![CDATA[SELECT RoleName,RoleDisplayName FROM CMS_Role  where SiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
-          </Query>
+          <Options>
+<![CDATA[
+Salesperson
+TWEAdmin;TWE Admin
+TWEGlobalAdmin;TWE Global Admin
+]]>
+          </Options>
           <SortItems>False</SortItems>
         </settings>
       </field>
