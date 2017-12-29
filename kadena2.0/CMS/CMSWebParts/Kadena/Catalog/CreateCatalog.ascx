@@ -17,7 +17,7 @@
             </label>
         </div>
     </div>
-    <div class="custom__btns">
+    <div class="custom__btns float-right">
         <cms:LocalizedLinkButton runat="server" ID="llbSaveSelection" CssClass="saveSelection btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.SaveSelection" OnClick="llbSaveSelection_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveFull" CssClass="btn-action login__login-button btn--no-shadow saveAllCatalog" ResourceString="KDA.CustomCatalog.Filters.SaveFull" OnClick="llbSaveFull_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLabel runat="server" ID="lblNoProducts" CssClass="input__label" ResourceString="KDA.CustomCatalog.SelectProducts" Visible="false"></cms:LocalizedLabel>
