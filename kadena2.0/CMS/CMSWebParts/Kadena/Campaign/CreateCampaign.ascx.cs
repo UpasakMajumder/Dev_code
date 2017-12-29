@@ -69,7 +69,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             if (!IsPostBack)
             {
                 string currentDate = DateTime.Today.ToShortDateString();
-                //Assign the value to compare here
                 compareDate.ValueToCompare = currentDate;
             }
         }

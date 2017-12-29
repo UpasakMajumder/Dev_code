@@ -553,7 +553,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         btnUpdate.Visible = false;
                     }
                     string currentDate = DateTime.Today.ToShortDateString();
-                    //Assign the value to compare here
                     compareDate.ValueToCompare = currentDate;
                 }
             }

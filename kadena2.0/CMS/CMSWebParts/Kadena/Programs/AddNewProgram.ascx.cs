@@ -213,6 +213,11 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                 btnAddProgram.Visible = true;
                 btnUpdateProgram.Visible = false;
             }
+            if (!IsPostBack)
+            {
+                string currentDate = DateTime.Today.ToShortDateString();
+                compareDate.ValueToCompare = currentDate;
+            }
         }
     }
 
