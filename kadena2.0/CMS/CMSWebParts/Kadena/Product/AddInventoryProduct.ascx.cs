@@ -65,41 +65,53 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     {
                         SetFeild(productId);
                     }
+                    else
+                    {
+                        var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetGIPos", null);
+                        if (!DataHelper.DataSourceIsEmpty(pos))
+                        {
+                            ddlPosNo.DataSource = pos;
+                            ddlPosNo.DataTextField = "POSNumber";
+                            ddlPosNo.DataValueField = "POSNumber";
+                            ddlPosNo.DataBind();
+                            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.PosNoWaterMark"), string.Empty);
+                            ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
+                        }
+                    }
                     BindUsers(1);
                     BindData();
                 }
-                if (!IsPostBack)
-                {
-                    string currentDate = DateTime.Today.ToShortDateString();
-                    //Assign the value to compare here
-                    compareDate.ValueToCompare = currentDate;
-                }
+
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
-                hdnDatepickerUrl.Value = SettingsKeyInfoProvider.GetValue("KDA_DatePickerPath", CurrentSiteName);
-                rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
-                rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
-                rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
-                rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
-                rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
-                revQuantity.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-                rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
-                rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
-                rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
-                rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
-                revBundleQnt.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-                rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
-                rfvWeight.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
-                revWeigth.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-                revEstPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-                revActualPrice.ErrorMessage= ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-                folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
-                libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
-                compareDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDaterangeMessage");
+                BindLabelText();
             }
         }
-
-
+        /// <summary>
+        /// Binding the resource string text
+        /// </summary>
+        public void BindLabelText()
+        {
+            hdnDatepickerUrl.Value = SettingsKeyInfoProvider.GetValue("KDA_DatePickerPath", CurrentSiteName);
+            rfvBrand.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BrandRequired");
+            rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
+            rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
+            rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
+            rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
+            revQuantity.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
+            rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
+            rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
+            rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
+            revBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
+            rfvWeight.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
+            revWeigth.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            revEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            revActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
+            libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
+        }
         #endregion WebpartSetupMethods
 
         #region ButtonclickEvents
@@ -396,6 +408,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
+                product.ProgramID = 0;
                 SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                 if (updateProduct != null)
                 {
@@ -458,7 +471,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
-                            ddlPosNo.SelectedValue = ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty);
+                            ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty), ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty)));
+                            ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
@@ -603,19 +617,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 BindStatus();
                 GetBrandName();
-                var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
-                    .Columns("POSNumber")
-                    .WhereEquals("Enable", 1)
-                    .ToList();
-                if (!DataHelper.DataSourceIsEmpty(pos))
-                {
-                    ddlPosNo.DataSource = pos;
-                    ddlPosNo.DataTextField = "POSNumber";
-                    ddlPosNo.DataValueField = "POSNumber";
-                    ddlPosNo.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.PosNoWaterMark"), string.Empty);
-                    ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
-                }
                 BindCategories();
                 GetStateGroup();
             }
@@ -694,6 +695,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var categories = ProductCategoryProvider.GetProductCategories()
                     .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                     .Columns("ProductCategoryID,ProductCategoryTitle")
+                    .WhereEquals("Status", 1)
                     .ToList();
                 if (!DataHelper.DataSourceIsEmpty(categories))
                 {

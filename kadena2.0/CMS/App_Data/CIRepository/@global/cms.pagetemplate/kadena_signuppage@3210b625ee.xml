@@ -329,7 +329,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="login__bg" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%});"></div>]]>
+            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
