@@ -785,6 +785,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     user = new UserInfo();
                     formElem.Mode = CMS.Base.Web.UI.FormModeEnum.Insert;
                     formElem.AlternativeFormFullName = NewUserAlternativeForm;
+                    user.Enabled = true;
                 }
                 else
                     formElem.AlternativeFormFullName = EditUserAlternativeForm;
