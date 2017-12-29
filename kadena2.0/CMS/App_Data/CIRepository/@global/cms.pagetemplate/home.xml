@@ -688,63 +688,6 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Header" guid="0b2d2da4-4d16-4c95-9c96-1dd33bfb690a" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter">
-<![CDATA[
-</h1>
-</div>
-]]>
-          </property>
-          <property name="contentbefore">
-<![CDATA[
-<div class="content-header__inner">
-<h1 class="content-header__page-name">
-]]>
-          </property>
-          <property name="controlid">Header</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">0b2d2da4-4d16-4c95-9c96-1dd33bfb690a</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">{%DocumentName%}</property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>
