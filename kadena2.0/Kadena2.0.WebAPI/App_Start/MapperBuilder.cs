@@ -174,8 +174,7 @@ namespace Kadena.WebAPI
                 config.CreateMap<ResultItemPage, AutocompletePage>();
                 config.CreateMap<Pagination, PaginationDto>();
                 config.CreateMap<OrderHead, OrderHeadDto>();
-                config.CreateMap<Dto.Order.OrderItemDto, CartItem>()
-                    .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
+                config.CreateMap<Dto.Order.OrderItemDto, CartItem>();
                 config.CreateMap<OrderDto, Order>();
                 config.CreateMap<OrderListDto, OrderList>()
                      .ForMember(d => d.Orders, o => o.MapFrom(s => s.Orders));
@@ -191,7 +190,6 @@ namespace Kadena.WebAPI
                         d.OrderDate = s.CreateDate;
                         d.OrderStatus = s.Status;
                     });
-                config.CreateMap<OrderRowDto, Order>();
                 config.CreateMap<OrderBody, OrderBodyDto>();
                 config.CreateMap<NewAddressButton, NewAddressButtonDTO>();
                 config.CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
