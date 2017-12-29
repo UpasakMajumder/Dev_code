@@ -497,6 +497,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 lblProductName.Text = product.SKUName;
                 lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
+                lblAvailbleItems.Visible = true;
             }
             else
             {
@@ -642,6 +643,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 }
             }
             btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
+            lblAvailbleItems.Visible = false;
             if (!lblErrorMsg.Visible)
             {
                 lblSuccessMsg.Text = ResHelper.GetString("Kadena.AddToCart.SuccessfullyAdded");
@@ -708,7 +710,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 cart.ShoppingCartShippingAddress = customerAddress;
                 var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                 var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
-                var inventoryType = ValidationHelper.GetString(cart.GetValue("ShoppingCartInventoryType"), string.Empty);
                 item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(item))
                 {
