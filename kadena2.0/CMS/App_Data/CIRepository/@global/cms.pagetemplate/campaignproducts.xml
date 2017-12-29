@@ -304,7 +304,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.ProductsList.HeaderText")|(user)cvoqa2@gmail.com|(hash)c5243924db286bf9b502513a750724844f3ee2ba7aa25f5f8ca442bfe2b902cb%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
