@@ -69,7 +69,7 @@
 ]]>
           </property>
           <property name="cacheitemname"></property>
-          <property name="cacheminutes"></property>
+          <property name="cacheminutes">0</property>
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
