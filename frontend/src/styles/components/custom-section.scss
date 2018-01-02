@@ -17,7 +17,7 @@
     position: absolute;
     top: 11px;
     right: 10px;
-    background: url(../gfx/svg/icons/search.svg) no-repeat;
+    background: url(../gfx/svg/search.svg) no-repeat;
     width: 18px;
     height: 18px;
     background-size: 100%;
@@ -68,7 +68,7 @@
   margin-bottom: 15px;
   padding: 0 15px;
 
-  .input__error {
+  .EditingFormErrorLabel {
     position: absolute;
     width: 100%;
   }
@@ -158,4 +158,6 @@
   width: 100%;
   color: $brand-dangerous;
   font-size: $font-xxs;
+  display: block;
+  position: absolute;
 }
