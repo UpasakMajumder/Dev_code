@@ -73,7 +73,6 @@
 </div>
 <asp:HiddenField runat="server" ID="hdnClickSKU" />
 <div id="divNoRecords" runat="server" visible="false">
-    <div class="clearfix"></div>
     <div class=" mt-2">
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoDataText %></span></div>
     </div>
