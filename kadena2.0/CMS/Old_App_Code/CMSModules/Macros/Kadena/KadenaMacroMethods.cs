@@ -417,10 +417,22 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
         private static bool IsUserInKadenaAdminRole()
         {
-            string globalAdminRole = SettingsKeyInfoProvider.GetValue("KDA_GlobalAminRoleName", SiteContext.CurrentSiteID);
-            string adminRole = SettingsKeyInfoProvider.GetValue("KDA_AdminRoleName", SiteContext.CurrentSiteID);
-            UserInfo User = MembershipContext.AuthenticatedUser;
-            return (User != null && (User.IsInRole(globalAdminRole, SiteContext.CurrentSiteName) || User.IsInRole(adminRole, SiteContext.CurrentSiteName)));
+            bool isKadenaAdmin = false;
+            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
+            UserInfo user = MembershipContext.AuthenticatedUser;
+            if (user != null && !string.IsNullOrWhiteSpace(adminRoles))
+            {
+                string[] roles = adminRoles.Split(';');
+                foreach (string role in roles)
+                {
+                    isKadenaAdmin = user.IsInRole(role, SiteContext.CurrentSiteName);
+                    if(isKadenaAdmin)
+                    {
+                        break;
+                    }
+                }
+            }
+            return isKadenaAdmin;
         }
 
         #region TWE macro methods
