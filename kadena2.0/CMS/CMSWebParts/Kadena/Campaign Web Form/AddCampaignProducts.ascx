@@ -17,7 +17,7 @@
                     <div class="input__inner">
                         <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true" CssClass="input__select">
                         </asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rqProgram" runat="server" CssClass="input__error" ControlToValidate="ddlProgram" InitialValue="0"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rqProgram" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlProgram" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlPos" CssClass="input__select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rqPOS" runat="server" CssClass="input__error" ControlToValidate="ddlPos" InitialValue="0"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rqPOS" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlPos" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     <span class="input__label" runat="server" id="lblProductName"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtProductName" CssClass="input__text"></asp:TextBox>
-                        <asp:RequiredFieldValidator runat="server" ID="rqProductName" CssClass="input__error" ControlToValidate="txtProductName"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator runat="server" ID="rqProductName" CssClass="EditingFormErrorLabel" ControlToValidate="txtProductName"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                     <span class="input__label" runat="server" id="lblLongDescription"></span>
                     <div class="input__inner long__desc">
                         <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="input__error" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -63,8 +63,8 @@
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
-                        <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
-                         <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date" Display="Dynamic" />
+                        <cms:CMSRequiredFieldValidator ID="rfvStartDate" CssClass="EditingFormErrorLabel" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
+                         <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date"/>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     <div class="input__inner">
                         <cms:CMSDropDownList ID="ddlBrand" runat="server" class="input__select" Enabled="false"></cms:CMSDropDownList>
                         <asp:HiddenField runat="server" ID="hfBrandItemID" />
-                        <asp:RequiredFieldValidator ID="rqBrand" CssClass="input__error" runat="server" ControlToValidate="ddlBrand" InitialValue="0"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rqBrand" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="ddlBrand" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -83,8 +83,8 @@
                     <span class="input__label" runat="server" id="lblEstimatedPrice"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtEstimatedprice" class="input__text"></asp:TextBox>
-                        <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="input__error" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="input__error"
+                        <asp:RequiredFieldValidator runat="server" ID="rqEstimatePrice" CssClass="EditingFormErrorLabel" ControlToValidate="txtEstimatedprice"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="EditingFormErrorLabel"
                             ControlToValidate="txtEstimatedprice" ValidationExpression="((\d+)((\.\d{1,100})?))$">
                         </asp:RegularExpressionValidator>
                     </div>
@@ -103,7 +103,7 @@
                     <span class="input__label" runat="server" id="lblProductCategory"></span>
                     <div class="input__inner">
                         <asp:DropDownList ID="ddlProductcategory" runat="server" CssClass="input__select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rqProductCategory" CssClass="input__error" runat="server" ControlToValidate="ddlProductcategory" InitialValue="0"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rqProductCategory" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="ddlProductcategory" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -112,8 +112,8 @@
                     <span class="input__label" runat="server" id="lblQtyPerPack"></span>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtQty" class="input__text"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rqQty" CssClass="input__error" runat="server" ControlToValidate="txtQty"></asp:RequiredFieldValidator>
-                        <asp:RegularExpressionValidator ID="revQty" runat="server" CssClass="input__error"
+                        <asp:RequiredFieldValidator ID="rqQty" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtQty"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="revQty" runat="server" CssClass="EditingFormErrorLabel"
                             ControlToValidate="txtQty" ValidationExpression="^[0-9]*$">
                         </asp:RegularExpressionValidator>
                     </div>
