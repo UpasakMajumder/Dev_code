@@ -42,6 +42,7 @@
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblState"></span>
+                     <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlState" CssClass="input__select"></asp:DropDownList>
                     </div>
@@ -63,6 +64,7 @@
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
                         <cms:CMSRequiredFieldValidator ID="rfvStartDate" Display="Dynamic" CssClass="input__error" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
+                         <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date" Display="Dynamic" />
                     </div>
                 </div>
             </div>
@@ -161,6 +163,50 @@
                 <asp:Button ID="btnSave" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click" />
                 <asp:Button ID="btnUpdate" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnUpdate_Click" />
                 <asp:Button ID="btnCancel" runat="server" class="btn-action login__login-button btn--no-shadow" OnClick="btnCancel_Click" CausesValidation="false" />
+            </div>
+        </div>
+    </div>
+</div>
+<%--State dropdown GroupInfoPopup--%>
+<div class="dialog" id="StateGroupInfoPopup">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <span><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateGroupPopupHeading") %></span>
+            <a onclick="$('#StateGroupInfoPopup').toggleClass('active');" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog__content">
+            <div class="modal__body business__assigned-user">
+                <asp:Repeater ID="RepStateInfo" runat="server">
+                    <HeaderTemplate>
+                        <table class="show-table">
+                            <tbody>
+                                <tr>
+                                    <th><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.GroupNameText") %></th>
+                                    <th><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateText") %></th>
+                                </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td class="state__group">
+                                <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("GroupName") %>' /></td>
+                            <td class="state__group">
+                                <asp:Label ID="lblUserid" runat="server" CssClass="trstyle" Text='<%# Eval("States") %>' />
+
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody>
+                        </table>
+               
+                    </FooterTemplate>
+                </asp:Repeater>
+                <asp:Label runat="server" ID="Label3" Visible="false" />
+            </div>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
             </div>
         </div>
     </div>

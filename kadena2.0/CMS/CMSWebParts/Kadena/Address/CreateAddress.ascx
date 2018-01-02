@@ -150,7 +150,7 @@
             </div>
             <div class="mb-3 form__btns">
                 <div class="">
-                    <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click"></asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click"></asp:LinkButton>
                     <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
                 </div>
             </div>

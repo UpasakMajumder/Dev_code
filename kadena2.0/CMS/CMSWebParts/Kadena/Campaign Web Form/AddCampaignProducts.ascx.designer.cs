@@ -183,6 +183,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.TextBox txtExpireDate;
     
     /// <summary>
+    /// rfvStartDate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSRequiredFieldValidator rfvStartDate;
+    
+    /// <summary>
+    /// compareDate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.CompareValidator compareDate;
+    
+    /// <summary>
     /// lblBrand control.
     /// </summary>
     /// <remarks>
@@ -451,4 +469,22 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnCancel;
+    
+    /// <summary>
+    /// RepStateInfo control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Repeater RepStateInfo;
+    
+    /// <summary>
+    /// Label3 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label3;
 }
