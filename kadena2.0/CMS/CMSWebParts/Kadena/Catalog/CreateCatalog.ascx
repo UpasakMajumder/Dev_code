@@ -17,7 +17,7 @@
             </label>
         </div>
     </div>
-    <div class="custom__btns">
+    <div class="custom__btns float-right">
         <cms:LocalizedLinkButton runat="server" ID="llbSaveSelection" CssClass="saveSelection btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.SaveSelection" OnClick="llbSaveSelection_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveFull" CssClass="btn-action login__login-button btn--no-shadow saveAllCatalog" ResourceString="KDA.CustomCatalog.Filters.SaveFull" OnClick="llbSaveFull_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLabel runat="server" ID="lblNoProducts" CssClass="input__label" ResourceString="KDA.CustomCatalog.SelectProducts" Visible="false"></cms:LocalizedLabel>
@@ -33,18 +33,18 @@
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts" DataBindByDefault="false">
         <ItemTemplate>
             <div class="cus__content--block col-sm-3">
-                    <div class="img__block">
-                        <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
-                        <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                            <img src='<%# GetProductImage(Eval("SKUImagePath"))%>' />
-                        </label>
-                    </div>
-                    <div class="input__wrapper">
-                        <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
-                        <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
-                        <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
-                    </div>
-                    <p><%#Eval("SKUDescription")%></p>
+                <div class="img__block">
+                    <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
+                    <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
+                        <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
+                    </label>
+                </div>
+                <div class="input__wrapper">
+                    <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
+                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
+                    <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
+                </div>
+                <p><%#Eval("SKUDescription")%></p>
             </div>
         </ItemTemplate>
     </cms:CMSRepeater>
