@@ -343,7 +343,7 @@
           <property name="contentbefore"></property>
           <property name="controlid">KadenaLogo</property>
           <property name="customtimezone"></property>
-          <property name="defaultimage">http://satyr.io/150x150/blue</property>
+          <property name="defaultimage"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displayselectortextbox">False</property>
