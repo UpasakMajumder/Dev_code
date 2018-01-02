@@ -389,59 +389,59 @@ TWEGlobalAdmin;TWE Global Admin
 <![CDATA[
 <div class="form form__lg">
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$$$validation:FirstName$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$ <span class="input__error">$$validation:LastName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$$$validation:LastName$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserTitle$}&nbsp;</span>$$input:UserTitle$$<span class="input__error">$$validation:UserTitle$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.UserTitle$}&nbsp;</span>$$input:UserTitle$$$$validation:UserTitle$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}&nbsp;</span>$$input:Email$$<span class="input__error">$$validation:Email$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}&nbsp;</span>$$input:Email$$$$validation:Email$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$<span class="input__error">$$validation:UserMobile$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$$$validation:UserMobile$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$<span class="input__error">$$validation:UserCountry$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$$$validation:UserCountry$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$$$validation:UserAddress$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$<span class="input__error">$$validation:UserCity$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$$$validation:UserCity$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}&nbsp;</span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$}&nbsp;</span>$$input:UserState$$$$validation:UserState$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.ZipCode$}</span>$$input:UserZipCode$$<span class="input__error">$$validation:UserZipCode$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.ZipCode$}</span>$$input:UserZipCode$$$$validation:UserZipCode$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Role$}</span>$$input:UserRole$$<span class="input__error">$$validation:UserRole$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Role$}</span>$$input:UserRole$$$$validation:UserRole$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Comapany$}</span>$$input:UserCompanyName$$<span class="input__error">$$validation:UserCompanyName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Comapany$}</span>$$input:UserCompanyName$$$$validation:UserCompanyName$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$<span class="input__error ">$$validation:UserFax$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$$$validation:UserFax$$</div>
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}&nbsp;</span>$$input:FYBudget$$<span class="input__error">$$validation:FYBudget$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$}&nbsp;</span>$$input:FYBudget$$$$validation:FYBudget$$</div>
 </div>
 
 <div class="mb-2 form__block">
@@ -457,7 +457,7 @@ TWEGlobalAdmin;TWE Global Admin
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$$$validation:PasswordHint$$</div>
 </div>
 
 <div class="mb-2 form__block">
@@ -465,7 +465,7 @@ TWEGlobalAdmin;TWE Global Admin
 </div>
 
 <div class="mb-2 form__block">
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$<span class="input__error">$$validation:BusinessUnit$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnit$}</span>$$input:BusinessUnit$$$$validation:BusinessUnit$$</div>
 
 <div class="business__assigned-user">
 <div class="table__responsive">
