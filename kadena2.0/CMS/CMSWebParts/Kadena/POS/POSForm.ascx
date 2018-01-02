@@ -8,7 +8,7 @@
                 <cms:LocalizedLabel ID="lblCategory" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSCategoryLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlCategory" runat="server" EnableViewState="false" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvCatgory" InitialValue="0" runat="server" CssClass="input__error"  ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator  ID="rfvCatgory" InitialValue="0" runat="server" CssClass="EditingFormErrorLabel"  ControlToValidate="ddlCategory"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
                 <cms:LocalizedLabel ID="lblBrand" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.BrandLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="false" onchange="brandChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvBrand" runat="server" CssClass="input__error" InitialValue="0"  ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="EditingFormErrorLabel" InitialValue="0"  ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                 <cms:LocalizedLabel ID="lblYear" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.FiscalYearLabel" />
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlYear" runat="server" EnableViewState="false" onchange="yearChange(this);return false;" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator Display="Dynamic" ID="rfvYear" runat="server" InitialValue="0"  ControlToValidate="ddlYear" CssClass="input__error"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator  ID="rfvYear" runat="server" InitialValue="0"  ControlToValidate="ddlYear" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -35,9 +35,9 @@
                 <cms:LocalizedLabel ID="lblPOSCode" runat="server" EnableViewState="False" CssClass="logon-token-info" ResourceString="Kadena.POSFrom.POSLabel" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtPOSCode"  runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvPOSCode" Display="Dynamic" CssClass="input__error" runat="server"   ControlToValidate="txtPOSCode">
+                    <asp:RequiredFieldValidator ID="rfvPOSCode"  CssClass="EditingFormErrorLabel" runat="server"   ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator Display="Dynamic" CssClass="input__error" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
+                    <asp:RegularExpressionValidator  CssClass="EditingFormErrorLabel" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
                          ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
                 </div>
             </div>

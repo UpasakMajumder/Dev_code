@@ -7,6 +7,21 @@
   float: left;
   margin: 0 5px 20px 0;
   position: relative;
+
+  input {
+    padding-right: 45px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    background: url(../gfx/svg/icons/search.svg) no-repeat;
+    width: 18px;
+    height: 18px;
+    background-size: 100%;
+  }
 }
 
 .add__btn {
@@ -55,6 +70,7 @@
 
   .input__error {
     position: absolute;
+    width: 100%;
   }
 
   .input__file {
@@ -135,4 +151,11 @@
 .state__group {
   width: 400px;
   word-break: break-all;
+}
+
+.EditingFormErrorLabel {
+  border-top: 1px solid $brand-dangerous;
+  width: 100%;
+  color: $brand-dangerous;
+  font-size: $font-xxs;
 }
