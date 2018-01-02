@@ -1071,4 +1071,7 @@ $(document).ready(function () {
     else if (status == 'deleted') {
         toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
     }
+    else if (status == 'error') {
+        toastr.error(config.localization.globalSuccess.errorMessage);
+    }
 });
