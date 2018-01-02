@@ -136,26 +136,26 @@
       text: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessText"))|(user)rostyslav.diachenko@actum.cz|(hash)bfa418526f0e55e291235f939ffaa195557b981dce3bb11c9d703951ee2ff533%}'
     },
     checkoutValidation  : {
-          deliveryMethod: {
-            title: 'Validation Error',
-            text: '{$Kadena.Checkout.DeliveryMethodInvalid$}'
-          },
-          paymentMethod: {
-            title: 'Validation Error',
-            text: '{$Kadena.Checkout.PaymentMethodInvalid$}'
-          },
-          deliveryAddress: {
-            title: 'Validation Error',
-            text: '{$Kadena.Checkout.DeliveryAddressInvalid$}'
-          },
-          invoice: {
-            title: 'Validation Error',
-            text: '{$Kadena.Checkout.PONumberInvalid$}'
-          },
-          emailConfirmation: {
-            title: 'Validation Error',
-            text: '{$Kadena.Checkout.EmailInvalid$}'
-          }
+      deliveryMethod: {
+        title: 'Validation Error',
+        text: '{$Kadena.Checkout.DeliveryMethodInvalid$}'
+      },
+      paymentMethod: {
+        title: 'Validation Error',
+        text: '{$Kadena.Checkout.PaymentMethodInvalid$}'
+      },
+      deliveryAddress: {
+        title: 'Validation Error',
+        text: '{$Kadena.Checkout.DeliveryAddressInvalid$}'
+      },
+      invoice: {
+        title: 'Validation Error',
+        text: '{$Kadena.Checkout.PONumberInvalid$}'
+      },
+      emailConfirmation: {
+        title: 'Validation Error',
+        text: '{$Kadena.Checkout.EmailInvalid$}'
+      }
     }      
   };
   config.localization.staticFields = {
@@ -188,8 +188,11 @@
     autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
     candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'
   };
-  
-  
+  config.localization.globalSuccess= {
+    addSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage") |(user)cvoqa2@gmail.com|(hash)d586e1841f580cf46d6ea516169c515756a1c781a9af08a1c71cc24d2eb54871%}',
+    updateSuccessMessage:'{% GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage") |(user)cvoqa2@gmail.com|(hash)ef56d821bc2a31eba96f03ab1a2106db1b9d4f3d75cc93f2dac824b5029cc0af%}',
+    deleteSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage") |(user)cvoqa2@gmail.com|(hash)499501cb9ff2489885508d87ce0abfc8fff51cedd99a9e2a8748223697d1ab69%}'
+  };
 </script>
 
 <script src="/js/common.min.js"></script>

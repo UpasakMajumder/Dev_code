@@ -10,6 +10,7 @@ using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.ImageUpload;
 using System;
 using System.Collections.Generic;
@@ -776,7 +777,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
                         if (campDoc != null)
                         {
-                            Response.Redirect(campDoc.DocumentUrlPath);
+                            Response.Redirect($"{campDoc.DocumentUrlPath}?status={QueryStringStatus.Added}");
                         }
                     }
                 }
@@ -865,7 +866,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
                 if (campDoc != null)
                 {
-                    Response.Redirect(campDoc.DocumentUrlPath);
+                    Response.Redirect($"{campDoc.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
             }
         }

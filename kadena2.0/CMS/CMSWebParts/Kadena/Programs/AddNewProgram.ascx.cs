@@ -7,6 +7,7 @@ using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Linq;
 using System.Web.UI;
@@ -326,7 +327,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                 DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date
                             };
                             program.Insert(CampaignNode, true);
-                            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                            URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                         }
                     }
                 }
@@ -386,7 +387,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                     DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
                             }
                         }
-                        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                        URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                     }
                 }
             }

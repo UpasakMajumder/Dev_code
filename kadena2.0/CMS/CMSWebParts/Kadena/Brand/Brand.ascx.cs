@@ -2,6 +2,7 @@ using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Linq;
 
@@ -73,7 +74,7 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
             {
                 var brandData = CustomTableItemProvider.GetItem<BrandItem>(QueryHelper.GetInteger("ItemID", 0));
                 brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
-                form.SaveData(CurrentDocument.Parent.AbsoluteURL);
+                form.SaveData($"{CurrentDocument.Parent.AbsoluteURL}?status={QueryStringStatus.Updated}");
             }
             else
             {
@@ -82,7 +83,7 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
                 brandData.BrandName = ValidationHelper.GetString(form.GetFieldValue("BrandName"), string.Empty);
                 brandData.BrandDescription = ValidationHelper.GetString(form.GetFieldValue("BrandDescription"), string.Empty);
                 brandData.Status= ValidationHelper.GetBoolean(form.GetFieldValue("Status"), true);
-                form.SaveData(CurrentDocument.Parent.AbsoluteURL);
+                form.SaveData($"{CurrentDocument.Parent.AbsoluteURL}?status={QueryStringStatus.Added}");
             }
         }
         else

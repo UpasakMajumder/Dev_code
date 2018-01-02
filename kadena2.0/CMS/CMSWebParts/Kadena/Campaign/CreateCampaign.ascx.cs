@@ -14,6 +14,7 @@ using CMS.DataEngine;
 using CMS.PortalEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
@@ -106,7 +107,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     lblFailureText.Visible = false;
                     Name.Text = "";
                     Description.Text = "";
-                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
                 {
@@ -153,8 +154,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     editPage.SetValue("EndDate", ValidationHelper.GetDate(txtEndDate.Text, DateTime.Now.Date));
                     editPage.SetValue("Status", ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false);
                     editPage.Update();
-                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
-                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else
                 {
