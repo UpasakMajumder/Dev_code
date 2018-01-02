@@ -180,6 +180,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         {
             if (!IsPostBack)
             {
+                divNoRecords.Visible = false;
                 txtPos.Attributes.Add("placeholder", PosSearchPlaceholder);
                 BindPrograms();
                 BindCategories();
@@ -251,6 +252,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 {
                     ddlCategory.Visible = true;
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
+                                      .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                                       .WhereEquals("ProgramID", null)
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(productsDetails))
@@ -271,6 +273,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (!DataHelper.DataSourceIsEmpty(programIds))
                     {
                         productsDetails = CampaignsProductProvider.GetCampaignsProducts()
+                                          .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                                           .WhereIn("ProgramID", programIds)
                                           .ToList();
                         if (!DataHelper.DataSourceIsEmpty(productsDetails))
@@ -336,6 +339,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
+            divNoRecords.Visible = false;
+            rptProductLists.DataSource = null;
+            rptProductLists.DataBind();
             List<CampaignsProduct> productsDetails = GetProductsDetails(programID, categoryID, posNumber);
             List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
             if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))

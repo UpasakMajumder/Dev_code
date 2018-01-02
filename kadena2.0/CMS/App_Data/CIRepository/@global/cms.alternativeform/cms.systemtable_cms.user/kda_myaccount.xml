@@ -51,7 +51,7 @@
         </rules>
       </field>
       <field column="FullName" guid="5c3003d6-de76-4e96-aca4-cf1efa86b3fa" visible="" />
-      <field column="Email" guid="fcef0fb3-6145-48ed-8f41-e28b71a665a8" reftype="Required" allowempty="">
+      <field column="Email" guid="fcef0fb3-6145-48ed-8f41-e28b71a665a8" allowempty="">
         <settings>
           <controlname>ViewSecureText</controlname>
           <ResolveMacros>True</ResolveMacros>
@@ -161,7 +161,7 @@
       </field>
       <field column="UserCompanyName" guid="b99e4b90-5eda-45b7-a0b5-3ebe79e91126" visible="" />
       <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" visible="" />
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="">
         <settings>
           <AddSelectCountryRecord>True</AddSelectCountryRecord>
           <EnableStateSelection>False</EnableStateSelection>
@@ -169,6 +169,7 @@
         <properties>
           <controlcssclass>input__select js-Country</controlcssclass>
           <defaultvalue>271</defaultvalue>
+          <validationerrormessage>{$Kadena.MyAccount.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
       <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be">
@@ -176,14 +177,14 @@
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Query>
 <![CDATA[
-select 0,'Select State' 
+select 0,'{$KDA.Common.SelectState$}'
 union
 select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
 ]]>
@@ -312,25 +313,25 @@ select ItemID,DivisionName from KDA_Division
 <div class="form">
 <p>Enter your personal details below:</p>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FirstName$}</span>$$input:FirstName$$$$validation:FirstName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$ <span class="input__error">$$validation:LastName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.LastName$}</span>$$input:LastName$$$$validation:LastName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$<span class="input__error">$$validation:UserCountry$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Country$}</span>$$input:UserCountry$$$$validation:UserCountry$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$<span class="input__error">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Address$}</span>$$input:UserAddress$$$$validation:UserAddress$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$<span class="input__error">$$validation:UserCity$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.City$}</span>$$input:UserCity$$$$validation:UserCity$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$} </span>$$input:UserState$$<span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.State$} </span>$$input:UserState$$$$validation:UserState$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Zipcode$} </span>$$input:UserZipCode$$<span class="input__error">$$validation:UserZipCode$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Zipcode$} </span>$$input:UserZipCode$$$$validation:UserZipCode$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$<span class="input__error">$$validation:UserMobile$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$$$validation:UserMobile$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$<span class="input__error">$$validation:UserFax$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$$$validation:UserFax$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$} </span>$$input:FYBudget$$<span class="input__error">$$validation:FYBudget$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$} </span>$$input:FYBudget$$$$validation:FYBudget$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}</span>$$input:SalesManagerID$$</div>
 
@@ -344,7 +345,7 @@ select ItemID,DivisionName from KDA_Division
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Email$}</span>$$input:Email$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$<span class="input__error">$$validation:PasswordHint$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.PasswordHint$}</span>$$input:PasswordHint$$$$validation:PasswordHint$$</div>
 $$submitbutton$$</div>
 
 ]]>
