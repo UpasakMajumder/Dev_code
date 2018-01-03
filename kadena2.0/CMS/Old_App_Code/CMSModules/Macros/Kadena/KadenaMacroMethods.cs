@@ -518,12 +518,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <param name="parameters"></param>
         /// <returns></returns>
         [MacroMethod(typeof(string), "Returns Currently opened campaign name", 1)]
-        public static object GetCampaignName(EvaluationContext context, params object[] parameters)
+        public static string GetCampaignName(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 string campaignName = string.Empty;
-                var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name")
+                                .WhereEquals("OpenCampaign", true)
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null))
+                                .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
                 if (campaign != null)
                 {
                     campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);

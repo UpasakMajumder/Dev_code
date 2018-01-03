@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.Enums;
+using System.Web;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -686,30 +687,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// </summary>
     /// <param name="imagepath"></param>
     /// <returns></returns>
-    public string GetProductImage(object imagepath)
+    public string GetProductImage(string imagepath)
     {
         string returnValue = string.Empty;
         try
         {
-            if (TypeOfProduct == (int)ProductType.PreBuy)
+            if(!string.IsNullOrWhiteSpace(imagepath))
             {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
+                string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
+                returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
             }
-            else
-            {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
-            }
-
         }
         catch (Exception ex)
         {
