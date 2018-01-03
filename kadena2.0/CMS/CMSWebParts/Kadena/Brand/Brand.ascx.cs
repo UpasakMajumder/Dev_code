@@ -101,33 +101,4 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
     {
         Response.Redirect(CurrentDocument.Parent.AbsoluteURL);
     }
-
-    /// <summary>
-    /// Checks whether the given brand already exists
-    /// </summary>
-    /// <param name="BrandCode">brand code</param>
-    /// <param name="ItemID">itemid</param>
-    /// <returns>flase if already exist else true</returns>
-    private bool IsBrandCodeValid(int BrandCode, int ItemID)
-    {
-        var flag = false;
-        if (ItemID > 0)
-        {
-            var brandData = CustomTableItemProvider.GetItems<BrandItem>().
-                WhereEquals("BrandCode", BrandCode).
-                And().
-                WhereNotEquals("ItemID", ItemID).
-                Columns("BrandCode").
-                FirstOrDefault();
-            return flag = brandData != null ? false : true;
-        }
-        else
-        {
-            var brandData = CustomTableItemProvider.GetItems<BrandItem>().
-                WhereEquals("BrandCode", BrandCode).
-                Columns("BrandCode").
-                FirstOrDefault();
-            return flag = brandData != null ? false : true;
-        }
-    }
 }
