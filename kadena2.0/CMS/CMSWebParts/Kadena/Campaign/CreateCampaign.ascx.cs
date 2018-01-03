@@ -181,8 +181,10 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             {
                 Name.Text = editPage.GetValue("Name").ToString();
                 Description.Text = editPage.GetValue("Description").ToString();
-                txtStartDate.Text = ValidationHelper.GetString(editPage.GetValue("StartDate"), string.Empty);
-                txtEndDate.Text = ValidationHelper.GetString(editPage.GetValue("EndDate"), string.Empty);
+                var startDate = editPage.GetValue<DateTime>("StartDate", default(DateTime));
+                txtStartDate.Text = (startDate != default(DateTime))? startDate.ToShortDateString():string.Empty;
+                var endDate = editPage.GetValue<DateTime>("EndDate", default(DateTime));
+                txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
                 ddlStatus.SelectedValue = ValidationHelper.GetBoolean(editPage.GetValue("Status"), false) == true ? "1" : "0";
             }
         }
