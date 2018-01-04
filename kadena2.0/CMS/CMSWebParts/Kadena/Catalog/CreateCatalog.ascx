@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Catalog_CreateCatalog" CodeBehind="~/CMSWebParts/Kadena/Catalog/CreateCatalog.ascx.cs" %>
-<div class="custom__block">
+<div class="custom__block" runat="server" id="catalogControls">
     <div class="custom__select clearfix">
         <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
@@ -27,6 +27,12 @@
     <div class="clearfix"></div>
     <div class=" mt-2">
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoDataFoundText  %></span></div>
+    </div>
+</div>
+<div id="campaignIsNotOpen" runat="server" visible="false">
+    <div class="clearfix"></div>
+    <div class=" mt-2">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoCampaignOpen  %></span></div>
     </div>
 </div>
 <div class="custom__content row">
