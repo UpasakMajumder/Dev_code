@@ -255,7 +255,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             string imagePath = string.Empty;
             try
             {
-                if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
+                if (ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
                 {
                     UpdateProduct(productId);
                 }
@@ -374,6 +374,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0),
                     SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
+                    SKUValidUntil = ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date),
                     SKUProductType = SKUProductTypeEnum.EProduct,
                     SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double)),
                 };
@@ -484,6 +485,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                             imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
+                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToString("MM/dd/yyyy"), string.Empty);
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
@@ -643,13 +645,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
             try
             {
                 var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                    .Columns("BrandCode,BrandName")
+                    .Columns("ItemId,BrandName")
                     .ToList();
                 if (!DataHelper.DataSourceIsEmpty(brands))
                 {
                     ddlBrand.DataSource = brands;
                     ddlBrand.DataTextField = "BrandName";
-                    ddlBrand.DataValueField = "BrandCode";
+                    ddlBrand.DataValueField = "ItemId";
                     ddlBrand.DataBind();
                     string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
                     ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
@@ -780,7 +782,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                        .FirstOrDefault();
                         if (brand != null)
                         {
-                            ddlBrand.SelectedValue = brand.GetValue("BrandCode").ToString();
+                            ddlBrand.SelectedValue = brand.GetValue("ItemId").ToString();
                         }
                     }
                 }
