@@ -209,7 +209,7 @@
           <property name="enableselecteditem">True</property>
           <property name="filtername"></property>
           <property name="instanceguid">97a27045-e236-4469-8520-a8e3fd3d71c0</property>
-          <property name="orderby" ismacro="true">{% Createdwhen %}</property>
+          <property name="orderby">ItemCreatedWhen Desc</property>
           <property name="selecteddatabasecolumnname">ItemID</property>
           <property name="selectedquerystringkeyname">ItemID</property>
           <property name="selectedvalidationtype">int</property>
