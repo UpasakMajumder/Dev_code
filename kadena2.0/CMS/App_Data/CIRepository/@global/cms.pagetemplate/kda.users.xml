@@ -500,6 +500,39 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
         </webpart>
+        <webpart controlid="jsUserRoleSelector" guid="764d2ec2-beb8-435a-96e6-da54bf7c9c7c" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">jsUserRoleSelector</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script type="text/javascript">
+  $(window).ready(function() {
+    var userRoleSelector=document.getElementsByClassName("js-user-role");
+    var userRole=document.getElementById("hdnUserRole").value;
+    if(userRole!="" && userRoleSelector!=undefined && userRoleSelector.length>0)
+    {
+      document.getElementsByClassName("js-user-role")[0].value=userRole;
+    }
+  });
+  
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">764d2ec2-beb8-435a-96e6-da54bf7c9c7c</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Startup</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>
