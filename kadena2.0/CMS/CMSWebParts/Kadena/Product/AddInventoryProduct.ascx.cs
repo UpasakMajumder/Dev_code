@@ -486,6 +486,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToString("MM/dd/yyyy"), string.Empty);
+                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
