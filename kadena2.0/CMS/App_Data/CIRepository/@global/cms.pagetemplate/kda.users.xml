@@ -524,7 +524,7 @@ iteratedDocument = iteratedDocument.Parent;
 </script>
 ]]>
           </property>
-          <property name="inlinescriptpagelocation">Header</property>
+          <property name="inlinescriptpagelocation">Inline</property>
           <property name="instanceguid">764d2ec2-beb8-435a-96e6-da54bf7c9c7c</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Startup</property>
