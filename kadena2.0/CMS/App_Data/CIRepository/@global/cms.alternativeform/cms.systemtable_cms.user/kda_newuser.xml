@@ -356,7 +356,7 @@ Select ItemID,DivisionName from KDA_Division
       </field>
       <field column="UserRole" columnsize="200" columntype="text" dummy="altform" guid="478931b1-6872-495c-8949-afc8ec69076d" publicfield="false" reftype="Required" visible="true" order="95">
         <properties>
-          <controlcssclass>input__select</controlcssclass>
+          <controlcssclass>input__select js-user-role</controlcssclass>
           <fieldcaption>User Role</fieldcaption>
           <validationerrormessage>{$kadena.Users.RoleRequiredError$}</validationerrormessage>
         </properties>

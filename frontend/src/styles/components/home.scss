@@ -56,11 +56,19 @@
     padding: 15px 15px 20px;
 
     .scroll__block {
-      overflow-y: auto;
-      max-height: 220px;
-
       p {
         padding-right: 10px;
+      }
+    }
+  }
+}
+
+.isOpen {
+  .main__content {
+    .main__right {
+      .scroll__block {
+        max-height: 220px;
+        overflow-x: auto;
       }
     }
   }

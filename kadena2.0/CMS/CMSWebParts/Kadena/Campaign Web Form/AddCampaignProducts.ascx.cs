@@ -521,7 +521,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                                 imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
                                 imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                                txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
+                                txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             }
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
                             ddlProgram.Enabled = false;
