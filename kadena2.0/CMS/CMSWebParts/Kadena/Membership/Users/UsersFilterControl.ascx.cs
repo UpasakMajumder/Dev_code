@@ -2,7 +2,6 @@
 using CMS.DocumentEngine.Web.UI;
 using CMS.DataEngine;
 using CMS.Helpers;
-using CMS.Base;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CMSAbstractBaseFilterControl
 {
@@ -123,6 +122,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
         lnkSortByActivity.Text = SortActivityLinkText;
         lnkSortByUserName.Text = SortUserNameLinkText;
         btnSelect.Text = ButtonText;
+        txtValue.Attributes.Add("Placeholder", ResHelper.GetString("Kadena.Users.SearchText"));
         base.OnLoad(e);
     }
 
@@ -135,7 +135,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
     protected void btnSelect_Click(object sender, EventArgs e)
     {
         // Set where condition
-        WhereCondition = GenerateWhereCondition(txtValue.Text);
+        WhereCondition = GenerateWhereCondition(txtValue.Text.Trim());
         // Save filter condition
         ViewState["FilterCondition"] = txtValue.Text;
         // Raise OnFilterChange event
@@ -178,7 +178,9 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
     {
         searchPhrase = SqlHelper.GetSafeQueryString(searchPhrase, false);
         string whereCondition = "(UserName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%') OR ";
-        whereCondition += "(UserNickName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%')";
+        whereCondition += "(UserNickName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%') OR";
+        whereCondition += "(FirstName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%') OR";
+        whereCondition += "(LastName LIKE N'%" + SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchPhrase)) + "%') ";
         return whereCondition;
     }
 }

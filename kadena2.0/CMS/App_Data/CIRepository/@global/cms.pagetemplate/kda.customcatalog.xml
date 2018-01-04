@@ -83,7 +83,7 @@
           <property name="text">
 <![CDATA[
 <div class="content-header__inner">
-<h1 class="content-header__page-name">{%  GetResourceString("KDA.CustomCatalog.Filters.HeaderText") |(user)cvoqa2@gmail.com|(hash)dee7a79ec7f988c6f4228dd3fe80d8970c2e7e6aa29f298896a7f43277cd13c9%}</h1>
+<h1 class="content-header__page-name">{%  GetResourceString("KDA.CustomCatalog.Filters.HeaderText") |(user)cvoqa2@gmail.com|(hash)dee7a79ec7f988c6f4228dd3fe80d8970c2e7e6aa29f298896a7f43277cd13c9%} - {%GetCampaignName() %}</h1>
 </div>
 
 
