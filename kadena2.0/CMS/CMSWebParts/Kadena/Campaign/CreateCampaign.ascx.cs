@@ -42,28 +42,35 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         if (!this.StopProcessing)
         {
-                Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
-                Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
-                txtStartDate.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtStartDateWatermark"));
-                txtEndDate.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtEndDateWatermark"));
-                rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
-                rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
-                rfvStartDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDateRequired");
-                rfvEndDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRequired");
-                rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
-                ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
-                ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
-                folderpath = SettingsKeyInfoProvider.GetValue("KDA_CampaignFolderPath", CurrentSiteName);
-                if (Request.QueryString["ID"] != null)
-                {
-                    btnSave.Click += btnSave_Edit;
-                    campaignId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
-                    SetFeild(campaignId);
-                }
-                else
-                {
-                    btnSave.Click += btnSave_Save;
-                }
+            Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
+            Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
+            txtStartDate.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtStartDateWatermark"));
+            txtEndDate.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtEndDateWatermark"));
+            rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
+            rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
+            rfvStartDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDateRequired");
+            compareWithStartdate.ErrorMessage= ResHelper.GetString("Kadena.CampaignForm.EndDateRangeMessage");
+            compareDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDaterangeMessage");
+            rfvEndDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRequired");
+            rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
+            ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+            ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
+            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CampaignFolderPath", CurrentSiteName);
+            if (Request.QueryString["ID"] != null)
+            {
+                btnSave.Click += btnSave_Edit;
+                campaignId = ValidationHelper.GetInteger(Request.QueryString["ID"], 0);
+                SetFeild(campaignId);
+            }
+            else
+            {
+                btnSave.Click += btnSave_Save;
+            }
+            if (!IsPostBack)
+            {
+                string currentDate = DateTime.Today.ToShortDateString();
+                compareDate.ValueToCompare = currentDate;
+            }
         }
     }
     /// <summary>
@@ -174,8 +181,10 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             {
                 Name.Text = editPage.GetValue("Name").ToString();
                 Description.Text = editPage.GetValue("Description").ToString();
-                txtStartDate.Text = ValidationHelper.GetString(editPage.GetValue("StartDate"), string.Empty);
-                txtEndDate.Text = ValidationHelper.GetString(editPage.GetValue("EndDate"), string.Empty);
+                var startDate = editPage.GetValue<DateTime>("StartDate", default(DateTime));
+                txtStartDate.Text = (startDate != default(DateTime))? startDate.ToShortDateString():string.Empty;
+                var endDate = editPage.GetValue<DateTime>("EndDate", default(DateTime));
+                txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
                 ddlStatus.SelectedValue = ValidationHelper.GetBoolean(editPage.GetValue("Status"), false) == true ? "1" : "0";
             }
         }

@@ -4,8 +4,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class CampaignProductDto
     {
-        [Header(0, "Campagin Name")]
-        public string Campagin { get; set; }
+        [Header(0, "Campaign Name")]
+        public string Campaign { get; set; }
 
         [Header(1, "Program Name")]
         [MaxLength(100)]
@@ -30,8 +30,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(6, "Long Description")]
         public string LongDescription { get; set; }
 
-        [Header(7, "Product Expiry Date (MM/dd/yyyy)")]
+        [Header(7, "Product Expiry Date (MM/dd/yyyy) *")]
         [MaxLength(20)]
+        [Required]
         public string SKUValidUntil { get; set; }
 
         [Header(8, "Brand *")]

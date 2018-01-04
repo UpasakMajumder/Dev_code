@@ -85,6 +85,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
                 BindLabelText();
+                if (!IsPostBack)
+                {
+                    string currentDate = DateTime.Today.ToShortDateString();
+                    compareDate.ValueToCompare = currentDate;
+                }
             }
         }
         /// <summary>
@@ -111,6 +116,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             revActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
             libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
+            compareDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDaterangeMessage");
         }
         #endregion WebpartSetupMethods
 
@@ -369,7 +375,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
                     SKUProductType = SKUProductTypeEnum.EProduct,
-                    SKUWeight=ValidationHelper.GetDouble(txtWeight.Text,default(double)),
+                    SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double)),
                 };
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
@@ -478,7 +484,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                             imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
+                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
@@ -637,13 +643,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
             try
             {
                 var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                    .Columns("ItemID,BrandName")
+                    .Columns("BrandCode,BrandName")
                     .ToList();
                 if (!DataHelper.DataSourceIsEmpty(brands))
                 {
                     ddlBrand.DataSource = brands;
                     ddlBrand.DataTextField = "BrandName";
-                    ddlBrand.DataValueField = "ItemID";
+                    ddlBrand.DataValueField = "BrandCode";
                     ddlBrand.DataBind();
                     string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.BrandWaterMark"), string.Empty);
                     ddlBrand.Items.Insert(0, new ListItem(selectText, "0"));
@@ -767,21 +773,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
                         .WhereEquals("POSNumber", selectedPos)
                          .FirstOrDefault();
-                    if(pos!=null)
+                    if (pos != null && pos.GetValue("BrandID") != null)
                     {
-                        if(pos.GetValue("BrandID")!=null)
+                        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                       .WhereEquals("BrandCode", pos.GetValue("BrandID"))
+                       .FirstOrDefault();
+                        if (brand != null)
                         {
-                            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                           .WhereEquals("BrandCode", pos.GetValue("BrandID"))
-                           .FirstOrDefault();
-                            if (brand != null)
-                            {
-                                ddlBrand.SelectedValue = brand.GetValue("ItemID").ToString();
-                            }
+                            ddlBrand.SelectedValue = brand.GetValue("BrandCode").ToString();
                         }
                     }
                 }
-               
+
                 ddlPosNo.SelectedValue = selectedPos;
             }
             catch (Exception ex)

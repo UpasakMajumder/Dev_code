@@ -472,6 +472,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         rqProductCategory.ErrorMessage = CategoryError;
         rqQty.ErrorMessage = QtyPerPackError;
         hdnDatepickerUrl.Value = CalenderIconPath;
+        compareDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignProduct.StartDateRangeErrorMessage");
         ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
         ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
     }
@@ -520,7 +521,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                                 imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
                                 imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                                txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
+                                txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             }
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
                             ddlProgram.Enabled = false;
@@ -551,6 +552,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         btnSave.Visible = true;
                         btnUpdate.Visible = false;
                     }
+                    string currentDate = DateTime.Today.ToShortDateString();
+                    compareDate.ValueToCompare = currentDate;
                 }
             }
             catch (Exception ex)
