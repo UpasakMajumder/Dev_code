@@ -200,6 +200,11 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <controlcssclass>input__select js-State</controlcssclass>
           <validationerrormessage>{$Kadena.MyAccount.StateRequired$}</validationerrormessage>
         </properties>
+        <rules>
+          <rule errormsg="{$Kadena.MyAccount.StateRequired$}">
+            <![CDATA[{%Rule("(Value >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinValue\" ><p n=\"minvalue\"><t>1</t><v>1</v><r>0</r><d></d><vt>double</vt><tv>0</tv></p></r></rules>")%}]]>
+          </rule>
+        </rules>
       </field>
       <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" allowempty="">
         <properties>
