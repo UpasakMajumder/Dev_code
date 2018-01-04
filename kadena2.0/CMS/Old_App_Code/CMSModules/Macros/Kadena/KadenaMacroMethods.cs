@@ -295,8 +295,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
-
-            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+            string adminCacheKey = IsUserInKadenaAdminRole() ? "_admin" : string.Empty;
+            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition" + adminCacheKey + "_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
         }
 
         [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
@@ -410,19 +410,29 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             bool status = true;
             if (className.ToLower().Equals("kda.adminmodule"))
             {
-                string globalAdminRole = SettingsKeyInfoProvider.GetValue("KDA_GlobalAminRoleName", SiteContext.CurrentSiteID);
-                string adminRole = SettingsKeyInfoProvider.GetValue("KDA_AdminRoleName", SiteContext.CurrentSiteID);
-                UserInfo User = MembershipContext.AuthenticatedUser;
-                if (User != null && (User.IsInRole(globalAdminRole, SiteContext.CurrentSiteName) || User.IsInRole(adminRole, SiteContext.CurrentSiteName)))
-                {
-                    status = true;
-                }
-                else
-                {
-                    status = false;
-                }
+                status = IsUserInKadenaAdminRole();
             }
             return status;
+        }
+
+        private static bool IsUserInKadenaAdminRole()
+        {
+            bool isKadenaAdmin = false;
+            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
+            UserInfo user = MembershipContext.AuthenticatedUser;
+            if (user != null && !string.IsNullOrWhiteSpace(adminRoles))
+            {
+                string[] roles = adminRoles.Split(';');
+                foreach (string role in roles)
+                {
+                    isKadenaAdmin = user.IsInRole(role, SiteContext.CurrentSiteName);
+                    if(isKadenaAdmin)
+                    {
+                        break;
+                    }
+                }
+            }
+            return isKadenaAdmin;
         }
 
         #region TWE macro methods
@@ -508,12 +518,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <param name="parameters"></param>
         /// <returns></returns>
         [MacroMethod(typeof(string), "Returns Currently opened campaign name", 1)]
-        public static object GetCampaignName(EvaluationContext context, params object[] parameters)
+        public static string GetCampaignName(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 string campaignName = string.Empty;
-                var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name")
+                                .WhereEquals("OpenCampaign", true)
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null))
+                                .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
                 if (campaign != null)
                 {
                     campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);

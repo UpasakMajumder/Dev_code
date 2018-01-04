@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MailingList.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.MailingList.MailingList" %>
 <%@ Import Namespace="CMS.MacroEngine" %>
 <%@ Import Namespace="Kadena.BusinessLogic.Services" %>
-<%@ Import Namespace="Kadena.WebAPI.KenticoProviders" %>
+<%@ Import Namespace="Kadena2.WebAPI.KenticoProviders" %>
 
 <div class="j-klist">
     <asp:Repeater ID="repMailingLists" runat="server" EnableViewState="false">
@@ -32,7 +32,7 @@
                     <%# Eval("name") %>
                 </td>
                 <td>
-                    <%# new DateTimeFormatter(new KenticoResourceService()).Format(EvalDateTime("createDate"))  %>
+                    <%# new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).Format(EvalDateTime("createDate"))  %>
                 </td>
                 <td>
                     <%# Eval("addressCount") %>

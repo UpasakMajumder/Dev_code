@@ -41,17 +41,15 @@
           <tr>
             <td>
               <input type="checkbox" class="js-chkAll" id="selectAll">
-            </td>
-            <td>{$Kadena.Users.BusinessUnitName$}</td>
+            </td>            
             <td>{$Kadena.Users.BusinessUnitNumber$}</td>
+            <td>{$Kadena.Users.BusinessUnitName$}</td>
           </tr>
         </tbody>
       </table>      
     </div>    
     <div class="dialog__footer">      
-      <div class="btn-group btn-group--right">        
-        <!--<button type="button" class="btn-action btn-action--secondary">Discard changes</button>
-<button type="button" class="btn-action">Save address</button>-->            
+      <div class="btn-group btn-group--right">                         
       </div>          
     </div>      
   </div>    
@@ -424,7 +422,7 @@ iteratedDocument = iteratedDocument.Parent;
         success: function (data) {
           if (data.d != '') {
             $('#buinessunits').html('');
-            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitName$}</td><td>{$Kadena.Users.BusinessUnitNumber$}</td></tr>';
+            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitNumber$}</td><td>{$Kadena.Users.BusinessUnitName$}</td></tr>';
             var parsedData=JSON.parse(data.d);          
             var rowData='';
             for(i=0; i<parsedData.length;i++)
