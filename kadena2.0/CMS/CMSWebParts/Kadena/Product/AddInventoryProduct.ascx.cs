@@ -538,7 +538,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private void BindUsers(int pageIndex)
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
-            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName")
+            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName").OrderBy("FullName")
                 .Skip(PageSize * (pageIndex - 1))
                 .Take(PageSize);
             foreach (UserInfo user in users)
