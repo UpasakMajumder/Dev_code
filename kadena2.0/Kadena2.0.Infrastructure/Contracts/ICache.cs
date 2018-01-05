@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kadena.BusinessLogic.Contracts
+namespace Kadena2.Infrastructure.Contracts
 {
     public interface ICache
     {
