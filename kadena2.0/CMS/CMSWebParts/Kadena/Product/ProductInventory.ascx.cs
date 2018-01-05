@@ -512,6 +512,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
     }
+
     /// <summary>
     /// Adds items to the cart
     /// </summary>
