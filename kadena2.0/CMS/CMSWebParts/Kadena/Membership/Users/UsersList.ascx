@@ -24,3 +24,4 @@
         </div>
     </div>
 </cms:CMSPanel>
+<asp:HiddenField runat="server" ID="hdnUserRole" ClientIDMode="Static" />

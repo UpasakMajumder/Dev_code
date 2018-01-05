@@ -39,12 +39,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         get
         {
-            return CampaignProvider.GetCampaigns()
-                             .Columns("CampaignID")
-                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                             .WhereTrue("OpenCampaign")
-                             .Where(new WhereCondition().WhereTrue("CloseCampaign").Or().WhereNull("CloseCampaign"))
-                             .FirstOrDefault();
+            return CampaignProvider.GetCampaigns().Columns("CampaignID,Name,StartDate,EndDate")
+                                .WhereEquals("OpenCampaign", true)
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null))
+                                .WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
         }
         set
         {
@@ -92,6 +91,21 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         set
         {
             SetValue("NoDataText", value);
+        }
+    }
+
+    /// <summary>
+    /// No campaign open text
+    /// </summary>
+    public string NoCampaignOpen
+    {
+        get
+        {
+            return ResHelper.GetString("Kadena.ItemList.NoCampaignOpen");
+        }
+        set
+        {
+            SetValue("NoCampaignOpen", value);
         }
     }
     /// <summary>
@@ -265,7 +279,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         }
                     }
                 }
-                else
+                else if (ProductType == (int)ProductsType.PreBuy)
                 {
                     ddlProgram.Visible = true;
                     ddlCategory.Visible = true;
@@ -343,18 +357,33 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
             List<CampaignsProduct> productsDetails = GetProductsDetails(programID, categoryID, posNumber);
-            List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
-            if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
+            if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
-                skuDetails = skuDetails
-                             .Where(x => x.SKUNumber.Contains(posNumber))
-                             .ToList();
+                List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
+                if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
+                {
+                    skuDetails = skuDetails
+                                 .Where(x => x.SKUNumber.Contains(posNumber))
+                                 .ToList();
+                }
+                if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
+                {
+                    var productAndSKUDetails = productsDetails
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
+                    rptProductLists.DataSource = productAndSKUDetails;
+                    rptProductLists.DataBind();
+                }
+                else
+                {
+                    divNoRecords.Visible = true;
+                }
             }
-            if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
+            else if (DataHelper.DataSourceIsEmpty(productsDetails) && OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
             {
-                var productAndSKUDetails = productsDetails
-                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription }).ToList();
-                rptProductLists.DataSource = productAndSKUDetails;
+                orderControls.Visible = false;
+                divNoRecords.Visible = false;
+                divNoCampaign.Visible = true;
+                rptProductLists.DataSource = null;
                 rptProductLists.DataBind();
             }
             else
@@ -499,79 +528,18 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             dialog_Add_To_Cart.Attributes.Add("class", "dialog active");
             btnClose.InnerText = CartCloseText;
             lblPopUpHeader.Text = ResHelper.GetString("KDA.AddToCart.Popup.HeaderText");
-            var hasBusinessUnit = CheckPersonHasBusinessUnit();
-            if (!DataHelper.DataSourceIsEmpty(product))
-            {
-                switch (ProductType)
-                {
-                    case (int)ProductsType.GeneralInventory:
-                        BindGeneralInventory(product, hasBusinessUnit);
-                        break;
-                    case (int)ProductsType.PreBuy:
-                        BindPreBuy(product, hasBusinessUnit);
-                        break;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
-    /// <summary>
-    /// Binds general inventory data to popup
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindGeneralInventory(SKUInfo product, bool hasBusinessUnit)
-    {
-        try
-        {
-            if (product.SKUAvailableItems > 0)
+            if (!DataHelper.DataSourceIsEmpty(product) && ProductType == (int)ProductsType.GeneralInventory)
             {
                 lblProductName.Text = product.SKUName;
                 lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
                 lblAvailbleItems.Visible = true;
-                BindPopupGridData(hasBusinessUnit);
             }
             else
             {
-                lblErrorMsg.Visible = true;
-                llbtnAddToCart.Visible = false;
-                lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.NoStockAvailableError");
+                lblProductName.Text = product?.SKUName;
+                lblAvailbleItems.Visible = false;
             }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindGeneralInventory()", ex);
-        }
-    }
-    /// <summary>
-    /// Binds prebuy data to  popup
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindPreBuy(SKUInfo product, bool hasBusinessUnit)
-    {
-        try
-        {
-            lblProductName.Text = product?.SKUName;
-            lblAvailbleItems.Visible = false;
-            BindPopupGridData(hasBusinessUnit);
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPreBuy()", ex);
-        }
-    }
-    /// <summary>
-    /// showing pop data based on assiged business units
-    /// </summary>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindPopupGridData(bool hasBusinessUnit)
-    {
-        try
-        {
+            var hasBusinessUnit = CheckPersonHasBusinessUnit();
             if (hasBusinessUnit)
             {
                 lblErrorMsg.Visible = false;
@@ -584,14 +552,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 llbtnAddToCart.Visible = false;
                 lblErrorMsg.Visible = true;
-                lblAvailbleItems.Visible = false;
                 lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.BusinessUnitError");
                 gvCustomersCart.Visible = false;
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPopupGridData()", ex);
+            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
     /// <summary>

@@ -462,6 +462,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 sku.SKUAvailableItems = ValidationHelper.GetInteger(product.TotalQuantity, 0);
             }
+            if (!string.IsNullOrWhiteSpace(product.ProductWeight))
+            {
+                sku.SKUWeight = ValidationHelper.GetDouble(product.ProductWeight, 0);
+            }
 
             SKUInfoProvider.SetSKUInfo(sku);
             return sku;
