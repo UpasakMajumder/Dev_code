@@ -105,6 +105,15 @@
     <Compile Include="Product\ProductValidator.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
+    <Compile Include="SiteSettings\Attributes\CategoryAttribute.cs" />
+    <Compile Include="SiteSettings\Attributes\DefaultValueAttribute.cs" />
+    <Compile Include="SiteSettings\Attributes\EncodedDefinitionAttribute.cs" />
+    <Compile Include="SiteSettings\Attributes\GroupAttribute.cs" />
+    <Compile Include="SiteSettings\Category.cs" />
+    <Compile Include="SiteSettings\Group.cs" />
+    <Compile Include="SiteSettings\Settings.cs" />
+    <Compile Include="SiteSettings\SettingsKey.cs" />
+    <Compile Include="SiteSettings\Synchronization\SettingsSynchronizationException.cs" />
     <Compile Include="Site\FtpCredentials.cs" />
     <Compile Include="Site\ArtworkFtpSettings.cs" />
     <Compile Include="Site\KenticoSite.cs" />

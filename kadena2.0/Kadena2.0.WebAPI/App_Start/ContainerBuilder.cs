@@ -3,6 +3,7 @@ using DryIoc;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
+using Kadena.BusinessLogic.Services.SettingsSynchronization;
 using Kadena.Helpers;
 using Kadena.WebAPI.Factories;
 using Kadena.WebAPI.Infrastructure;
@@ -44,6 +45,7 @@ namespace Kadena.WebAPI
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
 		    container.Register<ILoginService, LoginService>();
+            container.Register<ISettingsSynchronizationService, SettingsSynchronizationService>();
             return container;
         }
 
