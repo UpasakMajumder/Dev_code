@@ -24,14 +24,14 @@
                 <div class="input__wrapper">
                     <span class="input__label" id="lblBrandName" runat="server"></span>
                     <cms:CMSDropDownList ID="ddlBrand" CssClass="input__select" runat="server" EnableViewState="True"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="EditingFormErrorLabel" ErrorMessage="Please select Brand" ControlToValidate="ddlBrand"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="ddlBrandRequired" runat="server" CssClass="EditingFormErrorLabel" ErrorMessage="Please select Brand" ControlToValidate="ddlBrand" InitialValue="0"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" id="lblCampaignName" runat="server"></span>
                     <cms:CMSDropDownList ID="ddlCampaign" CssClass="input__select" runat="server"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="EditingFormErrorLabel" ErrorMessage="Please select Campaign" ControlToValidate="ddlCampaign"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="ddlCampaignRequired" runat="server" CssClass="EditingFormErrorLabel" ErrorMessage="Please select Campaign" ControlToValidate="ddlCampaign" InitialValue="0"></asp:RequiredFieldValidator>
                 </div>
             </div>
             <div class="mb-2">

@@ -5,7 +5,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblTokenIDlabel" runat="server" CssClass="input__label" ResourceString="Kadena.CampaignForm.CampaignName" />
                 <cms:CMSTextBox ID="Name" runat="server" CssClass="input__text" MaxLength="100" />
-                <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="Name" Display="Dynamic" CssClass="EditingFormErrorLabel" />
+                <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="Name"  CssClass="EditingFormErrorLabel" />
                 <asp:RegularExpressionValidator CssClass="EditingFormErrorLabel" ControlToValidate="Name" ID="rvName" ValidationExpression="^[\s\S]{0,40}$" runat="server" ></asp:RegularExpressionValidator>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtStartDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                      <cms:CMSRequiredFieldValidator ID="rfvStartDate" CssClass="EditingFormErrorLabel" ControlToValidate="txtStartDate" runat="server"></cms:CMSRequiredFieldValidator>
-                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="EditingFormErrorLabel" ControlToValidate="txtStartDate" Type="date" Display="Dynamic" />
+                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="EditingFormErrorLabel" ControlToValidate="txtStartDate" Type="date"/>
                 </div>
             </div>
         </div>
