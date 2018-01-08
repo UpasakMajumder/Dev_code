@@ -574,13 +574,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PdfEndingTags");
                 string html = pdfProductsContentWithBrands + pdfClosingDivs;
                 byte[] pdfByte = default(byte[]);
+                NReco.PdfGenerator.HtmlToPdfConverter PDFConverter = new NReco.PdfGenerator.HtmlToPdfConverter();
+                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue("KDA_NRecoOwner", CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue("KDA_NRecoKey", CurrentSite.SiteID));
+                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue("KDA_NRecoLowQuality", CurrentSite.SiteID);
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
-                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
+                    pdfByte = PDFConverter.GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
                 }
                 else
                 {
-                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, generalInventory + closingDiv);
+                    pdfByte = PDFConverter.GeneratePdf(html, generalInventory + closingDiv);
                 }
                 string fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
