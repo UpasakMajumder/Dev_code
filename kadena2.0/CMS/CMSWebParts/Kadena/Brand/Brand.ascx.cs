@@ -3,7 +3,6 @@ using CMS.CustomTables.Types.KDA;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using System;
-using System.Linq;
 
 public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
 {
@@ -81,7 +80,7 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
                 brandData.BrandCode = ValidationHelper.GetInteger(form.GetFieldValue("BrandCode"), 0);
                 brandData.BrandName = ValidationHelper.GetString(form.GetFieldValue("BrandName"), string.Empty);
                 brandData.BrandDescription = ValidationHelper.GetString(form.GetFieldValue("BrandDescription"), string.Empty);
-                brandData.Status= ValidationHelper.GetBoolean(form.GetFieldValue("Status"), true);
+                brandData.Status = ValidationHelper.GetBoolean(form.GetFieldValue("Status"), true);
                 form.SaveData(CurrentDocument.Parent.AbsoluteURL);
             }
         }
@@ -99,34 +98,5 @@ public partial class CMSWebParts_Kadena_Brand_Brand : CMSAbstractWebPart
     protected void btnCancel_Click(object sender, EventArgs e)
     {
         Response.Redirect(CurrentDocument.Parent.AbsoluteURL);
-    }
-
-    /// <summary>
-    /// Checks whether the given brand already exists
-    /// </summary>
-    /// <param name="BrandCode">brand code</param>
-    /// <param name="ItemID">itemid</param>
-    /// <returns>flase if already exist else true</returns>
-    private bool IsBrandCodeValid(int BrandCode, int ItemID)
-    {
-        var flag = false;
-        if (ItemID > 0)
-        {
-            var brandData = CustomTableItemProvider.GetItems<BrandItem>().
-                WhereEquals("BrandCode", BrandCode).
-                And().
-                WhereNotEquals("ItemID", ItemID).
-                Columns("BrandCode").
-                FirstOrDefault();
-            return flag = brandData != null ? false : true;
-        }
-        else
-        {
-            var brandData = CustomTableItemProvider.GetItems<BrandItem>().
-                WhereEquals("BrandCode", BrandCode).
-                Columns("BrandCode").
-                FirstOrDefault();
-            return flag = brandData != null ? false : true;
-        }
     }
 }

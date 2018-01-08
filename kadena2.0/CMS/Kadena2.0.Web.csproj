@@ -1105,6 +1105,13 @@
     <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.designer.cs">
       <DependentUpon>StatisticLabel.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\ForgotPasswordWithHint.ascx.cs">
+      <DependentUpon>ForgotPasswordWithHint.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Membership\Logon\ForgotPasswordWithHint.ascx.designer.cs">
+      <DependentUpon>ForgotPasswordWithHint.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx.cs">
       <DependentUpon>logonform.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1445,6 +1452,7 @@
     <Content Include="CMSWebParts\Kadena\MailingList\MailingList.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\MailingListUploader.ascx" />
     <Content Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx" />
+    <Content Include="CMSWebParts\Kadena\Membership\Logon\ForgotPasswordWithHint.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Logon\logonform.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Users\UsersFilterControl.ascx" />
     <Content Include="CMSWebParts\Kadena\Membership\Users\UsersList.ascx" />

@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Product_ProductInventory {
     
     /// <summary>
+    /// orderControls control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl orderControls;
+    
+    /// <summary>
     /// ddlProgram control.
     /// </summary>
     /// <remarks>
@@ -154,4 +163,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNoRecords;
+    
+    /// <summary>
+    /// divNoCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNoCampaign;
 }

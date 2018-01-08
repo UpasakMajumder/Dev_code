@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Product_ProductInventory" CodeBehind="~/CMSWebParts/Kadena/Product/ProductInventory.ascx.cs" %>
 
 <div class="custom__section">
-    <div class="custom__block clearfix">
+    <div class="custom__block clearfix" runat="server" visible="true" id="orderControls">
         <div class="custom__select">
             <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
@@ -17,7 +17,7 @@
                     <div class="img__block">
                         <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
                         <label for='zoomCheck_<%#Eval("SKUID") %>'>
-                            <img src='<%#GetProductImage(Eval("SKUImagePath"))%>' />
+                            <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
                     </div>
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUNumber")%></h4>
@@ -73,8 +73,12 @@
 </div>
 <asp:HiddenField runat="server" ID="hdnClickSKU" />
 <div id="divNoRecords" runat="server" visible="false">
-    <div class="clearfix"></div>
     <div class=" mt-2">
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoDataText %></span></div>
+    </div>
+</div>
+<div id="divNoCampaign" runat="server" visible="false">
+    <div class=" mt-2">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoCampaignOpen %></span></div>
     </div>
 </div>

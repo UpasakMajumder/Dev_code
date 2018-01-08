@@ -48,7 +48,7 @@ namespace Kadena.Old_App_Code.Kadena.ImageUpload
                     mediaFile.FileSize = file.Length;
                     MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
                     File.Delete(filePath);
-                    imagePath = mediaFile.FilePath;
+                    imagePath = MediaFileURLProvider.GetMediaFileUrl(mediaFile.FileGUID, mediaFile.FileName);
                 }
             }
             catch (Exception ex)
