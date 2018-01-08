@@ -139,6 +139,10 @@
                 </EditItemTemplate>
             </asp:TemplateField>
         </Columns>
-        <EmptyDataTemplate><%#NoDataText %></EmptyDataTemplate>
+        <EmptyDataTemplate>
+        <div class=" mt-2">
+  <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%#NoDataText %></span></div>
+</div>
+        </EmptyDataTemplate>
     </asp:GridView>
 </div>
