@@ -92,10 +92,10 @@
           <defaultvalue>false</defaultvalue>
         </properties>
       </field>
-      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false">
+      <field allowempty="true" column="OpenCampaign" columntype="boolean" guid="3e433561-260a-4741-9faa-1ed9e59eae0a" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
-          <fieldcaption>open</fieldcaption>
+          <fieldcaption>Open</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
@@ -106,10 +106,14 @@
           <defaultvalue>false</defaultvalue>
         </properties>
       </field>
-      <field allowempty="true" column="CloseCampaign" columntype="boolean" guid="bdcbad53-bdc5-4f8e-a206-00b043451efc" publicfield="false">
+      <field allowempty="true" column="CloseCampaign" columntype="boolean" guid="bdcbad53-bdc5-4f8e-a206-00b043451efc" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
+          <fieldcaption>Close</fieldcaption>
         </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
       </field>
     </form>
   </ClassFormDefinition>

@@ -10,6 +10,8 @@ using CMS.CustomTables.Types.KDA;
 using CMS.CustomTables;
 using System.Linq;
 using System.Collections.Generic;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -789,7 +791,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 }
                 else
                     formElem.AlternativeFormFullName = EditUserAlternativeForm;
-
+                hdnUserRole.Value = GetUserRole(user);
                 formElem.Info = user;
 
                 pnlUserForm.Visible = true;
@@ -949,6 +951,28 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
     }
 
+    private string GetUserRole(UserInfo user)
+    {
+        string userRole = string.Empty;
+        if (user != null)
+        {
+            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
+            if (!string.IsNullOrWhiteSpace(adminRoles))
+            {
+                string[] roles = adminRoles.Split(';');
+                foreach (string role in roles)
+                {
+                    if (user.IsInRole(role, SiteContext.CurrentSiteName))
+                    {
+                        userRole = role;
+                        break;
+                    }
+                }
+            }
+        }
+        return userRole;
+    }
+
 
     /// <summary>
     /// OnPreRender override.
@@ -1020,7 +1044,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         try
         {
             var userRoleData = UserRoleInfoProvider.GetUserRoles()
-                .WhereEquals("UserID", userID)                
+                .WhereEquals("UserID", userID)
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(userRoleData))
             {

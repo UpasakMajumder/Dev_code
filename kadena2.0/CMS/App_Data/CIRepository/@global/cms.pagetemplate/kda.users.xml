@@ -41,17 +41,15 @@
           <tr>
             <td>
               <input type="checkbox" class="js-chkAll" id="selectAll">
-            </td>
-            <td>{$Kadena.Users.BusinessUnitName$}</td>
+            </td>            
             <td>{$Kadena.Users.BusinessUnitNumber$}</td>
+            <td>{$Kadena.Users.BusinessUnitName$}</td>
           </tr>
         </tbody>
       </table>      
     </div>    
     <div class="dialog__footer">      
-      <div class="btn-group btn-group--right">        
-        <!--<button type="button" class="btn-action btn-action--secondary">Discard changes</button>
-<button type="button" class="btn-action">Save address</button>-->            
+      <div class="btn-group btn-group--right">                         
       </div>          
     </div>      
   </div>    
@@ -424,7 +422,7 @@ iteratedDocument = iteratedDocument.Parent;
         success: function (data) {
           if (data.d != '') {
             $('#buinessunits').html('');
-            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitName$}</td><td>{$Kadena.Users.BusinessUnitNumber$}</td></tr>';
+            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitNumber$}</td><td>{$Kadena.Users.BusinessUnitName$}</td></tr>';
             var parsedData=JSON.parse(data.d);          
             var rowData='';
             for(i=0; i<parsedData.length;i++)
@@ -497,6 +495,39 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="instanceguid">2219a8a4-7a1c-486a-a8e3-56e8c8aa6b16</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="jsUserRoleSelector" guid="764d2ec2-beb8-435a-96e6-da54bf7c9c7c" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">jsUserRoleSelector</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script type="text/javascript">
+  $(window).ready(function() {
+    var userRoleSelector=document.getElementsByClassName("js-user-role");
+    var userRole=document.getElementById("hdnUserRole").value;
+    if(userRole!="" && userRoleSelector!=undefined && userRoleSelector.length>0)
+    {
+      document.getElementsByClassName("js-user-role")[0].value=userRole;
+    }
+  });
+  
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">764d2ec2-beb8-435a-96e6-da54bf7c9c7c</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Startup</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>

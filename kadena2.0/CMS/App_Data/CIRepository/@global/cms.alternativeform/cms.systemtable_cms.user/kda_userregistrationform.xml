@@ -170,14 +170,14 @@
           <validationerrormessage>{$Kadena.Signup.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="" order="81">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="" order="81">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Query>
 <![CDATA[
-select 0,'Select State' 
+select 0,'{$KDA.Common.SelectState$}'
 union
 select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
 ]]>
@@ -294,7 +294,7 @@ Select ItemID,DivisionName from KDA_Division
       <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" visible="" order="90" />
       <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" visible="" order="91" />
       <field column="UserTitle" guid="4b9e356a-6051-494c-a18b-659fec7681c6" visible="" order="92" />
-      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" reftype="Required" order="93">
+      <field column="UserZipCode" guid="25f97281-5045-4ad0-99ed-afb6b5b9f3be" order="93">
         <properties>
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
@@ -314,19 +314,19 @@ Select ItemID,DivisionName from KDA_Division
 <p>{$kadena.signup.PersonalDetailsText$}</p>
 
 <div class="form">
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.FirstName$}</span>$$input:FirstName$$ <span class="input__error">$$validation:FirstName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.FirstName$}</span>$$input:FirstName$$$$validation:FirstName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.LastName$}</span>$$input:LastName$$ <span class="input__error">$$validation:LastName$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.LastName$}</span>$$input:LastName$$$$validation:LastName$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.DivisionID$}</span> $$input:UserDivisionID$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.Country$}</span> $$input:UserCountry$$ <span class="input__error">$$validation:UserCountry$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.Country$}</span> $$input:UserCountry$$$$validation:UserCountry$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.Address$}</span> $$input:UserAddress$$ <span class="input__error js-errAddress">$$validation:UserAddress$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.Address$}</span> $$input:UserAddress$$$$validation:UserAddress$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.City$}</span> $$input:UserCity$$ <span class="input__error">$$validation:UserCity$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.City$}</span> $$input:UserCity$$$$validation:UserCity$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.State$}</span> $$input:UserState$$ <span class="input__error">$$validation:UserState$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.State$}</span> $$input:UserState$$$$validation:UserState$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Zipcode$}</span> $$input:UserZipCode$$</div>
 </div>
@@ -334,12 +334,11 @@ Select ItemID,DivisionName from KDA_Division
 <p>{$kadena.signup.AccountsDetailsText$}</p>
 
 <div class="form">
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.Email$}</span> $$input:Email$$ <span class="input__error">$$validation:Email$$</span></div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.Email$}</span> $$input:Email$$$$validation:Email$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.Password$}</span> $$input:UserPassword$$ <span class="input__error">$$validation:UserPassword$$</span>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.Password$}</span> <a class="js-tooltip tooltip__css" data-tooltip-placement="bottom" href="#" title="{$Kadena.Common.PasswordTooltipText$}"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#FAQ" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a> $$input:UserPassword$$$$validation:UserPassword$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.ConfirmPassword$}</span> $$input:ConfirmPassword$$ <span class="input__error">$$validation:ConfirmPassword$$</span></div>
-</div>
+<div class="input__wrapper"><span class="input__label">{$kadena.signup.ConfirmPassword$}</span> $$input:ConfirmPassword$$$$validation:ConfirmPassword$$</div>
 </div>
 </div>
 
