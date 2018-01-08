@@ -350,6 +350,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
                                 .Columns("BrandName,ItemID")
                                 .Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") })
+                                .OrderBy(x=>x.BrandName)
                                 .ToList();
                 ddlBrands.DataSource = brand;
                 ddlBrands.DataTextField = "BrandName";
