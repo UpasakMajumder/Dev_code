@@ -81,6 +81,10 @@
     <Compile Include="UpdateInventoryData\UpdateInventoryDataService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
+      <Project>{bf079df3-1e13-44c5-8b87-c040257eac07}</Project>
+      <Name>Kadena2.0.Container.Default</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>
