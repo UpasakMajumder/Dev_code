@@ -200,8 +200,8 @@
 <script src="/js/app.min.js"></script>
 <script src="/CMSScripts/Custom/Kadena/custom.js?v=0.1"></script>
 <script src="/CMSScripts/Custom/Kadena/KadenaExtension.js"></script>
-<script src="//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js"></script>
-<script src="~/CMSScripts/Custom/Kadena/SmartyStreet.js"></script>
+{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
+
 
 
 ]]>

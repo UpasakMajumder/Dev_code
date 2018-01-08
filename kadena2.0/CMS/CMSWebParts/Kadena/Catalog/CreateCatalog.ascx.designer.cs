@@ -12,6 +12,15 @@
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     
     /// <summary>
+    /// catalogControls control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl catalogControls;
+    
+    /// <summary>
     /// ddlPrograms control.
     /// </summary>
     /// <remarks>
@@ -91,6 +100,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl noData;
+    
+    /// <summary>
+    /// campaignIsNotOpen control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl campaignIsNotOpen;
     
     /// <summary>
     /// rptCatalogProducts control.
