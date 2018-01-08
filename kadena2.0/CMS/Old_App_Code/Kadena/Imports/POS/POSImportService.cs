@@ -130,7 +130,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.POS
             {
                 POSNumberItem pos = new POSNumberItem()
                 {
-                    BrandID = brand.ItemID,
+                    BrandID = brand.BrandCode,
                     BrandName = brand.BrandName,
                     Year = ValidationHelper.GetInteger(posDto.Year, default(int)),
                     POSCode = ValidationHelper.GetInteger(posDto.POSCode, default(int)),
