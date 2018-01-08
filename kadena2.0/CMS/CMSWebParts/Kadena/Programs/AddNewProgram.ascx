@@ -7,15 +7,16 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <asp:TextBox ID="txtProgramName" runat="server" CssClass="input__text"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="EditingFormErrorLabel" ErrorMessage="EditingFormErrorLabel" ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
-                </div>
+                    <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="EditingFormErrorLabel"  ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator  ControlToValidate="txtProgramName" ID="revProgramName" CssClass="EditingFormErrorLabel" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
+                 </div>
             </div>
             <div class="mb-2">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramDescription"></span>
-                    <div class="input__inner">
+                    <div class="input__inner long__desc">
                         <asp:TextBox ID="txtProgramDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea" MaxLength="140" ClientIDMode="Static"></asp:TextBox>
-                        <asp:CustomValidator runat="server" ID="cvDesc" ControlToValidate="txtProgramDescription" CssClass="EditingFormErrorLabel" OnServerValidate="cvDesc_ServerValidate"></asp:CustomValidator>
+                        <asp:RegularExpressionValidator CssClass="EditingFormErrorLabel"   ControlToValidate="txtProgramDescription" ID="revDescription"  ValidationExpression="^[\s\S]{0,150}$" ValidationGroup="feildvalidation" runat="server"></asp:RegularExpressionValidator>  
                     </div>
                 </div>
             </div>

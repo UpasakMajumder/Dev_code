@@ -12,7 +12,7 @@
         <div class="mb-2">
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="LocalizedLabel1" runat="server" CssClass="input__label" ResourceString="Kadena.CampaignForm.CampaignDes" />
-                <div class="input__inner">
+                <div class="input__inner long__desc">
                     <cms:CMSTextBox ID="Description" runat="server" MaxLength="140" TextMode="MultiLine" />
                     <asp:RegularExpressionValidator CssClass="EditingFormErrorLabel" ControlToValidate="Description" ID="rvDescription" ValidationExpression="^[\s\S]{0,140}$" runat="server"></asp:RegularExpressionValidator>
                 </div>
