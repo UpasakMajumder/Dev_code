@@ -4,20 +4,58 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class SettingsService : ISettingsService
     {
-        private readonly IKenticoProviderService _kentico;
+        private readonly IKenticoPermissionsProvider _permissions;
+        private readonly IKenticoLocalizationProvider _localization;
+        private readonly IKenticoSiteProvider _site;
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _resources;
+        private readonly IShoppingCartProvider  _shoppingCart;
 
-        public SettingsService(IKenticoProviderService kentico, IKenticoUserProvider kenticoUsers, IKenticoResourceService resources)
+        public SettingsService(IKenticoPermissionsProvider permissions,
+                               IKenticoLocalizationProvider localization,
+                               IKenticoSiteProvider site,
+                               IKenticoUserProvider kenticoUsers, 
+                               IKenticoResourceService resources, 
+                               IShoppingCartProvider shoppingCart)
         {
-            _kentico = kentico;
+            if (permissions == null)
+            {
+                throw new ArgumentNullException(nameof(permissions));
+            }
+            if (localization == null)
+            {
+                throw new ArgumentNullException(nameof(localization));
+            }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
+            }
+
+            _permissions = permissions;
+            _localization = localization;
+            _site = site;
             _kenticoUsers = kenticoUsers;
             _resources = resources;
+            _shoppingCart = shoppingCart;
         }
 
         public SettingsAddresses GetAddresses()
@@ -29,14 +67,14 @@ namespace Kadena.BusinessLogic.Services
                 .Where(sa => sa.Id == customer.DefaultShippingAddressId)
                 .Concat(shippingAddresses.Where(sa => sa.Id != customer.DefaultShippingAddressId))
                 .ToList();
-            var states = _kentico.GetStates();
-            var countries = _kentico.GetCountries();
-            var canEdit = _kenticoUsers.UserCanModifyShippingAddress();
+            var states = _localization.GetStates();
+            var countries = _localization.GetCountries();
+            var canEdit = _permissions.UserCanModifyShippingAddress();
             var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
 
             var userNotification = string.Empty;
-            var userNotificationLocalizationKey = _kentico.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
-            if (!_kentico.IsCurrentCultureDefault())
+            var userNotificationLocalizationKey = _site.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
+            if (!_localization.IsCurrentCultureDefault())
             {
                 userNotification = _resources.GetResourceString(userNotificationLocalizationKey) == userNotificationLocalizationKey ? string.Empty : _resources.GetResourceString(userNotificationLocalizationKey);
             }
@@ -159,7 +197,7 @@ namespace Kadena.BusinessLogic.Services
 
         public void SaveShippingAddress(DeliveryAddress address)
         {
-            _kentico.SaveShippingAddress(address);
+            _shoppingCart.SaveShippingAddress(address);
         }
 
         public void SetDefaultShippingAddress(int addressId)

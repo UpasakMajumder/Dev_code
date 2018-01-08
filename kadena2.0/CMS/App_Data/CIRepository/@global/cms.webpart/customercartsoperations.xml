@@ -28,12 +28,9 @@
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
-          <Options>
-<![CDATA[
-1;General Inventory
-2;Pre-Buy Inventory
-]]>
-          </Options>
+          <Query>
+            <![CDATA[SELECT ITEMID as value,ProductType as Text from KDA_ProductTypes]]>
+          </Query>
           <SortItems>False</SortItems>
         </settings>
       </field>

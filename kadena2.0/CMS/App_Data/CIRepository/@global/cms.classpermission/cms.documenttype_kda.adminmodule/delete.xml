@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.AdminModule</CodeName>
+    <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>
+    <![CDATA[Allows to remove pages (only to Recycle bin). See also the Destroy page permission.]]>
+  </PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Delete</PermissionDisplayName>
+  <PermissionGUID>de827499-ba80-4d74-956e-52dc675dd4f1</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>5</PermissionOrder>
+</cms.classpermission>

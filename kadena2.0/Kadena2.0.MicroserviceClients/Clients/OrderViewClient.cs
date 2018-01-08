@@ -38,6 +38,22 @@ namespace Kadena2.MicroserviceClients.Clients
             url = $"{url}/api/Order/forSite?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}";
             return await Get<OrderListDto>(url).ConfigureAwait(false);
         }
+
+        public async Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity, int campaignID, string orderType)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            string campaignParameter = campaignID > 0 ? $"&CampaignId={campaignID}" : string.Empty;
+            url = $"{url}/api/Order/byquery?siteName={siteName}&pageNumber={pageNumber}&quantity={quantity}&type={orderType}{campaignParameter}";
+            return await Get<OrderListDto>(url).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity, int campaignID, string orderType)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            string campaignParameter = campaignID > 0 ? $"&CampaignId={campaignID}" : string.Empty;
+            var parameterizedUrl = $"{url}/api/Order/byquery?ClientId={customerId}&pageNumber={pageNumber}&quantity={quantity}&type={orderType}{campaignParameter}";
+            return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
+        }
     }
 }
 

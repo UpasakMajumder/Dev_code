@@ -30,12 +30,7 @@
     {^WebPartZone|(id)ZoneBreadCrumb^}
   </div>
 </div>
-<div class="webform_title">
-  
-  <div class="add_btn">
-    {^WebPartZone|(id)ZoneAddProductbutton^}
-  </div>
-</div>
+
 <div class="content-block">
   {^WebPartZone|(id)ZoneAddProductForm^}
 </div>

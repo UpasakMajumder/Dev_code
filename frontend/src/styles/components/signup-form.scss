@@ -1,0 +1,29 @@
+.signup__form {
+  position: static;
+  padding-bottom: 30px;
+
+  .login__form {
+    margin: 0 auto;
+    position: static;
+    width: 600px;
+    padding: 0 30px;
+
+    .login__form-inner {
+      overflow-y: inherit;
+
+      .form {
+        padding: 15px;
+        margin-bottom: 15px;
+
+        h2 {
+          margin-bottom: 20px;
+        }
+      }
+
+      .btn-action {
+        padding-bottom: 15px;
+      }
+    }
+  }
+}
+

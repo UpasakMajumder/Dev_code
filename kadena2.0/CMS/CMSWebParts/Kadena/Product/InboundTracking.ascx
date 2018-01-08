@@ -1,19 +1,19 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Product_InboundTracking" CodeBehind="~/CMSWebParts/Kadena/Product/InboundTracking.ascx.cs" %>
 
-<div class="custom_block">
-    <div class="custom_select">
+<div class="custom__block">
+    <div class="custom__select">
         <asp:DropDownList ID="ddlCampaign" runat="server" OnSelectedIndexChanged="ddlCampaign_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
     </div>
-    <div class="custom_btns">
+    <div class="custom__btns">
         <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" OnClick="btnRefresh_Click" />
         <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnExport_Click" />
     </div>
 </div>
-<div class="Inbound_track">
-    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" 
+<div class="inbound__track">
+    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowDataBound="gdvInboundProducts_RowDataBound" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" 
         OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast" 
-        class="show-table show-table-right">
+        class="table show__table-bottom" PagerStyle-CssClass="pagination__table">
         <Columns>
             <asp:TemplateField>
                 <ItemTemplate>
@@ -121,12 +121,11 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblStatus" Text='<%#ValidationHelper.GetBoolean(Eval("Status"),false)==true?"Active":"In-Active" %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblStatus" Text='<%#ValidationHelper.GetBoolean(Eval("Status"),false)==true?ActiveText:InActiveText %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
+                    <asp:Label Visible="false" runat="server" ID="lbleditStatus" Text='<%#ValidationHelper.GetBoolean(Eval("Status"),false)==true?ActiveText:InActiveText %>' />
                     <asp:DropDownList runat="server" ID="ddlStatus">
-                        <asp:ListItem Value="1" Selected="True">Active</asp:ListItem>
-                        <asp:ListItem Value="0">In-Active</asp:ListItem>
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>

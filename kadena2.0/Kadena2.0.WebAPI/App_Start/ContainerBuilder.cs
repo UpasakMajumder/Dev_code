@@ -11,6 +11,10 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
+using Kadena2.WebAPI.KenticoProviders.Providers;
+using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
 namespace Kadena.WebAPI
 {
@@ -45,7 +49,6 @@ namespace Kadena.WebAPI
 
         public static Container RegisterKentico(this Container container)
         {
-            container.Register<IKenticoProviderService, KenticoProviderService>();
             container.Register<IKenticoUserProvider, KenticoUserProvider>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
             container.Register<IKenticoSearchService, KenticoSearchService>();
@@ -62,6 +65,19 @@ namespace Kadena.WebAPI
             container.Register<IKenticoAddressBookProvider, KenticoAddressBookProvider>();
             container.Register<IKenticoBrandsProvider, KenticoBrandsProvider>();
             container.Register<IKenticoProgramsProvider, KenticoProgramsProvider>();
+            container.Register<IShoppingCartProvider, ShoppingCartProvider>();
+            container.Register<IKenticoLocalizationProvider, KenticoLocalizationProvider>();
+            container.Register<IKenticoLoginProvider, KenticoLoginProvider>();
+            container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
+            container.Register<IKenticoPermissionsProvider, KenticoPermissionsProvider>();
+            container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
+            return container;
+        }
+
+        public static Container RegisterKadenaSettings(this Container container)
+        {
+            container.Register<IKadenaSettings, KadenaSettings>();
+            container.Register<IShippingEstimationSettings, ShippingEstimationSettings>();
             return container;
         }
 
@@ -76,7 +92,7 @@ namespace Kadena.WebAPI
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
-            container.Register<IKenticoLoginProvider, KenticoLoginProvider>();
+            
             return container;
         }
 

@@ -84,7 +84,7 @@
   </ClassSearchSettings>
   <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
-  <ClassShowColumns>ItemID;IconName</ClassShowColumns>
+  <ClassShowColumns>ItemID;IconName;IconCodeName</ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_MainMenuIcon</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>

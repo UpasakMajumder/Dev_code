@@ -320,6 +320,36 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     }
 
     /// <summary>
+    /// Get Active text resource string
+    /// </summary>
+    public string ActiveText
+    {
+        get
+        {
+            return ResHelper.GetString("KDA.Common.Status.Active");
+        }
+        set
+        {
+            SetValue("ActiveText", value);
+        }
+    }
+
+    /// <summary>
+    /// Get InActive Resource string
+    /// </summary>
+    public string InActiveText
+    {
+        get
+        {
+            return ResHelper.GetString("KDA.Common.Status.Inactive");
+        }
+        set
+        {
+            SetValue("InActiveText", value);
+        }
+    }
+
+    /// <summary>
     /// No Data resource string
     /// </summary>
     public string NoDataText
@@ -462,6 +492,42 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         SetupControl();
     }
 
+    /// <summary>
+    /// Get the Campaign Closed or not
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <returns></returns>
+    public bool IsCampaignClosed(int programID)
+    {
+        bool isClosed = false;
+        try
+        {
+            Program program = ProgramProvider.GetPrograms()
+                 .WhereEquals("ProgramID", programID)
+                 .Columns("CampaignID")
+                 .FirstOrDefault();
+            if (program != null)
+            {
+                Campaign campaign = CampaignProvider.GetCampaigns()
+                    .WhereEquals("CampaignID", program.CampaignID).Columns("CloseCampaign")
+                    .FirstOrDefault();
+                if (campaign != null)
+                {
+                    isClosed = campaign.CloseCampaign;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Checking campaign Closed", "IsCampaignClosed()", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return isClosed;
+    }
+
+    /// <summary>
+    /// Get Product details
+    /// </summary>
+    /// <returns></returns>
     public List<CampaignsProduct> GetProductDetails()
     {
         List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
@@ -470,7 +536,10 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             List<int> programIds = new List<int>();
             if (ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)) != default(int))
             {
-                programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+                if (IsCampaignClosed(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int))))
+                {
+                    programIds.Add(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+                }
             }
             else
             {
@@ -490,6 +559,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         return productsDetails;
     }
 
+    /// <summary>
+    /// Get Sku Details
+    /// </summary>
+    /// <param name="productsDetails"></param>
+    /// <returns></returns>
     public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
     {
         List<SKUInfo> skuDetails = new List<SKUInfo>();
@@ -730,7 +804,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
             inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
             inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-            inboundData.Overage = inboundData.QtyOrdered - inboundData.QtyProduced;
+            inboundData.Overage = inboundData.QtyReceived- inboundData.QtyOrdered;
             inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
             inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
             inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
@@ -864,6 +938,39 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         gdvInboundProducts.PageIndex = e.NewPageIndex;
         GetProducts();
+    }
+
+    /// <summary>
+    /// Binding the data
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void gdvInboundProducts_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow && (e.Row.RowState & DataControlRowState.Edit) > 0)
+            {
+                DropDownList ddlStatus = (DropDownList)e.Row.FindControl("ddlStatus");
+                ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+                ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
+                string inActiveText = ResHelper.GetString("KDA.Common.Status.Inactive");
+                string activeText = ResHelper.GetString("KDA.Common.Status.Active");
+                string lblStatus = (e.Row.FindControl("lbleditStatus") as Label).Text;
+                if (lblStatus == inActiveText)
+                {
+                    ddlStatus.SelectedValue = "0";
+                }
+                if (lblStatus == activeText)
+                {
+                    ddlStatus.SelectedValue = "1";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Binding Status", "gdvInboundProducts_RowDataBound()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 }
 

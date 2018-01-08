@@ -255,13 +255,40 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator rfEmail;
     
     /// <summary>
-    /// btnSave control.
+    /// lblStatus control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Button btnSave;
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblStatus;
+    
+    /// <summary>
+    /// ddlStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.CMSDropDownList ddlStatus;
+    
+    /// <summary>
+    /// lblBrand control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblBrand;
+    
+    /// <summary>
+    /// lnkSave control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.LinkButton lnkSave;
     
     /// <summary>
     /// lnkCancel control.
@@ -271,4 +298,13 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.LinkButton lnkCancel;
+    
+    /// <summary>
+    /// hdnBrand control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnBrand;
 }

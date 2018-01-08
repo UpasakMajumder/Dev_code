@@ -114,6 +114,11 @@
   <ItemGroup>
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
+    <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
+    <Compile Include="Contracts\KadenaSettings\IKadenaSettings.cs" />
+    <Compile Include="Contracts\IKenticoLocalizationProvider.cs" />
+    <Compile Include="Contracts\IKenticoOrderProvider.cs" />
+    <Compile Include="Contracts\IKenticoPermissionsProvider.cs" />
     <Compile Include="Contracts\IKenticoProgramsProvider.cs" />
     <Compile Include="Contracts\IKenticoAddressBookProvider.cs" />
     <Compile Include="Contracts\IKenticoBusinessUnitsProvider.cs" />
@@ -126,18 +131,20 @@
     <Compile Include="Contracts\IKenticoProductsProvider.cs" />
     <Compile Include="Contracts\IKenticoDocumentProvider.cs" />
     <Compile Include="Contracts\IKenticoLoginProvider.cs" />
+    <Compile Include="Contracts\IKenticoSiteProvider.cs" />
+    <Compile Include="Contracts\IShoppingCartProvider.cs" />
     <Compile Include="Contracts\IKenticoUserProvider.cs" />
-    <Compile Include="Contracts\IKenticoProviderService.cs" />
     <Compile Include="Contracts\IKenticoResourceService.cs" />
     <Compile Include="Contracts\IKenticoMailProvider.cs" />
     <Compile Include="Contracts\IKenticoSearchService.cs" />
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
-    <Compile Include="Factories\CustomerFactory.cs" />
-    <Compile Include="Factories\DeliveryFactory.cs" />
-    <Compile Include="Factories\PaymentOptionFactory.cs" />
-    <Compile Include="Factories\SiteFactory.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderFactory.cs" />
+    <Compile Include="Providers\KadenaSettings\ShippingEstimationSettings.cs" />
+    <Compile Include="Providers\KadenaSettings\KadenaSettings.cs" />
+    <Compile Include="Providers\KenticoLocalizationProvider.cs" />
+    <Compile Include="Providers\KenticoPermissionsProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />
     <Compile Include="Providers\KenticoAddressBookProvider.cs" />
     <Compile Include="Providers\KenticoBusinessUnitsProvider.cs" />
@@ -151,8 +158,10 @@
     <Compile Include="Providers\KenticoMailProvider.cs" />
     <Compile Include="Providers\KenticoDocumentProvider.cs" />
     <Compile Include="Providers\KenticoLoginProvider.cs" />
+    <Compile Include="Providers\KenticoOrderProvider.cs" />
+    <Compile Include="Providers\KenticoSiteProvider.cs" />
+    <Compile Include="Providers\ShoppingCartProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />
-    <Compile Include="Providers\KenticoProviderService.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />
     <Compile Include="Providers\KenticoSearchService.cs" />
     <Compile Include="Providers\MicroProperties.cs" />
@@ -175,6 +184,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

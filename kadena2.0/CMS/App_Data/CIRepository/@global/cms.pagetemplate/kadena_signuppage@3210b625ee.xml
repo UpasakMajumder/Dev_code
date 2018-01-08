@@ -20,7 +20,7 @@
   <PageTemplateLayout>
 <![CDATA[
 <div class="container-fluid">
-  <div class="login signup_form">
+  <div class="login signup__form">
     <div class="login__form">
       <div class="login__form-inner">
         <div class="login__custom-logo mb-3">
@@ -73,15 +73,14 @@
     missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
     certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
     autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'
+    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'        
   };
 </script>
 
 <script src="/js/common.min.js?v=0.2"></script>
 <script src="/js/app.min.js?v=0.2" async></script>
 <script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
-<script src="//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js"></script>
-<script src="~/CMSScripts/Custom/Kadena/SmartyStreet.js"></script>
+{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
 
 ]]>
   </PageTemplateLayout>
@@ -161,9 +160,11 @@
         <webpart controlid="CustomRegistrationForm" guid="c7055693-98b7-4fdb-9558-0946b60e3e6b" type="CustomRegistrationForm" v="1">
           <property name="alternativeform">cms.user.KDA_UserRegistrationForm</property>
           <property name="approvalpage">~/CMSPages/Dialogs/UserRegistration.aspx</property>
-          <property name="assigntoroles"></property>
+          <property name="assigntoroles" ismacro="true">
+            <![CDATA[{%Settings.KDA_SignupDefaultRole|(user)cvoqa2@gmail.com|(hash)8ed96f1bcba133242c75996350660a4560772a2e8d76ffb528453610c78231de%}]]>
+          </property>
           <property name="assigntosites">TWE</property>
-          <property name="buttoncss">btn-action j-submit-button js-btnSmarty</property>
+          <property name="buttoncss">btn-action j-submit-button </property>
           <property name="buttontext">Sign Up</property>
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
@@ -242,6 +243,19 @@
       if(regEx!=null ||regEx!='') {
         var email=new RegExp(regEx);
         var val=$('[id$=txtEmailInput]').val();
+        if(val=="")
+        {
+          event.preventDefault();
+          if($('[id$=Email_lbe]').text()!='')
+          {
+            $('[id$=Email_lbe]').text('Please enter valid Email');
+          }
+          else
+          {
+            if($('#emailError').text()=='')
+              $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
+          }
+        }
         if(val!='')
         {
           if(!email.test(val)){
@@ -251,11 +265,12 @@
             }
             else
             {
-             if($('#emailError').text()=='')
+              if($('#emailError').text()=='')
                 $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
             }
             event.preventDefault();
-          } 
+          }
+          
         } 
       }
     });
@@ -315,7 +330,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="login__bg" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%});"></div>]]>
+            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

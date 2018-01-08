@@ -22,19 +22,21 @@
 
 <div class="content-header">
   <div class="content-header__inner">
-      <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
+    <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
   </div>
   <div class="breadcrumbs">
     <cms:CMSWebPartZone ZoneID="ZoneBreadcrubs" runat="server" />
   </div>
 </div>
 <div class="content-block">
-  
-  <div class="search_block">
-    <!-- <input type="text" class="input__text" placeholder="Search" value="">-->
-    <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
+      </div>
+      <cms:CMSWebPartZone ZoneID="ZoneAddAddress" runat="server" />
+    </div>
   </div>
-  <cms:CMSWebPartZone ZoneID="ZoneAddAddress" runat="server" />
   <cms:CMSWebPartZone ZoneID="ZoneAddressList" runat="server" />
   <div class="data_footer">
     <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
@@ -85,11 +87,13 @@
 <![CDATA[
  </tbody>
                                 </table>
+</div>
 ]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table class="show-table js-tblAddress">
+<div class="table__responsive">
+<table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$KDA.MyAddresses.Name$}</th>
@@ -98,6 +102,7 @@
       <th>{$KDA.MyAddresses.Company$}</th>
       <th>{$KDA.MyAddresses.TelephoneNo$}</th>
       <th>{$KDA.MyAddresses.Email$}</th>
+      <th>{$KDA.MyAddresses.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>
@@ -169,11 +174,14 @@ AddressPhone LIKE '%{?searchtext?}%'
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.Address.NoDataFoundText$}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-  $('.js-tblAddress').hide();
-</script>
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
 ]]>
           </property>
         </webpart>
@@ -393,7 +401,7 @@ if (confirm("Are you sure?")) {
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="add_btn">
+<div class="add__btn">
   <a class="btn-action" href="{% Settings.KDA_CreateAddressURL |(user)cvoqa2@gmail.com|(hash)0e9ef208a37fad94bd8b306cdcabe7b7117fe7381b58993c34b8d6a02ef6e9cb%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Address.AddNewText$}</a>
 </div>
 ]]>
@@ -447,7 +455,7 @@ if (confirm("Are you sure?")) {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[    <h1 class="content-header__page-name">{%GetResourceString("Kadena.AddressList.HeaderText")|(user)cvoqa2@gmail.com|(hash)d8871217f8d1d68c2792098420ed8d639c92ba71c8b576456873461ffcebb7df%}</h1>]]>
+            <![CDATA[    <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

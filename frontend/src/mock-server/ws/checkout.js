@@ -14,6 +14,8 @@ module.exports.ui = {
         "price": "10000.0"
       },
       "number": "You have 1 item in your shopping cart",
+      "productionTimeLabel": "Production time",
+      "shipTimeLabel": "Shipping time",
       "buttonLabels": {
         "edit": "Edit",
         "remove": "Remove"
@@ -33,7 +35,9 @@ module.exports.ui = {
           "quantityPrefix": "Quantity:",
           "quantity": 11,
           "stockQuantity": 15,
-          "isQuantityEditable": true
+          "isQuantityEditable": true,
+          "productionTime": "Now",
+          "shipTime": "Tomorrow"
         },
         {
           "id": 34,
@@ -49,7 +53,9 @@ module.exports.ui = {
           "quantityPrefix": "Quantity:",
           "quantity": 11,
           "stockQuantity": 15,
-          "isQuantityEditable": true
+          "isQuantityEditable": true,
+          "productionTime": "",
+          "shipTime": "Tomorrow"
         }
       ]
     },

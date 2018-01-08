@@ -3,12 +3,12 @@ using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.EventLog;
-using CMS.Globalization;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -58,6 +58,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
+                BindStatus();
                 CountryID = ValidationHelper.GetInteger(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"), 0);
                 if (CountryID > 0)
                 {
@@ -96,8 +97,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             rfCity.ErrorMessage = ResHelper.GetString("Kadena.Address.CityRequired");
             rfEmail.ErrorMessage = ResHelper.GetString("Kadena.Address.EmailRequired");
             rfZipcode.ErrorMessage = ResHelper.GetString("Kadena.Address.ZipcodeRequired");
-            btnSave.Text = Request.QueryString["id"] != null ? ResHelper.GetString("Kadena.Address.Update") : ResHelper.GetString("Kadena.Address.Save");
+            lnkSave.Text = Request.QueryString["id"] != null ? ResHelper.GetString("Kadena.Address.Update") : ResHelper.GetString("Kadena.Address.Save");
             lnkCancel.Text = ResHelper.GetString("Kadena.Address.Cancel");
+            lblBrand.InnerText= ResHelper.GetString("Kadena.Address.Brands");
         }
         catch (Exception ex)
         {
@@ -117,11 +119,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (!DataHelper.DataSourceIsEmpty(addressObj) && addressObj != null)
             {
                 AddressInfoProvider.SetAddressInfo(addressObj);
-                var shippingObj = BindShippingAddressObject(addressObj);
-                if (!DataHelper.DataSourceIsEmpty(shippingObj) && shippingObj != null)
-                {
-                    shippingObj.Update();
-                }
+                CreateAddressRelatedBrands(addressObj.AddressID);
             }
         }
         catch (Exception ex)
@@ -154,14 +152,6 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 txtEmail.Text = addressData.GetStringValue("Email", string.Empty);
                 txtComapnyName.Text = addressData.GetStringValue("CompanyName", string.Empty);
                 ddlAddressType.Value = addressData.GetStringValue("AddressTypeID", string.Empty);
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>()
-                                                            .WhereEquals("COM_AddressID", addressData.AddressID)
-                                                            .FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(shippingData))
-                {
-                    txtEmail.Text = shippingData.GetStringValue("Email", string.Empty);
-                    txtComapnyName.Text = shippingData.GetStringValue("CompanyName", string.Empty);
-                }
                 if (addressData.AddressStateID <= 0)
                 {
                     uniSelectorState.Enabled = false;
@@ -186,11 +176,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (!DataHelper.DataSourceIsEmpty(objAddress) && objAddress != null)
             {
                 AddressInfoProvider.SetAddressInfo(objAddress);
-                var objShipping = BindShippingAddressObject(objAddress);
-                if (!DataHelper.DataSourceIsEmpty(objShipping) && objShipping != null)
-                {
-                    objShipping.Insert();
-                }
+                CreateAddressRelatedBrands(objAddress.AddressID);
             }
         }
         catch (Exception ex)
@@ -200,39 +186,77 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
     }
 
     /// <summary>
-    /// Binding the shipping address object
+    /// creates the new address related brands
     /// </summary>
-    /// <param name="objAddress">Address info object</param>
-    /// <returns> ShippingAddressItem object</returns>
-
-    private ShippingAddressItem BindShippingAddressObject(AddressInfo objAddress)
+    /// <param name="addressID">addressid</param>
+    private void CreateAddressRelatedBrands(int addressID)
     {
         try
         {
-            ShippingAddressItem item = new ShippingAddressItem();
-            item.AddressTypeID = ValidationHelper.GetInteger(ddlAddressType.Value, default(int));
-            item.COM_AddressID = objAddress.AddressID;
-            item.UserID = CurrentUser.UserID;
-            item.Email = ValidationHelper.GetString(txtEmail.Text, string.Empty);
-            item.CompanyName = ValidationHelper.GetString(txtComapnyName.Text, string.Empty);
-            int itemID = Request.QueryString["id"] != null ? ValidationHelper.GetInteger(Request.QueryString["id"], default(int)) : default(int);
-            if (itemID != default(int))
+            DeleteAddressBrands(addressID);
+            if (hdnBrand.Value != string.Empty)
             {
-                var shippingData = CustomTableItemProvider.GetItems<ShippingAddressItem>()
-                                                            .WhereEquals("COM_AddressID", objAddress.AddressID)
-                                                            .FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(shippingData) && shippingData != null)
-                {
-                    item.ItemID = shippingData.ItemID;
-                }
+                var brandData = hdnBrand.Value.Split(';').Where(x => x != string.Empty).ToList();
+                AssignBrandToAddress(brandData, addressID);
             }
-            return item;
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("CreateAddress.ascx.cs", "BindShippingAddressObject()", ex);
+            EventLogProvider.LogException("CreateAddress.ascx.cs", "CreateAddressRelatedBrands()", ex);
         }
-        return null;
+    }
+
+    /// <summary>
+    /// deletes the address related brands
+    /// </summary>
+    /// <param name="addressID"></param>
+    private void DeleteAddressBrands(int addressID)
+    {
+        try
+        {
+            if (addressID != default(int))
+            {
+                var items = CustomTableItemProvider.GetItems<AddressBrandsItem>()
+                    .WhereEquals("AddressID", addressID)
+                    .Columns("BrandID,ItemID")
+                    .ToList();
+                if (items != null && items.Count > 0)
+                {
+                    foreach (var item in items)
+                        item.Delete();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CreateAddress.ascx.cs", "DeleteAddressBrands()", ex);
+        }
+    }
+
+    /// <summary>
+    /// assings the brands to particular address
+    /// </summary>
+    /// <param name="brandIDs">brandid</param>
+    /// <param name="addressID">addressID</param>
+    private void AssignBrandToAddress(List<string> brandIDs, int addressID)
+    {
+        try
+        {
+            if (brandIDs != null)
+            {
+                foreach (var id in brandIDs)
+                {
+                    AddressBrandsItem item = new AddressBrandsItem();
+                    item.AddressID = addressID;
+                    item.BrandID = ValidationHelper.GetInteger(id, default(int));
+                    item.Insert();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CreateAddress.ascx.cs", "AssignBrandToAddress()", ex);
+        }
     }
 
     /// <summary>
@@ -266,6 +290,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                         addressData.SetValue("Email", txtEmail.Text.Trim());
                         addressData.SetValue("CompanyName", txtComapnyName.Text.Trim());
                         addressData.SetValue("AddressTypeID", ddlAddressType.Value);
+                        addressData.SetValue("Status", ddlStatus.SelectedValue);
                         return addressData;
                     }
                 }
@@ -288,6 +313,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 objAddress.SetValue("Email", txtEmail.Text.Trim());
                 objAddress.SetValue("CompanyName", txtComapnyName.Text.Trim());
                 objAddress.SetValue("AddressTypeID", ddlAddressType.Value);
+                objAddress.SetValue("Status", ddlStatus.SelectedValue);
                 return objAddress;
             }
         }
@@ -438,5 +464,14 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             uniSelectorState.StopProcessing = true;
             uniSelectorState.Enabled = false;
         }
+    }
+    /// <summary>
+    /// Bind the status Type
+    /// </summary>
+    public void BindStatus()
+    {
+        ddlStatus.Items.Clear();
+        ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+        ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
     }
 }

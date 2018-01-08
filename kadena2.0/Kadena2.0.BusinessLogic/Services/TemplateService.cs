@@ -17,18 +17,44 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
         private readonly ITemplatedClient _templateClient;
-        private readonly IKenticoProviderService _kentico;
         private readonly IKenticoUserProvider _users;
-        private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoDocumentProvider _documents;
+        private readonly IKenticoProductsProvider _products;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, IKenticoProviderService kentico, IKenticoUserProvider users, IKenticoDocumentProvider documents)
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, 
+            IKenticoUserProvider users, IKenticoDocumentProvider documents, IKenticoProductsProvider products)
         {
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+            if (templateClient == null)
+            {
+                throw new ArgumentNullException(nameof(templateClient));
+            }
+            if (users == null)
+            {
+                throw new ArgumentNullException(nameof(users));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+
             this._resources = resources;
             this._logger = logger;
             this._templateClient = templateClient;
-            this._kentico = kentico;
             this._users = users;
-            this.documents = documents;
+            this._documents = documents;
+            this._products = products;
         }
 
         public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
@@ -71,7 +97,7 @@ namespace Kadena.BusinessLogic.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _kentico.GetProductByNodeId(nodeId);
+            var product = _products.GetProductByNodeId(nodeId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -87,7 +113,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                productEditorUrl = documents.GetDocumentUrl(productEditorUrl);
+                productEditorUrl = _documents.GetDocumentUrl(productEditorUrl);
             }
 
             if (requestResult.Success)

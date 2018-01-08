@@ -22,10 +22,10 @@
   <div class="content-header__inner">
     <h1 class="content-header__page-name">Pre-Buy</h1>
     <div class="text-right">
-      <div class="add_btn">
+      <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZonePDF" runat="server" />
       </div>
-      <div class="add_btn" style="margin-right: 5px;">
+      <div class="add__btn" style="margin-right: 5px;">
         <cms:CMSWebPartZone ZoneID="ZonePrint" runat="server" />
       </div>
     </div>
@@ -57,7 +57,28 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+<![CDATA[
+<div class="dialog" id="autoSave_Dialog">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__content">
+      <p class="response_Success">
+        {$KDA.Cart.Update.Success$}
+      </p>
+      <p class="response_failure">
+        {$KDA.Cart.Update.Failure$}
+      </p>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+]]>
+          </property>
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
@@ -118,7 +139,14 @@
           <property name="wherecondition" ismacro="true">
             <![CDATA[ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
           </property>
-          <property name="zerorowstext">No cart items found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class="clearfix"></div>
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+]]>
+          </property>
         </webpart>
         <webpart controlid="Javascript" guid="4b4cc245-d040-4a96-8e1d-743b38234c5e" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
@@ -127,13 +155,49 @@
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-$(".js-CloseMesaage").on("click",function(){
-$(this).closest(".dialog").removeClass("active");
-})
+<script type="text/javascript" >
+  $(".js-CloseMesaage").on("click",function(){
+    $(this).closest(".dialog").removeClass("active");
+  })
+    $(document).ready(function () {
+      $(".js-ItemQuantity").focusout(function(){
+        var cID=parseInt($(this).siblings().first().val());
+        var iQTY=parseInt($(this).val());
+        if(cID!=undefined && iQTY!=undefined && cID!=0){
+          UpdateItem(cID,iQTY,this);
+        }
+      });
+      function UpdateItem(id,qty,box){
+        var request= {CartItemId: id,ItemQuantity:qty}
+            $.ajax({
+              type: "POST",
+              data :JSON.stringify(request),
+              url: "api/distributor/update",
+              contentType: "application/json",
+              success: function (data) {
+                $('#autoSave_Dialog').addClass('active');
+                if (data==200) {
+                  $('.response_Success').show();
+                  $('.response_failure').hide();
+                  $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change');
+                } 
+                else{
+                  $('.response_Success').hide();
+                  $('.response_failure').show();
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError) {
+                $('.response_Success').hide();
+                $('.response_failure').show();
+              }
+            });
+      }
+    }); 
+</script>
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>
@@ -146,6 +210,53 @@ $(this).closest(".dialog").removeClass("active");
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZonePrint" v="1" />
+      <webpartzone id="ZonePDF" v="1">
+        <webpart controlid="GeneratePDFForCart" guid="e1a5f0dd-8717-4e48-b027-35675fb41a05" type="GeneratePDFforCart" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">GeneratePDFForCart</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">e1a5f0dd-8717-4e48-b027-35675fb41a05</property>
+          <property name="inventorytype">2</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">GeneratePDFforCart</property>
         </webpart>
       </webpartzone>
     </page>

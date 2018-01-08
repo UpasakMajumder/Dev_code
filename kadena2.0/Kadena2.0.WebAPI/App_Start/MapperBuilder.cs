@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.CustomerData;
@@ -21,6 +22,7 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models;
+using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
@@ -179,6 +181,8 @@ namespace Kadena.WebAPI
                 config.CreateMap<CartItem, Dto.RecentOrders.OrderItemDto>()
                     .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
                 config.CreateMap<Button, ButtonDto>();
+                config.CreateMap<Campaign, CampaignDTO>().ProjectUsing(s => new CampaignDTO { ID = s.ID, ProgramID = s.ProgramID, DistributorID = s.DistributorID });
+                config.CreateMap<CampaignDTO, Campaign>().ProjectUsing(s => new Campaign { ID = s.ID, ProgramID = s.ProgramID, DistributorID = s.DistributorID });
                 config.CreateMap<Order, OrderRowDto>()
                     .AfterMap((s, d) =>
                     {
@@ -234,7 +238,19 @@ namespace Kadena.WebAPI
                 config.CreateMap<CheckTaCRequestDTO, LoginRequest>();
                 config.CreateMap<AcceptTaCRequestDTO, LoginRequest>();
                 config.CreateMap<CheckTaCResult, CheckTaCResultDTO>();
-				config.CreateMap<BusinessUnit, BusinessUnitDto>();
+                config.CreateMap<BusinessUnit, BusinessUnitDto>();
+                config.CreateMap<Brand, BrandDto>();
+                config.CreateMap<OrderCampaginHead, OrderCampaginHeadDto>();
+                config.CreateMap<OrderCampaginItem, OrderCampaginItemDto>();
+
+                config.CreateMap<OrderHeadBlock, OrderHeadBlockDto>();
+                config.CreateMap<OrderRow, RecentOrderRowDto>();
+                config.CreateMap<OrderDialog, OrderDialogDto>();
+                config.CreateMap<OrderDailogLabel, OrderDailogLabelDto>();
+                config.CreateMap<OrderDialogTable, OrderDialogTableDto>();
+                config.CreateMap<OrderTableCell, OrderTableCellDto>();
+                config.CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
+                config.CreateMap<Distributor, DistributorDTO>();
             });
         }
     }

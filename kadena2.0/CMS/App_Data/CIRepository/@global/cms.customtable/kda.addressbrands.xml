@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>AddressBrands</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="e83f7c0b-c1d6-4ff1-b7aa-2bcd4afb5b4f" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="AddressID" columntype="integer" guid="74280527-2c15-4267-a9f6-95c90b200fbc" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Address ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="BrandID" columntype="integer" guid="750de583-f65a-44fa-b723-3ec66976ef04" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Brand ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="acafc099-3713-4522-be6b-94ecd369ed7a" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="b96f45fc-e9ba-45bd-b1df-c66be53aea94" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="999ba78b-87f2-45dd-b43f-ec2f8e6a8143" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="110f75d1-175d-464f-af84-67eb86a46101" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemOrder" columnprecision="0" columntype="integer" guid="d8164699-d5e7-4bdf-a476-1038d71415b4" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Order</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="2f8f4d1a-d0ae-4068-85a9-9700cf4e5cee" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>655a6ba5-3cc3-4a7b-9f60-367c93834ded</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.AddressBrands</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="44df7648-c42a-4a74-b8e9-7fef033f1433" name="ItemOrder" searchable="True" tokenized="False" />
+      <item content="False" id="49736bd5-97af-49b3-a518-a4473d9d46ee" name="BrandID" searchable="True" tokenized="False" />
+      <item content="False" id="636c2edb-b1c8-4133-a9bb-bbbd9b26fda4" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="cedcf4f5-4ad6-44d5-ab33-72a88d42bd49" name="ItemModifiedBy" searchable="True" tokenized="False" />
+      <item content="False" id="cf1f6f8e-47de-4a7c-896a-78df3860519d" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="False" id="da13bb09-e6e5-4683-8a77-18ed3d2917ce" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="dadde61a-3227-4ed2-ac8f-9eefc9135cfd" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="dc4b8e06-5b42-4c6b-bb45-d3022303a3c8" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="False" id="e3df07f7-5eb0-438b-93b6-94235e65363f" name="AddressID" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_AddressBrands</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

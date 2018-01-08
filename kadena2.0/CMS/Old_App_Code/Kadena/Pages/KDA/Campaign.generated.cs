@@ -98,6 +98,57 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
+		/// Start Date.
+		/// </summary>
+		[DatabaseField]
+		public DateTime StartDate
+		{
+			get
+			{
+				return ValidationHelper.GetDateTime(GetValue("StartDate"), DateTimeHelper.ZERO_TIME);
+			}
+			set
+			{
+				SetValue("StartDate", value);
+			}
+		}
+
+
+		/// <summary>
+		/// End Date.
+		/// </summary>
+		[DatabaseField]
+		public DateTime EndDate
+		{
+			get
+			{
+				return ValidationHelper.GetDateTime(GetValue("EndDate"), DateTimeHelper.ZERO_TIME);
+			}
+			set
+			{
+				SetValue("EndDate", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Status.
+		/// </summary>
+		[DatabaseField]
+		public bool Status
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("Status"), true);
+			}
+			set
+			{
+				SetValue("Status", value);
+			}
+		}
+
+
+		/// <summary>
 		/// 
 		/// </summary>
 		[DatabaseField]
@@ -144,23 +195,6 @@ namespace CMS.DocumentEngine.Types.KDA
 			set
 			{
 				SetValue("GlobalAdminNotified", value);
-			}
-		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public bool AllowUpdates
-		{
-			get
-			{
-				return ValidationHelper.GetBoolean(GetValue("AllowUpdates"), false);
-			}
-			set
-			{
-				SetValue("AllowUpdates", value);
 			}
 		}
 
@@ -266,6 +300,54 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 			/// <summary>
+			/// Start Date.
+			/// </summary>
+			public DateTime StartDate
+			{
+				get
+				{
+					return mInstance.StartDate;
+				}
+				set
+				{
+					mInstance.StartDate = value;
+				}
+			}
+
+
+			/// <summary>
+			/// End Date.
+			/// </summary>
+			public DateTime EndDate
+			{
+				get
+				{
+					return mInstance.EndDate;
+				}
+				set
+				{
+					mInstance.EndDate = value;
+				}
+			}
+
+
+			/// <summary>
+			/// Status.
+			/// </summary>
+			public bool Status
+			{
+				get
+				{
+					return mInstance.Status;
+				}
+				set
+				{
+					mInstance.Status = value;
+				}
+			}
+
+
+			/// <summary>
 			/// 
 			/// </summary>
 			public bool Initiate
@@ -309,22 +391,6 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.GlobalAdminNotified = value;
-				}
-			}
-
-
-			/// <summary>
-			/// 
-			/// </summary>
-			public bool AllowUpdates
-			{
-				get
-				{
-					return mInstance.AllowUpdates;
-				}
-				set
-				{
-					mInstance.AllowUpdates = value;
 				}
 			}
 

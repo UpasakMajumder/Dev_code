@@ -138,7 +138,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             TreeNode parentDocument = null;
             SiteInfo site = SiteInfoProvider.GetSiteInfo(siteID);
-            if (string.IsNullOrEmpty(campaignProductDto.Campagin))
+            if (string.IsNullOrEmpty(campaignProductDto.Campaign))
             {
                 string inventoryProductsAliasPath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductPath", siteID);
                 parentDocument = DocumentHelper.GetDocument(
@@ -154,7 +154,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
             else
             {
-                parentDocument = GetProgram(campaignProductDto.Campagin, campaignProductDto.ProgramName);
+                parentDocument = GetProgram(campaignProductDto.Campaign, campaignProductDto.ProgramName);
             }
             return parentDocument;
         }
@@ -230,7 +230,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             SKUTreeNode existingProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeSKUID == sku.SKUID);
             SKUTreeNode newProduct = existingProduct ?? (SKUTreeNode)TreeNode.New("KDA.CampaignsProduct", tree);
-            Program program = GetProgram(product.Campagin, product.ProgramName);
+            Program program = GetProgram(product.Campaign, product.ProgramName);
+            ProductCategory productCategory = GetProductCategory(product.ProductCategory);
 
             newProduct.DocumentName = product.ProductName;
             newProduct.DocumentSKUName = product.ProductName;
@@ -238,26 +239,30 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.NodeName = product.ProductName;
             newProduct.DocumentCulture = _culture;
             newProduct.SetValue("ProductName", product.ProductName);
-            newProduct.SetValue("BrandID", GetBrandID(product.BrandCode));
+            newProduct.SetValue("BrandID", GetBrandID(product.Brand));
             if (program != null)
             {
                 newProduct.SetValue("ProgramID", program.ProgramID);
             }
             if (!string.IsNullOrWhiteSpace(product.AllowedStates))
             {
-                newProduct.SetValue("State", product.AllowedStates);
+                newProduct.SetValue("State", GetStatesGroupID(product.AllowedStates));
             }
             if (!string.IsNullOrWhiteSpace(product.EstimatedPrice))
             {
                 newProduct.SetValue("EstimatedPrice", product.EstimatedPrice);
             }
-            if (!string.IsNullOrWhiteSpace(product.ProductCategoryID))
+            if (productCategory != null)
             {
-                newProduct.SetValue("CategoryID", product.ProductCategoryID);
+                newProduct.SetValue("CategoryID", productCategory.ProductCategoryID);
             }
             if (!string.IsNullOrWhiteSpace(product.BundleQuantity))
             {
                 newProduct.SetValue("QtyPerPack", product.BundleQuantity);
+            }
+            if (!string.IsNullOrWhiteSpace(product.CenveoID))
+            {
+                newProduct.SetValue("CVOProductID", product.CenveoID);
             }
 
             if (existingProduct == null)
@@ -279,12 +284,26 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return newProduct;
         }
 
-        private int GetBrandID(string brandCode)
+        private int GetStatesGroupID(string statesGroupName)
+        {
+            int statesGroupID = default(int);
+            if (!string.IsNullOrWhiteSpace(statesGroupName))
+            {
+                StatesGroupItem statesGroup = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("GroupName", statesGroupName).FirstOrDefault();
+                if (statesGroup != null)
+                {
+                    statesGroupID = statesGroup.ItemID;
+                }
+            }
+            return statesGroupID;
+        }
+
+        private int GetBrandID(string brandName)
         {
             int brandID = default(int);
-            if (!string.IsNullOrWhiteSpace(brandCode))
+            if (!string.IsNullOrWhiteSpace(brandName))
             {
-                BrandItem brand = CustomTableItemProvider.GetItems<BrandItem>().WhereEquals("BrandCode", brandCode).FirstOrDefault();
+                BrandItem brand = CustomTableItemProvider.GetItems<BrandItem>().WhereEquals("BrandName", brandName).FirstOrDefault();
                 if (brand != null)
                 {
                     brandID = brand.ItemID;
@@ -293,13 +312,28 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return brandID;
         }
 
+        private ProductCategory GetProductCategory(string productCategoryName)
+        {
+            if (string.IsNullOrWhiteSpace(productCategoryName))
+            {
+                return null;
+            }
+            else
+            {
+                return ProductCategoryProvider.GetProductCategories()
+                                  .OnSite(_site)
+                                  .Where(x => x.ProductCategoryTitle.Equals(productCategoryName) || x.DocumentName.Equals(productCategoryName))
+                                  .FirstOrDefault();
+            }
+        }
+
         private Program GetProgram(string campaignName, string programName)
         {
             if (string.IsNullOrWhiteSpace(campaignName) || string.IsNullOrWhiteSpace(programName))
             {
                 return null;
             }
-            Campaign campaign = GetCampaign(campaignName);
+            CMS.DocumentEngine.Types.KDA.Campaign campaign = GetCampaign(campaignName);
             if (campaign != null)
             {
                 return ProgramProvider.GetPrograms()
@@ -313,7 +347,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
         }
 
-        private Campaign GetCampaign(string campaignName)
+        private CMS.DocumentEngine.Types.KDA.Campaign GetCampaign(string campaignName)
         {
             return CampaignProvider.GetCampaigns()
                                    .OnSite(_site)
@@ -407,9 +441,16 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             sku.SKUSiteID = siteID;
             sku.SKUNumber = product.SKU;
             sku.SKUDescription = product.LongDescription;
-            sku.SKUEnabled = ValidationHelper.GetBoolean(product.Status, true);
+            if (product.Status.ToLower().Equals("active"))
+            {
+                sku.SKUEnabled = true;
+            }
+            else
+            {
+                sku.SKUEnabled = false;
+            }
 
-            if (string.IsNullOrWhiteSpace(product.Campagin))
+            if (string.IsNullOrWhiteSpace(product.Campaign))
             {
                 sku.SKUTrackInventory = TrackInventoryTypeEnum.ByProduct;
             }
@@ -420,6 +461,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             if (!string.IsNullOrWhiteSpace(product.TotalQuantity))
             {
                 sku.SKUAvailableItems = ValidationHelper.GetInteger(product.TotalQuantity, 0);
+            }
+            if (!string.IsNullOrWhiteSpace(product.ProductWeight))
+            {
+                sku.SKUWeight = ValidationHelper.GetDouble(product.ProductWeight, 0);
             }
 
             SKUInfoProvider.SetSKUInfo(sku);

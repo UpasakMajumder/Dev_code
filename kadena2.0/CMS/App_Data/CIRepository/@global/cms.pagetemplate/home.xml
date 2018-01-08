@@ -19,37 +19,35 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-<div class="content__inner">
-  <div class="content-header">
-    <div class="breadcrumbs">
-      <!--Bread crumbs Zone--> 
-      {^WebPartZone|(id)ZoneBreadCrumbs^}
+<!--<div class="content__inner">-->
+<div class="content-header">
+  <!--<div class="breadcrumbs">-->
+  <!--Bread crumbs Zone--> 
+  {^WebPartZone|(id)ZoneBreadCrumbs^}
+  <!--</div>-->
+</div>
+<div class="content-block">
+  <div class="main__content">
+    <div class="main__left">
+      <!--Header left Zone-->
+      {^WebPartZone|(id)ZoneHeaderLeft^}  
     </div>
+    <div class="main__right">
+      <div class="scroll__block">
+        <!--Header right Zone-->                            
+        {^WebPartZone|(id)ZoneHeaderRight^}
+      </div>
+    </div>
+    <div style="clear:both"></div>
   </div>
-  <div class="content-block">
-    <div class="main_content">
-      <div class="main_left">
-        <!--Header left Zone-->
-        {^WebPartZone|(id)ZoneHeaderLeft^}  
-      </div>
-      <div class="main_right">
-        <div class="scroll_block">
-          <!--Header right Zone-->                            
-          {^WebPartZone|(id)ZoneHeaderRight^}
-        </div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
-    <div class="product_sec">
-      <!--Admin area header Zone-->
-         {^WebPartZone|(id)AdminFeatures^}
-      </div>
-    </div>
-    <div class="admin_access">
-      <!--Global admin header zone-->
-     {^WebPartZone|(id)GlobalAdminFeatures^}
-    </div>
+  <div class="product__sec">
+    <!--Admin area header Zone-->
+    {^WebPartZone|(id)AdminFeatures^}
   </div>
+</div>
+<!--Global admin header zone-->
+{^WebPartZone|(id)GlobalAdminFeatures^}
+<!--</div>-->
 
 
 
@@ -75,7 +73,7 @@
         </properties>
         <webpart controlid="HomeContentBlock" guid="7be51a9d-6394-4766-8ae8-63bfb2f605c6" iswidget="true" type="HomeContentBlock" v="1">
           <property name="bannerimage">
-            <![CDATA[~/TWE/media/CampaignProducts/Images/banner.jpg?ext=.jpg]]>
+            <![CDATA[~/TWE/media/CampaignProducts/Images/BB.jpg?ext=.jpg]]>
           </property>
           <property name="container">HomeContent</property>
           <property name="containercssclass"></property>
@@ -192,8 +190,20 @@
       <webpartzone id="GlobalAdminFeatures" v="1">
         <properties>
           <property name="containerhideonsubpages">False</property>
+          <property name="contentafter">
+<![CDATA[
+</div>
+</div>
+]]>
+          </property>
+          <property name="contentbefore">
+<![CDATA[
+<div class="admin__access row">
+<div class="admin__inner col-sm-3">
+]]>
+          </property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles">GlobalAdmin</property>
+          <property name="displaytoroles">TWEAdmin;TWEGlobalAdmin</property>
           <property name="hideonsubpages">False</property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -293,7 +303,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage,FeatureID]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -343,7 +353,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
@@ -465,7 +475,7 @@
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Feature</property>
           <property name="columns">
-            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL]]>
+            <![CDATA[FeatureName,HeaderTextOne,HeaderTextTwo,DisplayImage,TargetURL,TargetPage,FeatureID]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -480,7 +490,7 @@
 ]]>
           </property>
           <property name="contentbefore">
-            <![CDATA[<div class="product_inner">   ]]>
+            <![CDATA[<div class="product__inner row">   ]]>
           </property>
           <property name="controlid">rptAdminFeatures</property>
           <property name="culturecode"></property>
@@ -522,7 +532,7 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">/Home/%</property>
+          <property name="path">./%</property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="querystringkey"></property>
           <property name="relatednodeisontheleftside">False</property>
@@ -547,6 +557,122 @@
           <property name="webparttype">repeater</property>
           <property name="wherecondition">VisibleRole=1</property>
           <property name="zerorowstext">No data found</property>
+        </webpart>
+        <webpart controlid="HomePageScript" guid="bb3ee8ce-5150-4f89-8dfe-b36733f61995" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">HomePageScript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    var modalID='';
+    $('.js-modal').on('click',function(){
+      if($(this).attr("target") == "modal") {
+        $(this).attr("href","#");
+        modalID='#'+$(this).attr("id");
+        $(this).removeAttr("target");
+        $('#customCatalogPopup').toggleClass('active');        
+      }
+    });
+    $(document).on('click', ".js-btnClose", function () {                
+      $('#customCatalogPopup').toggleClass('active');
+      $(modalID).attr("target","modal");
+    });
+  });
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">bb3ee8ce-5150-4f89-8dfe-b36733f61995</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="shtmlCustomCatalogModal" guid="c6d5c2db-b723-4260-a639-d50fd9696b18" type="statichtml" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">shtmlCustomCatalogModal</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">c6d5c2db-b723-4260-a639-d50fd9696b18</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="text" ismacro="true">
+<![CDATA[
+<!--pop up html-->
+<div class="dialog modal_businessunit" id="customCatalogPopup">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__header"> 
+      <h3>{$Kadena.HomePage.PopUpHeaderText$}</h3>
+      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+    </div>
+    <div class="dialog__content" style="overflow:hidden;">
+      <div class="product__sec modal__productsec">
+        <div class="product__inner row">       
+          <div class="product__block col-sm-6">
+            <a href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_PrebuyCatalogURL)|(user)cvoqa2@gmail.com|(hash)4f878b05fa8dcc4b6306227c1407ac5e2959cb4272875c1cba2a3b181303b830%}" target="_self"><img src="{%Settings.KDA_PrebuyCatalogImage|(user)cvoqa2@gmail.com|(hash)d675c53b82df08e440b1bb4e6d1d15de55e99d72fa5a69a30352f0d5e8e6a260%}">          
+              <h5>{$Kadena.CustomCatalogModal.PrebuyCatalog$}</h5></a>
+          </div>          
+          <div class="product__block col-sm-6">
+            <a href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_InventoryCatalogURL)|(user)cvoqa2@gmail.com|(hash)991b558fbdcef9e9988c85b69a92ea6029e2f29de3cb43fe7afdd179d080199f%}" target="_self"><img src="{%Settings.KDA_InventoryCatalogImage|(user)cvoqa2@gmail.com|(hash)7e56636edf3c617c25db21752a245aa09aa2a80e8fdb9f8cfaf657401f26fdbc%}">
+              <h5>{$Kadena.CustomCatalogModal.InventoryCatalog$}</h5></a>
+          </div>         
+        </div>
+      </div>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+      </div>
+    </div>
+  </div>
+</div>
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">Custom Catalog Modal</property>
+          <property name="webparttype">statichtml</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneBreadCrumbs" v="1">

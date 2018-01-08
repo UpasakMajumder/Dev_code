@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>_POS Bulk Import</WebPartDisplayName>
+  <WebPartFileName>~/CMSWebParts/Kadena/POS/POSBulkImport.ascx</WebPartFileName>
+  <WebPartGUID>e4734dac-57bc-4086-bf50-02eb48cb9c62</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>KDA.POSBulkImport</WebPartName>
+  <WebPartProperties>
+    <form />
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

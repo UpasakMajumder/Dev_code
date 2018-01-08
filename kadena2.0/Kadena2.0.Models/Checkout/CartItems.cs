@@ -5,6 +5,8 @@ namespace Kadena.Models.Checkout
     public class CartItems
     {
         public string Number { get; set; }
+        public string ProductionTimeLabel { get; set; }
+        public string ShipTimeLabel { get; set; }
         public List<CartItem> Items { get; set; }
         public CartPrice SummaryPrice { get; set; }
         public ButtonLabels ButtonLabels { get; set; }

@@ -1,20 +1,20 @@
-﻿ using Kadena.WebAPI.KenticoProviders.Contracts;
+﻿using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena.Helpers
 {
     public class SuppliantDomain : ISuppliantDomainClient
     {
-        private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoSiteProvider _site;
 
-        public SuppliantDomain(IKenticoResourceService kentico)
+        public SuppliantDomain(IKenticoSiteProvider site)
         {
-            _kentico = kentico;
+            _site = site;
         }
 
         public string GetSuppliantDomain()
         {
-            return _kentico.GetCurrentSiteDomain();
+            return _site.GetCurrentSiteDomain();
         }
     }
 }

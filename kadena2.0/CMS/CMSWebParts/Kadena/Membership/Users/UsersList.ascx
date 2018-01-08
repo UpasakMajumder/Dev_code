@@ -15,12 +15,13 @@
     <div class="login__form-content js-login">
         <div class="css-login form_section">
             <cms:DataForm ID="formElem" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" ValidateRequestMode="Enabled" ShowValidationErrorMessage="true" />
-            <div class="mb-3 form_btns">
+            <div class="mb-3 form__btns">   
                 <div>
-                    <cms:LocalizedLinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click" Text="Save"></cms:LocalizedLinkButton>
+                    <cms:LocalizedLinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click" Text="Save"></cms:LocalizedLinkButton>
                     <cms:LocalizedLinkButton runat="server" ID="btnCancel" CssClass="btn-action login__login-button btn--no-shadow" Text="Cancel" OnClick="btnCancel_Click"></cms:LocalizedLinkButton>
                 </div>
             </div>
         </div>
     </div>
 </cms:CMSPanel>
+<asp:HiddenField runat="server" ID="hdnUserRole" ClientIDMode="Static" />
