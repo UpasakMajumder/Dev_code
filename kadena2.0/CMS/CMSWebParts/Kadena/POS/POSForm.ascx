@@ -38,7 +38,7 @@
                     <asp:RequiredFieldValidator ID="rfvPOSCode"  CssClass="EditingFormErrorLabel" runat="server"   ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator  CssClass="EditingFormErrorLabel" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
-                         ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
+                         ValidationExpression="^\d{4,4}$" ></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
