@@ -6,6 +6,7 @@ using Kadena2.MicroserviceClients.MicroserviceRequests;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Kadena2.Infrastructure.Contracts;
 
 namespace Kadena.BusinessLogic.Services
 {

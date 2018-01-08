@@ -1,8 +1,8 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using Kadena2.Infrastructure.Contracts;
 using System;
 using System.Web.Caching;
 
-namespace Kadena.WebAPI.Infrastructure
+namespace Kadena2.Infrastructure.Services
 {
     public class InMemoryCache : ICache
     {
