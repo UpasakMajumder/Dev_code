@@ -42,7 +42,7 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
+                        <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>?MaxSideSize=150' />
                     </label>
                 </div>
                 <div class="input__wrapper">
