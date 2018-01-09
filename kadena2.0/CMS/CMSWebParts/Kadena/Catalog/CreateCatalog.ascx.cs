@@ -491,7 +491,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
                 var programs = ProgramProvider.GetPrograms()
                                        .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
-                                       .WhereEquals("CampaignID", OpenCampaign.CampaignID)
+                                       .WhereEquals("CampaignID", OpenCampaign?.CampaignID??default(int))
                                        .ToList();
                 lblNoProducts.Visible = false;
                 List<string> selectedProducts = selectedValues.Split(',').ToList();
