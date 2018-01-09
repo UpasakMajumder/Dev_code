@@ -56,11 +56,19 @@
     padding: 15px 15px 20px;
 
     .scroll__block {
-      overflow-y: auto;
-      max-height: 283px;
-
       p {
         padding-right: 10px;
+      }
+    }
+  }
+}
+
+.isOpen {
+  .main__content {
+    .main__right {
+      .scroll__block {
+        max-height: 220px;
+        overflow-x: auto;
       }
     }
   }
@@ -107,7 +115,7 @@
 }
 
 .admin__access {
-  padding: 20px 0;
+  padding: 0;
   border-radius: 5px;
 
   .admin__inner {

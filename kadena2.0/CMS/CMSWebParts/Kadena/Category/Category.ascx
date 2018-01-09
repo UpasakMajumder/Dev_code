@@ -5,8 +5,8 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblName" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.lblName" />
                 <cms:CMSTextBox ID="txtName" runat="server" MaxLength="100" CssClass="input__text" />
-                <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="txtName" CssClass="input__error" Display="Dynamic" ValidationGroup="feildvalidation" />
-                <asp:RegularExpressionValidator Display="Dynamic" ControlToValidate="txtName" ID="revName" CssClass="input__error" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
+                <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="txtName" CssClass="EditingFormErrorLabel"  ValidationGroup="feildvalidation" />
+                <asp:RegularExpressionValidator  ControlToValidate="txtName" ID="revName" CssClass="EditingFormErrorLabel" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
             </div>
         </div>
         <div class="mb-2">
@@ -14,7 +14,7 @@
                 <cms:LocalizedLabel ID="lblDecription" runat="server" CssClass="input__label" ResourceString="Kadena.Categoryform.DesText" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtDescription" runat="server" MaxLength="100" TextMode="MultiLine" CssClass="input__textarea" />
-                    <asp:RegularExpressionValidator CssClass="input__error"  Display="Dynamic" ControlToValidate="txtDescription" ID="revDescription" ValidationExpression="^[\s\S]{0,50}$" ValidationGroup="feildvalidation" runat="server"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator CssClass="EditingFormErrorLabel"   ControlToValidate="txtDescription" ID="revDescription" ValidationExpression="^[\s\S]{0,50}$" ValidationGroup="feildvalidation" runat="server"></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
 
         </div>
         <cms:LocalizedLabel ID="lblSuccessMsg" Visible="false" runat="server" CssClass="input__label" EnableViewState="False" ResourceString="Kadena.CategroyForm.SaveMsg" />
-        <cms:LocalizedLabel ID="lblFailureText" runat="server"  EnableViewState="False" CssClass="error-label input__error" Visible="false" ResourceString="Kadena.CategoryForm.FailureMsg" ForeColor="Red" />
+        <cms:LocalizedLabel ID="lblFailureText" runat="server"  EnableViewState="False" CssClass="error-label EditingFormErrorLabel" Visible="false" ResourceString="Kadena.CategoryForm.FailureMsg" ForeColor="Red" />
     </div>
 
 </div>

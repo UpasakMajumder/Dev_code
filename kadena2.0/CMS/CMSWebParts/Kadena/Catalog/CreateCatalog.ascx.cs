@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.Enums;
+using System.Web;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -47,6 +48,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         set
         {
             SetValue("NoDataFoundText", value);
+        }
+    }
+
+    /// <summary>
+    /// Select all text
+    /// </summary>
+    public string NoCampaignOpen
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.NoCampaignOpen"), string.Empty);
+        }
+        set
+        {
+            SetValue("NoCampaignOpen", value);
         }
     }
 
@@ -181,6 +197,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
         else
         {
+            catalogControls.Visible = true;
             lblNoProducts.Visible = false;
             ddlBrands.Visible = ShowBrandFilter;
             ddlProductTypes.Visible = ShowProductCategoryFilter;
@@ -208,24 +225,32 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     private void Bindproducts()
     {
         List<CampaignsProduct> products = null;
-        if (TypeOfProduct == (int)ProductsType.PreBuy)
+        if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
         {
             BindPrograms();
             BindProductTypes();
             if (OpenCampaign != null)
             {
                 products = CampaignsProductProvider.GetCampaignsProducts()
-                           .WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
+                           .WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
             }
+            BindingProductsToRepeater(products);
         }
-        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+        else if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign == null)
+        {
+            catalogControls.Visible = false;
+            lblNoProducts.Visible = false;
+            campaignIsNotOpen.Visible = true;
+
+        }
+        if (TypeOfProduct == (int)ProductsType.GeneralInventory)
         {
             BindBrands();
             BindProductTypes();
-            products = CampaignsProductProvider.GetCampaignsProducts()
+            products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID)
                 .WhereEquals("ProgramID", null).ToList();
+            BindingProductsToRepeater(products);
         }
-        BindingProductsToRepeater(products);
     }
     /// <summary>
     /// Getting programs based on open campaign
@@ -360,7 +385,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             lblNoProducts.Visible = false;
             if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
             {
-                var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
                 if (programID != default(int) && !DataHelper.DataSourceIsEmpty(products))
                 {
                     products = products.Where(x => x.ProgramID == programID).ToList();
@@ -371,9 +396,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 BindingProductsToRepeater(products, posNum);
             }
-            else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+            if (TypeOfProduct == (int)ProductsType.GeneralInventory)
             {
-                var products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID", null).ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", null).ToList();
                 if (brandID != default(int) && !DataHelper.DataSourceIsEmpty(products))
                 {
                     products = products.Where(x => x.BrandID == brandID).ToList();
@@ -455,9 +480,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                             .ToList();
                 string htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProductsPDFHeader");
                 string programFooterText = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProgramFooterText");
-                htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", OpenCampaign?.Name);
-                htmlTextheader = htmlTextheader.Replace("OrderStartDate", OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"));
-                htmlTextheader = htmlTextheader.Replace("OrderEndDate", OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
+                if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
+                {
+                    htmlTextheader = htmlTextheader.Replace("CAMPAIGNNAME", OpenCampaign?.Name);
+                    htmlTextheader = htmlTextheader.Replace("OrderStartDate", OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"));
+                    htmlTextheader = htmlTextheader.Replace("OrderEndDate", OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
+                }
                 string generalInventory = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                 {
@@ -465,7 +493,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 List<int> brands = new List<int>();
                 string programsContent = string.Empty;
-                if (TypeOfProduct == (int)ProductsType.PreBuy)
+                if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                 {
                     var programs = ProgramProvider.GetPrograms()
                                        .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
@@ -485,6 +513,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 else
                 {
                     var productItems = CampaignsProductProvider.GetCampaignsProducts()
+                                        .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                                         .WhereEquals("ProgramID", null)
                                         .ToList();
                     var inventoryList = productItems
@@ -507,11 +536,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         List<CampaignsProduct> productItems = new List<CampaignsProduct>();
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
                         {
-                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
+                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
                         }
                         else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                         {
-                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID", null).ToList();
+                            productItems = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("ProgramID", null).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
                         }
                         var catalogList = productItems
                                         .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
@@ -529,10 +558,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.SKUShortDescription ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTDESCRIPTION", product?.SKUDescription ?? string.Empty);
-                                pdfProductContent = pdfProductContent.Replace("PRODUCTVALIDSTATES", stateInfo?.States ?? string.Empty);
+                                pdfProductContent = pdfProductContent.Replace("PRODUCTVALIDSTATES", stateInfo?.States.Replace(",", ", ") ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy ? ValidationHelper.GetString(product.EstimatedPrice, string.Empty) : ValidationHelper.GetString(product.SKUPrice, string.Empty));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty);
-                                pdfProductContent = pdfProductContent.Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil.ToString() ?? string.Empty);
+                                pdfProductContent = pdfProductContent.Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil.ToString("MMM dd, yyyy") ?? string.Empty);
                                 pdfProductsContent += pdfProductContent;
                                 pdfProductContent = string.Empty;
                                 selectedProducts.Remove(product.SKUNumber);
@@ -641,6 +670,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
                 var skuDetails = SKUInfoProvider.GetSKUs()
                                 .WhereIn("SKUID", skuIds)
+                                .And()
+                                .WhereEquals("SKUEnabled", true)
                                 .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
                                 .ToList();
                 if (!DataHelper.DataSourceIsEmpty(skuDetails))
@@ -685,30 +716,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// </summary>
     /// <param name="imagepath"></param>
     /// <returns></returns>
-    public string GetProductImage(object imagepath)
+    public string GetProductImage(string imagepath)
     {
         string returnValue = string.Empty;
         try
         {
-            if (TypeOfProduct == (int)ProductType.PreBuy)
+            if (!string.IsNullOrWhiteSpace(imagepath))
             {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
+                string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
+                returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
             }
-            else
-            {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
-            }
-
         }
         catch (Exception ex)
         {

@@ -96,20 +96,21 @@
     missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
     certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
     autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'
+    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'    
   };  
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js"></script>
-<script src="~/CMSScripts/Custom/Kadena/SmartyStreet.js"></script>
-<script>
+{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
+<script>  
   $('.js-tabMyAccount').on("click",function(){
-                           $('.smarty-ui').css('display','block');                      
+    $('.smarty-ui').css('display','block');                      
   });
   $('.js-tabOther').on("click",function(){
-                       $('.smarty-ui').css('display','none');                      
+    $('.smarty-ui').css('display','none');                      
   });
 </script>
+
+
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>

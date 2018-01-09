@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using DryIoc;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Helpers;
-using Kadena.WebAPI.Factories;
-using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Infrastructure.Contracts;
+using Kadena2.Infrastructure.Services;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -16,11 +17,11 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
-namespace Kadena.WebAPI
+namespace Kadena2.Container.Default
 {
     public static class ContainerBuilder
     {
-        public static Container RegisterBLL(this Container container)
+        public static IContainer RegisterBLL(this IContainer container)
         {
             container.Register<IShoppingCartService, ShoppingCartService>();
             container.Register<ISearchService, SearchService>();
@@ -43,11 +44,11 @@ namespace Kadena.WebAPI
             container.Register<IAddressBookService, AddressBookService>();
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
-		    container.Register<ILoginService, LoginService>();
+            container.Register<ILoginService, LoginService>();
             return container;
         }
 
-        public static Container RegisterKentico(this Container container)
+        public static IContainer RegisterKentico(this IContainer container)
         {
             container.Register<IKenticoUserProvider, KenticoUserProvider>();
             container.Register<IKenticoResourceService, KenticoResourceService>();
@@ -74,14 +75,14 @@ namespace Kadena.WebAPI
             return container;
         }
 
-        public static Container RegisterKadenaSettings(this Container container)
+        public static IContainer RegisterKadenaSettings(this IContainer container)
         {
             container.Register<IKadenaSettings, KadenaSettings>();
             container.Register<IShippingEstimationSettings, ShippingEstimationSettings>();
             return container;
         }
 
-        public static Container RegisterMicroservices(this Container container)
+        public static IContainer RegisterMicroservices(this IContainer container)
         {
             container.Register<IMailingListClient, MailingListClient>();
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
@@ -92,22 +93,23 @@ namespace Kadena.WebAPI
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
-            
+            container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
             return container;
         }
 
-        public static Container RegisterFactories(this Container container)
+        public static IContainer RegisterFactories(this IContainer container)
         {
             container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
             container.Register<ICheckoutPageFactory, CheckoutPageFactory>();
             return container;
         }
 
-        public static Container RegisterInfrastructure(this Container container)
+        public static IContainer RegisterInfrastructure(this IContainer container)
         {
             container.RegisterInstance(typeof(IMapper), Mapper.Instance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }
     }
+
 }
