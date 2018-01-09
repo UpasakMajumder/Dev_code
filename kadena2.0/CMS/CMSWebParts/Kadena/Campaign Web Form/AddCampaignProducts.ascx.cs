@@ -652,6 +652,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
                 .Columns("ItemID,POSNumber")
+                .OrderBy("POSNumber")
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(pos))
             {
