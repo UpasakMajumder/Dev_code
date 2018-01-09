@@ -77,6 +77,12 @@ namespace Kadena.BusinessLogic.Services
                 {
                     new ProductTemplatesHeader
                     {
+                        Name = nameof(ProductTemplate.Image).ToCamelCase(),
+                        Title = _resources.GetResourceString("KADENA.PRODUCT.IMAGE"),
+                        Sorting = SortingType.None
+                    },
+                    new ProductTemplatesHeader
+                    {
                         Name = nameof(ProductTemplate.ProductName).ToCamelCase(),
                         Title = _resources.GetResourceString("KADENA.PRODUCT.NAME"),
                         Sorting = SortingType.None
@@ -142,7 +148,8 @@ namespace Kadena.BusinessLogic.Services
                             TemplateId = d.TemplateId,
                             CreatedDate = DateTime.Parse(d.Created),
                             UpdatedDate = DateTime.Parse(d.Updated),
-                            ProductName = d.Name
+                            ProductName = d.Name,
+                            Image = d.PreviewUrls?.FirstOrDefault() ?? "https://picsum.photos/200/200/?image=590" // TODO remove after implementing real thumbnail
                         };
                     })
                     .OrderByDescending(t => t.UpdatedDate)

@@ -13,5 +13,6 @@ namespace Kadena.Dto.TemplatedProduct.MicroserviceResponses
         public string Updated { get; set; }
         public TemplateServiceDocumentMailingList MailingList { get; set; }
         public Dictionary<string, object> MetaData { get; set; }
+        public string[] PreviewUrls { get; set; }
     }
 }
