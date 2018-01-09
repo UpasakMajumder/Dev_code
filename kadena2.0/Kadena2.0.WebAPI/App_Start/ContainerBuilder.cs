@@ -40,6 +40,7 @@ namespace Kadena.WebAPI
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
 		    container.Register<ILoginService, LoginService>();
+		    container.Register<IFileService, FileService>();
             return container;
         }
 

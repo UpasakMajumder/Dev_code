@@ -11,6 +11,7 @@ namespace Kadena2.MicroserviceClients
         public static FileModule KList { get; } = new FileModule("KList");
         public static FileModule KProducts { get; } = new FileModule("KProducts");
         public static FileModule KDesign { get; } = new FileModule("kdesign");
+        public static FileModule KadenaObjects { get; } = new FileModule("kadena-objects");
 
         private FileModule(string value)
         {
