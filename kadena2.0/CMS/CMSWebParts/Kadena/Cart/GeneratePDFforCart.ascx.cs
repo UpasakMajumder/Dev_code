@@ -25,7 +25,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("InventoryType", value);
             }
         }
-
+        /// <summary>
+        ///generate PDF  text
+        /// </summary>
+        public string TotalCartPDFButtonText
+        {
+            get
+            {
+                return ValidationHelper.GetString(ResHelper.GetString("Kadena.Product.TotalCartPDFButtonText"), string.Empty);
+            }
+            set
+            {
+                SetValue("TotalCartPDFButtonText", value);
+            }
+        }
         #endregion "Properties"
 
         #region "Page Events"

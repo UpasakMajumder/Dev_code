@@ -9,7 +9,7 @@
 <div runat="server" id="tblCartItems" class="js-cartItems">
     <cms:QueryRepeater ID="rptCartItems" runat="server">
         <HeaderTemplate>
-            <table class="table show-table-bottom">
+            <table class="table show__table-bottom">
                 <tbody>
                     <tr>
                         <th><%= POSNumber %> </th>
