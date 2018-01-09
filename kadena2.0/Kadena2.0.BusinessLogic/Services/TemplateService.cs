@@ -149,7 +149,7 @@ namespace Kadena.BusinessLogic.Services
                             CreatedDate = DateTime.Parse(d.Created),
                             UpdatedDate = DateTime.Parse(d.Updated),
                             ProductName = d.Name,
-                            Image = d.PreviewUrls?.FirstOrDefault() ?? "https://picsum.photos/200/200/?image=590" // TODO remove after implementing real thumbnail
+                            Image = d.PreviewUrls?.FirstOrDefault()
                         };
                     })
                     .OrderByDescending(t => t.UpdatedDate)
