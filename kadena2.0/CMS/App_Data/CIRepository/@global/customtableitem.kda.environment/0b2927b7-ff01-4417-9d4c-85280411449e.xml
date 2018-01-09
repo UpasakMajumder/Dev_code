@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <customtableitem.kda.environment>
-  <AmazonS3Folder>prod/media</AmazonS3Folder>
+  <AmazonS3Folder>prod</AmazonS3Folder>
   <CodeName>Prod</CodeName>
   <DisplayName>Production</DisplayName>
   <ItemGUID>0b2927b7-ff01-4417-9d4c-85280411449e</ItemGUID>
