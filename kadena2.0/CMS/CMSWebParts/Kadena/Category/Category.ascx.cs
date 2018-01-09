@@ -11,6 +11,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.EventLog;
+using Kadena.Old_App_Code.Kadena.Constants;
 
 public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
 {
@@ -90,7 +91,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     newPage.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
-                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
                 {
@@ -131,7 +132,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     editPage.SetValue("ProductCategoryDescription", categroyDes);
                     editPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false));
                     editPage.Update();
-                    URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else
                 {
