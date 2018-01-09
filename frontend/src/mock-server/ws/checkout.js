@@ -69,6 +69,7 @@ module.exports.ui = {
       },
       "dialogUI": {
         "title": "New address",
+        "saveAddressCheckbox": "Save in settings",
         "discardBtnLabel": "Discard changes",
         "submitBtnLabel": "Confirm & use address",
         "requiredErrorMessage": "The field is required",

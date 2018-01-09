@@ -5,6 +5,7 @@ import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
 import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
+import Checkbox from 'app.dump/Form/CheckboxInput';
 
 class NewAddressDialog extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class NewAddressDialog extends Component {
     const defaultCountry = fields.find(field => field.id === 'country').values.find(country => country.isDefault);
 
     this.state = {
+      saveAddress: false,
       invalids: [],
       address: {
         customerName: '',
@@ -35,7 +37,7 @@ class NewAddressDialog extends Component {
 
   submit = () => {
     const { address } = this.state;
-    const { submit, closeDialog } = this.props;
+    const { submit, closeDialog, saveAddress } = this.props;
 
     const invalids = [];
     const bodyData = this.getBodyData();
@@ -54,8 +56,8 @@ class NewAddressDialog extends Component {
 
     this.setState({ invalids });
     if (invalids.length) return;
-
-    submit(this.state.address);
+    this.state.saveAddress && saveAddress({ id: -1, ...address });
+    submit(address);
     closeDialog();
   };
 
@@ -64,26 +66,42 @@ class NewAddressDialog extends Component {
     return null;
   };
 
+  toggleSaveAddress = () => {
+    this.setState({ saveAddress: !this.state.saveAddress });
+  };
+
   render () {
     const { closeDialog, ui, userNotification } = this.props;
 
     const footer = (
-      <div className="btn-group btn-group--right">
-        <button
-          onClick={closeDialog}
-          type="button"
-          className="btn-action btn-action--secondary"
-        >
-          {ui.discardBtnLabel}
-        </button>
+      <div>
+        <div>
+          <Checkbox
+            id="save-address"
+            label={ui.saveAddressCheckbox}
+            type="checkbox"
+            onChange={this.toggleSaveAddress}
+            checked={this.state.saveAddress}
+          />
+        </div>
 
-        <button
-          onClick={this.submit}
-          type="button"
-          className="btn-action"
-        >
-          {ui.submitBtnLabel}
-        </button>
+        <div className="btn-group btn-group--right">
+          <button
+            onClick={closeDialog}
+            type="button"
+            className="btn-action btn-action--secondary"
+          >
+            {ui.discardBtnLabel}
+          </button>
+
+          <button
+            onClick={this.submit}
+            type="button"
+            className="btn-action"
+          >
+            {ui.submitBtnLabel}
+          </button>
+        </div>
       </div>
     );
 
@@ -142,13 +160,15 @@ class NewAddressDialog extends Component {
   }
 
   static propTypes = {
+    saveAddress: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
     userNotification: PropTypes.string,
     ui: PropTypes.shape({
       title: PropTypes.string.isRequired,
       discardBtnLabel: PropTypes.string.isRequired,
-      submitBtnLabel: PropTypes.string.isRequired
+      submitBtnLabel: PropTypes.string.isRequired,
+      saveAddressCheckbox: PropTypes.string.isRequired
     }).isRequired
   };
 

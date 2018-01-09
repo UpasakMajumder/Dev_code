@@ -37,6 +37,7 @@ export default (state = {}, action) => {
     return payload.ui;
 
   case ADD_SHIPPING_ADDRESS + SUCCESS:
+    if (!Object.keys(state).length) return state;
     return {
       ...state,
       shipping: {
