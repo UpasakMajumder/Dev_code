@@ -434,9 +434,8 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return $"{AmazonHelper.EndPoint}/{objectKeyFromPath}".ToLowerCSafe();
             }
-            string downloadPath = AmazonHelper.GetDownloadPath("~\\" + CMS.IO.Path.EnsureBackslashes(objectKeyFromPath, false));
-            string hashString = this.GetHashString(URLHelper.GetQuery(downloadPath));
-            return this.ResolveUrl(URLHelper.AddParameterToUrl(downloadPath, "hash", hashString));
+            string downloadPath = AmazonHelper.GetDownloadPath(objectKeyFromPath);
+            return this.ResolveUrl(downloadPath);
         }
 
         private static FileNotFoundException GetFileNotFoundException(string path)

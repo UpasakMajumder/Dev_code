@@ -11,7 +11,7 @@ namespace Kadena.AmazonFileSystemProvider
         private static bool? mPublicAccess;
         private static string mEndPoint;
         /// <summary>Path to azure file page.</summary>
-        public const string AMAZON_FILE_PAGE = "~/CMSPages/GetAmazonFile.aspx";
+        public const string AMAZON_FILE_PAGE = "~/api/file/get";
 
         /// <summary>
         /// Returns whether Amazon S3 storage sets public read access to uploaded files and whether direct storage links are generated.
