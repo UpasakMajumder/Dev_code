@@ -35,6 +35,12 @@
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoCampaignOpen  %></span></div>
     </div>
 </div>
+<div id="noProductSelected" runat="server" class="noProSelected" visible="false">
+    <div class="clearfix"></div>
+    <div class=" mt-2">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoProductSelected  %></span></div>
+    </div>
+</div>
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts" DataBindByDefault="false">
         <ItemTemplate>
@@ -47,7 +53,7 @@
                 </div>
                 <div class="input__wrapper">
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
-                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
+                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" />
                     <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
                 </div>
                 <p><%#Eval("SKUDescription")%></p>
@@ -56,3 +62,4 @@
     </cms:CMSRepeater>
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
+<asp:HiddenField ID="hdnSaveFullCatalog" runat="server" ClientIDMode="Static" />
