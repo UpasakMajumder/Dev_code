@@ -1413,7 +1413,7 @@ config.localization.languages = {
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility">False</property>
           <property name="categoryname"></property>
-          <property name="checkpermissions">False</property>
+          <property name="checkpermissions">True</property>
           <property name="classnames">
             <![CDATA[KDA.AddressModule;KDA.BrandsModule;KDA.BusinessUnitsModule;KDA.CampaignModule;KDA.Category;KDA.DAMModule;KDA.DashboardModule;KDA.HelpModule;KDA.InsightsModule;KDA.MailingListModule;KDA.POSModule;KDA.ProductsModule;KDA.ProgramsModule;KDA.ProofingModule;KDA.RecentOrdersModule;KDA.SettingsModule;KDA.SourcingModule;KDA.UsersModule;KDA.InboundTrackingModule;KDA.AdminModule;KDA.CustomCatalogModule;KDA.FAQModule;KDA.GenericModule;KDA.PrebuyModule;KDA.HomeModule]]>
           </property>
