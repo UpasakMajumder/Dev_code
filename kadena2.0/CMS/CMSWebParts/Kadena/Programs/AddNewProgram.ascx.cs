@@ -265,6 +265,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             var Campaigns = CampaignProvider.GetCampaigns()
                 .Columns("CampaignID,Name")
                 .WhereEquals("Status", 1)
+                .OrderBy("Name")
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(Campaigns))
             {
