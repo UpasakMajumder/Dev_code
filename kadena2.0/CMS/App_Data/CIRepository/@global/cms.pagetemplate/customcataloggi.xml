@@ -254,93 +254,57 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containertitle"></property>
           <property name="contentafter">
 <![CDATA[
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript">
-   $(document).ready(function () {
-    $('#errorLabel').text('');
-    var listval = [];
-    $(".js_Product").click(function () {
-      if ($(this).is(':checked')) {
-        listval.push($(this).val());
-      }
-      else {
-        if ((index = listval.indexOf($(this).val())) !== -1) {
-          listval.splice(index, 1);
-        }
-      }
-      $('#hdncheckedValues').val(listval);
-    });
-    $(".selectAllChk").click(function () {
-      checkAllProducts();
-      
-    });
-    $(".saveAllCatalog").click(function () {
-      checkAllProducts();
-      $(".js_Product").each(function () {
-        listval.push($(this).val());
-      });
-      $('#hdncheckedValues').val(listval);
-    });
-    $(".saveSelection").click(function () {
-      $(".js_Product").each(function () {
-        if($(this).checked)
-        {
-          return true;
-        }
-        else{
-          return false;
-          $('#errorLabel').text('You have not selected any items to put into your custom catalog. Please select items and try again.');
-        }
-      });
-      
-    });
-    var checkAllProducts = function () {
-      $(".js_Product").each(function () {
-        if ($(".selectAllChk").is(':checked')) {
-          $(".js_Product").prop('checked', true);
-          listval.push($(this).val());
-        }
-        else {
-          $(".js_Product").prop('checked', false);
-          if ((index = listval.indexOf($(this).val())) !== -1) {
-            listval.splice(index, 1);
-          }
-        }
-        $('#hdncheckedValues').val(listval);
-      });
-    }
-        var GetCheckboxValues = function () {
-          
-        }
-            
-            });
-  
-  function SelectforPrint(thiselem) {
-    var ele = $(thiselem).parent().parent().parent().find('.enablePrint');
-    $(ele).toggleClass('printIt');
-  }
-  
-  function Printfull() {
-    $('.enablePrint').addClass('printIt');
-    window.print();
-    $('.enablePrint').removeClass('printIt');
-  }
-  
-  function printselected()
-  {
-    var chkstatus = false;
-    $(".js_Product").each(function (index) {
-      var status = this.checked;
-      if (status == true)
-        chkstatus = status;
-    });
-    if (chkstatus)
-    { window.print(); }
-    else
-    { var msg='{$Kadena.CatalogPrint.PrintAlertText$}';
-     alert(msg); }
-  }
-</script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" > </script> 
+  <script type = "text/javascript" >
+	$(document).ready(function () {
+		$('#errorLabel').text('');
+		var listval = [];
+		$(".js_Product").click(function () {
+			if ($(this).is(':checked')) {
+              $('.noProSelected').hide();
+				listval.push($(this).val());
+			} else {
+				if ((index = listval.indexOf($(this).val())) !== -1) {
+					listval.splice(index, 1);
+				}
+			}
+			$('#hdncheckedValues').val(listval);
+		});
+		$(".selectAllChk").click(function () {
+			checkAllProducts();
+
+		});
+		$(".saveAllCatalog").click(function () {
+            $('.noProSelected').hide();
+			$(".js_Product").each(function () {
+				listval.push($(this).val());
+			});
+			$('#hdnSaveFullCatalog').val(listval);
+		});
+		
+		var checkAllProducts = function () {
+			$(".js_Product").each(function () {
+				if ($(".selectAllChk").is(':checked')) {
+					if (!$(this).is(':checked')) {
+						$(this).prop('checked', true);
+						listval.push($(this).val());
+					}
+				} else {
+					$(".js_Product").prop('checked', false);
+					if ((index = listval.indexOf($(this).val())) !== -1) {
+						listval.splice(index, 1);
+					}
+				}
+                $('.noProSelected').hide();
+				$('#hdncheckedValues').val(listval);
+			});
+		}
+		var GetCheckboxValues = function () {
+
+		}
+
+	});
+</script>	
 ]]>
           </property>
           <property name="contentbefore"></property>

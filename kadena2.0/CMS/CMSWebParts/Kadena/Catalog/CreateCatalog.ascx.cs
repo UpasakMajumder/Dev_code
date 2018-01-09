@@ -39,6 +39,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Select all text
     /// </summary>
+    public string NoProductSelected
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.NoProductSelected"), string.Empty);
+        }
+        set
+        {
+            SetValue("NoProductSelected", value);
+        }
+    }
+
+    /// <summary>
+    /// Select all text
+    /// </summary>
     public string NoDataFoundText
     {
         get
@@ -456,7 +471,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            CreateProductPDF();
+            CreateProductPDF(hdncheckedValues.Value);
         }
         catch (Exception ex)
         {
@@ -468,18 +483,18 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// Creating products PDF from Html
     /// </summary>
     /// <returns></returns>
-    public void CreateProductPDF()
+    public void CreateProductPDF(string selectedValues)
     {
         try
         {
-            if (!string.IsNullOrEmpty(hdncheckedValues.Value))
+            if (!string.IsNullOrEmpty(selectedValues))
             {
                 var programs = ProgramProvider.GetPrograms()
                                        .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
-                                       .WhereEquals("CampaignID", OpenCampaign.CampaignID)
+                                       .WhereEquals("CampaignID", OpenCampaign?.CampaignID??default(int))
                                        .ToList();
                 lblNoProducts.Visible = false;
-                List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
+                List<string> selectedProducts = selectedValues.Split(',').ToList();
                 var skuDetails = SKUInfoProvider.GetSKUs()
                                             .WhereIn("SKUNumber", selectedProducts)
                                             .ToList();
@@ -563,7 +578,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductImage(product.SKUImagePath));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUNumber ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
-                                pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.SKUShortDescription ?? string.Empty);
+                                pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTDESCRIPTION", product?.SKUDescription ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTVALIDSTATES", stateInfo?.States.Replace(",", ", ") ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy ? ValidationHelper.GetString(product.EstimatedPrice, string.Empty) : ValidationHelper.GetString(product.SKUPrice, string.Empty));
@@ -612,7 +627,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             else
             {
                 Bindproducts();
-                lblNoProducts.Visible = true;
+                noProductSelected.Visible = true;
             }
         }
         catch (Exception ex)
@@ -653,7 +668,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            CreateProductPDF();
+            CreateProductPDF(hdnSaveFullCatalog.Value);
         }
         catch (Exception ex)
         {
