@@ -74,7 +74,7 @@ class NewAddressDialog extends Component {
     const { closeDialog, ui, userNotification } = this.props;
 
     const footer = (
-      <div>
+      <div className="flex--center--between">
         <div>
           <Checkbox
             id="save-address"
