@@ -15,20 +15,37 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IMailingListClient _mailingClient;
         private readonly IAddressValidationClient _validationClient;
-        private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoSiteProvider _site;
         private readonly IMapper _mapper;
 
-        public KListService(IMailingListClient client, IKenticoResourceService kenticoResource, IAddressValidationClient validationClient, IMapper mapper)
+        public KListService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper)
         {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (validationClient == null)
+            {
+                throw new ArgumentNullException(nameof(validationClient));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _mailingClient = client;
-            _kentico = kenticoResource;
+            _site = site;
             _mapper = mapper;
             _validationClient = validationClient;
         }
 
         public async Task<MailingList> GetMailingList(Guid containerId)
         {
-            var customerName = _kentico.GetKenticoSite().Name;
+            var customerName = _site.GetKenticoSite().Name;
 
             var data = await _mailingClient.GetMailingList(containerId);
             return _mapper.Map<MailingList>(data.Payload);

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.GenericModule</CodeName>
+    <GUID>b4129f2e-d3a9-4ffd-a23a-015a7db273bd</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>Allows to manage page-level permissions.</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Modify permissions</PermissionDisplayName>
+  <PermissionGUID>8989915a-c20a-4145-b9c8-ee3e05a4f21a</PermissionGUID>
+  <PermissionName>ModifyPermissions</PermissionName>
+  <PermissionOrder>8</PermissionOrder>
+</cms.classpermission>

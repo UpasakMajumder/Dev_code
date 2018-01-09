@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using DryIoc;
-using Kadena.Helpers;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.ScheduledTasks
@@ -28,9 +23,7 @@ namespace Kadena.ScheduledTasks
                     if (container == null)
                     {
                         var newContainer = new Container();
-                        ConfigureMapper();
                         RegisterServices(newContainer);
-
                         container = newContainer;
                     }
                 }
@@ -41,28 +34,23 @@ namespace Kadena.ScheduledTasks
 
         private static void RegisterServices(IContainer container)
         {
-            // infrastructure
+            container
+                .RegisterKentico()
+                .RegisterMicroservices()
+                .RegisterKadenaSettings();
+
+            // scheduled tasks infrastructure
             container.Register<Infrastructure.IConfigurationProvider, KenticoConfigurationProvider>();
-            container.Register<IKenticoProviderService, KenticoProviderService>();
-            container.Register<IKenticoResourceService, KenticoResourceService>();
-            container.Register<IKenticoLogger, KenticoLogger>();
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.RegisterInstance(typeof(IMapper), CreateMapper());
 
-            // microservices
-            container.Register<IMailingListClient, MailingListClient>();
-            container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
-
-            // task services
+            // scheduled tasks services
             container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
-
-            // helpers
-            container.Register<IMicroProperties, MicroProperties>();
         }
 
-        private static void ConfigureMapper()
+        private static IMapper CreateMapper()
         {
-            Mapper.Initialize(cfg => cfg.AddProfile<KenticoModelMappingsProfile>());
+            return new MapperConfiguration(cfg => cfg.AddProfile<KenticoModelMappingsProfile>()).CreateMapper();
         }
     }
 }

@@ -58,6 +58,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
             {
                 BindResourceStrings();
+                BindStatus();
                 CountryID = ValidationHelper.GetInteger(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_AddressDefaultCountry"), 0);
                 if (CountryID > 0)
                 {
@@ -98,6 +99,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             rfZipcode.ErrorMessage = ResHelper.GetString("Kadena.Address.ZipcodeRequired");
             lnkSave.Text = Request.QueryString["id"] != null ? ResHelper.GetString("Kadena.Address.Update") : ResHelper.GetString("Kadena.Address.Save");
             lnkCancel.Text = ResHelper.GetString("Kadena.Address.Cancel");
+            lblBrand.InnerText= ResHelper.GetString("Kadena.Address.Brands");
         }
         catch (Exception ex)
         {
@@ -288,6 +290,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                         addressData.SetValue("Email", txtEmail.Text.Trim());
                         addressData.SetValue("CompanyName", txtComapnyName.Text.Trim());
                         addressData.SetValue("AddressTypeID", ddlAddressType.Value);
+                        addressData.SetValue("Status", ddlStatus.SelectedValue);
                         return addressData;
                     }
                 }
@@ -310,6 +313,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 objAddress.SetValue("Email", txtEmail.Text.Trim());
                 objAddress.SetValue("CompanyName", txtComapnyName.Text.Trim());
                 objAddress.SetValue("AddressTypeID", ddlAddressType.Value);
+                objAddress.SetValue("Status", ddlStatus.SelectedValue);
                 return objAddress;
             }
         }
@@ -460,5 +464,14 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             uniSelectorState.StopProcessing = true;
             uniSelectorState.Enabled = false;
         }
+    }
+    /// <summary>
+    /// Bind the status Type
+    /// </summary>
+    public void BindStatus()
+    {
+        ddlStatus.Items.Clear();
+        ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
+        ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
     }
 }

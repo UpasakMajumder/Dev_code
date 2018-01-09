@@ -4,20 +4,35 @@ using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models;
+using System;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class CustomerDataService : ICustomerDataService
     {
         private readonly IKenticoUserProvider kenticoUsers;
-        private readonly IKenticoProviderService kenticoProvider;
-        private readonly IKenticoResourceService kenticoResource;
+        private readonly IKenticoPermissionsProvider kenticoPermissions;
+        private readonly IKenticoLocalizationProvider kenticoLocalization;
 
-        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoProviderService kenticoProvider, IKenticoResourceService kenticoResource)
+        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization)
         {
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (kenticoPermissions == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoPermissions));
+            }
+            if (kenticoLocalization == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLocalization));
+            }
+
             this.kenticoUsers = kenticoUsers;
-            this.kenticoProvider = kenticoProvider;
-            this.kenticoResource = kenticoResource;
+            this.kenticoPermissions = kenticoPermissions;
+            this.kenticoLocalization = kenticoLocalization;
         }
 
         public CustomerData GetCustomerData(int siteId, int customerId)
@@ -43,8 +58,8 @@ namespace Kadena.BusinessLogic.Services
             var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
             if (address != null)
             {
-                var country = kenticoProvider.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
-                var state = kenticoProvider.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
+                var country = kenticoLocalization.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);
+                var state = kenticoLocalization.GetStates().FirstOrDefault(s => s.Id == address.State.Id);
 
                 customerData.Address = new CustomerAddress
                 {
@@ -63,10 +78,10 @@ namespace Kadena.BusinessLogic.Services
         {
             var claims = new Dictionary<string, string>();
 
-            bool canSeePrices = kenticoUsers.UserCanSeePrices(siteId, userId);
+            bool canSeePrices = kenticoPermissions.UserCanSeePrices(siteId, userId);
             claims.Add("UserCanSeePrices", canSeePrices.ToString().ToLower());
 
-            bool canDownloadHiresPdf = kenticoUsers.UserCanDownloadHiresPdf(siteId, userId);
+            bool canDownloadHiresPdf = kenticoPermissions.UserCanDownloadHiresPdf(siteId, userId);
             claims.Add("UserCanDownloadHiResPdf", canDownloadHiresPdf.ToString().ToLower());
 
             return claims;

@@ -253,6 +253,26 @@ ORDER BY ItemOrder
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ProductShipTime" columnsize="200" columntype="text" guid="90e7ac3e-ecf2-4c22-9416-f90cd75df043" publicfield="false" visible="true">
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductProductionTime" columnsize="200" columntype="text" guid="71be3738-d32d-4050-99ac-ef0eab75a41f" publicfield="false" visible="true">
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassFormLayout />

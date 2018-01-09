@@ -31,14 +31,19 @@
   </div>
 </div>
 <div class="content-block">
-  <div class="search__block">
-    <!--Filter content zone-->
-    {^WebPartZone|(id)ZoneBusinessUnitsFilter^}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        <!--Filter content zone-->
+        {^WebPartZone|(id)ZoneBusinessUnitsFilter^}
+      </div>
+      <div class="add__btn">
+        <!--Zone for creating new business unit button-->
+        {^WebPartZone|(id)ZoneNewBusinessUnitNewButton^}
+      </div>
+    </div>
   </div>
-  <div class="add__btn">
-    <!--Zone for creating new business unit button-->
-    {^WebPartZone|(id)ZoneNewBusinessUnitNewButton^}
-  </div>
+  
   <!--Business unit List-->
   {^WebPartZone|(id)ZoneBusinessUnits^}
   <div class="data_footer">
@@ -267,10 +272,14 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter">
-            <![CDATA[</table>]]>
+<![CDATA[
+</table>
+</div>
+]]>
           </property>
           <property name="contentbefore">
 <![CDATA[
+<div class="table__responsive">
 <table id="reptable" class="table show__table-buttom">
   <tr>    
     <th>{$KDA.BusinessUnitsList.BusinessUnitNumber$}</th>
@@ -344,10 +353,12 @@ BusinessUnitName LIKE '%{?searchtext?}%'
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.ItemList.NoDataFoundText$}
+<div class=" mt-2">
+  <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
 <style>
   #reptable {
-  display: none;
+    display: none;
   }
 </style>
 ]]>

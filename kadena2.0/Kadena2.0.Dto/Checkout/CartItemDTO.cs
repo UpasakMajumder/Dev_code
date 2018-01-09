@@ -18,5 +18,7 @@
         public string EditorURL { get; set; }
         public string MailingListPrefix { get; set; }
         public string TemplatePrefix { get; set; }
+        public string ProductionTime { get; set; }
+        public string ShipTime { get; set; }
     }
 }

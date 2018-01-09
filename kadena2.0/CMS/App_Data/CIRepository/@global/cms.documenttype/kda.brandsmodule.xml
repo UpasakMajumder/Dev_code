@@ -10,7 +10,7 @@
     <GUID>3bf2bc83-78e9-4450-923e-4357d2f66748</GUID>
     <ObjectType>cms.pagetemplate</ObjectType>
   </ClassDefaultPageTemplateID>
-  <ClassDisplayName>__Brands Module </ClassDisplayName>
+  <ClassDisplayName>_Brands Module </ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
       <field column="BrandsModuleID" columnprecision="0" columntype="integer" guid="b3e97a7f-bd5a-4d4c-92ae-6b103e598b4e" isPK="true" publicfield="false">

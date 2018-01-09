@@ -4,8 +4,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class CampaignProductDto
     {
-        [Header(0, "Campagin Name")]
-        public string Campagin { get; set; }
+        [Header(0, "Campaign Name")]
+        public string Campaign { get; set; }
 
         [Header(1, "Program Name")]
         [MaxLength(100)]
@@ -16,65 +16,70 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(30)]
         public string SKU { get; set; }
 
-        [Header(3, "Product Name *")]
+        [Header(3, "Cenveo ID")]
+        [MaxLength(30)]
+        public string CenveoID { get; set; }
+
+        [Header(4, "Product Name *")]
         [Required]
         public string ProductName { get; set; }
 
-        [Header(4, "Allowed States Group ID")]
+        [Header(5, "Allowed States Group ID")]
         public string AllowedStates { get; set; }
 
-        [Header(5, "Long Description")]
+        [Header(6, "Long Description")]
         public string LongDescription { get; set; }
 
-        [Header(6, "Product Expiry Date (MM/dd/yyyy)")]
+        [Header(7, "Product Expiry Date (MM/dd/yyyy) *")]
         [MaxLength(20)]
+        [Required]
         public string SKUValidUntil { get; set; }
 
-        [Header(7, "Brand Code *")]
+        [Header(8, "Brand *")]
         [Required]
-        [MaxLength(10)]
-        public string BrandCode { get; set; }
+        [MaxLength(100)]
+        public string Brand { get; set; }
 
-        [Header(8, "Estimated Price")]
+        [Header(9, "Estimated Price")]
         [MaxLength(30)]
         public string EstimatedPrice { get; set; }
 
-        [Header(9, "Actual Price")]
+        [Header(10, "Actual Price")]
         [MaxLength(30)]
         public string ActualPrice { get; set; }
 
-        [Header(10, "Product Category (Type) *")]
+        [Header(11, "Product Category (Type) *")]
         [Required]
-        [MaxLength(30)]
-        public string ProductCategoryID { get; set; }
+        [MaxLength(100)]
+        public string ProductCategory { get; set; }
 
-        [Header(11, "Bundle Quantity *")]
+        [Header(12, "Bundle Quantity *")]
         [Required]
         [MaxLength(30)]
         public string BundleQuantity { get; set; }
 
-        [Header(12, "Total Quantity")]
+        [Header(13, "Total Quantity")]
         [MaxLength(30)]
         public string TotalQuantity { get; set; }
 
-        [Header(13, "Product Weight *")]
+        [Header(14, "Product Weight *")]
         [MaxLength(30)]
         [Required]
         public string ProductWeight { get; set; }
 
-        [Header(14, "Status *")]
+        [Header(15, "Status *")]
         [Required]
-        [MaxLength(250)]
+        [MaxLength(20)]
         public string Status { get; set; }
 
-        [Header(15, "Item Specs ID")]
+        [Header(16, "Item Specs ID")]
         public string ItemSpecsID { get; set; }
 
-        [Header(16, "Image URL")]
+        [Header(17, "Image URL")]
         [MaxLength(200)]
         public string ImageURL { get; set; }
 
-        [Header(17, "Thumbnail URL")]
+        [Header(18, "Thumbnail URL")]
         [MaxLength(200)]
         public string ThumbnailURL { get; set; }
     }

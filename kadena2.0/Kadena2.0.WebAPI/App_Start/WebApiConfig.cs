@@ -2,6 +2,7 @@
 using DryIoc;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI
 {
@@ -39,6 +40,7 @@ namespace Kadena.WebAPI
             new Container()
                 .RegisterInfrastructure()
                 .RegisterKentico()
+                .RegisterKadenaSettings()
                 .RegisterBLL()
                 .RegisterMicroservices()
                 .RegisterFactories()

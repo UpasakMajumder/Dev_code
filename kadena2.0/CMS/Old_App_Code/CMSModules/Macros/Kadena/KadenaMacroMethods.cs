@@ -4,22 +4,26 @@ using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
+using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
-using System.Collections.Generic;
-using Kadena.Old_App_Code.Kadena.Forms;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.BusinessLogic.Services;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
+using Kadena.Old_App_Code.Kadena.Forms;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.WebAPI.KenticoProviders;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 
@@ -291,8 +295,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
-
-            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+            string adminCacheKey = IsUserInKadenaAdminRole() ? "_admin" : string.Empty;
+            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition" + adminCacheKey + "_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
         }
 
         [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
@@ -341,11 +345,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var logger = new KenticoLogger();
-                var resources = new KenticoResourceService();
-                var documents = new KenticoDocumentProvider(resources, logger, Mapper.Instance);
-                var kenticoService = new KenticoProviderService(resources, logger, documents, Mapper.Instance);
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoService.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                var kenticoLocalization = ProviderFactory.KenticoLocalizationProvider;
+                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }
@@ -355,13 +356,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         public static object FormatDate(EvaluationContext context, params object[] parameters)
         {
             var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
-            return new DateTimeFormatter(new KenticoResourceService()).Format(datetime);
+            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).Format(datetime);
         }
 
         [MacroMethod(typeof(string), "Returns unified date format string", 0)]
         public static object GetDateFormatString(EvaluationContext context, params object[] parameters)
         {
-            return new DateTimeFormatter(new KenticoResourceService()).GetFormatString();
+            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).GetFormatString();
         }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
@@ -388,7 +389,10 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             foreach (var pageType in pageTypes)
             {
-                result += $"ClassName = N'{pageType}' OR ";
+                if (GetRoleBasedAdminAccessModuleStatus(pageType))
+                {
+                    result += $"ClassName = N'{pageType}' OR ";
+                }
             }
             if (result.Length > 0)
             {
@@ -399,6 +403,36 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 result = "1 = 0";
             }
             return result;
+        }
+
+        private static bool GetRoleBasedAdminAccessModuleStatus(string className)
+        {
+            bool status = true;
+            if (className.ToLower().Equals("kda.adminmodule"))
+            {
+                status = IsUserInKadenaAdminRole();
+            }
+            return status;
+        }
+
+        private static bool IsUserInKadenaAdminRole()
+        {
+            bool isKadenaAdmin = false;
+            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
+            UserInfo user = MembershipContext.AuthenticatedUser;
+            if (user != null && !string.IsNullOrWhiteSpace(adminRoles))
+            {
+                string[] roles = adminRoles.Split(';');
+                foreach (string role in roles)
+                {
+                    isKadenaAdmin = user.IsInRole(role, SiteContext.CurrentSiteName);
+                    if(isKadenaAdmin)
+                    {
+                        break;
+                    }
+                }
+            }
+            return isKadenaAdmin;
         }
 
         #region TWE macro methods
@@ -484,12 +518,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <param name="parameters"></param>
         /// <returns></returns>
         [MacroMethod(typeof(string), "Returns Currently opened campaign name", 1)]
-        public static object GetCampaignName(EvaluationContext context, params object[] parameters)
+        public static string GetCampaignName(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 string campaignName = string.Empty;
-                var campaign = CampaignProvider.GetCampaigns().Columns("Name").WhereEquals("OpenCampaign", true).WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID).FirstOrDefault();
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name")
+                                .WhereEquals("OpenCampaign", true)
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null))
+                                .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
                 if (campaign != null)
                 {
                     campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
@@ -554,9 +592,21 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
                     var cartTotal = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-                    return ValidationHelper.GetDouble(cartTotal, default(double));
+                    return ValidationHelper.GetDecimal(cartTotal, default(decimal));
                 }
-                return default(double);
+                else
+                {
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(userID, ProductType.GeneralInventory);
+                    decimal cartTotal = 0;
+                    loggedInUSerCartIDs.ForEach(care =>
+                    {
+                        var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
+                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
+                        cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                    });
+                    return ValidationHelper.GetDecimal(cartTotal, default(decimal));
+                }
             }
             catch (Exception ex)
             {

@@ -12,6 +12,7 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>2e3f1106-f8e4-4347-ae3b-15ada5ac006a</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
@@ -27,16 +28,20 @@
   </div>
 </div>
 <div class="content-block">
-  <div class="search__block">
-   {^WebPartZone|(id)ZoneSearch^}
-  </div>
-  <div class="add__btn">
-    {^WebPartZone|(id)ZoneCreateButton^}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        {^WebPartZone|(id)ZoneSearch^}
+      </div>
+      <div class="add__btn">
+        {^WebPartZone|(id)ZoneCreateButton^}
+      </div>
+    </div>
   </div>
   {^WebPartZone|(id)ZonePosList^}
   <div class="data_footer">
     <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-     {^WebPartZone|(id)ZonePagination^}
+      {^WebPartZone|(id)ZonePagination^}
     </div>
   </div>
 </div>
@@ -113,7 +118,24 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+<![CDATA[
+<div class="dialog" id="divDailogue" >
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__content">
+            <p>
+                <span  ID="lblCartError">{$ KDA.POSDelete.DeleteErrorMessage$}</span></p>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+                <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">{$KDA.Common.CloseButtonText$}</button>
+            </div>
+        </div>
+    </div>
+</div>
+]]>
+          </property>
           <property name="contentbefore"></property>
           <property name="controlid">BasicRepeater</property>
           <property name="customtimezone"></property>
@@ -156,7 +178,9 @@
           <property name="webparttype">BasicRepeater</property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.ItemList.NoDataFoundText$}
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
 <style>
   #reptable {
   display: none;
@@ -185,7 +209,7 @@
           <property name="enableselecteditem">True</property>
           <property name="filtername"></property>
           <property name="instanceguid">97a27045-e236-4469-8520-a8e3fd3d71c0</property>
-          <property name="orderby" ismacro="true">{% Createdwhen %}</property>
+          <property name="orderby">ItemCreatedWhen Desc</property>
           <property name="selecteddatabasecolumnname">ItemID</property>
           <property name="selectedquerystringkeyname">ItemID</property>
           <property name="selectedvalidationtype">int</property>
@@ -213,35 +237,47 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-function ChangePOSStatus(PosID,thiselem)
-{
-var x = confirm('{$Kadena.CampaignDelete.Alert$}');
-if (x)
-{
-if(PosID !='')
-{
-$.ajax({
-type: "GET",
-url: '/api/pos/'+ PosID,
-contentType: "application/json; charset=utf-8",
-dataType: "json",
-success: function (data) {
-location.reload();
-},
-error: function (xhr, ajaxOptions, thrownError) { }
-});
-}
-}
-else
-return false;
-}
+<script>
+  function ChangePOSStatus(PosID,thiselem)
+  {
+    var x = confirm('{$Kadena.CampaignDelete.Alert$}');
+    if (x)
+    {
+      if(PosID !='')
+      {
+        $.ajax({
+          type: "GET",
+          url: '/api/deletepos/'+ PosID,
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function (data) {
+            if(data.success)
+            {
+              location.reload();
+            }
+            else
+            {
+              $("#divDailogue").addClass("active")
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) { }
+        });
+      }
+    }
+    else
+      return false;
+  }
+  $(".js-CloseMesaage").on("click",function(){
+    $("#divDailogue").removeClass("active")
+      });
+</script>
 ]]>
           </property>
-          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="inlinescriptpagelocation">Startup</property>
           <property name="instanceguid">43ce29f6-019b-4475-9b47-b0843aeef152</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>
@@ -297,6 +333,53 @@ return false;
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle">POSCreateButton</property>
+          <property name="webparttype">statichtml</property>
+        </webpart>
+        <webpart controlid="shtmlPOSBulkUploadBtn" guid="5af2c6ab-474e-44d2-ba54-5a20293121e4" type="statichtml" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">shtmlPOSBulkUploadBtn</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">5af2c6ab-474e-44d2-ba54-5a20293121e4</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="text" ismacro="true">
+            <![CDATA[&nbsp;<a class="btn-action" href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_POSBulkUploadPage)|(user)cvoqa2@gmail.com|(hash)6f8d8363d40ef455f13caf3373af2c87832fc26d312bad50be0101a35392f343%}">{$Kadena.POS.POSBulkUploadBtn$}</a>]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">POS Bulk Upload Button</property>
           <property name="webparttype">statichtml</property>
         </webpart>
       </webpartzone>
@@ -380,15 +463,15 @@ return false;
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displayfirstlastautomatically">False</property>
-          <property name="displaypreviousnextautomatically">True</property>
+          <property name="displaypreviousnextautomatically">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="firstpage">CMS.PagerTransformations.General-FirstPage</property>
+          <property name="firstpage"></property>
           <property name="groupsize">10</property>
           <property name="hideonsubpages">False</property>
           <property name="hidepagerforsinglepage">True</property>
           <property name="instanceguid">d4c0c55f-8a9e-4954-978b-480958d28e4c</property>
-          <property name="lastpage">CMS.PagerTransformations.General-LastPage</property>
+          <property name="lastpage"></property>
           <property name="nextgroup">CMS.PagerTransformations.General-NextGroup</property>
           <property name="nextpage">KDA.Transformations.General-NextPage</property>
           <property name="outputconverttablestodivs">none</property>
@@ -422,6 +505,67 @@ return false;
           <property name="visible">True</property>
           <property name="webparttitle">POSPager</property>
           <property name="webparttype">UniPager</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneBreadcrumb" v="1">
+        <webpart controlid="StaticText1" guid="b015ef41-2e08-4462-925c-5661dc713a1f" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">StaticText1</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">b015ef41-2e08-4462-925c-5661dc713a1f</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+ {%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+iteratedDocument = iteratedDocument.Parent;
+};
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
     </page>

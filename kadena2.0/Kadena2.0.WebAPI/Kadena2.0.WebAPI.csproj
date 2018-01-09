@@ -112,7 +112,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\ContainerBuilder.cs" />
     <Compile Include="App_Start\MapperBuilder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FileController.cs" />
@@ -138,7 +137,6 @@
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
-    <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
     <Compile Include="Infrastructure\Communication\BaseResponse.cs" />
@@ -153,7 +151,6 @@
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
     <Compile Include="App_Start\WebApiInitModule.cs" />
-    <Compile Include="Infrastructure\InMemoryCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -167,11 +164,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Factories\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
       <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
       <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
+      <Project>{bf079df3-1e13-44c5-8b87-c040257eac07}</Project>
+      <Name>Kadena2.0.Container.Default</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>

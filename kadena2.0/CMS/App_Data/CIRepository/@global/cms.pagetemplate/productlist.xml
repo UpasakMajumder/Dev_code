@@ -29,13 +29,17 @@
   </div>
 </div>
 <div class="content-block">
-  <div class="search__block">
-    <!--Filter content zone-->
-    {^WebPartZone|(id)ZoneProductFilter^}
-  </div>
-  <div class="add__btn">
-    <!--Zone for creating new Product button-->
-    {^WebPartZone|(id)ZoneNewProduct^}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="search__block">
+        <!--Filter content zone-->
+        {^WebPartZone|(id)ZoneProductFilter^}
+      </div>
+      <div class="add__btn">
+        <!--Zone for creating new Product button-->
+        {^WebPartZone|(id)ZoneNewProduct^}
+      </div>
+    </div>
   </div>
   <!--Products List-->
   {^WebPartZone|(id)ZoneProducts^}
@@ -65,7 +69,7 @@
 ]]>
           </property>
           <property name="cacheitemname"></property>
-          <property name="cacheminutes"></property>
+          <property name="cacheminutes">0</property>
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -81,6 +85,7 @@
 <![CDATA[
 </tbody>
 </table>
+</div>
 <script type="text/javascript">
 $( document ).ready(function() {  
 if($('#reptable tr').length==1)
@@ -93,7 +98,8 @@ $('#reptable').hide();
           </property>
           <property name="contentbefore">
 <![CDATA[
-<table  id="reptable" class="table show__table-buttom">
+<div class="table__responsive">
+<table  id="reptable" class="show-table">
   <tbody>
     <tr>
       <th>{$KDA.GIProductsList.POSNumber$}</th>
@@ -157,15 +163,14 @@ $('#reptable').hide();
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
-          <property name="wherecondition">p.ProgramID is null</property>
+          <property name="wherecondition" ismacro="true">
+            <![CDATA[ [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%}]]>
+          </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.ItemList.NoDataFoundText$}
-<style>
-  #reptable {
-  display: none;
-  }
-</style>
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
 ]]>
           </property>
         </webpart>

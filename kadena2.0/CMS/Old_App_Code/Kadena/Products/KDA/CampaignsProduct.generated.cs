@@ -193,11 +193,11 @@ namespace CMS.DocumentEngine.Types.KDA
 		/// Item Specs.
 		/// </summary>
 		[DatabaseField]
-		public int ItemSpecs
+		public string ItemSpecs
 		{
 			get
 			{
-				return ValidationHelper.GetInteger(GetValue("ItemSpecs"), 0);
+				return ValidationHelper.GetString(GetValue("ItemSpecs"), "");
 			}
 			set
 			{
@@ -253,6 +253,23 @@ namespace CMS.DocumentEngine.Types.KDA
 			set
 			{
 				SetValue("StoreFrontProductID", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Product Weight.
+		/// </summary>
+		[DatabaseField]
+		public decimal ProductWeight
+		{
+			get
+			{
+				return ValidationHelper.GetDecimal(GetValue("ProductWeight"), 0);
+			}
+			set
+			{
+				SetValue("ProductWeight", value);
 			}
 		}
 
@@ -435,7 +452,7 @@ namespace CMS.DocumentEngine.Types.KDA
 			/// <summary>
 			/// Item Specs.
 			/// </summary>
-			public int ItemSpecs
+			public string ItemSpecs
 			{
 				get
 				{
@@ -492,6 +509,22 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.StoreFrontProductID = value;
+				}
+			}
+
+
+			/// <summary>
+			/// Product Weight.
+			/// </summary>
+			public decimal ProductWeight
+			{
+				get
+				{
+					return mInstance.ProductWeight;
+				}
+				set
+				{
+					mInstance.ProductWeight = value;
 				}
 			}
 		}

@@ -64,6 +64,15 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="Status" columntype="boolean" guid="881fbe4c-44ff-49d4-a8f5-d48d0f8f7d83" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>true</defaultvalue>
+          <fieldcaption>Status</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="e753091a-495b-4e88-9d4a-2c6a709cf2c7" publicfield="false" system="true">
         <properties>
           <fieldcaption>Created by</fieldcaption>

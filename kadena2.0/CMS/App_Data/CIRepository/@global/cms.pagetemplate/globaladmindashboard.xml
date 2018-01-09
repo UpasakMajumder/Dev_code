@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>GlobalAdminDashboard</PageTemplateCodeName>
+  <PageTemplateDescription>Dashboard for recent order and recent user details</PageTemplateDescription>
+  <PageTemplateDisplayName>_Global Admin Dashboard</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>754acf74-5c61-419a-ac5a-cd7631909473</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content__inner">
+  <div class="content-header">
+    {^WebPartZone|(id)ZoneGlobalAdminDashboardHeader^}
+  </div>
+  <div class="content-block">
+    {^WebPartZone|(id)ZoneGlobalAdminDashboarTable^}
+  </div>
+</div>
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>html</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneGlobalAdminDashboardHeader" v="1">
+        <webpart controlid="StaticText1" guid="15dc3fbb-5874-4d97-9db1-db7ce46686f6" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">StaticText1</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">15dc3fbb-5874-4d97-9db1-db7ce46686f6</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<div class="content-header__inner">
+                                    <h1 class="content-header__page-name">{%GetResourceString("Kadena.GlobalAdminDashboard.HeaderText")|(user)cvoqa2@gmail.com|(hash)cbbe0382db6e29724a55e62953a2637c7ffbc16e462fffe2319d521d0f16c6e3%}</h1>
+                                </div>
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">GAdminDashboardHeader</property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+        <webpart controlid="StaticText" guid="7e7bbfb2-355c-4ad5-b192-b6d473918577" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">StaticText</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">7e7bbfb2-355c-4ad5-b192-b6d473918577</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+ {%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+iteratedDocument = iteratedDocument.Parent;
+};
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">GAdminDashboardBreadCrumb</property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneGlobalAdminDashboarTable" v="1">
+        <webpart controlid="GlobalAdminDashboard" guid="5a348bb2-f0d0-4ae7-ad3e-a9a59155f48b" type="GlobalAdminDashboard" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">GlobalAdminDashboard</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">5a348bb2-f0d0-4ae7-ad3e-a9a59155f48b</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">GlobalAdminDashboard</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

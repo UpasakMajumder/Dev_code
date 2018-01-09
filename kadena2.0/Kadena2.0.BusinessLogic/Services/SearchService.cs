@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using System.Web;
+using System;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -15,16 +16,44 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IMapper mapper;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoSiteProvider siteProvider;
         private readonly IKenticoSearchService kenticoSearch;
-        private readonly IKenticoProviderService kenticoProvider;
+        private readonly IKenticoProductsProvider products;
         private readonly IKenticoDocumentProvider documents;
 
-        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSearchService kenticoSearch, IKenticoProviderService kenticoProvider, IKenticoDocumentProvider documents)
+        public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
+            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (site == null)
+            {
+                throw new ArgumentNullException(nameof(site));
+            }
+            if (kenticoSearch == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoSearch));
+            }
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+
             this.mapper = mapper;
             this.resources = resources;
+            this.siteProvider = site;
             this.kenticoSearch = kenticoSearch;
-            this.kenticoProvider = kenticoProvider;
+            this.products = products;
             this.documents = documents;
         }
 
@@ -77,7 +106,7 @@ namespace Kadena.BusinessLogic.Services
 
         public List<ResultItemPage> SearchPages(string phrase, int results)
         {
-            var site = resources.GetKenticoSite();
+            var site = siteProvider.GetKenticoSite();
             var searchResultPages = new List<ResultItemPage>();
             var indexName = $"KDA_PagesIndex.{site.Name}";
             var datarowsResults = kenticoSearch.Search(phrase, indexName, "/%", results, true);
@@ -102,7 +131,7 @@ namespace Kadena.BusinessLogic.Services
 
         public List<ResultItemProduct> SearchProducts(string phrase, int results)
         {
-            var site = resources.GetKenticoSite();
+            var site = siteProvider.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
             var indexName = $"KDA_ProductsIndex.{site.Name}";
             var productsPath = resources.GetSettingsKey("KDA_ProductsPageUrl")?.TrimEnd('/');
@@ -117,10 +146,10 @@ namespace Kadena.BusinessLogic.Services
                     Title = dr[4].ToString(),
                     Breadcrumbs = documents.GetBreadcrumbs(documentId),
                     IsFavourite = false,
-                    ImgUrl = kenticoProvider.GetProductTeaserImageUrl(documentId)
+                    ImgUrl = products.GetProductTeaserImageUrl(documentId) 
                 };
 
-                var product = kenticoProvider.GetProductByDocumentId(documentId);
+                var product = products.GetProductByDocumentId(documentId);
                 if (product != null)
                 {
                     // fill in SKU image if teaser is empty

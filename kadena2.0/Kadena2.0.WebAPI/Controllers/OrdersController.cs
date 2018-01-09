@@ -9,6 +9,7 @@ using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -20,6 +21,19 @@ namespace Kadena.WebAPI.Controllers
 
         public OrdersController(IOrderListServiceFactory orderListServiceFactory, IOrderService orderSubmitService, IMapper mapper)
         {
+            if (orderListServiceFactory == null)
+            {
+                throw new ArgumentNullException(nameof(orderListServiceFactory));
+            }
+            if (orderSubmitService == null)
+            {
+                throw new ArgumentNullException(nameof(orderSubmitService));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
             _mapper = mapper;
             _orderService = orderListServiceFactory.GetRecentOrders();
             _orderSubmitService = orderSubmitService;
@@ -62,7 +76,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var submitRequest = _mapper.Map<SubmitOrderRequest>(request);
             var serviceResponse = await _orderSubmitService.SubmitOrder(submitRequest);
-            var resultDto = Mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            var resultDto = _mapper.Map<SubmitOrderResponseDto>(serviceResponse);
             return ResponseJson(resultDto);
         }
     }

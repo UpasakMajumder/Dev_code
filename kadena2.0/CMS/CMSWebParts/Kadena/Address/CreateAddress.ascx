@@ -6,14 +6,14 @@
 <div class="content-block">
     <div class="login__form-content js-login">
         <div class="css-login form__section">
-            <div class="form signup_form form_width100">
+            <div class="form form__lg">
 
                 <div class="mb-2 form__block">
                     <div class="input__wrapper">
                         <span class="input__label" runat="server" id="lblName"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtName" runat="server" CssClass="input__text" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterName")%>' MaxLength="50"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfName" runat="server" ControlToValidate="txtName" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfName" runat="server" ControlToValidate="txtName" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <span class="input__label" runat="server" id="lblTelephone"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtTelephone" runat="server" CssClass="input__text" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterPhone")%>' MaxLength="25"></asp:TextBox>
-                            <asp:CustomValidator ID="cvTelephone" runat="server" CssClass="input__error" ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate"></asp:CustomValidator>
+                            <asp:CustomValidator ID="cvTelephone" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate"></asp:CustomValidator>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                         <span class="input__label" runat="server" id="lblAddressLine1"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtAddressLine1" runat="server" CssClass="input__text js-Address" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterAddressline1")%>' MaxLength="50"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" CssClass="input__error js-errAddress"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfAddressLine1" runat="server" ControlToValidate="txtAddressLine1" CssClass="EditingFormErrorLabel js-errAddress"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                         <span class="input__label" runat="server" id="lblCity"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtCity" runat="server" CssClass="input__text js-City" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterCity")%>' MaxLength="20"></asp:TextBox>
-                            <asp:RequiredFieldValidator runat="server" ID="rfCity" ControlToValidate="txtCity" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator runat="server" ID="rfCity" ControlToValidate="txtCity" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                         <span class="input__label" runat="server" id="lblZipcode"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtZipcode" runat="server" CssClass="input__text js-Zipcode" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterZip")%>' MaxLength="20"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfZipcode" runat="server" ControlToValidate="txtZipcode" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfZipcode" runat="server" ControlToValidate="txtZipcode" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
@@ -109,25 +109,48 @@
                         <span class="input__label" runat="server" id="lblEmail"></span>
                         <div class="input__inner">
                             <asp:TextBox ID="txtEmail" runat="server" CssClass="input__text" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterEmail")%>'></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="rfEmail" ControlToValidate="txtEmail" runat="server" CssClass="input__error"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfEmail" ControlToValidate="txtEmail" runat="server" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mb-2 form__block">
+                    <div class="input__wrapper">
+                        <span class="input__label" runat="server" id="lblStatus"><%#ResHelper.GetString("Kadena.Address.Status")%></span>
+                        <div class="input__inner">
+                            <cms:CMSDropDownList ID="ddlStatus" runat="server" EnableViewState="True" CssClass="input__select"></cms:CMSDropDownList>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-2 form_block">
-                    <div class="input__wrapper">
-                        <span class="input__label" runat="server" id="lblBrand"><%#ResHelper.GetString("KDA.Address.Brands")%></span>
-                        <div class="input__inner">
-                            <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand"><i class="fa fa-plus" aria-hidden="true"></i><%#ResHelper.GetString("KDA.Address.Brand")%></a>
-                        </div>
+                <div class="mb-2 form__block">
+                    <div class="input__wrapper allocated__block allocated__business">
+                        <span class="input__label" runat="server" id="lblBrand"><%#ResHelper.GetString("Kadena.Address.Brands")%></span>
+                        <a href="#" class="js-btnBrand" data-toggle="modal" data-target="#myModal_brand" id="btnAssignBrand">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 511.398 511.398" style="enable-background: new 0 0 511.398 511.398;" xml:space="preserve" class="">
+<g>
+    <g>
+        <path d="M477.549,182.379H329.018V33.847c0-18.69-15.154-33.844-33.844-33.844H216.22c-18.69,0-33.844,15.153-33.844,33.844    v148.526H33.844C15.153,182.373,0,197.526,0,216.216v78.966c0,18.691,15.153,33.844,33.844,33.844h148.532v148.527    c0,18.689,15.153,33.842,33.844,33.842h78.96c18.691,0,33.844-15.152,33.844-33.842V329.026h148.533    c18.689,0,33.842-15.152,33.842-33.844v-78.966C511.393,197.526,496.246,182.379,477.549,182.379z" data-original="#D63A3A" class="active-path" data-old_color="#0275d8" fill="#0275d8" />
+    </g>
+</g></g></svg>
+                        </a>
+                    </div>
+                    <div class="Business_Assigned_user">
+                        <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display: none">
+                            <tbody id="AddressBrandsTablebody">
+                                <tr>
+                                    <td><%#ResHelper.GetString("Kadena.Address.BrandName")%></td>
+                                    <td><%#ResHelper.GetString("Kadena.Address.BrandCcode")%></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
             </div>
-            <div class="mb-3 form_btns">
+            <div class="mb-3 form__btns">
                 <div class="">
-                    <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow js-btnSmarty" OnClick="btnSave_Click"></asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="lnkSave" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnSave_Click"></asp:LinkButton>
                     <asp:LinkButton ID="lnkCancel" runat="server" CssClass="btn-action login__login-button btn--no-shadow" CausesValidation="false" OnClick="btnCancel_Click"></asp:LinkButton>
                 </div>
             </div>
@@ -138,37 +161,31 @@
 <asp:HiddenField ID="hdnBrand" runat="server" ClientIDMode="Static" />
 
 <!--pop up html-->
-<div class="modal_popup modal_brand" id="myModal_brand" style="display: none">
-    <div class="modal-content">
-        <div class="modal_header clearfix">
-            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("KDA.Address.AddBrand")%></a>
-            <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
+<div class="dialog modal_businessunit" id="brandPopup">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <a href="#" class="btn-action js-btn js-btnSaveBrand"><%#ResHelper.GetString("Kadena.Address.AddBrand")%></a>
+            <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
         </div>
-        <div class="modal_body">
-            <table class="show-table" id="brands">
+        <div class="dialog__content">
+            <div id="NoBrands" style="display:none">No Brands Found</div>
+            <table class="table" id="brands">
                 <tbody id="brandsbody">
                     <tr>
                         <td>
                             <input type="checkbox" class="js-chkAll" id="selectAll">
                         </td>
-                        <td><%#ResHelper.GetString("KDA.Address.BrandName")%></td>
-                        <td><%#ResHelper.GetString("KDA.Address.BrandCcode")%></td>
+                        <td><%#ResHelper.GetString("Kadena.Address.BrandName")%></td>
+                        <td><%#ResHelper.GetString("Kadena.Address.BrandCode")%></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+            </div>
+        </div>
     </div>
-</div>
-
-<!--Bind Brands-->
-<div class="Business_Assigned_user">
-    <table class="show-table js-brandsTable" id="AddressBrandsTable" style="display: none">
-        <tbody id="AddressBrandsTablebody">
-            <tr>
-                <td><%#ResHelper.GetString("KDA.Address.BrandName")%></td>
-                <td><%#ResHelper.GetString("KDA.Address.BrandCcode")%></td>
-            </tr>
-        </tbody>
-    </table>
 </div>
 

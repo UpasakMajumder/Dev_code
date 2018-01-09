@@ -11,12 +11,16 @@
   <td>{%BrandName%}</td>
   <td>{%BrandCode%}</td>
   <td>{%BrandDescription%}</td>
+  {% if(Status==true){ %}
+  <td>{$KDA.Common.Status.Active$}</td>
+  {%} else {%}
+  <td>{$KDA.Common.Status.InActive$}</td> 
+  {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
   <td>
     <div class="text-center"><a href="{%Settings.KDA_CreateBrandURL|(user)cvoqa2@gmail.com|(hash)e9f3a1697e6473e00557c89e9d212cb6204309a1fdf0231b461c5ff843778571%}?itemid={%ItemID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-      <a href="" class="delete_btn js_btndelete" data-itemid={%ItemID%} onclick="DeleteBrand({%ItemID%})"> <i class="fa fa-trash" aria-hidden="true"></i></a></div>
-  </td>
-  
-  
+    </td>
+    
+    
 ]]>
   </TransformationCode>
   <TransformationCSS />

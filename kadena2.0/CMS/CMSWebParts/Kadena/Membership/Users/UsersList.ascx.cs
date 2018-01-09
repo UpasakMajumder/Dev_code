@@ -10,6 +10,8 @@ using CMS.CustomTables.Types.KDA;
 using CMS.CustomTables;
 using System.Linq;
 using System.Collections.Generic;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstractWebPart
 {
@@ -785,10 +787,11 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     user = new UserInfo();
                     formElem.Mode = CMS.Base.Web.UI.FormModeEnum.Insert;
                     formElem.AlternativeFormFullName = NewUserAlternativeForm;
+                    user.Enabled = true;
                 }
                 else
                     formElem.AlternativeFormFullName = EditUserAlternativeForm;
-
+                hdnUserRole.Value = GetUserRole(user);
                 formElem.Info = user;
 
                 pnlUserForm.Visible = true;
@@ -948,6 +951,28 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
     }
 
+    private string GetUserRole(UserInfo user)
+    {
+        string userRole = string.Empty;
+        if (user != null)
+        {
+            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
+            if (!string.IsNullOrWhiteSpace(adminRoles))
+            {
+                string[] roles = adminRoles.Split(';');
+                foreach (string role in roles)
+                {
+                    if (user.IsInRole(role, SiteContext.CurrentSiteName))
+                    {
+                        userRole = role;
+                        break;
+                    }
+                }
+            }
+        }
+        return userRole;
+    }
+
 
     /// <summary>
     /// OnPreRender override.
@@ -983,10 +1008,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 if (user == null || (user != null && user.UserID <= 0))
                 {
                     CreateNewUser(user);
-                    if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
-                    {
-                        BindBusinessUnitsToUser(BusinessUnits, user.UserID);
-                    }
                     Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
                 }
                 else
@@ -994,6 +1015,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                     if (user != null && user.UserID != 0 && !string.IsNullOrEmpty(BusinessUnits))
                     {
                         BindBusinessUnitsToUser(BusinessUnits, user.UserID);
+                        DeleteUserRoles(user.UserID);
                         NewUserRole = ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
                         if (!string.IsNullOrEmpty(NewUserRole))
                         {
@@ -1013,6 +1035,30 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             EventLogProvider.LogException("UsersList", "UserSave", ex);
         }
     }
+    /// <summary>
+    /// deletes all the roles assigned to particular user
+    /// </summary>
+    /// <param name="userID"></param>
+    private void DeleteUserRoles(int userID)
+    {
+        try
+        {
+            var userRoleData = UserRoleInfoProvider.GetUserRoles()
+                .WhereEquals("UserID", userID)
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(userRoleData))
+            {
+                userRoleData.ForEach(x =>
+                {
+                    UserRoleInfoProvider.DeleteUserRoleInfo(x);
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("UsersList", "DeleteUserRoles", ex);
+        }
+    }
 
     /// <summary>
     /// Creates new user
@@ -1030,12 +1076,13 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
             "FYBudget",
             "PasswordHint",
             "UserCompanyName",
+            "UserZipCode"
         };
         List<string> intUserSettingKeys = new List<string>() {
             "UserCountry",
             "UserDivisionID",
             "SalesManagerID",
-            "TradeMarketingManagerID",
+            "TradeMarketingManagerID"
         };
         user = new UserInfo()
         {
@@ -1060,10 +1107,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         UserInfoProvider.SetUserInfo(user);
         UserInfoProvider.SetPassword(user.UserName, Password);
         UserInfoProvider.AddUserToSite(user.UserName, CurrentSiteName);
-        NewUserRole=ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
+        NewUserRole = ValidationHelper.GetString(formElem.GetFieldValue("UserRole"), string.Empty);
         if (!string.IsNullOrEmpty(NewUserRole))
         {
             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
+        }
+        if (user != null)
+        {
+            string BusinessUnits = ValidationHelper.GetString(formElem.GetFieldValue("BusinessUnit"), string.Empty);
+            BindBusinessUnitsToUser(BusinessUnits, user.UserID);
         }
     }
 

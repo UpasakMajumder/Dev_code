@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.PrebuyModule</CodeName>
+    <GUID>a1d0e888-ecf8-43e9-9d53-a5ea343ecf63</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <PermissionDescription>Allows to completely remove pages.</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Destroy</PermissionDisplayName>
+  <PermissionGUID>09e951e7-b667-4e80-a7ce-0951b6e2d702</PermissionGUID>
+  <PermissionName>Destroy</PermissionName>
+  <PermissionOrder>6</PermissionOrder>
+</cms.classpermission>

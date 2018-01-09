@@ -11,6 +11,7 @@
     img {
       max-width: 100%;
       height: auto;
+      width: 100%;
     }
 
     .banner__con {
@@ -54,15 +55,27 @@
     width: 30%;
     padding: 15px 15px 20px;
 
-    .scroll_block {
-      overflow-y: auto;
-      max-height: 219px;
-
+    .scroll__block {
       p {
         padding-right: 10px;
       }
     }
   }
+}
+
+.isOpen {
+  .main__content {
+    .main__right {
+      .scroll__block {
+        max-height: 220px;
+        overflow-x: auto;
+      }
+    }
+  }
+}
+
+.modal__product__sec {
+  width: 500px;
 }
 
 .product__sec {
@@ -72,20 +85,25 @@
 
   .product__inner {
     .product__block {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       a {
         color: $brand-dark;
+        position: relative;
+        display: block;
 
         img {
           width: 100%;
           height: auto;
-          margin-bottom: 15px;
+          margin-bottom: 0;
         }
 
-        span {
-          display: block;
-          font-size: $font-xs;
+        h5 {
+          position: absolute;
+          bottom: 0;
+          color: $brand-white;
+          text-align: center;
+          width: 100%;
         }
       }
 
@@ -97,21 +115,28 @@
 }
 
 .admin__access {
-  background: $form-bg;
-  padding: 20px 2%;
+  padding: 0;
   border-radius: 5px;
 
   .admin__inner {
-    width: 30%;
-
     img {
       max-width: 100%;
       height: auto;
-      margin-bottom: 15px;
+      margin-bottom: 0;
     }
 
     a {
       color: $brand-dark;
+      position: relative;
+      display: block;
+    }
+
+    h5 {
+      position: absolute;
+      bottom: 0;
+      color: $brand-white;
+      text-align: center;
+      width: 100%;
     }
   }
 }

@@ -7,12 +7,12 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<div class="product_block"> 
+<div class="product__block col-sm-3"> 
   {% If(HeaderTextOne.ToLower().Contains("pre-buy")) {%}
-  {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}'> {% } else { %}<a href='#'>{%}%}
-    {%} else { %}  <a href='{%TargetURL%}'>  {%}|(user)cvoqa2@gmail.com|(hash)64f6ae5ea51a58cbc2523911f8aab5243fb2bdb56def9e0cdc2dd02777b2ae57%}      
+  {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}"> {% } else { %}<a href='#' class="js-modal" id="{%FeatureID%}">{%}%}
+    {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}">  {%}|(user)cvoqa2@gmail.com|(hash)3eae4475418fe192cbb2d100413a14a9160642994473c18f320cc6bafc0b419c%}      
       <img src="{%DisplayImage%}" alt="{%FeatureName%}"/>
-      <h5><span>{%HeaderTextOne%}</span>{%HeaderTextTwo%}</h5></a>
+      <h5>{%FeatureName%}</h5></a>
     </div>
 ]]>
   </TransformationCode>

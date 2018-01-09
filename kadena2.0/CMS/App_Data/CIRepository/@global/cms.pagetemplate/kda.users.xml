@@ -25,29 +25,36 @@
   {^WebPartZone|(id)zoneContent^}
   
   {^WebPartZone|(id)zoneTextAfter^}
-  <!--pop up html-->
-  <div class="modal_popup modal_businessunit" id="myModal_businessunits" style="display: none">
-    <div class="modal-content">
-      <div class="modal_header clearfix">
-        <button type="button" class="btn-action js-btnSaveBU">Add Business Units</button>
-        <a href="#" class="btn_close js-btnClose"><i class="fa fa-close"></i></a>
-      </div>
-      <div class="modal_body">
-        <table class="show-table" id="buinessunits">
-          <tbody id="buinessunitsbody">
-            <tr>
-              <td>
-                <input type="checkbox" class="js-chkAll" id="selectAll">
-              </td>
-              <td>Bussiness Unit Name</td>
-              <td>Bussiness Unit Number</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  
 </div>
+<!--pop up html-->
+<div class="dialog modal_businessunit" id="businessUnitPopup">  
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">    
+    <div class="dialog__header">      
+      <a href="#" class="btn-action js-btnSaveBU">{$Kadena.BuinessUnit.AddBusinessUnits$}</a>
+      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>      
+    </div>    
+    <div class="dialog__content">      
+      <table class="table" id="buinessunits">
+        <tbody id="buinessunitsbody">
+          <tr>
+            <td>
+              <input type="checkbox" class="js-chkAll" id="selectAll">
+            </td>            
+            <td>{$Kadena.Users.BusinessUnitNumber$}</td>
+            <td>{$Kadena.Users.BusinessUnitName$}</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>    
+    <div class="dialog__footer">      
+      <div class="btn-group btn-group--right">                         
+      </div>          
+    </div>      
+  </div>    
+</div>
+
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
@@ -154,7 +161,13 @@
           <property name="webparttitle"></property>
           <property name="webparttype">KDA.UsersList</property>
           <property name="wherecondition">UserPrivilegeLevel!=3</property>
-          <property name="zerorowstext">No data found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+]]>
+          </property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneHeader" v="1">
@@ -364,9 +377,7 @@ iteratedDocument = iteratedDocument.Parent;
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
-    if($('.ConfirmationSeparator').is(':visible')){
-      $('.ConfirmationSeparator').next().addClass('input__label').text('{%GetResourceString("Kadena.MyAccount.ConfirmPassword")|(user)cvoqa2@gmail.com|(hash)4d0d90a14d6450a1a67865f49af7c5beda7f599b7b288aaf5b474bc8bfd07ef6%}');
-    }
+    $('#businessUnitPopup').removeClass('active');    
     //Bind already existed  business units
     function BindBUData() {
       var currentUserID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('userid=')[1]));
@@ -381,7 +392,7 @@ iteratedDocument = iteratedDocument.Parent;
           success: function (data) {
             if (data != '') {
               var parsedData=JSON.parse(data.d);
-              var th="<tr><th>Buisness Unit Number</th><th>Buisness Unit Name</th></tr>";
+              var th="<tr><th>{$Kadena.Users.BusinessUnitNumber$}</th><th>{$Kadena.Users.BusinessUnitName$}</th></tr>";
               var rowData='';
               var ids='';
               $('#hdnbuid').val('');
@@ -390,21 +401,13 @@ iteratedDocument = iteratedDocument.Parent;
                   '</td></tr>';
                 ids+=parsedData[i].ItemID+';';
               }
-              $('#hdnbuid').val(ids);
-              
-              //alert('data');
-              //var tablehtml='<tbody>'+th+rowData+'</tbody>';
-              //$('#UserBusinessUnit').append(tablehtml);
-              //var tablehtml=rowData;
+              $('#hdnbuid').val(ids);                           
               $('#UserBusinessUnitbody').append(rowData);
-              $('#UserBusinessUnit').show();
-              
+              $('#UserBusinessUnit').show();                           
             } else {
-              //alert('failed');
             }
           },
-          error: function (xhr, ajaxOptions, thrownError) {
-            
+          error: function (xhr, ajaxOptions, thrownError) {            
           }
         });
       }
@@ -419,9 +422,8 @@ iteratedDocument = iteratedDocument.Parent;
         success: function (data) {
           if (data.d != '') {
             $('#buinessunits').html('');
-            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>Bussiness Unit Name</td><td>Bussiness Unit Number</td></tr>';
-            var parsedData=JSON.parse(data.d);
-            //alert(parsedData);
+            var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitNumber$}</td><td>{$Kadena.Users.BusinessUnitName$}</td></tr>';
+            var parsedData=JSON.parse(data.d);          
             var rowData='';
             for(i=0; i<parsedData.length;i++)
               rowData +='<tr><td><input type="checkbox" class="js-chk" value='+parsedData[i].ItemID+'></td><td class=js-td>'+parsedData[i].BusinessUnitNumber+'</td><td class=js-td>'+parsedData[i].BusinessUnitName+
@@ -437,8 +439,7 @@ iteratedDocument = iteratedDocument.Parent;
               });
             }
             
-          } else {
-            //alert('failed');
+          } else {            
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {          
@@ -448,12 +449,12 @@ iteratedDocument = iteratedDocument.Parent;
     //Show pop up
     $(document).on('click', ".js-btnAssignBU", function (e) {
       e.preventDefault();
-      $('.modal_businessunit').show();
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     //Close the pop up
-    $(document).on('click', ".js-btnClose", function () {                
-      $('.modal_businessunit').hide();
+    $(document).on('click', ".js-btnClose", function () {            
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     //check/uncheck all check boxes
@@ -464,11 +465,10 @@ iteratedDocument = iteratedDocument.Parent;
     $(document).on('click', ".js-btnSaveBU", function () {      
       var itemID='';
       $('#UserBusinessUnitbody').html('');
-      var th='<tr><th>Business Unit Number</th><th>Business Unit Name</th></tr>';
+      var th='<tr><th>{$Kadena.Users.BusinessUnitNumber$}</th><th>{$Kadena.Users.BusinessUnitName$}</th></tr>';
       var tbody='';
       $('#UserBusinessUnitbody').append('')
         $('.js-chk:checkbox:checked', buinessunits).each(function() {
-          //alert('hello');
           itemID+=$(this).val()+';';
           var rowData='';
           $(this).closest('tr').children('.js-td').each(function(){
@@ -481,12 +481,12 @@ iteratedDocument = iteratedDocument.Parent;
         $('#UserBusinessUnit').show();
       }
       $('#hdnbuid').val(itemID);
-      $('.modal_businessunit').hide();
+      $('#businessUnitPopup').toggleClass('active');
     });
     
     BindBUData();
     BindBusinessUnits();
-    
+    $('#businessUnitPopup').removeClass('active');
   });
 </script>
 ]]>
@@ -495,6 +495,39 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="instanceguid">2219a8a4-7a1c-486a-a8e3-56e8c8aa6b16</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="jsUserRoleSelector" guid="764d2ec2-beb8-435a-96e6-da54bf7c9c7c" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">jsUserRoleSelector</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script type="text/javascript">
+  $(window).ready(function() {
+    var userRoleSelector=document.getElementsByClassName("js-user-role");
+    var userRole=document.getElementById("hdnUserRole").value;
+    if(userRole!="" && userRoleSelector!=undefined && userRoleSelector.length>0)
+    {
+      document.getElementsByClassName("js-user-role")[0].value=userRole;
+    }
+  });
+  
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">764d2ec2-beb8-435a-96e6-da54bf7c9c7c</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Startup</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>

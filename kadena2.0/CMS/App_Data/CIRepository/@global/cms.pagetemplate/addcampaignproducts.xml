@@ -27,15 +27,11 @@
     <cms:CMSWebPartZone ZoneID="ZoneBreadcrubs" runat="server" />
   </div>
 </div>
-<div class="webform_title">
-  <cms:CMSWebPartZone ZoneID="ZoneAddProductText" runat="server" />
-  <div class="add_btn">
-   <cms:CMSWebPartZone ZoneID="ZoneAddProduct" runat="server" />
-  </div>
-</div>
 <div class="content-block">
-  <cms:CMSWebPartZone ZoneID="ZoneProduct" runat="server" />
+  <cms:CMSWebPartZone ZoneID="ZoneAddProductText" runat="server" />
+ <cms:CMSWebPartZone ZoneID="ZoneProduct" runat="server" />
 </div>
+
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>ascx</PageTemplateLayoutType>

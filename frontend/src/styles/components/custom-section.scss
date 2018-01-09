@@ -3,10 +3,25 @@
 }
 
 .search__block {
-  width: 370px;
+  width: 300px;
   float: left;
-  margin: 0 0 20px;
+  margin: 0 5px 20px 0;
   position: relative;
+
+  input {
+    padding-right: 45px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 11px;
+    right: 10px;
+    background: url(../gfx/svg/search.svg) no-repeat;
+    width: 18px;
+    height: 18px;
+    background-size: 100%;
+  }
 }
 
 .add__btn {
@@ -41,12 +56,26 @@
   }
 }
 
+.form__section {
+  width: 100%;
+  display: inline-block;
+}
+
 .form__block {
   float: left;
   width: 50%;
   margin-right: 0%;
   margin-bottom: 15px;
   padding: 0 15px;
+
+  .EditingFormErrorLabel {
+    position: absolute;
+    width: 100%;
+  }
+
+  .input__file {
+    height: 41px;
+  }
 }
 
 .prebuy__distdata {
@@ -82,4 +111,61 @@
   .add__btn {
     margin-bottom: 10px;
   }
+}
+
+.long__desc {
+  line-height: 13px;
+
+  textarea {
+    height: 119px;
+  }
+}
+
+.table__responsive {
+  overflow-x: auto;
+}
+
+.webform__view {
+  position: relative;
+  text-align: center;
+
+  a,
+  span {
+    border-right: 1px solid #5d5a5a;
+    line-height: 14px;
+    display: inline-block;
+    padding: 0 10px;
+
+    &:last-child {
+      border: none;
+    }
+  }
+}
+
+.state__link {
+  position: absolute;
+  right: 0;
+  top: -3px;
+}
+
+.state__group {
+  width: 400px;
+  word-break: break-all;
+}
+
+.EditingFormErrorLabel {
+  border-top: 1px solid $brand-dangerous;
+  width: 100%;
+  color: $brand-dangerous;
+  font-size: $font-xxs;
+  display: block;
+  position: absolute;
+}
+
+.tooltip__css {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  right: 5px;
 }

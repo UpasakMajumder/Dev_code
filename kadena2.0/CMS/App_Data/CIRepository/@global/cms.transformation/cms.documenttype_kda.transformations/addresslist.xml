@@ -14,11 +14,15 @@
   <td>{%CompanyName%}</td>
   <td>{%AddressPhone%}</td>
   <td>{%Email%}</td>
+  {% if(Status==true){ %}
+  <td>{$KDA.Common.Status.Active$}</td>
+  {%} else {%}
+  <td>{$KDA.Common.Status.InActive$}</td> 
+  {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
   <td>
     <div class="text-center">
       <a href="{% Settings.KDA_CreateAddressURL |(user)cvoqa2@gmail.com|(hash)0e9ef208a37fad94bd8b306cdcabe7b7117fe7381b58993c34b8d6a02ef6e9cb%}?id={%AddressID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-      <a href="#" class="delete_btn" onClick='DeleteAddress({%AddressID%})'> <i class="fa fa-trash" aria-hidden="true"></i></a>
-    </div>
+      </div>
   </td>
 </tr>
 ]]>

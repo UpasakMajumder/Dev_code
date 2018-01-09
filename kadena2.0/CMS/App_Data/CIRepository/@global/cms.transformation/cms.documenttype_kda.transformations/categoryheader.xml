@@ -7,11 +7,13 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
+<div class="table__responsive">
 <table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
       <th>{$Kadena.CategoryList.CategoryTitle$}</th>
       <th>{$Kadena.CategoryList.Description$}</th>
+      <th>{$Kadena.CategoryList.Status$}</th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>

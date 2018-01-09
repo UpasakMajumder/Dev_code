@@ -75,7 +75,7 @@
           </property>
           <property name="contentbefore">
 <![CDATA[
- <table class="table show__table-buttom">
+ <table id="reptable" class="table show__table-bottom">
                                     <tbody>
                                         <tr>
                                             <th>{% GetResourceString("Kadena.Products.POSHearder") |(user)cvoqa2@gmail.com|(hash)0a3b0a49b3ad64b2cdc3727fa76795debe29d365ba4c68f093d018952df47703%}</th>
@@ -96,7 +96,7 @@
           <property name="enableoutputfilter">False</property>
           <property name="enablepaging">False</property>
           <property name="filtername">ProductsFilter</property>
-          <property name="hidecontrolforzerorows">True</property>
+          <property name="hidecontrolforzerorows">False</property>
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">edf731f8-227f-4b70-b51e-65cd8b21125f</property>
           <property name="itemseparator"></property>
@@ -135,9 +135,20 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition">
-            <![CDATA[NodeParentID={%CurrentDocument.NodeID|(user)cvoqa2@gmail.com|(hash)8496d32f3d11301f1acab0730e0f1302133756f181dcb2f01f82e7adcca14a97%}]]>
+            <![CDATA[NodeParentID={%CurrentDocument.NodeID|(user)cvoqa2@gmail.com|(hash)8496d32f3d11301f1acab0730e0f1302133756f181dcb2f01f82e7adcca14a97%} and  [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%}]]>
           </property>
-          <property name="zerorowstext">No data found</property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+<style>
+  #reptable {
+  display: none;
+  }
+</style>
+]]>
+          </property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneFilter" v="1">
@@ -293,7 +304,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.ProductsList.HeaderText")|(user)cvoqa2@gmail.com|(hash)c5243924db286bf9b502513a750724844f3ee2ba7aa25f5f8ca442bfe2b902cb%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

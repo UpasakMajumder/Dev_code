@@ -27,10 +27,10 @@
   <div class="settings">
     <div class="css-tabs__container js-tabs" data-tab=".js-tab-settings" data-tab-active="active" data-tab-active-default=".js-tab-settings-my-account">
       <ul class="css-tabs__list">
-        <li class="css-tabs__tab js-tab-settings" data-id="t1" data-tab-content=".js-tab-settings-my-account">{$Kadena.Settings.MyAccount$}</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="t2" data-tab-content=".js-tab-settings-password">{$Kadena.Settings.Password$}</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="t3" data-tab-content=".js-tab-settings-email-notification" style="display: none;">{$Kadena.Settings.EmailNotification$}</li>
-        <li class="css-tabs__tab js-tab-settings" data-id="t4" data-tab-content=".js-tab-settings-FY-Budget-History">{$Kadena.Settings.FYBudgetHistory$}</li>
+        <li class="css-tabs__tab js-tab-settings js-tabMyAccount" data-id="t1" data-tab-content=".js-tab-settings-my-account">{$Kadena.Settings.MyAccount$}</li>
+        <li class="css-tabs__tab js-tab-settings js-tabOther" data-id="t2" data-tab-content=".js-tab-settings-password">{$Kadena.Settings.Password$}</li>
+        <li class="css-tabs__tab js-tab-settings js-tabOther" data-id="t3" data-tab-content=".js-tab-settings-email-notification" style="display: none;">{$Kadena.Settings.EmailNotification$}</li>
+        <li class="css-tabs__tab js-tab-settings js-tabOther" data-id="t4" data-tab-content=".js-tab-settings-FY-Budget-History">{$Kadena.Settings.FYBudgetHistory$}</li>
         <!--<li class="css-tabs__tab js-tab-settings" data-id="t4" data-tab-content=".js-tab-settings-addresses" {% ECommerceContext.CurrentCustomer == null ? "style='display:none;'" : "" |(user)administrator|(hash)1de4948e8b1cec9b6a385379b5ea1b2a6c5c971f8d0e1381ae900294c694a62c%}>{$Kadena.Settings.Addresses$}</li>-->
       </ul>
       <div>
@@ -96,12 +96,21 @@
     missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
     certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
     autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'
-  };
+    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'    
+  };  
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js"></script>
-<script src="~/CMSScripts/Custom/Kadena/SmartyStreet.js"></script>
+{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
+<script>  
+  $('.js-tabMyAccount').on("click",function(){
+    $('.smarty-ui').css('display','block');                      
+  });
+  $('.js-tabOther').on("click",function(){
+    $('.smarty-ui').css('display','none');                      
+  });
+</script>
+
+
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
@@ -127,7 +136,16 @@
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
-          <property name="contentbefore"></property>
+          <property name="contentbefore">
+<![CDATA[
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('.FormButton').addClass('btn-action');
+  });
+</script>
+]]>
+          </property>
           <property name="controlid">MyProfile</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
@@ -155,7 +173,7 @@
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resourceprefix"></property>
           <property name="showfordocumenttypes"></property>
-          <property name="submitbuttonresourcestring">Save Changes</property>
+          <property name="submitbuttonresourcestring">{$Kadena.MyAccount.SaveChanges$}</property>
           <property name="timezonetype">inherit</property>
           <property name="usecolonbehindlabel">True</property>
           <property name="useupdatepanel">False</property>

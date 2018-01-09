@@ -144,7 +144,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="ItemSpecs" columntype="integer" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
+      <field allowempty="true" column="ItemSpecs" columnsize="200" columntype="text" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
@@ -165,7 +165,7 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="CVOProductID" columntype="integer" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
+      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
         <properties>
           <fieldcaption>CVO ProductID</fieldcaption>
         </properties>
@@ -189,6 +189,42 @@
           <controlname>TextBoxControl</controlname>
           <FilterMode>False</FilterMode>
           <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductWeight" columnprecision="4" columnsize="19" columntype="decimal" guid="cf17246b-edde-4742-bf92-4e2b6c4d04c9" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Weight</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="CustomItemSpecs" columnsize="200" columntype="text" guid="a5220525-408c-40f2-bf60-b9fec2d04623" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Custom Item Specs</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductThumbnail" columntype="file" guid="6cc6abc0-7d57-4046-b6ae-5a85f56ec2ac" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Thumbnail</fieldcaption>
+        </properties>
+        <settings>
+          <Allowed_Extensions>jpg;jpeg;png;</Allowed_Extensions>
+          <controlname>DirectUploadControl</controlname>
+          <Extensions>custom</Extensions>
         </settings>
       </field>
     </form>

@@ -19,35 +19,32 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-     <div class="content-header">
-      <div class="content-header__inner">
-        <h1 class="content-header__page-name"><cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" /></h1>
-      </div>
-      <div class="breadcrumbs">
-        <cms:CMSWebPartZone ZoneID="ZoneNav" runat="server" />
-      </div>
-    </div>
-    <div class="content-block">
-      
+<div class="content-header">
+  <div class="content-header__inner">
+    <h1 class="content-header__page-name"><cms:CMSWebPartZone ZoneID="ZoneHearder" runat="server" /></h1>
+  </div>
+  <div class="breadcrumbs">
+    <cms:CMSWebPartZone ZoneID="ZoneNav" runat="server" />
+  </div>
+</div>
+<div class="content-block">
+  <div class="row">
+    <div class="col-sm-12">
       <div class="search__block">
         <cms:CMSWebPartZone ZoneID="ZoneSearch" runat="server" />
       </div>
       <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZoneCreate" runat="server" />
       </div>
-         
-        <cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />
-        
-      <div class="data_footer">
-        
-        
-        <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-         
-          <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
-        </div>
-        
-      </div>
-    </div>
+</div>
+</div>
+<cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />
+<div class="data_footer">
+  <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+    <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
+  </div>
+</div>
+</div>
 
 
 ]]>
@@ -204,7 +201,7 @@
           <property name="controlid">editabletext</property>
           <property name="customtimezone"></property>
           <property name="defaulttext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.CampaignForm.HeaderText")  |(user)cvoqa2@gmail.com|(hash)5760736445d093d9020db3f55e722cb3fbc13c6fbf37ba0f409badabef8c4392%}]]>
+            <![CDATA[{% CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)99dff8a4110e4a69eb6809487cf1b9326821762ff6b2feb7276ae774e8fc8e10%}]]>
           </property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
@@ -300,7 +297,7 @@
           <property name="text" ismacro="true">
 <![CDATA[
 <a class="btn-action" href='{% KadenaNamespace.GetLocalizedDocumentUrlByGUID(Settings.KDA_CampaignCreatePageUrl) |(user)cvoqa2@gmail.com|(hash)0722e110dd54d18ba3eb52da4b07b960a5a8c84dca3680deb82d5e7858dd962c%}
-'><i class="fa fa-plus" aria-hidden="true"></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
+'><i></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -333,9 +330,7 @@
           <property name="categoryname"></property>
           <property name="checkpermissions">False</property>
           <property name="classnames">KDA.Campaign</property>
-          <property name="columns">
-            <![CDATA[Name,Description,CampaignID,DocumentModifiedWhen,DocumentCreatedWhen]]>
-          </property>
+          <property name="columns">Name,Description,CampaignID,StartDate,EndDate</property>
           <property name="combinewithdefaultculture"></property>
           <property name="controlid">PagesDataSource</property>
           <property name="culturecode"></property>
@@ -464,10 +459,12 @@ return false;
           <property name="webparttype">BasicRepeater</property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
-{$Kadena.ItemList.NoDataFoundText$}
+<div class=" mt-2">
+  <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
 <style>
   #reptable {
-  display: none;
+    display: none;
   }
 </style>
 ]]>
