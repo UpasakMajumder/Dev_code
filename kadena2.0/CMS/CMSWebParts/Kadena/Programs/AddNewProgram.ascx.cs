@@ -187,7 +187,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
-            cvDesc.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            revDescription.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            revProgramName.ErrorMessage= ResHelper.GetString("Kadena.Programs.ProgramNameRangeMessage");
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.Programs.DeliveryDateRangeMessage");
             GetBrandName();
             GetCampaign();
@@ -265,6 +266,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             var Campaigns = CampaignProvider.GetCampaigns()
                 .Columns("CampaignID,Name")
                 .WhereEquals("Status", 1)
+                .OrderBy("Name")
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(Campaigns))
             {
