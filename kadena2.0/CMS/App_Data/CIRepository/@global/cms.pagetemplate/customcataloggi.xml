@@ -342,10 +342,8 @@ iteratedDocument = iteratedDocument.Parent;
   }
     function ShowZoomEffect(thisele)
     {
-        var imgsrc = $(thisele).parent().parent().find('img').attr('src');
-        var index = $(thisele).parent().parent().find('img').attr('src').lastIndexOf('?');
-        imgsrc = imgsrc.substring(0, index);
-        $('#ZoomImage').attr('src', imgsrc);
+        var imgsrc = $(thisele).parent().parent().find('img').attr('src').split('?');
+        $('#ZoomImage').attr('src', imgsrc[0]);
         $('#ImageZoomPopup').toggleClass('active');
     }
 </script>

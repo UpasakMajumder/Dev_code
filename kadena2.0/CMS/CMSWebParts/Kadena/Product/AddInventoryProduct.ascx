@@ -11,8 +11,10 @@
                 </span>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged" CssClass="input__select"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvPosNo" runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosNo">
+                    <asp:RequiredFieldValidator ID="rfvPosNo"
+                        runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosNo">
                     </asp:RequiredFieldValidator>
+
                 </div>
             </div>
         </div>
@@ -67,7 +69,7 @@
                     <cms:CMSTextBox ID="txtExpDate" runat="server" EnableViewState="false" CssClass="input__text js-datepicker"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvExpDate" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="txtExpDate">
                     </asp:RequiredFieldValidator>
-                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="EditingFormErrorLabel" ControlToValidate="txtExpDate" Type="date"  />
+                    <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" CssClass="EditingFormErrorLabel" ControlToValidate="txtExpDate" Type="date" />
                 </div>
             </div>
         </div>
@@ -78,7 +80,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="txtEstPrice"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revEstPrice" runat="server"
+                    <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="EditingFormErrorLabel"
                         ControlToValidate="txtEstPrice" ValidationExpression="((\d+)((\.\d{1,100})?))$">
                     </asp:RegularExpressionValidator>
                 </div>
@@ -90,7 +92,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtWeight" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvWeight" runat="server" ControlToValidate="txtWeight" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revWeigth" ValidationExpression="((\d+)((\.\d{1,100})?))$" runat="server" ControlToValidate="txtWeight"></asp:RegularExpressionValidator>
+                    <asp:RegularExpressionValidator ID="revWeigth" ValidationExpression="((\d+)((\.\d{1,100})?))$" runat="server" ControlToValidate="txtWeight" CssClass="EditingFormErrorLabel"></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>
@@ -329,5 +331,9 @@
     </div>
 </div>
 
-
+<style type="text/css">
+    .xxxx {
+        display: block;
+    }
+</style>
 

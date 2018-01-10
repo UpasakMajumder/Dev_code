@@ -84,7 +84,7 @@
 </div>
 
 <div class="mb-2">
-<div class="input__wrapper"><span class="input__label">{$Kadena.CreateBrand.Description$}</span>
+<div class="input__wrapper long__desc"><span class="input__label">{$Kadena.CreateBrand.Description$}</span>
 
 <div class="input__inner">$$input:BrandDescription$$</div>
 $$validation:BrandDescription$$<br />

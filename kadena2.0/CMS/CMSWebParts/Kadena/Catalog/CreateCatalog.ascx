@@ -35,6 +35,12 @@
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoCampaignOpen  %></span></div>
     </div>
 </div>
+<div id="noProductSelected" runat="server" class="noProSelected" visible="false">
+    <div class="clearfix"></div>
+    <div class=" mt-2">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%= NoProductSelected  %></span></div>
+    </div>
+</div>
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts" DataBindByDefault="false">
         <ItemTemplate>
@@ -42,22 +48,22 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
+                        <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>?MaxSideSize=150' />
                     </label>
                 </div>
-               <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
+                 <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
                 <div class="input__wrapper">
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
-                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" onchange="SelectforPrint(this);return false;" />
+                    <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" />
                     <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
                 </div>
-                <p><%#Eval("SKUDescription")%></p> 
+                <p><%#Eval("SKUDescription")%></p>
             </div>
         </ItemTemplate>
     </cms:CMSRepeater>
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
-
+<asp:HiddenField ID="hdnSaveFullCatalog" runat="server" ClientIDMode="Static" />
 <%--Zoom EffectPopup--%>
 <div class="dialog" id="ImageZoomPopup">
     <div class="dialog__shadow"></div>
@@ -77,5 +83,3 @@
         </div>
     </div>
 </div>
-
-
