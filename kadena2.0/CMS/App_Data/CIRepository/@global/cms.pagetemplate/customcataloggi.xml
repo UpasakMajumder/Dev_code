@@ -340,6 +340,14 @@ iteratedDocument = iteratedDocument.Parent;
     { var msg='{$Kadena.CatalogPrint.PrintAlertText$}';
      alert(msg); }
   }
+    function ShowZoomEffect(thisele)
+    {
+        var imgsrc = $(thisele).parent().parent().find('img').attr('src');
+        var index = $(thisele).parent().parent().find('img').attr('src').lastIndexOf('?');
+        imgsrc = imgsrc.substring(0, index);
+        $('#ZoomImage').attr('src', imgsrc);
+        $('#ImageZoomPopup').toggleClass('active');
+    }
 </script>
 ]]>
           </property>
