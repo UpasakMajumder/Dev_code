@@ -44,8 +44,8 @@ namespace Kadena2.Container.Default
             container.Register<IAddressBookService, AddressBookService>();
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
-		    container.Register<ILoginService, LoginService>();
-		    container.Register<IFileService, FileService>();
+            container.Register<ILoginService, LoginService>();
+            container.Register<IFileService, FileService>();
             return container;
         }
 
