@@ -10,5 +10,6 @@ namespace Kadena.Models.Checkout
         public string SubmitBtnLabel { get; set; }
         public string RequiredErrorMessage { get; set; }
         public IEnumerable<DialogField> Fields { get; set; }
+        public string SaveAddressCheckbox { get; set; }
     }
 }
