@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -24,8 +21,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<string> GetUrlFromS3(string key)
         {
-            var module = _resources.GetSettingsKey("KDA_AmazonS3BucketName");
-            var linkResult = await _fileClient.GetShortliveSecureLink(key, module);
+            var linkResult = await _fileClient.GetShortliveSecureLink(key);
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {
