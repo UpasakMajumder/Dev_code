@@ -633,19 +633,25 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
                     BindLabels();
+                    divNodatafound.Visible = false;
                     gdvInboundProducts.DataSource = allDetails;
                     gdvInboundProducts.DataBind();
+                    gdvInboundProducts.Visible = true;
                 }
                 else
                 {
+                    divNodatafound.Visible = true;
+                    gdvInboundProducts.Visible = false;
                     BindLabels();
                     gdvInboundProducts.DataBind();
                 }
             }
             else
             {
+                divNodatafound.Visible = true;
                 BindLabels();
                 gdvInboundProducts.DataBind();
+                gdvInboundProducts.Visible = false;
             }
         }
         catch (Exception ex)

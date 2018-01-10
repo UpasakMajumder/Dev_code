@@ -30,9 +30,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(6, "Long Description")]
         public string LongDescription { get; set; }
 
-        [Header(7, "Product Expiry Date (MM/dd/yyyy) *")]
+        [Header(7, "Product Expiry Date (MM/dd/yyyy)")]
         [MaxLength(20)]
-        [Required]
         public string SKUValidUntil { get; set; }
 
         [Header(8, "Brand *")]
