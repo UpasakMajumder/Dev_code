@@ -65,6 +65,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
     }
     /// <summary>
     /// Click Event which will save a category
+    /// // Creates a new page of the "CMS.MenuItem" page type
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -80,22 +81,15 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                 CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
                 if (parentPage != null)
                 {
-                    // Creates a new page of the "CMS.MenuItem" page type
                     CMS.DocumentEngine.TreeNode newPage = CMS.DocumentEngine.TreeNode.New("KDA.ProductCategory", tree);
-
-                    // Sets the properties of the new page
                     newPage.DocumentName = categoryName;
                     newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     newPage.SetValue("ProductCategoryTitle", categoryName);
                     newPage.SetValue("ProductCategoryDescription", categroyDes);
-                    newPage.SetValue("Status",ddlStatus.SelectedValue);
-
-                    // Inserts the new page as a child of the parent page
+                    newPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue,false));
                     newPage.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
-                    txtName.Text = string.Empty;
-                    txtDescription.Text = string.Empty;
                     Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
                 }
                 else
@@ -113,6 +107,12 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
     {
         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
+    /// <summary>
+    ///   update the  campaign
+    ///   Sets the properties of the new page
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnSave_Edit(object sender, EventArgs e)
     {
         string categoryName = txtName.Text;
@@ -125,15 +125,12 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                 CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.ProductCategory").OnCurrentSite().Where("ProductCategoryID", QueryOperator.Equals, categoyId);
                 if (editPage != null)
                 {
-                    // Sets the properties of the new page
                     editPage.DocumentName = categoryName;
                     editPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     editPage.SetValue("ProductCategoryTitle", categoryName);
                     editPage.SetValue("ProductCategoryDescription", categroyDes);
-                    editPage.SetValue("Status", ddlStatus.SelectedValue);
-                    // update the  campaign
+                    editPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false));
                     editPage.Update();
-
                     URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
                 }
                 else
