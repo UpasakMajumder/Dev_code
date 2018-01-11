@@ -61,12 +61,4 @@
       height: $card-height;
     }
   }
-
-  .rccs__card--flipped {
-    transform-style: flat;
-
-    .rccs__card--back {
-      transform: scale(-1, 1);
-    }
-  }
 }
