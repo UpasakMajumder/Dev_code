@@ -145,7 +145,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Price", value);
             }
         }
-
+        
         /// <summary>
         /// Gets or sets the SaveasPDF
         /// </summary>
@@ -271,7 +271,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
                 var estimatedPrice = default(double);
-                if (ValidCart)
+                if(ValidCart)
                 {
                     base.OnPreRender(e);
                     BindRepeaterData();
@@ -284,20 +284,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                     }
                 }
-                if (Cart.ShippingOption.ShippingOptionCarrierServiceName != "Ground")
+                if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                 {
-                   estimation= GetShippingResponse();
+                    estimation = GetShippingResponse();
                 }
-                if (estimation.Success && estimation != null)
+                if (estimation != null && estimation.Success)
                 {
                     estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
                 }
                 else
                 {
-                    divDailogue.Attributes.Add("class", "dialog");
+                    divDailogue.Attributes.Add("class", "dialog active");
                 }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
-                SelectShippingoption(inventoryType, estimatedPrice);
+                BindShippingDropdown(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
@@ -333,7 +333,27 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Event handling"
 
         #region "Private Methods"
-
+        /// <summary>
+        /// gets Shipping cost response
+        /// </summary>
+        /// <returns></returns>
+        private BaseResponseDto<EstimateDeliveryPricePayloadDto> GetShippingResponse()
+        {
+            try
+            {
+                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                return ShoppingCartHelper.CallEstimationService(estimationdto);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
+                return null;
+            }
+        }
+        /// <summary>
+        /// gets etimated subtotal
+        /// </summary>
+        /// <returns></returns>
         private double EstimateSubTotal(int inventoryType)
         {
             double price = 0;
@@ -354,8 +374,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             return price;
         }
-
-        private void SelectShippingoption(int inventoryType, double estimatedPrice)
+        /// <summary>
+        /// binds dropdown based on prodcut type
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <param name="estimatedPrice"></param>
+        private void BindShippingDropdown(int inventoryType, double estimatedPrice)
         {
             try
             {
@@ -373,7 +397,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "SelectShippingoption", ex.Message);
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "BindShippingDropdown", ex.Message);
             }
         }
 
@@ -528,21 +552,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlShippingOption_SelectedIndexChanged", ex.Message);
             }
         }
+
         #endregion "Private Methods"
-
-        private BaseResponseDto<EstimateDeliveryPricePayloadDto> GetShippingResponse()
-        {
-            try
-            {
-                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                return ShoppingCartHelper.CallEstimationService(estimationdto);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
-                return null;
-            }
-        }
-
     }
 }
