@@ -39,6 +39,15 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     protected global::System.Web.UI.WebControls.RequiredFieldValidator programNameRequired;
     
     /// <summary>
+    /// revProgramName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RegularExpressionValidator revProgramName;
+    
+    /// <summary>
     /// lblProgramDescription control.
     /// </summary>
     /// <remarks>
@@ -57,13 +66,13 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram {
     protected global::System.Web.UI.WebControls.TextBox txtProgramDescription;
     
     /// <summary>
-    /// cvDesc control.
+    /// revDescription control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.CustomValidator cvDesc;
+    protected global::System.Web.UI.WebControls.RegularExpressionValidator revDescription;
     
     /// <summary>
     /// lblBrandName control.

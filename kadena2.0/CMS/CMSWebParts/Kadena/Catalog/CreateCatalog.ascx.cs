@@ -39,6 +39,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Select all text
     /// </summary>
+    public string NoProductSelected
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.NoProductSelected"), string.Empty);
+        }
+        set
+        {
+            SetValue("NoProductSelected", value);
+        }
+    }
+
+    /// <summary>
+    /// Select all text
+    /// </summary>
     public string NoDataFoundText
     {
         get
@@ -350,6 +365,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
                                 .Columns("BrandName,ItemID")
                                 .Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") })
+                                .OrderBy(x=>x.BrandName)
                                 .ToList();
                 ddlBrands.DataSource = brand;
                 ddlBrands.DataTextField = "BrandName";
@@ -455,7 +471,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            CreateProductPDF();
+            CreateProductPDF(hdncheckedValues.Value);
         }
         catch (Exception ex)
         {
@@ -467,14 +483,18 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// Creating products PDF from Html
     /// </summary>
     /// <returns></returns>
-    public void CreateProductPDF()
+    public void CreateProductPDF(string selectedValues)
     {
         try
         {
-            if (!string.IsNullOrEmpty(hdncheckedValues.Value))
+            if (!string.IsNullOrEmpty(selectedValues))
             {
+                var programs = ProgramProvider.GetPrograms()
+                                       .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
+                                       .WhereEquals("CampaignID", OpenCampaign?.CampaignID??default(int))
+                                       .ToList();
                 lblNoProducts.Visible = false;
-                List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
+                List<string> selectedProducts = selectedValues.Split(',').ToList();
                 var skuDetails = SKUInfoProvider.GetSKUs()
                                             .WhereIn("SKUNumber", selectedProducts)
                                             .ToList();
@@ -495,10 +515,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string programsContent = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                 {
-                    var programs = ProgramProvider.GetPrograms()
-                                       .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
-                                       .WhereEquals("CampaignID", OpenCampaign.CampaignID)
-                                       .ToList();
                     foreach (var program in programs)
                     {
                         string programContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProgramsContent");
@@ -530,9 +546,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 {
                     foreach (var brand in brands.Distinct())
                     {
-                        var brandName = GetBrandName(brand);
                         string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrand");
-                        productBrandHeader = productBrandHeader.Replace("BrandName", brandName);
+                        if (TypeOfProduct == (int)ProductsType.PreBuy)
+                        {
+                            productBrandHeader = productBrandHeader.Replace("BrandName", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
+                        }
+                        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+                        {
+                            productBrandHeader = productBrandHeader.Replace("BrandName", GetBrandName(brand));
+                        }
                         List<CampaignsProduct> productItems = new List<CampaignsProduct>();
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
                         {
@@ -556,7 +578,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductImage(product.SKUImagePath));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUNumber ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
-                                pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.SKUShortDescription ?? string.Empty);
+                                pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTDESCRIPTION", product?.SKUDescription ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTVALIDSTATES", stateInfo?.States.Replace(",", ", ") ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy ? ValidationHelper.GetString(product.EstimatedPrice, string.Empty) : ValidationHelper.GetString(product.SKUPrice, string.Empty));
@@ -574,13 +596,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PdfEndingTags");
                 string html = pdfProductsContentWithBrands + pdfClosingDivs;
                 byte[] pdfByte = default(byte[]);
+                NReco.PdfGenerator.HtmlToPdfConverter PDFConverter = new NReco.PdfGenerator.HtmlToPdfConverter();
+                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue("KDA_NRecoOwner", CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue("KDA_NRecoKey", CurrentSite.SiteID));
+                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue("KDA_NRecoLowQuality", CurrentSite.SiteID);
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
-                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
+                    pdfByte = PDFConverter.GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
                 }
                 else
                 {
-                    pdfByte = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html, generalInventory + closingDiv);
+                    pdfByte = PDFConverter.GeneratePdf(html, generalInventory + closingDiv);
                 }
                 string fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
@@ -602,7 +627,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             else
             {
                 Bindproducts();
-                lblNoProducts.Visible = true;
+                noProductSelected.Visible = true;
             }
         }
         catch (Exception ex)
@@ -632,6 +657,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             return string.Empty;
         }
     }
+    
 
     /// <summary>
     /// saving full catalog to PDF
@@ -642,7 +668,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            CreateProductPDF();
+            CreateProductPDF(hdnSaveFullCatalog.Value);
         }
         catch (Exception ex)
         {
