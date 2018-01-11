@@ -8,5 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<BusinessUnit> GetBusinessUnits();
 
         List<BusinessUnit> GetUserBusinessUnits(int userID);
+
+        string GetDistributorBusinessUnit(int distributorID);
     }
 }

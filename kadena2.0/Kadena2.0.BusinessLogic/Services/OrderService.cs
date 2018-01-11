@@ -37,6 +37,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
+        private readonly IKenticoBusinessUnitsProvider businessUnits;
 
         public OrderService(IMapper mapper,
             IOrderSubmitClient orderSubmitClient,
@@ -54,7 +55,8 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLocalizationProvider localization,
             IKenticoPermissionsProvider permissions,
             IKenticoSiteProvider site,
-            IKadenaSettings settings)
+            IKadenaSettings settings,
+            IKenticoBusinessUnitsProvider businessUnits)
         {
             if (mapper == null)
             {
@@ -124,6 +126,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(settings));
             }
+            if (businessUnits == null)
+            {
+                throw new ArgumentNullException(nameof(businessUnits));
+            }
 
             this.mapper = mapper;
             this.kenticoOrder = kenticoOrder;
@@ -142,6 +148,7 @@ namespace Kadena.BusinessLogic.Services
             this.permissions = permissions;
             this.siteProvider = site;
             this.settings = settings;
+            this.businessUnits = businessUnits;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -194,8 +201,8 @@ namespace Kadena.BusinessLogic.Services
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
                     DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
-                    BUnitLabel="Business Unit",
-                    BUnitName="Test Unit name"
+                    BUnitLabel = resources.GetResourceString("Kadena.Order.BusinessUnitLabel"),
+                    BUnitName = businessUnits.GetDistributorBusinessUnit(data.campaign != null ? data.campaign.DistributorID : 0)
                 },
                 PricingInfo = new PricingInfo()
                 {
