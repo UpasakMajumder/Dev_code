@@ -178,28 +178,27 @@ ProductCategoryDescription LIKE '%{?searchtext?}%'
           <property name="inlinescript">
 <![CDATA[
 function DeleteCategory(categoryID) {
-   debugger; var params = "{CategoryID:" + categoryID + "}";
-var Delete_Confirm = confirm('{$Kadena.CategoryDelete.Confirm$}');
-if(Delete_Confirm)
-{
-$.ajax({
-type: "POST",
-url: '/KadenaWebService.asmx/DeleteCategory',
-contentType: "application/json;charset=utf-8",
-dataType: "json",
-data: params,
-success: function (data) {
-alert('{$Kadena.CategoryDelete.SuccessMsg$}')
-location.reload('{$Kadena.CategoryDelete.ErrorMsg$}');
-},
-error: function (xhr, ajaxOptions, thrownError) { 
-alert('{$Kadena.CategoryDelete.ErrorMsg$}');
-}
-});
-}
-else
-{
-}
+  debugger; var params = "{CategoryID:" + categoryID + "}";
+  var Delete_Confirm = confirm('{$Kadena.CategoryDelete.Confirm$}');
+  if(Delete_Confirm)
+  {
+    $.ajax({
+      type: "POST",
+      url: '/KadenaWebService.asmx/DeleteCategory',
+      contentType: "application/json;charset=utf-8",
+      dataType: "json",
+      data: params,
+      success: function (data) {
+         window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+      },
+      error: function (xhr, ajaxOptions, thrownError) { 
+       window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+      }
+    });
+  }
+  else
+  {
+  }
 }
 ]]>
           </property>
