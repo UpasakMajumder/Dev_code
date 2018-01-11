@@ -283,7 +283,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                     }
                 }
-                if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName != "Ground")
+                if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                 {
                     estimation = GetShippingResponse();
                 }

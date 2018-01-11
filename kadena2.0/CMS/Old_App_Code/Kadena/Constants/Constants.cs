@@ -31,4 +31,11 @@
         public const string OrderInProgress = "Submission in progress";
         public const string OrderPlaced = "Submitted";
     }
+    /// <summary>
+    /// This class represents shipping options
+    /// </summary>
+    public class ShippingOption
+    {
+        public const string Ground = "ground";
+    }
 }
