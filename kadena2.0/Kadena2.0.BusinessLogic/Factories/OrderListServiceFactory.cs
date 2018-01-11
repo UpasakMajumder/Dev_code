@@ -5,7 +5,7 @@ using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 
-namespace Kadena.WebAPI.Factories
+namespace Kadena.BusinessLogic.Factories
 {
     public class OrderListServiceFactory : IOrderListServiceFactory
     {

@@ -56,7 +56,6 @@
     <Compile Include="Contracts\IPOSService.cs" />
     <Compile Include="Contracts\ICampaignsService.cs" />
     <Compile Include="Contracts\IBusinessUnitsService.cs" />
-    <Compile Include="Contracts\ICache.cs" />
     <Compile Include="Contracts\ICreditCardService.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IDateTimeFormatter.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
+    <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ProgramsService.cs" />
     <Compile Include="Services\AddressBookService.cs" />
@@ -111,6 +111,10 @@
     <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
       <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj">
+      <Project>{21862471-4fce-4096-82cb-79b23fe63a22}</Project>
+      <Name>Kadena2.0.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
