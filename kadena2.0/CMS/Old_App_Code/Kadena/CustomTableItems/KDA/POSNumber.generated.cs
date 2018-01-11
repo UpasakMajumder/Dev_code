@@ -23,341 +23,341 @@ using CMS.CustomTables;
 
 namespace CMS.CustomTables.Types.KDA
 {
-	/// <summary>
-	/// Represents a content item of type POSNumberItem.
-	/// </summary>
-	public partial class POSNumberItem : CustomTableItem
-	{
-		#region "Constants and variables"
+    /// <summary>
+    /// Represents a content item of type POSNumberItem.
+    /// </summary>
+    public partial class POSNumberItem : CustomTableItem
+    {
+        #region "Constants and variables"
 
-		/// <summary>
-		/// The name of the data class.
-		/// </summary>
-		public const string CLASS_NAME = "KDA.POSNumber";
-
-
-		/// <summary>
-		/// The instance of the class that provides extended API for working with POSNumberItem fields.
-		/// </summary>
-		private readonly POSNumberItemFields mFields;
-
-		#endregion
+        /// <summary>
+        /// The name of the data class.
+        /// </summary>
+        public const string CLASS_NAME = "KDA.POSNumber";
 
 
-		#region "Properties"
+        /// <summary>
+        /// The instance of the class that provides extended API for working with POSNumberItem fields.
+        /// </summary>
+        private readonly POSNumberItemFields mFields;
 
-		/// <summary>
-		/// Brand ID.
-		/// </summary>
-		[DatabaseField]
-		public int BrandID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("BrandID"), 0);
-			}
-			set
-			{
-				SetValue("BrandID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// Year.
-		/// </summary>
-		[DatabaseField]
-		public int Year
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("Year"), 0);
-			}
-			set
-			{
-				SetValue("Year", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// Brand ID.
+        /// </summary>
+        [DatabaseField]
+        public int BrandID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("BrandID"), 0);
+            }
+            set
+            {
+                SetValue("BrandID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// POSCode.
-		/// </summary>
-		[DatabaseField]
-		public int POSCode
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("POSCode"), 0);
-			}
-			set
-			{
-				SetValue("POSCode", value);
-			}
-		}
+        /// <summary>
+        /// Year.
+        /// </summary>
+        [DatabaseField]
+        public int Year
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("Year"), 0);
+            }
+            set
+            {
+                SetValue("Year", value);
+            }
+        }
 
 
-		/// <summary>
-		/// POS Category ID.
-		/// </summary>
-		[DatabaseField]
-		public int POSCategoryID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("POSCategoryID"), 0);
-			}
-			set
-			{
-				SetValue("POSCategoryID", value);
-			}
-		}
+        /// <summary>
+        /// POSCode.
+        /// </summary>
+        [DatabaseField]
+        public string POSCode
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("POSCode"), "");
+            }
+            set
+            {
+                SetValue("POSCode", value);
+            }
+        }
 
 
-		/// <summary>
-		/// POS Category Name.
-		/// </summary>
-		[DatabaseField]
-		public string POSCategoryName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("POSCategoryName"), "");
-			}
-			set
-			{
-				SetValue("POSCategoryName", value);
-			}
-		}
+        /// <summary>
+        /// POS Category ID.
+        /// </summary>
+        [DatabaseField]
+        public int POSCategoryID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("POSCategoryID"), 0);
+            }
+            set
+            {
+                SetValue("POSCategoryID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Brand Name.
-		/// </summary>
-		[DatabaseField]
-		public string BrandName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("BrandName"), "");
-			}
-			set
-			{
-				SetValue("BrandName", value);
-			}
-		}
+        /// <summary>
+        /// POS Category Name.
+        /// </summary>
+        [DatabaseField]
+        public string POSCategoryName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("POSCategoryName"), "");
+            }
+            set
+            {
+                SetValue("POSCategoryName", value);
+            }
+        }
 
 
-		/// <summary>
-		/// POS Number.
-		/// </summary>
-		[DatabaseField]
-		public int POSNumber
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("POSNumber"), 0);
-			}
-			set
-			{
-				SetValue("POSNumber", value);
-			}
-		}
+        /// <summary>
+        /// Brand Name.
+        /// </summary>
+        [DatabaseField]
+        public string BrandName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("BrandName"), "");
+            }
+            set
+            {
+                SetValue("BrandName", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Enable.
-		/// </summary>
-		[DatabaseField]
-		public bool Enable
-		{
-			get
-			{
-				return ValidationHelper.GetBoolean(GetValue("Enable"), false);
-			}
-			set
-			{
-				SetValue("Enable", value);
-			}
-		}
+        /// <summary>
+        /// POS Number.
+        /// </summary>
+        [DatabaseField]
+        public string POSNumber
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("POSNumber"), "");
+            }
+            set
+            {
+                SetValue("POSNumber", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Gets an object that provides extended API for working with POSNumberItem fields.
-		/// </summary>
-		[RegisterProperty]
-		public POSNumberItemFields Fields
-		{
-			get
-			{
-				return mFields;
-			}
-		}
+        /// <summary>
+        /// Enable.
+        /// </summary>
+        [DatabaseField]
+        public bool Enable
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("Enable"), true);
+            }
+            set
+            {
+                SetValue("Enable", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Provides extended API for working with POSNumberItem fields.
-		/// </summary>
-		[RegisterAllProperties]
-		public partial class POSNumberItemFields : AbstractHierarchicalObject<POSNumberItemFields>
-		{
-			/// <summary>
-			/// The content item of type POSNumberItem that is a target of the extended API.
-			/// </summary>
-			private readonly POSNumberItem mInstance;
+        /// <summary>
+        /// Gets an object that provides extended API for working with POSNumberItem fields.
+        /// </summary>
+        [RegisterProperty]
+        public POSNumberItemFields Fields
+        {
+            get
+            {
+                return mFields;
+            }
+        }
 
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="POSNumberItemFields" /> class with the specified content item of type POSNumberItem.
-			/// </summary>
-			/// <param name="instance">The content item of type POSNumberItem that is a target of the extended API.</param>
-			public POSNumberItemFields(POSNumberItem instance)
-			{
-				mInstance = instance;
-			}
+        /// <summary>
+        /// Provides extended API for working with POSNumberItem fields.
+        /// </summary>
+        [RegisterAllProperties]
+        public partial class POSNumberItemFields : AbstractHierarchicalObject<POSNumberItemFields>
+        {
+            /// <summary>
+            /// The content item of type POSNumberItem that is a target of the extended API.
+            /// </summary>
+            private readonly POSNumberItem mInstance;
 
 
-			/// <summary>
-			/// Brand ID.
-			/// </summary>
-			public int BrandID
-			{
-				get
-				{
-					return mInstance.BrandID;
-				}
-				set
-				{
-					mInstance.BrandID = value;
-				}
-			}
+            /// <summary>
+            /// Initializes a new instance of the <see cref="POSNumberItemFields" /> class with the specified content item of type POSNumberItem.
+            /// </summary>
+            /// <param name="instance">The content item of type POSNumberItem that is a target of the extended API.</param>
+            public POSNumberItemFields(POSNumberItem instance)
+            {
+                mInstance = instance;
+            }
 
 
-			/// <summary>
-			/// Year.
-			/// </summary>
-			public int Year
-			{
-				get
-				{
-					return mInstance.Year;
-				}
-				set
-				{
-					mInstance.Year = value;
-				}
-			}
+            /// <summary>
+            /// Brand ID.
+            /// </summary>
+            public int BrandID
+            {
+                get
+                {
+                    return mInstance.BrandID;
+                }
+                set
+                {
+                    mInstance.BrandID = value;
+                }
+            }
 
 
-			/// <summary>
-			/// POSCode.
-			/// </summary>
-			public int POSCode
-			{
-				get
-				{
-					return mInstance.POSCode;
-				}
-				set
-				{
-					mInstance.POSCode = value;
-				}
-			}
+            /// <summary>
+            /// Year.
+            /// </summary>
+            public int Year
+            {
+                get
+                {
+                    return mInstance.Year;
+                }
+                set
+                {
+                    mInstance.Year = value;
+                }
+            }
 
 
-			/// <summary>
-			/// POS Category ID.
-			/// </summary>
-			public int POSCategoryID
-			{
-				get
-				{
-					return mInstance.POSCategoryID;
-				}
-				set
-				{
-					mInstance.POSCategoryID = value;
-				}
-			}
+            /// <summary>
+            /// POSCode.
+            /// </summary>
+            public string POSCode
+            {
+                get
+                {
+                    return mInstance.POSCode;
+                }
+                set
+                {
+                    mInstance.POSCode = value;
+                }
+            }
 
 
-			/// <summary>
-			/// POS Category Name.
-			/// </summary>
-			public string POSCategoryName
-			{
-				get
-				{
-					return mInstance.POSCategoryName;
-				}
-				set
-				{
-					mInstance.POSCategoryName = value;
-				}
-			}
+            /// <summary>
+            /// POS Category ID.
+            /// </summary>
+            public int POSCategoryID
+            {
+                get
+                {
+                    return mInstance.POSCategoryID;
+                }
+                set
+                {
+                    mInstance.POSCategoryID = value;
+                }
+            }
 
 
-			/// <summary>
-			/// Brand Name.
-			/// </summary>
-			public string BrandName
-			{
-				get
-				{
-					return mInstance.BrandName;
-				}
-				set
-				{
-					mInstance.BrandName = value;
-				}
-			}
+            /// <summary>
+            /// POS Category Name.
+            /// </summary>
+            public string POSCategoryName
+            {
+                get
+                {
+                    return mInstance.POSCategoryName;
+                }
+                set
+                {
+                    mInstance.POSCategoryName = value;
+                }
+            }
 
 
-			/// <summary>
-			/// POS Number.
-			/// </summary>
-			public int POSNumber
-			{
-				get
-				{
-					return mInstance.POSNumber;
-				}
-				set
-				{
-					mInstance.POSNumber = value;
-				}
-			}
+            /// <summary>
+            /// Brand Name.
+            /// </summary>
+            public string BrandName
+            {
+                get
+                {
+                    return mInstance.BrandName;
+                }
+                set
+                {
+                    mInstance.BrandName = value;
+                }
+            }
 
 
-			/// <summary>
-			/// Enable.
-			/// </summary>
-			public bool Enable
-			{
-				get
-				{
-					return mInstance.Enable;
-				}
-				set
-				{
-					mInstance.Enable = value;
-				}
-			}
-		}
-
-		#endregion
+            /// <summary>
+            /// POS Number.
+            /// </summary>
+            public string POSNumber
+            {
+                get
+                {
+                    return mInstance.POSNumber;
+                }
+                set
+                {
+                    mInstance.POSNumber = value;
+                }
+            }
 
 
-		#region "Constructors"
+            /// <summary>
+            /// Enable.
+            /// </summary>
+            public bool Enable
+            {
+                get
+                {
+                    return mInstance.Enable;
+                }
+                set
+                {
+                    mInstance.Enable = value;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="POSNumberItem" /> class.
-		/// </summary>
-		public POSNumberItem() : base(CLASS_NAME)
-		{
-			mFields = new POSNumberItemFields(this);
-		}
+        #endregion
 
-		#endregion
-	}
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="POSNumberItem" /> class.
+        /// </summary>
+        public POSNumberItem() : base(CLASS_NAME)
+        {
+            mFields = new POSNumberItemFields(this);
+        }
+
+        #endregion
+    }
 }

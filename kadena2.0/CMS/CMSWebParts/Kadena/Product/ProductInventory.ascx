@@ -44,11 +44,6 @@
             <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
             <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
                 <Columns>
-                    <asp:TemplateField>
-                        <ItemTemplate>
-                            <asp:CheckBox Text="" ID="chkSelected" runat="server" Checked='<%# ValidationHelper.GetBoolean(Eval("IsSelected"),default(bool)) %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
                     <asp:BoundField DataField="AddressID" />
                     <asp:BoundField DataField="AddressPersonalName" />
                     <asp:TemplateField>
@@ -65,7 +60,7 @@
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" clientidmode="Static"></button>
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" onserverclick="btnClose_ServerClick" clientidmode="Static"></button>
                 <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
