@@ -293,7 +293,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 else
                 {
-                    divDailogue.Attributes.Add("class", "dialog");
+                    divDailogue.Attributes.Add("class", "dialog active");
                 }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 BindShippingDropdown(inventoryType, estimatedPrice);
