@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 {
-    public class DeleteExpiredMailingListsService
+    public class DeleteExpiredMailingListsService : IDeleteExpiredMailingListsService
     {
         private IConfigurationProvider configurationProvider;
         private IKenticoSiteProvider kenticoSiteProvider;
@@ -39,11 +39,11 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             this.mailingService = mailingService;
         }
 
-        public async Task Delete()
+        public async Task<string> Delete()
         {
             var customers = kenticoSiteProvider.GetSites();
             var now = GetCurrentTime();
-
+            
             var tasks = new List<Task<BaseResponseDto<object>>>();
             foreach (var customer in customers)
             {
@@ -58,8 +58,10 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             if (results.Any(r => !r.Success))
             {
-                throw new Exception(CreateErrorMessageFromResponses(results, customers));
+                return CreateErrorMessageFromResponses(results, customers);
             }
+
+            return "Done";
         }
 
         private string CreateErrorMessageFromResponses(BaseResponseDto<object>[] responses, Site[] customers)

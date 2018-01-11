@@ -71,6 +71,7 @@
     <Compile Include="DeleteExpiredMailingLists\DeleteExpiredMailingListsService.cs" />
     <Compile Include="DeleteExpiredMailingLists\KenticoTask.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
+    <Compile Include="Infrastructure\IDeleteExpiredMailingListsService.cs" />
     <Compile Include="Infrastructure\IUpdateInventoryDataService.cs" />
     <Compile Include="Infrastructure\Kentico\KenticoConfigurationProvider.cs" />
     <Compile Include="Infrastructure\UpdateInventoryConfiguration.cs" />
