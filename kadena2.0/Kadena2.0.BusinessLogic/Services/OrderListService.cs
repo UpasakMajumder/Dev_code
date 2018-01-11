@@ -304,7 +304,7 @@ namespace Kadena.BusinessLogic.Services
                     new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID) },
                     new OrderTableCell() { value = o.Status },
                     new OrderTableCell() { value = o.ShippingDate.ToString() },
-                    new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "button" }
+                    new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{_orderDetailUrl}?orderID={o.Id}" }
                 };
         }
 
