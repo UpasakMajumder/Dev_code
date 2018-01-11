@@ -40,4 +40,11 @@
         public const string Updated = "updated";
         public const string Deleted = "deleted";
     }
+    /// <summary>
+    /// This class represents shipping options
+    /// </summary>
+    public class ShippingOption
+    {
+        public const string Ground = "ground";
+    }
 }

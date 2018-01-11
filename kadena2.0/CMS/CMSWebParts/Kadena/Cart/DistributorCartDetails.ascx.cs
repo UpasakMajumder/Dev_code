@@ -271,6 +271,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
                 var estimatedPrice = default(double);
+                if(ValidCart)
                 {
                     base.OnPreRender(e);
                     BindRepeaterData();
