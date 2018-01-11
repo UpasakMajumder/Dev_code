@@ -26,16 +26,18 @@
     /// <summary>
     /// This class represents orderstatus
     /// </summary>
-    public class OrderStatusConstants
+    public static class OrderStatusConstants
     {
         public const string OrderInProgress = "Submission in progress";
         public const string OrderPlaced = "Submitted";
     }
     /// <summary>
-    /// This class represents shipping options
+    /// This class represents status querystrings
     /// </summary>
-    public class ShippingOption
+    public static class QueryStringStatus
     {
-        public const string Ground = "ground";
+        public const string Added = "added";
+        public const string Updated = "updated";
+        public const string Deleted = "deleted";
     }
 }
