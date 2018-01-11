@@ -191,30 +191,29 @@ AND
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-var DeleteBrand = function (brandID) {
-
+var DeleteBrand = function (brandID)
+      {
         if (confirm("{$Kadena.Brands.DeleteConfirmMSG$}")) {
-            $.ajax({
-                type: "POST",
-                url: '/BrandWebservice.asmx/DeleteBrand',
-                data: '{itemID: ' + brandID + '}',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    if (data.d == true) {
-                        location.reload();
-                    } else {
-                        //alert('Deletion failed');
-                    }
-                },
+          $.ajax({
+            type: "POST",
+            url: '/BrandWebservice.asmx/DeleteBrand',
+            data: '{itemID: ' + brandID + '}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+              if (data.d == true)
+              { window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+              } 
+              else {
+                window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+              },
                 error: function (xhr, ajaxOptions, thrownError) {
-                   
+                  window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
                 }
             });
-        }
-        return false;
-    }
-     
+          }
+                 return false;
+         }
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>
@@ -304,8 +303,8 @@ var DeleteBrand = function (brandID) {
           <property name="directpage"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displayfirstlastautomatically">False</property>
-          <property name="displaypreviousnextautomatically">True</property>
+          <property name="displayfirstlastautomatically">True</property>
+          <property name="displaypreviousnextautomatically">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
           <property name="firstpage">CMS.PagerTransformations.General-FirstPage</property>

@@ -6,6 +6,7 @@ using CMS.CustomTables;
 using CMS.EventLog;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
+using Kadena.Old_App_Code.Kadena.Constants;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
@@ -112,7 +113,7 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
                     };
                     objPosNumber.Insert();
-                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
                 {

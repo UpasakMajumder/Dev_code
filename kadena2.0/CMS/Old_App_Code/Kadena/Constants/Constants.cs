@@ -26,9 +26,18 @@
     /// <summary>
     /// This class represents orderstatus
     /// </summary>
-    public class OrderStatusConstants
+    public static class OrderStatusConstants
     {
         public const string OrderInProgress = "Submission in progress";
         public const string OrderPlaced = "Submitted";
+    }
+    /// <summary>
+    /// This class represents status querystrings
+    /// </summary>
+    public static class QueryStringStatus
+    {
+        public const string Added = "added";
+        public const string Updated = "updated";
+        public const string Deleted = "deleted";
     }
 }

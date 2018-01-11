@@ -11,8 +11,8 @@
     </div>
 </div>
 <div class="inbound__track">
-    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowDataBound="gdvInboundProducts_RowDataBound" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating" 
-        OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast" 
+    <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowDataBound="gdvInboundProducts_RowDataBound" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating"
+        OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" ShowHeaderWhenEmpty="false" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast"
         class="table show__table-bottom" PagerStyle-CssClass="pagination__table">
         <Columns>
             <asp:TemplateField>
@@ -139,6 +139,10 @@
                 </EditItemTemplate>
             </asp:TemplateField>
         </Columns>
-        <EmptyDataTemplate><%#NoDataText %></EmptyDataTemplate>
+        <EmptyDataTemplate>
+        </EmptyDataTemplate>
     </asp:GridView>
+    <div class=" mt-2" runat="server" id="divNodatafound" visible="false">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><cms:LocalizedLabel runat="server" ResourceString="Kadena.Inbound.NoDataText"></cms:LocalizedLabel></div>
+    </div>
 </div>
