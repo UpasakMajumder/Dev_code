@@ -133,8 +133,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.POS
                     BrandID = brand.BrandCode,
                     BrandName = brand.BrandName,
                     Year = ValidationHelper.GetInteger(posDto.Year, default(int)),
-                    POSCode = ValidationHelper.GetInteger(posDto.POSCode, default(int)),
-                    POSNumber = ValidationHelper.GetInteger(GetPOSNumber(posDto), default(int)),
+                    POSCode = ValidationHelper.GetString(posDto.POSCode, default(string)),
+                    POSNumber = ValidationHelper.GetString(GetPOSNumber(posDto), default(string)),
                     POSCategoryID = posCategory.ItemID,
                     POSCategoryName = posCategory.PosCategoryName
                 };

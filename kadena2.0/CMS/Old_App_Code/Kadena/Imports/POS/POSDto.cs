@@ -13,9 +13,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.POS
         [MaxLength(4)]
         public string Year { get; set; }
 
-        [Header(2, "POS Code (4 Digit) *")]
+        [Header(2, "POS Code *")]
         [Required]
-        [MaxLength(4)]
         public string POSCode { get; set; }
 
         [Header(3, "POS Category *")]
