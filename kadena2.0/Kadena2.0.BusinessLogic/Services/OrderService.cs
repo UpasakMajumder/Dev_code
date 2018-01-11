@@ -193,7 +193,9 @@ namespace Kadena.BusinessLogic.Services
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
-                    DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix")
+                    DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
+                    BUnitLabel="Business Unit",
+                    BUnitName="Test Unit"
                 },
                 PricingInfo = new PricingInfo()
                 {
