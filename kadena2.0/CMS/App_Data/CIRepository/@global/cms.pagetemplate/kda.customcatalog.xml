@@ -174,57 +174,60 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containertitle"></property>
           <property name="contentafter">
 <![CDATA[
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" > </script> 
-  <script type = "text/javascript" >
-	$(document).ready(function () {
-		$('#errorLabel').text('');
-		var listval = [];
-		$(".js_Product").click(function () {
-			if ($(this).is(':checked')) {
-              $('.noProSelected').hide();
-				listval.push($(this).val());
-			} else {
-				if ((index = listval.indexOf($(this).val())) !== -1) {
-					listval.splice(index, 1);
-				}
-			}
-			$('#hdncheckedValues').val(listval);
-		});
-		$(".selectAllChk").click(function () {
-			checkAllProducts();
-
-		});
-		$(".saveAllCatalog").click(function () {
-            $('.noProSelected').hide();
-			$(".js_Product").each(function () {
-				listval.push($(this).val());
-			});
-			$('#hdnSaveFullCatalog').val(listval);
-		});
-		
-		var checkAllProducts = function () {
-			$(".js_Product").each(function () {
-				if ($(".selectAllChk").is(':checked')) {
-					if (!$(this).is(':checked')) {
-						$(this).prop('checked', true);
-						listval.push($(this).val());
-					}
-				} else {
-					$(".js_Product").prop('checked', false);
-					if ((index = listval.indexOf($(this).val())) !== -1) {
-						listval.splice(index, 1);
-					}
-				}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var listVal = [];
+    $(document).ready(function () {
+        $('#errorLabel').text('');
+        $(".js_Product").click(function () {
+            var selectedProduct = $(this);
+            if (selectedProduct.is(':checked')) {
                 $('.noProSelected').hide();
-				$('#hdncheckedValues').val(listval);
-			});
-		}
-		var GetCheckboxValues = function () {
+                listVal.push(selectedProduct.val());
+            } else {
+                var index = listVal.indexOf(selectedProduct.val());
+                if (index !== -1) {
+                    listVal.splice(index, 1);
+                }
+            }
+            $('#hdncheckedValues').val(listVal);
+        });
+        $(".selectAllChk").click(checkAllProducts);
+        $(".saveAllCatalog").click(function () {
+            var fullSelection = [];
+            $('.noProSelected').hide();
+            $(".js_Product").each(function () {
+                fullSelection.push($(this).val());
+            });
+            $('#hdnSaveFullCatalog').val(fullSelection);
+        });
+    });
 
-		}
-
-	});
-</script>	
+    var checkAllProducts = function () {
+        $(".js_Product").each(function () {
+            if ($(".selectAllChk").is(':checked')) {
+                if (!$(this).is(':checked')) {
+                    $(this).prop('checked', true);
+                    listVal.push($(this).val());
+                }
+            } else {
+                $(".js_Product").prop('checked', false);
+                var index = listVal.indexOf($(this).val());
+                if (index !== -1) {
+                    listVal.splice(index, 1);
+                }
+            }
+            $('.noProSelected').hide();
+            $('#hdncheckedValues').val(listVal);
+        });
+    }
+  function ShowZoomEffect(thisEle)
+  {
+    var imgsrc = $(thisEle).parents("#imagediv").find('img').attr('src').split('?');
+    $('#ZoomImage').attr('src', imgsrc[0]);
+    $('#ImageZoomPopup').toggleClass('active');
+  }
+</script>
 ]]>
           </property>
           <property name="contentbefore"></property>

@@ -44,7 +44,7 @@
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts" DataBindByDefault="false">
         <ItemTemplate>
-            <div class="cus__content--block col-sm-3">
+            <div class="cus__content--block col-sm-3" id="imagediv">
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">

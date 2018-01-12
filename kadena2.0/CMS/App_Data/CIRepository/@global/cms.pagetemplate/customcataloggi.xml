@@ -159,88 +159,6 @@ iteratedDocument = iteratedDocument.Parent;
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneCustomCatalog" v="1">
-        <webpart controlid="StaticHTML" guid="257e020e-1695-4051-93bb-a8847ca39a88" type="statichtml" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">StaticHTML</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">257e020e-1695-4051-93bb-a8847ca39a88</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="text">
-<![CDATA[
-<div class="content_container notdisplay printIt">
-<div class="treasure_content">
-<div class="treasure_heading">
-<h2>Treasury Wine Estates</h2>
-
-<h2>FY18 HOLIDAY POS PRE-BUY</h2>
-
-<p>Ordering Dates: May 12th - May 28th</p>
-</div>
-
-<div class="treasure_con">
-<h2>PROMOTION PROGRAM LIST</h2>
-
-<p>19 Crimes, Share it with the Gang - Delivering to Distributors - December 4, 2017</p>
-
-<p>90+ Club, Riedel - Delivering to Distributors - October 2, 2017</p>
-
-<p>Beringer Main &amp; Vine, Uncork &amp; Win - Delivering to Distributors - October 2, 2017</p>
-
-<p>BV Coastal Estates, Cruise A Week - Delivering to Distributors - December 4, 2017</p>
-
-<p>Matua DISPLAY &amp; MERCH ONLY - Delivering to Distributors - December 4, 2017</p>
-
-<p>Penfold&#39;s, Max&#39;s Vault - Delivering to Distributors - December 4, 2017</p>
-
-<p>Portfolio Display - Delivering to Distributors - October 2, 2017</p>
-
-<p>Sterling Uber - Delivering to Distributors - October 2, 2017</p>
-
-<p class="merch_con">*Merch items that do not meet 250 piece minimum order requirements risk price increase or cancellation.</p>
-</div>
-</div>
-</div>
-
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">False</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statichtml</property>
-        </webpart>
         <webpart controlid="CustomCatalog" guid="936ca6c3-368f-495c-95c7-018b2b176d55" type="CustomCatalog" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
@@ -254,98 +172,59 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containertitle"></property>
           <property name="contentafter">
 <![CDATA[
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
-   $(document).ready(function () {
-    $('#errorLabel').text('');
-    var listval = [];
-    $(".js_Product").click(function () {
-      if ($(this).is(':checked')) {
-        listval.push($(this).val());
-      }
-      else {
-        if ((index = listval.indexOf($(this).val())) !== -1) {
-          listval.splice(index, 1);
-        }
-      }
-      $('#hdncheckedValues').val(listval);
-    });
-    $(".selectAllChk").click(function () {
-      checkAllProducts();
-      
-    });
-    $(".saveAllCatalog").click(function () {
-      checkAllProducts();
-      $(".js_Product").each(function () {
-        listval.push($(this).val());
-      });
-      $('#hdncheckedValues').val(listval);
-    });
-    $(".saveSelection").click(function () {
-      $(".js_Product").each(function () {
-        if($(this).checked)
-        {
-          return true;
-        }
-        else{
-          return false;
-          $('#errorLabel').text('You have not selected any items to put into your custom catalog. Please select items and try again.');
-        }
-      });
-      
-    });
-    var checkAllProducts = function () {
-      $(".js_Product").each(function () {
-        if ($(".selectAllChk").is(':checked')) {
-          $(".js_Product").prop('checked', true);
-          listval.push($(this).val());
-        }
-        else {
-          $(".js_Product").prop('checked', false);
-          if ((index = listval.indexOf($(this).val())) !== -1) {
-            listval.splice(index, 1);
-          }
-        }
-        $('#hdncheckedValues').val(listval);
-      });
-    }
-        var GetCheckboxValues = function () {
-          
-        }
-            
+    var listVal = [];
+    $(document).ready(function () {
+        $('#errorLabel').text('');
+        $(".js_Product").click(function () {
+            var selectedProduct = $(this);
+            if (selectedProduct.is(':checked')) {
+                $('.noProSelected').hide();
+                listVal.push(selectedProduct.val());
+            } else {
+                var index = listVal.indexOf(selectedProduct.val());
+                if (index !== -1) {
+                    listVal.splice(index, 1);
+                }
+            }
+            $('#hdncheckedValues').val(listVal);
+        });
+        $(".selectAllChk").click(checkAllProducts);
+        $(".saveAllCatalog").click(function () {
+            var fullSelection = [];
+            $('.noProSelected').hide();
+            $(".js_Product").each(function () {
+                fullSelection.push($(this).val());
             });
-  
-  function SelectforPrint(thiselem) {
-    var ele = $(thiselem).parent().parent().parent().find('.enablePrint');
-    $(ele).toggleClass('printIt');
-  }
-  
-  function Printfull() {
-    $('.enablePrint').addClass('printIt');
-    window.print();
-    $('.enablePrint').removeClass('printIt');
-  }
-  
-  function printselected()
-  {
-    var chkstatus = false;
-    $(".js_Product").each(function (index) {
-      var status = this.checked;
-      if (status == true)
-        chkstatus = status;
+            $('#hdnSaveFullCatalog').val(fullSelection);
+        });
     });
-    if (chkstatus)
-    { window.print(); }
-    else
-    { var msg='{$Kadena.CatalogPrint.PrintAlertText$}';
-     alert(msg); }
-  }
-    function ShowZoomEffect(thisele)
-    {
-        var imgsrc = $(thisele).parent().parent().find('img').attr('src').split('?');
-        $('#ZoomImage').attr('src', imgsrc[0]);
-        $('#ImageZoomPopup').toggleClass('active');
+
+    var checkAllProducts = function () {
+        $(".js_Product").each(function () {
+            if ($(".selectAllChk").is(':checked')) {
+                if (!$(this).is(':checked')) {
+                    $(this).prop('checked', true);
+                    listVal.push($(this).val());
+                }
+            } else {
+                $(".js_Product").prop('checked', false);
+                var index = listVal.indexOf($(this).val());
+                if (index !== -1) {
+                    listVal.splice(index, 1);
+                }
+            }
+            $('.noProSelected').hide();
+            $('#hdncheckedValues').val(listVal);
+        });
     }
+  function ShowZoomEffect(thisEle)
+  {
+    var imgsrc = $(thisEle).parents("#imagediv").find('img').attr('src').split('?');
+    $('#ZoomImage').attr('src', imgsrc[0]);
+    $('#ImageZoomPopup').toggleClass('active');
+  }
 </script>
 ]]>
           </property>
