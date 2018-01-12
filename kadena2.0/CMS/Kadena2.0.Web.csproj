@@ -795,6 +795,13 @@
     <Compile Include="CMSModules\Kadena\Pages\Users\Import.aspx.designer.cs">
       <DependentUpon>Import.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx.cs">
+      <DependentUpon>KadenaPasswordStrength.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx.designer.cs">
+      <DependentUpon>KadenaPasswordStrength.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSPages\Kadena\S3Uploader.aspx.cs">
       <DependentUpon>S3Uploader.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1363,6 +1370,7 @@
     <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Addresses.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
+    <Content Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx" />
     <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
