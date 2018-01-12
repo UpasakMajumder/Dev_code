@@ -221,8 +221,7 @@ iteratedDocument = iteratedDocument.Parent;
             $('#hdncheckedValues').val(listVal);
         });
     }
-  function ShowZoomEffect(thisEle)
-  {
+  function ShowZoomEffect(thisEle){
     var imgsrc = $(thisEle).parents("#imagediv").find('img').attr('src').split('?');
     $('#ZoomImage').attr('src', imgsrc[0]);
     $('#ImageZoomPopup').toggleClass('active');
