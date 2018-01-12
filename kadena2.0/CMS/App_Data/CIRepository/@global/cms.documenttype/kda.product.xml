@@ -52,6 +52,14 @@
           <Extensions>custom</Extensions>
         </settings>
       </field>
+      <field allowempty="true" column="ProductThumbnailBorder" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Thumbnail border</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductMachineType" columnsize="200" columntype="text" guid="277090ed-8f70-4d76-8114-7356caec63bb" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Machine Type</fieldcaption>
