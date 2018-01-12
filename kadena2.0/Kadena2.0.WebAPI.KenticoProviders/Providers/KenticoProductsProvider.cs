@@ -16,15 +16,23 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         public List<ProductCategoryLink> GetCategories(string path)
         {
-            var pages = GetDocuments(path, "KDA.ProductCategory");
+            var pages = GetDocuments(path, "KDA.ProductCategory").;
             return pages.Select(p => new ProductCategoryLink
             {
                 Id = p.DocumentID,
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
-                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductCategoryImage", string.Empty))
+                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductCategoryImage", string.Empty)),
+                ProductBordersEnabled = p.GetBooleanValue("ProductCategoryBordersEnabled", false)
             }
             ).ToList();
+        }
+
+        public ProductCategoryLink GetCategory(string path)
+        {
+            var category = GetDocuments(path, "KDA.ProductCategory").SingleOrDefault();
+
+
         }
 
         public List<ProductLink> GetProducts(string path)
@@ -39,7 +47,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ? 
                                                     p.GetValue("SKUImagePath", string.Empty) : 
                                                     "/CMSPages/GetFile.aspx?guid=" + p.GetValue("ProductThumbnail")),
-                IsFavourite = false
+                IsFavourite = false,
+                Border = p.GetBooleanValue("ProductThumbnailBorder", false),
+                ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath)
             }
             ).ToList();
         }
