@@ -2,6 +2,7 @@
 using Kadena.Models.Site;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     {
         private IConfigurationProvider configurationProvider;
         private IKenticoSiteProvider kenticoSiteProvider;
-        private IMailingListClient mailingService;
+        //private IMailingListClient mailingService;
 
         public Func<DateTime> GetCurrentTime { get; set; } = () => DateTime.Now;
 
-        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoSiteProvider kenticoSiteProvider, IMailingListClient mailingService)
+        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoSiteProvider kenticoSiteProvider)//, IMailingListClient mailingService)
         {
             if (configurationProvider == null)
             {
@@ -29,14 +30,14 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             {
                 throw new ArgumentNullException(nameof(kenticoSiteProvider));
             }
-            if (mailingService == null)
+            /*if (mailingService == null)
             {
                 throw new ArgumentNullException(nameof(mailingService));
-            }
+            }*/
 
             this.configurationProvider = configurationProvider;
             this.kenticoSiteProvider = kenticoSiteProvider;
-            this.mailingService = mailingService;
+            //this.mailingService = mailingService;
         }
 
         public async Task<string> Delete()
@@ -51,7 +52,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    tasks.Add(mailingService.RemoveMailingList(deleteOlderThan));
+                    tasks.Add(new MailingListClient(new StaticMicroProperties(customer.Name)).RemoveMailingList(deleteOlderThan));
                 }
             }
 
