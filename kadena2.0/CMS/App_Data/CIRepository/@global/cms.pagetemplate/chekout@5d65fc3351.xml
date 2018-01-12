@@ -67,6 +67,11 @@ config.localization.checkout = {
     text: '{% GetResourceString("Kadena.Checkout.TermsAndConditions") |(user)tomas.rucki@actum.cz|(hash)2d6c3db00ef3c35c461632ae85e93d7386d91235a06432118d662bf6fbe210e2%}'
   }
 };
+config.localization.userSettings = {
+	addresses:{
+		editAddressURL : 'api/usersettings/saveshippingaddress'
+	}
+};
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>
