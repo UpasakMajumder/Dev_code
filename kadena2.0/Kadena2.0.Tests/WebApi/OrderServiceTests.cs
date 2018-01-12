@@ -77,6 +77,7 @@ namespace Kadena.Tests.WebApi
             var localization = new Mock<IKenticoLocalizationProvider>();
             var permissions = new Mock<IKenticoPermissionsProvider>();
             var settings = new Mock<IKadenaSettings>();
+            var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
 
             return new OrderService(mapper,
                 orderSubmitClient.Object,
@@ -94,7 +95,8 @@ namespace Kadena.Tests.WebApi
                 localization.Object,
                 permissions.Object,
                 kenticoSite.Object,
-                settings.Object
+                settings.Object,
+                businessUnits.Object
             );
         }
 

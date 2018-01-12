@@ -31,5 +31,8 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "items")]
         public IEnumerable<OrderItemDto> Items { get; set; }
+
+        [DataMember(Name = "campaign")]
+        public CampaignDTO campaign { get; set; }
     }
 }

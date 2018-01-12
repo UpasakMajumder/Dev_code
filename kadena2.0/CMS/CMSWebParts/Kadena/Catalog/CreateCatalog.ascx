@@ -44,13 +44,14 @@
 <div class="custom__content row">
     <cms:CMSRepeater runat="server" ID="rptCatalogProducts" DataBindByDefault="false">
         <ItemTemplate>
-            <div class="cus__content--block col-sm-3">
+            <div class="cus__content--block col-sm-3" id="imagediv">
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
                         <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>?MaxSideSize=150' />
                     </label>
                 </div>
+                 <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
                 <div class="input__wrapper">
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
                     <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("SKUNumber")%>' class=" input__checkbox  js_Product" />
@@ -63,3 +64,22 @@
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
 <asp:HiddenField ID="hdnSaveFullCatalog" runat="server" ClientIDMode="Static" />
+<%--Zoom EffectPopup--%>
+<div class="dialog" id="ImageZoomPopup">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <span><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateGroupPopupHeading") %></span>
+            <a onclick="$('#ImageZoomPopup').toggleClass('active');" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog__content">
+            <div class="modal__body business__assigned-user">
+                 <div class="zoom__block"><img id="ZoomImage" src='<%#CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage")%>' /></div>
+            </div>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+            </div>
+        </div>
+    </div>
+</div>

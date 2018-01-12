@@ -192,32 +192,35 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
+          <property name="generatescripttags">False</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-function DeleteAddress(addressID){
-if (confirm("Are you sure?")) {
-        $.ajax({
-            type: "POST",
-            url: '/DeleteAddressWebService.asmx/DeleteAddress',
-            data: '{addressID: ' + addressID + '}',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                if (data.d == true) {
-                    location.reload();
-                } else {
-                    alert('Deletion failed');
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('Deletion failed');
-            }
-        });
+<script>
+  function DeleteAddress(addressID){
+    if (confirm("Are you sure?")) {
+      $.ajax({
+        type: "POST",
+        url: '/DeleteAddressWebService.asmx/DeleteAddress',
+        data: '{addressID: ' + addressID + '}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+          if (data.d == true) {
+            window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+            //location.reload();
+          } else {
+            window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+          window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+        }
+      });
     }
     return false;
-}
+  }
+</script>
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>

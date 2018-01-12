@@ -1032,7 +1032,6 @@ var customScripts = {
     },
     init: function () {
         var base = this;
-
         base.logoutInit();
         base.createPasswordInit();
         base.setPersonContactInformationInit();
@@ -1047,7 +1046,32 @@ var customScripts = {
         base.kListColumnMappingInit();
     }
 }
-
+var customHelpers = {
+    getQueryStringByName:function(name) {
+        url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return "";
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+}
 $(document).ready(function () {
     customScripts.init();
+    var status = customHelpers.getQueryStringByName("status");
+    if (status == 'added')
+    {
+        toastr.success(config.localization.globalSuccess.addSuccessMessage)
+    }
+    else if (status == 'updated')
+    {
+        toastr.success(config.localization.globalSuccess.updateSuccessMessage);
+    }
+    else if (status == 'deleted') {
+        toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
+    }
+    else if (status == 'error') {
+        toastr.error(config.localization.globalSuccess.errorMessage);
+    }
 });

@@ -6,6 +6,7 @@ using CMS.CustomTables;
 using CMS.EventLog;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
+using Kadena.Old_App_Code.Kadena.Constants;
 
 public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 {
@@ -45,7 +46,6 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
             rfvYear.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.YearRequired");
             rfvPOSCode.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCodeRequired");
             rfvCatgory.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSCategroyRequired");
-            revPOSCodeLength.ErrorMessage = ResHelper.GetString("Kadena.POSFrom.POSMaxLengthMsg");
         }
     }
 
@@ -106,13 +106,13 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
                         Year = ValidationHelper.GetInteger(ddlYear.SelectedValue, default(int)),
                         POSCategoryName = ValidationHelper.GetString(ddlCategory.SelectedItem.Text, string.Empty),
-                        POSCode = ValidationHelper.GetInteger(txtPOSCode.Text, default(int)),
+                        POSCode = ValidationHelper.GetString(txtPOSCode.Text, default(string)),
                         POSCategoryID = ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)),
                         BrandName = ValidationHelper.GetString(ddlBrand.SelectedItem.Text, string.Empty),
-                        POSNumber = ValidationHelper.GetInteger(posNumber, default(int)),
+                        POSNumber = ValidationHelper.GetString(posNumber, default(string)),
                     };
                     objPosNumber.Insert();
-                    Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
                 {
