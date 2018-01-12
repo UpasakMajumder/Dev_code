@@ -90,12 +90,9 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword : CMSAbs
     /// </summary>
     protected void SetupControl()
     {
-        if (StopProcessing)
+        if (!StopProcessing)
         {
-            // Do not process
-        }
-        else
-        {
+            successMessage.Visible = false;
             Visible = (!ShowOnlyWhenAuthenticated || AuthenticationHelper.IsAuthenticated());
             passStrength.MaxLength = MaximalPasswordLength;
             txtConfirmPassword.MaxLength = MaximalPasswordLength;
@@ -108,13 +105,9 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword : CMSAbs
             txtOldPassword.Attributes.Add("Placeholder", ResHelper.GetString("Kadena.ChangePassword.OldPasswordWatermarkText"));
             passStrength.PlaceholderText = ResHelper.GetString("Kadena.ChangePassword.NewPasswordWatermarkText");
             txtConfirmPassword.Attributes.Add("Placeholder", ResHelper.GetString("Kadena.ChangePassword.ConfirmPasswordWatermarkText"));
-
             rvOldPassword.ErrorMessage = ResHelper.GetString("Kadena.ChangePassword.OldPwdRequired");
-            rvPasswordStrength.ErrorMessage = ResHelper.GetString("Kadena.ChangePassword.NewPwdRequired");
-            revPassword.ErrorMessage = ResHelper.GetString("Kadena.ChangePassword.NewPwdRegularExprssionError");
             rvConfirmPassword.ErrorMessage = ResHelper.GetString("Kadena.ChangePassword.ConfirmPwdRequired");
             cvConfirmPassword.ErrorMessage = ResHelper.GetString("Kadena.ChangePassword.ConfirmPwdComapreError");
-            // WAI validation
             lblNewPassword.AssociatedControlClientID = passStrength.InputClientID;
         }
     }
@@ -125,22 +118,13 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword : CMSAbs
     /// </summary>
     protected void btnOk_Click(object sender, EventArgs e)
     {
-        // Get current user info object
         var ui = MembershipContext.AuthenticatedUser;
-
-        // Get current site info object
         SiteInfo si = SiteContext.CurrentSite;
-
         if ((ui != null) && (si != null))
         {
             string userName = ui.UserName;
-
-            // new password correctly filled
-            //if (txtConfirmPassword.Text == passStrength.Text)
-            //{
             if (passStrength.IsValid())
             {
-                // Old password match
                 if (!UserInfoProvider.IsUserPasswordDifferent(ui, txtOldPassword.Text.Trim()))
                 {
                     UserInfoProvider.SetPassword(userName, passStrength.Text.Trim());
@@ -149,27 +133,12 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword : CMSAbs
                     {
                         AuthenticationHelper.SendPasswordResetConfirmation(ui, SiteContext.CurrentSiteName, "Change password web part", "Membership.PasswordResetConfirmation");
                     }
-
-                    //lblInfo.Visible = true;
-                    //lblInfo.Text = GetString("ChangePassword.ChangesSaved");
                 }
-                //        else
-                //        {
-                //            lblError.Visible = true;
-                //            lblError.Text = GetString("ChangePassword.ErrorOldPassword");
-                //        }
-                //    }
-                //    else
-                //    {
-                //        lblError.Visible = true;
-                //        lblError.Text = AuthenticationHelper.GetPolicyViolationMessage(SiteContext.CurrentSiteName);
-                //    }
-                //}
-                //else
-                //{
-                //    lblError.Visible = true;
-                //    lblError.Text = GetString("ChangePassword.ErrorNewPassword");
-                //}
+                else
+                {
+                    successMessage.Visible = true;
+                }
+                
             }
         }
     }

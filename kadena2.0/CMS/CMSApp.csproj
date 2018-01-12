@@ -1465,6 +1465,7 @@
     <Content Include="CMSModules\EmailTemplates\Pages\SendDraft.aspx" />
     <Content Include="CMSModules\ImportExport\Controls\Export\cms_resource.ascx" />
     <Content Include="CMSModules\ImportExport\Controls\Export\Site\community_group.ascx" />
+    <Content Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx" />
     <Content Include="CMSModules\Modules\Controls\NuGetPackages\ExportModule.ascx" />
     <Content Include="CMSModules\Newsletters\Controls\RecipientContactGroups.ascx" />
     <Content Include="CMSModules\Newsletters\Controls\IssueLinks.ascx" />
@@ -5079,6 +5080,13 @@
     </Compile>
     <Compile Include="CMSModules\ImportExport\Controls\Export\Site\community_group.ascx.designer.cs">
       <DependentUpon>community_group.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx.cs">
+      <DependentUpon>KadenaPasswordStrength.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Membership\FormControls\Passwords\KadenaPasswordStrength.ascx.designer.cs">
+      <DependentUpon>KadenaPasswordStrength.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Modules\Controls\NuGetPackages\ExportModule.ascx.cs">
       <DependentUpon>ExportModule.ascx</DependentUpon>

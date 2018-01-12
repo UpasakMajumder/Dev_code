@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true"
     Inherits="CMSWebParts_Kadena_Membership_KadenaChangePassword" CodeBehind="~/CMSWebParts/Kadena/Membership/KadenaChangePassword.ascx.cs" %>
 
-<%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx" TagName="PasswordStrength"
+<%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/KadenaPasswordStrength.ascx" TagName="PwdStrength"
     TagPrefix="cms" %>
 
 <asp:Panel ID="pnlWebPart" runat="server" DefaultButton="btnChangePassword" CssClass="change-password">
@@ -21,9 +21,7 @@
         <div class="mb-2">
             <div class="input__wrapper">
                     <cms:LocalizedLabel CssClass="input__label" ID="lblNewPassword" runat="server" />
-                    <cms:PasswordStrength runat="server" ID="passStrength" TextBoxClass="input__text" AllowEmpty="true" />
-                    <asp:RequiredFieldValidator ID="rvPasswordStrength" runat="server" ControlToValidate="passStrength" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revPassword" runat="server" ControlToValidate="passStrength" CssClass="EditingFormErrorLabel" ValidationExpression="(?=^.{8,50}$)((?=.*\d)|(?=.*[!@#$%^&*]+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"></asp:RegularExpressionValidator>
+                    <cms:PwdStrength runat="server" ID="passStrength" TextBoxClass="input__text" />
             </div>
         </div>
 
@@ -38,7 +36,8 @@
     </div>
     <div class="mb-3 form__btns">
         <div class="">
-            <cms:LocalizedLinkButton ID="btnChangePassword" runat="server" OnClick="btnOk_Click" CssClass="btn-action login__login-button btn--no-shadow" Text="Kadena.MyAccount.ChangePassword" ValidationGroup="PasswordChange"></cms:LocalizedLinkButton>
+            <cms:LocalizedLinkButton ID="btnChangePassword" runat="server" OnClick="btnOk_Click" CssClass="btn-action login__login-button btn--no-shadow" Text="Kadena.MyAccount.ChangePassword"></cms:LocalizedLinkButton>
+            <cms:LocalizedLabel CssClass="input__label" ID="successMessage" ResourceString="Kadena.ChangePassword.SuccessMessage" runat="server" Visible="false"/>
         </div>
     </div>
 

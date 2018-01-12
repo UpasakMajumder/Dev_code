@@ -81,25 +81,7 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSModules_Membership_FormControls_Passwords_PasswordStrength passStrength;
-    
-    /// <summary>
-    /// rvPasswordStrength control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.RequiredFieldValidator rvPasswordStrength;
-    
-    /// <summary>
-    /// revPassword control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.RegularExpressionValidator revPassword;
+    protected global::CMSModules_Membership_FormControls_Passwords_KadenaPasswordStrength passStrength;
     
     /// <summary>
     /// lblConfirmPassword control.
@@ -145,4 +127,13 @@ public partial class CMSWebParts_Kadena_Membership_KadenaChangePassword {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.Base.Web.UI.LocalizedLinkButton btnChangePassword;
+    
+    /// <summary>
+    /// successMessage control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel successMessage;
 }
