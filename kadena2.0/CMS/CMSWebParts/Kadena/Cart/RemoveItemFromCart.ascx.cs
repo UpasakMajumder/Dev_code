@@ -4,6 +4,7 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Linq;
 
@@ -118,7 +119,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ShoppingCartItemInfoObject.CartItemUnits, ContactID);
                 ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
                 ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
-                URLHelper.Redirect(Request.RawUrl);
+                URLHelper.Redirect($"{Request.RawUrl}?status={QueryStringStatus.Deleted}");
             }
             catch (Exception ex)
             {

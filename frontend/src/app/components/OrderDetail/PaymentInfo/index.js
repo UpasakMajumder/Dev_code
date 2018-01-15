@@ -6,9 +6,11 @@ import SVG from 'app.dump/SVG';
 import timeFormat from 'app.helpers/time';
 
 const PaymentInfo = ({ ui, dateTimeNAString }) => {
-  const { title, paymentIcon, paidBy, paymentDetail, date, datePrefix } = ui;
+  const { title, paymentIcon, paidBy, paymentDetail, date, datePrefix, bUnitName, bUnitLabel } = ui;
 
   const paymentMethodInfo = paymentDetail ? <p>{paidBy},<br /> {paymentDetail}</p> : <p>{paidBy}</p>;
+
+  const bUnitInfo = bUnitName ? <p>{bUnitLabel}: {bUnitName}</p> : <p></p>;
 
   return (
     <div className="order-block order-block--tile ">
@@ -17,6 +19,7 @@ const PaymentInfo = ({ ui, dateTimeNAString }) => {
         <SVG name={paymentIcon}/>
         {paymentMethodInfo}
         <p>{datePrefix}: <span className="weight--bold">{timeFormat(date, dateTimeNAString)}</span></p>
+        {bUnitInfo}
       </div>
     </div>
   );
@@ -30,7 +33,9 @@ PaymentInfo.propTypes = {
     paidBy: PropTypes.string.isRequired,
     paymentDetail: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    datePrefix: PropTypes.string.isRequired
+    datePrefix: PropTypes.string.isRequired,
+    bUnitName: PropTypes.string.isRequired,
+    bUnitLabel: PropTypes.string.isRequired
   })
 };
 

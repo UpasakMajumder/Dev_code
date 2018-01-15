@@ -11,6 +11,7 @@ using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.ImageUpload;
 using System;
 using System.Collections.Generic;
@@ -393,7 +394,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
             }
             else
             {
@@ -446,7 +447,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
             }
             else
             {

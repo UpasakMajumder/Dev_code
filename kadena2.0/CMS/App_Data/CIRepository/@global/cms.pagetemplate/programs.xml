@@ -193,13 +193,13 @@ function deleteProgram(programID) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d==true) {
-                       location.reload();
+                       window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
                     } else {
-                       alert('Deletion failed');
+                      window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Deletion failed');
+                    window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
                 }
             });
     }

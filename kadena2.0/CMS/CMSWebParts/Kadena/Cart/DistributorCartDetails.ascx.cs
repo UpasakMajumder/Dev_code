@@ -6,6 +6,8 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
+using Kadena.Dto.General;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
@@ -267,7 +269,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                if (ValidCart)
+                BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
+                var estimatedPrice = default(double);
+                if(ValidCart)
                 {
                     base.OnPreRender(e);
                     BindRepeaterData();
@@ -280,12 +284,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                     }
                 }
-                var txtQuantity = Cart.CartItems.Sum(x => x.CartItemUnits);
-                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
+                {
+                    estimation = GetShippingResponse();
+                }
+                if (estimation != null && estimation.Success)
+                {
+                    estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                }
+                else
+                {
+                    divDailogue.Attributes.Add("class", "dialog active");
+                }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
-                SelectShippingoption(inventoryType, estimatedPrice);
+                BindShippingDropdown(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
@@ -321,7 +333,27 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Event handling"
 
         #region "Private Methods"
-
+        /// <summary>
+        /// gets Shipping cost response
+        /// </summary>
+        /// <returns></returns>
+        private BaseResponseDto<EstimateDeliveryPricePayloadDto> GetShippingResponse()
+        {
+            try
+            {
+                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                return ShoppingCartHelper.CallEstimationService(estimationdto);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
+                return null;
+            }
+        }
+        /// <summary>
+        /// gets etimated subtotal
+        /// </summary>
+        /// <returns></returns>
         private double EstimateSubTotal(int inventoryType)
         {
             double price = 0;
@@ -342,8 +374,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             return price;
         }
-
-        private void SelectShippingoption(int inventoryType, double estimatedPrice)
+        /// <summary>
+        /// binds dropdown based on prodcut type
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <param name="estimatedPrice"></param>
+        private void BindShippingDropdown(int inventoryType, double estimatedPrice)
         {
             try
             {
@@ -361,7 +397,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "SelectShippingoption", ex.Message);
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "BindShippingDropdown", ex.Message);
             }
         }
 
@@ -518,7 +554,5 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         #endregion "Private Methods"
-
-
     }
 }

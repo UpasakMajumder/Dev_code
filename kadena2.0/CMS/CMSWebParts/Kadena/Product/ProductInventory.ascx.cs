@@ -528,18 +528,79 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             dialog_Add_To_Cart.Attributes.Add("class", "dialog active");
             btnClose.InnerText = CartCloseText;
             lblPopUpHeader.Text = ResHelper.GetString("KDA.AddToCart.Popup.HeaderText");
-            if (!DataHelper.DataSourceIsEmpty(product) && ProductType == (int)ProductsType.GeneralInventory)
+            var hasBusinessUnit = CheckPersonHasBusinessUnit();
+            if (!DataHelper.DataSourceIsEmpty(product))
+            {
+                switch (ProductType)
+                {
+                    case (int)ProductsType.GeneralInventory:
+                        BindGeneralInventory(product, hasBusinessUnit);
+                        break;
+                    case (int)ProductsType.PreBuy:
+                        BindPreBuy(product, hasBusinessUnit);
+                        break;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+    /// <summary>
+    /// Binds general inventory data to popup
+    /// </summary>
+    /// <param name="product"></param>
+    /// <param name="hasBusinessUnit"></param>
+    private void BindGeneralInventory(SKUInfo product, bool hasBusinessUnit)
+    {
+        try
+        {
+            if (product.SKUAvailableItems > 0)
             {
                 lblProductName.Text = product.SKUName;
                 lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
                 lblAvailbleItems.Visible = true;
+                BindPopupGridData(hasBusinessUnit);
             }
             else
             {
-                lblProductName.Text = product?.SKUName;
-                lblAvailbleItems.Visible = false;
+                lblErrorMsg.Visible = true;
+                llbtnAddToCart.Visible = false;
+                lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.NoStockAvailableError");
             }
-            var hasBusinessUnit = CheckPersonHasBusinessUnit();
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindGeneralInventory()", ex);
+        }
+    }
+    /// <summary>
+    /// Binds prebuy data to  popup
+    /// </summary>
+    /// <param name="product"></param>
+    /// <param name="hasBusinessUnit"></param>
+    private void BindPreBuy(SKUInfo product, bool hasBusinessUnit)
+    {
+        try
+        {
+            lblProductName.Text = product?.SKUName;
+            lblAvailbleItems.Visible = false;
+            BindPopupGridData(hasBusinessUnit);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPreBuy()", ex);
+        }
+    }
+    /// <summary>
+    /// showing pop data based on assiged business units
+    /// </summary>
+    /// <param name="hasBusinessUnit"></param>
+    private void BindPopupGridData(bool hasBusinessUnit)
+    {
+        try
+        {
             if (hasBusinessUnit)
             {
                 lblErrorMsg.Visible = false;
@@ -552,13 +613,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 llbtnAddToCart.Visible = false;
                 lblErrorMsg.Visible = true;
+                lblAvailbleItems.Visible = false;
                 lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.BusinessUnitError");
                 gvCustomersCart.Visible = false;
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
+            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPopupGridData()", ex);
         }
     }
     /// <summary>
@@ -628,7 +690,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         return myAddressList;
     }
-
+    /// <summary>
+    /// refreshes the page on buuton close
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void btnClose_ServerClick(object sender, EventArgs e)
+    {
+        Response.Redirect(Request.RawUrl, false);
+    }
     /// <summary>
     /// Add to
     /// </summary>
@@ -645,35 +715,26 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 if (row.RowType == DataControlRowType.DataRow && !DataHelper.DataSourceIsEmpty(product))
                 {
-                    CheckBox chkRow = (row.Cells[0].FindControl("chkSelected") as CheckBox);
-                    int customerAddressID = Convert.ToInt32(row.Cells[1].Text);
-                    TextBox txtQty = (row.Cells[3].FindControl("txtQuanityOrdering") as TextBox);
+                    int customerAddressID = Convert.ToInt32(row.Cells[0].Text);
+                    TextBox txtQty = (row.Cells[2].FindControl("txtQuanityOrdering") as TextBox);
                     var quantityPlacing = ValidationHelper.GetInteger(txtQty.Text, default(int));
-                    var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[4].Text, default(int));
-                    if (chkRow.Checked)
+                    var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[3].Text, default(int));
+                    if (ProductType == (int)ProductsType.GeneralInventory)
                     {
-                        if (ProductType == (int)ProductsType.GeneralInventory)
-                        {
-                            itemsPlaced += quantityPlacing;
-                            if (itemsPlaced < product.SKUAvailableItems)
-                            {
-                                CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
-                            }
-                            else
-                            {
-                                lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
-                                lblErrorMsg.Visible = true;
-                            }
-                        }
-                        else
+                        itemsPlaced += quantityPlacing;
+                        if (itemsPlaced < product.SKUAvailableItems)
                         {
                             CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
+                        else
+                        {
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
+                            lblErrorMsg.Visible = true;
+                        }
                     }
-                    else if (customerShoppingCartID > 0 && quantityPlacing > 0)
+                    else
                     {
-                        RemovingProductFromShoppingCart(product, customerShoppingCartID);
-                        BindCustomersList(ProductSKUID);
+                        CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                     }
                 }
             }
@@ -717,7 +778,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     Updatingtheunitcountofcartitem(productInfo, cartID, quantity, addressID);
                     BindCustomersList(ProductSKUID);
                 }
-                else if (cartID > 0 && quantity == 0)
+                else if (cartID > 0 && quantity <= 0)
                 {
                     RemovingProductFromShoppingCart(productInfo, cartID);
                     BindCustomersList(ProductSKUID);
@@ -822,10 +883,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 cart.SetValue("ShoppingCartInventoryType", ProductType);
                 cart.User = CurrentUser;
                 cart.ShoppingCartShippingAddress = customerAddress;
-                if (ProductType == (int)ProductType)
-                {
-                    cart.ShoppingCartShippingOptionID = ProductShippingID;
-                }
+                cart.ShoppingCartShippingOptionID = ProductShippingID;
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
                 parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);

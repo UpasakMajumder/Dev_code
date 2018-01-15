@@ -42,7 +42,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="POSCode" columntype="integer" guid="4af2c7bd-5060-467c-a928-5384f897ec36" publicfield="false" visible="true">
+      <field allowempty="true" column="POSCode" columnsize="200" columntype="text" guid="4af2c7bd-5060-467c-a928-5384f897ec36" publicfield="false" visible="true">
         <properties>
           <fieldcaption>POSCode</fieldcaption>
         </properties>
@@ -102,7 +102,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="POSNumber" columntype="integer" guid="1910d977-b881-44f9-8c7c-cc74ff878b3d" publicfield="false" visible="true">
+      <field allowempty="true" column="POSNumber" columnsize="200" columntype="text" guid="1910d977-b881-44f9-8c7c-cc74ff878b3d" publicfield="false" visible="true">
         <properties>
           <fieldcaption>POS Number</fieldcaption>
         </properties>
