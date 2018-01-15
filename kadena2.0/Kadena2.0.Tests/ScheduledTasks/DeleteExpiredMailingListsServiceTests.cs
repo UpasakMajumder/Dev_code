@@ -25,9 +25,10 @@ namespace Kadena.Tests.ScheduledTasks
 
         /*
          
-            TODO update these test if refactoring of scheduled tasks will work.
+            TODO :
 
-            Do not confirm code review if this is not resolved
+            Improve DeleteExpiredMailingListsService based on https://cenveo.atlassian.net/browse/KDA-2262
+            to be unittestable again
 
         [Fact]
         public async Task Service_ShouldNotRun_WhenNoIntervalIsSpecified()
