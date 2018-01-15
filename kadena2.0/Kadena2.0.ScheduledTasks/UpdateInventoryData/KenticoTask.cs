@@ -13,17 +13,8 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
     {
         public string Execute(TaskInfo task)
         {
-            try
-            {
-                var service = Services.Resolve<IUpdateInventoryDataService>();
-                return service.UpdateInventoryData().Result;
-            }
-            catch (Exception ex)
-            {
-                var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                ProviderFactory.KenticoLogger.LogError("UpdateInventoryData task", $"[{processName}] {ex.ToString()}");
-                return ex.ToString();
-            }
+            var service = Services.Resolve<IUpdateInventoryDataService>();
+            return service.UpdateInventoryData().Result;
         }
     }
 }
