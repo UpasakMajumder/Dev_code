@@ -3,7 +3,6 @@ using Kadena.Models.Site;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 
         public Func<DateTime> GetCurrentTime { get; set; } = () => DateTime.Now;
 
-        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoSiteProvider kenticoSiteProvider)//, IMailingListClient mailingService)
+        public DeleteExpiredMailingListsService(IConfigurationProvider configurationProvider, IKenticoSiteProvider kenticoSiteProvider)
         {
             if (configurationProvider == null)
             {
