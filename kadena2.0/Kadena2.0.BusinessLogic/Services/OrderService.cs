@@ -466,6 +466,7 @@ namespace Kadena.BusinessLogic.Services
 
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
             shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
+            shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(paymentMethodId);
@@ -508,6 +509,7 @@ namespace Kadena.BusinessLogic.Services
                     AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
                     State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
+                    StateDisplayName = !string.IsNullOrEmpty(shippingAddress.State?.StateDisplayName) ? shippingAddress.State.StateDisplayName : shippingAddress.Country.Name, 
                     KenticoStateID = shippingAddress.State.Id,
                     KenticoCountryID = shippingAddress.Country.Id,
                     AddressCompanyName = customer.Company,
