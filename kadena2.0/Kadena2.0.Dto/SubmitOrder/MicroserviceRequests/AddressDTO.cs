@@ -16,6 +16,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         [Required(AllowEmptyStrings = false, ErrorMessage = "State is a mandatory field")]
         public string State { get; set; }
 
+        public string StateDisplayName { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Zip Code is a mandatory field")]
         public string Zip { get; set; }
         public string Phone { get; set; }

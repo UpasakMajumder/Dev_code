@@ -225,13 +225,15 @@ namespace Kadena.WebAPI
                     .ForMember(dest => dest.Sorting, cfg => cfg.ResolveUsing(src => src.Sorting.ToString().ToLower()));
                 config.CreateMap<LocalizationDto, string>().ProjectUsing(src => src.Language);
                 config.CreateMap<ButtonLabels, ButtonLabelsDto>();
+                config.CreateMap<AddressDTO, State>()
+                    .ForMember(dest => dest.StateCode, opt => opt.MapFrom(src => src.State));
                 config.CreateMap<AddressDTO, DeliveryAddress>()
                     .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
                     .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
-                    .ForMember(dest => dest.State, opt => opt.Ignore())
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
                     .ForMember(dest => dest.Country, opt => opt.Ignore());
                 config.CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
-                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateCode))
+                    .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
                 config.CreateMap<LogonUserRequestDTO, LoginRequest>();
                 config.CreateMap<LoginResult, LogonUserResultDTO>();
