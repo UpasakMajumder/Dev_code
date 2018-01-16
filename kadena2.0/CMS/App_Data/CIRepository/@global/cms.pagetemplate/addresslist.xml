@@ -160,7 +160,11 @@
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-{%if(QueryString["searchtext"]!=""){%}
+{%if(ECommerceContext.CurrentCustomer.ID>0){%}
+AddressCustomerID={%ECommerceContext.CurrentCustomer.ID%}
+{%}else{ "1=0" }|(user)cvoqa2@gmail.com|(hash)acebfebbbca9d949966fc1b658e0e456d3d745ac007465db8487ac2ad0f2d431%}
+{%if(ECommerceContext.CurrentCustomer.ID>0 && QueryString["searchtext"]!=""){%}
+ AND
 (
 AddressPersonalName LIKE '%{?searchtext?}%' OR 
 AddressType LIKE '%{?searchtext?}%' OR 
@@ -169,7 +173,7 @@ CompanyName LIKE '%{?searchtext?}%' OR
 Email LIKE '%{?searchtext?}%' OR 
 AddressPhone LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)3ec64ac89cf1164f809a17c0b80a6ba86dc085a78a7b81dd0117e3fbfec5954c%}
+{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)2edacb31c18b5b8d64192baf499296b1ca837dd90a41c14196abc33ef71110fd%}
 ]]>
           </property>
           <property name="zerorowstext" ismacro="true">
