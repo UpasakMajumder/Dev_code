@@ -24,7 +24,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// Create Pdf method
         /// </summary>
         /// <param name="distributorCartData"></param>
-        public static byte[] CreateProductPDF(DataTable distributorCartData,int inventoryType)
+        public static byte[] CreateProductPDF(DataTable distributorCartData, int inventoryType)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// </summary>
         /// <param name="distributorCartData"></param>
         /// <returns></returns>
-        public static string CreateCartInnerContent(DataTable distributorCartData, string CurrentSiteName,int inventoryType)
+        public static string CreateCartInnerContent(DataTable distributorCartData, string CurrentSiteName, int inventoryType)
         {
             try
             {
@@ -127,7 +127,6 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
-                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string)), inventoryType));
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -144,7 +143,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// </summary>
         /// <param name="distributorCartData"></param>
         /// <returns></returns>
-        public static string CreateCartInnerContent(List<DataRow> distributorCartData, string CurrentSiteName,int inventoryType)
+        public static string CreateCartInnerContent(List<DataRow> distributorCartData, string CurrentSiteName, int inventoryType)
         {
             try
             {
@@ -156,7 +155,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
-                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"],default(string)), inventoryType));
+                    pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))));
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -196,36 +195,22 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// </summary>
         /// <param name="imagepath"></param>
         /// <returns></returns>
-        public static string GetProductImage(object imagepath,int typeOfProduct)
+        public static string GetProductImage(string imagepath)
         {
             string returnValue = string.Empty;
             try
             {
-                if (typeOfProduct == (int)ProductType.PreBuy)
+                if (!string.IsNullOrWhiteSpace(imagepath))
                 {
-                    string folderName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ImagesFolderName");
-                    folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-                    if (imagepath != null && folderName != null)
-                    {
-                        returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(SiteContext.CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                    }
+                    string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
+                    returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
                 }
-                else
-                {
-                    string folderName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_InventoryProductImageFolderName");
-                    folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
-                    if (imagepath != null && folderName != null)
-                    {
-                        returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(SiteContext.CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                    }
-                }
-
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, SiteContext.CurrentSiteID, ex.Message);
             }
-            return returnValue;
+            return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
         }
         #endregion Methods
     }
