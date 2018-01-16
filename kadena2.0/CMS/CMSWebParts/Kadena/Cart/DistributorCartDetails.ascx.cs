@@ -493,14 +493,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var businessUnitID = ValidationHelper.GetInteger(ddlBusinessUnits.SelectedValue, default(int));
+                var businessUnitID = ValidationHelper.GetLong(ddlBusinessUnits.SelectedValue, default(long));
                 if (CartID != default(int) && businessUnitID > 0)
                 {
-                    var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (shoppingCart != null)
+                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                    if (Cart != null)
                     {
-                        shoppingCart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
-                        shoppingCart.Update();
+                        Cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+                        Cart.Update();
                     }
                 }
             }
@@ -522,15 +522,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
                 if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
                 {
-                    var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (shoppingCart != null)
+                    if (Cart != null)
                     {
-                        shoppingCart.ShoppingCartShippingOptionID = shippingID;
-                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                        var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                        shoppingCart.TotalShipping = estimatedPrice;
-                        shoppingCart.Update();
+                        Cart.ShoppingCartShippingOptionID = shippingID;
+                        Cart.Update();
                     }
                 }
             }
