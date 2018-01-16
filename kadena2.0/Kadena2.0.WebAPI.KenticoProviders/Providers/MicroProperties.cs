@@ -26,7 +26,7 @@ namespace Kadena.Helpers
 
         public string GetCustomerName()
         {
-            return _site.GetKenticoSite().Name;
+            return _site.GetKenticoSite()?.Name;
         }
 
         public string GetServiceUrl(string urlLocationName)
