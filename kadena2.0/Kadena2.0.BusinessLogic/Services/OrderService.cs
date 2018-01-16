@@ -262,9 +262,6 @@ namespace Kadena.BusinessLogic.Services
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                     Tracking = null // TODO Track your package url unknown
                 };
-                orderDetail.ShippingInfo.Address.State = localization
-                    .GetStates()
-                    .FirstOrDefault(s => s.StateCode.Equals(data.ShippingInfo.AddressTo.State));
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
                     .FirstOrDefault(s => s.Code.Equals(data.ShippingInfo.AddressTo.isoCountryCode));
@@ -468,6 +465,7 @@ namespace Kadena.BusinessLogic.Services
             shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
+            var billingState = localization.GetStates().FirstOrDefault(c => c.Id == billingAddress.StateId);
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(paymentMethodId);
             var cartItems = shoppingCart.GetShoppingCartItems();
@@ -494,6 +492,7 @@ namespace Kadena.BusinessLogic.Services
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
                     State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
+                    StateDisplayName = !string.IsNullOrEmpty(billingState?.StateDisplayName) ? billingState.StateDisplayName : billingAddress.Country,
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
                     AddressCompanyName = settings.DefaultSiteCompanyName,
