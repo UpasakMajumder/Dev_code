@@ -14,6 +14,7 @@ import CheckboxInput from 'app.dump/Form/CheckboxInput';
 import { changeShoppingData, sendData, initCheckedShoppingData, removeProduct,
   changeProductQuantity, getUI, addNewAddress } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
+import { addAddress as saveAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
 import DeliveryMethod from './DeliveryMethod';
@@ -225,7 +226,7 @@ class Checkout extends Component {
   };
 
   render() {
-    const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress } = this.props;
+    const { checkout, changeShoppingData, changeProductQuantity, removeProduct, addNewAddress, saveAddress } = this.props;
     const { ui, checkedData, isSending, newAddress } = checkout;
 
     let content = <Spinner />;
@@ -293,6 +294,7 @@ class Checkout extends Component {
               addNewAddress={addNewAddress}
               ui={deliveryAddresses}
               newAddressObject={newAddress}
+              saveAddress={saveAddress}
             />
           </div>
         ) : (
@@ -395,5 +397,6 @@ export default connect((state) => {
   removeProduct,
   changeProductQuantity,
   changeProducts,
-  addNewAddress
+  addNewAddress,
+  saveAddress
 })(Checkout);
