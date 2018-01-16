@@ -53,7 +53,7 @@ class DeliveryAddress extends Component {
 
   render() {
     const { addressesNumber } = this.state;
-    const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject } = this.props;
+    const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject, saveAddress } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification, bounds } = ui;
 
     const renderAddresses = (item, i) => {
@@ -129,6 +129,7 @@ class DeliveryAddress extends Component {
           closeDialog={this.toggleDialog}
           ui={dialogUI}
           userNotification={userNotification}
+          saveAddress={saveAddress}
         />}
 
         <div>
@@ -156,6 +157,7 @@ DeliveryAddress.propTypes = {
   addNewAddress: PropTypes.func.isRequired,
   checkedId: PropTypes.number,
   disableInteractivity: PropTypes.bool.isRequired,
+  saveAddress: PropTypes.func.isRequired,
   ui: PropTypes.shape({
     userNotification: PropTypes.string,
     items: PropTypes.arrayOf(PropTypes.object.isRequired),

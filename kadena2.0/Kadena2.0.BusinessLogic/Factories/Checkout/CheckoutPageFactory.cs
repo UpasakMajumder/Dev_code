@@ -116,6 +116,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 DiscardBtnLabel = resources.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
                 SubmitBtnLabel = resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress"),
                 RequiredErrorMessage = resources.GetResourceString("Kadena.Settings.RequiredField"),
+                SaveAddressCheckbox = resources.GetResourceString("Kadena.Checkout.PersistAddressCheckbox"),
                 Fields = new[] {
                     new DialogField
                     {

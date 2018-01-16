@@ -4,7 +4,15 @@ $align-items: (center: center, start: flex-start, end: flex-end, stretch: stretc
 
 @each $alignProp, $alignStyle in $align-items {
   @each $justifyProp, $justifyStyle in $justify-content {
+    // extension
     %flex--#{$alignProp}--#{$justifyProp} {
+      display: flex;
+      align-items: $alignStyle;
+      justify-content: $justifyStyle;
+    }
+
+    // tachyon
+    .flex--#{$alignProp}--#{$justifyProp} {
       display: flex;
       align-items: $alignStyle;
       justify-content: $justifyStyle;
