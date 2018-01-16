@@ -377,41 +377,46 @@ iteratedDocument = iteratedDocument.Parent;
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
   $(document).ready(function () {
-    $('#businessUnitPopup').removeClass('active');    
-    //Bind already existed  business units
-    function BindBUData() {
-      var currentUserID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('userid=')[1]));
-      if(currentUserID > 0) 
-      {
-        $.ajax({
-          type: "POST",
-          url: '/KadenaWebservice.asmx/GetUserBusinessUnitData',
-          contentType: "application/json; charset=utf-8",
-          data: '{userID: ' + currentUserID + '}',
-          dataType: "json",
-          success: function (data) {
-            if (data != '') {
-              var parsedData=JSON.parse(data.d);
-              var th="<tr><th>{$Kadena.Users.BusinessUnitNumber$}</th><th>{$Kadena.Users.BusinessUnitName$}</th></tr>";
-              var rowData='';
-              var ids='';
-              $('#hdnbuid').val('');
-              for(i=0; i<parsedData.length;i++)  {
-                rowData +='<tr id='+parsedData[i].ItemID+'><td>'+parsedData[i].BusinessUnitNumber+'</td><td>'+parsedData[i].BusinessUnitName+
-                  '</td></tr>';
-                ids+=parsedData[i].ItemID+';';
+    $('#businessUnitPopup').removeClass('active'); 
+    $('.password-strength').children('input').addClass('input__text');
+    $('.ConfirmationSeparator').next().addClass('input__label').css('display','block').html('{$Kadena.Common.ConfirmPassword$}');
+    $('.ConfirmationSeparator').next().next().addClass('input__text');
+    $('.ConfirmationSeparator').next().next().addClass('js-cpwdtext')
+      $('.ConfirmationSeparator').next().addClass('js-cpwdlabel').css('display','block').html('{$Kadena.Common.ConfirmPassword$}')
+        //Bind already existed  business units
+        function BindBUData() {
+          var currentUserID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('userid=')[1]));
+          if(currentUserID > 0) 
+          {
+            $.ajax({
+              type: "POST",
+              url: '/KadenaWebservice.asmx/GetUserBusinessUnitData',
+              contentType: "application/json; charset=utf-8",
+              data: '{userID: ' + currentUserID + '}',
+              dataType: "json",
+              success: function (data) {
+                if (data != '') {
+                  var parsedData=JSON.parse(data.d);
+                  var th="<tr><th>{$Kadena.Users.BusinessUnitNumber$}</th><th>{$Kadena.Users.BusinessUnitName$}</th></tr>";
+                  var rowData='';
+                  var ids='';
+                  $('#hdnbuid').val('');
+                  for(i=0; i<parsedData.length;i++)  {
+                    rowData +='<tr id='+parsedData[i].ItemID+'><td>'+parsedData[i].BusinessUnitNumber+'</td><td>'+parsedData[i].BusinessUnitName+
+                      '</td></tr>';
+                    ids+=parsedData[i].ItemID+';';
+                  }
+                  $('#hdnbuid').val(ids);                           
+                  $('#UserBusinessUnitbody').append(rowData);
+                  $('#UserBusinessUnit').show();                           
+                } else {
+                }
+              },
+              error: function (xhr, ajaxOptions, thrownError) {            
               }
-              $('#hdnbuid').val(ids);                           
-              $('#UserBusinessUnitbody').append(rowData);
-              $('#UserBusinessUnit').show();                           
-            } else {
-            }
-          },
-          error: function (xhr, ajaxOptions, thrownError) {            
+            });
           }
-        });
-      }
-    }
+        }
     //Bind busienss units in pop up
     function BindBusinessUnits(){
       $.ajax({

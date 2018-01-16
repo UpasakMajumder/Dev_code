@@ -25,10 +25,10 @@
         </div>
         <div class="input__con">
           <label> 
-              <%# string.IsNullOrEmpty(Eval("AddressName",string.Empty))?"":Eval("AddressName",string.Empty) %>
-             <%# string.IsNullOrEmpty(Eval("StateDisplayName",string.Empty))?"":","+Eval("StateDisplayName",string.Empty) %>
-            <%# string.IsNullOrEmpty(Eval("AddressZip",string.Empty))?"":","+Eval("AddressZip",string.Empty) %>
-            <%# string.IsNullOrEmpty(Eval("AddressPhone",string.Empty))?"":","+Eval("AddressPhone",string.Empty) %>
+            <%# IfEmpty(Eval("AddressName"), "",Eval("AddressName")) %>
+            <%# IfEmpty(Eval("StateDisplayName"), "",","+Eval("StateDisplayName")) %>
+            <%# IfEmpty(Eval("AddressZip"), "",","+Eval("AddressZip")) %>
+            <%# IfEmpty(Eval("AddressPhone"), "",","+Eval("AddressPhone"))  %>
           </label>
         </div>
       </div>

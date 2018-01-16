@@ -69,7 +69,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 var loggedInUserCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(CurrentUser.UserID, ProductType.GeneralInventory);
-                var unprocessedDistributorIDs = new List<int>();
+                var unprocessedDistributorIDs =  new List<Tuple<int, string>>();
                 loggedInUserCartIDs.ForEach(care =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
@@ -80,7 +80,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                     else
                     {
-                        unprocessedDistributorIDs.Add(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)));
+                        unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
                     }
                 });
                 if (unprocessedDistributorIDs.Count == 0)
@@ -89,8 +89,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 else
                 {
-                    var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs).Column("AddressPersonalName").ToList().Select(x => x?.AddressPersonalName).ToList();
-                    ShowOrderErrorList(distributors);
+                    ShowOrderErrorList(unprocessedDistributorIDs);
                 }
                 divErrorDailogue.Attributes.Add("class", "dialog active");
             }
@@ -125,13 +124,24 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// displays the unprocessed order distributors names
         /// </summary>
         /// <param name="addresses"></param>
-        private void ShowOrderErrorList(List<string> addresses)
+        private void ShowOrderErrorList(List<Tuple<int, string>> unprocessedDistributorIDs)
         {
             try
             {
-                lblCartError.Text = ResHelper.GetString("KDA.Checkout.OrderError");
-                lstErrors.DataSource = addresses;
-                lstErrors.DataBind();
+
+                var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs.Select(x => x.Item1).ToList())
+                    .Columns("AddressPersonalName,AddressID").ToList().Select(x => {
+                        return new { AddressID = x?.AddressID, AddressPersonalName = x?.AddressPersonalName };
+                    }).ToList();
+                rptErrors.DataSource=   unprocessedDistributorIDs.Select(x =>
+                {
+                   var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
+                    return new {
+                        AddressPersonalName= distributor.AddressPersonalName,
+                        Reason=x.Item2
+                    };
+                }).ToList();
+                rptErrors.DataBind();
             }
             catch (Exception ex)
             {
