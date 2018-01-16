@@ -492,7 +492,7 @@ namespace Kadena.BusinessLogic.Services
                     AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                     City = billingAddress.City,
                     State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
-                    StateDisplayName = !string.IsNullOrEmpty(billingState?.StateDisplayName) ? billingState.StateDisplayName : billingAddress.Country,
+                    StateDisplayName = billingState?.StateDisplayName,
                     KenticoStateID = billingAddress.StateId,
                     KenticoCountryID = billingAddress.CountryId,
                     AddressCompanyName = settings.DefaultSiteCompanyName,
@@ -508,7 +508,7 @@ namespace Kadena.BusinessLogic.Services
                     AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
                     State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
-                    StateDisplayName = !string.IsNullOrEmpty(shippingAddress.State?.StateDisplayName) ? shippingAddress.State.StateDisplayName : shippingAddress.Country.Name, 
+                    StateDisplayName = shippingAddress.State?.StateDisplayName, 
                     KenticoStateID = shippingAddress.State.Id,
                     KenticoCountryID = shippingAddress.Country.Id,
                     AddressCompanyName = customer.Company,
