@@ -25,10 +25,10 @@
         </div>
         <div class="input__con">
           <label> 
-            <%# IfEmpty(Eval("AddressName"), "",Eval("AddressName").ToString()) %>
-            <%# IfEmpty(Eval("StateDisplayName"), "",","+Eval("StateDisplayName").ToString()) %>
-            <%# IfEmpty(Eval("AddressZip"), "",","+Eval("AddressZip").ToString()) %>
-            <%# IfEmpty(Eval("AddressPhone"), "",","+Eval("AddressPhone").ToString()) %>
+            <%# IfEmpty(Eval("AddressName"), "",Eval("AddressName")) %>
+            <%# IfEmpty(Eval("StateDisplayName"), "",","+Eval("StateDisplayName")) %>
+            <%# IfEmpty(Eval("AddressZip"), "",","+Eval("AddressZip")) %>
+            <%# IfEmpty(Eval("AddressPhone"), "",","+Eval("AddressPhone"))  %>
           </label>
         </div>
       </div>
