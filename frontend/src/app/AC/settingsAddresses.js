@@ -6,7 +6,7 @@ import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_A
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { USER_SETTINGS, NOTIFICATION } from 'app.globals';
+import { USER_SETTINGS, NOTIFICATION, CHECKOUT } from 'app.globals';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -38,18 +38,19 @@ export const getUI = () => {
   };
 };
 
-export const modifyAddress = (data) => {
-  return (dispatch) => {
+export const modifyAddress = (data, fromCheckout) => {
+  return async (dispatch) => {
     dispatch({ type: MODIFY_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    axios({
-      method: 'post',
-      url: USER_SETTINGS.addresses.editAddressURL,
-      headers: { 'Content-Type': 'application/json' },
-      data
-    }).then((response) => {
-      const { success, errorMessage } = response.data;
+    try {
+      const response = axios({
+        method: 'post',
+        url: USER_SETTINGS.addresses.editAddressURL,
+        headers: { 'Content-Type': 'application/json' },
+        data
+      });
+      const { success, errorMessage, payload } = response.data;
 
       if (!success) {
         dispatch({
@@ -60,6 +61,8 @@ export const modifyAddress = (data) => {
         return;
       }
 
+      if (fromCheckout) await axios.post(CHECKOUT.changeAddressURL, { id: payload.id });
+
       dispatch({
         type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
         payload: data
@@ -67,10 +70,10 @@ export const modifyAddress = (data) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
-    }).catch((error) => {
+    } catch (e) {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
       dispatch({ type: APP_LOADING + FINISH });
-    });
+    }
   };
 };
 
