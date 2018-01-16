@@ -177,7 +177,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             try
             {
                 StringBuilder sb = new StringBuilder();
-                string personData = $"{distributor["AddressPersonalName"].ToString()} | {distributor["AddressCity"].ToString()} | {distributor["StateDisplayName"].ToString()}";
+                string personData = $"{distributor["AddressPersonalName"].ToString()} | {distributor["AddressCity"].ToString()} | {distributor["StateDisplayName"].ToString()} | {distributor["AddressZip"].ToString()}";
                 string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFOuterBodyHTML");
                 pdfProductContent = pdfProductContent.Replace("{DISTRIBUTORDETAILS}", personData);
                 pdfProductContent = pdfProductContent.Replace("{PDFNAME}", distributor["AddressPersonalName"].ToString());
