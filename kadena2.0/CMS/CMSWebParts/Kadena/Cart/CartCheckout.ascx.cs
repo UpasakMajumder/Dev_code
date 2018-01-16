@@ -141,7 +141,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         Reason=x.Item2
                     };
                 }).ToList();
-                // lblCartError.Text = ResHelper.GetString("KDA.Checkout.OrderError");
                 rptErrors.DataBind();
             }
             catch (Exception ex)
