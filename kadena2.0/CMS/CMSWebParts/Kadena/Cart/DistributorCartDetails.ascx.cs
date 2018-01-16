@@ -145,7 +145,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Price", value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the SaveasPDF
         /// </summary>
@@ -271,7 +271,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
                 var estimatedPrice = default(double);
-                if(ValidCart)
+                if (ValidCart)
                 {
                     base.OnPreRender(e);
                     BindRepeaterData();
@@ -291,10 +291,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (estimation != null && estimation.Success)
                 {
                     estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                }
-                else
-                {
-                    divDailogue.Attributes.Add("class", "dialog active");
                 }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 BindShippingDropdown(inventoryType, estimatedPrice);
@@ -535,15 +531,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
                 if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
                 {
-                    var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (shoppingCart != null)
+                    if (Cart != null)
                     {
-                        shoppingCart.ShoppingCartShippingOptionID = shippingID;
-                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                        var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                        shoppingCart.TotalShipping = estimatedPrice;
-                        shoppingCart.Update();
+                        Cart.ShoppingCartShippingOptionID = shippingID;
+                        Cart.Update();
                     }
                 }
             }
