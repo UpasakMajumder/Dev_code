@@ -23,6 +23,7 @@
     <tr>
         <td colspan="2"><%= Shipping %></td>
         <td>
+            <asp:Label runat="server" ID="lblShippingOption" Visible="false" ></asp:Label>
             <asp:DropDownList runat="server" ID="ddlShippingOption" CssClass="select-list js-Shipping" EnableViewState="true" OnSelectedIndexChanged="ddlShippingOption_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
         </td>
         <td colspan="2">
