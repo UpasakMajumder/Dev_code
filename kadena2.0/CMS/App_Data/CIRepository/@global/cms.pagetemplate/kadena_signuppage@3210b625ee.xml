@@ -238,14 +238,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
   $(document).ready(function(){ 
-    //confirm password 
-    $('.password-strength').children('input').addClass('input__text');
-    $('.ConfirmationSeparator').next().addClass('input__label').css('display','block').html('{$Kadena.Common.ConfirmPassword$}');
-    $('.ConfirmationSeparator').next().next().addClass('input__text');
-    $('.ConfirmationSeparator').next().next().addClass('js-cpwdtext')
-      $('.ConfirmationSeparator').next().addClass('js-cpwdlabel').css('display','block').html('{$Kadena.Common.ConfirmPassword$}')
-        
-        var regEx='{%Settings.KDA_Email_Validation|(user)cvoqa2@gmail.com|(hash)2c2de5d7f49b1b43fee586327be72f42cd93aaaa1ff9951a52a3bcf73a76d2aa%}';
+    var regEx='{%Settings.KDA_Email_Validation|(user)cvoqa2@gmail.com|(hash)2c2de5d7f49b1b43fee586327be72f42cd93aaaa1ff9951a52a3bcf73a76d2aa%}';
     $('[id$=btnRegister]').click(function(event){
       if(regEx!=null ||regEx!='') {
         var email=new RegExp(regEx);
