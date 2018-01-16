@@ -19,7 +19,6 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-
 <div class="content-header">
   <div class="content-header__inner">
     <cms:CMSWebPartZone ZoneID="ZoneHeader" runat="server" />
@@ -45,19 +44,6 @@
     
   </div>
 </div>
-<script src="./Kadena 2.0 - Settings_files/email-decode.min.js.download"></script>
-<script type="text/javascript">
-  //<![CDATA[
-  config.localization.languages = {
-    url: '/api/usersettings/savelocalization',
-    selected: 'English',
-    languages: [{ "code": "en-US", "language": "English", "url": "/Settings?lang=en-US" }, { "code": "ja-JP", "language": "日本語", "url": "/設定?lang=ja-JP" }]
-  }
-    //
-]]>
-<![CDATA[
-
-</script>
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
