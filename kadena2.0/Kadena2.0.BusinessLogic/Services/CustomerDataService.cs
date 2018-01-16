@@ -66,7 +66,7 @@ namespace Kadena.BusinessLogic.Services
                     Street = new List<string> { address.Address1, address.Address2 },
                     City = address.City,
                     Country = country.Name,
-                    State = state?.StateCode,
+                    State = state?.StateDisplayName,
                     Zip = address.Zip
                 };
             }
