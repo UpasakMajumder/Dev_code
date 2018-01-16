@@ -264,10 +264,10 @@ config.localization.userSettings = {
         </webpart>
       </webpartzone>
       <webpartzone id="zonePassword" v="1">
-        <webpart controlid="KadenaChangePassword" guid="ca1a51d1-9453-4956-8957-aacf7a655f51" type="_KadenaChangePassword" v="1">
+        <webpart controlid="PasswordChange" guid="d6b6dfb0-5f42-4934-aaf7-fc5deb863b32" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
+          <property name="cat_open_output_filter">False</property>
+          <property name="cat_open_performance">False</property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
           <property name="container"></property>
@@ -277,22 +277,22 @@ config.localization.userSettings = {
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">KadenaChangePassword</property>
+          <property name="controlid">PasswordChange</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
+          <property name="disableviewstate">True</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">ca1a51d1-9453-4956-8957-aacf7a655f51</property>
-          <property name="maximalpasswordlength">0</property>
+          <property name="instanceguid">d6b6dfb0-5f42-4934-aaf7-fc5deb863b32</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
+          <property name="outputfixattributes">False</property>
+          <property name="outputfixhtml5">False</property>
+          <property name="outputfixjavascript">False</property>
+          <property name="outputfixlowercase">False</property>
+          <property name="outputfixselfclose">False</property>
+          <property name="outputresolveurls">False</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -300,15 +300,53 @@ config.localization.userSettings = {
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resourceprefix"></property>
+          <property name="preservepartialcacheonpostback">True</property>
+          <property name="resolvedynamiccontrols">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="showlables">True</property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<div class="settings__item j-password-change-form" data-function="ChangePassword" data-id="{% CurrentUser.GUID |(user)administrator|(hash)8193d504f6de6e276c15d0b104209a89ee806ba6485c5481c641994ab780467b%}">
+    <div>
+        <div class="form">
+            <div class="input__wrapper js-password">
+                <div class="input__inner">
+                    <input type="password" class="input__password js-password-input j-old-password" placeholder="{$Kadena.Settings.Password.OldPassword$}" />
+                    <span class="input__toggler js-password-toggler" data-password-show='{$Kadena.Field.Show$}' data-password-hide='{$Kadena.Field.Hide$}'>{$Kadena.Field.Show$}</span>
+                </div>
+                <span class="input__error input__error--noborder j-old-password-empty-error-label" style="display: none;">{$Kadena.Settings.Password.OldPasswordIsEmpty$}</span>
+                <span class="input__error input__error--noborder j-old-password-whitespace-error-label" style="display: none;">{$Kadena.Settings.Password.OldPasswordContainsWhiteSpaces$}</span>
+            </div>
+            <div class="input__wrapper js-password">
+                <div class="input__inner">
+                    <input type="password" class="input__password js-password-input j-new-password" placeholder="{$Kadena.Settings.Password.NewPassword$}" />
+                    <span class="input__toggler js-password-toggler" data-password-show="{$Kadena.Field.Show$}" data-password-hide="{$Kadena.Field.Hide$}">{$Kadena.Field.Show$}</span>
+                </div>
+                <span class="input__error input__error--noborder j-new-password-empty-error-label" style="display: none;">{$Kadena.Settings.Password.NewPasswordIsEmpty$}</span>
+                <span class="input__error input__error--noborder j-new-password-whitespace-error-label" style="display: none;">{$Kadena.Settings.Password.NewPasswordContainsWhiteSpaces$}</span>
+            </div>
+            <div class="input__wrapper js-password">
+                <div class="input__inner">
+                    <input type="password" class="input__password js-password-input j-confirm-password" placeholder="{$Kadena.Settings.Password.ConfirmNewPassword$}" />
+                    <span class="input__toggler js-password-toggler" data-password-show="{$Kadena.Field.Show$}" data-password-hide="{$Kadena.Field.Hide$}">{$Kadena.Field.Show$}</span>
+                </div>
+                <span class="input__error input__error--noborder j-confirm-password-empty-error-label" style="display: none;">{$Kadena.Settings.Password.ConfirmPasswordIsEmpty$}</span>
+                <span class="input__error input__error--noborder j-confirm-password-whitespace-error-label" style="display: none;">{$Kadena.Settings.Password.ConfirmPasswordContainsWhiteSpaces$}</span>
+                <span class="input__error input__error--noborder j-passwords-dont-match-error-label" style="display: none;">{$Kadena.Settings.Password.PasswordsDontMatch$}</span>
+                <span class="input__error input__error--noborder j-general-error-label" style="display: none;"></span>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn-action j-submit-button">{$Kadena.Settings.Password.ChangePassword$}</button>
+</div>
+]]>
+          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">_KadenaChangePassword</property>
+          <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneFYBudgetHistory" v="1">
