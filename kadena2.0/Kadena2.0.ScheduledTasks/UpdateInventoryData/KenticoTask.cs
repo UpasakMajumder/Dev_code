@@ -2,6 +2,8 @@
 using CMS.Scheduler;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.UpdateInventoryData;
+using Kadena2.WebAPI.KenticoProviders;
+using System;
 
 [assembly: RegisterCustomClass("UpdateInventoryItems", typeof(KenticoTask))]
 
