@@ -292,10 +292,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
                 }
-                else
-                {
-                    divDailogue.Attributes.Add("class", "dialog active");
-                }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 BindShippingDropdown(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
