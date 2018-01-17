@@ -50,19 +50,20 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
         {
             var groupInfo = GetGroup(key.Group.DisplayName, key.Group.Category.Name);
 
-            var newKey = new SettingsKeyInfo();
-
-            newKey.KeyDisplayName = key.KeyDisplayName;
-            newKey.KeyName = key.KeyName;
-            newKey.KeyDescription = key.KeyDescription;
-            newKey.KeyType = key.KeyType;
-            newKey.KeyValue = key.KeyDefaultValue;
-            newKey.KeyCategoryID = groupInfo.CategoryID;
-            newKey.KeyDefaultValue = key.KeyDefaultValue;
-            newKey.KeyEditingControlPath = key.KeyEditingControlPath;
-            newKey.KeyExplanationText = key.KeyExplanationText;
-            newKey.KeyFormControlSettings = key.KeyFormControlSettings;
-            newKey.KeyValidation = key.KeyValidation;
+            var newKey = new SettingsKeyInfo
+            {
+                KeyDisplayName = key.KeyDisplayName,
+                KeyName = key.KeyName,
+                KeyDescription = key.KeyDescription,
+                KeyType = key.KeyType,
+                KeyValue = key.KeyDefaultValue,
+                KeyCategoryID = groupInfo.CategoryID,
+                KeyDefaultValue = key.KeyDefaultValue,
+                KeyEditingControlPath = key.KeyEditingControlPath,
+                KeyExplanationText = key.KeyExplanationText,
+                KeyFormControlSettings = key.KeyFormControlSettings,
+                KeyValidation = key.KeyValidation
+            };
 
             SettingsKeyInfoProvider.SetSettingsKeyInfo(newKey);
         }
