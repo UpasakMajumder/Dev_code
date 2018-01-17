@@ -369,8 +369,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
-                          .OrderBy(p=>p.SKUName)
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription})
+                           .OrderBy(p=>p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
                     rptProductLists.DataBind();
