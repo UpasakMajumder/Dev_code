@@ -39,18 +39,18 @@ export const getUI = () => {
 };
 
 export const modifyAddress = (data, fromCheckout) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({ type: MODIFY_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    try {
-      const response = axios({
-        method: 'post',
-        url: USER_SETTINGS.addresses.editAddressURL,
-        headers: { 'Content-Type': 'application/json' },
-        data
-      });
-      const { success, errorMessage, payload } = response.data;
+
+    axios({
+      method: 'post',
+      url: USER_SETTINGS.addresses.editAddressURL,
+      headers: { 'Content-Type': 'application/json' },
+      data
+    }).then((response) => {
+      const { success, errorMessage } = response.data;
 
       if (!success) {
         dispatch({
@@ -61,8 +61,6 @@ export const modifyAddress = (data, fromCheckout) => {
         return;
       }
 
-      if (fromCheckout) await axios.post(CHECKOUT.changeAddressURL, { id: payload.id });
-
       dispatch({
         type: MODIFY_SHIPPING_ADDRESS + SUCCESS,
         payload: data
@@ -70,24 +68,26 @@ export const modifyAddress = (data, fromCheckout) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
-    } catch (e) {
+    }).catch(() => {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
       dispatch({ type: APP_LOADING + FINISH });
-    }
+    });
   };
 };
 
 
-export const addAddress = (data) => {
-  return (dispatch) => {
+export const addAddress = (data, fromCheckout) => {
+  return async (dispatch) => {
     dispatch({ type: ADD_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    axios({
-      method: 'post',
-      url: USER_SETTINGS.addresses.editAddressURL,
-      data
-    }).then((response) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: USER_SETTINGS.addresses.editAddressURL,
+        data
+      });
+
       const { success, errorMessage, payload } = response.data;
 
       if (!success) {
@@ -102,6 +102,8 @@ export const addAddress = (data) => {
       const { id } = payload;
       data.id = id;
 
+      if (fromCheckout) await axios.post(CHECKOUT.changeAddressURL, { id });
+
       dispatch({
         type: ADD_SHIPPING_ADDRESS + SUCCESS,
         payload: data
@@ -109,11 +111,12 @@ export const addAddress = (data) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
-    })
-      .catch((error) => {
-        dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
-        dispatch({ type: APP_LOADING + FINISH });
-      });
+
+
+    } catch (e) {
+      dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
+      dispatch({ type: APP_LOADING + FINISH });
+    }
   };
 };
 
