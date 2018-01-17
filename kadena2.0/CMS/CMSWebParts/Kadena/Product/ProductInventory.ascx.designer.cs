@@ -21,6 +21,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl orderControls;
     
     /// <summary>
+    /// ddlBrand control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlBrand;
+    
+    /// <summary>
     /// ddlProgram control.
     /// </summary>
     /// <remarks>
