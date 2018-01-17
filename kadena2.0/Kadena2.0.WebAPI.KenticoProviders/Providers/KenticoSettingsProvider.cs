@@ -100,28 +100,34 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
 
         public bool GroupExists(string displayName, string categoryName)
         {
-            var category = SettingsCategoryInfoProvider.GetSettingsCategoryInfoByName(categoryName);
-            if (category == null)
+            var parentCategory = SettingsCategoryInfoProvider.GetSettingsCategoryInfoByName(categoryName);
+            if (parentCategory == null)
             {
                 throw new ArgumentException($"Parent category with name {categoryName} does not exist");
             }
 
-            var groupExists = SettingsCategoryInfoProvider.GetCategoriesOnPath(category.CategoryIDPath)
-                .Any(c => c.CategoryDisplayName == displayName);
+            var groupExists = SettingsCategoryInfoProvider.GetSettingsCategories()
+                .WhereEquals(nameof(SettingsCategoryInfo.CategoryParentID), parentCategory.CategoryID)
+                .And()
+                .WhereEquals(nameof(SettingsCategoryInfo.CategoryDisplayName), displayName)
+                .Any();
 
             return groupExists;
         }
 
         private SettingsCategoryInfo GetGroup(string displayName, string categoryName)
         {
-            var category = SettingsCategoryInfoProvider.GetSettingsCategoryInfoByName(categoryName);
-            if (category == null)
+            var parentCategory = SettingsCategoryInfoProvider.GetSettingsCategoryInfoByName(categoryName);
+            if (parentCategory == null)
             {
                 throw new ArgumentException($"Parent category with name {categoryName} does not exist");
             }
 
-            var group = SettingsCategoryInfoProvider.GetCategoriesOnPath(category.CategoryIDPath)
-                .FirstOrDefault(c => c.CategoryDisplayName == displayName);
+            var group = SettingsCategoryInfoProvider.GetSettingsCategories()
+                .WhereEquals(nameof(SettingsCategoryInfo.CategoryParentID), parentCategory.CategoryID)
+                .And()
+                .WhereEquals(nameof(SettingsCategoryInfo.CategoryDisplayName), displayName)
+                .FirstOrDefault();
             if (group == null)
             {
                 throw new ArgumentException($"Group with display name {displayName} does not exist");
