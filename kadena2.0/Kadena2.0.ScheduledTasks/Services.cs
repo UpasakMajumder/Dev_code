@@ -11,22 +11,20 @@ namespace Kadena.ScheduledTasks
 {
     public static class Services
     {
-        private static IContainer container;
-        private static object initializationLock = new object();
+        private static IContainer container = null;
 
+        static Services()
+        {
+            container = new Container();
+            RegisterServices(container);
+        }
+    
         public static T Resolve<T>()
         {
             if (container == null)
             {
-                lock (initializationLock)
-                {
-                    if (container == null)
-                    {
-                        var newContainer = new Container();
-                        RegisterServices(newContainer);
-                        container = newContainer;
-                    }
-                }
+                var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                ProviderFactory.KenticoLogger.LogError("Scheduled task container", $"[{processName}] container is null");
             }
 
             return container.Resolve<T>();

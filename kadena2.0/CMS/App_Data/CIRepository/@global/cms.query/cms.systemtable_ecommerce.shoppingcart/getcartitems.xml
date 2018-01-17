@@ -16,7 +16,8 @@
 <![CDATA[
 SELECT cart.ShoppingCartID,cartSKU.CartItemID,cartSKU.CartItemDistributorID,sku.SKUNumber,sku.SKUName,cartSKU.SKUUnits,sku.SKUPrice,
  cart.ShoppingCartInventoryType FROM COM_ShoppingCart cart INNER JOIN COM_ShoppingCartSKU cartSKU ON cart.ShoppingCartID= cartSKU.ShoppingCartID
-  INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID  WHERE CartItemDistributorID=@CartItemDistributorID
+  INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID  WHERE CartItemDistributorID=@CartItemDistributorID  AND 
+  cart.ShoppingCartInventoryType=@ShoppingCartInventoryType
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

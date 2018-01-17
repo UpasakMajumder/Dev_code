@@ -383,10 +383,11 @@ contentType: "application/json; charset=utf-8",
 dataType: "json",
 data: "{'CampaignID':" + CampaignID + "}",
 success: function (data) {
-alert('{$Kadena.CampaignDelete.SuccessMsg$}');
-location.reload();
+window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
 },
-error: function (xhr, ajaxOptions, thrownError) { }
+error: function (xhr, ajaxOptions, thrownError) {
+ window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+}
 });
 }
 }

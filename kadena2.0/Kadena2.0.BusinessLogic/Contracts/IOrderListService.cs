@@ -1,4 +1,5 @@
-﻿using Kadena.Models.RecentOrders;
+﻿using Kadena.Dto.Order;
+using Kadena.Models.RecentOrders;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -12,5 +13,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<OrderHead> GetHeaders();
 
         Task<OrderBody> GetBody(int pageNumber);
+
+        Task<OrderHeadBlock> GetHeaders(string orderType, int campaignID);
     }
 }

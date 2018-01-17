@@ -324,3 +324,19 @@
     top: -19px;
   }
 }
+
+.zoom__in {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+}
+
+.zoom__block {
+  width: 300px;
+  padding-left: 10px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}

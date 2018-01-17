@@ -11,6 +11,7 @@ using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.ImageUpload;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (!this.StopProcessing)
             {
                 productId = QueryHelper.GetInteger("ID", 0);
+                BindLabelText();
                 if (productId > 0)
                 {
                     btnSave.Click += btnUpdate_Click;
@@ -84,7 +86,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
-                BindLabelText();
                 if (!IsPostBack)
                 {
                     string currentDate = DateTime.Today.ToShortDateString();
@@ -102,7 +103,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
             rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
             rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
-            rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
             revQuantity.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
             rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
@@ -393,7 +393,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
             }
             else
             {
@@ -446,7 +446,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
-                Response.Redirect(CurrentDocument.Parent.DocumentUrlPath, false);
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
             }
             else
             {
@@ -475,7 +475,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         if (skuDetails != null)
                         {
                             string folderName = libraryFolderName;
-                            folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
+                            folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty), ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty)));
@@ -483,7 +483,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                            imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
+                            imgProduct.ImageUrl =  ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToString("MM/dd/yyyy"), string.Empty);
                             txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
@@ -538,7 +538,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private void BindUsers(int pageIndex)
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
-            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName")
+            var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName").OrderBy("FullName")
                 .Skip(PageSize * (pageIndex - 1))
                 .Take(PageSize);
             foreach (UserInfo user in users)
@@ -752,7 +752,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     txtShortDes.Text = skuDetails.SKUName;
                     txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                     ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                    imgProduct.ImageUrl = MediaFileURLProvider.GetMediaFileUrl(CurrentSiteName, folderName, ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty));
+                    imgProduct.ImageUrl =  ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                     txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                     txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
