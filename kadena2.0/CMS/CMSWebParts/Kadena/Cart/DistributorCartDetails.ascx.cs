@@ -145,7 +145,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Price", value);
             }
         }
-        
+
         /// <summary>
         /// Gets or sets the SaveasPDF
         /// </summary>
@@ -235,10 +235,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                 GetItems();
-                GetShippingOptions();
-                BindRepeaterData();
                 BindBusinessUnit();
-                BindShippingOptions();
+                if (InventoryType == (Int32)ProductType.GeneralInventory)
+                {
+                    BindShippingOptions();
+                }
                 ValidCart = true;
             }
             catch (Exception ex)
@@ -271,7 +272,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
                 var estimatedPrice = default(double);
-                if(ValidCart)
+                if (ValidCart)
                 {
                     base.OnPreRender(e);
                     BindRepeaterData();
@@ -284,15 +285,18 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         tblCartItems.Visible = false;
                     }
                 }
-                if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
-                {
-                    estimation = GetShippingResponse();
-                }
-                if (estimation != null && estimation.Success)
-                {
-                    estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                }
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
+                if (inventoryType == (Int32)ProductType.GeneralInventory)
+                {
+                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
+                    {
+                        estimation = GetShippingResponse();
+                    }
+                    if (estimation != null && estimation.Success)
+                    {
+                        estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                    }
+                }
                 BindShippingDropdown(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
@@ -382,14 +386,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (inventoryType == (Int32)ProductType.GeneralInventory)
                 {
                     ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
-                    lblShippingCharge.Text = CurrencyInfoProvider.GetFormattedPrice(estimatedPrice, CurrentSite.SiteID);
                 }
                 else
                 {
-                    ddlShippingOption.Items[0].Selected = true;
-                    ddlShippingOption.Attributes["disabled"] = "disabled";
-                    lblShippingCharge.Text = CurrencyInfoProvider.GetFormattedPrice(estimatedPrice, CurrentSite.SiteID);
+                    ddlShippingOption.Visible = false;
+                    lblShippingOption.Visible = true;
+                    lblShippingOption.Text = ResHelper.GetString("KDA.DistributorCart.GroundShippingOptionText");
                 }
+                lblShippingCharge.Text = CurrencyInfoProvider.GetFormattedPrice(estimatedPrice, CurrentSite.SiteID);
             }
             catch (Exception ex)
             {
@@ -419,25 +423,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         }
 
         /// <summary>
-        /// This will get shipping options
-        /// </summary>
-        private void GetShippingOptions()
-        {
-            try
-            {
-                if (ShippingOptions == null)
-                {
-                    ShippingOptions = ShippingOptionInfoProvider.GetShippingOptions()
-                                                .OnSite(CurrentSite.SiteID).Where(x => x.ShippingOptionEnabled == true).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "BindRepeaterData", ex.Message);
-            }
-        }
-
-        /// <summary>
         /// This will bind the data to repeater
         /// </summary>
         private void BindRepeaterData()
@@ -447,6 +432,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 rptCartItems.CacheMinutes = 0;
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
+                parameters.Add("@ShoppingCartInventoryType", InventoryType);
                 rptCartItems.QueryParameters = parameters;
                 rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
                 rptCartItems.TransformationName = TransformationNames.cartItems;
@@ -464,6 +450,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                if (ShippingOptions == null)
+                {
+                    ShippingOptions = ShippingOptionInfoProvider.GetShippingOptions()
+                                                .OnSite(CurrentSite.SiteID).Where(x => x.ShippingOptionEnabled == true).ToList();
+                }
                 ddlShippingOption.DataSource = ShippingOptions;
                 ddlShippingOption.DataValueField = "ShippingOptionID";
                 ddlShippingOption.DataTextField = "ShippingOptionName";
@@ -502,14 +493,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var businessUnitID = ValidationHelper.GetInteger(ddlBusinessUnits.SelectedValue, default(int));
+                var businessUnitID = ValidationHelper.GetLong(ddlBusinessUnits.SelectedValue, default(long));
                 if (CartID != default(int) && businessUnitID > 0)
                 {
-                    var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (shoppingCart != null)
+                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                    if (Cart != null)
                     {
-                        shoppingCart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
-                        shoppingCart.Update();
+                        Cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+                        Cart.Update();
                     }
                 }
             }
@@ -531,15 +522,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
                 if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
                 {
-                    var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (shoppingCart != null)
+                    if (Cart != null)
                     {
-                        shoppingCart.ShoppingCartShippingOptionID = shippingID;
-                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                        var estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
-                        shoppingCart.TotalShipping = estimatedPrice;
-                        shoppingCart.Update();
+                        Cart.ShoppingCartShippingOptionID = shippingID;
+                        Cart.Update();
                     }
                 }
             }
