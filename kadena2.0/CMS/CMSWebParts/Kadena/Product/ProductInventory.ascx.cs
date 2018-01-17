@@ -700,7 +700,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         CustomerInfo currentCustomer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
         if (!DataHelper.DataSourceIsEmpty(currentCustomer))
         {
-            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").ToList();
+            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status",true).ToList();
         }
         return myAddressList;
     }
