@@ -1,4 +1,7 @@
-﻿using CMS.DataEngine;
+﻿using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.MediaLibrary;
@@ -120,6 +123,11 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             try
             {
                 StringBuilder sb = new StringBuilder();
+                var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
+                var programs = CampaignsProductProvider.GetCampaignsProducts()
+        .Source(s => s.Join("KDA_Program", "ProgramID", "KDA_Program.ProgramID")).
+        WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).ToList();
+                //  var products = CampaignsProductProvider.GetCampaignsProducts().jo).WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).ToList();
                 foreach (DataRow row in distributorCartData.Rows)
                 {
                     string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
@@ -148,14 +156,34 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             try
             {
                 StringBuilder sb = new StringBuilder();
+                var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null)
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).ToList()
+                    .Select(x=> {
+                        return new {ProgramID= x.ProgramID, NodeSKUID= x.NodeSKUID, StateGroupID=x.State};
+                } );
+                var programs=ProgramProvider.GetPrograms().WhereIn("ProgramID", products.Select(x=>x.ProgramID).ToList()).ToList()
+                    .Select(x => {
+                    return new { ProgramID= x.ProgramID,ProgramName= x.ProgramName };
+                });
+                var stateGroups = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereIn("ItemID", products.Select(x => x.StateGroupID).ToList()).ToList()
+                   .Select(x => {
+                       return new { x.ItemID,x.States };
+                   });
+                var ProgramNames = products.Join(programs, x => x.ProgramID, y => y.ProgramID, (x, y) => new { x.NodeSKUID, y.ProgramName,  x.StateGroupID });
                 foreach (DataRow row in distributorCartData)
                 {
+                    var programName = ProgramNames.Where(x => x.NodeSKUID == ValidationHelper.GetInteger(row["SKUID"],default(int))).FirstOrDefault();
+                    var states= stateGroups.Where(x => x.ItemID == programName.StateGroupID).FirstOrDefault();
                     string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
                     pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}", row["SKUName"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
                     pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))));
+                    pdfProductContent = pdfProductContent.Replace("{VALIDSTATES}", states?.States);
+                    pdfProductContent = pdfProductContent.Replace("{EXPIREDATE}", ValidationHelper.GetString(row["SKUValidUntil"], string.Empty));
+                    pdfProductContent = pdfProductContent.Replace("{PROGRAMNAME}", programName?.ProgramName);
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
