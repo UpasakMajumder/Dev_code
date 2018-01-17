@@ -16,9 +16,9 @@ namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
             try
             {
                 var service = new SettingsSynchronizationService(new KenticoSettingsProvider());
-                service.Synchronize();
+                var result = service.Synchronize();
 
-                ShowSuccessMessage("All done!");
+                ShowSuccessMessage($"All done! Added {result.AddedCount} new key(s)");
             }
             catch (SettingsSynchronizationException ex)
             {

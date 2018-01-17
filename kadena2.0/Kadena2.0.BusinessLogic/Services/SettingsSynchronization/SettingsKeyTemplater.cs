@@ -6,15 +6,10 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
 {
     public class SettingsKeyTemplater
     {
-        SettingsKey key;
-
-        public SettingsKeyTemplater(SettingsKey key)
+        public static string GetTemplateSourceCode(SettingsKey settingsKey)
         {
-            this.key = key ?? throw new ArgumentNullException(nameof(key));
-        }
+            var key = settingsKey ?? throw new ArgumentNullException(nameof(settingsKey));
 
-        public string GetTemplateCode()
-        {
             var codeLines = new[]
             {
                 "/// <summary>",

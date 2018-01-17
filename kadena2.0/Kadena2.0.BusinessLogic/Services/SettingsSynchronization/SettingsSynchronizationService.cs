@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SiteSettings.Synchronization;
 using Kadena2.WebAPI.KenticoProviders.Providers;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
             return settingsKey != null;
         }
 
-        public string GetSettingsKeyCode(string keyName)
+        public string GetSettingsKeySourceCode(string keyName)
         {
             var isValidKey = TryFindSettingsKey(out var key, keyName);
             if (!isValidKey)
@@ -36,15 +37,19 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
                 return string.Empty;
             }
 
-            var templater = new SettingsKeyTemplater(key);
-            var code = templater.GetTemplateCode();
+            var code = SettingsKeyTemplater.GetTemplateSourceCode(key);
             return code;
         }
 
-        public void Synchronize()
+        public SynchronizationResult Synchronize()
         {
             var keysToAdd = GetSettingsToAdd();
             AddNewKeys(keysToAdd);
+
+            return new SynchronizationResult
+            {
+                AddedCount = keysToAdd.Count
+            };
         }
 
         public void AddNewKeys(IEnumerable<SettingsKey> keysToAdd)
@@ -67,7 +72,7 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
             }
         }
 
-        public IEnumerable<SettingsKey> GetSettingsToAdd()
+        public IList<SettingsKey> GetSettingsToAdd()
         {
             var keysToCreate = new List<SettingsKey>();
             var metadataReader = new MetadataReader();

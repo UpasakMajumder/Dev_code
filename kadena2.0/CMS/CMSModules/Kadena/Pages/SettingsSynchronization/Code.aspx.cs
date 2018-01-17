@@ -17,7 +17,7 @@ namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
             var service = new SettingsSynchronizationService(new KenticoSettingsProvider());
             try
             {
-                var generatedCode = service.GetSettingsKeyCode(keyName);
+                var generatedCode = service.GetSettingsKeySourceCode(keyName);
                 if (!string.IsNullOrEmpty(generatedCode))
                 {
                     code.InnerText = generatedCode;
