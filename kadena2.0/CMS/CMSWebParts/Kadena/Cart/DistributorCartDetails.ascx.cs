@@ -241,6 +241,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     BindShippingOptions();
                 }
                 ValidCart = true;
+                BindRepeaterData();
             }
             catch (Exception ex)
             {
@@ -302,16 +303,67 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
+              
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
             }
         }
-
         #endregion "Page events"
 
         #region "Event handling"
+        /// <summary>
+        /// Updates the Shipping option selected by the user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBusinessUnits_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var businessUnitID = ValidationHelper.GetLong(ddlBusinessUnits.SelectedValue, default(long));
+                if (CartID != default(int) && businessUnitID > 0)
+                {
+                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                    if (Cart != null)
+                    {
+                        Cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+                        Cart.Update();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlBusinessUnits_SelectedIndexChanged", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the businessunit selected by the user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlShippingOption_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
+                if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
+                {
+                    if (Cart != null)
+                    {
+                        Cart.ShoppingCartShippingOptionID = shippingID;
+                        Cart.Update();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlShippingOption_SelectedIndexChanged", ex.Message);
+            }
+        }
+
         /// <summary>
         /// Save pdf click event
         /// </summary>
@@ -328,6 +380,32 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "lnkSaveasPDF_Click", ex.Message);
+            }
+        }
+        /// <summary>
+        /// Removes the current cart item and the associated product options from the shopping cart.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void linkRemoveItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RepeaterItem item = (sender as LinkButton).Parent as RepeaterItem;
+                int cartItemID = int.Parse((item.FindControl("lblCartItemID") as Label).Text);
+                ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(cartItemID);
+                ShoppingCartInfoProvider.RemoveShoppingCartItem(Cart, cartItemID);
+                if (Cart.CartItems.Count == 0)
+                {
+                    ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart.ShoppingCartID);
+                }
+                ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
+                ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+                URLHelper.Redirect($"{Request.RawUrl}?status={QueryStringStatus.Deleted}");
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_RemoveItemFromCart", "Remove", ex.Message);
             }
         }
         #endregion "Event handling"
@@ -435,7 +513,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 parameters.Add("@ShoppingCartInventoryType", InventoryType);
                 rptCartItems.QueryParameters = parameters;
                 rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
-                rptCartItems.TransformationName = TransformationNames.cartItems;
             }
             catch (Exception ex)
             {
@@ -489,58 +566,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "BindBusinessUnit", ex.Message);
             }
         }
-
-        /// <summary>
-        /// Updates the Shipping option selected by the user
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void ddlBusinessUnits_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var businessUnitID = ValidationHelper.GetLong(ddlBusinessUnits.SelectedValue, default(long));
-                if (CartID != default(int) && businessUnitID > 0)
-                {
-                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
-                    if (Cart != null)
-                    {
-                        Cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
-                        Cart.Update();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlBusinessUnits_SelectedIndexChanged", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Updates the businessunit selected by the user
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void ddlShippingOption_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var shippingID = ValidationHelper.GetInteger(ddlShippingOption.SelectedValue, default(int));
-                if (CartID != default(int) && shippingID > 0 && InventoryType == (int)ProductType.GeneralInventory)
-                {
-                    if (Cart != null)
-                    {
-                        Cart.ShoppingCartShippingOptionID = shippingID;
-                        Cart.Update();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlShippingOption_SelectedIndexChanged", ex.Message);
-            }
-        }
-
         #endregion "Private Methods"
+      
     }
 }
