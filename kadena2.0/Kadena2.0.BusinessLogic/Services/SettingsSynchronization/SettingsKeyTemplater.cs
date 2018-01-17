@@ -17,12 +17,17 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
                 "/// </summary>",
                 $"[{ nameof(CategoryAttribute) }(\"{ key.Group.Category.DisplayName }\", \"{ key.Group.Category.Name }\", \"{ key.Group.Category.CategoryParentName }\")]",
                 $"[{ nameof(GroupAttribute) }(\"{ key.Group.DisplayName }\")]",
-                $"[{ nameof(DefaultValueAttribute) }({ (key.KeyDefaultValue == null ? "null" : $"\"{ key.KeyDefaultValue }\"" ) })]",
+                $"[{ nameof(DefaultValueAttribute) }({ (key.KeyDefaultValue == null ? "null" : $"@\"{ EscapeQuotes(key.KeyDefaultValue) }\"" ) })]",
                 $"[{ nameof(EncodedDefinitionAttribute) }(\"{ MetadataEncoder.Encode(key) }\")]",
                 $"public const string { key.KeyName } = \"{ key.KeyName }\";"
             };
             var code = string.Join(Environment.NewLine, codeLines);
             return code;
+        }
+
+        private static string EscapeQuotes(string input)
+        {
+            return input.Replace("\"", "\"\"");
         }
     }
 }
