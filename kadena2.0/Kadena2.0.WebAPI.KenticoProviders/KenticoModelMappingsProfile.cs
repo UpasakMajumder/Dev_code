@@ -7,6 +7,9 @@ using System;
 using Kadena.Models.Site;
 using CMS.SiteProvider;
 using Kadena.WebAPI.KenticoProviders;
+using CMS.DocumentEngine;
+using Kadena.Models.Product;
+using CMS.Helpers;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -82,7 +85,13 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CarrierDisplayName))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CarrierName))
                 .AfterMap((src, dest) => dest.Opened = false);
-            ;
+            CreateMap<TreeNode, ProductCategoryLink>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.DocumentName))
+                .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
+                .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
+                .AfterMap((src, dest) => dest.Border = new Border { Exists = false });
         }
     }
 }

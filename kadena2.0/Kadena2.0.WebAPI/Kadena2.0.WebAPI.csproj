@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\MapperBuilder.cs" />
+    <Compile Include="App_Start\MapperDefaultProfile.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />

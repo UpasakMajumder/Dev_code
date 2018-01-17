@@ -11,7 +11,6 @@ using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Checkout;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -27,12 +26,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
-
         private readonly string _orderDetailUrl;
-
         private int _pageCapacity;
         private string _pageCapacityKey;
-        private Dictionary<int, string> _addressBookList;
 
         public string PageCapacityKey
         {

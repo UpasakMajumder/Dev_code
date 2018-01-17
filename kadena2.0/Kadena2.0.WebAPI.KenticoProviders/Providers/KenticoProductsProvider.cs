@@ -9,46 +9,53 @@ using CMS.Ecommerce;
 using CMS.Membership;
 using System;
 using CMS.SiteProvider;
+using AutoMapper;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProductsProvider : IKenticoProductsProvider
     {
+        private readonly IMapper mapper;
+
+        public KenticoProductsProvider(IMapper mapper)
+        {
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
         public List<ProductCategoryLink> GetCategories(string path)
         {
-            var pages = GetDocuments(path, "KDA.ProductCategory").;
-            return pages.Select(p => new ProductCategoryLink
-            {
-                Id = p.DocumentID,
-                Title = p.DocumentName,
-                Url = p.DocumentUrlPath,
-                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductCategoryImage", string.Empty)),
-                ProductBordersEnabled = p.GetBooleanValue("ProductCategoryBordersEnabled", false)
-            }
-            ).ToList();
+            var categories = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Children).ToList();
+            return mapper.Map<List<ProductCategoryLink>>(categories);
         }
 
         public ProductCategoryLink GetCategory(string path)
         {
-            var category = GetDocuments(path, "KDA.ProductCategory").SingleOrDefault();
-
-
+            var category = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Single).SingleOrDefault();
+            return mapper.Map<ProductCategoryLink>(category);
         }
 
         public List<ProductLink> GetProducts(string path)
         {
-            var pages = GetDocuments(path, "KDA.Product");
+            var bordersEnabledOnSite = SettingsKeyInfoProvider.GetBoolValue("KDA_ProductThumbnailBorderEnabled");
+            var borderEnabledOnParentCategory =  GetCategory(path)?.ProductBordersEnabled ?? false;
+            var borderStyle = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle");
+            var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
             return pages.Select(p => new ProductLink
             {
                 Id = p.DocumentID,
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
-                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ? 
-                                                    p.GetValue("SKUImagePath", string.Empty) : 
+                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ?
+                                                    p.GetValue("SKUImagePath", string.Empty) :
                                                     "/CMSPages/GetFile.aspx?guid=" + p.GetValue("ProductThumbnail")),
                 IsFavourite = false,
-                Border = p.GetBooleanValue("ProductThumbnailBorder", false),
+                Border = new Border
+                {
+                    Exists = p.GetBooleanValue("ProductThumbnailBorder", false) && bordersEnabledOnSite && borderEnabledOnParentCategory,
+                    Value = borderStyle
+                },
                 ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath)
             }
             ).ToList();
@@ -67,10 +74,10 @@ namespace Kadena.WebAPI.KenticoProviders
             skuInfo.Update();
         }
 
-        private DocumentQuery GetDocuments(string path, string className)
+        private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType )
         {
             return DocumentHelper.GetDocuments(className)
-                            .Path(path, PathTypeEnum.Children)
+                            .Path(path, pathType)
                             .WhereEquals("ClassName", className)
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
                             .CheckPermissions()

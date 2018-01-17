@@ -16,5 +16,7 @@ namespace Kadena2.WebAPI.KenticoProviders
         public static IMicroProperties MicroProperties => new MicroProperties(KenticoResourceService, KenticoSiteProvider);
         public static ISuppliantDomainClient SuppliantDomain => new SuppliantDomain(KenticoSiteProvider);
         public static IKenticoLocalizationProvider KenticoLocalizationProvider => new KenticoLocalizationProvider(Mapper.Instance);
+        public static IKenticoLogger KenticoLogger => new KenticoLogger();
+        
     }
 }
