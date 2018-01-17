@@ -1,16 +1,14 @@
-﻿﻿<%@ 
-    Page Language="C#" 
-    AutoEventWireup="true" 
-    CodeBehind="Code.aspx.cs" 
-    Inherits="Kadena.CMSModules.Kadena.Pages.SettingsSynchronization.Code" 
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" 
-    Title="Settings Synchronization - Code" 
-    Theme="Default"
-    %>
+﻿<%@ Page Language="C#"
+    AutoEventWireup="true"
+    CodeBehind="Code.aspx.cs"
+    Inherits="Kadena.CMSModules.Kadena.Pages.SettingsSynchronization.Code"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Settings Synchronization - Code"
+    Theme="Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal">
-        
+
         <asp:PlaceHolder runat="server" ID="errorMessageContainer" Visible="false">
             <div class="alert-dismissable alert-error alert">
                 <span class="alert-icon">
