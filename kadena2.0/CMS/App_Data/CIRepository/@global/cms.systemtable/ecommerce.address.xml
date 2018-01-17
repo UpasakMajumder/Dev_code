@@ -207,7 +207,7 @@ ORDER BY [ItemOrder]
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="BusinessUnit" columntype="integer" guid="0a5869a4-4e12-496a-9264-02c714eba06d" publicfield="false" visible="true">
+      <field allowempty="true" column="BusinessUnit" columntype="longinteger" guid="0a5869a4-4e12-496a-9264-02c714eba06d" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Business Unit</fieldcaption>
         </properties>

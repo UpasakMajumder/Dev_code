@@ -473,10 +473,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                ddlBusinessUnits.DataSource = BusinessUnits;
-                ddlBusinessUnits.DataValueField = "BusinessUnitNumber";
-                ddlBusinessUnits.DataTextField = "BusinessUnitName";
-                ddlBusinessUnits.DataBind();
+                if (BusinessUnits != null && BusinessUnits.Count > 0)
+                {
+                    ddlBusinessUnits.DataSource = BusinessUnits;
+                    ddlBusinessUnits.DataValueField = "BusinessUnitNumber";
+                    ddlBusinessUnits.DataTextField = "BusinessUnitName";
+                    ddlBusinessUnits.DataBind();
+
+                    Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                    Cart.Update();
+                }
             }
             catch (Exception ex)
             {
