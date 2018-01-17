@@ -69,7 +69,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 var loggedInUserCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(CurrentUser.UserID, ProductType.GeneralInventory);
-                var unprocessedDistributorIDs =  new List<Tuple<int, string>>();
+                var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 loggedInUserCartIDs.ForEach(care =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
@@ -111,6 +111,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 OrderDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID, OrderType.generalInventory);
+                if (Ordersdto != null && Ordersdto.Campaign != null)
+                {
+                    UpdateDistributorsBusinessUnit(Ordersdto.Campaign.DistributorID);
+                }
                 var response = ShoppingCartHelper.CallOrderService(Ordersdto);
                 return response;
             }
@@ -130,17 +134,19 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
 
                 var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs.Select(x => x.Item1).ToList())
-                    .Columns("AddressPersonalName,AddressID").ToList().Select(x => {
+                    .Columns("AddressPersonalName,AddressID").ToList().Select(x =>
+                    {
                         return new { AddressID = x?.AddressID, AddressPersonalName = x?.AddressPersonalName };
                     }).ToList();
-                rptErrors.DataSource=   unprocessedDistributorIDs.Select(x =>
-                {
+                rptErrors.DataSource = unprocessedDistributorIDs.Select(x =>
+               {
                    var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
-                    return new {
-                        AddressPersonalName= distributor.AddressPersonalName,
-                        Reason=x.Item2
-                    };
-                }).ToList();
+                   return new
+                   {
+                       AddressPersonalName = distributor.AddressPersonalName,
+                       Reason = x.Item2
+                   };
+               }).ToList();
                 rptErrors.DataBind();
             }
             catch (Exception ex)
@@ -148,6 +154,22 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "ShowError", ex.Message);
             }
         }
+
+        /// <summary>
+        /// Updates business unit for distributor
+        /// </summary>
+        /// <param name="distributorID">Distributor ID</param>
+        private void UpdateDistributorsBusinessUnit(int distributorID)
+        {
+            AddressInfo distributor = AddressInfoProvider.GetAddressInfo(distributorID);
+            long businessUnitNumber = ValidationHelper.GetLong(Cart.GetValue("BusinessUnitIDForDistributor"), default(long));
+            if (distributor != null && businessUnitNumber != default(long))
+            {
+                distributor.SetValue("BusinessUnit", businessUnitNumber);
+                AddressInfoProvider.SetAddressInfo(distributor);
+            }
+        }
+
         #endregion Methods
     }
 }
