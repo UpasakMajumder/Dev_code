@@ -187,7 +187,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="BusinessUnitIDForDistributor" columntype="integer" guid="bd106e6a-dd57-493c-b9a6-34f37ab18f81" publicfield="false" visible="true">
+      <field allowempty="true" column="BusinessUnitIDForDistributor" columntype="longinteger" guid="bd106e6a-dd57-493c-b9a6-34f37ab18f81" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Business UnitID For Distributor</fieldcaption>
         </properties>
