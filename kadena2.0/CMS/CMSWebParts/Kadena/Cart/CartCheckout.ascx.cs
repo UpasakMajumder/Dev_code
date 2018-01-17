@@ -98,6 +98,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "lnkCheckout_Click", ex.Message);
             }
         }
+        /// <summary>
+        /// popup click close event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnClose_ServerClick(object sender, EventArgs e)
+        {
+            Response.Redirect(Request.RawUrl);
+        }
         #endregion Events
 
         #region Methods
@@ -149,5 +158,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
         #endregion Methods
+      
     }
 }
