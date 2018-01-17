@@ -642,24 +642,37 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                                                 .Select(x => x.ShoppingCartID).ToList();
                 List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
                                                                                    .WhereIn("ShoppingCartID", shoppingCartIDs)
-                                                                                   .WhereEquals("SKUID", productID)
                                                                                    .ToList();
                 gvCustomersCart.DataSource = myAddressList
                     .Distinct()
                     .Select(g =>
                     {
                         var cartItem = cartItems
-                            .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID && k.SKUID == productID)
+                            .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID)
                             .FirstOrDefault();
-                        return new
+                        if (cartItem?.SKUID == productID)
                         {
-                            g.AddressID,
-                            g.AddressPersonalName,
-                            IsSelected = cartItem?.CartItemUnits > 0,
-                            ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
-                            SKUID = cartItem?.SKUID ?? default(int),
-                            SKUUnits = cartItem?.CartItemUnits ?? default(int)
-                        };
+                            return new
+                            {
+                                g.AddressID,
+                                g.AddressPersonalName,
+                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
+                                SKUID = cartItem?.SKUID ?? default(int),
+                                SKUUnits = cartItem?.CartItemUnits ?? default(int)
+                            };
+                        }
+                        else
+                        {
+                            return new
+                            {
+                                g.AddressID,
+                                g.AddressPersonalName,
+                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
+                                SKUID = default(int),
+                                SKUUnits = default(int)
+                            };
+                        }
+
                     })
                     .ToList();
                 gvCustomersCart.Columns[1].HeaderText = AddressIDText;
@@ -677,7 +690,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindCustomersList()", ex);
         }
     }
-
     /// <summary>
     /// Gets the distributors created by current user
     /// </summary>
@@ -743,7 +755,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
             lblAvailbleItems.Visible = false;
             if (!lblErrorMsg.Visible)
-            {
+            {   
                 lblSuccessMsg.Text = ResHelper.GetString("Kadena.AddToCart.SuccessfullyAdded");
                 lblSuccessMsg.Visible = true;
                 gvCustomersCart.Visible = false;

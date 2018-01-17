@@ -56,7 +56,7 @@ class NewAddressDialog extends Component {
 
     this.setState({ invalids });
     if (invalids.length) return;
-    this.state.saveAddress && saveAddress({ id: -1, ...address });
+    this.state.saveAddress && saveAddress({ id: -1, ...address }, true);
     submit(address);
     closeDialog();
   };
