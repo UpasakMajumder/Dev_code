@@ -473,10 +473,13 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressCountryID = address.Country.Id,
                 AddressZip = address.Zip,
                 AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}"
+                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
+                AddressPhone = address.Phone
             };
             info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
             info.SetValue("AddressType", AddressType.Shipping.Code);
+            info.SetValue("CompanyName", address.CustomerName);
+            info.SetValue("Email", address.Email);
 
             AddressInfoProvider.SetAddressInfo(info);
             address.Id = info.AddressID;

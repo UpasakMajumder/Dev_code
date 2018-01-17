@@ -79,5 +79,24 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = _mapper.Map<SubmitOrderResponseDto>(serviceResponse);
             return ResponseJson(resultDto);
         }
+
+
+        [HttpGet]
+        [Route("api/recentorders/getheaders/{orderType}")]
+        public async Task<IHttpActionResult> GetHeaders(string orderType)
+        {
+            var orderHead = await _orderService.GetHeaders(orderType, 0);
+            var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route("api/recentorders/getheaders/{orderType}/{campaignID}")]
+        public async Task<IHttpActionResult> GetHeaders(string orderType, int campaignID)
+        {
+            var orderHead = await _orderService.GetHeaders(orderType, campaignID);
+            var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
+            return ResponseJson(result);
+        }
     }
 }

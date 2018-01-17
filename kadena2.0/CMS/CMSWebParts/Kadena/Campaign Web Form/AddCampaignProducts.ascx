@@ -63,7 +63,6 @@
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
-                        <cms:CMSRequiredFieldValidator ID="rfvStartDate" CssClass="EditingFormErrorLabel" ControlToValidate="txtExpireDate" runat="server"></cms:CMSRequiredFieldValidator>
                          <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date"/>
                     </div>
                 </div>
@@ -130,7 +129,7 @@
 
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
-                    <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.OtherItemSpecsText")%></span>
+                    <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsText")%></span>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlItemSpecs" CssClass="input__select" OnSelectedIndexChanged="ddlItemSpecs_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                     </div>
@@ -139,7 +138,7 @@
 
             <div class="mb-2 form__block" id="divItemSpecs" runat="server" visible="false">
                 <div class="input__wrapper">
-                    <span class="input__label" runat="server" id="lblOtherItemSpec"></span>
+                    <cms:LocalizedLabel ID="lblOthersItemSpec" runat="server" ResourceString="Kadena.CampaignProduct.OtherItemSpecsText" class="input__label"></cms:LocalizedLabel>
                     <div class="input__inner">
                         <asp:TextBox runat="server" ID="txtItemSpec" CssClass="input__text"></asp:TextBox>
                     </div>
