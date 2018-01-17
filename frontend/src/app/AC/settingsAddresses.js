@@ -6,7 +6,7 @@ import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_A
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { USER_SETTINGS, NOTIFICATION } from 'app.globals';
+import { USER_SETTINGS, NOTIFICATION, CHECKOUT } from 'app.globals';
 
 export const getUI = () => {
   return (dispatch) => {
@@ -38,10 +38,11 @@ export const getUI = () => {
   };
 };
 
-export const modifyAddress = (data) => {
+export const modifyAddress = (data, fromCheckout) => {
   return (dispatch) => {
     dispatch({ type: MODIFY_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
+
 
     axios({
       method: 'post',
@@ -67,7 +68,7 @@ export const modifyAddress = (data) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.modifyAddress.title, NOTIFICATION.modifyAddress.text);
-    }).catch((error) => {
+    }).catch(() => {
       dispatch({ type: MODIFY_SHIPPING_ADDRESS + FAILURE });
       dispatch({ type: APP_LOADING + FINISH });
     });
@@ -75,16 +76,18 @@ export const modifyAddress = (data) => {
 };
 
 
-export const addAddress = (data) => {
-  return (dispatch) => {
+export const addAddress = (data, fromCheckout) => {
+  return async (dispatch) => {
     dispatch({ type: ADD_SHIPPING_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    axios({
-      method: 'post',
-      url: USER_SETTINGS.addresses.editAddressURL,
-      data
-    }).then((response) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: USER_SETTINGS.addresses.editAddressURL,
+        data
+      });
+
       const { success, errorMessage, payload } = response.data;
 
       if (!success) {
@@ -99,6 +102,8 @@ export const addAddress = (data) => {
       const { id } = payload;
       data.id = id;
 
+      if (fromCheckout) await axios.post(CHECKOUT.changeAddressURL, { id });
+
       dispatch({
         type: ADD_SHIPPING_ADDRESS + SUCCESS,
         payload: data
@@ -106,11 +111,12 @@ export const addAddress = (data) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
-    })
-      .catch((error) => {
-        dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
-        dispatch({ type: APP_LOADING + FINISH });
-      });
+
+
+    } catch (e) {
+      dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
+      dispatch({ type: APP_LOADING + FINISH });
+    }
   };
 };
 
