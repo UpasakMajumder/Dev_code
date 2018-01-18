@@ -725,6 +725,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 lblError.Text = ResHelper.GetString("Kadena.AddToCart.DistributorError");
                 lblError.Visible = true;
+                llbtnAddToCart.Visible = false;
+                btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
             }
         }
         catch (Exception ex)
@@ -738,7 +740,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <returns></returns>
     private List<AddressInfo> GetMyAddressBookList()
     {
-        List<AddressInfo> myAddressList = new List<AddressInfo>();
+            List<AddressInfo> myAddressList = new List<AddressInfo>();
         CustomerInfo currentCustomer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
         if (!DataHelper.DataSourceIsEmpty(currentCustomer))
         {
