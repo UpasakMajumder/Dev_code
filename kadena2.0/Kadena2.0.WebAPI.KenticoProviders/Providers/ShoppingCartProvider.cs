@@ -3,6 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
 using CMS.Helpers;
+using CMS.IO;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
@@ -542,15 +543,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SetAmount(cartItem, addedAmount + existingAmountInCart);
             }
 
-            var isPodType = ProductTypes.IsOfType(productType, ProductTypes.POD);
-            if (isPodType)
-            {
-                SetArtwork(cartItem, productDocument.GetStringValue("ProductDigitalPrinting", string.Empty));
-            }
-            else
-            {
-                SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
-            }
+            SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
 
             RefreshPrice(cartItem, productDocument);
             SetCustomName(cartItem, newItem.CustomProductName);
@@ -560,9 +553,19 @@ namespace Kadena.WebAPI.KenticoProviders
             return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
         }
 
-        private void SetArtwork(ShoppingCartItemInfo cartItem, string artworkUrl)
+        private static void SetArtwork(ShoppingCartItemInfo cartItem, string guid)
         {
-            cartItem.SetValue("ArtworkLocation", artworkUrl);
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
+                var fullPath = StorageHelper.GetFullFilePhysicalPath(attachmentPath);
+                if (!Path.HasExtension(fullPath))
+                {
+                    var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
+                    fullPath = $"{fullPath}{attachment.AttachmentExtension}";
+                }
+                cartItem.SetValue("ArtworkLocation", fullPath);
+            }
         }
 
         private void EnsureInventoryAmount(TreeNode productDocument, int addedAmount, int existingAmount)
