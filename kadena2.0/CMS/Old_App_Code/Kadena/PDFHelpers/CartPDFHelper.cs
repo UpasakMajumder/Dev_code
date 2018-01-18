@@ -40,7 +40,10 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     PDFBody = PDFBody.Replace("{INNERCONTENT}", CreateCartInnerContent(cartData, SiteContext.CurrentSiteName, inventoryType));
                 }
                 html = html.Replace("{OUTERCONTENT}", PDFBody);
-                return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+                NReco.PdfGenerator.HtmlToPdfConverter PDFConverter = new NReco.PdfGenerator.HtmlToPdfConverter();
+                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue("KDA_NRecoOwner", SiteContext.CurrentSiteID), SettingsKeyInfoProvider.GetValue("KDA_NRecoKey", SiteContext.CurrentSiteID));
+                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue("KDA_NRecoLowQuality", SiteContext.CurrentSiteID);
+                return PDFConverter.GeneratePdf(html);
             }
             catch (Exception ex)
             {
@@ -48,7 +51,10 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 return null;
             }
         }
-
+        /// <summary>
+        /// Writing response to pdf
+        /// </summary>
+        /// <param name="pdfBytes"></param>
         public static void WriteresponseToPDF(byte[] pdfBytes)
         {
             try
