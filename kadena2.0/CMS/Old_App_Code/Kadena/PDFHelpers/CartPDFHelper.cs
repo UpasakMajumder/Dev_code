@@ -175,13 +175,13 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     var programName = programs.Where(x => x.ProgramID ==product.ProgramID).FirstOrDefault();
                     var states = stateGroups.Where(x => x.ItemID == product.State).FirstOrDefault();
                     var skuValidity = ValidationHelper.GetDateTime(row["SKUValidUntil"], default(DateTime));
-                    pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}",ValidationHelper.GetString(row["SKUName"],string.Empty));
-                    pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUNumber"], string.Empty));
-                    pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], string.Empty));
+                    pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}",ValidationHelper.GetString(row["SKUName"], "&nbsp"));
+                    pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUNumber"], "&nbsp"));
+                    pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"));
                     pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", $"${ValidationHelper.GetDouble(row["SKUUnitsPrice"], default(double)).ToString()}");
                     pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))));
                     pdfProductContent = pdfProductContent.Replace("{VALIDSTATES}", states?.States);
-                    pdfProductContent = pdfProductContent.Replace("{EXPIREDATE}", skuValidity!= default(DateTime)? skuValidity.ToString("MMM dd, yyyy"):string.Empty);
+                    pdfProductContent = pdfProductContent.Replace("{EXPIREDATE}", skuValidity!= default(DateTime)? skuValidity.ToString("MMM dd, yyyy") : "&nbsp");
                     pdfProductContent = pdfProductContent.Replace("{PROGRAMNAME}", programName?.ProgramName);
                     sb.Append(pdfProductContent);
                 }
