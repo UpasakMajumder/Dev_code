@@ -71,6 +71,10 @@
     <Reference Include="CMS.Helpers">
       <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.IO, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.IO.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Localization">
       <HintPath>..\Lib\CMS.Localization.dll</HintPath>
     </Reference>
