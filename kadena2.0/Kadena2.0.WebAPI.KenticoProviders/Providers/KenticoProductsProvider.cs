@@ -25,14 +25,26 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<ProductCategoryLink> GetCategories(string path)
         {
-            var categories = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Children).ToList();
-            return mapper.Map<List<ProductCategoryLink>>(categories);
+            var categoryNodes = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Children).ToList();
+            var categories = mapper.Map<List<ProductCategoryLink>>(categoryNodes);
+            categories.ForEach(c => SetBorderInfo(c.Border));
+            return categories;
         }
 
         public ProductCategoryLink GetCategory(string path)
         {
-            var category = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Single).SingleOrDefault();
-            return mapper.Map<ProductCategoryLink>(category);
+            var categoryNode = GetDocuments(path, "KDA.ProductCategory", PathTypeEnum.Single).SingleOrDefault();
+            var category = mapper.Map<ProductCategoryLink>(categoryNode);
+            SetBorderInfo(category?.Border);
+            return category;
+        }
+
+        private void SetBorderInfo(Border border)
+        {
+            if (border?.Exists ?? false)
+            {
+                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle");
+            }
         }
 
         public List<ProductLink> GetProducts(string path)

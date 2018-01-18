@@ -92,7 +92,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
-                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false), Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle") });
+                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false)});
         }
     }
 }
