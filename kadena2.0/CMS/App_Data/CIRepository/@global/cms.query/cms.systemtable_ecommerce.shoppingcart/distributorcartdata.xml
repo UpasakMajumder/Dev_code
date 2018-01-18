@@ -14,8 +14,8 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-SELECT AddressPersonalName,AddressZip,AddressName,AddressCity,AddressPhone,states.StateDisplayName,SKUImagePath,
-country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice*SKUUnits AS SKUUnitsPrice
+SELECT AddressPersonalName,AddressZip,AddressName,AddressCity,AddressPhone,states.StateDisplayName,SKUImagePath,sku.SKUID,
+country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice*SKUUnits AS SKUUnitsPrice,sku.SKUValidUntil
 FROM COM_Address customer
 INNER JOIN COM_ShoppingCart cart ON customer.AddressID =cart.ShoppingCartDistributorID 
 INNER JOIN COM_ShoppingCartSKU cartSKU on cart.ShoppingCartID=cartSKU.ShoppingCartID
