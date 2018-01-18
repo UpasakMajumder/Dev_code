@@ -48,29 +48,19 @@ namespace Kadena.WebAPI
             {
                 config.AddProfile<KenticoModelMappingsProfile>();
 
-                config.CreateMap<CartItem, OrderItemDTO>().ProjectUsing(p => new OrderItemDTO()
-                {
-                    DesignFilePath = p.DesignFilePath,
-                    LineNumber = p.LineNumber,
-                    MailingList = new MailingListDTO()
-                    {
-                        MailingListID = p.MailingListGuid
-                    },
-                    SKU = new SKUDTO()
-                    {
-                        KenticoSKUID = p.SKUID,
-                        Name = p.SKUName,
-                        SKUNumber = p.SKUNumber
-                    },
-                    TotalPrice = p.TotalPrice,
-                    TotalTax = p.TotalTax,
-                    UnitCount = p.Quantity,
-                    UnitOfMeasure = p.UnitOfMeasure,
-                    UnitPrice = p.UnitPrice,
-                    ChiliTaskId = p.DesignFilePathTaskId,
-                    ChiliTemplateId = p.ChiliEditorTemplateId
-                });
+                config.CreateMap<CartItem, SKUDTO>()
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
+                    .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));
+                config.CreateMap<string, FileLocationDto>()
+                    .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src));
 
+                config.CreateMap<CartItem, OrderItemDTO>()
+                    .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
+                    .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
+                    .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
+                    .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
+                    .ForMember(dest => dest.DesignFileInfo, opt => opt.MapFrom(src => src.DesignFilePath));
+                
                 config.CreateMap<CustomerData, CustomerDataDTO>();
                 config.CreateMap<CustomerAddress, CustomerAddressDTO>();
                 config.CreateMap<CartItems, CartItemsDTO>();
