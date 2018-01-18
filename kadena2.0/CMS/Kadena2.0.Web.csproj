@@ -1325,7 +1325,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\StatusMessages.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\KenticoProviderFactory.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />

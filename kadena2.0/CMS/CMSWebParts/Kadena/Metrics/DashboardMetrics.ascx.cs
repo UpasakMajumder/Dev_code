@@ -9,7 +9,9 @@ using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 
 namespace Kadena.CMSWebParts.Kadena.Metrics
@@ -126,7 +128,7 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 
         private OrderStatisticsData GetOrderStatisticsInternal()
         {
-            var statisticClient = new StatisticsClient(ProviderFactory.MicroProperties);
+            var statisticClient = new StatisticsClient(ContainerBuilder.Resolve<IMicroProperties>());
             var requestResult = statisticClient.GetOrderStatistics().Result;
 
             if (!requestResult.Success)

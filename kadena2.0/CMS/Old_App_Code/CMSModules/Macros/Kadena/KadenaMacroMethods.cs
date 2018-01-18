@@ -20,6 +20,7 @@ using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
@@ -339,7 +340,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoLocalization = ProviderFactory.KenticoLocalizationProvider;
+                var kenticoLocalization = ContainerBuilder.Resolve<IKenticoLocalizationProvider>();
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
@@ -350,13 +351,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         public static object FormatDate(EvaluationContext context, params object[] parameters)
         {
             var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
-            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).Format(datetime);
+            return new DateTimeFormatter(ContainerBuilder.Resolve<IKenticoLocalizationProvider>()).Format(datetime);
         }
 
         [MacroMethod(typeof(string), "Returns unified date format string", 0)]
         public static object GetDateFormatString(EvaluationContext context, params object[] parameters)
         {
-            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).GetFormatString();
+            return new DateTimeFormatter(ContainerBuilder.Resolve<IKenticoLocalizationProvider>()).GetFormatString();
         }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)

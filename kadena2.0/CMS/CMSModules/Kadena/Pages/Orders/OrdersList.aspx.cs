@@ -4,7 +4,9 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,7 +18,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var client = new OrderViewClient(ProviderFactory.MicroProperties);
+            var client = new OrderViewClient(ContainerBuilder.Resolve<IMicroProperties>());
             var initialPageNumber = 1;
             var initialQuantity = 1;
             // First request to get total count of records.

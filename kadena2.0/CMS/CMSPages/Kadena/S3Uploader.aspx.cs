@@ -3,8 +3,10 @@ using CMS.IO;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 
 namespace Kadena.CMSFormControls
@@ -34,7 +36,7 @@ namespace Kadena.CMSFormControls
                 var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                 var module = FileModule.KProducts;
 
-                var client = new FileClient(ProviderFactory.MicroProperties);
+                var client = new FileClient(ContainerBuilder.Resolve<IMicroProperties>());
                 var uploadResult = client.UploadToS3(SiteContext.CurrentSiteName, FileFolder.Artworks, module,
                     inpFile.PostedFile.InputStream, fileName).Result;
 

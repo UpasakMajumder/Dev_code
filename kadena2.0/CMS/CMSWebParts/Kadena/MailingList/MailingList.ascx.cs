@@ -4,6 +4,8 @@ using Kadena2.MicroserviceClients.Clients;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.EventLog;
 using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
+using Kadena2.MicroserviceClients.Contracts.Base;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -39,7 +41,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private void GetMailingLists()
         {
-            var client = new MailingListClient(ProviderFactory.MicroProperties);
+            var client = new MailingListClient(ContainerBuilder.Resolve<IMicroProperties>());
             var serviceCallResult = client.GetMailingListsForCustomer().Result;
 
             if (serviceCallResult.Success)

@@ -16,7 +16,7 @@ namespace Kadena.Old_App_Code.EventHandlers
     public class ProductEventHandler : Module
     {
         public virtual IKenticoProductsProvider ProductsProvider { get; set; } = new KenticoProductsProvider( MapperBuilder.MapperInstance );
-        public virtual IKenticoLogger Logger { get; set; } = ProviderFactory.KenticoLogger;
+        public virtual IKenticoLogger Logger { get; set; } = ContainerBuilder.Resolve<IKenticoLogger>();
 
         public ProductEventHandler() : base(nameof(ProductEventHandler))
         {

@@ -1,6 +1,9 @@
 ﻿using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 
 namespace Kadena.CMSWebParts.Kadena.Chili
@@ -45,8 +48,8 @@ namespace Kadena.CMSWebParts.Kadena.Chili
         {
             if (!StopProcessing && TemplateID != null)
             {
-                var resources = ProviderFactory.KenticoResourceService;
-                chilliIframe.Src = new TemplatedClient(ProviderFactory.SuppliantDomain, ProviderFactory.MicroProperties)
+                var resources = ContainerBuilder.Resolve<IKenticoResourceService>();
+                chilliIframe.Src = new TemplatedClient(ContainerBuilder.Resolve<ISuppliantDomainClient>(), ContainerBuilder.Resolve<IMicroProperties>())
                     .GetEditorUrl(Guid.Parse(TemplateID), Guid.Parse(WorkspaceID), false, Use3d)
                     .Result?
                     .Payload ?? string.Empty;
