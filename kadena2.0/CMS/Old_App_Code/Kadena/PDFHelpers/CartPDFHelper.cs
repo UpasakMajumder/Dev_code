@@ -1,7 +1,9 @@
-﻿using CMS.DataEngine;
+﻿using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.MediaLibrary;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
@@ -120,6 +122,11 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             try
             {
                 StringBuilder sb = new StringBuilder();
+                var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
+                var programs = CampaignsProductProvider.GetCampaignsProducts()
+        .Source(s => s.Join("KDA_Program", "ProgramID", "KDA_Program.ProgramID")).
+        WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).ToList();
+                //  var products = CampaignsProductProvider.GetCampaignsProducts().jo).WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).ToList();
                 foreach (DataRow row in distributorCartData.Rows)
                 {
                     string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
@@ -147,15 +154,35 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         {
             try
             {
+                string pdfProductContent = string.Empty;
                 StringBuilder sb = new StringBuilder();
+                if (inventoryType == Convert.ToInt32(ProductType.GeneralInventory))
+                {
+                    pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBodyGI");
+                }
+                else
+                {
+                    pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
+                }
+                var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts()
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID").ToList();
+                var programs = ProgramProvider.GetPrograms().WhereIn("ProgramID", products.Select(x => x.ProgramID).ToList()).Columns("ProgramID,ProgramName").ToList();
+                var stateGroups = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereIn("ItemID", products.Select(x => x.State).ToList()).Columns("ItemID,States").ToList();
                 foreach (DataRow row in distributorCartData)
                 {
-                    string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
-                    pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}", row["SKUName"].ToString());
-                    pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", row["SKUNumber"].ToString());
-                    pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", row["SKUUnits"].ToString());
-                    pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", row["SKUUnitsPrice"].ToString());
+                    var product = products.Where(x => x.NodeSKUID == ValidationHelper.GetInteger(row["SKUID"], default(int))).FirstOrDefault();
+                    var programName = programs.Where(x => x.ProgramID ==product.ProgramID).FirstOrDefault();
+                    var states = stateGroups.Where(x => x.ItemID == product.State).FirstOrDefault();
+                    var skuValidity = ValidationHelper.GetDateTime(row["SKUValidUntil"], default(DateTime));
+                    pdfProductContent = pdfProductContent.Replace("{PRODUCTNAME}",ValidationHelper.GetString(row["SKUName"],string.Empty));
+                    pdfProductContent = pdfProductContent.Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUNumber"], string.Empty));
+                    pdfProductContent = pdfProductContent.Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], string.Empty));
+                    pdfProductContent = pdfProductContent.Replace("{SKUUNITSPRICE}", $"${ValidationHelper.GetDouble(row["SKUUnitsPrice"], default(double)).ToString()}");
                     pdfProductContent = pdfProductContent.Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))));
+                    pdfProductContent = pdfProductContent.Replace("{VALIDSTATES}", states?.States);
+                    pdfProductContent = pdfProductContent.Replace("{EXPIREDATE}", skuValidity!= default(DateTime)? skuValidity.ToString("MMM dd, yyyy"):string.Empty);
+                    pdfProductContent = pdfProductContent.Replace("{PROGRAMNAME}", programName?.ProgramName);
                     sb.Append(pdfProductContent);
                 }
                 return sb.ToString();
@@ -166,7 +193,6 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 return string.Empty;
             }
         }
-
         /// <summary>
         /// This methods returns Outer HTML for pdf
         /// </summary>
