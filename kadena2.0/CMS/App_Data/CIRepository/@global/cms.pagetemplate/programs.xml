@@ -241,8 +241,8 @@ function deleteProgram(programID) {
           <property name="directpage"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displayfirstlastautomatically">False</property>
-          <property name="displaypreviousnextautomatically">True</property>
+          <property name="displayfirstlastautomatically">True</property>
+          <property name="displaypreviousnextautomatically">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
           <property name="firstpage">CMS.PagerTransformations.General-FirstPage</property>
