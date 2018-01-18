@@ -37,7 +37,7 @@ using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
 
-namespace Kadena.WebAPI.App_Start
+namespace Kadena2.Container.Default
 {
     public class MapperDefaultProfile : Profile
     {
@@ -75,7 +75,7 @@ namespace Kadena.WebAPI.App_Start
             CreateMap<CartItem, CartItemPreviewDTO>()
                 .AfterMap((src, dest) => dest.Price = src.PriceText)
                 .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
-            CreateMap<Models.PaymentMethod, PaymentMethodDTO>();
+            CreateMap<Kadena.Models.PaymentMethod, PaymentMethodDTO>();
             CreateMap<PaymentMethods, PaymentMethodsDTO>();
             CreateMap<Total, TotalDTO>();
             CreateMap<Totals, TotalsDTO>();
@@ -117,15 +117,15 @@ namespace Kadena.WebAPI.App_Start
             CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
             CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
             CreateMap<BaseErrorDto, SubmitOrderError>();
-            CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
-            CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
+            CreateMap<PaymentMethodDto, Kadena.Models.SubmitOrder.PaymentMethod>();
+            CreateMap<DeliveryAddress, Kadena.Dto.Settings.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
-            CreateMap<Dto.Settings.AddressDto, Country>()
+            CreateMap<Kadena.Dto.Settings.AddressDto, Country>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
-            CreateMap<Dto.Settings.AddressDto, State>()
+            CreateMap<Kadena.Dto.Settings.AddressDto, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
-            CreateMap<Dto.Settings.AddressDto, DeliveryAddress>()
+            CreateMap<Kadena.Dto.Settings.AddressDto, DeliveryAddress>()
                 .ForMember(dest => dest.State, opt =>
                 {
                     opt.MapFrom(src => src);
@@ -142,8 +142,8 @@ namespace Kadena.WebAPI.App_Start
             CreateMap<DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
-            CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
-            CreateMap<Models.Checkout.AddressDialog, Dto.Checkout.AddressDialogDto>();
+            CreateMap<Kadena.Models.Settings.AddressDialog, Kadena.Dto.Settings.AddressDialogDto>();
+            CreateMap<Kadena.Models.Checkout.AddressDialog, Kadena.Dto.Checkout.AddressDialogDto>();
             CreateMap<DefaultAddress, DefaultAddressDto>();
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
@@ -169,12 +169,12 @@ namespace Kadena.WebAPI.App_Start
             CreateMap<ResultItemPage, AutocompletePage>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<OrderHead, OrderHeadDto>();
-            CreateMap<Dto.Order.OrderItemDto, CartItem>()
+            CreateMap<Kadena.Dto.Order.OrderItemDto, CartItem>()
                 .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
             CreateMap<OrderDto, Order>();
             CreateMap<OrderListDto, OrderList>();
-            CreateMap<CartItem, Dto.RecentOrders.OrderItemDto>()
-                .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
+            CreateMap<CartItem, Kadena.Dto.RecentOrders.OrderItemDto>()
+                .ProjectUsing(s => new Kadena.Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
             CreateMap<Button, ButtonDto>();
             CreateMap<Campaign, CampaignDTO>();
             CreateMap<CampaignDTO, Campaign>();
@@ -228,7 +228,7 @@ namespace Kadena.WebAPI.App_Start
                 .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.Country, opt => opt.Ignore());
-            CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
+            CreateMap<DeliveryAddress, Kadena.Dto.ViewOrder.Responses.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             CreateMap<LogonUserRequestDTO, LoginRequest>();

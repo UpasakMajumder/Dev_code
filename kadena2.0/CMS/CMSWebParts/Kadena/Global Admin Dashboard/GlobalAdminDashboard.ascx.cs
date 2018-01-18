@@ -1,19 +1,17 @@
 using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using System;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Dashboard;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Membership;
 using System.Linq;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena.Helpers;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using System.Collections.Generic;
 using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena.Old_App_Code.Kadena;
 
 public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashboard : CMSAbstractWebPart
 {

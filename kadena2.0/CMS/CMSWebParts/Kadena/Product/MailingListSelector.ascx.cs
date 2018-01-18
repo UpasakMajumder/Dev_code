@@ -9,8 +9,7 @@ using Kadena.Old_App_Code.Kadena.MailingList;
 using Kadena2.MicroserviceClients.Clients;
 using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena.Helpers;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena.Old_App_Code.Kadena;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {

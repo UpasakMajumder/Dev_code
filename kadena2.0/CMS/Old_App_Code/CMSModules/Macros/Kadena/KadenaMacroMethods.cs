@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CMS.CustomTables;
+﻿using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -15,13 +14,13 @@ using Kadena.BusinessLogic.Services;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
+using Kadena.Old_App_Code.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
-using Kadena.WebAPI;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +32,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
-        static KadenaMacroMethods()
-        {
-            MapperBuilder.InitializeAll();
-        }
-
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsSKUWeightRequired(EvaluationContext context, params object[] parameters)
@@ -332,7 +326,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
                 return documents.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
@@ -657,7 +651,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
             if (!pageGUID.Equals(Guid.Empty))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
                 return documents.GetDocumentUrl(pageGUID);
             }
             return string.Empty;

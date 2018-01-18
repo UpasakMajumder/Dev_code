@@ -1,6 +1,6 @@
 ﻿using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.WebAPI.KenticoProviders;
 using System;
 
 namespace Kadena.CMSWebParts.Kadena.Chili

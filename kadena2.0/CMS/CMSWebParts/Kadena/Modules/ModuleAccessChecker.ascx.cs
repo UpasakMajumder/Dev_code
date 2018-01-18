@@ -1,13 +1,12 @@
-﻿using AutoMapper;
-using CMS.CustomTables;
+﻿using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using Kadena.WebAPI;
 using Kadena.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +40,7 @@ namespace Kadena.CMSWebParts.Kadena.Modules
                             return;
                         }
                         // module is not enabled - unauthorized accesss
-                        MapperBuilder.InitializeAll();
-                        var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                        var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
                         var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DisabledModuleUrl");
                         url = documents.GetDocumentUrl(url);
                         Response.Redirect(url);

@@ -106,7 +106,7 @@ namespace Kadena2.Container.Default
 
         public static IContainer RegisterInfrastructure(this IContainer container)
         {
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.RegisterInstance(typeof(IMapper), MapperBuilder.MapperInstance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }

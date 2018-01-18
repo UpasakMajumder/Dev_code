@@ -3,7 +3,7 @@ using System.Linq;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.EventLog;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena.Old_App_Code.Kadena;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {

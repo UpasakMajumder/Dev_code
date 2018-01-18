@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using CMS.DataEngine;
+﻿using CMS.DataEngine;
 using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.EventHandlers;
-using Kadena.WebAPI.App_Start;
+using Kadena.Old_App_Code.Kadena;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
 using Kadena2.WebAPI.KenticoProviders.Classes;
 using System;
 
@@ -16,7 +15,7 @@ namespace Kadena.Old_App_Code.EventHandlers
 {
     public class ProductEventHandler : Module
     {
-        public virtual IKenticoProductsProvider ProductsProvider { get; set; } = new KenticoProductsProvider(new MapperConfiguration(cfg => cfg.AddProfiles(typeof(KenticoModelMappingsProfile), typeof(MapperDefaultProfile))).CreateMapper());
+        public virtual IKenticoProductsProvider ProductsProvider { get; set; } = new KenticoProductsProvider( MapperBuilder.MapperInstance );
         public virtual IKenticoLogger Logger { get; set; } = ProviderFactory.KenticoLogger;
 
         public ProductEventHandler() : base(nameof(ProductEventHandler))

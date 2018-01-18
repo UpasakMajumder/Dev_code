@@ -32,7 +32,7 @@
                     <%# Eval("name") %>
                 </td>
                 <td>
-                    <%# new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).Format(EvalDateTime("createDate"))  %>
+                    <%# new DateTimeFormatter(Kadena.Old_App_Code.Kadena.ProviderFactory.KenticoLocalizationProvider).Format(EvalDateTime("createDate"))  %>
                 </td>
                 <td>
                     <%# Eval("addressCount") %>

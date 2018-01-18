@@ -3,8 +3,8 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
+using Kadena.Old_App_Code.Kadena;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena2.WebAPI.KenticoProviders;
 using System;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.EventHandlers.SettingsKeyEventHandler))]
