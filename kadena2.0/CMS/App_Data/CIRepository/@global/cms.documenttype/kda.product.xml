@@ -52,9 +52,9 @@
           <Extensions>custom</Extensions>
         </settings>
       </field>
-      <field allowempty="true" column="ProductThumbnailBorder" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
+      <field allowempty="true" column="ProductThumbnailBorderDisabled" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>Thumbnail border</fieldcaption>
+          <fieldcaption>Thumbnail border Disabled</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
