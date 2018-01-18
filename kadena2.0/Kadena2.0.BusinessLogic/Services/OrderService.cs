@@ -587,6 +587,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var mappedItem = mapper.Map<OrderItemDTO>(item);
             mappedItem.Type = ConvertCartItemProductTypeToOrderItemProductType(item.ProductType);
+            mappedItem.DesignFileInfo.Module = resources.GetStorageRootPath(mappedItem.DesignFileInfo.Key);
             return mappedItem;
         }
 
