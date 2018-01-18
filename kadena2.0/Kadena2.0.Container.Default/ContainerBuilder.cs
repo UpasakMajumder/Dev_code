@@ -21,6 +21,26 @@ namespace Kadena2.Container.Default
 {
     public static class ContainerBuilder
     {
+        private static readonly IContainer container;
+
+        public static IContainer ContainerInstance => container;
+
+        static ContainerBuilder()
+        {
+            container = new DryIoc.Container()
+                .RegisterBLL()
+                .RegisterKentico()
+                .RegisterKadenaSettings()
+                .RegisterMicroservices()
+                .RegisterFactories()
+                .RegisterInfrastructure();
+        }
+
+        public static T Resolve<T>()
+        {
+            return container.Resolve<T>();
+        }
+
         public static IContainer RegisterBLL(this IContainer container)
         {
             container.Register<IShoppingCartService, ShoppingCartService>();

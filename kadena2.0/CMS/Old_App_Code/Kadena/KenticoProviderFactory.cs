@@ -10,12 +10,12 @@ namespace Kadena.Old_App_Code.Kadena
 {
     public static class ProviderFactory
     {
-        public static IKenticoLogger KenticoLogger => new KenticoLogger();
-        public static IKadenaSettings KadenaSettings => new KadenaSettings(KenticoResourceService);
-        public static IKenticoResourceService KenticoResourceService => new KenticoResourceService();
-        public static IKenticoSiteProvider KenticoSiteProvider => new KenticoSiteProvider(MapperBuilder.MapperInstance, KadenaSettings);
-        public static IMicroProperties MicroProperties => new MicroProperties(KenticoResourceService, KenticoSiteProvider);
-        public static ISuppliantDomainClient SuppliantDomain => new SuppliantDomain(KenticoSiteProvider);
-        public static IKenticoLocalizationProvider KenticoLocalizationProvider => new KenticoLocalizationProvider(MapperBuilder.MapperInstance);
+        public static IKenticoLogger KenticoLogger => ContainerBuilder.Resolve<IKenticoLogger>();
+        public static IKadenaSettings KadenaSettings => ContainerBuilder.Resolve<IKadenaSettings>();
+        public static IKenticoResourceService KenticoResourceService => ContainerBuilder.Resolve<IKenticoResourceService>();
+        public static IKenticoSiteProvider KenticoSiteProvider => ContainerBuilder.Resolve<IKenticoSiteProvider>();
+        public static IMicroProperties MicroProperties => ContainerBuilder.Resolve<IMicroProperties>();
+        public static ISuppliantDomainClient SuppliantDomain => ContainerBuilder.Resolve<ISuppliantDomainClient>();
+        public static IKenticoLocalizationProvider KenticoLocalizationProvider => ContainerBuilder.Resolve<IKenticoLocalizationProvider>();
     }
 }

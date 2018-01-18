@@ -27,13 +27,7 @@ namespace Kadena.WebAPI
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
-            new Container()
-                .RegisterInfrastructure()
-                .RegisterKentico()
-                .RegisterKadenaSettings()
-                .RegisterBLL()
-                .RegisterMicroservices()
-                .RegisterFactories()
+            ContainerBuilder.ContainerInstance
                 .WithWebApi(apiConfig);
         }
 
