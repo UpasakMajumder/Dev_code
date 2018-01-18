@@ -23,7 +23,7 @@
             <td><%# Eval("SKUNumber") %></td>
             <td><%# Eval("SKUName") %> </td>
             <td>
-                <asp:TextBox runat="server" TextMode="Number" ID="txtUnits" CssClass="input__text js-ItemQuantity" Text='<%# Eval("SKUUnits") %>' />
+                <asp:TextBox runat="server" TextMode="Number" ID="txtUnits" min="1" CssClass="input__text js-ItemQuantity" Text='<%# Eval("SKUUnits") %>' />
                 <asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' />
             </td>
             <td>
