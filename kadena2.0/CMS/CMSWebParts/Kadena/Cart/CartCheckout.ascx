@@ -33,7 +33,7 @@
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" onclick="" class="btn-action btn-action--secondary js-CloseMesaage"><%=PopupCloseButtonText %></button>
+                <button type="button" runat="server" id="btnClose" onserverclick="btnClose_ServerClick" class="btn-action btn-action--secondary js-CloseMesaage"><%=PopupCloseButtonText %></button>
             </div>
         </div>
     </div>
