@@ -162,14 +162,6 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             {
                 string pdfProductContent = string.Empty;
                 StringBuilder sb = new StringBuilder();
-                if (inventoryType == Convert.ToInt32(ProductType.GeneralInventory))
-                {
-                    pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBodyGI");
-                }
-                else
-                {
-                    pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
-                }
                 var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
                 var products = CampaignsProductProvider.GetCampaignsProducts()
                     .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID").ToList();
@@ -177,6 +169,14 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 var stateGroups = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereIn("ItemID", products.Select(x => x.State).ToList()).Columns("ItemID,States").ToList();
                 foreach (DataRow row in distributorCartData)
                 {
+                    if (inventoryType == Convert.ToInt32(ProductType.GeneralInventory))
+                    {
+                        pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBodyGI");
+                    }
+                    else
+                    {
+                        pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_DistributorCartPDFHTMLBody");
+                    }
                     var product = products.Where(x => x.NodeSKUID == ValidationHelper.GetInteger(row["SKUID"], default(int))).FirstOrDefault();
                     var programName = programs.Where(x => x.ProgramID ==product.ProgramID).FirstOrDefault();
                     var states = stateGroups.Where(x => x.ItemID == product.State).FirstOrDefault();
