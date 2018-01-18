@@ -7,5 +7,6 @@
         string GetSettingsKey(string siteName, string key);        
         string GetSettingsKey(int siteId, string key);        
         string ResolveMacroString(string macroString);
+        string GetStorageRootPath(string path);
     }
 }
