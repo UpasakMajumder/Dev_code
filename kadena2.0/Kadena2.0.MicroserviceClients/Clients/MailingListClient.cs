@@ -20,6 +20,11 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public MailingListClient(IMicroProperties properties)
         {
+            if (properties == null)
+            {
+                throw new ArgumentNullException(nameof(properties));
+            }
+
             _properties = properties;
         }
 

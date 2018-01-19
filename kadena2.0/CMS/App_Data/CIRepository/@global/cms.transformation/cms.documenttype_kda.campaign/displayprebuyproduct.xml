@@ -13,7 +13,7 @@
   <td><%#Eval("ProductName")%></td>
   <td><%# Eval("ProgramName")%></td>
   <td><%# Eval("ProductCategoryTitle")%></td>
-  <td><%# Convert.ToDateTime(Eval("SKUValidUntil")).ToString("MM/dd/yyyy")%></td>
+  <td><%#FormatDateTime(Eval("SKUValidUntil"), "MM/dd/yyyy")%></td>
   <td class="webform_view">
     <uc1:ProductEditButton runat="server" id="ProductEditButton" />
   </td>

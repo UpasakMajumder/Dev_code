@@ -1032,7 +1032,6 @@ var customScripts = {
     },
     init: function () {
         var base = this;
-
         base.logoutInit();
         base.createPasswordInit();
         base.setPersonContactInformationInit();
@@ -1047,7 +1046,40 @@ var customScripts = {
         base.kListColumnMappingInit();
     }
 }
-
+var customHelpers = {
+    getQueryStringByName:function(name) {
+        url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return "";
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+}
 $(document).ready(function () {
     customScripts.init();
+    var status = customHelpers.getQueryStringByName("status");
+    var oldLoc = document.referrer;
+    var newLoc = window.location.href;
+    var oldPageURL = oldLoc != "" ? oldLoc.split('?')[0] : "";
+    var newPageURL = newLoc !="" ? newLoc.split('?')[0] :"";
+    var isSame = oldPageURL == newPageURL ? true : false;
+    var page = customHelpers.getQueryStringByName("page");
+    if (status == 'added') {
+        if (oldLoc != "" && page == "" && !isSame)
+            toastr.success(config.localization.globalSuccess.addSuccessMessage)
+    }
+    else if (status == 'updated') {
+        if (oldLoc != "" && page == "" && !isSame)
+            toastr.success(config.localization.globalSuccess.updateSuccessMessage);
+    }
+    else if (status == 'deleted') {
+        if (oldLoc != "" && page == "" && !isSame)
+        toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
+    }
+    else if (status == 'error') {
+        if (loc != "" && page == "" && !isSame)
+        toastr.error(config.localization.globalSuccess.errorMessage);
+    }
 });

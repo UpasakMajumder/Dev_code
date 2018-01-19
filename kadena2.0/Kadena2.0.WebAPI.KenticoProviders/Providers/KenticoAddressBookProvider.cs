@@ -19,8 +19,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Dictionary<int, string> GetAddressNames()
         {
-            List<int> customerIDs = CustomerInfoProvider.GetCustomers().Where(x => x.CustomerSiteID.Equals(SiteContext.CurrentSiteID)).Select(x => x.CustomerID).ToList();
-            return AddressInfoProvider.GetAddresses().WhereIn("AddressCustomerID", customerIDs).ToDictionary(x => x.AddressID, x => x.AddressName);
+            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressName);
         }
     }
 }

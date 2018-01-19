@@ -556,6 +556,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\DotNetOpenAuth.dll</HintPath>
     </Reference>
+    <Reference Include="DryIoc, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.dll.2.10.0\lib\net45\DryIoc.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Facebook.dll</HintPath>
@@ -673,6 +676,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\PDFClown.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.HashFunction.Core, Version=1.8.2.2, Culture=neutral, PublicKeyToken=80c9288e394c1322, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1368,6 +1372,10 @@
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
       <Project>{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}</Project>
       <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
+      <Project>{BF079DF3-1E13-44C5-8B87-C040257EAC07}</Project>
+      <Name>Kadena2.0.Container.Default</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
