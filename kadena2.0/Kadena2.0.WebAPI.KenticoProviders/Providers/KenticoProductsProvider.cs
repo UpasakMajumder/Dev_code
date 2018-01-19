@@ -48,10 +48,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
 
         public List<ProductLink> GetProducts(string path)
-        {
-            var bordersEnabledOnSite = SettingsKeyInfoProvider.GetBoolValue("KDA_ProductThumbnailBorderEnabled");
-            var borderEnabledOnParentCategory =  GetCategory(path)?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
-            var borderStyle = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle");
+        {            
             var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
             return pages.Select(p => new ProductLink
@@ -65,8 +62,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 IsFavourite = false,
                 Border = new Border
                 {
-                    Exists = !p.GetBooleanValue("ProductThumbnailBorderDisabled", false) && bordersEnabledOnSite && borderEnabledOnParentCategory,
-                    Value = borderStyle
+                    Exists = !p.GetBooleanValue("ProductThumbnailBorderDisabled", false),
                 },
                 ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath)
             }

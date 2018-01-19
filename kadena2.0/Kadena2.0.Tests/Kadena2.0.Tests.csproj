@@ -461,6 +461,7 @@
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="WebApi\KListServiceTests.cs" />
+    <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
