@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CMS.CustomTables;
+﻿using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -11,7 +10,7 @@ using CMS.Localization;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.BusinessLogic.Services;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
@@ -19,9 +18,8 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
-using Kadena.WebAPI;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +31,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
-        static KadenaMacroMethods()
-        {
-            MapperBuilder.InitializeAll();
-        }
-
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsSKUWeightRequired(EvaluationContext context, params object[] parameters)
@@ -332,7 +325,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var documents = DIContainer.Resolve<IKenticoDocumentProvider>();
                 return documents.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
@@ -345,7 +338,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoLocalization = ProviderFactory.KenticoLocalizationProvider;
+                var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
                 return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
@@ -356,13 +349,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         public static object FormatDate(EvaluationContext context, params object[] parameters)
         {
             var datetime = ValidationHelper.GetDateTime(parameters[0], DateTime.MinValue);
-            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).Format(datetime);
+            return DIContainer.Resolve<IDateTimeFormatter>().Format(datetime);
         }
 
         [MacroMethod(typeof(string), "Returns unified date format string", 0)]
         public static object GetDateFormatString(EvaluationContext context, params object[] parameters)
         {
-            return new DateTimeFormatter(ProviderFactory.KenticoLocalizationProvider).GetFormatString();
+            return DIContainer.Resolve<IDateTimeFormatter>().GetFormatString();
         }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
@@ -660,7 +653,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
             if (!pageGUID.Equals(Guid.Empty))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), Mapper.Instance);
+                var documents = DIContainer.Resolve<IKenticoDocumentProvider>();
                 return documents.GetDocumentUrl(pageGUID);
             }
             return string.Empty;

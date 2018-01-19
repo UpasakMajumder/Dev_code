@@ -140,7 +140,6 @@
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderFactory.cs" />
     <Compile Include="Providers\KadenaSettings\ShippingEstimationSettings.cs" />
     <Compile Include="Providers\KadenaSettings\KadenaSettings.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />

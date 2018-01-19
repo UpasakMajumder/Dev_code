@@ -19,8 +19,28 @@ using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
 namespace Kadena2.Container.Default
 {
-    public static class ContainerBuilder
+    public static class DIContainer
     {
+        private static readonly IContainer container;
+
+        public static IContainer Instance => container;
+
+        static DIContainer()
+        {
+            container = new DryIoc.Container()
+                .RegisterBLL()
+                .RegisterKentico()
+                .RegisterKadenaSettings()
+                .RegisterMicroservices()
+                .RegisterFactories()
+                .RegisterInfrastructure();
+        }
+
+        public static T Resolve<T>()
+        {
+            return container.Resolve<T>();
+        }
+
         public static IContainer RegisterBLL(this IContainer container)
         {
             container.Register<IShoppingCartService, ShoppingCartService>();
@@ -45,6 +65,7 @@ namespace Kadena2.Container.Default
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
+            container.Register<IDateTimeFormatter, DateTimeFormatter>();
             return container;
         }
 
@@ -94,6 +115,7 @@ namespace Kadena2.Container.Default
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
+            container.Register<IBidClient, BidClient>();
             return container;
         }
 
@@ -106,7 +128,7 @@ namespace Kadena2.Container.Default
 
         public static IContainer RegisterInfrastructure(this IContainer container)
         {
-            container.RegisterInstance(typeof(IMapper), Mapper.Instance);
+            container.RegisterInstance(typeof(IMapper), MapperBuilder.MapperInstance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }

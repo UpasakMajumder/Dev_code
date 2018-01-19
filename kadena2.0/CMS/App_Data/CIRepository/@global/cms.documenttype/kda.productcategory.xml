@@ -42,6 +42,17 @@
           <controlname>MediaSelectionControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductCategoryBordersEnabled" columntype="boolean" guid="c189263f-d58a-4192-bb3a-ce53e75015ad" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Borders enabled</fieldcaption>
+          <fielddescription>
+            <![CDATA[Display border of product thumbnail images it this category]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductCategoryDescription" columntype="longtext" guid="d8287120-36ac-45ec-a1ad-a0d60f94d46b" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Description</fieldcaption>
