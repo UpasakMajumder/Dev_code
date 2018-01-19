@@ -38,7 +38,7 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public void GetProductsAndCategories_basicTest() 
+        public void GetProductsAndCategories_BasicTest() 
         {
             // Arrange
             var sut = CreateProductsService(true, true);
@@ -62,7 +62,7 @@ namespace Kadena.Tests.WebApi
         [InlineData(true, true, true, borderStyleValue)]
         [InlineData(true, false, false, "")]
         [InlineData(false, false, false, "")]
-        public void GetProductsAndCategoriesTest(bool borderOnSite, bool borderOnCategory, bool expectedResult, string style)
+        public void GetProductsAndCategories_BordersTest(bool borderOnSite, bool borderOnCategory, bool expectedResult, string style)
         {
             // Arrange
             var sut = CreateProductsService(borderOnSite, borderOnCategory);
