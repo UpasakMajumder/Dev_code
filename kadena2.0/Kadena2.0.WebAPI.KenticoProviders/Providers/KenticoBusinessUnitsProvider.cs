@@ -1,6 +1,7 @@
 ﻿using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.Ecommerce;
+using CMS.Helpers;
 using CMS.SiteProvider;
 using Kadena.Models.BusinessUnit;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -71,7 +72,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressInfo address = AddressInfoProvider.GetAddressInfo(distributorID);
                 if (address != null)
                 {
-                    int businessUnitNumber = address.GetIntegerValue("BusinessUnit", 0);
+                    long businessUnitNumber = ValidationHelper.GetLong(address.GetValue("BusinessUnit"), default(long));
                     CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
                     businessUnit = businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty) : string.Empty;
                 }
