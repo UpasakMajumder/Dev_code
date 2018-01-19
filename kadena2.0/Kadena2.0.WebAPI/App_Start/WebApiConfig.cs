@@ -27,7 +27,7 @@ namespace Kadena.WebAPI
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
-            ContainerBuilder.ContainerInstance
+            DIContainer.Instance
                 .WithWebApi(apiConfig);
         }
 

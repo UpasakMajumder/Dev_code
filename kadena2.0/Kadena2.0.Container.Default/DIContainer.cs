@@ -19,13 +19,13 @@ using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
 namespace Kadena2.Container.Default
 {
-    public static class ContainerBuilder
+    public static class DIContainer
     {
         private static readonly IContainer container;
 
-        public static IContainer ContainerInstance => container;
+        public static IContainer Instance => container;
 
-        static ContainerBuilder()
+        static DIContainer()
         {
             container = new DryIoc.Container()
                 .RegisterBLL()
@@ -65,6 +65,7 @@ namespace Kadena2.Container.Default
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
+            container.Register<IDateTimeFormatter, DateTimeFormatter>();
             return container;
         }
 

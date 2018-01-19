@@ -2,8 +2,6 @@
 using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.EventHandlers;
-using Kadena.Old_App_Code.Kadena;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.WebAPI.KenticoProviders.Classes;
@@ -15,8 +13,8 @@ namespace Kadena.Old_App_Code.EventHandlers
 {
     public class ProductEventHandler : Module
     {
-        public virtual IKenticoProductsProvider ProductsProvider { get; set; } = new KenticoProductsProvider( MapperBuilder.MapperInstance );
-        public virtual IKenticoLogger Logger { get; set; } = ContainerBuilder.Resolve<IKenticoLogger>();
+        public virtual IKenticoProductsProvider ProductsProvider { get; set; } = DIContainer.Resolve<IKenticoProductsProvider>();
+        public virtual IKenticoLogger Logger { get; set; } = DIContainer.Resolve<IKenticoLogger>();
 
         public ProductEventHandler() : base(nameof(ProductEventHandler))
         {

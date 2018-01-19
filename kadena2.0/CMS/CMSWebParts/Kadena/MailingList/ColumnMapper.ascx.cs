@@ -26,7 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
         };
-        private IMicroProperties _microProperties = ContainerBuilder.Resolve<IMicroProperties>();
+        private IMicroProperties _microProperties = DIContainer.Resolve<IMicroProperties>();
         private string _fileId;
         private Guid _containerId;
 

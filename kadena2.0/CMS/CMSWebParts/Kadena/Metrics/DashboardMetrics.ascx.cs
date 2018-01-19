@@ -128,7 +128,7 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
 
         private OrderStatisticsData GetOrderStatisticsInternal()
         {
-            var statisticClient = new StatisticsClient(ContainerBuilder.Resolve<IMicroProperties>());
+            var statisticClient = new StatisticsClient(DIContainer.Resolve<IMicroProperties>());
             var requestResult = statisticClient.GetOrderStatistics().Result;
 
             if (!requestResult.Success)

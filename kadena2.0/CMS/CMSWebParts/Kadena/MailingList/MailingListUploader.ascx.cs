@@ -5,10 +5,10 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 var id = new Guid(containerId);
 
-                var mailingListClient = new MailingListClient(ContainerBuilder.Resolve<IMicroProperties>());
+                var mailingListClient = DIContainer.Resolve<IMailingListClient>();
 
                 var mailingListResponse = mailingListClient.GetMailingList(id).Result;
                 if (mailingListResponse.Success)
@@ -196,7 +196,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             try
             {
-                var microProperties = ContainerBuilder.Resolve<IMicroProperties>();
+                var microProperties = DIContainer.Resolve<IMicroProperties>();
 
                 var fileStream = ReadRequestFileStream();
                 var fileName = inpFileName.Value;

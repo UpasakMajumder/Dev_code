@@ -5,10 +5,8 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.MicroserviceClients.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -107,7 +105,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
         private IEnumerable<MailingAddressDto> GetAddresses()
         {
-            var client = new MailingListClient(ContainerBuilder.Resolve<IMicroProperties>());
+            var client = DIContainer.Resolve<IMailingListClient>();
             return client.GetAddresses(_containerId).Result.Payload;
         }
 

@@ -4,10 +4,8 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
-using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +31,7 @@ namespace Kadena.CMSWebParts.Kadena.KSource
             try
             {
                 var workGroupName = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_WorkgroupName");
-                var client = new BidClient(ContainerBuilder.Resolve<IMicroProperties>());
+                var client = DIContainer.Resolve<IBidClient>();
                 var reqResult = client.GetProjects(workGroupName).Result;
                 if (reqResult.Success)
                 {

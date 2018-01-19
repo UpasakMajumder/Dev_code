@@ -14,6 +14,7 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.MicroserviceClients.Contracts;
 
 public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashboard : CMSAbstractWebPart
 {
@@ -142,7 +143,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     public DashboardStatistics GetDashboardStatistics()
     {
         DashboardStatistics statistics = new DashboardStatistics();
-        var statisticClient = new OrderViewClient(ContainerBuilder.Resolve<IMicroProperties>());
+        var statisticClient = DIContainer.Resolve<IOrderViewClient>();
         BaseResponseDto<OrderListDto> response = statisticClient.GetOrders(CurrentSiteName, 1, 1000).Result;
         if (response.Success)
         {

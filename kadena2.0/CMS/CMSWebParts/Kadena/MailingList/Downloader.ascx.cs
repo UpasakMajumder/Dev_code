@@ -26,7 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var microProperties = ContainerBuilder.Resolve<IMicroProperties>();
+                var microProperties = DIContainer.Resolve<IMicroProperties>();
                 var mailingListClient = new MailingListClient(microProperties);
 
                 var mailingListResponse = mailingListClient.GetMailingList(_containerId).Result;
