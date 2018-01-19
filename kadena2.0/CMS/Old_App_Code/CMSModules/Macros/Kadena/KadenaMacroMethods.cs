@@ -11,16 +11,13 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using Kadena.Old_App_Code.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using System;
@@ -328,7 +325,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
+                var documents = DIContainer.Resolve<IKenticoDocumentProvider>();
                 return documents.GetDocumentUrl(aliasPath);
             }
             return string.Empty;
@@ -656,7 +653,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             Guid pageGUID = ValidationHelper.GetGuid(parameters[0], Guid.Empty);
             if (!pageGUID.Equals(Guid.Empty))
             {
-                var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
+                var documents = DIContainer.Resolve<IKenticoDocumentProvider>();
                 return documents.GetDocumentUrl(pageGUID);
             }
             return string.Empty;

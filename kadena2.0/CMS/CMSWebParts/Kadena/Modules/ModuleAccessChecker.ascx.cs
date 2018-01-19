@@ -5,7 +5,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
-using Kadena.WebAPI.KenticoProviders;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace Kadena.CMSWebParts.Kadena.Modules
                             return;
                         }
                         // module is not enabled - unauthorized accesss
-                        var documents = new KenticoDocumentProvider(new KenticoResourceService(), new KenticoLogger(), MapperBuilder.MapperInstance);
+                        var documents = DIContainer.Resolve<IKenticoDocumentProvider>();
                         var url = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.KDA_DisabledModuleUrl");
                         url = documents.GetDocumentUrl(url);
                         Response.Redirect(url);
