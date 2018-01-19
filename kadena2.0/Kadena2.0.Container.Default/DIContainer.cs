@@ -78,7 +78,6 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoMailProvider, KenticoMailProvider>();
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
-            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
             container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
@@ -93,6 +92,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
             container.Register<IKenticoPermissionsProvider, KenticoPermissionsProvider>();
             container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
+            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             return container;
         }
 
@@ -116,6 +116,9 @@ namespace Kadena2.Container.Default
             container.Register<IMicroProperties, MicroProperties>();
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
             container.Register<IBidClient, BidClient>();
+            container.Register<ICreditCardManagerClient, CreditCardManagerClient>();
+            container.Register<IPaymentServiceClient, PaymentServiceClient>();
+            container.Register<IUserDataServiceClient, UserDataServiceClient>();
             return container;
         }
 

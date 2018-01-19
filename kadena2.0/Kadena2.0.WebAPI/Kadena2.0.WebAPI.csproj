@@ -142,6 +142,7 @@
     <Compile Include="Infrastructure\Filters\Authentication\IdentityBasicAuthenticationAttribute.cs" />
     <Compile Include="Infrastructure\Filters\RecalculateShoppingCartAttribute.cs" />
     <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
+    <Compile Include="Infrastructure\Filters\RequestLogFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\CustomerAuthorizationFilter.cs" />
