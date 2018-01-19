@@ -105,6 +105,8 @@ namespace Kadena.Tests.WebApi
             Assert.Equal(2, result.Products[1].Id);
             Assert.Equal(10, result.Categories[0].Id);
             Assert.Equal(11, result.Categories[1].Id);
+            Assert.False(result.Products[0].IsFavourite);
+            Assert.True(result.Products[1].IsFavourite);
         }
     }
 }
