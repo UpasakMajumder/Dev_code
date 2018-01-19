@@ -301,9 +301,9 @@ namespace Kadena.BusinessLogic.Services
                 {
                     new OrderTableCell() { value = o.Id },
                     new OrderTableCell() { value = o.CreateDate.ToShortDateString() },
-                    new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID) },
-                    new OrderTableCell() { value = o.Status },
-                    new OrderTableCell() { value = o.ShippingDate.ToString() },
+                    new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID), type = "longtext" },
+                    new OrderTableCell() { value = o.Status, type = "hover-hide" },
+                    new OrderTableCell() { value = o.ShippingDate.ToString(), type = "hover-hide" },
                     new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{_orderDetailUrl}?orderID={o.Id}" }
                 };
         }
