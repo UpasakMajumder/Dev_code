@@ -329,6 +329,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                 DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date
                             };
                             program.Insert(CampaignNode, true);
+.                            Response.Cookies["status"].Value = QueryStringStatus.Added;
+                            Response.Cookies["status"].HttpOnly = false;
                             URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                         }
                     }
@@ -389,6 +391,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                     DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
                             }
                         }
+                        Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                        Response.Cookies["status"].HttpOnly = false;
                         URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                     }
                 }
