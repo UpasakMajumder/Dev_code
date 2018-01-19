@@ -6,11 +6,14 @@
         <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
     </div>
     <div class="custom__btns">
-        <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" OnClick="btnRefresh_Click" />
-        <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnExport_Click" />
+        <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" Enabled="false" OnClick="btnRefresh_Click" />
+        <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Enabled="false" OnClick="btnExport_Click" />
+    </div>
+    <div class="custom__btns float-right">
+        <asp:Button runat="server" Enabled="false" ID="btnClose" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnClose_Click"/>
     </div>
 </div>
-<div class="inbound__track">
+<div class="inbound__track" runat="server" id="inBoundGrid">
     <asp:GridView ID="gdvInboundProducts" runat="server" AutoGenerateColumns="false" OnRowDataBound="gdvInboundProducts_RowDataBound" OnRowEditing="inboundProducts_RowEditing" OnRowUpdating="inboundProducts_RowUpdating"
         OnRowCancelingEdit="gdvInboundProducts_RowCancelingEdit" ShowHeaderWhenEmpty="false" AllowPaging="true" PageSize="25" OnPageIndexChanging="gdvInboundProducts_PageIndexChanging" PagerSettings-Mode="NumericFirstLast"
         class="table show__table-bottom" PagerStyle-CssClass="pagination__table">
@@ -142,7 +145,27 @@
         <EmptyDataTemplate>
         </EmptyDataTemplate>
     </asp:GridView>
-    <div class=" mt-2" runat="server" id="divNodatafound" visible="false">
+</div>
+<div class=" mt-2" runat="server" id="divNodatafound" visible="false">
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><cms:LocalizedLabel runat="server" ResourceString="Kadena.Inbound.NoDataText"></cms:LocalizedLabel></div>
+    </div>
+    <div class=" mt-2" runat="server" id="divSelectCampaign" visible="false">
+        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><cms:LocalizedLabel runat="server" ResourceString="Kadena.Inbound.SelectCampaignText"></cms:LocalizedLabel></div>
+    </div>
+<div class="dialog" id="dialog_Close_IBTF" runat="server" clientidmode="Static">
+    <div class="dialog__shadow" runat="server" id="popUpShadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <asp:Label runat="server" ID="lblPopUpHeader"></asp:Label>
+        </div>
+        <div class="dialog__content">
+            <asp:Label runat="server" ID="lblPopUpMessage"></asp:Label>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+                <button type="button" class="btn-action btn-action--secondary" id="popUpYes" runat="server" onserverclick="popUpYes_ServerClick"></button>
+                <asp:Button runat="server" CssClass="btn-action btn-action--secondary" ID="noPopUp" OnClick="noPopUp_Click" />
+            </div>
+        </div>
     </div>
 </div>

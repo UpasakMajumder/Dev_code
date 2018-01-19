@@ -20,6 +20,62 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     #region Properties
 
     /// <summary>
+    /// Pop up label message resource string
+    /// </summary>
+    public string PopUPLabelMsgText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUPLabelMsgText"), string.Empty);
+        }
+        set
+        {
+            SetValue("PopUPLabelMsgText", value);
+        }
+    }
+    /// <summary>
+    /// Close button resource string
+    /// </summary>
+    public string CloseButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.CloseButtonText"), string.Empty);
+        }
+        set
+        {
+            SetValue("CloseButtonText", value);
+        }
+    }
+    /// <summary>
+    /// PopUp Yes button resource string
+    /// </summary>
+    public string PopUpYesButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUpYesButtonText"), string.Empty);
+        }
+        set
+        {
+            SetValue("PopUpYesButtonText", value);
+        }
+    }
+    /// <summary>
+    /// PopUp no button resource string
+    /// </summary>
+    public string PopUpNoButtonText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUpNoButtonText"), string.Empty);
+        }
+        set
+        {
+            SetValue("PopUpNoButtonText", value);
+        }
+    }
+    /// <summary>
     /// Refresh bustton resource string
     /// </summary>
     public string RefreshButtonText
@@ -449,6 +505,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         gdvInboundProducts.Columns[15].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
+        btnClose.Text = CloseButtonText;
     }
 
     /// <summary>
@@ -465,10 +522,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 {
                     if (!IsPostBack)
                     {
+                        divSelectCampaign.Visible = true;
                         BindCampaigns();
                         string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
                         ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                        GetProducts();
+                        BindLabels();
                     }
                 }
                 else
@@ -632,14 +690,19 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 allDetails = allDetails.ToList();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
-                    BindLabels();
                     divNodatafound.Visible = false;
                     gdvInboundProducts.DataSource = allDetails;
                     gdvInboundProducts.DataBind();
                     gdvInboundProducts.Visible = true;
+                    btnClose.Enabled = true;
+                    btnRefresh.Enabled = true;
+                    btnExport.Enabled = true;
                 }
                 else
                 {
+                    btnClose.Enabled = false;
+                    btnRefresh.Enabled = false;
+                    btnExport.Enabled = false;
                     divNodatafound.Visible = true;
                     gdvInboundProducts.Visible = false;
                     BindLabels();
@@ -648,6 +711,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             }
             else
             {
+                btnClose.Enabled = false;
+                btnRefresh.Enabled = false;
+                btnExport.Enabled = false;
                 divNodatafound.Visible = true;
                 BindLabels();
                 gdvInboundProducts.DataBind();
@@ -717,7 +783,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name").ToList();
+            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name").OrderBy(x => x.Name).ToList();
             if (!DataHelper.DataSourceIsEmpty(camapaigns))
             {
                 ddlCampaign.DataSource = camapaigns;
@@ -810,7 +876,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
             inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
             inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-            inboundData.Overage = inboundData.QtyReceived- inboundData.QtyOrdered;
+            inboundData.Overage = inboundData.QtyReceived - inboundData.QtyOrdered;
             inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
             inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
             inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
@@ -878,8 +944,28 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// <param name="e"></param>
     protected void ddlCampaign_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindPrograms(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
-        GetProducts();
+        try
+        {
+            if (ddlCampaign.SelectedIndex != 0)
+            {
+                inBoundGrid.Visible = true;
+                ddlProgram.Enabled = true;
+                divSelectCampaign.Visible = false;
+                BindPrograms(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
+                GetProducts();
+            }
+            else
+            {
+                ddlProgram.Enabled = false;
+                divNodatafound.Visible = false;
+                divSelectCampaign.Visible = true;
+                inBoundGrid.Visible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Campaign selection change event", "ddlCampaign_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 
     /// <summary>
@@ -978,6 +1064,44 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             EventLogProvider.LogException("Binding Status", "gdvInboundProducts_RowDataBound()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
+    protected void btnClose_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            popUpShadow.Visible = true;
+            dialog_Close_IBTF.Visible = true;
+            dialog_Close_IBTF.Attributes.Add("class", "dialog active");
+            lblPopUpMessage.Text = PopUPLabelMsgText;
+            popUpYes.InnerText = PopUpYesButtonText;
+            noPopUp.Text = PopUpNoButtonText;
+
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CloseButton", "btnClose_Click()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+    /// <summary>
+    /// Pop up Yes click
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void popUpYes_ServerClick(object sender, EventArgs e)
+    {
+
+    }
+    /// <summary>
+    /// PopUp No click
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void noPopUp_Click(object sender, EventArgs e)
+    {
+        dialog_Close_IBTF.Visible = false;
+        popUpShadow.Visible = false;
+    }
 }
 
 #endregion "Methods"
+
