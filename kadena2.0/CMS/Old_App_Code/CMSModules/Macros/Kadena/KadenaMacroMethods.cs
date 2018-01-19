@@ -594,12 +594,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 {
                     var loggedInUSerCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(userID, ProductType.GeneralInventory);
                     decimal cartTotal = 0;
-                    loggedInUSerCartIDs.ForEach(care =>
+                    loggedInUSerCartIDs.ForEach(cartID =>
                     {
-                        var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
-                        EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
-                        var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                        cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                        var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
+                        if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
+                        {
+                            EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                            var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
+                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                        }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));
                 }
