@@ -115,6 +115,7 @@ namespace Kadena2.Container.Default
             container.Register<IFileClient, FileClient>();
             container.Register<IMicroProperties, MicroProperties>();
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
+            container.Register<IBidClient, BidClient>();
             return container;
         }
 
