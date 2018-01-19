@@ -461,6 +461,7 @@
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="WebApi\KListServiceTests.cs" />
+    <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
@@ -474,6 +475,10 @@
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
       <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
       <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
+      <Project>{BF079DF3-1E13-44C5-8B87-C040257EAC07}</Project>
+      <Name>Kadena2.0.Container.Default</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>
