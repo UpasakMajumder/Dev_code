@@ -12,7 +12,11 @@ namespace Kadena.WebAPI.Controllers
 
         public FileController(IFileService fileService)
         {
-            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+            if (fileService == null)
+            {
+                throw new ArgumentNullException(nameof(fileService));
+            }
+            _fileService = fileService;
         }
 
         [HttpGet]

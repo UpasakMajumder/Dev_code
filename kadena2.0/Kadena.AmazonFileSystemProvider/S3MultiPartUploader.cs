@@ -22,7 +22,11 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="maximalPartSize">Maximal possible size of the part sent in one request to Amazon S3 storage.</param>
         internal S3MultiPartUploader(AmazonS3Client s3Client, long minimalPartSize, long maximalPartSize)
         {
-            this.mS3Client = s3Client ?? throw new ArgumentNullException(nameof(s3Client));
+            if (s3Client == null)
+            {
+                throw new ArgumentNullException(nameof(s3Client));
+            }
+            this.mS3Client = s3Client;
             if (minimalPartSize < 1L)
             {
                 throw new ArgumentOutOfRangeException(nameof(minimalPartSize), "minimalPartSize cannot be smaller than 1.");
