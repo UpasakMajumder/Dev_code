@@ -27,9 +27,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
-
         private readonly string _orderDetailUrl;
-
         private int _pageCapacity;
         private string _pageCapacityKey;
         private Dictionary<int, string> _addressBookList;

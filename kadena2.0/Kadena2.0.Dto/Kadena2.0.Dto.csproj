@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
+    <Compile Include="Product\BorderDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTableCellDto.cs" />
