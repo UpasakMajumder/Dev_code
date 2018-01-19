@@ -67,6 +67,22 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="AmazonS3ExcludedPaths" columnsize="200" columntype="text" guid="de73cd22-c1a3-455f-bafc-0e021e75010f" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Amazon S3 excluded paths</fieldcaption>
+          <fielddescription>
+            <![CDATA[List of folders to be excluded from storing in Amazon S3 divided by semicolon.]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>cc2d6624-b13e-491b-aa23-b702b1acbc56</ClassGUID>

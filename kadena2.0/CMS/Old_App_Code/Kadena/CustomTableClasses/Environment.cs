@@ -20,176 +20,209 @@ using Kadena.CustomTables;
 
 namespace Kadena.CustomTables
 {
-	/// <summary>
-	/// Represents a content item of type EnvironmentItem.
-	/// </summary>
-	public partial class EnvironmentItem : CustomTableItem
-	{
-		#region "Constants and variables"
+    /// <summary>
+    /// Represents a content item of type EnvironmentItem.
+    /// </summary>
+    public partial class EnvironmentItem : CustomTableItem
+    {
+        #region "Constants and variables"
 
-		/// <summary>
-		/// The name of the data class.
-		/// </summary>
-		public const string CLASS_NAME = "KDA.Environment";
-
-
-		/// <summary>
-		/// The instance of the class that provides extended API for working with EnvironmentItem fields.
-		/// </summary>
-		private readonly EnvironmentItemFields mFields;
-
-		#endregion
+        /// <summary>
+        /// The name of the data class.
+        /// </summary>
+        public const string CLASS_NAME = "KDA.Environment";
 
 
-		#region "Properties"
+        /// <summary>
+        /// The instance of the class that provides extended API for working with EnvironmentItem fields.
+        /// </summary>
+        private readonly EnvironmentItemFields mFields;
 
-		/// <summary>
-		/// Code name.
-		/// </summary>
-		[DatabaseField]
-		public string CodeName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("CodeName"), "");
-			}
-			set
-			{
-				SetValue("CodeName", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// Display name.
-		/// </summary>
-		[DatabaseField]
-		public string DisplayName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("DisplayName"), "");
-			}
-			set
-			{
-				SetValue("DisplayName", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// Code name.
+        /// </summary>
+        [DatabaseField]
+        public string CodeName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("CodeName"), "");
+            }
+            set
+            {
+                SetValue("CodeName", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Amazon S3 folder.
-		/// </summary>
-		[DatabaseField]
-		public string AmazonS3Folder
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("AmazonS3Folder"), "");
-			}
-			set
-			{
-				SetValue("AmazonS3Folder", value);
-			}
-		}
+        /// <summary>
+        /// Display name.
+        /// </summary>
+        [DatabaseField]
+        public string DisplayName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("DisplayName"), "");
+            }
+            set
+            {
+                SetValue("DisplayName", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Gets an object that provides extended API for working with EnvironmentItem fields.
-		/// </summary>
-		[RegisterProperty]
-		public EnvironmentItemFields Fields
-		{
-			get
-			{
-				return mFields;
-			}
-		}
+        /// <summary>
+        /// Amazon S3 folder.
+        /// </summary>
+        [DatabaseField]
+        public string AmazonS3Folder
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("AmazonS3Folder"), "");
+            }
+            set
+            {
+                SetValue("AmazonS3Folder", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Provides extended API for working with EnvironmentItem fields.
-		/// </summary>
-		[RegisterAllProperties]
-		public partial class EnvironmentItemFields : AbstractHierarchicalObject<EnvironmentItemFields>
-		{
-			/// <summary>
-			/// The content item of type EnvironmentItem that is a target of the extended API.
-			/// </summary>
-			private readonly EnvironmentItem mInstance;
+        /// <summary>
+        /// List of folders to be excluded from storing in Amazon S3 divided by semicolon.
+        /// </summary>
+        [DatabaseField]
+        public string AmazonS3ExcludedPaths
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("AmazonS3ExcludedPaths"), "");
+            }
+            set
+            {
+                SetValue("AmazonS3ExcludedPaths", value);
+            }
+        }
 
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="EnvironmentItemFields" /> class with the specified content item of type EnvironmentItem.
-			/// </summary>
-			/// <param name="instance">The content item of type EnvironmentItem that is a target of the extended API.</param>
-			public EnvironmentItemFields(EnvironmentItem instance)
-			{
-				mInstance = instance;
-			}
+        /// <summary>
+        /// Gets an object that provides extended API for working with EnvironmentItem fields.
+        /// </summary>
+        [RegisterProperty]
+        public EnvironmentItemFields Fields
+        {
+            get
+            {
+                return mFields;
+            }
+        }
 
 
-			/// <summary>
-			/// Code name.
-			/// </summary>
-			public string CodeName
-			{
-				get
-				{
-					return mInstance.CodeName;
-				}
-				set
-				{
-					mInstance.CodeName = value;
-				}
-			}
+        /// <summary>
+        /// Provides extended API for working with EnvironmentItem fields.
+        /// </summary>
+        [RegisterAllProperties]
+        public partial class EnvironmentItemFields : AbstractHierarchicalObject<EnvironmentItemFields>
+        {
+            /// <summary>
+            /// The content item of type EnvironmentItem that is a target of the extended API.
+            /// </summary>
+            private readonly EnvironmentItem mInstance;
 
 
-			/// <summary>
-			/// Display name.
-			/// </summary>
-			public string DisplayName
-			{
-				get
-				{
-					return mInstance.DisplayName;
-				}
-				set
-				{
-					mInstance.DisplayName = value;
-				}
-			}
+            /// <summary>
+            /// Initializes a new instance of the <see cref="EnvironmentItemFields" /> class with the specified content item of type EnvironmentItem.
+            /// </summary>
+            /// <param name="instance">The content item of type EnvironmentItem that is a target of the extended API.</param>
+            public EnvironmentItemFields(EnvironmentItem instance)
+            {
+                mInstance = instance;
+            }
 
 
-			/// <summary>
-			/// Amazon S3 folder.
-			/// </summary>
-			public string AmazonS3Folder
-			{
-				get
-				{
-					return mInstance.AmazonS3Folder;
-				}
-				set
-				{
-					mInstance.AmazonS3Folder = value;
-				}
-			}
-		}
-
-		#endregion
+            /// <summary>
+            /// Code name.
+            /// </summary>
+            public string CodeName
+            {
+                get
+                {
+                    return mInstance.CodeName;
+                }
+                set
+                {
+                    mInstance.CodeName = value;
+                }
+            }
 
 
-		#region "Constructors"
+            /// <summary>
+            /// Display name.
+            /// </summary>
+            public string DisplayName
+            {
+                get
+                {
+                    return mInstance.DisplayName;
+                }
+                set
+                {
+                    mInstance.DisplayName = value;
+                }
+            }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="EnvironmentItem" /> class.
-		/// </summary>
-		public EnvironmentItem() : base(CLASS_NAME)
-		{
-			mFields = new EnvironmentItemFields(this);
-		}
 
-		#endregion
-	}
+            /// <summary>
+            /// Amazon S3 folder.
+            /// </summary>
+            public string AmazonS3Folder
+            {
+                get
+                {
+                    return mInstance.AmazonS3Folder;
+                }
+                set
+                {
+                    mInstance.AmazonS3Folder = value;
+                }
+            }
+
+
+            /// <summary>
+            /// List of folders to be excluded from storing in Amazon S3 divided by semicolon.
+            /// </summary>
+            public string AmazonS3ExcludedPaths
+            {
+                get
+                {
+                    return mInstance.AmazonS3ExcludedPaths;
+                }
+                set
+                {
+                    mInstance.AmazonS3ExcludedPaths = value;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnvironmentItem" /> class.
+        /// </summary>
+        public EnvironmentItem() : base(CLASS_NAME)
+        {
+            mFields = new EnvironmentItemFields(this);
+        }
+
+        #endregion
+    }
 }
