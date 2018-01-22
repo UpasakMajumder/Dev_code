@@ -16,6 +16,14 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="IsClosed" columntype="boolean" guid="de35ede1-4eab-4d3c-9fec-81350948b5e4" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUID" columntype="integer" guid="07354247-2b13-4b03-ae35-56f20d014d20" publicfield="false" visible="true">
         <properties>
           <fieldcaption>SKUID</fieldcaption>

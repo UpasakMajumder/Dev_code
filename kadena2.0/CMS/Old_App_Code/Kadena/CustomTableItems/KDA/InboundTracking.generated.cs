@@ -47,35 +47,18 @@ namespace CMS.CustomTables.Types.KDA
 		#region "Properties"
 
 		/// <summary>
-		/// CampaignID.
+		/// 
 		/// </summary>
 		[DatabaseField]
-		public int CampaignID
+		public bool IsClosed
 		{
 			get
 			{
-				return ValidationHelper.GetInteger(GetValue("CampaignID"), 0);
+				return ValidationHelper.GetBoolean(GetValue("IsClosed"), false);
 			}
 			set
 			{
-				SetValue("CampaignID", value);
-			}
-		}
-
-
-		/// <summary>
-		/// ProgramID.
-		/// </summary>
-		[DatabaseField]
-		public int ProgramID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("ProgramID"), 0);
-			}
-			set
-			{
-				SetValue("ProgramID", value);
+				SetValue("IsClosed", value);
 			}
 		}
 
@@ -93,40 +76,6 @@ namespace CMS.CustomTables.Types.KDA
 			set
 			{
 				SetValue("SKUID", value);
-			}
-		}
-
-
-		/// <summary>
-		/// SKUNumber.
-		/// </summary>
-		[DatabaseField]
-		public string SKUNumber
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("SKUNumber"), "");
-			}
-			set
-			{
-				SetValue("SKUNumber", value);
-			}
-		}
-
-
-		/// <summary>
-		/// SKUName.
-		/// </summary>
-		[DatabaseField]
-		public string SKUName
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("SKUName"), "");
-			}
-			set
-			{
-				SetValue("SKUName", value);
 			}
 		}
 
@@ -371,33 +320,17 @@ namespace CMS.CustomTables.Types.KDA
 
 
 			/// <summary>
-			/// CampaignID.
+			/// 
 			/// </summary>
-			public int CampaignID
+			public bool IsClosed
 			{
 				get
 				{
-					return mInstance.CampaignID;
+					return mInstance.IsClosed;
 				}
 				set
 				{
-					mInstance.CampaignID = value;
-				}
-			}
-
-
-			/// <summary>
-			/// ProgramID.
-			/// </summary>
-			public int ProgramID
-			{
-				get
-				{
-					return mInstance.ProgramID;
-				}
-				set
-				{
-					mInstance.ProgramID = value;
+					mInstance.IsClosed = value;
 				}
 			}
 
@@ -414,38 +347,6 @@ namespace CMS.CustomTables.Types.KDA
 				set
 				{
 					mInstance.SKUID = value;
-				}
-			}
-
-
-			/// <summary>
-			/// SKUNumber.
-			/// </summary>
-			public string SKUNumber
-			{
-				get
-				{
-					return mInstance.SKUNumber;
-				}
-				set
-				{
-					mInstance.SKUNumber = value;
-				}
-			}
-
-
-			/// <summary>
-			/// SKUName.
-			/// </summary>
-			public string SKUName
-			{
-				get
-				{
-					return mInstance.SKUName;
-				}
-				set
-				{
-					mInstance.SKUName = value;
 				}
 			}
 

@@ -685,16 +685,18 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      CenveoComments = newData?.CenveoComments ?? string.Empty,
                                      TweComments = newData?.TweComments ?? string.Empty,
                                      ActualPrice = newData?.ActualPrice ?? default(double),
-                                     Status = product.SKUEnabled
+                                     Status = product.SKUEnabled,
+                                     IsClosed = newData?.IsClosed ?? false
                                  };
                 allDetails = allDetails.ToList();
+                var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
                     divNodatafound.Visible = false;
                     gdvInboundProducts.DataSource = allDetails;
                     gdvInboundProducts.DataBind();
                     gdvInboundProducts.Visible = true;
-                    btnClose.Enabled = true;
+                    btnClose.Enabled = !closeButtonStatus;
                     btnRefresh.Enabled = true;
                     btnExport.Enabled = true;
                 }
@@ -783,7 +785,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name").OrderBy(x => x.Name).ToList();
+            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name")
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", true))
+                                .WhereEquals("NodeSiteID", CurrentSite.SiteID).OrderBy(x => x.Name).ToList();
             if (!DataHelper.DataSourceIsEmpty(camapaigns))
             {
                 ddlCampaign.DataSource = camapaigns;
@@ -1079,7 +1083,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("CloseButton", "btnClose_Click()", ex, CurrentSite.SiteID, ex.Message);
+            EventLogProvider.LogException("CloseButtonPopup", "btnClose_Click()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
     /// <summary>
@@ -1089,7 +1093,26 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// <param name="e"></param>
     protected void popUpYes_ServerClick(object sender, EventArgs e)
     {
-
+        try
+        {
+            List<CampaignsProduct> productsDetails = GetProductDetails();
+            List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
+            var skuIDs = skuDetails.Select(x => x.SKUID).ToList();
+            var campaignRelatedInboundForm = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID",skuIDs).ToList();
+            foreach (var item in campaignRelatedInboundForm)
+            {
+                if (item != null)
+                {
+                    item.IsClosed = true;
+                    item.Update();
+                }
+            }
+            Response.Redirect(Request.RawUrl);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CloseButtonYesClick", "popUpYes_ServerClick()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
     /// <summary>
     /// PopUp No click

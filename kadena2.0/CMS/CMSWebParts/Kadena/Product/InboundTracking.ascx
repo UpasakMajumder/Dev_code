@@ -134,7 +134,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:LinkButton ID="lnkEdit" runat="server" CommandName="edit" Text='<%#EditLinkText %>'></asp:LinkButton>
+                    <asp:LinkButton ID="lnkEdit" runat="server" Enabled='<%#ValidationHelper.GetBoolean(Eval("IsClosed"),false)==true?false:true%>' CommandName="edit" Text='<%#EditLinkText %>'></asp:LinkButton>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:LinkButton ID="lnkUpdate" runat="server" CommandName="update" Text='<%#UpdateText %>'></asp:LinkButton>
