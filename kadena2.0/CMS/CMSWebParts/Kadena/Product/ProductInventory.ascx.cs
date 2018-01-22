@@ -32,7 +32,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("ProductType", value);
         }
     }
-
     /// <summary>
     /// get the open campaign
     /// </summary>
@@ -51,7 +50,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("OpenCampaign", value);
         }
     }
-
     // <summary>
     /// Get the Product type.
     /// </summary>
@@ -81,7 +79,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("AddToCartLinkText", value);
         }
     }
-
     /// <summary>
     /// NoDataText Link text
     /// </summary>
@@ -111,7 +108,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("NoCampaignOpen", value);
         }
     }
-
     /// <summary>
     /// Search placeholder text
     /// </summary>
@@ -126,27 +122,22 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("PosSearchPlaceholder", value);
         }
     }
-
     /// <summary>
     /// SKUID of the product adding to cart
     /// </summary>
     public int ProductSKUID { get; set; }
-
     /// <summary>
     /// Campaign id of the product if it has
     /// </summary>
     public int ProductCampaignID { get; set; }
-
     /// <summary>
     /// Programm id of the product if it has
     /// </summary>
     public int ProductProgramID { get; set; }
-
     /// <summary>
     /// Product Shipping id of the product if it product type is pre-buy
     /// </summary>
     public int ProductShippingID { get; set; }
-
     /// <summary>
     /// Loads the addressid column heading
     /// </summary>
@@ -157,7 +148,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.StoreID"), string.Empty);
         }
     }
-
     /// <summary>
     /// Loads the AddressPersonalName column heading
     /// </summary>
@@ -168,7 +158,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.CustomerName"), string.Empty);
         }
     }
-
     /// <summary>
     /// Loads the CartCloseText button text
     /// </summary>
@@ -179,7 +168,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.DiscardChanges"), string.Empty);
         }
     }
-
     #endregion "Properties"
 
     #region "Methods"
@@ -413,7 +401,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, x.EstimatedPrice, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
                            .OrderBy(p => p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
@@ -592,7 +580,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     case (int)ProductsType.GeneralInventory:
                         BindGeneralInventory(product, hasBusinessUnit);
                         break;
-
                     case (int)ProductsType.PreBuy:
                         BindPreBuy(product, hasBusinessUnit);
                         break;
@@ -604,7 +591,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
-
     /// <summary>
     /// Binds general inventory data to popup
     /// </summary>
@@ -633,7 +619,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindGeneralInventory()", ex);
         }
     }
-
     /// <summary>
     /// Binds prebuy data to  popup
     /// </summary>
@@ -652,7 +637,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPreBuy()", ex);
         }
     }
-
     /// <summary>
     /// showing pop data based on assiged business units
     /// </summary>
@@ -683,7 +667,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPopupGridData()", ex);
         }
     }
-
     /// <summary>
     /// Get all Cusromers / Distributers list based on product ID
     /// </summary>
@@ -706,10 +689,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     .Distinct()
                     .Select(g =>
                     {
-                        var cartItem = cartItems
+                        var currentCartItems = cartItems
                             .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID)
-                            .FirstOrDefault();
-                        if (cartItem?.SKUID == productID)
+                            .ToList();
+                        var cartData = currentCartItems.FirstOrDefault();
+                        var cartItem = currentCartItems.Where(x => x.SKUID == productID).FirstOrDefault();
+                        if (cartItem != null)
                         {
                             return new
                             {
@@ -726,11 +711,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                             {
                                 g.AddressID,
                                 g.AddressPersonalName,
-                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
+                                ShoppingCartID = cartData?.ShoppingCartID ?? default(int),
                                 SKUID = default(int),
                                 SKUUnits = default(int)
                             };
                         }
+
                     })
                     .ToList();
                 gvCustomersCart.Columns[1].HeaderText = AddressIDText;
@@ -750,22 +736,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindCustomersList()", ex);
         }
     }
-
     /// <summary>
     /// Gets the distributors created by current user
     /// </summary>
     /// <returns></returns>
     private List<AddressInfo> GetMyAddressBookList()
     {
-        List<AddressInfo> myAddressList = new List<AddressInfo>();
+            List<AddressInfo> myAddressList = new List<AddressInfo>();
         CustomerInfo currentCustomer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
         if (!DataHelper.DataSourceIsEmpty(currentCustomer))
         {
-            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status",true).ToList();
         }
         return myAddressList;
     }
-
     /// <summary>
     /// refreshes the page on buuton close
     /// </summary>
@@ -775,7 +759,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         Response.Redirect(Request.RawUrl, false);
     }
-
     /// <summary>
     /// Add to
     /// </summary>
@@ -829,10 +812,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         {
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "btmAddItemsToCart_Click()", ex);
         }
-    }
 
+    }
     /// <summary>
-    /// Cart operations based on the values
+    /// Cart operations based on the values 
     /// </summary>
     /// <param name="cartID">shoppingcart id</param>
     /// <param name="quantity">units placing</param>
@@ -867,7 +850,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "CartProcess()", ex);
         }
     }
-
     /// <summary>
     /// Updating the unit count of shopping cart Item
     /// </summary>
@@ -909,7 +891,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "Updatingtheunitcountofcartitem()", ex);
         }
     }
-
     /// <summary>
     /// Removing Shopping Cart and cart items by cart id
     /// </summary>
@@ -941,7 +922,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "RemovingProductFromShoppingCart()", ex);
         }
     }
-
     /// <summary>
     /// Create Shopping cart with item by customer
     /// </summary>
@@ -981,7 +961,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "CreateShoppingCartByCustomer()", ex);
         }
     }
-
     /// <summary>
     /// Checks whether the current user has mapped to any business unit
     /// </summary>
@@ -1031,7 +1010,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "GetPrebuyData()", ex);
         }
     }
-
     #endregion "Methods"
 }
 
