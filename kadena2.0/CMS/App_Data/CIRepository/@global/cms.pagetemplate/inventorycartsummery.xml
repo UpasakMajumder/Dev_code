@@ -83,7 +83,7 @@
 <![CDATA[
 <div class="itemcount">
   <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1)|(user)cvoqa2@gmail.com|(hash)671b9de7d0da94985b138b9969c8eda7042579a6f54d7b275acc84e656c97a10%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
-  <label>{$ KDA.DistributorCart.CartTotalPrice $} {%KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1)|(user)cvoqa2@gmail.com|(hash)8d494e4fea21cd4e4f3da1988ab25db021be0bb4b062157fa2171a1f2217a864%}</label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1))|(user)cvoqa2@gmail.com|(hash)ea266f3e8789a6ab56745180063b08292ff3a766b6c27b5266f85fe9ac59fa41%}</label>
 </div>
 ]]>
           </property>
