@@ -103,7 +103,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rfvActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ActualPriceRequired");
             rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
             rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
-            rfvExpDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDateRequired");
             revQuantity.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
             rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
@@ -394,6 +393,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
+                Response.Cookies["status"].Value = QueryStringStatus.Added;
+                Response.Cookies["status"].HttpOnly = false;
                 URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
             }
             else
@@ -447,6 +448,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
+                Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                Response.Cookies["status"].HttpOnly = false;
                 URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
             }
             else

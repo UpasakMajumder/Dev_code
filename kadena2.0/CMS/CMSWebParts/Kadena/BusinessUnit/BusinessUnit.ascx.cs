@@ -165,11 +165,15 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
                 if (itemID > 0)
                 {
                     UpdateBusinessUnit(itemID);
+                    Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else
                 {
                     InsertBusinessUnit();
+                    Response.Cookies["status"].Value = QueryStringStatus.Added;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
             }

@@ -37,7 +37,10 @@ class Products extends Component {
             <a href={category.url} className="category">
               <div
                 className="category__picture"
-                style={{ backgroundImage: `url(${category.imageUrl})` }}>
+                style={{
+                  backgroundImage: `url(${category.imageUrl})`,
+                  border: category.border.exists ? category.border.value : 'none'
+                }}>
               </div>
               <div className="category__title">
                 <h2>{category.title}</h2>
@@ -72,7 +75,10 @@ class Products extends Component {
               <a href={product.url} className="category">
                 <div
                   className="category__picture"
-                  style={{ backgroundImage: `url(${product.imageUrl})` }}>
+                  style={{
+                    backgroundImage: `url(${product.imageUrl})`,
+                    border: product.border.exists ? product.border.value : 'none'
+                  }}>
                 </div>
                 <div className="category__title">
                   <h2>{product.title}</h2>

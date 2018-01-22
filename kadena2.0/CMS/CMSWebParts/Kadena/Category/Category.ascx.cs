@@ -91,6 +91,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     newPage.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
+                    Response.Cookies["status"].Value = QueryStringStatus.Added;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
@@ -132,6 +134,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     editPage.SetValue("ProductCategoryDescription", categroyDes);
                     editPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false));
                     editPage.Update();
+                    Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else

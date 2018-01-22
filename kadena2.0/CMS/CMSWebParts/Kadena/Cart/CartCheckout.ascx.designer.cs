@@ -40,21 +40,21 @@ namespace Kadena.CMSWebParts.Kadena.Cart {
         protected global::System.Web.UI.WebControls.Label lblCartUpdateSuccess;
         
         /// <summary>
-        /// lblCartError control.
+        /// rptErrors control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCartError;
+        protected global::CMS.DocumentEngine.Web.UI.CMSRepeater rptErrors;
         
         /// <summary>
-        /// lstErrors control.
+        /// btnClose control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.BulletedList lstErrors;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnClose;
     }
 }
