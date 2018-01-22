@@ -8,7 +8,7 @@ import timeFormat from 'app.helpers/time';
 const Order = (props) => {
   const { image, template, mailingList, shippingDate, trackingId,
     price, quantityPrefix, quantity, downloadPdfURL, quantityShippedPrefix, quantityShipped,
-    mailingListPrefix, shippingDatePrefix, trackingIdPrefix, templatePrefix } = props;
+    mailingListPrefix, shippingDatePrefix, trackingIdPrefix, templatePrefix, productStatusPrefix, productStatus } = props;
 
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
@@ -58,6 +58,8 @@ const Order = (props) => {
       </div>
     );
 
+  const productStatusInfo = productStatus ? <p>{productStatusPrefix}: {productStatus}</p> : <p></p>;
+
   return (
     <div className="cart-product">
       <div className="cart-product__img">
@@ -83,6 +85,7 @@ const Order = (props) => {
         <div className="cart-product__price">
           <span>{price}</span>
         </div>
+        {productStatusInfo}
         {quantityElement}
         {downloadPdfLink}
       </div>
@@ -103,7 +106,9 @@ Order.propTypes = {
   mailingListPrefix: PropTypes.string.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
   trackingIdPrefix: PropTypes.string.isRequired,
-  templatePrefix: PropTypes.string.isRequired
+  templatePrefix: PropTypes.string.isRequired,
+  productStatusPrefix: PropTypes.string.isRequired,
+  productStatus: PropTypes.string.isRequired
 };
 
 export default Order;

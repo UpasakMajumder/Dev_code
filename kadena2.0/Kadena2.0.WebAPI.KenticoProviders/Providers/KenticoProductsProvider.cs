@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
 
         public List<ProductLink> GetProducts(string path)
-        {            
+        {
             var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
             return pages.Select(p => new ProductLink
@@ -87,7 +87,7 @@ namespace Kadena.WebAPI.KenticoProviders
             skuInfo.Update();
         }
 
-        private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType )
+        private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType)
         {
             return DocumentHelper.GetDocuments(className)
                             .Path(path, pathType)
@@ -184,13 +184,13 @@ namespace Kadena.WebAPI.KenticoProviders
             return result;
         }
 
-        public bool IsProductSKUEnabled(int skuid)
+        public string GetProductStatus(int skuid)
         {
             if (skuid <= 0)
-                return false;
+                return string.Empty;
 
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            return sku != null ? sku.SKUEnabled : false;
+            return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
         }
     }
 }

@@ -294,7 +294,8 @@ namespace Kadena.BusinessLogic.Services
                 ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
                 TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
-                SKUEnabled = products.IsProductSKUEnabled(i.SkuId)
+                ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
+                ProductStatus = products.GetProductStatus(i.SkuId)
             }).ToList();
 
 
@@ -509,7 +510,7 @@ namespace Kadena.BusinessLogic.Services
                     AddressLine2 = shippingAddress.Address2,
                     City = shippingAddress.City,
                     State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
-                    StateDisplayName = shippingAddress.State?.StateDisplayName, 
+                    StateDisplayName = shippingAddress.State?.StateDisplayName,
                     KenticoStateID = shippingAddress.State.Id,
                     KenticoCountryID = shippingAddress.Country.Id,
                     AddressCompanyName = customer.Company,
