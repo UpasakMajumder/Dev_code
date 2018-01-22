@@ -989,7 +989,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            var productDocument = DocumentHelper.GetDocuments().WhereEquals("NodeSKUID", skuID).Columns("NodeSKUID,ProgramID").FirstOrDefault();
+            var productDocument = DocumentHelper.GetDocuments("KDA.CampaignsProduct").WhereEquals("NodeSKUID", skuID).Columns("NodeSKUID,ProgramID").FirstOrDefault();
             if (!DataHelper.DataSourceIsEmpty(productDocument))
             {
                 ProductProgramID = ValidationHelper.GetInteger(productDocument?.GetValue("ProgramID"), default(int));
