@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.classpermission>
   <ClassID>
-    <CodeName>KDA.PreBuy_Products</CodeName>
-    <GUID>b1f15001-2a12-4074-ae25-dbe730c92a7b</GUID>
-    <ObjectType>cms.documenttype</ObjectType>
+    <CodeName>KDA.Environment</CodeName>
+    <GUID>cc2d6624-b13e-491b-aa23-b702b1acbc56</GUID>
+    <ObjectType>cms.customtable</ObjectType>
   </ClassID>
-  <PermissionDescription>{$permissiondescription.document.modify$}</PermissionDescription>
+  <PermissionDescription>{$permissiondescription.customtable.modify$}</PermissionDescription>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
   <PermissionDisplayName>{$permissionnames.modify$}</PermissionDisplayName>
-  <PermissionGUID>f23cf97f-64e8-42d6-9210-2440b5b715cf</PermissionGUID>
+  <PermissionGUID>b405a9ee-6657-4f9b-b6dd-d884b6309b0d</PermissionGUID>
   <PermissionName>Modify</PermissionName>
   <PermissionOrder>2</PermissionOrder>
 </cms.classpermission>
