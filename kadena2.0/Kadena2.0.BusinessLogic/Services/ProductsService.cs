@@ -14,9 +14,22 @@ namespace Kadena.BusinessLogic.Services
 
         public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources)
         {
-            this.productsProvider = products ?? throw new ArgumentNullException(nameof(products));
-            this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
-            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            if (products == null)
+            {
+                throw new ArgumentNullException(nameof(products));
+            }
+            if (favorites == null)
+            {
+                throw new ArgumentNullException(nameof(favorites));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+
+            this.productsProvider = products;
+            this.favorites = favorites;
+            this.resources = resources;
         }
 
         public ProductsPage GetProducts(string path)
