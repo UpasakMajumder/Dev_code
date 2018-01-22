@@ -269,18 +269,6 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="ProductDigitalPrinting" columnsize="500" columntype="text" guid="a892715c-a2ef-4d9c-8d19-564fb0e50526" hasdependingfields="true" publicfield="false">
-        <properties>
-          <fieldcaption>Digital Printing</fieldcaption>
-          <fielddescription>Digital Printing for POD product</fielddescription>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)46270976e922b50b4e70b990fb5b0c402518551e1ed5fd9c1f7cda1ee5938988%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <controlname>S3Uploader</controlname>
-        </settings>
-      </field>
       <field allowempty="true" column="ProductRelatedSKUs" columnsize="500" columntype="text" guid="769aa7a5-56c2-49f4-bce4-28f671cef36c" hasdependingfields="true" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Related SKUs</fieldcaption>
