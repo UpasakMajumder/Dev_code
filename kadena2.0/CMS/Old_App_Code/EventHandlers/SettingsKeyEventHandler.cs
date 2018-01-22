@@ -3,8 +3,8 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.EventHandlers.SettingsKeyEventHandler))]
@@ -92,7 +92,7 @@ namespace Kadena.Old_App_Code.EventHandlers
 
                     try
                     {
-                        var client = new CloudEventConfiguratorClient(ProviderFactory.MicroProperties);
+                        var client = DIContainer.Resolve<ICloudEventConfiguratorClient>();
                         var result = client.UpdateNooshRule(nooshRule, nooshSettings).Result;
                         if (!result.Success)
                         {

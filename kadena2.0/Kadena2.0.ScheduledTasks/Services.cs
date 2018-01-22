@@ -4,6 +4,7 @@ using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena2.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
 
@@ -24,7 +25,7 @@ namespace Kadena.ScheduledTasks
             if (container == null)
             {
                 var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                ProviderFactory.KenticoLogger.LogError("Scheduled task container", $"[{processName}] container is null");
+                new KenticoLogger().LogError("Scheduled task container", $"[{processName}] container is null");
             }
 
             return container.Resolve<T>();

@@ -107,6 +107,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     lblFailureText.Visible = false;
                     Name.Text = "";
                     Description.Text = "";
+                    Response.Cookies["status"].Value = QueryStringStatus.Added;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
@@ -154,6 +156,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     editPage.SetValue("EndDate", ValidationHelper.GetDate(txtEndDate.Text, DateTime.Now.Date));
                     editPage.SetValue("Status", ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false);
                     editPage.Update();
+                    Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else

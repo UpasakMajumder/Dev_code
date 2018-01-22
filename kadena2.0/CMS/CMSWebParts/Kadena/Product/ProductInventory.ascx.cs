@@ -689,10 +689,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     .Distinct()
                     .Select(g =>
                     {
-                        var cartItem = cartItems
+                        var currentCartItems = cartItems
                             .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID)
-                            .FirstOrDefault();
-                        if (cartItem?.SKUID == productID)
+                            .ToList();
+                        var cartData = currentCartItems.FirstOrDefault();
+                        var cartItem = currentCartItems.Where(x => x.SKUID == productID).FirstOrDefault();
+                        if (cartItem != null)
                         {
                             return new
                             {
@@ -709,7 +711,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                             {
                                 g.AddressID,
                                 g.AddressPersonalName,
-                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
+                                ShoppingCartID = cartData?.ShoppingCartID ?? default(int),
                                 SKUID = default(int),
                                 SKUUnits = default(int)
                             };

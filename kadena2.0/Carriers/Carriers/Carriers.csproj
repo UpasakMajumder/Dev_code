@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005" />
     <Reference Include="CMS.Base">
       <HintPath>..\..\Lib\CMS.Base.dll</HintPath>
     </Reference>
@@ -83,6 +84,10 @@
     <Compile Include="USPSCarrier.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
+      <Project>{BF079DF3-1E13-44C5-8B87-C040257EAC07}</Project>
+      <Name>Kadena2.0.Container.Default</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}</Project>
       <Name>Kadena2.0.Dto</Name>
