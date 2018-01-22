@@ -170,7 +170,7 @@
           <validationerrormessage>{$Kadena.Signup.CountryRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="" order="81">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="" order="81">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -225,9 +225,10 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <validationerrormessage>{$Kadena.Signup.EmailRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" order="84">
+      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" reftype="Required" order="84">
         <settings>
-          <controlname>Password</controlname>
+          <controlname>PasswordConfirmator</controlname>
+          <showstrength>True</showstrength>
           <AutoCompleteEnableCaching />
           <AutoCompleteFirstRowSelected />
           <AutoCompleteShowOnlyCurrentWordInCompletionListItem />
@@ -235,7 +236,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim />
         </settings>
         <properties>
-          <controlcssclass>input__text</controlcssclass>
+          <controlcssclass>input__password_field js-pwd</controlcssclass>
           <fieldcaption>PASSWORD</fieldcaption>
           <validationerrormessage>{$Kadena.Signup.PasswordRequired$}</validationerrormessage>
         </properties>
@@ -337,8 +338,6 @@ Select ItemID,DivisionName from KDA_Division
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Email$}</span> $$input:Email$$$$validation:Email$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Password$}</span> <a class="js-tooltip tooltip__css" data-tooltip-placement="bottom" href="#" title="{$Kadena.Common.PasswordTooltipText$}"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#FAQ" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a> $$input:UserPassword$$$$validation:UserPassword$$</div>
-
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.ConfirmPassword$}</span> $$input:ConfirmPassword$$$$validation:ConfirmPassword$$</div>
 </div>
 </div>
 

@@ -34,7 +34,7 @@ function getDate(datePicker) {
     }
     catch (err) {
         return null;
-    }    
+    }
 }
 
 // LOGOUT
@@ -1047,7 +1047,7 @@ var customScripts = {
     }
 }
 var customHelpers = {
-    getQueryStringByName:function(name) {
+    getQueryStringByName: function (name) {
         url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -1055,6 +1055,18 @@ var customHelpers = {
         if (!results) return "";
         if (!results[2]) return "";
         return decodeURIComponent(results[2].replace(/\+/g, " "));
+    },
+    getCookie: function (cookieName) {
+        var pattern = RegExp(cookieName + "=.[^;]*")
+        matched = document.cookie.match(pattern);
+        if (matched) {
+            var cookie = matched[0].split('=');
+            return cookie[1];
+        }
+        return false
+    },
+    setCookie: function () {
+        document.cookie = "status = new";
     }
 }
 $(document).ready(function () {
@@ -1063,23 +1075,18 @@ $(document).ready(function () {
     var oldLoc = document.referrer;
     var newLoc = window.location.href;
     var oldPageURL = oldLoc != "" ? oldLoc.split('?')[0] : "";
-    var newPageURL = newLoc !="" ? newLoc.split('?')[0] :"";
+    var newPageURL = newLoc != "" ? newLoc.split('?')[0] : "";
     var isSame = oldPageURL == newPageURL ? true : false;
     var page = customHelpers.getQueryStringByName("page");
-    if (status == 'added') {
-        if (oldLoc != "" && page == "" && !isSame)
-            toastr.success(config.localization.globalSuccess.addSuccessMessage)
+    var cookieValue = customHelpers.getCookie("status");
+    switch (cookieValue) {
+        case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.setCookie(); break;
+        case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.setCookie(); break;
     }
-    else if (status == 'updated') {
-        if (oldLoc != "" && page == "" && !isSame)
-            toastr.success(config.localization.globalSuccess.updateSuccessMessage);
-    }
-    else if (status == 'deleted') {
-        if (oldLoc != "" && page == "" && !isSame)
+    if (status == 'deleted') {
         toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
     }
     else if (status == 'error') {
-        if (loc != "" && page == "" && !isSame)
         toastr.error(config.localization.globalSuccess.errorMessage);
     }
 });
