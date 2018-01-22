@@ -393,6 +393,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
+                Response.Cookies["status"].Value = QueryStringStatus.Added;
+                Response.Cookies["status"].HttpOnly = false;
                 URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
             }
             else
@@ -446,6 +448,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 lblSuccessMsg.Visible = true;
                 lblFailureText.Visible = false;
                 EmptyFields(true);
+                Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                Response.Cookies["status"].HttpOnly = false;
                 URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
             }
             else

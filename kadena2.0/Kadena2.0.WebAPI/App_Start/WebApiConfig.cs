@@ -15,7 +15,6 @@ namespace Kadena.WebAPI
         {
             RegisterApiRoutes(apiConfig);
             ConfigureFilters(apiConfig);
-            ConfigureMapper();
             ConfigureContainer(apiConfig);
             apiConfig.EnsureInitialized();
         }
@@ -25,25 +24,10 @@ namespace Kadena.WebAPI
             GlobalConfiguration.Configuration.Filters.Add(new ExceptionFilter());
             GlobalConfiguration.Configuration.Filters.Add(new ValidateModelStateAttribute());
         }
-        
-
-        // TODO refactor mappping non-automappable 
-        // TODO get rid of CMS.ECommerce dependency
-        // TODO think about the best way how to initialize mappings. DONT forget testability
-        private static void ConfigureMapper()
-        {
-            MapperBuilder.InitializeAll();
-        }
 
         private static void ConfigureContainer(HttpConfiguration apiConfig)
         {
-            new Container()
-                .RegisterInfrastructure()
-                .RegisterKentico()
-                .RegisterKadenaSettings()
-                .RegisterBLL()
-                .RegisterMicroservices()
-                .RegisterFactories()
+            DIContainer.Instance
                 .WithWebApi(apiConfig);
         }
 

@@ -1,9 +1,10 @@
 ﻿using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using Kadena2.WebAPI.KenticoProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
         };
-        private IMicroProperties _microProperties = ProviderFactory.MicroProperties;
+        private IMicroProperties _microProperties = DIContainer.Resolve<IMicroProperties>();
         private string _fileId;
         private Guid _containerId;
 

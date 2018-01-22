@@ -112,6 +112,8 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
                         POSNumber = ValidationHelper.GetString(posNumber, default(string)),
                     };
                     objPosNumber.Insert();
+                    Response.Cookies["status"].Value = QueryStringStatus.Added;
+                    Response.Cookies["status"].HttpOnly = false;
                     URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
                 else
