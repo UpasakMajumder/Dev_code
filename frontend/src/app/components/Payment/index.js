@@ -107,7 +107,7 @@ class Payment extends Component {
       this.setState({ invalids });
     } else {
       location.assign(CARD_PAYMENT.RedirectURL);
-      // proceedCard(fields, cardType);
+      proceedCard(fields, cardType);
     }
   }
 
