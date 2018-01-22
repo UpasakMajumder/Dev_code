@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -13,5 +14,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetDocumentAbsoluteUrl(string aliasPath);
 
         string GetDocumentUrl(string aliasPath, string cultureCode, bool absoluteUrl = false);
+
+        string GetDocumentUrl(Guid documentGUID);
     }
 }
