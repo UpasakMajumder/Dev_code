@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using System;
 using System.Collections.Generic;
 
 namespace Kadena.Dto.ViewOrder.MicroserviceResponses
@@ -12,5 +13,6 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public ShippingInfoDTO ShippingInfo { get; set; }
         public PaymentInfoDTO PaymentInfo { get; set; }
         public List<OrderItemDTO> Items { get; set; }
+        public CampaignDTO campaign { get; set; }
     }
 }

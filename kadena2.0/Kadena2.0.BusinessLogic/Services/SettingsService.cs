@@ -181,7 +181,7 @@ namespace Kadena.BusinessLogic.Services
                                     Values = sts.Select(s => new
                                     {
                                         Id = s.Id.ToString(),
-                                        Name = s.StateCode
+                                        Name = s.StateDisplayName
                                     }).ToArray()
                                 }).ToList()
                         }

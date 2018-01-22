@@ -3,6 +3,7 @@
 <div class="custom__section">
     <div class="custom__block clearfix" runat="server" visible="true" id="orderControls">
         <div class="custom__select">
+            <asp:DropDownList runat="server" ID="ddlBrand" Visible="false" OnSelectedIndexChanged="ddlBrand_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
@@ -17,7 +18,7 @@
                     <div class="img__block">
                         <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
                         <label for='zoomCheck_<%#Eval("SKUID") %>'>
-                            <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
+                            <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>?MaxSideSize=150' />
                     </div>
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUNumber")%></h4>
@@ -44,11 +45,6 @@
             <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
             <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
                 <Columns>
-                    <asp:TemplateField>
-                        <ItemTemplate>
-                            <asp:CheckBox Text="" ID="chkSelected" runat="server" Checked='<%# ValidationHelper.GetBoolean(Eval("IsSelected"),default(bool)) %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
                     <asp:BoundField DataField="AddressID" />
                     <asp:BoundField DataField="AddressPersonalName" />
                     <asp:TemplateField>
@@ -65,7 +61,7 @@
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" clientidmode="Static"></button>
+                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" onserverclick="btnClose_ServerClick" clientidmode="Static"></button>
                 <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
             </div>
         </div>
