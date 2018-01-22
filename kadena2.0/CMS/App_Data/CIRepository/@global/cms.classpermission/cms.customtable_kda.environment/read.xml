@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.Environment</CodeName>
+    <GUID>cc2d6624-b13e-491b-aa23-b702b1acbc56</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.read$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.read$}</PermissionDisplayName>
+  <PermissionGUID>c2afd58b-f579-4f50-84ce-65af25cae015</PermissionGUID>
+  <PermissionName>Read</PermissionName>
+  <PermissionOrder>1</PermissionOrder>
+</cms.classpermission>
