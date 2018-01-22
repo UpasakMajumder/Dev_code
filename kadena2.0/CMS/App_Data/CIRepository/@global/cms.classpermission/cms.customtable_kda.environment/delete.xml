@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.Environment</CodeName>
+    <GUID>cc2d6624-b13e-491b-aa23-b702b1acbc56</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.delete$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$general.delete$}</PermissionDisplayName>
+  <PermissionGUID>07823358-3f1d-404b-9aae-e2a0a0567c54</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>
