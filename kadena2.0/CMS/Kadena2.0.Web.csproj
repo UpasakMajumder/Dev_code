@@ -747,13 +747,6 @@
     <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.designer.cs">
       <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.cs">
-      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.designer.cs">
-      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.cs">
       <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -795,13 +788,6 @@
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Import.aspx.designer.cs">
       <DependentUpon>Import.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.cs">
-      <DependentUpon>S3Uploader.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.designer.cs">
-      <DependentUpon>S3Uploader.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.cs">
       <DependentUpon>OrdersList.aspx</DependentUpon>
@@ -1352,14 +1338,12 @@
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
-    <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Addresses.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
-    <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />
