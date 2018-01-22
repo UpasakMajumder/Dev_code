@@ -7,6 +7,7 @@ using CMS.IO;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
@@ -558,13 +559,17 @@ namespace Kadena.WebAPI.KenticoProviders
             if (!string.IsNullOrWhiteSpace(guid))
             {
                 var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
-                var fullPath = StorageHelper.GetFullFilePhysicalPath(attachmentPath);
-                if (!Path.HasExtension(fullPath))
+                if (!Path.HasExtension(attachmentPath))
                 {
                     var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
-                    fullPath = $"{fullPath}{attachment.AttachmentExtension}";
+                    attachmentPath = $"{attachmentPath}{attachment.AttachmentExtension}";
                 }
-                cartItem.SetValue("ArtworkLocation", fullPath);
+                var storageProvider = StorageHelper.GetStorageProvider(attachmentPath);
+                if (storageProvider.IsExternalStorage && storageProvider.FileProviderObject.GetType() == typeof(AmazonFileSystemProvider.File))
+                {
+                    attachmentPath = PathHelper.GetObjectKeyFromPath(attachmentPath);
+                }
+                cartItem.SetValue("ArtworkLocation", attachmentPath);
             }
         }
 
