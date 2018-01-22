@@ -293,7 +293,8 @@ namespace Kadena.BusinessLogic.Services
                 MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
                 ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
-                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix")
+                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
+                SKUEnabled = products.IsProductSKUEnabled(i.SkuId)
             }).ToList();
 
 

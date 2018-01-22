@@ -13,5 +13,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Product GetProductByNodeId(int nodeId);
         string GetProductTeaserImageUrl(int documentId);
         void SetSkuAvailableQty(string skunumber, int availableItems);
+        bool IsProductSKUEnabled(int skuid);
     }
 }

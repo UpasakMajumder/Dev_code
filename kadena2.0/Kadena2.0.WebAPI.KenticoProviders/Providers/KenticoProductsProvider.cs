@@ -153,5 +153,14 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return result;
         }
+
+        public bool IsProductSKUEnabled(int skuid)
+        {
+            if (skuid <= 0)
+                return false;
+
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            return sku != null ? sku.SKUEnabled : false;
+        }
     }
 }

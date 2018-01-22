@@ -18,5 +18,6 @@
         public int Quantity { get; set; }
         public int QuantityShipped { get; set; }
         public string DownloadPdfURL { get; set; }
+        public bool SKUEnabled { get; set; }
     }
 }
