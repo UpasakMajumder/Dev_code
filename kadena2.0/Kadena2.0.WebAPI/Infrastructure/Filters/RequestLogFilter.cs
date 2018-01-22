@@ -1,42 +1,51 @@
 ﻿using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Web.Http.Filters;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Text;
+using System.Web.Http.Controllers;
+using Kadena2.Container.Default;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
-    public class RequestLogFilter : ActionFilterAttribute
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    // Authorization filter runs first so it will log even requests without fields marked as mandatory
+    public class RequestLogFilter : AuthorizationFilterAttribute 
     {
-        IKenticoLogger logger;
-        readonly string loggerSource = "WEBAPI RequestLog";
+        private readonly IKenticoLogger logger;
+        private string source = "WebAPI";
 
-        public RequestLogFilter()
+        public RequestLogFilter(string source = "")
         {
-            logger = new KenticoProviders.KenticoLogger();
-        }
+            logger = DIContainer.Resolve<IKenticoLogger>();
 
-        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
-        {
-            Log3dsiRequest(actionExecutedContext.Request);
-            base.OnActionExecuted(actionExecutedContext);
-        }
-
-        public override Task OnActionExecutedAsync(HttpActionExecutedContext actionExecutedContext, CancellationToken cancellationToken)
-        {
-            return base.OnActionExecutedAsync(actionExecutedContext, cancellationToken);
-        }
-
-        private void Log3dsiRequest(HttpRequestMessage request)
-        {
-            var isRequestTo3dsiEndpoint = request?.RequestUri?.AbsoluteUri?.ToLower().Contains("/api/3dsi/approveSubmission") ?? false;
-
-            if (isRequestTo3dsiEndpoint)
+            if (!string.IsNullOrEmpty(source))
             {
-                logger.LogInfo(loggerSource, "I", request.ToString());
+                this.source = source;
             }
+        }
+
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            Log3dsiRequest(actionContext.Request).Wait();
+            base.OnAuthorization(actionContext);
+        }
+
+        private async Task Log3dsiRequest(HttpRequestMessage request)
+        {
+            var log = new StringBuilder();
+            log.AppendLine(request?.ToString());
+            var body = await request?.Content?.ReadAsStringAsync();
+
+            if (!string.IsNullOrEmpty(body))
+            {
+                log.AppendLine("Body: ");
+                log.AppendLine(body);
+            };
+
+            logger.LogInfo(source, "HTTP request", log.ToString());
         }
     }
  }

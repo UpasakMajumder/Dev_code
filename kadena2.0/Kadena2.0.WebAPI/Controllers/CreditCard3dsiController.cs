@@ -7,9 +7,11 @@ using Kadena.Dto.CreditCard._3DSi.Responses;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.Models.CreditCard;
+using Kadena.WebAPI.Infrastructure.Filters;
 
 namespace Kadena.WebAPI.Controllers
 {
+    
     public class CreditCard3dsiController : ApiControllerBase
     {
         private readonly ICreditCardService service;
@@ -32,6 +34,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
+        [RequestLogFilter("3DSi approval")]
         public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
         {
            var success = service.VerifySubmissionId(request.SubmissionID);
