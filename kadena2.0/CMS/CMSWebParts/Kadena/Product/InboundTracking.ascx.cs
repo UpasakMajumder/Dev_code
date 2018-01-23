@@ -964,6 +964,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 divNodatafound.Visible = false;
                 divSelectCampaign.Visible = true;
                 inBoundGrid.Visible = false;
+                btnClose.Enabled = false;
+                btnRefresh.Enabled = false;
+                btnExport.Enabled = false;
             }
         }
         catch (Exception ex)
@@ -1069,23 +1072,6 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
-    protected void btnClose_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            popUpShadow.Visible = true;
-            dialog_Close_IBTF.Visible = true;
-            dialog_Close_IBTF.Attributes.Add("class", "dialog active");
-            lblPopUpMessage.Text = PopUPLabelMsgText;
-            popUpYes.InnerText = PopUpYesButtonText;
-            noPopUp.Text = PopUpNoButtonText;
-
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CloseButtonPopup", "btnClose_Click()", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
     /// <summary>
     /// Pop up Yes click
     /// </summary>
@@ -1107,22 +1093,12 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                     item.Update();
                 }
             }
-            Response.Redirect(Request.RawUrl);
+            Response.Redirect(Request.RawUrl,false);
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("CloseButtonYesClick", "popUpYes_ServerClick()", ex, CurrentSite.SiteID, ex.Message);
         }
-    }
-    /// <summary>
-    /// PopUp No click
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void noPopUp_Click(object sender, EventArgs e)
-    {
-        dialog_Close_IBTF.Visible = false;
-        popUpShadow.Visible = false;
     }
 }
 

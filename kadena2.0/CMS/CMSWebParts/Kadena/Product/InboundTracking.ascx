@@ -10,7 +10,7 @@
         <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Enabled="false" OnClick="btnExport_Click" />
     </div>
     <div class="custom__btns float-right">
-        <asp:Button runat="server" Enabled="false" ID="btnClose" CssClass="btn-action login__login-button btn--no-shadow" OnClick="btnClose_Click"/>
+        <asp:Button runat="server" Enabled="false" ID="btnClose" CssClass="btn-action login__login-button btn--no-shadow finalizeButton"/>
     </div>
 </div>
 <div class="inbound__track" runat="server" id="inBoundGrid">
@@ -159,12 +159,12 @@
             <asp:Label runat="server" ID="lblPopUpHeader"></asp:Label>
         </div>
         <div class="dialog__content">
-            <asp:Label runat="server" ID="lblPopUpMessage"></asp:Label>
+            <asp:Label runat="server" CssClass="popUpMessage" ID="lblPopUpMessage"></asp:Label>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="popUpYes" runat="server" onserverclick="popUpYes_ServerClick"></button>
-                <asp:Button runat="server" CssClass="btn-action btn-action--secondary" ID="noPopUp" OnClick="noPopUp_Click" />
+                <button type="button" class="btn-action btn-action--secondary inBoundDialogueYes" id="popUpYes" runat="server" onserverclick="popUpYes_ServerClick"></button>
+                <button class="btn-action btn-action--secondary noButtonDialogue" id="noDialougeBtn" />
             </div>
         </div>
     </div>
