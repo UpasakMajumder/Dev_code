@@ -63,7 +63,7 @@
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
-                         <asp:CompareValidator ID="compareDate" runat="server" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date"/>
+                         <asp:CompareValidator ID="compareDate" runat="server" CssClass="EditingFormErrorLabel"  Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date"/>
                     </div>
                 </div>
             </div>
