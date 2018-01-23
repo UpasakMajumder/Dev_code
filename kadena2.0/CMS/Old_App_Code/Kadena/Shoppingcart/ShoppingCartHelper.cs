@@ -437,8 +437,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        //We are keeping constant values at present,this will be done in sprint 4 once sku weight is added
-                        UnitOfMeasure = "Lb",
+                        UnitOfMeasure = SKUMeasuringUnits.Lb,
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
                     });
                 });
