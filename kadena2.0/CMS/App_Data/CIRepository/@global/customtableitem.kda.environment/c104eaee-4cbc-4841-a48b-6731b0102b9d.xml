@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <customtableitem.kda.environment>
+  <AmazonS3ExcludedPaths>~/App_Data/CIRepository</AmazonS3ExcludedPaths>
   <AmazonS3Folder>test</AmazonS3Folder>
   <CodeName>QA</CodeName>
   <DisplayName>Test</DisplayName>
