@@ -47,4 +47,25 @@
     {
         public const string Ground = "ground";
     }
+    /// <summary>
+    /// This class represents email templates
+    /// </summary>
+    public class EmailTemplate
+    {
+        public const string PrebuyOrderStatusTemplate = "PrebuyOrderStatusTemplate";
+    }
+    /// <summary>
+    /// This class represents SKU Measuring Units
+    /// </summary>
+    public class SKUMeasuringUnits
+    {
+        public const string Lb = "Lb";
+    }
+    /// <summary>
+    /// This class represents Scheduled task names
+    /// </summary>
+    public class ScheduledTaskNames
+    {
+        public const string PrebuyOrderCreation = "PrebuyOrderCreation";
+    }
 }
