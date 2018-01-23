@@ -31,7 +31,8 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
 
         public string GetSettingsKeySourceCode(string keyName)
         {
-            var isValidKey = TryFindSettingsKey(out var key, keyName);
+            SettingsKey key;
+            var isValidKey = TryFindSettingsKey(out key, keyName);
             if (!isValidKey)
             {
                 return string.Empty;
