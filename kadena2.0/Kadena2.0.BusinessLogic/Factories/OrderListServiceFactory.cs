@@ -1,9 +1,9 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.BusinessLogic.Services.Orders;
 
 namespace Kadena.BusinessLogic.Factories
 {

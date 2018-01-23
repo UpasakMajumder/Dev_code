@@ -4,9 +4,12 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
+using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
+using Kadena2.BusinessLogic.Services.OrderPayment;
 using Kadena2.Infrastructure.Contracts;
 using Kadena2.Infrastructure.Services;
 using Kadena2.MicroserviceClients.Clients;
@@ -66,6 +69,8 @@ namespace Kadena2.Container.Default
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
+            container.Register<ICreditCard3dsi, CreditCard3dsi>();
+            container.Register<IPurchaseOrder, PurchaseOrder>();
             return container;
         }
 

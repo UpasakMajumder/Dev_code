@@ -13,7 +13,7 @@ using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 
-namespace Kadena.BusinessLogic.Services
+namespace Kadena.BusinessLogic.Services.Orders
 {
     public class OrderListService : IOrderListService
     {

@@ -7,6 +7,7 @@ using Kadena.Models.OrderDetail;
 using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
@@ -16,7 +17,7 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace Kadena.BusinessLogic.Services
+namespace Kadena.BusinessLogic.Services.Orders
 {
     public class OrderService : IOrderService
     {
@@ -27,20 +28,20 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
-        private readonly IOrderSubmitClient orderSubmitClient;
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly ITaxEstimationService taxService;
         private readonly ITemplatedClient templateService;
-        private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
 
+        private readonly ICreditCard3dsi creditCard3dsi;
+        private readonly IPurchaseOrder purchaseOrder;
+
         public OrderService(IMapper mapper,
-            IOrderSubmitClient orderSubmitClient,
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
             IKenticoOrderProvider kenticoOrder,
@@ -51,20 +52,18 @@ namespace Kadena.BusinessLogic.Services
             IKenticoLogger kenticoLog,
             ITaxEstimationService taxService,
             ITemplatedClient templateService,
-            IKenticoDocumentProvider documents,
             IKenticoLocalizationProvider localization,
             IKenticoPermissionsProvider permissions,
             IKenticoSiteProvider site,
             IKadenaSettings settings,
-            IKenticoBusinessUnitsProvider businessUnits)
+            IKenticoBusinessUnitsProvider businessUnits,
+            ICreditCard3dsi creditCard3dsi,
+            IPurchaseOrder purchaseOrder
+            )
         {
             if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
-            }
-            if (orderSubmitClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderSubmitClient));
             }
             if (orderViewClient == null)
             {
@@ -106,10 +105,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(templateService));
             }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
             if (localization == null)
             {
                 throw new ArgumentNullException(nameof(localization));
@@ -130,6 +125,14 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(businessUnits));
             }
+            if (creditCard3dsi == null)
+            {
+                throw new ArgumentNullException(nameof(creditCard3dsi));
+            }
+            if (purchaseOrder == null)
+            {
+                throw new ArgumentNullException(nameof(purchaseOrder));
+            }
 
             this.mapper = mapper;
             this.kenticoOrder = kenticoOrder;
@@ -137,18 +140,18 @@ namespace Kadena.BusinessLogic.Services
             this.products = products;
             this.kenticoUsers = kenticoUsers;
             this.resources = resources;
-            this.orderSubmitClient = orderSubmitClient;
             this.orderViewClient = orderViewClient;
             this.mailingClient = mailingClient;
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
             this.templateService = templateService;
-            this.documents = documents;
             this.localization = localization;
             this.permissions = permissions;
             this.siteProvider = site;
             this.settings = settings;
             this.businessUnits = businessUnits;
+            this.creditCard3dsi = creditCard3dsi;
+            this.purchaseOrder = purchaseOrder;
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -359,39 +362,6 @@ namespace Kadena.BusinessLogic.Services
             var paymentMethods = shoppingCart.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
 
-            switch (selectedPayment?.ClassName ?? string.Empty)
-            {
-                case "KDA.PaymentMethods.CreditCard":
-                    return await PayByCard(request);
-
-                case "KDA.PaymentMethods.PurchaseOrder":
-                case "KDA.PaymentMethods.MonthlyPayment":
-                case "NoPaymentRequired":
-                    return await SubmitPOOrder(request);
-
-                case "KDA.PaymentMethods.PayPal":
-                    throw new NotImplementedException("PayPal payment is not implemented yet");
-
-                default:
-                    throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
-            }
-        }
-
-        public async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)
-        {
-            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
-
-            return await Task.FromResult(new SubmitOrderResult
-            {
-                Success = true,
-                RedirectURL = documents.GetDocumentUrl(insertCardUrl)
-            }
-            );
-        }
-
-        public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
-        {
-            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
             Customer customer = kenticoUsers.GetCurrentCustomer();
 
             var emails = request.EmailConfirmation.Union(new[] { customer.Email });
@@ -409,35 +379,23 @@ namespace Kadena.BusinessLogic.Services
             var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id,
                 request.PaymentMethod.Invoice, request.AgreeWithTandC, emails);
 
-            if ((orderData?.Items?.Count() ?? 0) <= 0)
-            {
-                throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
-            }
 
-            var serviceResultDto = await orderSubmitClient.SubmitOrder(orderData);
-            var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
-
-            var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
-            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
-            var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
-            if (serviceResult.Success)
+            switch (selectedPayment?.ClassName ?? string.Empty)
             {
-                redirectUrl += "&order_id=" + serviceResult.Payload;
-            }
-            serviceResult.RedirectURL = redirectUrl;
+                case "KDA.PaymentMethods.CreditCard":
+                    return await creditCard3dsi.PayByCard3dsi(orderData);
 
-            if (serviceResult.Success)
-            {
-                kenticoLog.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
-                shoppingCart.RemoveCurrentItemsFromStock();
-                shoppingCart.ClearCart();
-            }
-            else
-            {
-                kenticoLog.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
-            }
+                case "KDA.PaymentMethods.PurchaseOrder":
+                case "KDA.PaymentMethods.MonthlyPayment":
+                case "NoPaymentRequired":
+                    return await purchaseOrder.SubmitPOOrder(orderData);
 
-            return serviceResult;
+                case "KDA.PaymentMethods.PayPal":
+                    throw new NotImplementedException("PayPal payment is not implemented yet");
+
+                default:
+                    throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
+            }
         }
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)

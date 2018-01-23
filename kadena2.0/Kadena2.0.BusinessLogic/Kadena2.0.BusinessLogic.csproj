@@ -62,9 +62,9 @@
     <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
-    <Compile Include="Contracts\IOrderListService.cs" />
-    <Compile Include="Contracts\IOrderListServiceFactory.cs" />
-    <Compile Include="Contracts\IOrderService.cs" />
+    <Compile Include="Contracts\Orders\IOrderListService.cs" />
+    <Compile Include="Contracts\Orders\IOrderListServiceFactory.cs" />
+    <Compile Include="Contracts\Orders\IOrderService.cs" />
     <Compile Include="Contracts\IPdfService.cs" />
     <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
@@ -74,6 +74,8 @@
     <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Contracts\ITemplateService.cs" />
+    <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
+    <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
@@ -91,8 +93,8 @@
     <Compile Include="Services\FavoritesService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
-    <Compile Include="Services\OrderListService.cs" />
-    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\Orders\OrderListService.cs" />
+    <Compile Include="Services\Orders\OrderService.cs" />
     <Compile Include="Services\PdfService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\SearchService.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\SiteDataService.cs" />
+    <Compile Include="Services\OrderPayment\CreditCard3dsi.cs" />
+    <Compile Include="Services\OrderPayment\PurchaseOrder.cs" />
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\TemplateService.cs" />
   </ItemGroup>

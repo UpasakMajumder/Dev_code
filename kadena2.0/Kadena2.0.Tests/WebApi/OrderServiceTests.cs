@@ -4,7 +4,6 @@ using Kadena.Models;
 using Kadena.Models.Site;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
@@ -16,6 +15,8 @@ using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.Container.Default;
+using Kadena.BusinessLogic.Services.Orders;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
 
 namespace Kadena.Tests.WebApi
 {
@@ -71,14 +72,14 @@ namespace Kadena.Tests.WebApi
             var taxCalculator = new Mock<ITaxEstimationService>();
             var mailingListClient = new Mock<IMailingListClient>();
             var templateProductService = new Mock<ITemplatedClient>();
-            var documents = new Mock<IKenticoDocumentProvider>();
             var localization = new Mock<IKenticoLocalizationProvider>();
             var permissions = new Mock<IKenticoPermissionsProvider>();
             var settings = new Mock<IKadenaSettings>();
             var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
+            var card3dsi = new Mock<ICreditCard3dsi>();
+            var purchaseOrder = new Mock<IPurchaseOrder>();
 
             return new OrderService(mapper,
-                orderSubmitClient.Object,
                 orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
                 mailingListClient.Object,
                 kenticoOrder.Object,
@@ -89,12 +90,13 @@ namespace Kadena.Tests.WebApi
                 kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
                 taxCalculator.Object,
                 templateProductService.Object,
-                documents.Object,
                 localization.Object,
                 permissions.Object,
                 kenticoSite.Object,
                 settings.Object,
-                businessUnits.Object
+                businessUnits.Object,
+                card3dsi.Object,
+                purchaseOrder.Object
             );
         }
 
