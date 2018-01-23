@@ -4,7 +4,6 @@ using CMS.SiteProvider;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.Localization;
 using CMS.MacroEngine;
-using CMS.IO;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -29,11 +28,6 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetSettingsKey(int siteId, string key)
         {
             return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
-        }
-
-        public string GetStorageRootPath(string path)
-        {
-            return StorageHelper.GetStorageProvider(path).CustomRootPath;
         }
 
         public string ResolveMacroString(string macroString)
