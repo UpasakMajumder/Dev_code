@@ -413,6 +413,21 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
+    /// <summary>
+    /// Items specs resource string
+    /// </summary>
+    public string ItemSpecHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ItemSpecHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ItemSpecHeaderText", value);
+        }
+    }
+
     #endregion Properties
 
     #region "Methods"
@@ -433,20 +448,21 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         gdvInboundProducts.Columns[0].HeaderText = SKUNumberHeaderText;
         gdvInboundProducts.Columns[1].HeaderText = SKUNameheaderText;
-        gdvInboundProducts.Columns[2].HeaderText = QtyOrderedHeaderText;
-        gdvInboundProducts.Columns[3].HeaderText = DemandHeaderText;
-        gdvInboundProducts.Columns[4].HeaderText = QtyReceivedHeaderText;
-        gdvInboundProducts.Columns[5].HeaderText = QtyProdusedHeaderText;
-        gdvInboundProducts.Columns[6].HeaderText = OverageHeaderText;
-        gdvInboundProducts.Columns[7].HeaderText = VendorHeaderText;
-        gdvInboundProducts.Columns[8].HeaderText = ExpArraivalToCenveoHeaderText;
-        gdvInboundProducts.Columns[9].HeaderText = DeliveryToDistByHeaderText;
-        gdvInboundProducts.Columns[10].HeaderText = ShippedToDistHeaderText;
-        gdvInboundProducts.Columns[11].HeaderText = CenveoCommentsHeaderText;
-        gdvInboundProducts.Columns[12].HeaderText = TWECommentsHeaderText;
-        gdvInboundProducts.Columns[13].HeaderText = ActualPriceHeaderText;
-        gdvInboundProducts.Columns[14].HeaderText = StatusHeaderText;
-        gdvInboundProducts.Columns[15].HeaderText = ActionsText;
+        gdvInboundProducts.Columns[2].HeaderText = ItemSpecHeaderText;
+        gdvInboundProducts.Columns[3].HeaderText = QtyOrderedHeaderText;
+        gdvInboundProducts.Columns[4].HeaderText = DemandHeaderText;
+        gdvInboundProducts.Columns[5].HeaderText = QtyReceivedHeaderText;
+        gdvInboundProducts.Columns[6].HeaderText = QtyProdusedHeaderText;
+        gdvInboundProducts.Columns[7].HeaderText = OverageHeaderText;
+        gdvInboundProducts.Columns[8].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[9].HeaderText = ExpArraivalToCenveoHeaderText;
+        gdvInboundProducts.Columns[10].HeaderText = DeliveryToDistByHeaderText;
+        gdvInboundProducts.Columns[11].HeaderText = ShippedToDistHeaderText;
+        gdvInboundProducts.Columns[12].HeaderText = CenveoCommentsHeaderText;
+        gdvInboundProducts.Columns[13].HeaderText = TWECommentsHeaderText;
+        gdvInboundProducts.Columns[14].HeaderText = ActualPriceHeaderText;
+        gdvInboundProducts.Columns[15].HeaderText = StatusHeaderText;
+        gdvInboundProducts.Columns[16].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
     }
@@ -604,7 +620,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
-                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
+                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
                 var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
                 var allDetails = from product in productAndSKUDetails
                                  join inbound in inboundDetails
@@ -627,7 +643,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      CenveoComments = newData?.CenveoComments ?? string.Empty,
                                      TweComments = newData?.TweComments ?? string.Empty,
                                      ActualPrice = newData?.ActualPrice ?? default(double),
-                                     Status = product.SKUEnabled
+                                     Status = product.SKUEnabled,
+                                     ItemSpec = product?.ItemSpecs ?? string.Empty,
+                                     CustomItemSpecs = product.CustomItemSpecs ?? string.Empty
                                  };
                 allDetails = allDetails.ToList();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
@@ -810,7 +828,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
             inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
             inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-            inboundData.Overage = inboundData.QtyReceived- inboundData.QtyOrdered;
+            inboundData.Overage = inboundData.QtyReceived - inboundData.QtyOrdered;
             inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
             inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
             inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
@@ -976,6 +994,29 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         catch (Exception ex)
         {
             EventLogProvider.LogException("Binding Status", "gdvInboundProducts_RowDataBound()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Gets the item specs from data base
+    /// </summary>
+    /// <returns>returns value based on itemid</returns>
+    public string GetItemSpecs(string itemID)
+    {
+        try
+        {
+            var itemSpecs = CustomTableItemProvider.GetItems(ProductItemSpecsItem.CLASS_NAME).WhereEquals("ItemID", ValidationHelper.GetInteger(itemID, 0))
+                .Columns("ItemSpec").FirstOrDefault();
+            if (itemSpecs != null)
+            {
+                return itemSpecs.GetValue("ItemSpecs", string.Empty);
+            }
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetItemSpecs()", ex, CurrentSite.SiteID, ex.Message);
+            return string.Empty;
         }
     }
 }
