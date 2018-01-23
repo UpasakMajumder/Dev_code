@@ -11,7 +11,6 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

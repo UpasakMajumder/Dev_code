@@ -69,6 +69,7 @@ namespace Kadena2.Container.Default
             container.Register<IBrandsService, BrandsService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
+            container.Register<IFileService, FileService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
             container.Register<ICreditCard3dsi, CreditCard3dsi>();
             container.Register<IPurchaseOrder, PurchaseOrder>();

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.environment>
+  <AmazonS3ExcludedPaths>~/App_Data/CIRepository</AmazonS3ExcludedPaths>
+  <AmazonS3Folder>stage</AmazonS3Folder>
+  <CodeName>Stage</CodeName>
+  <DisplayName>Stage</DisplayName>
+  <ItemGUID>1d415ed8-802a-4d30-9b24-6cab15502247</ItemGUID>
+  <ItemOrder>3</ItemOrder>
+</customtableitem.kda.environment>

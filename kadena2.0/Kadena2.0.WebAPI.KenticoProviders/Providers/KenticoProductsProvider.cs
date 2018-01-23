@@ -20,7 +20,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public KenticoProductsProvider(IMapper mapper)
         {
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
         }
 
         public List<ProductCategoryLink> GetCategories(string path)

@@ -8,7 +8,7 @@ namespace Kadena.BusinessLogic.Services
 {
     public class ProductsService : IProductsService
     {
-        private readonly IKenticoProductsProvider productsProvider;
+        private readonly IKenticoProductsProvider products;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
 
@@ -27,17 +27,17 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentNullException(nameof(resources));
             }
 
-            this.productsProvider = products;
+            this.products = products;
             this.favorites = favorites;
             this.resources = resources;
         }
 
         public ProductsPage GetProducts(string path)
         {
-            var categories = productsProvider.GetCategories(path);
-            var products = productsProvider.GetProducts(path);
+            var categories = this.products.GetCategories(path);
+            var products = this.products.GetProducts(path);
             var favoriteIds = favorites.CheckFavoriteProductIds(products.Select(p => p.Id).ToList());
-            var pathCategory = productsProvider.GetCategory(path);
+            var pathCategory = this.products.GetCategory(path);
             var bordersEnabledOnSite = resources.GetSettingsKey("KDA_ProductThumbnailBorderEnabled").ToLower() == "true";
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
             var borderStyle = resources.GetSettingsKey("KDA_ProductThumbnailBorderStyle");
