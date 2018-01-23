@@ -253,7 +253,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     Id = i.CartItemID,
                     CartItemText = i.CartItemText,
-                    DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
+                    DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                     ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),

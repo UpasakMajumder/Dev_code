@@ -26,6 +26,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public MailingListDTO MailingList { get; set; }
         public Guid ChiliTaskId { get; set; }
         public Guid ChiliTemplateId { get; set; }
-        public FileLocationDto DesignFileInfo { get; set; }
+        public string DesignFileKey { get; set; }
   }
 }

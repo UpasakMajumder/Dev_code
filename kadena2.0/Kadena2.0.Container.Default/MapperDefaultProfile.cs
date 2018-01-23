@@ -46,15 +46,12 @@ namespace Kadena2.Container.Default
             CreateMap<CartItem, SKUDTO>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
                     .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));
-            CreateMap<string, FileLocationDto>()
-                .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src));
 
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
-                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
-                .ForMember(dest => dest.DesignFileInfo, opt => opt.MapFrom(src => src.DesignFilePath));
+                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
