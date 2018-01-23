@@ -67,5 +67,12 @@ namespace Kadena2.MicroserviceClients.Clients
             }
             return request;
         }
+
+        public async Task<BaseResponseDto<string>> GetShortliveSecureLink(string key)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/File?key={key}";
+            return await Get<string>(url);
+        }
     }
 }

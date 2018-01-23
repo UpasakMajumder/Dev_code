@@ -7,5 +7,6 @@
         public string Title { get; set; }
         public string Url { get; set; }
         public bool IsFavourite { get; set; }
+        public BorderDto Border { get; set; }
     }
 }

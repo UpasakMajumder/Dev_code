@@ -47,5 +47,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CMS.DocumentEngine.Web.UI.CMSRepeater rptErrors;
+        
+        /// <summary>
+        /// btnClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnClose;
     }
 }

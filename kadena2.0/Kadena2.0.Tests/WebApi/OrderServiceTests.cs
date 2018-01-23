@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Kadena.Dto.General;
+﻿using Kadena.Dto.General;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
 using Kadena.Models.Site;
-using Kadena.WebAPI;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services;
@@ -17,6 +15,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
+using Kadena2.Container.Default;
 
 namespace Kadena.Tests.WebApi
 {
@@ -52,8 +51,7 @@ namespace Kadena.Tests.WebApi
         private OrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null,
                                                 Mock<IOrderViewClient> orderViewClient = null)
         {
-            MapperBuilder.InitializeAll();
-            var mapper = Mapper.Instance;
+            var mapper = MapperBuilder.MapperInstance;
             var kenticoUsers = new Mock<IKenticoUserProvider>();
             var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
             kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
