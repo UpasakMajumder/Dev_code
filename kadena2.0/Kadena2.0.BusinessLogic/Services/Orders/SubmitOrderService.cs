@@ -113,24 +113,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var paymentMethods = shoppingCart.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
-
-            Customer customer = kenticoUsers.GetCurrentCustomer();
-
-            var emails = request.EmailConfirmation.Union(new[] { customer.Email });
-
-            if ((request?.DeliveryAddress?.Id ?? 0) < 0)
-            {
-                shoppingCart.SetShoppingCartAddress(request.DeliveryAddress);
-                customer.FirstName = request.DeliveryAddress.CustomerName;
-                customer.LastName = string.Empty;
-                customer.Email = request.DeliveryAddress.Email;
-                customer.Phone = request.DeliveryAddress.Phone;
-            }
-
-
-            var orderData = await GetSubmitOrderData(customer, request.DeliveryMethod, request.PaymentMethod.Id,
-                request.PaymentMethod.Invoice, request.AgreeWithTandC, emails);
-
+            var orderData = await GetSubmitOrderData(request);
 
             switch (selectedPayment?.ClassName ?? string.Empty)
             {
@@ -166,10 +149,22 @@ namespace Kadena.BusinessLogic.Services.Orders
             return Guid.Empty;
         }
 
-        private async Task<OrderDTO> GetSubmitOrderData(Customer customer, int deliveryMethodId, int paymentMethodId, string invoice,
-            bool termsAndConditionsExplicitlyAccepted, IEnumerable<string> notificationEmails)
+        private async Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request)
         {
             // TODO: add to order request. need confirmation on the name of the property from microservice side.
+
+            Customer customer = kenticoUsers.GetCurrentCustomer();
+
+            var notificationEmails = request.EmailConfirmation.Union(new[] { customer.Email });
+
+            if ((request?.DeliveryAddress?.Id ?? 0) < 0)
+            {
+                shoppingCart.SetShoppingCartAddress(request.DeliveryAddress);
+                customer.FirstName = request.DeliveryAddress.CustomerName;
+                customer.LastName = string.Empty;
+                customer.Email = request.DeliveryAddress.Email;
+                customer.Phone = request.DeliveryAddress.Phone;
+            }
 
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
             shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
@@ -177,7 +172,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
             var billingState = localization.GetStates().FirstOrDefault(c => c.Id == billingAddress.StateId);
             var site = siteProvider.GetKenticoSite();
-            var paymentMethod = shoppingCart.GetPaymentMethod(paymentMethodId);
+            var paymentMethod = shoppingCart.GetPaymentMethod(request.PaymentMethod.Id);
             var cartItems = shoppingCart.GetShoppingCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
@@ -244,7 +239,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     KenticoPaymentOptionID = paymentMethod.Id,
                     PaymentOptionName = paymentMethod.Title,
-                    PONumber = invoice
+                    PONumber = request.PaymentMethod.Invoice
                 },
                 Site = new SiteDTO()
                 {
@@ -280,7 +275,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             // If only mailing list items in cart, we are not picking any delivery option
             if (!cartItems.All(i => i.IsMailingList))
             {
-                var deliveryMethod = shoppingCart.GetShippingOption(deliveryMethodId);
+                var deliveryMethod = shoppingCart.GetShippingOption(request.DeliveryMethod);
                 orderDto.ShippingOption = new ShippingOptionDTO()
                 {
                     KenticoShippingOptionID = deliveryMethod.Id,
