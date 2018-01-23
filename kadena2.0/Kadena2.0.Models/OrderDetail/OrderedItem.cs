@@ -17,6 +17,5 @@
         public string QuantityShippedPrefix { get; set; }
         public int Quantity { get; set; }
         public int QuantityShipped { get; set; }
-        public string DownloadPdfURL { get; set; }
     }
 }
