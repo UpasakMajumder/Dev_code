@@ -50,7 +50,7 @@ class Orders extends Component {
         let cell = <td key={j}>{item.value}</td>;
 
         if (item.type === 'link') {
-          cell = <td key={j}><a target="_blank" href={item.url} className="link">{item.value}</a></td>;
+          cell = <td key={j} className="show-table__will-appear"><a href={item.url} className="btn-action">{item.value}</a></td>;
         } else if (item.type === 'button') {
           cell = (
             <td key={j} className="show-table__will-appear">
@@ -65,6 +65,10 @@ class Orders extends Component {
           );
         } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value))) {
           cell = <td key={j}>{timeFormat(item.value)}</td>;
+        } else if (item.type === 'longtext') {
+          cell = <td key={j} className="show-table__text-appear">{timeFormat(item.value)}</td>;
+        } else if (item.type === 'hover-hide') {
+          cell = <td key={j} className="show-table__will-hide">{timeFormat(item.value)}</td>;
         }
 
         return cell;

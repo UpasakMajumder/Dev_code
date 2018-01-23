@@ -3,6 +3,7 @@ using CMS.CustomTables.Types.KDA;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -164,12 +165,17 @@ public partial class CMSWebParts_Kadena_BusinessUnit_BusinessUnit : CMSAbstractW
                 if (itemID > 0)
                 {
                     UpdateBusinessUnit(itemID);
+                    Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                    Response.Cookies["status"].HttpOnly = false;
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                 }
                 else
                 {
                     InsertBusinessUnit();
+                    Response.Cookies["status"].Value = QueryStringStatus.Added;
+                    Response.Cookies["status"].HttpOnly = false;
+                    URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                 }
-                URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
             }
         }
         catch (Exception ex)

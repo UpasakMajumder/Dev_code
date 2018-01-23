@@ -4,9 +4,12 @@ using CMS.Helpers;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
+using Kadena.Helpers;
+using Kadena.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +32,8 @@ namespace Kadena2.Carriers
 
         public CarrierBase()
         {
-            _properties = ProviderFactory.MicroProperties;
+            var resources = new KenticoResourceService();
+            _properties = new MicroProperties(resources, new KenticoSiteProvider( MapperBuilder.MapperInstance, new KadenaSettings(resources)  ));
             microserviceClient = new ShippingCostServiceClient(_properties);
             ServiceUrl = _properties.GetServiceUrl("KDA_ShippingCostServiceUrl");
         }

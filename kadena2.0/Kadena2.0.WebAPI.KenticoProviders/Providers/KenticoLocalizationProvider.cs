@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return StateInfoProvider
                 .GetStates()
-                .Columns("StateId", "StateName", "StateCode", "CountryId")
+                .Columns("StateDisplayName", "StateId", "StateName", "StateCode", "CountryId")
                 .Select<StateInfo, State>(s => _mapper.Map<State>(s));
         }
         public IEnumerable<Country> GetCountries()

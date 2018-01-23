@@ -111,6 +111,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl campaignIsNotOpen;
     
     /// <summary>
+    /// noProductSelected control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl noProductSelected;
+    
+    /// <summary>
     /// rptCatalogProducts control.
     /// </summary>
     /// <remarks>
@@ -127,4 +136,13 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.HiddenField hdncheckedValues;
+    
+    /// <summary>
+    /// hdnSaveFullCatalog control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnSaveFullCatalog;
 }

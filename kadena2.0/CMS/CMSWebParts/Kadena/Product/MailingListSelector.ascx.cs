@@ -6,11 +6,10 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.MailingList;
-using Kadena2.MicroserviceClients.Clients;
 using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena.Helpers;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -27,7 +26,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var client = new MailingListClient(ProviderFactory.MicroProperties);
+            var client = DIContainer.Resolve<IMailingListClient>();
 
             var mailingListData = client.GetMailingListsForCustomer().Result.Payload
                 .Where(l => l.AddressCount > 0);
@@ -101,7 +100,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var quantity = btn.Attributes["quantity"];
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
-                    var templateClient = new TemplatedClient(ProviderFactory.SuppliantDomain, ProviderFactory.MicroProperties);
+                    var templateClient = DIContainer.Resolve<ITemplatedClient>();
                     var setResult = templateClient.SetMailingList(containerId, templateId, workspaceId, use3d).Result;
                     if (!setResult.Success)
                     {

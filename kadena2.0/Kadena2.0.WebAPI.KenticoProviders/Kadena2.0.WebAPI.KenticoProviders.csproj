@@ -9,7 +9,7 @@
     <ProjectGuid>{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2.WebAPI.KenticoProviders</RootNamespace>
+    <RootNamespace>Kadena.WebAPI.KenticoProviders</RootNamespace>
     <AssemblyName>Kadena2.0.WebAPI.KenticoProviders</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -140,7 +140,6 @@
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProviderFactory.cs" />
     <Compile Include="Providers\KadenaSettings\ShippingEstimationSettings.cs" />
     <Compile Include="Providers\KadenaSettings\KadenaSettings.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />

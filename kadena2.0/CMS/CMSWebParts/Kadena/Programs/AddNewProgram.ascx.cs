@@ -7,6 +7,7 @@ using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Linq;
 using System.Web.UI;
@@ -105,9 +106,10 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("UpdateButtonText", value);
         }
     }
+
     /// <summary>
     /// Status localization string
-    /// 
+    ///
     /// </summary>
     public string StatusTest
     {
@@ -120,7 +122,6 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             SetValue("CampaignNameText", value);
         }
     }
-
 
     /// <summary>
     /// CancelButton localization string
@@ -186,7 +187,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
-            cvDesc.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            revDescription.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
+            revProgramName.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRangeMessage");
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.Programs.DeliveryDateRangeMessage");
             GetBrandName();
             GetCampaign();
@@ -251,6 +253,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         return returnValue;
     }
+
     /// <summary>
     /// Get the brand list
     /// </summary>
@@ -264,6 +267,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             var Campaigns = CampaignProvider.GetCampaigns()
                 .Columns("CampaignID,Name")
                 .WhereEquals("Status", 1)
+                .OrderBy("Name")
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(Campaigns))
             {
@@ -281,6 +285,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         }
         return returnValue;
     }
+
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -326,7 +331,9 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                 DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date
                             };
                             program.Insert(CampaignNode, true);
-                            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                            Response.Cookies["status"].Value = QueryStringStatus.Added;
+                            Response.Cookies["status"].HttpOnly = false;
+                            URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
                         }
                     }
                 }
@@ -386,7 +393,9 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                                     DocumentHelper.MoveDocument(program, targetCampaign, tree, true);
                             }
                         }
-                        URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
+                        Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                        Response.Cookies["status"].HttpOnly = false;
+                        URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
                     }
                 }
             }
@@ -413,6 +422,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             EventLogProvider.LogInformation("CMSWebParts_Kadena_Programs_AddNewProgram", "cvDesc_ServerValidate", ex.Message);
         }
     }
+
     public void BindStatus()
     {
         ddlStatus.Items.Clear();

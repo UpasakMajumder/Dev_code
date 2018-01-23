@@ -55,4 +55,13 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.GridView gdvInboundProducts;
+    
+    /// <summary>
+    /// divNodatafound control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNodatafound;
 }

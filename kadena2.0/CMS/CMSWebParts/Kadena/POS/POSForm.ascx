@@ -37,8 +37,6 @@
                     <cms:CMSTextBox ID="txtPOSCode"  runat="server" EnableViewState="false" onChange="poscodeChange(this);return false;" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvPOSCode"  CssClass="EditingFormErrorLabel" runat="server"   ControlToValidate="txtPOSCode">
                     </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator  CssClass="EditingFormErrorLabel" ID="revPOSCodeLength" runat="server" ControlToValidate="txtPOSCode"
-                         ValidationExpression="^\d{1,4}$" ></asp:RegularExpressionValidator>
                 </div>
             </div>
         </div>

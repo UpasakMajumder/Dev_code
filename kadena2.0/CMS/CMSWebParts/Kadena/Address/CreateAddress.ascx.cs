@@ -7,6 +7,7 @@ using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -401,6 +402,9 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             if (itemID != default(int))
             {
                 UpdateAddressData(itemID);
+                Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                Response.Cookies["status"].HttpOnly = false;
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
             }
             else
             {
@@ -413,8 +417,10 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                     customerID = CreateCustomer();
                     CreateNewAddress(customerID);
                 }
+                Response.Cookies["status"].Value = QueryStringStatus.Added;
+                Response.Cookies["status"].HttpOnly = false;
+                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
             }
-            URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
         }
         catch (Exception ex)
         {
