@@ -2,6 +2,7 @@
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
+using Kadena.Dto.CreditCard._3DSi.Responses;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
 using Kadena.Dto.Logon.Requests;
@@ -25,6 +26,7 @@ using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
+using Kadena.Models.CreditCard;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.OrderDetail;
@@ -249,6 +251,8 @@ namespace Kadena2.Container.Default
             CreateMap<OrderTableCell, OrderTableCellDto>();
             CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
             CreateMap<Distributor, DistributorDTO>();
+            CreateMap<Submission, GetSubmissionIdResponseDto>()
+                .ForMember(dest => dest.SubmissionID, opt => opt.MapFrom(src => src.SubmissionId));
         }
     }
 }

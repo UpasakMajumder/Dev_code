@@ -47,7 +47,7 @@ namespace Kadena.BusinessLogic.Services
             this.logger = logger;
         }
 
-        public Guid GenerateSubmissionId()
+        public Submission GenerateSubmissionId()
         {
             var submission = new Submission()
             {
@@ -56,7 +56,7 @@ namespace Kadena.BusinessLogic.Services
             };
 
             submissionProvider.SaveSubmission(submission);
-            return submission.SubmissionId;
+            return submission;
         }
 
         public bool VerifySubmissionId(string submissionId)

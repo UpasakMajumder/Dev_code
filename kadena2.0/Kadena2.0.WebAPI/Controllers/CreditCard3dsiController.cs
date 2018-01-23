@@ -52,11 +52,21 @@ namespace Kadena.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/shoppingcart/creditcardSaved")]
+        [Route("api/3dsi/creditcardSaved")]
         public IHttpActionResult CreditcardSaved(string submissionId)
         {
             var success = service.CreditcardSaved(submissionId);
             return ResponseJson<bool>(success);
+        }
+
+        [HttpGet]
+        [Route("api/3dsi/getsubmissionid")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult GetSubmissionId()
+        {
+            var submission = service.GenerateSubmissionId();
+            var responseDto = mapper.Map<GetSubmissionIdResponseDto>(submission);
+            return ResponseJson(responseDto);
         }
     }
 }
