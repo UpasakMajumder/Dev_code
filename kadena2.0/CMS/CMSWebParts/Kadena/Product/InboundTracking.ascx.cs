@@ -8,6 +8,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ using System.Web.UI.WebControls;
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
 {
     #region Properties
-    
+
     /// <summary>
     /// Refresh bustton resource string
     /// </summary>
@@ -607,7 +608,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             {
                 var productAndSKUDetails = productsDetails
                                   .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
-                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
+                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID", skuDetails.Select(x => x.SKUID).ToList()).ToList();
                 var allDetails = from product in productAndSKUDetails
                                  join inbound in inboundDetails
                                  on product.SKUID equals inbound.SKUID into alldata
@@ -630,7 +631,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      TweComments = newData?.TweComments ?? string.Empty,
                                      ActualPrice = newData?.ActualPrice ?? default(double),
                                      Status = product.SKUEnabled,
-                                     IsClosed = newData?.IsClosed ?? false
+                                     IsClosed = IsIBTFClosed(product?.ProgramID ?? 0)
                                  };
                 allDetails = allDetails.ToList();
                 var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();
@@ -1025,25 +1026,44 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            List<CampaignsProduct> productsDetails = GetProductDetails();
-            List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
-            var skuIDs = skuDetails.Select(x => x.SKUID).ToList();
-            var campaignRelatedInboundForm = CustomTableItemProvider.GetItems<InboundTrackingItem>()
-                                                                    .WhereIn("SKUID", skuIDs)
-                                                                    .ToList();
-            foreach (var item in campaignRelatedInboundForm)
+            var selectedCampaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int))).FirstOrDefault();
+            if (selectedCampaign != null)
             {
-                if (item != null)
-                {
-                    item.IsClosed = true;
-                    item.Update();
-                }
+                selectedCampaign.IBTFFinalized = true;
+                selectedCampaign.Update();
             }
-            Response.Redirect(Request.RawUrl, false);
+            btnClose.Enabled = false;
+            GetProducts();
+            Response.Cookies["status"].Value = QueryStringStatus.Updated;
+            Response.Cookies["status"].HttpOnly = false;
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("CloseButtonYesClick", "popUpYes_ServerClick()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// checking if Inbound form is finalized
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <returns></returns>
+    public bool IsIBTFClosed(int? programID)
+    {
+        try
+        {
+            var program = ProgramProvider.GetPrograms().WhereEquals("ProgramID", programID).Column("CampaignID").FirstOrDefault();
+            var campaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", program?.CampaignID ?? 0).FirstOrDefault();
+            if (campaign != null)
+            {
+                return campaign?.IBTFFinalized ?? false;
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("IsIBTFClosed", "checking if IBTF of particular campaign is closed", ex, CurrentSite.SiteID, ex.Message);
+            return false;
         }
     }
 }

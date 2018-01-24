@@ -47,23 +47,6 @@ namespace CMS.CustomTables.Types.KDA
 		#region "Properties"
 
 		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public bool IsClosed
-		{
-			get
-			{
-				return ValidationHelper.GetBoolean(GetValue("IsClosed"), false);
-			}
-			set
-			{
-				SetValue("IsClosed", value);
-			}
-		}
-
-
-		/// <summary>
 		/// SKUID.
 		/// </summary>
 		[DatabaseField]
@@ -316,22 +299,6 @@ namespace CMS.CustomTables.Types.KDA
 			public InboundTrackingItemFields(InboundTrackingItem instance)
 			{
 				mInstance = instance;
-			}
-
-
-			/// <summary>
-			/// 
-			/// </summary>
-			public bool IsClosed
-			{
-				get
-				{
-					return mInstance.IsClosed;
-				}
-				set
-				{
-					mInstance.IsClosed = value;
-				}
 			}
 
 

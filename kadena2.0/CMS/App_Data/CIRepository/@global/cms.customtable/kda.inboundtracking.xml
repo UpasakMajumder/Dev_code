@@ -8,21 +8,12 @@
   <ClassDisplayName>In-Bound Tracking</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
-      <field column="ItemID" columnprecision="0" columntype="integer" guid="41592d49-44a6-4294-a09c-e1142a1c30af" isPK="true" publicfield="false">
+      <field column="ItemID" columntype="integer" guid="41592d49-44a6-4294-a09c-e1142a1c30af" isPK="true" isunique="true" publicfield="false" system="true">
         <properties>
           <fieldcaption>ItemID</fieldcaption>
         </properties>
         <settings>
           <controlname>labelcontrol</controlname>
-        </settings>
-      </field>
-      <field allowempty="true" column="IsClosed" columntype="boolean" guid="de35ede1-4eab-4d3c-9fec-81350948b5e4" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>false</defaultvalue>
-          <fieldcaption>IBTF Finalized</fieldcaption>
-        </properties>
-        <settings>
-          <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
       <field allowempty="true" column="SKUID" columntype="integer" guid="07354247-2b13-4b03-ae35-56f20d014d20" publicfield="false" visible="true">
