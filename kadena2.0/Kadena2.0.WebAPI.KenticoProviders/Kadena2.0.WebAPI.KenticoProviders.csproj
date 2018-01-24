@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
+    <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
     <Compile Include="Contracts\KadenaSettings\IKadenaSettings.cs" />
     <Compile Include="Contracts\IKenticoLocalizationProvider.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Providers\KenticoDocumentProvider.cs" />
     <Compile Include="Providers\KenticoLoginProvider.cs" />
     <Compile Include="Providers\KenticoOrderProvider.cs" />
+    <Compile Include="Providers\KenticoSettingsProvider.cs" />
     <Compile Include="Providers\KenticoSiteProvider.cs" />
     <Compile Include="Providers\ShoppingCartProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />

@@ -64,7 +64,6 @@
       </field>
       <field column="ShippingID" columntype="integer" guid="7f6381ce-27eb-46ca-9103-bf21be48c53f" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
         <properties>
-          <defaultvalue>137</defaultvalue>
           <fieldcaption>Please select shipping option</fieldcaption>
           <fielddescription>
             <![CDATA[Indicates which shipping option should be used if item is pre-buy]]>
@@ -77,7 +76,7 @@
           <Query>
 <![CDATA[
 select ShippingOptionID as value,ShippingOptionDisplayName as text from COM_ShippingOption
-            where ShippingOptionSiteID={%CurrentSite.ID|(user)cvoqa2@gmail.com|(hash)bd1ae4e27dbe1e2a368414c4ebfbc3913c59531047bbe5fb2d0e56619febd3b2%} and ShippingOptionEnabled=1
+where ShippingOptionSiteID={%CurrentSite.ID|(user)cvoqa2@gmail.com|(hash)bd1ae4e27dbe1e2a368414c4ebfbc3913c59531047bbe5fb2d0e56619febd3b2%} and ShippingOptionEnabled=1
 ]]>
           </Query>
           <SortItems>True</SortItems>
