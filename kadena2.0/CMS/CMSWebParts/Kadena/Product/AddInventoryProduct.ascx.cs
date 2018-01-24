@@ -63,6 +63,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
                 if (!IsPostBack)
                 {
+                    BindData();
                     if (productId > 0)
                     {
                         SetFeild(productId);
@@ -81,7 +82,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         }
                     }
                     BindUsers(1);
-                    BindData();
+                    
                 }
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
@@ -131,7 +132,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
+                if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0)
                 {
                     if (ViewState["ProductId"] != null)
                     {
@@ -255,7 +256,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             string imagePath = string.Empty;
             try
             {
-                if (ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
+                if (ddlProdCategory.SelectedIndex > 0 )
                 {
                     UpdateProduct(productId);
                 }
