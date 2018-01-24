@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.EmailEngine;
 using CMS.EventLog;
 using CMS.MacroEngine;
@@ -49,19 +50,26 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 
         public static void SendEmailNotification(OrderDto orderDetails, string templateName, UserInfo customer)
         {
-            var email = EmailTemplateProvider.GetEmailTemplate(templateName, SiteContext.CurrentSite.SiteName);
-            EmailMessage msg = new EmailMessage();
-            if (email != null)
+            try
             {
-                MacroResolver resolver = MacroResolver.GetInstance();
-                resolver.SetAnonymousSourceData(orderDetails);
-                msg.From = resolver.ResolveMacros(email.TemplateFrom);
-                msg.Recipients = customer.Email;
-                msg.EmailFormat = EmailFormatEnum.Default;
-                msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
-                msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
-                msg.Body = resolver.ResolveMacros(email.TemplateText);
-                EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
+                var email = EmailTemplateProvider.GetEmailTemplate(templateName, SiteContext.CurrentSite.SiteName);
+                EmailMessage msg = new EmailMessage();
+                if (email != null)
+                {
+                    MacroResolver resolver = MacroResolver.GetInstance();
+                    resolver.SetAnonymousSourceData(orderDetails);
+                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
+                    msg.Recipients = customer.Email;
+                    msg.EmailFormat = EmailFormatEnum.Default;
+                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
+                    msg.Body = resolver.ResolveMacros(email.TemplateText);
+                    EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("ProductEmailNotifications", "SendEmailNotification", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
         }
 
@@ -69,8 +77,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var orderType = "prebuy";
-                var templateName = "";
+                var orderType = Constants.OrderType.prebuy;
+                var templateName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_OrderReservationEmailTemplate");
                 var client = DIContainer.Resolve<IOrderViewClient>();
                 BaseResponseDto<OrderListDto> response = client.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, orderType).Result;
                 if (response.Success && response.Payload.TotalCount != 0)
