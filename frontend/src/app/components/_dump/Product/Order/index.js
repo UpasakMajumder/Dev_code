@@ -58,7 +58,7 @@ const Order = (props) => {
       </div>
     );
 
-  const productStatusInfo = productStatus ? <p>{productStatusPrefix}: {productStatus}</p> : <p></p>;
+  const productStatusInfo = productStatus ? <p>{productStatusPrefix} {productStatus}</p> : <p></p>;
 
   return (
     <div className="cart-product">

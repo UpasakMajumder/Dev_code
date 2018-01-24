@@ -186,7 +186,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetProductStatus(int skuid)
         {
-            if (skuid <= 0)
+            if (!SettingsKeyInfoProvider.GetBoolValue("KDA_OrderDetailsShowProductStatus", SiteContext.CurrentSiteID) || skuid <= 0)
                 return string.Empty;
 
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
