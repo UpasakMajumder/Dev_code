@@ -195,15 +195,14 @@
           <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
-          ##DEFAULT##
+##DEFAULT##
 
-          
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="producttype">2</property>
-          <property name="shippingid">137</property>
+          <property name="shippingid">166</property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
