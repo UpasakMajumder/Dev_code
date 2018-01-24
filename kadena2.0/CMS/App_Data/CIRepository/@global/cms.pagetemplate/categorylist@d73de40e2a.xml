@@ -346,7 +346,7 @@ function DeleteCategory(categoryID) {
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -358,7 +358,7 @@ function DeleteCategory(categoryID) {
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
+          <property name="displaytoroles">TWEGlobalAdmin</property>
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">d02d3abf-f331-4651-8ca6-c43ad67a62d9</property>
