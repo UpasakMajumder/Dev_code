@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -75,7 +77,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     if(shippingResponse != null && shippingResponse.Success)
                     {
                         var shippingCost=ValidationHelper.GetDecimal(shippingResponse?.Payload?.Cost, default(decimal));
-                        var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, shippingCost);
+                        OrderDTO Ordersdto = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                        var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto,shippingCost);
                         if (response != null && response.Success)
                         {
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);

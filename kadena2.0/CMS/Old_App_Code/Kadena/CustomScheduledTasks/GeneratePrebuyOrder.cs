@@ -11,6 +11,7 @@ using System.Linq;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -55,8 +56,10 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                     var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
+                        var shippingCost = default(decimal);
                         Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cart);
-                        var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy);
+                        OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, shippingCost);
+                        var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, ordersDTO, shippingCost);
                         if (response != null && response.Success)
                         {
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);

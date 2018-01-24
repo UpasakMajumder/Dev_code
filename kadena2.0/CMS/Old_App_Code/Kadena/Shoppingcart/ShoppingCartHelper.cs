@@ -158,16 +158,15 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         ///Processes order and returns response
         /// </summary>
         /// <returns></returns>
-        public static BaseResponseDto<string> ProcessOrder(ShoppingCartInfo cart,int userID,string orderType,decimal shippingCost=default(decimal))
+        public static BaseResponseDto<string> ProcessOrder(ShoppingCartInfo cart,int userID,string orderType, OrderDTO ordersDTO, decimal shippingCost=default(decimal))
         {
             try
             {
-                OrderDTO Ordersdto =CreateOrdersDTO(cart, userID, orderType, shippingCost);
-                if (Ordersdto != null && Ordersdto.Campaign != null)
+                if (ordersDTO != null && ordersDTO.Campaign != null)
                 {
-                    UpdateDistributorsBusinessUnit(Ordersdto.Campaign.DistributorID);
+                    UpdateDistributorsBusinessUnit(ordersDTO.Campaign.DistributorID);
                 }
-                var response = CallOrderService(Ordersdto);
+                var response = CallOrderService(ordersDTO);
                 return response;
             }
             catch (Exception ex)
