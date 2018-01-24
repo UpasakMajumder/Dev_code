@@ -353,7 +353,7 @@ function deleteProgram(programID) {
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -365,7 +365,7 @@ function deleteProgram(programID) {
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
+          <property name="displaytoroles">TWEGlobalAdmin</property>
           <property name="enableoutputfilter">False</property>
           <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
