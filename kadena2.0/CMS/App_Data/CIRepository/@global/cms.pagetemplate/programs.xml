@@ -92,7 +92,9 @@
       <th>{$KDA.ProgramsList.CampaignName$}</th>
       <th>{$KDA.ProgramsList.Description$}</th>
       <th>{$KDA.ProgramsList.Status$}</th>
+        {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
+      {%}|(user)cvoqa2@gmail.com|(hash)ab45dd9810092ceb3c807708b0f49f5ae954fc2c3a61d7b4f1fd94fd66a26b2d%}
     </tr>
 ]]>
           </property>

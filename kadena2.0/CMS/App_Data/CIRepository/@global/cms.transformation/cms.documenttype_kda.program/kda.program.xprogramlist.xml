@@ -12,18 +12,18 @@
   <td>{%BrandName%}</td>
   <td>{%CampaignName%}</td>
   <td>{%ProgramDescription%}</td>
-   {% if(Status==true){ %}
+  {% if(Status==true){ %}
   <td>{$KDA.Common.Status.Active$}</td>
   {%} else {%}
   <td>{$KDA.Common.Status.InActive$}</td> 
   {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
+  {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
   <td>
-   {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
     <div class="text-center">
       <a href="{% Settings.KDA_CreateProgramURL #%}?id={%ProgramID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
-    {% } |(user)cvoqa2@gmail.com|(hash)c6f17674f464a7e212a59f23e6ef5feb8b88ef9d1e937dfc596fe7d50b25c4b5%}
   </td>
+  {% } |(user)cvoqa2@gmail.com|(hash)edcbc2c6feb19cb645aa7777a2219412af39cbf0362a0459767a048f46be640c%}
 </tr>
 
 
