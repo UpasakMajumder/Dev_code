@@ -8,8 +8,12 @@ namespace Kadena.BusinessLogic.Services.SettingsSynchronization
     {
         public static string GetTemplateSourceCode(SettingsKey settingsKey)
         {
-            var key = settingsKey ?? throw new ArgumentNullException(nameof(settingsKey));
+            if (settingsKey == null)
+            {
+                throw new ArgumentNullException(nameof(settingsKey));
+            }
 
+            var key = settingsKey;
             var codeLines = new[]
             {
                 "/// <summary>",
