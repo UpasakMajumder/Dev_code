@@ -48,7 +48,14 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             }
         }
 
-        public static void SendEmailNotification(OrderDto orderDetails, string templateName, UserInfo customer)
+        /// <summary>
+        ///    Send emails to all sales persons
+        /// </summary>
+        /// <typeparam name="T">object type</typeparam>
+        /// <param name="orderDetails"></param>
+        /// <param name="templateName">email template name</param>
+        /// <param name="customer">user details</param>
+        public static void SendEmailNotification<T>(T orderDetails, string templateName, UserInfo customer)
         {
             try
             {
@@ -73,6 +80,11 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             }
         }
 
+        /// <summary>
+        ///   Gets all the prebuy orders under particular campaign
+        /// </summary>
+        /// <param name="campaignID">campaign id</param>
+        /// <returns>true/false</returns>
         public static bool GetCampaignOrders(int campaignID)
         {
             try
