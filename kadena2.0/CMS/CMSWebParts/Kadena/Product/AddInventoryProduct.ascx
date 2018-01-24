@@ -77,7 +77,6 @@
                 <cms:LocalizedLabel ID="lblEstPrice" CssClass="input__label" runat="server" EnableViewState="False" ResourceString="Kadena.InvProductForm.lblEstPrice" />
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtEstPrice" runat="server" EnableViewState="false" TextMode="DateTime" CssClass="input__text"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvEstPrice" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="txtEstPrice"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator ID="revEstPrice" runat="server" CssClass="EditingFormErrorLabel"
                         ControlToValidate="txtEstPrice" ValidationExpression="((\d+)((\.\d{1,100})?))$">
                     </asp:RegularExpressionValidator>
@@ -122,7 +121,6 @@
                 <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlState" runat="server" EnableViewState="True"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvState" runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlState"></asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
