@@ -5,12 +5,9 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
-using CMS.Scheduler;
 using CMS.SiteProvider;
-using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using System;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions : CMSAbstractWebPart
@@ -316,19 +313,19 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 {
                     if (!initiated)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = true;
                     }
                     else if (initiated && !isGlobalAdminNotified && !openCampaign && !closeCampaign)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = true;
                         lnkUpdateProducts.Visible = true;
                         lnkUpdateProducts.Enabled = true;
                     }
                     else if (initiated && isGlobalAdminNotified && !openCampaign && !closeCampaign)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = false;
                         lnkViewProducts.Visible = true;
                         lnkViewProducts.Enabled = true;
@@ -506,15 +503,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             {
                 campaign.CloseCampaign = true;
                 campaign.Update();
-                TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, CurrentSite.SiteID);
-                if (runTask != null)
-                {
-                    ScriptManager.RegisterStartupScript(Page, GetType(), "growl_confirm", $"<script>toastr.success('{ResHelper.GetString("KDA.OrderSchedular.ExecutionStartMessage")}')</script>", false);
-                    runTask.TaskRunInSeparateThread = true;
-                    runTask.TaskEnabled = true;
-                    runTask.TaskData = $"{campaign.CampaignID}|{CurrentUser.UserID}";
-                    SchedulingExecutor.ExecuteTask(runTask);
-                }
                 var users = UserInfoProvider.GetUsers();
                 if (users != null)
                 {
@@ -531,5 +519,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkCloseCampaign_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
     #endregion "Methods"
 }
