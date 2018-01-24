@@ -153,9 +153,9 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{SKUUNITSPRICE}", $"${ValidationHelper.GetDouble(row["SKUUnitsPrice"], default(double)).ToString()}")
                                            .Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))))
-                                           .Replace("{VALIDSTATES}", states?.States)
+                                           .Replace("{VALIDSTATES}", ValidationHelper.GetString(states?.States, "&nbsp"))
                                            .Replace("{EXPIREDATE}", skuValidity != default(DateTime) ? skuValidity.ToString("MMM dd, yyyy") : "&nbsp")
-                                           .Replace("{PROGRAMNAME}", programName?.ProgramName);
+                                           .Replace("{PROGRAMNAME}", ValidationHelper.GetString(programName?.ProgramName, "&nbsp") );
                     sb.Append(pdfContent);
                 });
                 return sb.ToString();
