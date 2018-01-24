@@ -1472,13 +1472,6 @@ namespace Kadena.Models.SiteSettings
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ildvcmtncm91cCBOYW1lIiwiS2V5TmFtZSI6IktEQV9Xb3JrZ3JvdXBOYW1lIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IlBvbGFyaXMiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiSy1Tb3VyY2UifX0=")]
         public const string KDA_WorkgroupName = "KDA_WorkgroupName";
 
-        /// <summary>
-        /// Don't worry. This is just a test.
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("test group to delete")]
-        [DefaultValueAttribute(@"Who tests the tests?")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ikp1c3QgdGVzdCBrZXkiLCJLZXlOYW1lIjoiS0RBX1NvbWVUZXN0S2V5Rm9yVGVzdCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiJXaG8gdGVzdHMgdGhlIHRlc3RzPyIsIktleURlc2NyaXB0aW9uIjoiRG9uJ3Qgd29ycnkuIFRoaXMgaXMganVzdCBhIHRlc3QuIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJ0ZXN0IGdyb3VwIHRvIGRlbGV0ZSJ9fQ==")]
-        public const string KDA_SomeTestKeyForTest = "KDA_SomeTestKeyForTest";
+
     }
 }
