@@ -80,7 +80,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports
         {
             var workbook = sheet.Workbook;
             var valuesSheet = workbook.CreateSheet(sheetWithValuesName);
-            workbook.SetSheetHidden(1, SheetState.VeryHidden);
+            var valuesSheetIndex = workbook.GetSheetIndex(valuesSheet);
+            workbook.SetSheetHidden(valuesSheetIndex, SheetState.VeryHidden);
             for (int i = 0; i < values.Length; i++)
             {
                 valuesSheet.CreateRow(i)

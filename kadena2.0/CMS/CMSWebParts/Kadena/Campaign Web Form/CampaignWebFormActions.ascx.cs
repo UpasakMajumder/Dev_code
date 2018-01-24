@@ -313,19 +313,19 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 {
                     if (!initiated)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = true;
                     }
                     else if (initiated && !isGlobalAdminNotified && !openCampaign && !closeCampaign)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = true;
                         lnkUpdateProducts.Visible = true;
                         lnkUpdateProducts.Enabled = true;
                     }
                     else if (initiated && isGlobalAdminNotified && !openCampaign && !closeCampaign)
                     {
-                        lnkEdit.Visible = true;
+                        lnkEdit.Visible = false;
                         lnkEdit.Enabled = false;
                         lnkViewProducts.Visible = true;
                         lnkViewProducts.Enabled = true;
