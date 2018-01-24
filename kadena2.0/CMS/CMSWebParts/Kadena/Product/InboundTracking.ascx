@@ -10,7 +10,7 @@
         <asp:Button ID="btnExport" runat="server" CssClass="btn-action login__login-button btn--no-shadow" Enabled="false" OnClick="btnExport_Click" />
     </div>
     <div class="custom__btns float-right">
-        <asp:Button runat="server" Enabled="false" ID="btnClose" CssClass="btn-action login__login-button btn--no-shadow finalizeButton"/>
+        <asp:Button runat="server" Enabled="false" ID="btnClose" CssClass="btn-action login__login-button btn--no-shadow" OnClientClick="javascript:document.getElementById('dialog_Close_IBTF').classList.add('active'); return false;" />
     </div>
 </div>
 <div class="inbound__track" runat="server" id="inBoundGrid">
@@ -152,19 +152,17 @@
     <div class=" mt-2" runat="server" id="divSelectCampaign" visible="false">
         <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><cms:LocalizedLabel runat="server" ResourceString="Kadena.Inbound.SelectCampaignText"></cms:LocalizedLabel></div>
     </div>
-<div class="dialog" id="dialog_Close_IBTF" runat="server" clientidmode="Static">
-    <div class="dialog__shadow" runat="server" id="popUpShadow"></div>
+<div class="dialog " id="dialog_Close_IBTF">
+    <div class="dialog__shadow"></div>
     <div class="dialog__block">
-        <div class="dialog__header">
-            <asp:Label runat="server" ID="lblPopUpHeader"></asp:Label>
-        </div>
+        <div class="dialog__header"></div>
         <div class="dialog__content">
-            <asp:Label runat="server" CssClass="popUpMessage" ID="lblPopUpMessage"></asp:Label>
+            <cms:LocalizedLabel runat="server" ResourceString="Kadena.Inbound.PopUPLabelMsgText"></cms:LocalizedLabel>
         </div>
         <div class="dialog__footer">
             <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary inBoundDialogueYes" id="popUpYes" runat="server" onserverclick="popUpYes_ServerClick"></button>
-                <button class="btn-action btn-action--secondary noButtonDialogue" id="noDialougeBtn" />
+                <cms:LocalizedLinkButton runat="server" CssClass="btn-action btn-action--secondary" ResourceString="Kadena.Inbound.PopUpYesButtonText" OnClick="popUpYes_ServerClick"></cms:LocalizedLinkButton>
+                <cms:LocalizedLinkButton runat="server" CssClass="btn-action btn-action--secondary" ResourceString="Kadena.Inbound.PopUpNoButtonText" OnClientClick="javascript:document.getElementById('dialog_Close_IBTF').classList.remove('active'); return false;"></cms:LocalizedLinkButton>
             </div>
         </div>
     </div>

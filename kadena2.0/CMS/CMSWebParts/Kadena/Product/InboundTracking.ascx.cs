@@ -18,63 +18,7 @@ using System.Web.UI.WebControls;
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
 {
     #region Properties
-
-    /// <summary>
-    /// Pop up label message resource string
-    /// </summary>
-    public string PopUPLabelMsgText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUPLabelMsgText"), string.Empty);
-        }
-        set
-        {
-            SetValue("PopUPLabelMsgText", value);
-        }
-    }
-    /// <summary>
-    /// Close button resource string
-    /// </summary>
-    public string CloseButtonText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.CloseButtonText"), string.Empty);
-        }
-        set
-        {
-            SetValue("CloseButtonText", value);
-        }
-    }
-    /// <summary>
-    /// PopUp Yes button resource string
-    /// </summary>
-    public string PopUpYesButtonText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUpYesButtonText"), string.Empty);
-        }
-        set
-        {
-            SetValue("PopUpYesButtonText", value);
-        }
-    }
-    /// <summary>
-    /// PopUp no button resource string
-    /// </summary>
-    public string PopUpNoButtonText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.PopUpNoButtonText"), string.Empty);
-        }
-        set
-        {
-            SetValue("PopUpNoButtonText", value);
-        }
-    }
+    
     /// <summary>
     /// Refresh bustton resource string
     /// </summary>
@@ -505,7 +449,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         gdvInboundProducts.Columns[15].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
-        btnClose.Text = CloseButtonText;
+        btnClose.Text = ResHelper.GetString("Kadena.Inbound.CloseButtonText");
     }
 
     /// <summary>
@@ -1084,7 +1028,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             List<CampaignsProduct> productsDetails = GetProductDetails();
             List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
             var skuIDs = skuDetails.Select(x => x.SKUID).ToList();
-            var campaignRelatedInboundForm = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID",skuIDs).ToList();
+            var campaignRelatedInboundForm = CustomTableItemProvider.GetItems<InboundTrackingItem>()
+                                                                    .WhereIn("SKUID", skuIDs)
+                                                                    .ToList();
             foreach (var item in campaignRelatedInboundForm)
             {
                 if (item != null)
@@ -1093,7 +1039,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                     item.Update();
                 }
             }
-            Response.Redirect(Request.RawUrl,false);
+            Response.Redirect(Request.RawUrl, false);
         }
         catch (Exception ex)
         {

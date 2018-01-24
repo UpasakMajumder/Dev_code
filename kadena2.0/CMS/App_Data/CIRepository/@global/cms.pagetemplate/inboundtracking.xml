@@ -196,44 +196,6 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttitle"></property>
           <property name="webparttype">InboundTracking</property>
         </webpart>
-        <webpart controlid="Javascript" guid="5fce0d84-a47c-429d-bf33-d555c764fbe7" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">Javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () { 
-    $(".finalizeButton").on("click", function () {
-        document.getElementById('dialog_Close_IBTF').className += ' dialog active';
-        $('.inBoundDialogueYes').text("{$Kadena.Inbound.PopUpYesButtonText$}");
-        $('#noDialougeBtn').text("{$Kadena.Inbound.PopUpNoButtonText$}");
-        $('.popUpMessage').text("{$Kadena.Inbound.PopUPLabelMsgText$}");
-        return false;
-    });
-    $(".noButtonDialogue").on("click", function () {
-        document.getElementById('dialog_Close_IBTF').classList.remove("dialog active");
-        return false;
-    });
-    });
-</script>
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">5fce0d84-a47c-429d-bf33-d555c764fbe7</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
       </webpartzone>
       <webpartzone id="ZonePager" v="1">
         <webpart controlid="Pager" guid="f88ca02b-5a43-472a-802a-91f2957c0e14" type="UniPager" v="1">
