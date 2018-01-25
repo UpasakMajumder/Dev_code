@@ -16,9 +16,22 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="TokenSavedAndAuthorized" columntype="boolean" guid="259046bc-7023-42ed-be6f-d465a89f41bf" publicfield="false" visible="true">
+      <field allowempty="true" column="OrderJson" columntype="longtext" guid="a0b9331f-2d3a-4995-bf66-e261b09278ed" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>TokenSavedAndAuthorized</fieldcaption>
+          <fieldcaption>OrderJson</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextAreaControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Wrap>True</Wrap>
+        </settings>
+      </field>
+      <field allowempty="true" column="Processed" columntype="boolean" guid="259046bc-7023-42ed-be6f-d465a89f41bf" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Processed</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
