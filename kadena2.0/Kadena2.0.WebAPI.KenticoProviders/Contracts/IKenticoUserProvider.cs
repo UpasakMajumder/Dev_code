@@ -15,7 +15,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool SaveLocalization(string code);
         void UnsetDefaultShippingAddress();
         bool UserIsInCurrentSite(int userId);
-        UserInfo GetUserByUserId(int userId);
+        User GetUserByUserId(int userId);
 
     }
 }

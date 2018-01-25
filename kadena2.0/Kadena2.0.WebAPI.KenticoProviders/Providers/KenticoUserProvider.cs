@@ -108,9 +108,9 @@ namespace Kadena.WebAPI.KenticoProviders
             return user?.IsInSite(SiteContext.CurrentSiteName) ?? false;
         }
 
-        public UserInfo GetUserByUserId(int userId)
+        public User GetUserByUserId(int userId)
         {
-            return UserInfoProvider.GetUserInfo(userId);
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(userId));
         }
     }
 }

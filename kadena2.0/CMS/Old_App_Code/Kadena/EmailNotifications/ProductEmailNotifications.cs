@@ -6,6 +6,7 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
@@ -55,7 +56,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="orderDetails"></param>
         /// <param name="templateName">email template name</param>
         /// <param name="customer">user details</param>
-        public static void SendEmailNotification<T>(T orderDetails, string templateName, UserInfo customer)
+        public static void SendEmailNotification<T>(T orderDetails, string templateName, User customer)
         {
             try
             {
