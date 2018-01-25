@@ -644,7 +644,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      TweComments = newData?.TweComments ?? string.Empty,
                                      ActualPrice = newData?.ActualPrice ?? default(double),
                                      Status = product.SKUEnabled,
-                                     ItemSpec = product?.ItemSpecs ?? string.Empty,
+                                     ItemSpec = (product?.ItemSpecs ?? string.Empty) == ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")  ? product?.CustomItemSpecs ?? string.Empty : (product?.ItemSpecs ?? string.Empty) == "0" ? string.Empty : GetItemSpecs(product?.ItemSpecs ?? string.Empty) ,
                                      CustomItemSpecs = product.CustomItemSpecs ?? string.Empty
                                  };
                 allDetails = allDetails.ToList();
@@ -1009,7 +1009,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 .Columns("ItemSpec").FirstOrDefault();
             if (itemSpecs != null)
             {
-                return itemSpecs.GetValue("ItemSpecs", string.Empty);
+                return itemSpecs.GetValue("ItemSpec", string.Empty);
             }
             return string.Empty;
         }

@@ -28,7 +28,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%#Eval("ItemSpec",string.Empty) == ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText")  ? Eval("CustomItemSpecs") : Eval("ItemSpec",string.Empty) == "0" ? string.Empty : GetItemSpecs(Eval("ItemSpec",string.Empty)) %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
