@@ -28,6 +28,11 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
+                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField>
+                <ItemTemplate>
                     <asp:Label runat="server" ID="lblQtyOrdered" Text='<%#Eval("QtyOrdered") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>

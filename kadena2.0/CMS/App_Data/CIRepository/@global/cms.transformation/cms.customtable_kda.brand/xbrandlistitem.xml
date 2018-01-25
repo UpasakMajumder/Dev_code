@@ -16,11 +16,11 @@
   {%} else {%}
   <td>{$KDA.Common.Status.InActive$}</td> 
   {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
-  
-  <td>
-    {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
+     {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
+   <td>
     <div class="text-center"><a href="{%Settings.KDA_CreateBrandURL#%}?itemid={%ItemID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-    {%  } |(user)cvoqa2@gmail.com|(hash)a997c765054edb134c0c45737f0835c11a7ac059f3b0db94248875e830e7b088%}  </td>
+   </td>
+      {%  } |(user)cvoqa2@gmail.com|(hash)3e43dd0a6770ebf2264112e532c6cfa2f8aec360489a4d2241946eb7cfa15d06%}  
   
     
 ]]>

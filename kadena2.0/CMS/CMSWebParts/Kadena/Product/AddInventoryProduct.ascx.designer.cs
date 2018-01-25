@@ -202,15 +202,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::CMS.Base.Web.UI.CMSTextBox txtEstPrice;
         
         /// <summary>
-        /// rfvEstPrice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEstPrice;
-        
-        /// <summary>
         /// revEstPrice control.
         /// </summary>
         /// <remarks>
@@ -335,15 +326,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::CMS.Base.Web.UI.CMSDropDownList ddlState;
-        
-        /// <summary>
-        /// rfvState control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvState;
         
         /// <summary>
         /// lblProdCategory control.
