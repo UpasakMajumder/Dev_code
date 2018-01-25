@@ -16,6 +16,40 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="TokenSavedAndAuthorized" columntype="boolean" guid="259046bc-7023-42ed-be6f-d465a89f41bf" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>TokenSavedAndAuthorized</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="CustomerId" columntype="integer" guid="36fc9d85-163c-492f-b173-496035424932" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>CustomerId</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="SiteId" columntype="integer" guid="1029f30b-6522-474c-b1cb-a823e3c7deb4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SiteId</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
       <field column="SubmissionId" columntype="guid" guid="e8c19ece-8de1-464a-a825-557d022fad32" publicfield="false" visible="true">
         <settings>
           <controlname>LabelControl</controlname>
