@@ -63,6 +63,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
                 if (!IsPostBack)
                 {
+                    BindData();
                     if (productId > 0)
                     {
                         SetFeild(productId);
@@ -81,7 +82,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         }
                     }
                     BindUsers(1);
-                    BindData();
+                    
                 }
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
@@ -104,10 +105,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
             rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
             revQuantity.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-            rfvEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.EstimatedPriceRequired");
             rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
             rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
-            rfvState.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.StateRequired");
             revBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
             rfvWeight.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
@@ -131,7 +130,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
+                if (ddlBrand.SelectedIndex > 0 && ddlPosNo.SelectedIndex > 0 && ddlProdCategory.SelectedIndex > 0)
                 {
                     if (ViewState["ProductId"] != null)
                     {
@@ -255,7 +254,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             string imagePath = string.Empty;
             try
             {
-                if (ddlProdCategory.SelectedIndex > 0 && ddlState.SelectedIndex > 0)
+                if (ddlProdCategory.SelectedIndex > 0 )
                 {
                     UpdateProduct(productId);
                 }
@@ -417,7 +416,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
-                product.ProgramID = 0;
                 SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                 if (updateProduct != null)
                 {

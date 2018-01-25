@@ -584,6 +584,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         var programs = ProgramProvider.GetPrograms()
                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                             .WhereEquals("CampaignID", campaignID)
+                            .WhereEquals("Status",true)
                             .Columns("ProgramName,ProgramID")
                             .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
                             .ToList();
@@ -816,6 +817,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int));
                     product.ItemSpecs = ValidationHelper.GetString(itemSpecsID, string.Empty);
                     product.CustomItemSpecs = ValidationHelper.GetString(customItemSpecs, string.Empty);
+                    product.EstimatedPrice = ValidationHelper.GetDouble(txtEstimatedprice.Text, default(double));
                     product.ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                     SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                     if (updateProduct != null)
