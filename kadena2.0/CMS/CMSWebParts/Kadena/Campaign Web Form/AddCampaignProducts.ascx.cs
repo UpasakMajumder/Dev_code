@@ -522,7 +522,10 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                                 imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                                 imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                                txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                                if (skuDetails.SKUValidUntil != DateTime.MinValue)
+                                {
+                                 txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                                }
                             }
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
                             ddlProgram.Enabled = false;
@@ -765,13 +768,16 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty),
                             SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty),
                             SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
-                            SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date),
                             SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
                             SKUImagePath = imagePath,
                             SKUSiteID = CurrentSite.SiteID,
                             SKUProductType = SKUProductTypeEnum.EProduct,
                             SKUPrice = 0
                         };
+                        if (!string.IsNullOrEmpty(txtExpireDate.Text))
+                        {
+                            newProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpireDate.Text, DateTime.MinValue);
+                        }
                         SKUInfoProvider.SetSKUInfo(newProduct);
                         products.NodeSKUID = newProduct.SKUID;
                         products.Insert(createNode, true);
@@ -835,7 +841,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         updateProduct.SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty);
                         updateProduct.SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
-                        updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.Now.Date);
+                        updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.MinValue);
                         updateProduct.SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false;
                         updateProduct.SKUSiteID = CurrentSite.SiteID;
                         updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
