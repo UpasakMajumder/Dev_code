@@ -58,13 +58,13 @@
     <Compile Include="Contracts\IPOSService.cs" />
     <Compile Include="Contracts\ICampaignsService.cs" />
     <Compile Include="Contracts\IBusinessUnitsService.cs" />
-    <Compile Include="Contracts\ICreditCardService.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IDateTimeFormatter.cs" />
     <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsiDemo.cs" />
+    <Compile Include="Contracts\Orders\IGetOrderDataService.cs" />
     <Compile Include="Contracts\Orders\IOrderListService.cs" />
     <Compile Include="Contracts\Orders\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\Orders\IOrderDetailService.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="Services\ProductCategoryService.cs" />
     <Compile Include="Services\POSService.cs" />
     <Compile Include="Services\CampaignsService.cs" />
-    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\DateTimeFormatter.cs" />
     <Compile Include="Services\BusinessUnitService.cs" />

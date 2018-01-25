@@ -21,6 +21,8 @@ namespace Kadena.Models.CreditCard
 
         public int CustomerId { get; set; }
 
-        public bool TokenSavedAndAuthorized { get; set; }
+        public bool Processed { get; set; }
+
+        public string OrderJson { get; set; }
     }
 }

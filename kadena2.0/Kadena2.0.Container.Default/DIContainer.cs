@@ -8,6 +8,8 @@ using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2._0.BusinessLogic.Services.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Kadena2.BusinessLogic.Services.OrderPayment;
 using Kadena2.Infrastructure.Contracts;
@@ -59,7 +61,6 @@ namespace Kadena2.Container.Default
             container.Register<IMailTemplateService, MailTemplateService>();
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
-            container.Register<ICreditCardService, CreditCardService>();
             container.Register<IPdfService, PdfService>();
             container.Register<IBusinessUnitsService, BusinessUnitService>();
             container.Register<ICampaignsService, CampaignsService>();
@@ -74,6 +75,7 @@ namespace Kadena2.Container.Default
             container.Register<ICreditCard3dsi, CreditCard3dsi>();
             container.Register<ICreditCard3dsiDemo, CreditCard3dsiDemo>();
             container.Register<IPurchaseOrder, PurchaseOrder>();
+            container.Register<IGetOrderDataService, GetOrderDataService>();
             return container;
         }
 

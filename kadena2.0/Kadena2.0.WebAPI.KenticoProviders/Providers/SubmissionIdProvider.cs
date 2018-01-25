@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.KenticoProviders
             submissionItem.SetValue("UserId", submission.UserId);
             submissionItem.SetValue("CustomerId", submission.CustomerId);
             submissionItem.SetValue("AlreadyUsed", submission.AlreadyUsed);
-            submissionItem.SetValue("TokenSavedAndAuthorized", submission.TokenSavedAndAuthorized);
+            submissionItem.SetValue("Processed", submission.Processed);
             submissionItem.Insert();
         }
 

@@ -101,7 +101,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.GetIntegerValue("SiteId", 0)))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.GetIntegerValue("UserId", 0)))
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.GetIntegerValue("CustomerId", 0)))
-                .ForMember(dest => dest.TokenSavedAndAuthorized, opt => opt.MapFrom(src => src.GetBooleanValue("TokenSavedAndAuthorized", false)));
+                .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)));
         }
     }
 }

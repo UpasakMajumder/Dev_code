@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.Models.CreditCard;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
 
 namespace Kadena.WebAPI.Controllers
 {
     
     public class CreditCard3dsiController : ApiControllerBase
     {
-        private readonly ICreditCardService service;
+        private readonly ICreditCard3dsi service;
         private readonly ISubmissionService submissions;
         private readonly IMapper mapper;
 
-        public CreditCard3dsiController(ICreditCardService service, ISubmissionService submissions, IMapper mapper)
+        public CreditCard3dsiController(ICreditCard3dsi service, ISubmissionService submissions, IMapper mapper)
         {
             if (service == null)
             {

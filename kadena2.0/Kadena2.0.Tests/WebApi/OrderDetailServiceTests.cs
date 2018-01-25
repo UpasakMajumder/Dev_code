@@ -2,7 +2,6 @@
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
 using Kadena.Models.Site;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
@@ -13,14 +12,14 @@ using System.Security;
 using System.Threading.Tasks;
 using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
-using Kadena2.BusinessLogic.Contracts.OrderPayment;
+using DryIoc;
+using static DryIoc.Rules;
 
 namespace Kadena.Tests.WebApi
 {
-    public class OrderServiceTests
+    public class OrderDetailServiceTests
     {
         private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK(OrderItemDTO[] items = null)
         {
@@ -48,50 +47,7 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        private SubmitOrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null,
-                                                Mock<IOrderViewClient> orderViewClient = null)
-        {
-            var mapper = MapperBuilder.MapperInstance;
-            var kenticoUsers = new Mock<IKenticoUserProvider>();
-            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
-            kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
-                .Returns(false);
-            kenticoUsers.Setup(p => p.GetCurrentCustomer())
-               .Returns(new Customer() { Id = 10, UserID = 16 });
-
-            var kenticoResource = new Mock<IKenticoResourceService>();
-            var kenticoSite = new Mock<IKenticoSiteProvider>();
-            kenticoSite.Setup(p => p.GetKenticoSite())
-                .Returns(new KenticoSite());
-
-            var kenticoOrder = new Mock<IKenticoOrderProvider>();
-            var shoppingCart = new Mock<IShoppingCartProvider>();
-            var productsProvider = new Mock<IKenticoProductsProvider>();
-            var orderSubmitClient = new Mock<IOrderSubmitClient>();
-            var taxCalculator = new Mock<ITaxEstimationService>();
-            var mailingListClient = new Mock<IMailingListClient>();
-            var templateProductService = new Mock<ITemplatedClient>();
-            var localization = new Mock<IKenticoLocalizationProvider>();
-            var permissions = new Mock<IKenticoPermissionsProvider>();
-            var settings = new Mock<IKadenaSettings>();
-            var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
-            var card3dsi = new Mock<ICreditCard3dsi>();
-            var purchaseOrder = new Mock<IPurchaseOrder>();
-
-            return new SubmitOrderService(mapper,
-                kenticoOrder.Object,
-                shoppingCart.Object,
-                kenticoUsers.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
-                taxCalculator.Object,
-                templateProductService.Object,
-                localization.Object,
-                kenticoSite.Object,
-                settings.Object,
-                card3dsi.Object,
-                purchaseOrder.Object
-            );
-        }
+        
 
         private OrderDetailService CreateOrderDetailService(Mock<IKenticoLogger> kenticoLogger = null,
                                         Mock<IOrderViewClient> orderViewClient = null)
@@ -132,6 +88,74 @@ namespace Kadena.Tests.WebApi
             );
         }
 
+        /*
+        private OrderDetailService CreateOrderDetailService_UsingDI(Mock<IKenticoLogger> kenticoLogger = null,
+                                        Mock<IOrderViewClient> orderViewClient = null)
+        {
+            if (kenticoLogger == null)
+            {
+                kenticoLogger = new Mock<IKenticoLogger>();
+            }
+
+            if (orderViewClient == null)
+            {
+                orderViewClient = new Mock<IOrderViewClient>();
+            }
+
+            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
+            kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
+                .Returns(false);
+
+            var kenticoUsers = new Mock<IKenticoUserProvider>();
+            kenticoUsers.Setup(p => p.GetCurrentCustomer())
+               .Returns(new Customer() { Id = 10, UserID = 16 });
+
+            var kenticoSite = new Mock<IKenticoSiteProvider>();
+            kenticoSite.Setup(p => p.GetKenticoSite())
+                .Returns(new KenticoSite());
+
+            var factory = new DelegateFactory(r => r.);
+            //var defaultResolver = new UnknownServiceResolver(target => new Mock<object>(target.RequiredServiceType) );
+            var container = new Container(rules => rules.WithUnknownServiceResolvers());
+
+            container.Rules.UnknownServiceResolvers.
+
+            container.RegisterInstance<IKenticoLogger>(kenticoLogger.Object);
+            container.RegisterInstance<IOrderViewClient>(orderViewClient.Object);
+            container.RegisterInstance<IKenticoPermissionsProvider>(kenticoPermissions.Object);
+            container.RegisterInstance<IKenticoUserProvider>(kenticoUsers.Object);
+            container.RegisterInstance<IKenticoSiteProvider>(kenticoSite.Object);
+
+
+
+
+            var mapper = MapperBuilder.MapperInstance;
+            var kenticoUsers = new Mock<IKenticoUserProvider>();
+            
+
+            var kenticoOrder = new Mock<IKenticoOrderProvider>();
+            var shoppingCart = new Mock<IShoppingCartProvider>();
+            var productsProvider = new Mock<IKenticoProductsProvider>();
+            var mailingListClient = new Mock<IMailingListClient>();
+            var localization = new Mock<IKenticoLocalizationProvider>();
+            var permissions = new Mock<IKenticoPermissionsProvider>();
+            var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
+
+            return new OrderDetailService(mapper,
+                orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
+                mailingListClient.Object,
+                kenticoOrder.Object,
+                shoppingCart.Object,
+                productsProvider.Object,
+                kenticoUsers.Object,
+                kenticoResource.Object,
+                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
+                localization.Object,
+                permissions.Object,
+                businessUnits.Object
+            );
+        }
+        */
 
         [Fact]
         public async Task OrderServiceTest_UserCanSee()

@@ -380,6 +380,9 @@
       <HintPath>..\packages\Kentico.Libraries.10.0.16\lib\net45\CMS.WorkflowEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DryIoc, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.dll.2.10.0\lib\net45\DryIoc.dll</HintPath>
+    </Reference>
     <Reference Include="FiftyOne.Foundation, Version=3.2.4.4, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <HintPath>..\packages\Kentico.Libraries.10.0.16\lib\net45\FiftyOne.Foundation.dll</HintPath>
       <Private>True</Private>
@@ -421,6 +424,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -463,8 +467,9 @@
     <Compile Include="WebApi\KListServiceTests.cs" />
     <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
-    <Compile Include="WebApi\OrderServiceTests.cs" />
+    <Compile Include="WebApi\OrderDetailServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
+    <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
     <Compile Include="WebApi\TemplateServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
